@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppTribool
+    ../RibiClasses/CppTribool
 
 SOURCES += \
-    ../../Classes/CppTribool/tribool.cpp
+    ../RibiClasses/CppTribool/tribool.cpp
 
 HEADERS  += \
-    ../../Classes/CppTribool/tribool.h
+    ../RibiClasses/CppTribool/tribool.h
 
 OTHER_FILES += \
-    ../../Classes/CppTribool/Licence.txt
+    ../RibiClasses/CppTribool/Licence.txt
 

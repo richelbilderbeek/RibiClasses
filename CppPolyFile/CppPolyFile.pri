@@ -1,15 +1,15 @@
 INCLUDEPATH += \
-    ../../Classes/CppPolyFile
+    ../RibiClasses/CppPolyFile
 
 SOURCES += \
-    ../../Classes/CppPolyFile/polyfile.cpp
+    ../RibiClasses/CppPolyFile/polyfile.cpp
 
 HEADERS  += \
-    ../../Classes/CppPolyFile/polyfile.h
+    ../RibiClasses/CppPolyFile/polyfile.h
 
 OTHER_FILES += \
-    ../../Classes/CppPolyFile/Licence.txt
+    ../RibiClasses/CppPolyFile/Licence.txt
 
 RESOURCES += \
-    ../../Classes/CppPolyFile/CppPolyFile.qrc
+    ../RibiClasses/CppPolyFile/CppPolyFile.qrc
 

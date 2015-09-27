@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppQtTicTacToeWidget
+    ../RibiClasses/CppQtTicTacToeWidget
 
 SOURCES += \
-    ../../Classes/CppQtTicTacToeWidget/qttictactoewidget.cpp
+    ../RibiClasses/CppQtTicTacToeWidget/qttictactoewidget.cpp
 
 HEADERS  += \
-    ../../Classes/CppQtTicTacToeWidget/qttictactoewidget.h
+    ../RibiClasses/CppQtTicTacToeWidget/qttictactoewidget.h
 
 OTHER_FILES += \
-    ../../Classes/CppQtTicTacToeWidget/Licence.txt
+    ../RibiClasses/CppQtTicTacToeWidget/Licence.txt
 

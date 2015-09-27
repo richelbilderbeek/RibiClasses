@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppRainbow
+    ../RibiClasses/CppRainbow
 
 SOURCES += \
-    ../../Classes/CppRainbow/rainbow.cpp
+    ../RibiClasses/CppRainbow/rainbow.cpp
 
 HEADERS  += \
-    ../../Classes/CppRainbow/rainbow.h
+    ../RibiClasses/CppRainbow/rainbow.h
 
 OTHER_FILES += \
-    ../../Classes/CppRainbow/Licence.txt
+    ../RibiClasses/CppRainbow/Licence.txt
 

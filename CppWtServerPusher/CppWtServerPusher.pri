@@ -1,14 +1,14 @@
 INCLUDEPATH += \
-    ../../Classes/CppWtServerPusher
+    ../RibiClasses/CppWtServerPusher
 
 SOURCES += \
-    ../../Classes/CppWtServerPusher/wtserverpusher.cpp \
-    ../../Classes/CppWtServerPusher/wtserverpusherclient.cpp
+    ../RibiClasses/CppWtServerPusher/wtserverpusher.cpp \
+    ../RibiClasses/CppWtServerPusher/wtserverpusherclient.cpp
 
 HEADERS  += \
-    ../../Classes/CppWtServerPusher/wtserverpusher.h \
-    ../../Classes/CppWtServerPusher/wtserverpusherclient.h
+    ../RibiClasses/CppWtServerPusher/wtserverpusher.h \
+    ../RibiClasses/CppWtServerPusher/wtserverpusherclient.h
 
 OTHER_FILES += \
-    ../../Classes/CppWtServerPusher/Licence.txt
+    ../RibiClasses/CppWtServerPusher/Licence.txt
 

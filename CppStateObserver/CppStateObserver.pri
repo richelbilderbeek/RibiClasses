@@ -1,28 +1,28 @@
 INCLUDEPATH += \
-    ../../Classes/CppStateObserver
+    ../RibiClasses/CppStateObserver
 
 SOURCES += \
-    ../../Classes/CppStateObserver/alphabetafilter.cpp \
-    ../../Classes/CppStateObserver/alphabetagammafilter.cpp \
-    ../../Classes/CppStateObserver/alphafilter.cpp \
-    ../../Classes/CppStateObserver/floatingpointstateobserver.cpp \
-    ../../Classes/CppStateObserver/integeralphafilter.cpp \
-    ../../Classes/CppStateObserver/integerstateobserver.cpp \
-    ../../Classes/CppStateObserver/integersymmetricalphafilter.cpp \
-    ../../Classes/CppStateObserver/multialphafilter.cpp \
-    ../../Classes/CppStateObserver/multiintegerstateobserver.cpp
+    ../RibiClasses/CppStateObserver/alphabetafilter.cpp \
+    ../RibiClasses/CppStateObserver/alphabetagammafilter.cpp \
+    ../RibiClasses/CppStateObserver/alphafilter.cpp \
+    ../RibiClasses/CppStateObserver/floatingpointstateobserver.cpp \
+    ../RibiClasses/CppStateObserver/integeralphafilter.cpp \
+    ../RibiClasses/CppStateObserver/integerstateobserver.cpp \
+    ../RibiClasses/CppStateObserver/integersymmetricalphafilter.cpp \
+    ../RibiClasses/CppStateObserver/multialphafilter.cpp \
+    ../RibiClasses/CppStateObserver/multiintegerstateobserver.cpp
 
 HEADERS  += \
-    ../../Classes/CppStateObserver/alphabetafilter.h \
-    ../../Classes/CppStateObserver/alphabetagammafilter.h \
-    ../../Classes/CppStateObserver/alphafilter.h \
-    ../../Classes/CppStateObserver/floatingpointstateobserver.h \
-    ../../Classes/CppStateObserver/integeralphafilter.h \
-    ../../Classes/CppStateObserver/integerstateobserver.h \
-    ../../Classes/CppStateObserver/integersymmetricalphafilter.h \
-    ../../Classes/CppStateObserver/multialphafilter.h \
-    ../../Classes/CppStateObserver/multiintegerstateobserver.h \
-    ../../Classes/CppStateObserver/stateobserverfwd.h
+    ../RibiClasses/CppStateObserver/alphabetafilter.h \
+    ../RibiClasses/CppStateObserver/alphabetagammafilter.h \
+    ../RibiClasses/CppStateObserver/alphafilter.h \
+    ../RibiClasses/CppStateObserver/floatingpointstateobserver.h \
+    ../RibiClasses/CppStateObserver/integeralphafilter.h \
+    ../RibiClasses/CppStateObserver/integerstateobserver.h \
+    ../RibiClasses/CppStateObserver/integersymmetricalphafilter.h \
+    ../RibiClasses/CppStateObserver/multialphafilter.h \
+    ../RibiClasses/CppStateObserver/multiintegerstateobserver.h \
+    ../RibiClasses/CppStateObserver/stateobserverfwd.h
 
 OTHER_FILES += \
-    ../../Classes/CppStateObserver/Licence.txt
+    ../RibiClasses/CppStateObserver/Licence.txt

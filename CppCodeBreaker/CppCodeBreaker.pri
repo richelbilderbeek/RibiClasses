@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppCodeBreaker
+    ../RibiClasses/CppCodeBreaker
 
 SOURCES += \
-    ../../Classes/CppCodeBreaker/codebreaker.cpp
+    ../RibiClasses/CppCodeBreaker/codebreaker.cpp
 
 HEADERS  += \
-    ../../Classes/CppCodeBreaker/codebreaker.h
+    ../RibiClasses/CppCodeBreaker/codebreaker.h
 
 OTHER_FILES += \
-    ../../Classes/CppCodeBreaker/Licence.txt
+    ../RibiClasses/CppCodeBreaker/Licence.txt
 

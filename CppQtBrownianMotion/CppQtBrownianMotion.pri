@@ -1,20 +1,20 @@
 INCLUDEPATH += \
-    ../../Classes/CppQtBrownianMotion
+    ../RibiClasses/CppQtBrownianMotion
 
 HEADERS += \
-    ../../Classes/CppQtBrownianMotion/qtbrownianmotionparameterswidget.h \
-    ../../Classes/CppQtBrownianMotion/qtbrownianmotionmaxlikelihoodwidget.h \
-    ../../Classes/CppQtBrownianMotion/qtbrownianmotionlikelihoodwidget.h
+    ../RibiClasses/CppQtBrownianMotion/qtbrownianmotionparameterswidget.h \
+    ../RibiClasses/CppQtBrownianMotion/qtbrownianmotionmaxlikelihoodwidget.h \
+    ../RibiClasses/CppQtBrownianMotion/qtbrownianmotionlikelihoodwidget.h
 
 SOURCES += \
-    ../../Classes/CppQtBrownianMotion/qtbrownianmotionparameterswidget.cpp \
-    ../../Classes/CppQtBrownianMotion/qtbrownianmotionmaxlikelihoodwidget.cpp \
-    ../../Classes/CppQtBrownianMotion/qtbrownianmotionlikelihoodwidget.cpp
+    ../RibiClasses/CppQtBrownianMotion/qtbrownianmotionparameterswidget.cpp \
+    ../RibiClasses/CppQtBrownianMotion/qtbrownianmotionmaxlikelihoodwidget.cpp \
+    ../RibiClasses/CppQtBrownianMotion/qtbrownianmotionlikelihoodwidget.cpp
 
 FORMS += \
-    ../../Classes/CppQtBrownianMotion/qtbrownianmotionparameterswidget.ui \
-    ../../Classes/CppQtBrownianMotion/qtbrownianmotionmaxlikelihoodwidget.ui \
-    ../../Classes/CppQtBrownianMotion/qtbrownianmotionlikelihoodwidget.ui
+    ../RibiClasses/CppQtBrownianMotion/qtbrownianmotionparameterswidget.ui \
+    ../RibiClasses/CppQtBrownianMotion/qtbrownianmotionmaxlikelihoodwidget.ui \
+    ../RibiClasses/CppQtBrownianMotion/qtbrownianmotionlikelihoodwidget.ui
 
 OTHER_FILES += \
-    ../../Classes/CppQtBrownianMotion/Licence.txt
+    ../RibiClasses/CppQtBrownianMotion/Licence.txt

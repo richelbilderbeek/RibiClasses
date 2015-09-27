@@ -1,14 +1,14 @@
 INCLUDEPATH += \
-    ../../Classes/CppWtTimedServerPusher
+    ../RibiClasses/CppWtTimedServerPusher
 
 SOURCES += \
-    ../../Classes/CppWtTimedServerPusher/wttimedserverpusher.cpp \
-    ../../Classes/CppWtTimedServerPusher/wttimedserverpusherclient.cpp
+    ../RibiClasses/CppWtTimedServerPusher/wttimedserverpusher.cpp \
+    ../RibiClasses/CppWtTimedServerPusher/wttimedserverpusherclient.cpp
 
 HEADERS  += \
-    ../../Classes/CppWtTimedServerPusher/wttimedserverpusher.h \
-    ../../Classes/CppWtTimedServerPusher/wttimedserverpusherclient.h
+    ../RibiClasses/CppWtTimedServerPusher/wttimedserverpusher.h \
+    ../RibiClasses/CppWtTimedServerPusher/wttimedserverpusherclient.h
 
 OTHER_FILES += \
-    ../../Classes/CppWtTimedServerPusher/Licence.txt
+    ../RibiClasses/CppWtTimedServerPusher/Licence.txt
 

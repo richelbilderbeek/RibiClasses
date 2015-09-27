@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppQtLeftRightRectItem
+    ../RibiClasses/CppQtLeftRightRectItem
 
 SOURCES += \
-    ../../Classes/CppQtLeftRightRectItem/qtleftrightrectitem.cpp
+    ../RibiClasses/CppQtLeftRightRectItem/qtleftrightrectitem.cpp
 
 HEADERS  += \
-    ../../Classes/CppQtLeftRightRectItem/qtleftrightrectitem.h
+    ../RibiClasses/CppQtLeftRightRectItem/qtleftrightrectitem.h
 
 OTHER_FILES += \
-    ../../Classes/CppQtLeftRightRectItem/Licence.txt
+    ../RibiClasses/CppQtLeftRightRectItem/Licence.txt
 

@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppWtBroadcastServer
+    ../RibiClasses/CppWtBroadcastServer
 
 SOURCES += \
-    ../../Classes/CppWtBroadcastServer/wtbroadcastserver.cpp
+    ../RibiClasses/CppWtBroadcastServer/wtbroadcastserver.cpp
 
 HEADERS  += \
-    ../../Classes/CppWtBroadcastServer/wtbroadcastserver.h
+    ../RibiClasses/CppWtBroadcastServer/wtbroadcastserver.h
 
 OTHER_FILES += \
-    ../../Classes/CppWtBroadcastServer/Licence.txt
+    ../RibiClasses/CppWtBroadcastServer/Licence.txt
 

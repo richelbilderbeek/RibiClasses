@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppQtGraphics
+    ../RibiClasses/CppQtGraphics
 
 SOURCES += \
-    ../../Classes/CppQtGraphics/qtgraphics.cpp
+    ../RibiClasses/CppQtGraphics/qtgraphics.cpp
 
 HEADERS  += \
-    ../../Classes/CppQtGraphics/qtgraphics.h
+    ../RibiClasses/CppQtGraphics/qtgraphics.h
 
 OTHER_FILES += \
-    ../../Classes/CppQtGraphics/Licence.txt
+    ../RibiClasses/CppQtGraphics/Licence.txt
 

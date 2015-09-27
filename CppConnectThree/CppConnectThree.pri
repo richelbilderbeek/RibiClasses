@@ -1,23 +1,23 @@
 INCLUDEPATH += \
-    ../../Classes/CppConnectThree
+    ../RibiClasses/CppConnectThree
 
 SOURCES += \
-    ../../Classes/CppConnectThree/connectthree.cpp \
-    ../../Classes/CppConnectThree/connectthreeplayer.cpp \
-    ../../Classes/CppConnectThree/connectthreesquare.cpp \
-    ../../Classes/CppConnectThree/connectthreewinner.cpp \
-    ../../Classes/CppConnectThree/connectthreemove.cpp \
-    ../../Classes/CppConnectThree/connectthreemovefactory.cpp
+    ../RibiClasses/CppConnectThree/connectthree.cpp \
+    ../RibiClasses/CppConnectThree/connectthreeplayer.cpp \
+    ../RibiClasses/CppConnectThree/connectthreesquare.cpp \
+    ../RibiClasses/CppConnectThree/connectthreewinner.cpp \
+    ../RibiClasses/CppConnectThree/connectthreemove.cpp \
+    ../RibiClasses/CppConnectThree/connectthreemovefactory.cpp
 
 HEADERS  += \
-    ../../Classes/CppConnectThree/connectthree.h \
-    ../../Classes/CppConnectThree/connectthreeplayer.h \
-    ../../Classes/CppConnectThree/connectthreesquare.h \
-    ../../Classes/CppConnectThree/connectthreewinner.h \
-    ../../Classes/CppConnectThree/connectthreemove.h \
-    ../../Classes/CppConnectThree/connectthreefwd.h \
-    ../../Classes/CppConnectThree/connectthreemovefactory.h
+    ../RibiClasses/CppConnectThree/connectthree.h \
+    ../RibiClasses/CppConnectThree/connectthreeplayer.h \
+    ../RibiClasses/CppConnectThree/connectthreesquare.h \
+    ../RibiClasses/CppConnectThree/connectthreewinner.h \
+    ../RibiClasses/CppConnectThree/connectthreemove.h \
+    ../RibiClasses/CppConnectThree/connectthreefwd.h \
+    ../RibiClasses/CppConnectThree/connectthreemovefactory.h
 
 OTHER_FILES += \
-    ../../Classes/CppConnectThree/Licence.txt
+    ../RibiClasses/CppConnectThree/Licence.txt
 

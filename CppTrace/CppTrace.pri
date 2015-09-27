@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppTrace
+    ../RibiClasses/CppTrace
 
 SOURCES +=
-#    ../../Classes/CppTrace/trace.cpp
+#    ../RibiClasses/CppTrace/trace.cpp
 
 HEADERS  += \
-    ../../Classes/CppTrace/trace.h
+    ../RibiClasses/CppTrace/trace.h
 
 OTHER_FILES += \
-    ../../Classes/CppTrace/Licence.txt
+    ../RibiClasses/CppTrace/Licence.txt
 

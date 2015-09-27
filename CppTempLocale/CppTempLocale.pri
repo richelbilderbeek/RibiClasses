@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppTempLocale
+    ../RibiClasses/CppTempLocale
 
 SOURCES += \
-    ../../Classes/CppTempLocale/templocale.cpp
+    ../RibiClasses/CppTempLocale/templocale.cpp
 
 HEADERS  += \
-    ../../Classes/CppTempLocale/templocale.h
+    ../RibiClasses/CppTempLocale/templocale.h
 
 OTHER_FILES += \
-    ../../Classes/CppTempLocale/Licence.txt
+    ../RibiClasses/CppTempLocale/Licence.txt
 

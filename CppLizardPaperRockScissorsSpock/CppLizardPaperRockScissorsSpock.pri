@@ -1,13 +1,13 @@
 INCLUDEPATH += \
-    ../../Classes/CppLizardPaperRockScissorsSpock
+    ../RibiClasses/CppLizardPaperRockScissorsSpock
 
 SOURCES += \
-    ../../Classes/CppLizardPaperRockScissorsSpock/lizardpaperrockscissorsspock_test.cpp \
-    ../../Classes/CppLizardPaperRockScissorsSpock/lizardpaperrockscissorsspock.cpp
+    ../RibiClasses/CppLizardPaperRockScissorsSpock/lizardpaperrockscissorsspock_test.cpp \
+    ../RibiClasses/CppLizardPaperRockScissorsSpock/lizardpaperrockscissorsspock.cpp
 
 HEADERS  += \
-    ../../Classes/CppLizardPaperRockScissorsSpock/lizardpaperrockscissorsspock.h
+    ../RibiClasses/CppLizardPaperRockScissorsSpock/lizardpaperrockscissorsspock.h
 
 OTHER_FILES += \
-    ../../Classes/CppLizardPaperRockScissorsSpock/Licence.txt
+    ../RibiClasses/CppLizardPaperRockScissorsSpock/Licence.txt
 

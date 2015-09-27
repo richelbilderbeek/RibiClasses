@@ -1,14 +1,14 @@
 INCLUDEPATH += \
-    ../../Classes/CppOpenQuestion
+    ../RibiClasses/CppOpenQuestion
 
 SOURCES += \
-    ../../Classes/CppOpenQuestion/openquestion.cpp \
-    ../../Classes/CppOpenQuestion/openquestionfactory.cpp
+    ../RibiClasses/CppOpenQuestion/openquestion.cpp \
+    ../RibiClasses/CppOpenQuestion/openquestionfactory.cpp
 
 HEADERS  += \
-    ../../Classes/CppOpenQuestion/openquestion.h \
-    ../../Classes/CppOpenQuestion/openquestionfactory.h
+    ../RibiClasses/CppOpenQuestion/openquestion.h \
+    ../RibiClasses/CppOpenQuestion/openquestionfactory.h
 
 OTHER_FILES += \
-    ../../Classes/CppOpenQuestion/Licence.txt
+    ../RibiClasses/CppOpenQuestion/Licence.txt
 

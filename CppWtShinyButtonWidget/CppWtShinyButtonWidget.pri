@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppWtShinyButtonWidget
+    ../RibiClasses/CppWtShinyButtonWidget
 
 SOURCES += \
-    ../../Classes/CppWtShinyButtonWidget/wtshinybuttonwidget.cpp
+    ../RibiClasses/CppWtShinyButtonWidget/wtshinybuttonwidget.cpp
 
 HEADERS  += \
-    ../../Classes/CppWtShinyButtonWidget/wtshinybuttonwidget.h
+    ../RibiClasses/CppWtShinyButtonWidget/wtshinybuttonwidget.h
 
 OTHER_FILES += \
-    ../../Classes/CppWtShinyButtonWidget/Licence.txt
+    ../RibiClasses/CppWtShinyButtonWidget/Licence.txt
 

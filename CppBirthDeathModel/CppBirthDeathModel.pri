@@ -1,16 +1,16 @@
 INCLUDEPATH += \
-    ../../Classes/CppBirthDeathModel
+    ../RibiClasses/CppBirthDeathModel
 
 SOURCES += \
-    ../../Classes/CppBirthDeathModel/birthdeathmodelsimulation.cpp \
-    ../../Classes/CppBirthDeathModel/birthdeathmodelparameters.cpp \
-    ../../Classes/CppBirthDeathModel/birthdeathmodelhelper.cpp
+    ../RibiClasses/CppBirthDeathModel/birthdeathmodelsimulation.cpp \
+    ../RibiClasses/CppBirthDeathModel/birthdeathmodelparameters.cpp \
+    ../RibiClasses/CppBirthDeathModel/birthdeathmodelhelper.cpp
 
 HEADERS  += \
-    ../../Classes/CppBirthDeathModel/birthdeathmodelsimulation.h \
-    ../../Classes/CppBirthDeathModel/birthdeathmodelparameters.h \
-    ../../Classes/CppBirthDeathModel/birthdeathmodelhelper.h
+    ../RibiClasses/CppBirthDeathModel/birthdeathmodelsimulation.h \
+    ../RibiClasses/CppBirthDeathModel/birthdeathmodelparameters.h \
+    ../RibiClasses/CppBirthDeathModel/birthdeathmodelhelper.h
 
 OTHER_FILES += \
-    ../../Classes/CppBirthDeathModel/Licence.txt
+    ../RibiClasses/CppBirthDeathModel/Licence.txt
 

@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppDial
+    ../RibiClasses/CppDial
 
 SOURCES += \
-    ../../Classes/CppDial/dial.cpp
+    ../RibiClasses/CppDial/dial.cpp
 
 HEADERS  += \
-    ../../Classes/CppDial/dial.h
+    ../RibiClasses/CppDial/dial.h
 
 OTHER_FILES += \
-    ../../Classes/CppDial/Licence.txt
+    ../RibiClasses/CppDial/Licence.txt
 

@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppPaperRockScissorsSimulation
+    ../RibiClasses/CppPaperRockScissorsSimulation
 
 SOURCES += \
-    ../../Classes/CppPaperRockScissorsSimulation/paperrockscissorssimulation.cpp
+    ../RibiClasses/CppPaperRockScissorsSimulation/paperrockscissorssimulation.cpp
 
 HEADERS  += \
-    ../../Classes/CppPaperRockScissorsSimulation/paperrockscissorssimulation.h
+    ../RibiClasses/CppPaperRockScissorsSimulation/paperrockscissorssimulation.h
 
 OTHER_FILES += \
-    ../../Classes/CppPaperRockScissorsSimulation/Licence.txt
+    ../RibiClasses/CppPaperRockScissorsSimulation/Licence.txt
 

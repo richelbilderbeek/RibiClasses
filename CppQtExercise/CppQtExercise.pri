@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppQtExercise
+    ../RibiClasses/CppQtExercise
 
 SOURCES += \
-    ../../Classes/CppQtExercise/qtexercise.cpp
+    ../RibiClasses/CppQtExercise/qtexercise.cpp
 
 HEADERS  += \
-    ../../Classes/CppQtExercise/qtexercise.h
+    ../RibiClasses/CppQtExercise/qtexercise.h
 
 OTHER_FILES += \
-    ../../Classes/CppQtExercise/Licence.txt
+    ../RibiClasses/CppQtExercise/Licence.txt
 

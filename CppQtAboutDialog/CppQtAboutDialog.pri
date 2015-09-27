@@ -1,15 +1,15 @@
 INCLUDEPATH += \
-    ../../Classes/CppQtAboutDialog
+    ../RibiClasses/CppQtAboutDialog
 
 SOURCES += \
-    ../../Classes/CppQtAboutDialog/qtaboutdialog.cpp
+    ../RibiClasses/CppQtAboutDialog/qtaboutdialog.cpp
 
 HEADERS  += \
-    ../../Classes/CppQtAboutDialog/qtaboutdialog.h
+    ../RibiClasses/CppQtAboutDialog/qtaboutdialog.h
 
 FORMS += \
-    ../../Classes/CppQtAboutDialog/qtaboutdialog.ui
+    ../RibiClasses/CppQtAboutDialog/qtaboutdialog.ui
 
 OTHER_FILES += \
-    ../../Classes/CppQtAboutDialog/Licence.txt
+    ../RibiClasses/CppQtAboutDialog/Licence.txt
 

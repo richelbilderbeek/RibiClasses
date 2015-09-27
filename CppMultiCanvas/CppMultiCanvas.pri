@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppMultiCanvas
+    ../RibiClasses/CppMultiCanvas
 
 SOURCES += \
-    ../../Classes/CppMultiCanvas/multicanvas.cpp
+    ../RibiClasses/CppMultiCanvas/multicanvas.cpp
 
 HEADERS  += \
-    ../../Classes/CppMultiCanvas/multicanvas.h
+    ../RibiClasses/CppMultiCanvas/multicanvas.h
 
 OTHER_FILES += \
-    ../../Classes/CppMultiCanvas/Licence.txt
+    ../RibiClasses/CppMultiCanvas/Licence.txt
 

@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppLoopReader
+    ../RibiClasses/CppLoopReader
 
 SOURCES +=
-#    ../../Classes/CppLoopReader/loopreader.cpp
+#    ../RibiClasses/CppLoopReader/loopreader.cpp
 
 HEADERS  += \
-    ../../Classes/CppLoopReader/loopreader.h
+    ../RibiClasses/CppLoopReader/loopreader.h
 
 OTHER_FILES += \
-    ../../Classes/CppLoopReader/Licence.txt
+    ../RibiClasses/CppLoopReader/Licence.txt
 

@@ -1,24 +1,24 @@
 DEFINES += DEBUG_SKIP_SAZ_AND_SAO
 
 INCLUDEPATH += \
-    ../../Classes/CppManyDigitNewick
+    ../RibiClasses/CppManyDigitNewick
 
 SOURCES += \
-    ../../Classes/CppManyDigitNewick/manydigitnewick.cpp \
-    ../../Classes/CppManyDigitNewick/manydigitnewickcoordinat.cpp \
-    ../../Classes/CppManyDigitNewick/manydigitnewickderivative.cpp \
-    ../../Classes/CppManyDigitNewick/manydigitnewickindexer.cpp \
-    ../../Classes/CppManyDigitNewick/manydigitnewickindextable.cpp \
-    ../../Classes/CppManyDigitNewick/manydigitnewicks.cpp
+    ../RibiClasses/CppManyDigitNewick/manydigitnewick.cpp \
+    ../RibiClasses/CppManyDigitNewick/manydigitnewickcoordinat.cpp \
+    ../RibiClasses/CppManyDigitNewick/manydigitnewickderivative.cpp \
+    ../RibiClasses/CppManyDigitNewick/manydigitnewickindexer.cpp \
+    ../RibiClasses/CppManyDigitNewick/manydigitnewickindextable.cpp \
+    ../RibiClasses/CppManyDigitNewick/manydigitnewicks.cpp
 
 HEADERS  += \
-    ../../Classes/CppManyDigitNewick/manydigitnewick.h \
-    ../../Classes/CppManyDigitNewick/manydigitnewickcoordinat.h \
-    ../../Classes/CppManyDigitNewick/manydigitnewickderivative.h \
-    ../../Classes/CppManyDigitNewick/manydigitnewickindexer.h \
-    ../../Classes/CppManyDigitNewick/manydigitnewickindextable.h \
-    ../../Classes/CppManyDigitNewick/manydigitnewicks.h \
+    ../RibiClasses/CppManyDigitNewick/manydigitnewick.h \
+    ../RibiClasses/CppManyDigitNewick/manydigitnewickcoordinat.h \
+    ../RibiClasses/CppManyDigitNewick/manydigitnewickderivative.h \
+    ../RibiClasses/CppManyDigitNewick/manydigitnewickindexer.h \
+    ../RibiClasses/CppManyDigitNewick/manydigitnewickindextable.h \
+    ../RibiClasses/CppManyDigitNewick/manydigitnewicks.h \
 
 OTHER_FILES += \
-    ../../Classes/CppManyDigitNewick/Licence.txt
+    ../RibiClasses/CppManyDigitNewick/Licence.txt
 

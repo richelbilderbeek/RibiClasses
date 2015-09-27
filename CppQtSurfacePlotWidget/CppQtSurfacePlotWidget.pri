@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppQtSurfacePlotWidget
+    ../RibiClasses/CppQtSurfacePlotWidget
 
 SOURCES += \
-    ../../Classes/CppQtSurfacePlotWidget/qtsurfaceplotwidget.cpp
+    ../RibiClasses/CppQtSurfacePlotWidget/qtsurfaceplotwidget.cpp
 
 HEADERS  += \
-    ../../Classes/CppQtSurfacePlotWidget/qtsurfaceplotwidget.h
+    ../RibiClasses/CppQtSurfacePlotWidget/qtsurfaceplotwidget.h
 
 OTHER_FILES += \
-    ../../Classes/CppQtSurfacePlotWidget/Licence.txt
+    ../RibiClasses/CppQtSurfacePlotWidget/Licence.txt
 

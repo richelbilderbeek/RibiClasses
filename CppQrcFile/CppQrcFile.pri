@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppQrcFile
+    ../RibiClasses/CppQrcFile
 
 SOURCES += \
-    ../../Classes/CppQrcFile/qrcfile.cpp
+    ../RibiClasses/CppQrcFile/qrcfile.cpp
 
 HEADERS  += \
-    ../../Classes/CppQrcFile/qrcfile.h
+    ../RibiClasses/CppQrcFile/qrcfile.h
 
 OTHER_FILES += \
-    ../../Classes/CppQrcFile/Licence.txt
+    ../RibiClasses/CppQrcFile/Licence.txt
 

@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppMultiApproximator
+    ../RibiClasses/CppMultiApproximator
 
 SOURCES += \
-    ../../Classes/CppMultiApproximator/multiapproximator.cpp
+    ../RibiClasses/CppMultiApproximator/multiapproximator.cpp
 
 HEADERS  += \
-    ../../Classes/CppMultiApproximator/multiapproximator.h
+    ../RibiClasses/CppMultiApproximator/multiapproximator.h
 
 OTHER_FILES += \
-    ../../Classes/CppMultiApproximator/Licence.txt
+    ../RibiClasses/CppMultiApproximator/Licence.txt
 

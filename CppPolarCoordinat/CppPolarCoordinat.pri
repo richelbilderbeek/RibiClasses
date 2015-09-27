@@ -1,11 +1,11 @@
 INCLUDEPATH += \
-    ../../Classes/CppPolarCoordinat
+    ../RibiClasses/CppPolarCoordinat
 
 SOURCES += \
-    ../../Classes/CppPolarCoordinat/polarcoordinat.cpp
+    ../RibiClasses/CppPolarCoordinat/polarcoordinat.cpp
 
 HEADERS  += \
-    ../../Classes/CppPolarCoordinat/polarcoordinat.h
+    ../RibiClasses/CppPolarCoordinat/polarcoordinat.h
 
 OTHER_FILES += \
-    ../../Classes/CppPolarCoordinat/Licence.txt
+    ../RibiClasses/CppPolarCoordinat/Licence.txt

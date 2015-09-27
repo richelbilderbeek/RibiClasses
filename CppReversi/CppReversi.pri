@@ -1,23 +1,23 @@
 INCLUDEPATH += \
-    ../../Classes/CppReversi
+    ../RibiClasses/CppReversi
 
 SOURCES += \
-    ../../Classes/CppReversi/reversiwidget.cpp \
-    ../../Classes/CppReversi/reversimove.cpp \
-    ../../Classes/CppReversi/reversiboard.cpp \
-    ../../Classes/CppReversi/reversisquare.cpp \
-    ../../Classes/CppReversi/reversiplayer.cpp \
-    ../../Classes/CppReversi/reversiwinner.cpp
+    ../RibiClasses/CppReversi/reversiwidget.cpp \
+    ../RibiClasses/CppReversi/reversimove.cpp \
+    ../RibiClasses/CppReversi/reversiboard.cpp \
+    ../RibiClasses/CppReversi/reversisquare.cpp \
+    ../RibiClasses/CppReversi/reversiplayer.cpp \
+    ../RibiClasses/CppReversi/reversiwinner.cpp
 
 HEADERS  += \
-    ../../Classes/CppReversi/reversiwidget.h \
-    ../../Classes/CppReversi/reversimove.h \
-    ../../Classes/CppReversi/reversiboard.h \
-    ../../Classes/CppReversi/reversifwd.h \
-    ../../Classes/CppReversi/reversisquare.h \
-    ../../Classes/CppReversi/reversiplayer.h \
-    ../../Classes/CppReversi/reversiwinner.h
+    ../RibiClasses/CppReversi/reversiwidget.h \
+    ../RibiClasses/CppReversi/reversimove.h \
+    ../RibiClasses/CppReversi/reversiboard.h \
+    ../RibiClasses/CppReversi/reversifwd.h \
+    ../RibiClasses/CppReversi/reversisquare.h \
+    ../RibiClasses/CppReversi/reversiplayer.h \
+    ../RibiClasses/CppReversi/reversiwinner.h
 
 OTHER_FILES += \
-    ../../Classes/CppReversi/Licence.txt
+    ../RibiClasses/CppReversi/Licence.txt
 

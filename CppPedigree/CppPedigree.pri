@@ -1,13 +1,13 @@
 INCLUDEPATH += \
-    ../../Classes/CppPedigree
+    ../RibiClasses/CppPedigree
 
 SOURCES += \
-    ../../Classes/CppPedigree/pedigree.cpp \
-    ../../Classes/CppPedigree/pedigree_test.cpp
+    ../RibiClasses/CppPedigree/pedigree.cpp \
+    ../RibiClasses/CppPedigree/pedigree_test.cpp
 
 HEADERS  += \
-    ../../Classes/CppPedigree/pedigree.h
+    ../RibiClasses/CppPedigree/pedigree.h
 
 OTHER_FILES += \
-    ../../Classes/CppPedigree/Licence.txt
+    ../RibiClasses/CppPedigree/Licence.txt
 

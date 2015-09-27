@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppPositiveNonZeroDouble
+    ../RibiClasses/CppPositiveNonZeroDouble
 
 SOURCES += \
-    ../../Classes/CppPositiveNonZeroDouble/positivenonzerodouble.cpp
+    ../RibiClasses/CppPositiveNonZeroDouble/positivenonzerodouble.cpp
 
 HEADERS  += \
-    ../../Classes/CppPositiveNonZeroDouble/positivenonzerodouble.h
+    ../RibiClasses/CppPositiveNonZeroDouble/positivenonzerodouble.h
 
 OTHER_FILES += \
-    ../../Classes/CppPositiveNonZeroDouble/Licence.txt
+    ../RibiClasses/CppPositiveNonZeroDouble/Licence.txt
 

@@ -1,14 +1,14 @@
 INCLUDEPATH += \
-    ../../Classes/CppQtChess
+    ../RibiClasses/CppQtChess
 
 SOURCES += \
-    ../../Classes/CppQtChess/qtchessresources.cpp \
-    ../../Classes/CppQtChess/qtchessboardwidget.cpp
+    ../RibiClasses/CppQtChess/qtchessresources.cpp \
+    ../RibiClasses/CppQtChess/qtchessboardwidget.cpp
 
 HEADERS  += \
-    ../../Classes/CppQtChess/qtchessresources.h \
-    ../../Classes/CppQtChess/qtchessboardwidget.h
+    ../RibiClasses/CppQtChess/qtchessresources.h \
+    ../RibiClasses/CppQtChess/qtchessboardwidget.h
 
 OTHER_FILES += \
-    ../../Classes/CppQtChess/Licence.txt
+    ../RibiClasses/CppQtChess/Licence.txt
 

@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppToggleButton
+    ../RibiClasses/CppToggleButton
 
 SOURCES += \
-    ../../Classes/CppToggleButton/togglebutton.cpp
+    ../RibiClasses/CppToggleButton/togglebutton.cpp
 
 HEADERS  += \
-    ../../Classes/CppToggleButton/togglebutton.h
+    ../RibiClasses/CppToggleButton/togglebutton.h
 
 OTHER_FILES += \
-    ../../Classes/CppToggleButton/Licence.txt
+    ../RibiClasses/CppToggleButton/Licence.txt
 

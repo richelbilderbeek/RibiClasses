@@ -1,58 +1,58 @@
 INCLUDEPATH += \
-    ../../Classes/CppTriangleMesh
+    ../RibiClasses/CppTriangleMesh
 
 SOURCES += \
-    ../../Classes/CppTriangleMesh/trianglemeshtemplate.cpp \
-    ../../Classes/CppTriangleMesh/trianglemeshpoint.cpp \
-    ../../Classes/CppTriangleMesh/trianglemeshfaceorientation.cpp \
-    ../../Classes/CppTriangleMesh/trianglemeshfacefactory.cpp \
-    ../../Classes/CppTriangleMesh/trianglemeshface.cpp \
-    ../../Classes/CppTriangleMesh/trianglemeshcellscreator.cpp \
-    ../../Classes/CppTriangleMesh/trianglemeshcellfactory.cpp \
-    ../../Classes/CppTriangleMesh/trianglemeshcell.cpp \
-    ../../Classes/CppTriangleMesh/trianglemeshhelper.cpp \
-    ../../Classes/CppTriangleMesh/trianglemeshbuilder.cpp \
-    ../../Classes/CppTriangleMesh/trianglemeshpointfactory.cpp \
-    ../../Classes/CppTriangleMesh/trianglemeshcellscreatorfactory.cpp \
-    ../../Classes/CppTriangleMesh/trianglemeshwinding.cpp \
-    ../../Classes/CppTriangleMesh/trianglemeshwindings.cpp \
-    ../../Classes/CppTriangleMesh/trianglemeshcreateverticalfacesstrategy.cpp \
-    ../../Classes/CppTriangleMesh/trianglemeshcreateverticalfacesstrategies.cpp \
-    ../../Classes/CppTriangleMesh/trianglemeshdialog.cpp \
-    ../../Classes/CppTriangleMesh/trianglemeshbuilderimpl.cpp \
-    ../../Classes/CppTriangleMesh/trianglemeshtemplateimpl.cpp \
-    ../../Classes/CppTriangleMesh/trianglemeshcellimpl.cpp \
-    ../../Classes/CppTriangleMesh/trianglemeshbuilderimpl_pout.cpp \
-    ../../Classes/CppTriangleMesh/trianglemeshbuilderimpl_pin.cpp \
-    ../../Classes/CppTriangleMesh/trianglemeshbuilderimpl_mut.cpp \
-    ../../Classes/CppTriangleMesh/trianglemeshbuilderimpl_k.cpp \
-    ../../Classes/CppTriangleMesh/trianglemeshfaceimpl.cpp \
-    ../../Classes/CppTriangleMesh/trianglemeshhelper_test.cpp
+    ../RibiClasses/CppTriangleMesh/trianglemeshtemplate.cpp \
+    ../RibiClasses/CppTriangleMesh/trianglemeshpoint.cpp \
+    ../RibiClasses/CppTriangleMesh/trianglemeshfaceorientation.cpp \
+    ../RibiClasses/CppTriangleMesh/trianglemeshfacefactory.cpp \
+    ../RibiClasses/CppTriangleMesh/trianglemeshface.cpp \
+    ../RibiClasses/CppTriangleMesh/trianglemeshcellscreator.cpp \
+    ../RibiClasses/CppTriangleMesh/trianglemeshcellfactory.cpp \
+    ../RibiClasses/CppTriangleMesh/trianglemeshcell.cpp \
+    ../RibiClasses/CppTriangleMesh/trianglemeshhelper.cpp \
+    ../RibiClasses/CppTriangleMesh/trianglemeshbuilder.cpp \
+    ../RibiClasses/CppTriangleMesh/trianglemeshpointfactory.cpp \
+    ../RibiClasses/CppTriangleMesh/trianglemeshcellscreatorfactory.cpp \
+    ../RibiClasses/CppTriangleMesh/trianglemeshwinding.cpp \
+    ../RibiClasses/CppTriangleMesh/trianglemeshwindings.cpp \
+    ../RibiClasses/CppTriangleMesh/trianglemeshcreateverticalfacesstrategy.cpp \
+    ../RibiClasses/CppTriangleMesh/trianglemeshcreateverticalfacesstrategies.cpp \
+    ../RibiClasses/CppTriangleMesh/trianglemeshdialog.cpp \
+    ../RibiClasses/CppTriangleMesh/trianglemeshbuilderimpl.cpp \
+    ../RibiClasses/CppTriangleMesh/trianglemeshtemplateimpl.cpp \
+    ../RibiClasses/CppTriangleMesh/trianglemeshcellimpl.cpp \
+    ../RibiClasses/CppTriangleMesh/trianglemeshbuilderimpl_pout.cpp \
+    ../RibiClasses/CppTriangleMesh/trianglemeshbuilderimpl_pin.cpp \
+    ../RibiClasses/CppTriangleMesh/trianglemeshbuilderimpl_mut.cpp \
+    ../RibiClasses/CppTriangleMesh/trianglemeshbuilderimpl_k.cpp \
+    ../RibiClasses/CppTriangleMesh/trianglemeshfaceimpl.cpp \
+    ../RibiClasses/CppTriangleMesh/trianglemeshhelper_test.cpp
 
 HEADERS  += \
-    ../../Classes/CppTriangleMesh/trianglemeshtemplate.h \
-    ../../Classes/CppTriangleMesh/trianglemeshpoint.h \
-    ../../Classes/CppTriangleMesh/trianglemeshfwd.h \
-    ../../Classes/CppTriangleMesh/trianglemeshfaceorientation.h \
-    ../../Classes/CppTriangleMesh/trianglemeshfacefactory.h \
-    ../../Classes/CppTriangleMesh/trianglemeshhelper.h \
-    ../../Classes/CppTriangleMesh/trianglemeshface.h \
-    ../../Classes/CppTriangleMesh/trianglemeshcellscreator.h \
-    ../../Classes/CppTriangleMesh/trianglemeshcellfactory.h \
-    ../../Classes/CppTriangleMesh/trianglemeshcell.h \
-    ../../Classes/CppTriangleMesh/trianglemeshbuilder.h \
-    ../../Classes/CppTriangleMesh/trianglemeshpointfactory.h \
-    ../../Classes/CppTriangleMesh/trianglemeshcellscreatorfactory.h \
-    ../../Classes/CppTriangleMesh/trianglemeshwinding.h \
-    ../../Classes/CppTriangleMesh/trianglemeshwindings.h \
-    ../../Classes/CppTriangleMesh/trianglemeshcreateverticalfacesstrategy.h \
-    ../../Classes/CppTriangleMesh/trianglemeshcreateverticalfacesstrategies.h \
-    ../../Classes/CppTriangleMesh/trianglemeshdialog.h \
-    ../../Classes/CppTriangleMesh/trianglemeshbuilderimpl.h \
-    ../../Classes/CppTriangleMesh/trianglemeshtemplateimpl.h \
-    ../../Classes/CppTriangleMesh/trianglemeshcellimpl.h \
-    ../../Classes/CppTriangleMesh/trianglemeshfaceimpl.h
+    ../RibiClasses/CppTriangleMesh/trianglemeshtemplate.h \
+    ../RibiClasses/CppTriangleMesh/trianglemeshpoint.h \
+    ../RibiClasses/CppTriangleMesh/trianglemeshfwd.h \
+    ../RibiClasses/CppTriangleMesh/trianglemeshfaceorientation.h \
+    ../RibiClasses/CppTriangleMesh/trianglemeshfacefactory.h \
+    ../RibiClasses/CppTriangleMesh/trianglemeshhelper.h \
+    ../RibiClasses/CppTriangleMesh/trianglemeshface.h \
+    ../RibiClasses/CppTriangleMesh/trianglemeshcellscreator.h \
+    ../RibiClasses/CppTriangleMesh/trianglemeshcellfactory.h \
+    ../RibiClasses/CppTriangleMesh/trianglemeshcell.h \
+    ../RibiClasses/CppTriangleMesh/trianglemeshbuilder.h \
+    ../RibiClasses/CppTriangleMesh/trianglemeshpointfactory.h \
+    ../RibiClasses/CppTriangleMesh/trianglemeshcellscreatorfactory.h \
+    ../RibiClasses/CppTriangleMesh/trianglemeshwinding.h \
+    ../RibiClasses/CppTriangleMesh/trianglemeshwindings.h \
+    ../RibiClasses/CppTriangleMesh/trianglemeshcreateverticalfacesstrategy.h \
+    ../RibiClasses/CppTriangleMesh/trianglemeshcreateverticalfacesstrategies.h \
+    ../RibiClasses/CppTriangleMesh/trianglemeshdialog.h \
+    ../RibiClasses/CppTriangleMesh/trianglemeshbuilderimpl.h \
+    ../RibiClasses/CppTriangleMesh/trianglemeshtemplateimpl.h \
+    ../RibiClasses/CppTriangleMesh/trianglemeshcellimpl.h \
+    ../RibiClasses/CppTriangleMesh/trianglemeshfaceimpl.h
 
 OTHER_FILES += \
-    ../../Classes/CppTriangleMesh/Licence.txt
+    ../RibiClasses/CppTriangleMesh/Licence.txt
 

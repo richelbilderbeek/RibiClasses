@@ -1,11 +1,11 @@
 INCLUDEPATH += \
-    ../../Classes/CppWtConnectThreeWidget
+    ../RibiClasses/CppWtConnectThreeWidget
 
 HEADERS += \
-    ../../Classes/CppWtConnectThreeWidget/wtconnectthreewidget.h
+    ../RibiClasses/CppWtConnectThreeWidget/wtconnectthreewidget.h
 
 SOURCES += \
-    ../../Classes/CppWtConnectThreeWidget/wtconnectthreewidget.cpp
+    ../RibiClasses/CppWtConnectThreeWidget/wtconnectthreewidget.cpp
 
 OTHER_FILES += \
-    ../../Classes/CppWtConnectThreeWidget/Licence.txt
+    ../RibiClasses/CppWtConnectThreeWidget/Licence.txt

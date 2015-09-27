@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppMenuDialog
+    ../RibiClasses/CppMenuDialog
 
 SOURCES += \
-    ../../Classes/CppMenuDialog/menudialog.cpp
+    ../RibiClasses/CppMenuDialog/menudialog.cpp
 
 HEADERS  += \
-    ../../Classes/CppMenuDialog/menudialog.h
+    ../RibiClasses/CppMenuDialog/menudialog.h
 
 OTHER_FILES += \
-    ../../Classes/CppMenuDialog/Licence.txt
+    ../RibiClasses/CppMenuDialog/Licence.txt
 

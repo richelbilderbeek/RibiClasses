@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppMultipleChoiceQuestion
+    ../RibiClasses/CppMultipleChoiceQuestion
 
 SOURCES += \
-    ../../Classes/CppMultipleChoiceQuestion/multiplechoicequestion.cpp
+    ../RibiClasses/CppMultipleChoiceQuestion/multiplechoicequestion.cpp
 
 HEADERS  += \
-    ../../Classes/CppMultipleChoiceQuestion/multiplechoicequestion.h
+    ../RibiClasses/CppMultipleChoiceQuestion/multiplechoicequestion.h
 
 OTHER_FILES += \
-    ../../Classes/CppMultipleChoiceQuestion/Licence.txt
+    ../RibiClasses/CppMultipleChoiceQuestion/Licence.txt
 

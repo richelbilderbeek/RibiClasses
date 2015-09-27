@@ -1,36 +1,36 @@
 INCLUDEPATH += \
-    ../../Classes/CppUnits
+    ../RibiClasses/CppUnits
 
 SOURCES += \
-    ../../Classes/CppUnits/units.cpp \
-    ../../Classes/CppUnits/sulfidemoleculeamount.cpp \
-    ../../Classes/CppUnits/hydrogenmoleculeamount.cpp \
-    ../../Classes/CppUnits/speciesdensity.cpp \
-    ../../Classes/CppUnits/moleculeamount.cpp \
-    ../../Classes/CppUnits/volumetricflow.cpp \
-    ../../Classes/CppUnits/massflow.cpp \
-    ../../Classes/CppUnits/massdensity.cpp \
-    ../../Classes/CppUnits/concentration.cpp \
-    ../../Classes/CppUnits/speciesgrowth.cpp \
-    ../../Classes/CppUnits/rate.cpp \
-    ../../Classes/CppUnits/concentrationchange.cpp \
-    ../../Classes/CppUnits/ribi_time.cpp
+    ../RibiClasses/CppUnits/units.cpp \
+    ../RibiClasses/CppUnits/sulfidemoleculeamount.cpp \
+    ../RibiClasses/CppUnits/hydrogenmoleculeamount.cpp \
+    ../RibiClasses/CppUnits/speciesdensity.cpp \
+    ../RibiClasses/CppUnits/moleculeamount.cpp \
+    ../RibiClasses/CppUnits/volumetricflow.cpp \
+    ../RibiClasses/CppUnits/massflow.cpp \
+    ../RibiClasses/CppUnits/massdensity.cpp \
+    ../RibiClasses/CppUnits/concentration.cpp \
+    ../RibiClasses/CppUnits/speciesgrowth.cpp \
+    ../RibiClasses/CppUnits/rate.cpp \
+    ../RibiClasses/CppUnits/concentrationchange.cpp \
+    ../RibiClasses/CppUnits/ribi_time.cpp
 
 HEADERS  += \
-    ../../Classes/CppUnits/units.h \
-    ../../Classes/CppUnits/moleculeamount.h \
-    ../../Classes/CppUnits/sulfidemoleculeamount.h \
-    ../../Classes/CppUnits/hydrogenmoleculeamount.h \
-    ../../Classes/CppUnits/speciesdensity.h \
-    ../../Classes/CppUnits/volumetricflow.h \
-    ../../Classes/CppUnits/massflow.h \
-    ../../Classes/CppUnits/massdensity.h \
-    ../../Classes/CppUnits/concentration.h \
-    ../../Classes/CppUnits/speciesgrowth.h \
-    ../../Classes/CppUnits/rate.h \
-    ../../Classes/CppUnits/concentrationchange.h \
-    ../../Classes/CppUnits/ribi_time.h
+    ../RibiClasses/CppUnits/units.h \
+    ../RibiClasses/CppUnits/moleculeamount.h \
+    ../RibiClasses/CppUnits/sulfidemoleculeamount.h \
+    ../RibiClasses/CppUnits/hydrogenmoleculeamount.h \
+    ../RibiClasses/CppUnits/speciesdensity.h \
+    ../RibiClasses/CppUnits/volumetricflow.h \
+    ../RibiClasses/CppUnits/massflow.h \
+    ../RibiClasses/CppUnits/massdensity.h \
+    ../RibiClasses/CppUnits/concentration.h \
+    ../RibiClasses/CppUnits/speciesgrowth.h \
+    ../RibiClasses/CppUnits/rate.h \
+    ../RibiClasses/CppUnits/concentrationchange.h \
+    ../RibiClasses/CppUnits/ribi_time.h
 
 OTHER_FILES += \
-    ../../Classes/CppUnits/Licence.txt
+    ../RibiClasses/CppUnits/Licence.txt
 

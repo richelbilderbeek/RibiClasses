@@ -1,11 +1,11 @@
 INCLUDEPATH += \
-    ../../Classes/CppMultiVector
+    ../RibiClasses/CppMultiVector
 
 SOURCES += \
-    ../../Classes/CppMultiVector/multivector.cpp
+    ../RibiClasses/CppMultiVector/multivector.cpp
 
 HEADERS  += \
-    ../../Classes/CppMultiVector/multivector.h
+    ../RibiClasses/CppMultiVector/multivector.h
 
 OTHER_FILES += \
-    ../../Classes/CppMultiVector/Licence.txt
+    ../RibiClasses/CppMultiVector/Licence.txt

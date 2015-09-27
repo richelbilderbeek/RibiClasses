@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppWtToggleButtonWidget
+    ../RibiClasses/CppWtToggleButtonWidget
 
 SOURCES += \
-    ../../Classes/CppWtToggleButtonWidget/wttogglebuttonwidget.cpp
+    ../RibiClasses/CppWtToggleButtonWidget/wttogglebuttonwidget.cpp
 
 HEADERS  += \
-    ../../Classes/CppWtToggleButtonWidget/wttogglebuttonwidget.h
+    ../RibiClasses/CppWtToggleButtonWidget/wttogglebuttonwidget.h
 
 OTHER_FILES += \
-    ../../Classes/CppWtToggleButtonWidget/Licence.txt
+    ../RibiClasses/CppWtToggleButtonWidget/Licence.txt
 

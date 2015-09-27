@@ -1,13 +1,13 @@
 INCLUDEPATH += \
-    ../../Classes/CppDnaSequence
+    ../RibiClasses/CppDnaSequence
 
 SOURCES += \
-    ../../Classes/CppDnaSequence/dnasequence.cpp \
-    ../../Classes/CppDnaSequence/dnasequence_test.cpp
+    ../RibiClasses/CppDnaSequence/dnasequence.cpp \
+    ../RibiClasses/CppDnaSequence/dnasequence_test.cpp
 
 HEADERS  += \
-    ../../Classes/CppDnaSequence/dnasequence.h
+    ../RibiClasses/CppDnaSequence/dnasequence.h
 
 OTHER_FILES += \
-    ../../Classes/CppDnaSequence/Licence.txt
+    ../RibiClasses/CppDnaSequence/Licence.txt
 

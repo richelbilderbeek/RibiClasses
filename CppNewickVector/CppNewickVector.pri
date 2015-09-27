@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppNewickVector
+    ../RibiClasses/CppNewickVector
 
 SOURCES += \
-    ../../Classes/CppNewickVector/newickvector.cpp
+    ../RibiClasses/CppNewickVector/newickvector.cpp
 
 HEADERS  += \
-    ../../Classes/CppNewickVector/newickvector.h
+    ../RibiClasses/CppNewickVector/newickvector.h
 
 OTHER_FILES += \
-    ../../Classes/CppNewickVector/Licence.txt
+    ../RibiClasses/CppNewickVector/Licence.txt
 

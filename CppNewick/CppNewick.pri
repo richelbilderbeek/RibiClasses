@@ -1,15 +1,15 @@
 INCLUDEPATH += \
-    ../../Classes/CppNewick
+    ../RibiClasses/CppNewick
 
 SOURCES += \
-    ../../Classes/CppNewick/newick.cpp \
-    ../../Classes/CppNewick/newickcpp98.cpp
+    ../RibiClasses/CppNewick/newick.cpp \
+    ../RibiClasses/CppNewick/newickcpp98.cpp
 
 HEADERS  += \
-    ../../Classes/CppNewick/newick.h \
-    ../../Classes/CppNewick/newickcpp98.h \
-    ../../Classes/CppNewick/newickstorage.h
+    ../RibiClasses/CppNewick/newick.h \
+    ../RibiClasses/CppNewick/newickcpp98.h \
+    ../RibiClasses/CppNewick/newickstorage.h
 
 OTHER_FILES += \
-    ../../Classes/CppNewick/Licence.txt
+    ../RibiClasses/CppNewick/Licence.txt
 

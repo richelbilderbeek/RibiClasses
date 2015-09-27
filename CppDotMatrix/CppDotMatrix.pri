@@ -1,16 +1,16 @@
 INCLUDEPATH += \
-    ../../Classes/CppDotMatrix
+    ../RibiClasses/CppDotMatrix
 
 SOURCES += \
-    ../../Classes/CppDotMatrix/dotmatrixchar.cpp \
-    ../../Classes/CppDotMatrix/dotmatrixstring.cpp \
-    ../../Classes/CppDotMatrix/dotmatrixtext.cpp
+    ../RibiClasses/CppDotMatrix/dotmatrixchar.cpp \
+    ../RibiClasses/CppDotMatrix/dotmatrixstring.cpp \
+    ../RibiClasses/CppDotMatrix/dotmatrixtext.cpp
 
 HEADERS  += \
-    ../../Classes/CppDotMatrix/dotmatrixstring.h \
-    ../../Classes/CppDotMatrix/dotmatrixchar.h \
-    ../../Classes/CppDotMatrix/dotmatrixtext.h
+    ../RibiClasses/CppDotMatrix/dotmatrixstring.h \
+    ../RibiClasses/CppDotMatrix/dotmatrixchar.h \
+    ../RibiClasses/CppDotMatrix/dotmatrixtext.h
 
 OTHER_FILES += \
-    ../../Classes/CppDotMatrix/Licence.txt
+    ../RibiClasses/CppDotMatrix/Licence.txt
 

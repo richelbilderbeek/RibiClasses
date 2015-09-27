@@ -1,19 +1,19 @@
 INCLUDEPATH += \
-    ../../Classes/CppRubiksClock
+    ../RibiClasses/CppRubiksClock
 
 SOURCES += \
-    ../../Classes/CppRubiksClock/rubiksclock.cpp \
-    ../../Classes/CppRubiksClock/rubiksclockpegs.cpp \
-    ../../Classes/CppRubiksClock/rubiksclockside.cpp \
-    ../../Classes/CppRubiksClock/rubiksclocktimes.cpp
+    ../RibiClasses/CppRubiksClock/rubiksclock.cpp \
+    ../RibiClasses/CppRubiksClock/rubiksclockpegs.cpp \
+    ../RibiClasses/CppRubiksClock/rubiksclockside.cpp \
+    ../RibiClasses/CppRubiksClock/rubiksclocktimes.cpp
 
 HEADERS  += \
-    ../../Classes/CppRubiksClock/rubiksclock.h \
-    ../../Classes/CppRubiksClock/rubiksclockpegs.h \
-    ../../Classes/CppRubiksClock/rubiksclockside.h \
-    ../../Classes/CppRubiksClock/rubiksclocktimes.h \
-    ../../Classes/CppRubiksClock/rubiksclockfwd.h
+    ../RibiClasses/CppRubiksClock/rubiksclock.h \
+    ../RibiClasses/CppRubiksClock/rubiksclockpegs.h \
+    ../RibiClasses/CppRubiksClock/rubiksclockside.h \
+    ../RibiClasses/CppRubiksClock/rubiksclocktimes.h \
+    ../RibiClasses/CppRubiksClock/rubiksclockfwd.h
 
 OTHER_FILES += \
-    ../../Classes/CppRubiksClock/Licence.txt
+    ../RibiClasses/CppRubiksClock/Licence.txt
 

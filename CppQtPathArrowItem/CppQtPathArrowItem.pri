@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppQtPathArrowItem
+    ../RibiClasses/CppQtPathArrowItem
 
 SOURCES += \
-    ../../Classes/CppQtPathArrowItem/qtpatharrowitem.cpp
+    ../RibiClasses/CppQtPathArrowItem/qtpatharrowitem.cpp
 
 HEADERS  += \
-    ../../Classes/CppQtPathArrowItem/qtpatharrowitem.h
+    ../RibiClasses/CppQtPathArrowItem/qtpatharrowitem.h
 
 OTHER_FILES += \
-    ../../Classes/CppQtPathArrowItem/Licence.txt
+    ../RibiClasses/CppQtPathArrowItem/Licence.txt
 

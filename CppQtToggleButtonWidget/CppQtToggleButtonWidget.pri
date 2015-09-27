@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppQtToggleButtonWidget
+    ../RibiClasses/CppQtToggleButtonWidget
 
 SOURCES += \
-    ../../Classes/CppQtToggleButtonWidget/qttogglebuttonwidget.cpp
+    ../RibiClasses/CppQtToggleButtonWidget/qttogglebuttonwidget.cpp
 
 HEADERS  += \
-    ../../Classes/CppQtToggleButtonWidget/qttogglebuttonwidget.h
+    ../RibiClasses/CppQtToggleButtonWidget/qttogglebuttonwidget.h
 
 OTHER_FILES += \
-    ../../Classes/CppQtToggleButtonWidget/Licence.txt
+    ../RibiClasses/CppQtToggleButtonWidget/Licence.txt
 

@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppIrcBot
+    ../RibiClasses/CppIrcBot
 
 SOURCES += \
-    ../../Classes/CppIrcBot/ircbot.cpp
+    ../RibiClasses/CppIrcBot/ircbot.cpp
 
 HEADERS  += \
-    ../../Classes/CppIrcBot/ircbot.h
+    ../RibiClasses/CppIrcBot/ircbot.h
 
 OTHER_FILES += \
-    ../../Classes/CppIrcBot/Licence.txt
+    ../RibiClasses/CppIrcBot/Licence.txt
 

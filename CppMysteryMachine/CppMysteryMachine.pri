@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppMysteryMachine
+    ../RibiClasses/CppMysteryMachine
 
 SOURCES += \
-    ../../Classes/CppMysteryMachine/mysterymachine.cpp
+    ../RibiClasses/CppMysteryMachine/mysterymachine.cpp
 
 HEADERS  += \
-    ../../Classes/CppMysteryMachine/mysterymachine.h
+    ../RibiClasses/CppMysteryMachine/mysterymachine.h
 
 OTHER_FILES += \
-    ../../Classes/CppMysteryMachine/Licence.txt
+    ../RibiClasses/CppMysteryMachine/Licence.txt
 

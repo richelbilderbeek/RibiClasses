@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppQtShinyButtonWidget
+    ../RibiClasses/CppQtShinyButtonWidget
 
 SOURCES += \
-    ../../Classes/CppQtShinyButtonWidget/qtshinybuttonwidget.cpp
+    ../RibiClasses/CppQtShinyButtonWidget/qtshinybuttonwidget.cpp
 
 HEADERS  += \
-    ../../Classes/CppQtShinyButtonWidget/qtshinybuttonwidget.h
+    ../RibiClasses/CppQtShinyButtonWidget/qtshinybuttonwidget.h
 
 OTHER_FILES += \
-    ../../Classes/CppQtShinyButtonWidget/Licence.txt
+    ../RibiClasses/CppQtShinyButtonWidget/Licence.txt
 

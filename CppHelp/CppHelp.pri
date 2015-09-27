@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppHelp
+    ../RibiClasses/CppHelp
 
 SOURCES += \
-    ../../Classes/CppHelp/help.cpp
+    ../RibiClasses/CppHelp/help.cpp
 
 HEADERS  += \
-    ../../Classes/CppHelp/help.h
+    ../RibiClasses/CppHelp/help.h
 
 OTHER_FILES += \
-    ../../Classes/CppHelp/Licence.txt
+    ../RibiClasses/CppHelp/Licence.txt
 

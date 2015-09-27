@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppWtGroupWidget
+    ../RibiClasses/CppWtGroupWidget
 
 SOURCES += \
-    ../../Classes/CppWtGroupWidget/wtgroupwidget.cpp
+    ../RibiClasses/CppWtGroupWidget/wtgroupwidget.cpp
 
 HEADERS  += \
-    ../../Classes/CppWtGroupWidget/wtgroupwidget.h
+    ../RibiClasses/CppWtGroupWidget/wtgroupwidget.h
 
 OTHER_FILES += \
-    ../../Classes/CppWtGroupWidget/Licence.txt
+    ../RibiClasses/CppWtGroupWidget/Licence.txt
 

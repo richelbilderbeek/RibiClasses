@@ -1,15 +1,15 @@
 INCLUDEPATH += \
-    ../../Classes/CppChessResources
+    ../RibiClasses/CppChessResources
 
 SOURCES += \
-    ../../Classes/CppChessResources/chessresources.cpp
+    ../RibiClasses/CppChessResources/chessresources.cpp
 
 HEADERS  += \
-    ../../Classes/CppChessResources/chessresources.h
+    ../RibiClasses/CppChessResources/chessresources.h
 
 OTHER_FILES += \
-    ../../Classes/CppChessResources/Licence.txt
+    ../RibiClasses/CppChessResources/Licence.txt
 
 RESOURCES += \
-    ../../Classes/CppChessResources/chessresources.qrc
+    ../RibiClasses/CppChessResources/chessresources.qrc
 

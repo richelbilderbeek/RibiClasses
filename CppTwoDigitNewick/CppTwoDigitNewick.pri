@@ -1,20 +1,20 @@
 INCLUDEPATH += \
-    ../../Classes/CppTwoDigitNewick
+    ../RibiClasses/CppTwoDigitNewick
 
 SOURCES += \
-    ../../Classes/CppTwoDigitNewick/twodigitnewick.cpp \
-    ../../Classes/CppTwoDigitNewick/twodigitnewickderivative.cpp \
-    ../../Classes/CppTwoDigitNewick/twodigitnewickindexer.cpp \
-    ../../Classes/CppTwoDigitNewick/twodigitnewickindextable.cpp \
-    ../../Classes/CppTwoDigitNewick/twodigitnewicks.cpp
+    ../RibiClasses/CppTwoDigitNewick/twodigitnewick.cpp \
+    ../RibiClasses/CppTwoDigitNewick/twodigitnewickderivative.cpp \
+    ../RibiClasses/CppTwoDigitNewick/twodigitnewickindexer.cpp \
+    ../RibiClasses/CppTwoDigitNewick/twodigitnewickindextable.cpp \
+    ../RibiClasses/CppTwoDigitNewick/twodigitnewicks.cpp
 
 HEADERS  += \
-    ../../Classes/CppTwoDigitNewick/twodigitnewick.h \
-    ../../Classes/CppTwoDigitNewick/twodigitnewickderivative.h \
-    ../../Classes/CppTwoDigitNewick/twodigitnewickindexer.h \
-    ../../Classes/CppTwoDigitNewick/twodigitnewickindextable.h \
-    ../../Classes/CppTwoDigitNewick/twodigitnewicks.h
+    ../RibiClasses/CppTwoDigitNewick/twodigitnewick.h \
+    ../RibiClasses/CppTwoDigitNewick/twodigitnewickderivative.h \
+    ../RibiClasses/CppTwoDigitNewick/twodigitnewickindexer.h \
+    ../RibiClasses/CppTwoDigitNewick/twodigitnewickindextable.h \
+    ../RibiClasses/CppTwoDigitNewick/twodigitnewicks.h
 
 OTHER_FILES += \
-    ../../Classes/CppTwoDigitNewick/Licence.txt
+    ../RibiClasses/CppTwoDigitNewick/Licence.txt
 

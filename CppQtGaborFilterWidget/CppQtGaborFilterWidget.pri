@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppQtGaborFilterWidget
+    ../RibiClasses/CppQtGaborFilterWidget
 
 SOURCES += \
-    ../../Classes/CppQtGaborFilterWidget/qtgaborfilterwidget.cpp
+    ../RibiClasses/CppQtGaborFilterWidget/qtgaborfilterwidget.cpp
 
 HEADERS  += \
-    ../../Classes/CppQtGaborFilterWidget/qtgaborfilterwidget.h
+    ../RibiClasses/CppQtGaborFilterWidget/qtgaborfilterwidget.h
 
 OTHER_FILES += \
-    ../../Classes/CppQtGaborFilterWidget/Licence.txt
+    ../RibiClasses/CppQtGaborFilterWidget/Licence.txt
 

@@ -1,18 +1,18 @@
 INCLUDEPATH += \
-    ../../Classes/CppBrownianMotion
+    ../RibiClasses/CppBrownianMotion
 
 SOURCES += \
-    ../../Classes/CppBrownianMotion/brownianmotion.cpp \
-    ../../Classes/CppBrownianMotion/brownianmotionprocess.cpp \
-    ../../Classes/CppBrownianMotion/brownianmotionparameters.cpp \
-    ../../Classes/CppBrownianMotion/brownianmotionhelper.cpp
+    ../RibiClasses/CppBrownianMotion/brownianmotion.cpp \
+    ../RibiClasses/CppBrownianMotion/brownianmotionprocess.cpp \
+    ../RibiClasses/CppBrownianMotion/brownianmotionparameters.cpp \
+    ../RibiClasses/CppBrownianMotion/brownianmotionhelper.cpp
 
 HEADERS  += \
-    ../../Classes/CppBrownianMotion/brownianmotion.h \
-    ../../Classes/CppBrownianMotion/brownianmotionprocess.h \
-    ../../Classes/CppBrownianMotion/brownianmotionparameters.h \
-    ../../Classes/CppBrownianMotion/brownianmotionhelper.h
+    ../RibiClasses/CppBrownianMotion/brownianmotion.h \
+    ../RibiClasses/CppBrownianMotion/brownianmotionprocess.h \
+    ../RibiClasses/CppBrownianMotion/brownianmotionparameters.h \
+    ../RibiClasses/CppBrownianMotion/brownianmotionhelper.h
 
 OTHER_FILES += \
-    ../../Classes/CppBrownianMotion/Licence.txt
+    ../RibiClasses/CppBrownianMotion/Licence.txt
 

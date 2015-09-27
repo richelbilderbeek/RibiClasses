@@ -1,13 +1,13 @@
 INCLUDEPATH += \
-    ../../Classes/CppPolyFileFromPolygons
+    ../RibiClasses/CppPolyFileFromPolygons
 
 SOURCES += \
-    ../../Classes/CppPolyFileFromPolygons/polyfilefrompolygons.cpp
+    ../RibiClasses/CppPolyFileFromPolygons/polyfilefrompolygons.cpp
 
 HEADERS  += \
-    ../../Classes/CppPolyFileFromPolygons/polyfilefrompolygons.h
+    ../RibiClasses/CppPolyFileFromPolygons/polyfilefrompolygons.h
 
 OTHER_FILES += \
-    ../../Classes/CppPolyFileFromPolygons/Licence.txt
+    ../RibiClasses/CppPolyFileFromPolygons/Licence.txt
 
 

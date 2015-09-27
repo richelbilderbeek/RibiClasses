@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppQtHideAndShowDialog
+    ../RibiClasses/CppQtHideAndShowDialog
 
 SOURCES += \
-    ../../Classes/CppQtHideAndShowDialog/qthideandshowdialog.cpp
+    ../RibiClasses/CppQtHideAndShowDialog/qthideandshowdialog.cpp
 
 HEADERS  += \
-    ../../Classes/CppQtHideAndShowDialog/qthideandshowdialog.h
+    ../RibiClasses/CppQtHideAndShowDialog/qthideandshowdialog.h
 
 OTHER_FILES += \
-    ../../Classes/CppQtHideAndShowDialog/Licence.txt
+    ../RibiClasses/CppQtHideAndShowDialog/Licence.txt
 

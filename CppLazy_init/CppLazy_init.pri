@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppLazy_init
+    ../RibiClasses/CppLazy_init
 
 SOURCES += \
-    ../../Classes/CppLazy_init/lazy_init.cpp
+    ../RibiClasses/CppLazy_init/lazy_init.cpp
 
 HEADERS  += \
-    ../../Classes/CppLazy_init/lazy_init.h
+    ../RibiClasses/CppLazy_init/lazy_init.h
 
 OTHER_FILES += \
-    ../../Classes/CppLazy_init/Licence.txt
+    ../RibiClasses/CppLazy_init/Licence.txt
 
