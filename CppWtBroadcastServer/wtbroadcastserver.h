@@ -100,7 +100,7 @@ private:
   WtBroadcastServer();
 
   ///WtBroadcastServer destructor
-  ~WtBroadcastServer();
+  ~WtBroadcastServer() noexcept;
 
   ///Only let a smart pointer (that is, m_instance) delete WtBroadcastServer
   friend void boost::checked_delete<>(WtBroadcastServer*);

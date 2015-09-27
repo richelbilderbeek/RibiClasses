@@ -58,7 +58,7 @@ public:
     Final_act(const Final_act&) = delete;
     Final_act& operator=(const Final_act&) = delete;
     
-    ~Final_act() { f_(); }
+    ~Final_act() noexcept { f_(); }
 
 private:
     F f_;

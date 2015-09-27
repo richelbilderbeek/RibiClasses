@@ -130,7 +130,7 @@ private:
   void SetCompetencyAsStr(const std::string& s) const;
 
   ///Use checked_delete only
-  ~Example() {}
+  ~Example() noexcept {}
   friend void boost::checked_delete<>(Example* x);
   friend void boost::checked_delete<>(const Example* x);
   friend class boost::detail::sp_ms_deleter<      Example>;

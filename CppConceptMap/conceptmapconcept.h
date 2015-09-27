@@ -157,7 +157,7 @@ struct Concept
   #endif
 
   ///Use checked_delete for destructor
-  ~Concept() {}
+  ~Concept() noexcept {}
   friend void boost::checked_delete<>(Concept* x);
 
   ///Let only ConceptFactory construct Concepts

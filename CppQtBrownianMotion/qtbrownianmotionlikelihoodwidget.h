@@ -13,7 +13,7 @@ class QtBrownianMotionLikelihoodWidget : public QWidget
 
 public:
   explicit QtBrownianMotionLikelihoodWidget(QWidget *parent = 0);
-  ~QtBrownianMotionLikelihoodWidget();
+  ~QtBrownianMotionLikelihoodWidget() noexcept;
 
   void CalcLikelihood(const std::vector<double>& v) noexcept;
 

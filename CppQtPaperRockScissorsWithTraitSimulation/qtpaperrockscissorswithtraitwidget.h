@@ -29,7 +29,7 @@ public:
   );
   QtPaperRockScissorsWithTraitWidget(const QtPaperRockScissorsWithTraitWidget&) = delete;
   QtPaperRockScissorsWithTraitWidget& operator=(const QtPaperRockScissorsWithTraitWidget&) = delete;
-  ~QtPaperRockScissorsWithTraitWidget();
+  ~QtPaperRockScissorsWithTraitWidget() noexcept;
 
   std::tuple<int,int,int> GetLastPopSizes() const;
   std::tuple<double,double,double> GetLastMeanTraits() const;

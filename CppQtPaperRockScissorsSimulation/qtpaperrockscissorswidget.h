@@ -28,7 +28,7 @@ public:
   );
   QtPaperRockScissorsWidget(const QtPaperRockScissorsWidget&) = delete;
   QtPaperRockScissorsWidget& operator=(const QtPaperRockScissorsWidget&) = delete;
-  ~QtPaperRockScissorsWidget();
+  ~QtPaperRockScissorsWidget() noexcept;
 
   void SetAll(
     const int width,

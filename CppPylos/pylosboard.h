@@ -45,7 +45,7 @@ struct Board
   typedef std::vector<std::vector<PositionState> > Layer;
 
   Board() noexcept;
-  virtual ~Board();
+  virtual ~Board() noexcept;
 
   ///CanDo determines if a Pylos notation move is valid
   bool CanDo(const std::string& s, const Player player) const;
@@ -190,7 +190,7 @@ struct Board
 struct BoardAdvanced final : public Board
 {
   BoardAdvanced() noexcept;
-  ~BoardAdvanced();
+  ~BoardAdvanced() noexcept;
 
   ///Clone a derived class of Board.
   std::unique_ptr<Board> Clone() const noexcept override;
@@ -219,7 +219,7 @@ struct BoardAdvanced final : public Board
 struct BoardBasic final : public Board
 {
   BoardBasic() noexcept;
-  ~BoardBasic();
+  ~BoardBasic() noexcept;
 
   ///Clone a derived class of Pylos.
   std::unique_ptr<Board> Clone() const noexcept override;

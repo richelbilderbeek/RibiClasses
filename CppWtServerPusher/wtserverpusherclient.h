@@ -30,7 +30,7 @@ namespace ribi {
 ///and to be used as a base class
 struct WtServerPusherClient
 {
-  virtual ~WtServerPusherClient();
+  virtual ~WtServerPusherClient() noexcept;
 
   ///Get the version of this class
   static std::string GetVersion();

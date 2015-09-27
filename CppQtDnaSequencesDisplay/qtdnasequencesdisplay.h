@@ -14,7 +14,7 @@ public:
   explicit QtDnaSequencesDisplay(QWidget *parent = 0);
   QtDnaSequencesDisplay(const QtDnaSequencesDisplay&) = delete;
   QtDnaSequencesDisplay& operator=(const QtDnaSequencesDisplay&) = delete;
-  ~QtDnaSequencesDisplay();
+  ~QtDnaSequencesDisplay() noexcept;
 
   void SetDnaSequences(const std::vector<ribi::DnaSequence>& sequences) noexcept;
 

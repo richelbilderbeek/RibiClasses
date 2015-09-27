@@ -16,7 +16,7 @@ public:
   explicit QtBirthDeathModelParametersWidget(QWidget *parent = 0);
   QtBirthDeathModelParametersWidget(const QtBirthDeathModelParametersWidget&) = delete;
   QtBirthDeathModelParametersWidget& operator=(const QtBirthDeathModelParametersWidget&) = delete;
-  ~QtBirthDeathModelParametersWidget();
+  ~QtBirthDeathModelParametersWidget() noexcept;
 
   ribi::bdm::Parameters GetParameters() const noexcept;
 

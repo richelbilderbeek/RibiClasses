@@ -39,7 +39,7 @@ struct Random
   Random();
   ///Use a given seed
   Random(const int seed);
-  ~Random();
+  ~Random() noexcept;
 
   ///Obtain a random boolean
   bool GetBool() noexcept;

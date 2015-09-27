@@ -15,7 +15,7 @@ public:
   explicit QtBirthDeathModelMaxLikelihoodWidget(QWidget *parent = 0);
   QtBirthDeathModelMaxLikelihoodWidget(const QtBirthDeathModelMaxLikelihoodWidget&) = delete;
   QtBirthDeathModelMaxLikelihoodWidget operator=(const QtBirthDeathModelMaxLikelihoodWidget&) = delete;
-  ~QtBirthDeathModelMaxLikelihoodWidget();
+  ~QtBirthDeathModelMaxLikelihoodWidget() noexcept;
   void SetPhylogeny(const std::string& phylogeny);
 
 private:

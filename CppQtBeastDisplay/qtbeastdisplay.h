@@ -14,7 +14,7 @@ public:
   explicit QtBeastDisplay(QWidget *parent = 0);
   QtBeastDisplay(const QtBeastDisplay&) = delete;
   QtBeastDisplay& operator=(const QtBeastDisplay&) = delete;
-  ~QtBeastDisplay();
+  ~QtBeastDisplay() noexcept;
 
   void Analyze(
     const std::vector<ribi::DnaSequence>& sequences,

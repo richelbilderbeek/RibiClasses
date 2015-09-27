@@ -46,7 +46,7 @@ struct WtSelectFileDialog : public Wt::WContainerWidget
   WtSelectFileDialog();
   WtSelectFileDialog(const WtSelectFileDialog&) = delete;
   WtSelectFileDialog& operator=(const WtSelectFileDialog&) = delete;
-  virtual ~WtSelectFileDialog() {}
+  virtual ~WtSelectFileDialog() noexcept {}
 
   ///Check the folder for files again
   void DoRefresh();
