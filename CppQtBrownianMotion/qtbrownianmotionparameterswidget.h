@@ -13,7 +13,7 @@ class QtBrownianMotionParametersWidget : public QWidget
 
 public:
   explicit QtBrownianMotionParametersWidget(QWidget *parent = 0);
-  ~QtBrownianMotionParametersWidget();
+  ~QtBrownianMotionParametersWidget() noexcept;
 
 
 

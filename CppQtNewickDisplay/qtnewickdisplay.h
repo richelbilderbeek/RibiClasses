@@ -15,7 +15,7 @@ public:
   explicit QtNewickDisplay(QWidget *parent = 0);
   QtNewickDisplay(const QtNewickDisplay&) = delete;
   QtNewickDisplay& operator=(const QtNewickDisplay&) = delete;
-  ~QtNewickDisplay();
+  ~QtNewickDisplay() noexcept;
 
   void SetNewick(const std::string& newick) noexcept;
 

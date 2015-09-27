@@ -14,7 +14,7 @@ public:
   explicit QtDnaSequencesDialog(QWidget *parent = 0);
   QtDnaSequencesDialog(const QtDnaSequencesDialog&) = delete;
   QtDnaSequencesDialog& operator=(const QtDnaSequencesDialog&) = delete;
-  ~QtDnaSequencesDialog();
+  ~QtDnaSequencesDialog() noexcept;
 
   std::vector<ribi::DnaSequence> GetSequences() const noexcept;
   //void SetDnaSequences(const std::vector<ribi::DnaSequence>& sequences) noexcept;

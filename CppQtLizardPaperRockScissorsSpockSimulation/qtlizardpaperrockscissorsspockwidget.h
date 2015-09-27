@@ -27,7 +27,7 @@ public:
   );
   QtLizardPaperRockScissorsSpockWidget(const QtLizardPaperRockScissorsSpockWidget&) = delete;
   QtLizardPaperRockScissorsSpockWidget& operator=(const QtLizardPaperRockScissorsSpockWidget&) = delete;
-  ~QtLizardPaperRockScissorsSpockWidget();
+  ~QtLizardPaperRockScissorsSpockWidget() noexcept;
 
   void SetAll(
     const int width,

@@ -56,7 +56,7 @@ struct Square
   ///the rank or y-coordinat of the square, a2 has m_file of 1
   const Chess::Rank m_rank; //Y
 
-  ~Square() {}
+  ~Square() noexcept {}
   friend void boost::checked_delete<>(Square *);
   friend class SquareFactory;
 };

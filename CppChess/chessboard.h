@@ -110,7 +110,7 @@ struct Board
   ///Construct a Board in the initial position, allowed by BoardFactory only
   Board(const Pieces& pieces);
 
-  ~Board() {}
+  ~Board() noexcept {}
 
   ///All the Pieces
   Pieces m_pieces;

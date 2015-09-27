@@ -19,7 +19,7 @@ namespace tictactoe {
 struct Ai
 {
   Ai() {}
-  virtual ~Ai() {}
+  virtual ~Ai() noexcept {}
   static std::string GetVersion() noexcept;
   static std::vector<std::string> GetVersionHistory() noexcept;
   virtual std::pair<int,int> SuggestMove(const Game& game) const = 0;

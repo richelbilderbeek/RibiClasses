@@ -49,7 +49,7 @@ public:
   explicit QtLedWidgetDialog(QWidget *parent = 0);
   QtLedWidgetDialog(const QtLedWidgetDialog&) = delete;
   QtLedWidgetDialog& operator=(const QtLedWidgetDialog&) = delete;
-  ~QtLedWidgetDialog();
+  ~QtLedWidgetDialog() noexcept;
 
   void SetWidget(const boost::shared_ptr<LedWidget>& widget) noexcept;
   boost::shared_ptr<LedWidget> GetWidget() const noexcept { return m_widget; }

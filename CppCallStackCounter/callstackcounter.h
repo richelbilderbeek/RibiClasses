@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 struct CallStackCounter
 {
   CallStackCounter()  { ++cnt; }
-  ~CallStackCounter() { --cnt; }
+  ~CallStackCounter() noexcept { --cnt; }
   static int Count() { return cnt; }
   private:
   static int cnt;
@@ -36,7 +36,7 @@ struct CallStackCounter
 struct CallStackHistoryCounter
 {
   CallStackHistoryCounter()  { ++cnt; history.push_back(cnt); }
-  ~CallStackHistoryCounter() { --cnt; history.push_back(cnt); }
+  ~CallStackHistoryCounter() noexcept { --cnt; history.push_back(cnt); }
   static int Count() { return cnt; }
   static const std::vector<int>& History() { return history; }
   static int Max();

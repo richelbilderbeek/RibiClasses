@@ -16,7 +16,7 @@ public:
   using Time = ribi::units::Time;
 
   explicit QtOrnsteinUhlenbeckLikelihoodWidget(QWidget *parent = 0);
-  ~QtOrnsteinUhlenbeckLikelihoodWidget();
+  ~QtOrnsteinUhlenbeckLikelihoodWidget() noexcept;
 
   void CalcLikelihood(
     const std::vector<double>& v,

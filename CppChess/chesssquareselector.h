@@ -69,7 +69,7 @@ struct SquareSelector
   static const Chess::Color m_moves_color = Color::blue;
 
   private:
-  ~SquareSelector() {}
+  ~SquareSelector() noexcept {}
 
   ///The Square the cursor is.
   ///There will always be a cursor somewhere

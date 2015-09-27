@@ -18,7 +18,7 @@ public:
   using Time = ribi::units::Time;
 
   explicit QtOrnsteinUhlenbeckParametersWidget(QWidget *parent = 0);
-  ~QtOrnsteinUhlenbeckParametersWidget();
+  ~QtOrnsteinUhlenbeckParametersWidget() noexcept;
 
   double GetInitValue() const noexcept;
   Time GetTimestep() const noexcept;

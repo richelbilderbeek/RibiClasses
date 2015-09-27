@@ -87,7 +87,7 @@ private:
   WtServerPusher();
 
   ///WtServerPusher destructor
-  ~WtServerPusher();
+  ~WtServerPusher() noexcept;
 
   ///Only let a smart pointer (that is, m_instance) delete WtServerPusher
   friend void boost::checked_delete<>(WtServerPusher*);

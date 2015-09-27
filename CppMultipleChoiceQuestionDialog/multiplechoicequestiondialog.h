@@ -41,7 +41,7 @@ struct MultipleChoiceQuestionDialog final : public QuestionDialog
   ///Will work if question is not nullptr
   explicit MultipleChoiceQuestionDialog(const boost::shared_ptr<const MultipleChoiceQuestion> question);
 
-  ~MultipleChoiceQuestionDialog() = default;
+  ~MultipleChoiceQuestionDialog() noexcept;
 
   ///The answer the user has typed in so far
   int GetAnswerInProgress() const noexcept { return m_answer_in_progress; }

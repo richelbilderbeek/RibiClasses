@@ -110,7 +110,7 @@ struct Move
   ///Parses a Move from std::string.
   explicit Move(const std::string& s);
 
-  ~Move() {}
+  ~Move() noexcept {}
 
   #define CHESS_MOVE_NOT_USE_CONST
   #ifndef CHESS_MOVE_NOT_USE_CONST

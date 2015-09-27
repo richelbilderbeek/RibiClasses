@@ -55,7 +55,7 @@ struct WtQuestionDialog : public Wt::WContainerWidget
   mutable boost::signals2::signal<void (bool)> m_signal_submitted;
 
   protected:
-  virtual ~WtQuestionDialog() {}
+  virtual ~WtQuestionDialog() noexcept {}
 };
 
 } //~namespace ribi

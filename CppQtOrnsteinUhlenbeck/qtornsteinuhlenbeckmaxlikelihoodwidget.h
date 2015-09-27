@@ -16,7 +16,7 @@ public:
   using Time = ribi::units::Time;
 
   explicit QtOrnsteinUhlenbeckMaxLikelihoodWidget(QWidget *parent = 0);
-  ~QtOrnsteinUhlenbeckMaxLikelihoodWidget();
+  ~QtOrnsteinUhlenbeckMaxLikelihoodWidget() noexcept;
 
   double GetMaxLogLikelihood() const noexcept { return m_max_log_likelihood; }
   void SetData(const std::vector<double>& v, const Time dt);

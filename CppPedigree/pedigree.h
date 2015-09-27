@@ -10,7 +10,7 @@ struct Pedigree : public std::enable_shared_from_this<Pedigree>
     const std::string& name = "",
     const std::weak_ptr<Pedigree> parent = std::weak_ptr<Pedigree>()
   );
-  ~Pedigree();
+  ~Pedigree() noexcept;
 
   ///Make an individual clean its deleted offspring
   void CheckOffspring() const;

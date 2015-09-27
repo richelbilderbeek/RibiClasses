@@ -52,7 +52,7 @@ struct ImageCanvas : public Canvas
   ) noexcept;
   ImageCanvas(const ImageCanvas&) noexcept;
   ImageCanvas& operator=(const ImageCanvas&) noexcept;
-  ~ImageCanvas() = default;
+  ~ImageCanvas() noexcept;
 
   ///The color system used:
   ///- normal: full/drawn is displayed by M

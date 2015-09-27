@@ -13,7 +13,7 @@ class QtBrownianMotionMaxLikelihoodWidget : public QWidget
 
 public:
   explicit QtBrownianMotionMaxLikelihoodWidget(QWidget *parent = 0);
-  ~QtBrownianMotionMaxLikelihoodWidget();
+  ~QtBrownianMotionMaxLikelihoodWidget() noexcept;
 
   double GetMaxLogLikelihood() const noexcept { return m_max_log_likelihood; }
   void SetData(const std::vector<double>& v);
