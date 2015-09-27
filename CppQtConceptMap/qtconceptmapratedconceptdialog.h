@@ -51,7 +51,7 @@ public:
     QWidget *parent = 0);
   QtConceptMapRatedConceptDialog(const QtConceptMapRatedConceptDialog&) = delete;
   QtConceptMapRatedConceptDialog& operator=(const QtConceptMapRatedConceptDialog&) = delete;
-  ~QtConceptMapRatedConceptDialog();
+  ~QtConceptMapRatedConceptDialog() noexcept;
 
   ///Hides the rating. This is used when a student views his/her
   ///work before an assessor has rated his/her work

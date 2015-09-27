@@ -48,7 +48,7 @@ public:
   explicit QtExamplesDialog(QWidget *parent = 0);
   QtExamplesDialog(const QtExamplesDialog&) = delete;
   QtExamplesDialog& operator=(const QtExamplesDialog&) = delete;
-  ~QtExamplesDialog();
+  ~QtExamplesDialog() noexcept;
 
   void SetExamples(const boost::shared_ptr<Examples>& examples);
   boost::shared_ptr<Examples> GetExamples() const noexcept { return m_examples; }

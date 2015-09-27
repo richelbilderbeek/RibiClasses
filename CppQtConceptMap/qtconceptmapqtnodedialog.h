@@ -27,7 +27,7 @@ public:
   explicit QtQtNodeDialog(QWidget *parent = 0);
   QtQtNodeDialog(const QtQtNodeDialog&) = delete;
   QtQtNodeDialog& operator=(const QtQtNodeDialog&) = delete;
-  ~QtQtNodeDialog();
+  ~QtQtNodeDialog() noexcept;
 
 
   static int GetMinimumHeight(const QtNode& qtnode) noexcept;

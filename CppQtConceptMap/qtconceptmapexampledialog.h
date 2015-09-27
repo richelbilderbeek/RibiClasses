@@ -45,7 +45,7 @@ public:
   explicit QtExampleDialog(QWidget *parent = 0);
   QtExampleDialog(const QtExampleDialog&) = delete;
   QtExampleDialog& operator=(const QtExampleDialog&) = delete;
-  ~QtExampleDialog();
+  ~QtExampleDialog() noexcept;
 
   boost::shared_ptr<Example> GetExample() const noexcept { return m_example; }
   static int GetMinimumHeight(const Example& example) noexcept;

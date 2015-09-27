@@ -27,7 +27,7 @@ public:
   explicit QtQtEdgeDialog(QWidget *parent = 0);
   QtQtEdgeDialog(const QtQtEdgeDialog&) = delete;
   QtQtEdgeDialog& operator=(const QtQtEdgeDialog&) = delete;
-  ~QtQtEdgeDialog();
+  ~QtQtEdgeDialog() noexcept;
 
 
   static int GetMinimumHeight(const QtEdge& qtedge) noexcept;
