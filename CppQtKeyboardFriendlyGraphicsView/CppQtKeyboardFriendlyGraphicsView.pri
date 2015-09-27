@@ -1,13 +1,13 @@
 INCLUDEPATH += \
-    ../../Classes/CppQtKeyboardFriendlyGraphicsView
+    ../RibiClasses/CppQtKeyboardFriendlyGraphicsView
 
 SOURCES += \
-    ../../Classes/CppQtKeyboardFriendlyGraphicsView/qtkeyboardfriendlygraphicsview.cpp \
-    ../../Classes/CppQtKeyboardFriendlyGraphicsView/qtkeyboardfriendlygraphicsview_test.cpp
+    ../RibiClasses/CppQtKeyboardFriendlyGraphicsView/qtkeyboardfriendlygraphicsview.cpp \
+    ../RibiClasses/CppQtKeyboardFriendlyGraphicsView/qtkeyboardfriendlygraphicsview_test.cpp
 
 HEADERS  += \
-    ../../Classes/CppQtKeyboardFriendlyGraphicsView/qtkeyboardfriendlygraphicsview.h
+    ../RibiClasses/CppQtKeyboardFriendlyGraphicsView/qtkeyboardfriendlygraphicsview.h
 
 OTHER_FILES += \
-    ../../Classes/CppQtKeyboardFriendlyGraphicsView/Licence.txt
+    ../RibiClasses/CppQtKeyboardFriendlyGraphicsView/Licence.txt
 

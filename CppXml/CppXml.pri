@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppXml
+    ../RibiClasses/CppXml
 
 SOURCES += \
-    ../../Classes/CppXml/xml.cpp
+    ../RibiClasses/CppXml/xml.cpp
 
 HEADERS  += \
-    ../../Classes/CppXml/xml.h
+    ../RibiClasses/CppXml/xml.h
 
 OTHER_FILES += \
-    ../../Classes/CppXml/Licence.txt
+    ../RibiClasses/CppXml/Licence.txt
 

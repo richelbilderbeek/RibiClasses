@@ -1,18 +1,18 @@
 INCLUDEPATH += \
-    ../../Classes/CppGeometry
+    ../RibiClasses/CppGeometry
 
 SOURCES += \
-    ../../Classes/CppGeometry/geometry.cpp \
-    ../../Classes/CppGeometry/geometry_test.cpp \
-    ../../Classes/CppGeometry/geometry_calccrossproduct.cpp \
-    ../../Classes/CppGeometry/geometry_calccenter.cpp \
-    ../../Classes/CppGeometry/geometry_getangle.cpp \
-    ../../Classes/CppGeometry/geometry_is_clockwise.cpp \
-    ../../Classes/CppGeometry/geometry_is_counter_clockwise.cpp
+    ../RibiClasses/CppGeometry/geometry.cpp \
+    ../RibiClasses/CppGeometry/geometry_test.cpp \
+    ../RibiClasses/CppGeometry/geometry_calccrossproduct.cpp \
+    ../RibiClasses/CppGeometry/geometry_calccenter.cpp \
+    ../RibiClasses/CppGeometry/geometry_getangle.cpp \
+    ../RibiClasses/CppGeometry/geometry_is_clockwise.cpp \
+    ../RibiClasses/CppGeometry/geometry_is_counter_clockwise.cpp
 
 HEADERS  += \
-    ../../Classes/CppGeometry/geometry.h
+    ../RibiClasses/CppGeometry/geometry.h
 
 OTHER_FILES += \
-    ../../Classes/CppGeometry/Licence.txt
+    ../RibiClasses/CppGeometry/Licence.txt
 

@@ -1,88 +1,88 @@
 INCLUDEPATH += \
-    ../../Classes/CppQtConceptMap
+    ../RibiClasses/CppQtConceptMap
 
 
 OTHER_FILES += \
-    ../../Classes/CppQtConceptMap/Licence.txt
+    ../RibiClasses/CppQtConceptMap/Licence.txt
 
 SOURCES += \
-    ../../Classes/CppQtConceptMap/qtconceptmapbrushfactory.cpp \
-    ../../Classes/CppQtConceptMap/qtconceptmapcompetency.cpp \
-    ../../Classes/CppQtConceptMap/qtconceptmapconcepteditdialog.cpp \
-    ../../Classes/CppQtConceptMap/qtconceptmap.cpp \
-    ../../Classes/CppQtConceptMap/qtconceptmapexamplesitem.cpp \
-    ../../Classes/CppQtConceptMap/qtconceptmapitemhighlighter.cpp \
-    ../../Classes/CppQtConceptMap/qtconceptmapnewarrow.cpp \
-    ../../Classes/CppQtConceptMap/qtconceptmaptoolsitem.cpp \
-    ../../Classes/CppQtConceptMap/qtconceptmaprateconceptdialognewname.cpp \
-    ../../Classes/CppQtConceptMap/qtconceptmaprateconcepttallydialognewname.cpp \
-    ../../Classes/CppQtConceptMap/qtconceptmaprateexamplesdialognewname.cpp \
-    ../../Classes/CppQtConceptMap/qtconceptmapratedconceptdialog.cpp \
-#    ../../Classes/CppQtConceptMap/qtdisplayconceptmap.cpp \
-#    ../../Classes/CppQtConceptMap/qtrateconceptmap.cpp \
-    ../../Classes/CppQtConceptMap/qtconceptmapcenternode.cpp \
-    ../../Classes/CppQtConceptMap/qtconceptmapexampledialog.cpp \
-    ../../Classes/CppQtConceptMap/qtconceptmapexamplesdialog.cpp \
-    ../../Classes/CppQtConceptMap/qtconceptmapconceptdialog.cpp \
-    ../../Classes/CppQtConceptMap/qtconceptmapnodedialog.cpp \
-    ../../Classes/CppQtConceptMap/qtconceptmapedgedialog.cpp \
-    ../../Classes/CppQtConceptMap/qtconceptmapqtnodedialog.cpp \
-    ../../Classes/CppQtConceptMap/qtconceptmapqtedgedialog.cpp \
-    ../../Classes/CppQtConceptMap/qtconceptmapqtnodefactory.cpp \
-    ../../Classes/CppQtConceptMap/qtconceptmapqtedgefactory.cpp \
-    ../../Classes/CppQtConceptMap/qtconceptmapqtnode.cpp \
-    ../../Classes/CppQtConceptMap/qtconceptmapbrating.cpp \
-    ../../Classes/CppQtConceptMap/qtconceptmapqtedge_test.cpp \
-    ../../Classes/CppQtConceptMap/test_qtconceptmap.cpp \
-    ../../Classes/CppQtConceptMap/qtconceptmapqtedge.cpp
-#    ../../Classes/CppQtConceptMap/test_qtrateconceptmap.cpp
+    ../RibiClasses/CppQtConceptMap/qtconceptmapbrushfactory.cpp \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapcompetency.cpp \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapconcepteditdialog.cpp \
+    ../RibiClasses/CppQtConceptMap/qtconceptmap.cpp \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapexamplesitem.cpp \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapitemhighlighter.cpp \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapnewarrow.cpp \
+    ../RibiClasses/CppQtConceptMap/qtconceptmaptoolsitem.cpp \
+    ../RibiClasses/CppQtConceptMap/qtconceptmaprateconceptdialognewname.cpp \
+    ../RibiClasses/CppQtConceptMap/qtconceptmaprateconcepttallydialognewname.cpp \
+    ../RibiClasses/CppQtConceptMap/qtconceptmaprateexamplesdialognewname.cpp \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapratedconceptdialog.cpp \
+#    ../RibiClasses/CppQtConceptMap/qtdisplayconceptmap.cpp \
+#    ../RibiClasses/CppQtConceptMap/qtrateconceptmap.cpp \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapcenternode.cpp \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapexampledialog.cpp \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapexamplesdialog.cpp \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapconceptdialog.cpp \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapnodedialog.cpp \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapedgedialog.cpp \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapqtnodedialog.cpp \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapqtedgedialog.cpp \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapqtnodefactory.cpp \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapqtedgefactory.cpp \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapqtnode.cpp \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapbrating.cpp \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapqtedge_test.cpp \
+    ../RibiClasses/CppQtConceptMap/test_qtconceptmap.cpp \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapqtedge.cpp
+#    ../RibiClasses/CppQtConceptMap/test_qtrateconceptmap.cpp
 
 HEADERS += \
-    ../../Classes/CppQtConceptMap/qtconceptmapexamplesitem.h \
-    ../../Classes/CppQtConceptMap/qtconceptmapfwd.h \
-    ../../Classes/CppQtConceptMap/qtconceptmapitemhighlighter.h \
-    ../../Classes/CppQtConceptMap/qtconceptmapnewarrow.h \
-    ../../Classes/CppQtConceptMap/qtconceptmaptoolsitem.h \
-    ../../Classes/CppQtConceptMap/qtconceptmapconcepteditdialog.h \
-    ../../Classes/CppQtConceptMap/qtconceptmapbrushfactory.h \
-    ../../Classes/CppQtConceptMap/qtconceptmapcompetency.h \
-    ../../Classes/CppQtConceptMap/qtconceptmap.h \
-    ../../Classes/CppQtConceptMap/qtconceptmaprateconceptdialognewname.h \
-    ../../Classes/CppQtConceptMap/qtconceptmaprateconcepttallydialognewname.h \
-    ../../Classes/CppQtConceptMap/qtconceptmaprateexamplesdialognewname.h \
-    ../../Classes/CppQtConceptMap/qtconceptmapratedconceptdialog.h \
-#    ../../Classes/CppQtConceptMap/qtdisplayconceptmap.h \
-#    ../../Classes/CppQtConceptMap/qtrateconceptmap.h \
-#   ../../Classes/CppQtConceptMap/qtitemdisplaystrategy.h \
-#    ../../Classes/CppQtConceptMap/qtconceptmapcenternode.h \
-    ../../Classes/CppQtConceptMap/qtconceptmapexampledialog.h \
-    ../../Classes/CppQtConceptMap/qtconceptmapexamplesdialog.h \
-    ../../Classes/CppQtConceptMap/qtconceptmapconceptdialog.h \
-    ../../Classes/CppQtConceptMap/qtconceptmapnodedialog.h \
-    ../../Classes/CppQtConceptMap/qtconceptmapedgedialog.h \
-    ../../Classes/CppQtConceptMap/qtconceptmapqtnodedialog.h \
-    ../../Classes/CppQtConceptMap/qtconceptmapedgefactory.h \
-    ../../Classes/CppQtConceptMap/qtconceptmapqtedgedialog.h \
-    ../../Classes/CppQtConceptMap/qtconceptmapqtnodefactory.h \
-    ../../Classes/CppQtConceptMap/qtconceptmapqtedgefactory.h \
-    ../../Classes/CppQtConceptMap/qtconceptmapqtnode.h \
-    ../../Classes/CppQtConceptMap/qtconceptmaprating.h \
-    ../../Classes/CppQtConceptMap/qtconceptmapcollect.h \
-    ../../Classes/CppQtConceptMap/qtconceptmapqtedge.h
+    ../RibiClasses/CppQtConceptMap/qtconceptmapexamplesitem.h \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapfwd.h \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapitemhighlighter.h \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapnewarrow.h \
+    ../RibiClasses/CppQtConceptMap/qtconceptmaptoolsitem.h \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapconcepteditdialog.h \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapbrushfactory.h \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapcompetency.h \
+    ../RibiClasses/CppQtConceptMap/qtconceptmap.h \
+    ../RibiClasses/CppQtConceptMap/qtconceptmaprateconceptdialognewname.h \
+    ../RibiClasses/CppQtConceptMap/qtconceptmaprateconcepttallydialognewname.h \
+    ../RibiClasses/CppQtConceptMap/qtconceptmaprateexamplesdialognewname.h \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapratedconceptdialog.h \
+#    ../RibiClasses/CppQtConceptMap/qtdisplayconceptmap.h \
+#    ../RibiClasses/CppQtConceptMap/qtrateconceptmap.h \
+#   ../RibiClasses/CppQtConceptMap/qtitemdisplaystrategy.h \
+#    ../RibiClasses/CppQtConceptMap/qtconceptmapcenternode.h \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapexampledialog.h \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapexamplesdialog.h \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapconceptdialog.h \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapnodedialog.h \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapedgedialog.h \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapqtnodedialog.h \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapedgefactory.h \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapqtedgedialog.h \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapqtnodefactory.h \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapqtedgefactory.h \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapqtnode.h \
+    ../RibiClasses/CppQtConceptMap/qtconceptmaprating.h \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapcollect.h \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapqtedge.h
 
 FORMS += \
-    ../../Classes/CppQtConceptMap/qtconceptmapconcepteditdialog.ui \
-    ../../Classes/CppQtConceptMap/qtconceptmaprateconceptdialognewname.ui \
-    ../../Classes/CppQtConceptMap/qtconceptmaprateconcepttallydialognewname.ui \
-    ../../Classes/CppQtConceptMap/qtconceptmaprateexamplesdialognewname.ui \
-    ../../Classes/CppQtConceptMap/qtconceptmapratedconceptdialog.ui \
-    ../../Classes/CppQtConceptMap/qtconceptmapexampledialog.ui \
-    ../../Classes/CppQtConceptMap/qtconceptmapexamplesdialog.ui \
-    ../../Classes/CppQtConceptMap/qtconceptmapconceptdialog.ui \
-    ../../Classes/CppQtConceptMap/qtconceptmapnodedialog.ui \
-    ../../Classes/CppQtConceptMap/qtconceptmapqtnodedialog.ui \
-    ../../Classes/CppQtConceptMap/qtconceptmapedgedialog.ui \
-    ../../Classes/CppQtConceptMap/qtconceptmapqtedgedialog.ui
+    ../RibiClasses/CppQtConceptMap/qtconceptmapconcepteditdialog.ui \
+    ../RibiClasses/CppQtConceptMap/qtconceptmaprateconceptdialognewname.ui \
+    ../RibiClasses/CppQtConceptMap/qtconceptmaprateconcepttallydialognewname.ui \
+    ../RibiClasses/CppQtConceptMap/qtconceptmaprateexamplesdialognewname.ui \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapratedconceptdialog.ui \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapexampledialog.ui \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapexamplesdialog.ui \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapconceptdialog.ui \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapnodedialog.ui \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapqtnodedialog.ui \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapedgedialog.ui \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapqtedgedialog.ui
 
 RESOURCES += \
-    ../../Classes/CppQtConceptMap/CppQtConceptMap.qrc
+    ../RibiClasses/CppQtConceptMap/CppQtConceptMap.qrc

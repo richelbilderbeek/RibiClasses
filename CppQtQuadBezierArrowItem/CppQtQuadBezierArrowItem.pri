@@ -1,17 +1,17 @@
 INCLUDEPATH += \
-    ../../Classes/CppQtQuadBezierArrowItem
+    ../RibiClasses/CppQtQuadBezierArrowItem
 
 SOURCES += \
-    ../../Classes/CppQtQuadBezierArrowItem/qtquadbezierarrowitem.cpp \
-    ../../Classes/CppQtQuadBezierArrowItem/qtquadbezierarrowdialog.cpp
+    ../RibiClasses/CppQtQuadBezierArrowItem/qtquadbezierarrowitem.cpp \
+    ../RibiClasses/CppQtQuadBezierArrowItem/qtquadbezierarrowdialog.cpp
 
 HEADERS  += \
-    ../../Classes/CppQtQuadBezierArrowItem/qtquadbezierarrowitem.h \
-    ../../Classes/CppQtQuadBezierArrowItem/qtquadbezierarrowdialog.h
+    ../RibiClasses/CppQtQuadBezierArrowItem/qtquadbezierarrowitem.h \
+    ../RibiClasses/CppQtQuadBezierArrowItem/qtquadbezierarrowdialog.h
 
 OTHER_FILES += \
-    ../../Classes/CppQtQuadBezierArrowItem/Licence.txt
+    ../RibiClasses/CppQtQuadBezierArrowItem/Licence.txt
 
 FORMS += \
-    ../../Classes/CppQtQuadBezierArrowItem/qtquadbezierarrowdialog.ui
+    ../RibiClasses/CppQtQuadBezierArrowItem/qtquadbezierarrowdialog.ui
 

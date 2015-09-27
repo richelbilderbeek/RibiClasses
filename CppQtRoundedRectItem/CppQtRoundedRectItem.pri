@@ -1,18 +1,18 @@
 INCLUDEPATH += \
-    ../../Classes/CppQtRoundedRectItem
+    ../RibiClasses/CppQtRoundedRectItem
 
 SOURCES += \
-    ../../Classes/CppQtRoundedRectItem/qtroundedrectitem.cpp \
-    ../../Classes/CppQtRoundedRectItem/qtroundedrectitemdialog.cpp \
-    ../../Classes/CppQtRoundedRectItem/qtroundedrectitem_test.cpp
+    ../RibiClasses/CppQtRoundedRectItem/qtroundedrectitem.cpp \
+    ../RibiClasses/CppQtRoundedRectItem/qtroundedrectitemdialog.cpp \
+    ../RibiClasses/CppQtRoundedRectItem/qtroundedrectitem_test.cpp
 
 HEADERS  += \
-    ../../Classes/CppQtRoundedRectItem/qtroundedrectitem.h \
-    ../../Classes/CppQtRoundedRectItem/qtroundedrectitemdialog.h
+    ../RibiClasses/CppQtRoundedRectItem/qtroundedrectitem.h \
+    ../RibiClasses/CppQtRoundedRectItem/qtroundedrectitemdialog.h
 
 OTHER_FILES += \
-    ../../Classes/CppQtRoundedRectItem/Licence.txt
+    ../RibiClasses/CppQtRoundedRectItem/Licence.txt
 
 FORMS += \
-    ../../Classes/CppQtRoundedRectItem/qtroundedrectitemdialog.ui
+    ../RibiClasses/CppQtRoundedRectItem/qtroundedrectitemdialog.ui
 

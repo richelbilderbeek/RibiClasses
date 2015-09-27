@@ -1,18 +1,18 @@
 INCLUDEPATH += \
-    ../../Classes/CppCoordinat
+    ../RibiClasses/CppCoordinat
 
 SOURCES += \
-    ../../Classes/CppCoordinat/coordinat.cpp \
-    ../../Classes/CppCoordinat/coordinat3d.cpp \
-    ../../Classes/CppCoordinat/coordinat2d.cpp \
-    ../../Classes/CppCoordinat/constcoordinat2d.cpp
+    ../RibiClasses/CppCoordinat/coordinat.cpp \
+    ../RibiClasses/CppCoordinat/coordinat3d.cpp \
+    ../RibiClasses/CppCoordinat/coordinat2d.cpp \
+    ../RibiClasses/CppCoordinat/constcoordinat2d.cpp
 
 HEADERS  += \
-    ../../Classes/CppCoordinat/coordinat.h \
-    ../../Classes/CppCoordinat/coordinat3d.h \
-    ../../Classes/CppCoordinat/coordinat2d.h \
-    ../../Classes/CppCoordinat/constcoordinat2d.h
+    ../RibiClasses/CppCoordinat/coordinat.h \
+    ../RibiClasses/CppCoordinat/coordinat3d.h \
+    ../RibiClasses/CppCoordinat/coordinat2d.h \
+    ../RibiClasses/CppCoordinat/constcoordinat2d.h
 
 OTHER_FILES += \
-    ../../Classes/CppCoordinat/Licence.txt
+    ../RibiClasses/CppCoordinat/Licence.txt
 

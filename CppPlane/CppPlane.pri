@@ -1,22 +1,22 @@
 INCLUDEPATH += \
-    ../../Classes/CppPlane
+    ../RibiClasses/CppPlane
 
 SOURCES += \
-    ../../Classes/CppPlane/plane.cpp \
-    ../../Classes/CppPlane/planez.cpp \
-    ../../Classes/CppPlane/planex.cpp \
-    ../../Classes/CppPlane/planey.cpp \
-    ../../Classes/CppPlane/plane_test.cpp \
-    ../../Classes/CppPlane/planez_test.cpp \
-    ../../Classes/CppPlane/planey_test.cpp \
-    ../../Classes/CppPlane/planex_test.cpp
+    ../RibiClasses/CppPlane/plane.cpp \
+    ../RibiClasses/CppPlane/planez.cpp \
+    ../RibiClasses/CppPlane/planex.cpp \
+    ../RibiClasses/CppPlane/planey.cpp \
+    ../RibiClasses/CppPlane/plane_test.cpp \
+    ../RibiClasses/CppPlane/planez_test.cpp \
+    ../RibiClasses/CppPlane/planey_test.cpp \
+    ../RibiClasses/CppPlane/planex_test.cpp
 
 HEADERS  += \
-    ../../Classes/CppPlane/plane.h \
-    ../../Classes/CppPlane/planez.h \
-    ../../Classes/CppPlane/planex.h \
-    ../../Classes/CppPlane/planey.h
+    ../RibiClasses/CppPlane/plane.h \
+    ../RibiClasses/CppPlane/planez.h \
+    ../RibiClasses/CppPlane/planex.h \
+    ../RibiClasses/CppPlane/planey.h
 
 OTHER_FILES += \
-    ../../Classes/CppPlane/Licence.txt
+    ../RibiClasses/CppPlane/Licence.txt
 

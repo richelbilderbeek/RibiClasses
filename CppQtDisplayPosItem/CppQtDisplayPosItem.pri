@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppQtDisplayPosItem
+    ../RibiClasses/CppQtDisplayPosItem
 
 SOURCES += \
-    ../../Classes/CppQtDisplayPosItem/qtdisplaypositem.cpp
+    ../RibiClasses/CppQtDisplayPosItem/qtdisplaypositem.cpp
 
 HEADERS  += \
-    ../../Classes/CppQtDisplayPosItem/qtdisplaypositem.h
+    ../RibiClasses/CppQtDisplayPosItem/qtdisplaypositem.h
 
 OTHER_FILES += \
-    ../../Classes/CppQtDisplayPosItem/Licence.txt
+    ../RibiClasses/CppQtDisplayPosItem/Licence.txt
 

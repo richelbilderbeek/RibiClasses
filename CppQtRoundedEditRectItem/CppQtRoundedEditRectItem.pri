@@ -1,20 +1,20 @@
 INCLUDEPATH += \
-    ../../Classes/CppQtRoundedEditRectItem
+    ../RibiClasses/CppQtRoundedEditRectItem
 
 SOURCES += \
-    ../../Classes/CppQtRoundedEditRectItem/qtroundededitrectitem.cpp \
-    ../../Classes/CppQtRoundedEditRectItem/qtroundededitrectitemdialog.cpp \
-    ../../Classes/CppQtRoundedEditRectItem/qtroundededitrectitempadding.cpp \
-    ../../Classes/CppQtRoundedEditRectItem/qtroundededitrectitem_test.cpp
+    ../RibiClasses/CppQtRoundedEditRectItem/qtroundededitrectitem.cpp \
+    ../RibiClasses/CppQtRoundedEditRectItem/qtroundededitrectitemdialog.cpp \
+    ../RibiClasses/CppQtRoundedEditRectItem/qtroundededitrectitempadding.cpp \
+    ../RibiClasses/CppQtRoundedEditRectItem/qtroundededitrectitem_test.cpp
 
 HEADERS  += \
-    ../../Classes/CppQtRoundedEditRectItem/qtroundededitrectitem.h \
-    ../../Classes/CppQtRoundedEditRectItem/qtroundededitrectitemdialog.h \
-    ../../Classes/CppQtRoundedEditRectItem/qtroundededitrectitempadding.h
+    ../RibiClasses/CppQtRoundedEditRectItem/qtroundededitrectitem.h \
+    ../RibiClasses/CppQtRoundedEditRectItem/qtroundededitrectitemdialog.h \
+    ../RibiClasses/CppQtRoundedEditRectItem/qtroundededitrectitempadding.h
 
 OTHER_FILES += \
-    ../../Classes/CppQtRoundedEditRectItem/Licence.txt
+    ../RibiClasses/CppQtRoundedEditRectItem/Licence.txt
 
 FORMS += \
-    ../../Classes/CppQtRoundedEditRectItem/qtroundededitrectitemdialog.ui
+    ../RibiClasses/CppQtRoundedEditRectItem/qtroundededitrectitemdialog.ui
 

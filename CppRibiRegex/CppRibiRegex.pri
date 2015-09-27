@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppRibiRegex
+    ../RibiClasses/CppRibiRegex
 
 SOURCES += \
-    ../../Classes/CppRibiRegex/ribi_regex.cpp
+    ../RibiClasses/CppRibiRegex/ribi_regex.cpp
 
 HEADERS  += \
-    ../../Classes/CppRibiRegex/ribi_regex.h
+    ../RibiClasses/CppRibiRegex/ribi_regex.h
 
 OTHER_FILES += \
-    ../../Classes/CppRibiRegex/Licence.txt
+    ../RibiClasses/CppRibiRegex/Licence.txt
 

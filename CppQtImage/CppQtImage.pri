@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppQtImage
+    ../RibiClasses/CppQtImage
 
 SOURCES += \
-    ../../Classes/CppQtImage/qtimage.cpp
+    ../RibiClasses/CppQtImage/qtimage.cpp
 
 HEADERS  += \
-    ../../Classes/CppQtImage/qtimage.h
+    ../RibiClasses/CppQtImage/qtimage.h
 
 OTHER_FILES += \
-    ../../Classes/CppQtImage/Licence.txt
+    ../RibiClasses/CppQtImage/Licence.txt
 

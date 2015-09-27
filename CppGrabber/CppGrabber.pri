@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppGrabber
+    ../RibiClasses/CppGrabber
 
 SOURCES += \
-    ../../Classes/CppGrabber/grabber.cpp
+    ../RibiClasses/CppGrabber/grabber.cpp
 
 HEADERS  += \
-    ../../Classes/CppGrabber/grabber.h
+    ../RibiClasses/CppGrabber/grabber.h
 
 OTHER_FILES += \
-    ../../Classes/CppCounter/Licence.txt
+    ../RibiClasses/CppCounter/Licence.txt
 

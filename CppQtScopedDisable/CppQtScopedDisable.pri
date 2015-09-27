@@ -1,9 +1,9 @@
 INCLUDEPATH += \
-    ../../Classes/CppQtScopedDisable
+    ../RibiClasses/CppQtScopedDisable
 
 HEADERS  += \
-    ../../Classes/CppQtScopedDisable/qtscopeddisable.h
+    ../RibiClasses/CppQtScopedDisable/qtscopeddisable.h
 
 OTHER_FILES += \
-    ../../Classes/CppQtScopedDisable/Licence.txt
+    ../RibiClasses/CppQtScopedDisable/Licence.txt
 

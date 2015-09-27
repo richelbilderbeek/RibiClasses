@@ -1,13 +1,13 @@
 INCLUDEPATH += \
-    ../../Classes/CppCounter
+    ../RibiClasses/CppCounter
 
 SOURCES += \
-    ../../Classes/CppCounter/counter.cpp \
-    ../../Classes/CppCounter/counter_test.cpp
+    ../RibiClasses/CppCounter/counter.cpp \
+    ../RibiClasses/CppCounter/counter_test.cpp
 
 HEADERS  += \
-    ../../Classes/CppCounter/counter.h
+    ../RibiClasses/CppCounter/counter.h
 
 OTHER_FILES += \
-    ../../Classes/CppCounter/Licence.txt
+    ../RibiClasses/CppCounter/Licence.txt
 

@@ -1,69 +1,69 @@
 INCLUDEPATH += \
-    ../../Classes/CppConceptMap
+    ../RibiClasses/CppConceptMap
 
 
 OTHER_FILES += \
-    ../../Classes/CppConceptMap/Licence.txt
+    ../RibiClasses/CppConceptMap/Licence.txt
 
 HEADERS += \
-    ../../Classes/CppConceptMap/conceptmapfwd.h \
-    ../../Classes/CppConceptMap/conceptmapcenternode.h \
-    ../../Classes/CppConceptMap/conceptmapcenternodefactory.h \
-    ../../Classes/CppConceptMap/conceptmapcompetency.h \
-    ../../Classes/CppConceptMap/conceptmapconcept.h \
-    ../../Classes/CppConceptMap/conceptmapconceptfactory.h \
-    ../../Classes/CppConceptMap/conceptmap.h \
-    ../../Classes/CppConceptMap/conceptmapfactory.h \
-    ../../Classes/CppConceptMap/conceptmapedgefactory.h \
-    ../../Classes/CppConceptMap/conceptmapexample.h \
-    ../../Classes/CppConceptMap/conceptmapexamplefactory.h \
-    ../../Classes/CppConceptMap/conceptmapexamples.h \
-    ../../Classes/CppConceptMap/conceptmapexamplesfactory.h \
-    ../../Classes/CppConceptMap/conceptmapnode.h \
-    ../../Classes/CppConceptMap/conceptmapnodefactory.h \
-    ../../Classes/CppConceptMap/conceptmaphelper.h \
-    ../../Classes/CppConceptMap/conceptmapedge.h \
-    ../../Classes/CppConceptMap/conceptmapcommand.h \
-    ../../Classes/CppConceptMap/conceptmapelement.h \
-    ../../Classes/CppConceptMap/conceptmapcommandfactory.h \
-    ../../Classes/CppConceptMap/conceptmapcommandcreatenewnode.h \
-    ../../Classes/CppConceptMap/conceptmapcommanddeletenode.h \
-    ../../Classes/CppConceptMap/conceptmapcommandcreatenewedge.h \
-    ../../Classes/CppConceptMap/conceptmapcommandaddselectedrandom.h \
-    ../../Classes/CppConceptMap/conceptmapcommandunselectrandom.h \
-    ../../Classes/CppConceptMap/conceptmapcompetencies.h \
-    ../../Classes/CppConceptMap/conceptmapregex.h \
-    ../../Classes/CppConceptMap/conceptmapcommandsetselectedwithcoordinat.h \
-    ../../Classes/CppConceptMap/conceptmapcommanddeleteedge.h
+    ../RibiClasses/CppConceptMap/conceptmapfwd.h \
+    ../RibiClasses/CppConceptMap/conceptmapcenternode.h \
+    ../RibiClasses/CppConceptMap/conceptmapcenternodefactory.h \
+    ../RibiClasses/CppConceptMap/conceptmapcompetency.h \
+    ../RibiClasses/CppConceptMap/conceptmapconcept.h \
+    ../RibiClasses/CppConceptMap/conceptmapconceptfactory.h \
+    ../RibiClasses/CppConceptMap/conceptmap.h \
+    ../RibiClasses/CppConceptMap/conceptmapfactory.h \
+    ../RibiClasses/CppConceptMap/conceptmapedgefactory.h \
+    ../RibiClasses/CppConceptMap/conceptmapexample.h \
+    ../RibiClasses/CppConceptMap/conceptmapexamplefactory.h \
+    ../RibiClasses/CppConceptMap/conceptmapexamples.h \
+    ../RibiClasses/CppConceptMap/conceptmapexamplesfactory.h \
+    ../RibiClasses/CppConceptMap/conceptmapnode.h \
+    ../RibiClasses/CppConceptMap/conceptmapnodefactory.h \
+    ../RibiClasses/CppConceptMap/conceptmaphelper.h \
+    ../RibiClasses/CppConceptMap/conceptmapedge.h \
+    ../RibiClasses/CppConceptMap/conceptmapcommand.h \
+    ../RibiClasses/CppConceptMap/conceptmapelement.h \
+    ../RibiClasses/CppConceptMap/conceptmapcommandfactory.h \
+    ../RibiClasses/CppConceptMap/conceptmapcommandcreatenewnode.h \
+    ../RibiClasses/CppConceptMap/conceptmapcommanddeletenode.h \
+    ../RibiClasses/CppConceptMap/conceptmapcommandcreatenewedge.h \
+    ../RibiClasses/CppConceptMap/conceptmapcommandaddselectedrandom.h \
+    ../RibiClasses/CppConceptMap/conceptmapcommandunselectrandom.h \
+    ../RibiClasses/CppConceptMap/conceptmapcompetencies.h \
+    ../RibiClasses/CppConceptMap/conceptmapregex.h \
+    ../RibiClasses/CppConceptMap/conceptmapcommandsetselectedwithcoordinat.h \
+    ../RibiClasses/CppConceptMap/conceptmapcommanddeleteedge.h
 
 SOURCES += \
-    ../../Classes/CppConceptMap/conceptmapcenternode.cpp \
-    ../../Classes/CppConceptMap/conceptmapcenternodefactory.cpp \
-    ../../Classes/CppConceptMap/conceptmapcompetency.cpp \
-    ../../Classes/CppConceptMap/conceptmapconcept.cpp \
-    ../../Classes/CppConceptMap/conceptmapconceptfactory.cpp \
-    ../../Classes/CppConceptMap/conceptmap.cpp \
-    ../../Classes/CppConceptMap/conceptmapfactory.cpp \
-    ../../Classes/CppConceptMap/conceptmapedge.cpp \
-    ../../Classes/CppConceptMap/conceptmapedgefactory.cpp \
-    ../../Classes/CppConceptMap/conceptmapexample.cpp \
-    ../../Classes/CppConceptMap/conceptmapexamplefactory.cpp \
-    ../../Classes/CppConceptMap/conceptmapexamples.cpp \
-    ../../Classes/CppConceptMap/conceptmapexamplesfactory.cpp \
-    ../../Classes/CppConceptMap/conceptmapnode.cpp \
-    ../../Classes/CppConceptMap/conceptmapnodefactory.cpp \
-    ../../Classes/CppConceptMap/conceptmaphelper.cpp \
-    ../../Classes/CppConceptMap/conceptmapcommand.cpp \
-    ../../Classes/CppConceptMap/conceptmapelement.cpp \
-    ../../Classes/CppConceptMap/conceptmapcommandfactory.cpp \
-    ../../Classes/CppConceptMap/conceptmapcommandcreatenewnode.cpp \
-    ../../Classes/CppConceptMap/conceptmapcommanddeletenode.cpp \
-    ../../Classes/CppConceptMap/conceptmapcommandcreatenewedge.cpp \
-    ../../Classes/CppConceptMap/conceptmapcommandaddselectedrandom.cpp \
-    ../../Classes/CppConceptMap/conceptmapcommandunselectrandom.cpp \
-    ../../Classes/CppConceptMap/conceptmapcompetencies.cpp \
-    ../../Classes/CppConceptMap/conceptmapregex.cpp \
-    ../../Classes/CppConceptMap/conceptmapconcept_test.cpp \
-    ../../Classes/CppConceptMap/conceptmap_test.cpp \
-    ../../Classes/CppConceptMap/conceptmapcommandsetselectedwithcoordinat.cpp \
-    ../../Classes/CppConceptMap/conceptmapcommanddeleteedge.cpp
+    ../RibiClasses/CppConceptMap/conceptmapcenternode.cpp \
+    ../RibiClasses/CppConceptMap/conceptmapcenternodefactory.cpp \
+    ../RibiClasses/CppConceptMap/conceptmapcompetency.cpp \
+    ../RibiClasses/CppConceptMap/conceptmapconcept.cpp \
+    ../RibiClasses/CppConceptMap/conceptmapconceptfactory.cpp \
+    ../RibiClasses/CppConceptMap/conceptmap.cpp \
+    ../RibiClasses/CppConceptMap/conceptmapfactory.cpp \
+    ../RibiClasses/CppConceptMap/conceptmapedge.cpp \
+    ../RibiClasses/CppConceptMap/conceptmapedgefactory.cpp \
+    ../RibiClasses/CppConceptMap/conceptmapexample.cpp \
+    ../RibiClasses/CppConceptMap/conceptmapexamplefactory.cpp \
+    ../RibiClasses/CppConceptMap/conceptmapexamples.cpp \
+    ../RibiClasses/CppConceptMap/conceptmapexamplesfactory.cpp \
+    ../RibiClasses/CppConceptMap/conceptmapnode.cpp \
+    ../RibiClasses/CppConceptMap/conceptmapnodefactory.cpp \
+    ../RibiClasses/CppConceptMap/conceptmaphelper.cpp \
+    ../RibiClasses/CppConceptMap/conceptmapcommand.cpp \
+    ../RibiClasses/CppConceptMap/conceptmapelement.cpp \
+    ../RibiClasses/CppConceptMap/conceptmapcommandfactory.cpp \
+    ../RibiClasses/CppConceptMap/conceptmapcommandcreatenewnode.cpp \
+    ../RibiClasses/CppConceptMap/conceptmapcommanddeletenode.cpp \
+    ../RibiClasses/CppConceptMap/conceptmapcommandcreatenewedge.cpp \
+    ../RibiClasses/CppConceptMap/conceptmapcommandaddselectedrandom.cpp \
+    ../RibiClasses/CppConceptMap/conceptmapcommandunselectrandom.cpp \
+    ../RibiClasses/CppConceptMap/conceptmapcompetencies.cpp \
+    ../RibiClasses/CppConceptMap/conceptmapregex.cpp \
+    ../RibiClasses/CppConceptMap/conceptmapconcept_test.cpp \
+    ../RibiClasses/CppConceptMap/conceptmap_test.cpp \
+    ../RibiClasses/CppConceptMap/conceptmapcommandsetselectedwithcoordinat.cpp \
+    ../RibiClasses/CppConceptMap/conceptmapcommanddeleteedge.cpp
