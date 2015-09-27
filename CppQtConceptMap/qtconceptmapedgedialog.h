@@ -45,7 +45,7 @@ public:
   explicit QtEdgeDialog(QWidget *parent = 0);
   QtEdgeDialog(const QtEdgeDialog&) = delete;
   QtEdgeDialog& operator=(const QtEdgeDialog&) = delete;
-  ~QtEdgeDialog();
+  ~QtEdgeDialog() noexcept;
 
   boost::shared_ptr<Edge> GetEdge() const noexcept { return m_edge; }
   static int GetMinimumHeight(const Edge& edge) noexcept;

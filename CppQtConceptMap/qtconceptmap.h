@@ -48,7 +48,7 @@ public:
   );
   QtConceptMap(const QtConceptMap&) = delete;
   QtConceptMap& operator=(const QtConceptMap&) = delete;
-  ~QtConceptMap();
+  ~QtConceptMap() noexcept;
 
   ///Raw pointer, because ConceptMap its QUndoStack will take over ownership of pointer
   void DoCommand(Command * const command) noexcept;

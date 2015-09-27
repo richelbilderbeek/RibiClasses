@@ -45,7 +45,7 @@ public:
   explicit QtNodeDialog(QWidget *parent = 0);
   QtNodeDialog(const QtNodeDialog&) = delete;
   QtNodeDialog& operator=(const QtNodeDialog&) = delete;
-  ~QtNodeDialog();
+  ~QtNodeDialog() noexcept;
 
   static int GetMinimumHeight(const Node& node) noexcept;
   boost::shared_ptr<Node> GetNode() const noexcept { return m_node; }

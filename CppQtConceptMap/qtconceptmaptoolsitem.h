@@ -53,7 +53,7 @@ struct QtTool : public QGraphicsPixmapItem
   explicit QtTool();
   QtTool(const QtTool& other) = delete;
   QtTool& operator=(const QtTool& other) = delete;
-  virtual ~QtTool() {}
+  virtual ~QtTool() noexcept {}
 
   ///Get the item the tools item floats above
   ///Return type cannot be const, as the user might want to modify it
