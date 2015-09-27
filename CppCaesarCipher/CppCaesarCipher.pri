@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppCaesarCipher
+    ../RibiClasses/CppCaesarCipher
 
 SOURCES += \
-    ../../Classes/CppCaesarCipher/caesarcipher.cpp
+    ../RibiClasses/CppCaesarCipher/caesarcipher.cpp
 
 HEADERS  += \
-    ../../Classes/CppCaesarCipher/caesarcipher.h
+    ../RibiClasses/CppCaesarCipher/caesarcipher.h
 
 OTHER_FILES += \
-    ../../Classes/CppCaesarCipher/Licence.txt
+    ../RibiClasses/CppCaesarCipher/Licence.txt
 

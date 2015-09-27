@@ -1,22 +1,22 @@
 INCLUDEPATH += \
-    ../../Classes/CppBeast
+    ../RibiClasses/CppBeast
 
 SOURCES += \
-    ../../Classes/CppBeast/beast.cpp \
-    ../../Classes/CppBeast/beastparameterfile.cpp \
-    ../../Classes/CppBeast/beaststatefile.cpp \
-    ../../Classes/CppBeast/beast_test.cpp \
-    ../../Classes/CppBeast/beastparameterfile_test.cpp \
-    ../../Classes/CppBeast/beaststatefile_test.cpp
+    ../RibiClasses/CppBeast/beast.cpp \
+    ../RibiClasses/CppBeast/beastparameterfile.cpp \
+    ../RibiClasses/CppBeast/beaststatefile.cpp \
+    ../RibiClasses/CppBeast/beast_test.cpp \
+    ../RibiClasses/CppBeast/beastparameterfile_test.cpp \
+    ../RibiClasses/CppBeast/beaststatefile_test.cpp
 
 HEADERS  += \
-    ../../Classes/CppBeast/beast.h \
-    ../../Classes/CppBeast/beaststatefile.h \
-    ../../Classes/CppBeast/beastparameterfile.h
+    ../RibiClasses/CppBeast/beast.h \
+    ../RibiClasses/CppBeast/beaststatefile.h \
+    ../RibiClasses/CppBeast/beastparameterfile.h
 
 OTHER_FILES += \
-    ../../Classes/CppBeast/Licence.txt
+    ../RibiClasses/CppBeast/Licence.txt
 
 RESOURCES += \
-    ../../Classes/CppBeast/CppBeast.qrc
+    ../RibiClasses/CppBeast/CppBeast.qrc
 

@@ -1,16 +1,16 @@
 INCLUDEPATH += \
-    ../../Classes/CppQtBeastDisplay
+    ../RibiClasses/CppQtBeastDisplay
 
 SOURCES += \
-    ../../Classes/CppQtBeastDisplay/qtbeastdisplay.cpp
+    ../RibiClasses/CppQtBeastDisplay/qtbeastdisplay.cpp
 
 HEADERS  += \
-    ../../Classes/CppQtBeastDisplay/qtbeastdisplay.h
+    ../RibiClasses/CppQtBeastDisplay/qtbeastdisplay.h
 
 FORMS += \
-    ../../Classes/CppQtBeastDisplay/qtbeastdisplay.ui
+    ../RibiClasses/CppQtBeastDisplay/qtbeastdisplay.ui
 
 OTHER_FILES += \
-    ../../Classes/CppQtBeastDisplay/Licence.txt
+    ../RibiClasses/CppQtBeastDisplay/Licence.txt
 
 

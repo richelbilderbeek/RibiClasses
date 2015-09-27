@@ -1,13 +1,13 @@
 INCLUDEPATH += \
-    ../../Classes/CppNewickUtils
+    ../RibiClasses/CppNewickUtils
 
 SOURCES += \
-    ../../Classes/CppNewickUtils/newickutils.cpp \
-    ../../Classes/CppNewickUtils/newickutils_test.cpp
+    ../RibiClasses/CppNewickUtils/newickutils.cpp \
+    ../RibiClasses/CppNewickUtils/newickutils_test.cpp
 
 HEADERS  += \
-    ../../Classes/CppNewickUtils/newickutils.h
+    ../RibiClasses/CppNewickUtils/newickutils.h
 
 OTHER_FILES += \
-    ../../Classes/CppNewickUtils/Licence.txt
+    ../RibiClasses/CppNewickUtils/Licence.txt
 

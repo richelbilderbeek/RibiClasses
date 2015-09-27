@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppEncranger
+    ../RibiClasses/CppEncranger
 
 SOURCES += \
-    ../../Classes/CppEncranger/encranger.cpp
+    ../RibiClasses/CppEncranger/encranger.cpp
 
 HEADERS  += \
-    ../../Classes/CppEncranger/encranger.h
+    ../RibiClasses/CppEncranger/encranger.h
 
 OTHER_FILES += \
-    ../../Classes/CppEncranger/Licence.txt
+    ../RibiClasses/CppEncranger/Licence.txt
 

@@ -1,15 +1,15 @@
 INCLUDEPATH += \
-    ../../Classes/CppQtPaperRockScissorsWithTraitSimulation
+    ../RibiClasses/CppQtPaperRockScissorsWithTraitSimulation
 
 SOURCES += \
-    ../../Classes/CppQtPaperRockScissorsWithTraitSimulation/qtpaperrockscissorswithtraitwidget.cpp
+    ../RibiClasses/CppQtPaperRockScissorsWithTraitSimulation/qtpaperrockscissorswithtraitwidget.cpp
 
 HEADERS  += \
-    ../../Classes/CppQtPaperRockScissorsWithTraitSimulation/qtpaperrockscissorswithtraitwidget.h
+    ../RibiClasses/CppQtPaperRockScissorsWithTraitSimulation/qtpaperrockscissorswithtraitwidget.h
 
 FORMS  += \
-    ../../Classes/CppQtPaperRockScissorsWithTraitSimulation/qtpaperrockscissorswithtraitwidget.ui
+    ../RibiClasses/CppQtPaperRockScissorsWithTraitSimulation/qtpaperrockscissorswithtraitwidget.ui
 
 OTHER_FILES += \
-    ../../Classes/CppQtPaperRockScissorsWithTraitSimulation/Licence.txt
+    ../RibiClasses/CppQtPaperRockScissorsWithTraitSimulation/Licence.txt
 

@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppHistogram
+    ../RibiClasses/CppHistogram
 
 SOURCES += \
-    ../../Classes/CppHistogram/histogram.cpp
+    ../RibiClasses/CppHistogram/histogram.cpp
 
 HEADERS  += \
-    ../../Classes/CppHistogram/histogram.h
+    ../RibiClasses/CppHistogram/histogram.h
 
 OTHER_FILES += \
-    ../../Classes/CppHistogram/Licence.txt
+    ../RibiClasses/CppHistogram/Licence.txt
 

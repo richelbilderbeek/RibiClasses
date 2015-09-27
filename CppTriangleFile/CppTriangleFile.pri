@@ -1,15 +1,15 @@
 INCLUDEPATH += \
-    ../../Classes/CppTriangleFile
+    ../RibiClasses/CppTriangleFile
 
 SOURCES += \
-    ../../Classes/CppTriangleFile/trianglefile.cpp
+    ../RibiClasses/CppTriangleFile/trianglefile.cpp
 
 HEADERS  += \
-    ../../Classes/CppTriangleFile/trianglefile.h
+    ../RibiClasses/CppTriangleFile/trianglefile.h
 
 OTHER_FILES += \
-    ../../Classes/CppTriangleFile/Licence.txt
+    ../RibiClasses/CppTriangleFile/Licence.txt
 
 RESOURCES += \
-    ../../Classes/CppTriangleFile/CppTriangleFile.qrc
+    ../RibiClasses/CppTriangleFile/CppTriangleFile.qrc
 

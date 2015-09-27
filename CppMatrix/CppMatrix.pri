@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppMatrix
+    ../RibiClasses/CppMatrix
 
 SOURCES += \
-    ../../Classes/CppMatrix/matrix.cpp
+    ../RibiClasses/CppMatrix/matrix.cpp
 
 HEADERS  += \
-    ../../Classes/CppMatrix/matrix.h
+    ../RibiClasses/CppMatrix/matrix.h
 
 OTHER_FILES += \
-    ../../Classes/CppMatrix/Licence.txt
+    ../RibiClasses/CppMatrix/Licence.txt
 

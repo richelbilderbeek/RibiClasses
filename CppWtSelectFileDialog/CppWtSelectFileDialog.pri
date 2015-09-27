@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppWtSelectFileDialog
+    ../RibiClasses/CppWtSelectFileDialog
 
 SOURCES += \
-    ../../Classes/CppWtSelectFileDialog/wtselectfiledialog.cpp
+    ../RibiClasses/CppWtSelectFileDialog/wtselectfiledialog.cpp
 
 HEADERS  += \
-    ../../Classes/CppWtSelectFileDialog/wtselectfiledialog.h
+    ../RibiClasses/CppWtSelectFileDialog/wtselectfiledialog.h
 
 OTHER_FILES += \
-    ../../Classes/CppWtSelectFileDialog/Licence.txt
+    ../RibiClasses/CppWtSelectFileDialog/Licence.txt
 

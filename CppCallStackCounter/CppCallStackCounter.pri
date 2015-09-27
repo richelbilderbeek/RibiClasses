@@ -1,11 +1,11 @@
 INCLUDEPATH += \
-    ../../Classes/CppCallStackCounter
+    ../RibiClasses/CppCallStackCounter
 
 SOURCES += \
-    ../../Classes/CppCallStackCounter/callstackcounter.cpp
+    ../RibiClasses/CppCallStackCounter/callstackcounter.cpp
 
 HEADERS += \
-    ../../Classes/CppCallStackCounter/callstackcounter.h
+    ../RibiClasses/CppCallStackCounter/callstackcounter.h
 
 OTHER_FILES += \
-    ../../Classes/CppCallStackCounter/Licence.txt
+    ../RibiClasses/CppCallStackCounter/Licence.txt

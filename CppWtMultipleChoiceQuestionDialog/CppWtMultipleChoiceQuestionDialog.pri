@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppWtMultipleChoiceQuestionDialog
+    ../RibiClasses/CppWtMultipleChoiceQuestionDialog
 
 SOURCES += \
-    ../../Classes/CppWtMultipleChoiceQuestionDialog/wtmultiplechoicequestiondialog.cpp
+    ../RibiClasses/CppWtMultipleChoiceQuestionDialog/wtmultiplechoicequestiondialog.cpp
 
 HEADERS  += \
-    ../../Classes/CppWtMultipleChoiceQuestionDialog/wtmultiplechoicequestiondialog.h
+    ../RibiClasses/CppWtMultipleChoiceQuestionDialog/wtmultiplechoicequestiondialog.h
 
 OTHER_FILES += \
-    ../../Classes/CppWtMultipleChoiceQuestionDialog/Licence.txt
+    ../RibiClasses/CppWtMultipleChoiceQuestionDialog/Licence.txt
 

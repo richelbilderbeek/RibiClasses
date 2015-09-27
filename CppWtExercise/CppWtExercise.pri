@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppWtExercise
+    ../RibiClasses/CppWtExercise
 
 SOURCES += \
-    ../../Classes/CppWtExercise/wtexercise.cpp
+    ../RibiClasses/CppWtExercise/wtexercise.cpp
 
 HEADERS  += \
-    ../../Classes/CppWtExercise/wtexercise.h
+    ../RibiClasses/CppWtExercise/wtexercise.h
 
 OTHER_FILES += \
-    ../../Classes/CppWtExercise/Licence.txt
+    ../RibiClasses/CppWtExercise/Licence.txt
 

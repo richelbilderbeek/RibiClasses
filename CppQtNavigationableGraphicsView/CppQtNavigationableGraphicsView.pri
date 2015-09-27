@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppQtNavigationableGraphicsView
+    ../RibiClasses/CppQtNavigationableGraphicsView
 
 SOURCES += \
-    ../../Classes/CppQtNavigationableGraphicsView/qtnavigationablegraphicsview.cpp
+    ../RibiClasses/CppQtNavigationableGraphicsView/qtnavigationablegraphicsview.cpp
 
 HEADERS  += \
-    ../../Classes/CppQtNavigationableGraphicsView/qtnavigationablegraphicsview.h
+    ../RibiClasses/CppQtNavigationableGraphicsView/qtnavigationablegraphicsview.h
 
 OTHER_FILES += \
-    ../../Classes/CppQtNavigationableGraphicsView/Licence.txt
+    ../RibiClasses/CppQtNavigationableGraphicsView/Licence.txt
 

@@ -1,58 +1,58 @@
 INCLUDEPATH += \
-    ../../Classes/CppChess
+    ../RibiClasses/CppChess
 
 SOURCES += \
-    ../../Classes/CppChess/chessbitboard.cpp \
-    ../../Classes/CppChess/chessboard.cpp \
-    ../../Classes/CppChess/chessboardfactory.cpp \
-    ../../Classes/CppChess/chessboardtest.cpp \
-    ../../Classes/CppChess/chessboardwidget.cpp \
-    ../../Classes/CppChess/chesscastling.cpp \
-    ../../Classes/CppChess/chesscolor.cpp \
-    ../../Classes/CppChess/chessfile.cpp \
-    ../../Classes/CppChess/chessgame.cpp \
-    ../../Classes/CppChess/chessgamewidget.cpp \
-    ../../Classes/CppChess/chesshelper.cpp \
-    ../../Classes/CppChess/chessmove.cpp \
-    ../../Classes/CppChess/chessmovefactory.cpp \
-    ../../Classes/CppChess/chessmoves.cpp \
-    ../../Classes/CppChess/chessmovetest.cpp \
-    ../../Classes/CppChess/chesspiece.cpp \
-    ../../Classes/CppChess/chesspiecefactory.cpp \
-    ../../Classes/CppChess/chesspiecetest.cpp \
-    ../../Classes/CppChess/chessplayer.cpp \
-    ../../Classes/CppChess/chessrank.cpp \
-    ../../Classes/CppChess/chessscore.cpp \
-    ../../Classes/CppChess/chesssquare.cpp \
-    ../../Classes/CppChess/chesssquarefactory.cpp \
-    ../../Classes/CppChess/chesssquareselector.cpp \
-    ../../Classes/CppChess/chesswidget.cpp
+    ../RibiClasses/CppChess/chessbitboard.cpp \
+    ../RibiClasses/CppChess/chessboard.cpp \
+    ../RibiClasses/CppChess/chessboardfactory.cpp \
+    ../RibiClasses/CppChess/chessboardtest.cpp \
+    ../RibiClasses/CppChess/chessboardwidget.cpp \
+    ../RibiClasses/CppChess/chesscastling.cpp \
+    ../RibiClasses/CppChess/chesscolor.cpp \
+    ../RibiClasses/CppChess/chessfile.cpp \
+    ../RibiClasses/CppChess/chessgame.cpp \
+    ../RibiClasses/CppChess/chessgamewidget.cpp \
+    ../RibiClasses/CppChess/chesshelper.cpp \
+    ../RibiClasses/CppChess/chessmove.cpp \
+    ../RibiClasses/CppChess/chessmovefactory.cpp \
+    ../RibiClasses/CppChess/chessmoves.cpp \
+    ../RibiClasses/CppChess/chessmovetest.cpp \
+    ../RibiClasses/CppChess/chesspiece.cpp \
+    ../RibiClasses/CppChess/chesspiecefactory.cpp \
+    ../RibiClasses/CppChess/chesspiecetest.cpp \
+    ../RibiClasses/CppChess/chessplayer.cpp \
+    ../RibiClasses/CppChess/chessrank.cpp \
+    ../RibiClasses/CppChess/chessscore.cpp \
+    ../RibiClasses/CppChess/chesssquare.cpp \
+    ../RibiClasses/CppChess/chesssquarefactory.cpp \
+    ../RibiClasses/CppChess/chesssquareselector.cpp \
+    ../RibiClasses/CppChess/chesswidget.cpp
 
 HEADERS  += \
-    ../../Classes/CppChess/chessbitboard.h \
-    ../../Classes/CppChess/chessboard.h \
-    ../../Classes/CppChess/chessboardfactory.h \
-    ../../Classes/CppChess/chessboardwidget.h \
-    ../../Classes/CppChess/chesscastling.h \
-    ../../Classes/CppChess/chesscolor.h \
-    ../../Classes/CppChess/chessfile.h \
-    ../../Classes/CppChess/chessfwd.h \
-    ../../Classes/CppChess/chessgame.h \
-    ../../Classes/CppChess/chessgamewidget.h \
-    ../../Classes/CppChess/chesshelper.h \
-    ../../Classes/CppChess/chessmove.h \
-    ../../Classes/CppChess/chessmovefactory.h \
-    ../../Classes/CppChess/chessmoves.h \
-    ../../Classes/CppChess/chesspiece.h \
-    ../../Classes/CppChess/chesspiecefactory.h \
-    ../../Classes/CppChess/chessplayer.h \
-    ../../Classes/CppChess/chessrank.h \
-    ../../Classes/CppChess/chessscore.h \
-    ../../Classes/CppChess/chesssquare.h \
-    ../../Classes/CppChess/chesssquarefactory.h \
-    ../../Classes/CppChess/chesssquareselector.h \
-    ../../Classes/CppChess/chesswidget.h
+    ../RibiClasses/CppChess/chessbitboard.h \
+    ../RibiClasses/CppChess/chessboard.h \
+    ../RibiClasses/CppChess/chessboardfactory.h \
+    ../RibiClasses/CppChess/chessboardwidget.h \
+    ../RibiClasses/CppChess/chesscastling.h \
+    ../RibiClasses/CppChess/chesscolor.h \
+    ../RibiClasses/CppChess/chessfile.h \
+    ../RibiClasses/CppChess/chessfwd.h \
+    ../RibiClasses/CppChess/chessgame.h \
+    ../RibiClasses/CppChess/chessgamewidget.h \
+    ../RibiClasses/CppChess/chesshelper.h \
+    ../RibiClasses/CppChess/chessmove.h \
+    ../RibiClasses/CppChess/chessmovefactory.h \
+    ../RibiClasses/CppChess/chessmoves.h \
+    ../RibiClasses/CppChess/chesspiece.h \
+    ../RibiClasses/CppChess/chesspiecefactory.h \
+    ../RibiClasses/CppChess/chessplayer.h \
+    ../RibiClasses/CppChess/chessrank.h \
+    ../RibiClasses/CppChess/chessscore.h \
+    ../RibiClasses/CppChess/chesssquare.h \
+    ../RibiClasses/CppChess/chesssquarefactory.h \
+    ../RibiClasses/CppChess/chesssquareselector.h \
+    ../RibiClasses/CppChess/chesswidget.h
 
 OTHER_FILES += \
-    ../../Classes/CppChess/Licence.txt
+    ../RibiClasses/CppChess/Licence.txt
 

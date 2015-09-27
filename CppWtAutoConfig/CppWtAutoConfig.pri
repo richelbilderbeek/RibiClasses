@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppWtAutoConfig
+    ../RibiClasses/CppWtAutoConfig
 
 SOURCES += \
-    ../../Classes/CppWtAutoConfig/wtautoconfig.cpp
+    ../RibiClasses/CppWtAutoConfig/wtautoconfig.cpp
 
 HEADERS  += \
-    ../../Classes/CppWtAutoConfig/wtautoconfig.h
+    ../RibiClasses/CppWtAutoConfig/wtautoconfig.h
 
 OTHER_FILES += \
-    ../../Classes/CppWtAutoConfig/Licence.txt
+    ../RibiClasses/CppWtAutoConfig/Licence.txt
 

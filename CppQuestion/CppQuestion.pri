@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppQuestion
+    ../RibiClasses/CppQuestion
 
 SOURCES += \
-    ../../Classes/CppQuestion/question.cpp
+    ../RibiClasses/CppQuestion/question.cpp
 
 HEADERS  += \
-    ../../Classes/CppQuestion/question.h
+    ../RibiClasses/CppQuestion/question.h
 
 OTHER_FILES += \
-    ../../Classes/CppQuestion/Licence.txt
+    ../RibiClasses/CppQuestion/Licence.txt
 

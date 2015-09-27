@@ -1,11 +1,11 @@
 INCLUDEPATH += \
-    ../../Classes/CppExercise
+    ../RibiClasses/CppExercise
 
 SOURCES += \
-    ../../Classes/CppExercise/exercise.cpp
+    ../RibiClasses/CppExercise/exercise.cpp
 
 HEADERS  += \
-    ../../Classes/CppExercise/exercise.h
+    ../RibiClasses/CppExercise/exercise.h
 
 OTHER_FILES += \
-    ../../Classes/CppExercise/Licence.txt
+    ../RibiClasses/CppExercise/Licence.txt

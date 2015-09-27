@@ -1,17 +1,17 @@
 INCLUDEPATH += \
-    ../../Classes/CppQtLed
+    ../RibiClasses/CppQtLed
 
 SOURCES += \
-    ../../Classes/CppQtLed/qtled.cpp \
-    ../../Classes/CppQtLed/qtleddialog.cpp
+    ../RibiClasses/CppQtLed/qtled.cpp \
+    ../RibiClasses/CppQtLed/qtleddialog.cpp
 
 HEADERS  += \
-    ../../Classes/CppQtLed/qtled.h \
-    ../../Classes/CppQtLed/qtleddialog.h
+    ../RibiClasses/CppQtLed/qtled.h \
+    ../RibiClasses/CppQtLed/qtleddialog.h
 
 OTHER_FILES += \
-    ../../Classes/CppQtLed/Licence.txt
+    ../RibiClasses/CppQtLed/Licence.txt
 
 FORMS += \
-    ../../Classes/CppQtLed/qtleddialog.ui
+    ../RibiClasses/CppQtLed/qtleddialog.ui
 

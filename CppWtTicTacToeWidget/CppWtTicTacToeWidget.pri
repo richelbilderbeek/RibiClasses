@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppWtTicTacToeWidget
+    ../RibiClasses/CppWtTicTacToeWidget
 
 SOURCES += \
-    ../../Classes/CppWtTicTacToeWidget/wttictactoewidget.cpp
+    ../RibiClasses/CppWtTicTacToeWidget/wttictactoewidget.cpp
 
 HEADERS  += \
-    ../../Classes/CppWtTicTacToeWidget/wttictactoewidget.h
+    ../RibiClasses/CppWtTicTacToeWidget/wttictactoewidget.h
 
 OTHER_FILES += \
-    ../../Classes/CppWtTicTacToeWidget/Licence.txt
+    ../RibiClasses/CppWtTicTacToeWidget/Licence.txt
 

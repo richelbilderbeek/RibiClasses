@@ -1,16 +1,16 @@
 INCLUDEPATH += \
-    ../../Classes/CppRubiksClockWidget
+    ../RibiClasses/CppRubiksClockWidget
 
 SOURCES += \
-    ../../Classes/CppRubiksClockWidget/rubiksclockdial.cpp \
-    ../../Classes/CppRubiksClockWidget/rubiksclockdialwidget.cpp \
-    ../../Classes/CppRubiksClockWidget/rubiksclockwidget.cpp
+    ../RibiClasses/CppRubiksClockWidget/rubiksclockdial.cpp \
+    ../RibiClasses/CppRubiksClockWidget/rubiksclockdialwidget.cpp \
+    ../RibiClasses/CppRubiksClockWidget/rubiksclockwidget.cpp
 
 HEADERS  += \
-    ../../Classes/CppRubiksClockWidget/rubiksclockdial.h \
-    ../../Classes/CppRubiksClockWidget/rubiksclockdialwidget.h \
-    ../../Classes/CppRubiksClockWidget/rubiksclockwidget.h
+    ../RibiClasses/CppRubiksClockWidget/rubiksclockdial.h \
+    ../RibiClasses/CppRubiksClockWidget/rubiksclockdialwidget.h \
+    ../RibiClasses/CppRubiksClockWidget/rubiksclockwidget.h
 
 OTHER_FILES += \
-    ../../Classes/CppRubiksClockWidget/Licence.txt
+    ../RibiClasses/CppRubiksClockWidget/Licence.txt
 

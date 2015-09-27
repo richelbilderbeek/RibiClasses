@@ -1,15 +1,15 @@
 INCLUDEPATH += \
-    ../../Classes/CppQtOpenQuestionDialog
+    ../RibiClasses/CppQtOpenQuestionDialog
 
 SOURCES += \
-    ../../Classes/CppQtOpenQuestionDialog/qtopenquestiondialog.cpp
+    ../RibiClasses/CppQtOpenQuestionDialog/qtopenquestiondialog.cpp
 
 HEADERS  += \
-    ../../Classes/CppQtOpenQuestionDialog/qtopenquestiondialog.h
+    ../RibiClasses/CppQtOpenQuestionDialog/qtopenquestiondialog.h
 
 FORMS += \
-    ../../Classes/CppQtOpenQuestionDialog/qtopenquestiondialog.ui
+    ../RibiClasses/CppQtOpenQuestionDialog/qtopenquestiondialog.ui
 
 OTHER_FILES += \
-    ../../Classes/CppQtOpenQuestionDialog/Licence.txt
+    ../RibiClasses/CppQtOpenQuestionDialog/Licence.txt
 

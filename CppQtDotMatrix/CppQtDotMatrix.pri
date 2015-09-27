@@ -1,14 +1,14 @@
 INCLUDEPATH += \
-    ../../Classes/CppQtDotMatrix
+    ../RibiClasses/CppQtDotMatrix
 
 SOURCES += \
-    ../../Classes/CppQtDotMatrix/qtdotmatrixstring.cpp \
-    ../../Classes/CppQtDotMatrix/qtdotmatrixchar.cpp
+    ../RibiClasses/CppQtDotMatrix/qtdotmatrixstring.cpp \
+    ../RibiClasses/CppQtDotMatrix/qtdotmatrixchar.cpp
 
 HEADERS  += \
-    ../../Classes/CppQtDotMatrix/qtdotmatrixstring.h \
-    ../../Classes/CppQtDotMatrix/qtdotmatrixchar.h
+    ../RibiClasses/CppQtDotMatrix/qtdotmatrixstring.h \
+    ../RibiClasses/CppQtDotMatrix/qtdotmatrixchar.h
 
 OTHER_FILES += \
-    ../../Classes/CppQtDotMatrix/Licence.txt
+    ../RibiClasses/CppQtDotMatrix/Licence.txt
 

@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppSortedBinaryNewickVector
+    ../RibiClasses/CppSortedBinaryNewickVector
 
 SOURCES += \
-    ../../Classes/CppSortedBinaryNewickVector/sortedbinarynewickvector.cpp
+    ../RibiClasses/CppSortedBinaryNewickVector/sortedbinarynewickvector.cpp
 
 HEADERS  += \
-    ../../Classes/CppSortedBinaryNewickVector/sortedbinarynewickvector.h
+    ../RibiClasses/CppSortedBinaryNewickVector/sortedbinarynewickvector.h
 
 OTHER_FILES += \
-    ../../Classes/CppSortedBinaryNewickVector/Licence.txt
+    ../RibiClasses/CppSortedBinaryNewickVector/Licence.txt
 

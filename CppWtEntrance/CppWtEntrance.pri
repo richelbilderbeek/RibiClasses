@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppWtEntrance
+    ../RibiClasses/CppWtEntrance
 
 SOURCES += \
-    ../../Classes/CppWtEntrance/wtentrance.cpp
+    ../RibiClasses/CppWtEntrance/wtentrance.cpp
 
 HEADERS  += \
-    ../../Classes/CppWtEntrance/wtentrance.h
+    ../RibiClasses/CppWtEntrance/wtentrance.h
 
 OTHER_FILES += \
-    ../../Classes/CppWtEntrance/Licence.txt
+    ../RibiClasses/CppWtEntrance/Licence.txt
 

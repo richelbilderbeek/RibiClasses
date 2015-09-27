@@ -1,29 +1,29 @@
 INCLUDEPATH += \
-    ../../Classes/CppPylos
+    ../RibiClasses/CppPylos
 
 SOURCES += \
-    ../../Classes/CppPylos/pylosboard.cpp \
-    ../../Classes/CppPylos/pyloscoordinat.cpp \
-    ../../Classes/CppPylos/pyloscurrentmovestate.cpp \
-    ../../Classes/CppPylos/pylosgame.cpp \
-    ../../Classes/CppPylos/pylosmove.cpp \
-    ../../Classes/CppPylos/pylosmustremovestate.cpp \
-    ../../Classes/CppPylos/pylosplayer.cpp \
-    ../../Classes/CppPylos/pylospositionstate.cpp \
-    ../../Classes/CppPylos/pyloswinner.cpp
+    ../RibiClasses/CppPylos/pylosboard.cpp \
+    ../RibiClasses/CppPylos/pyloscoordinat.cpp \
+    ../RibiClasses/CppPylos/pyloscurrentmovestate.cpp \
+    ../RibiClasses/CppPylos/pylosgame.cpp \
+    ../RibiClasses/CppPylos/pylosmove.cpp \
+    ../RibiClasses/CppPylos/pylosmustremovestate.cpp \
+    ../RibiClasses/CppPylos/pylosplayer.cpp \
+    ../RibiClasses/CppPylos/pylospositionstate.cpp \
+    ../RibiClasses/CppPylos/pyloswinner.cpp
 
 HEADERS  += \
-    ../../Classes/CppPylos/pylosboard.h \
-    ../../Classes/CppPylos/pyloscoordinat.h \
-    ../../Classes/CppPylos/pyloscurrentmovestate.h \
-    ../../Classes/CppPylos/pylosfwd.h \
-    ../../Classes/CppPylos/pylosgame.h \
-    ../../Classes/CppPylos/pylosmove.h \
-    ../../Classes/CppPylos/pylosmustremovestate.h \
-    ../../Classes/CppPylos/pylosplayer.h \
-    ../../Classes/CppPylos/pylospositionstate.h \
-    ../../Classes/CppPylos/pyloswinner.h
+    ../RibiClasses/CppPylos/pylosboard.h \
+    ../RibiClasses/CppPylos/pyloscoordinat.h \
+    ../RibiClasses/CppPylos/pyloscurrentmovestate.h \
+    ../RibiClasses/CppPylos/pylosfwd.h \
+    ../RibiClasses/CppPylos/pylosgame.h \
+    ../RibiClasses/CppPylos/pylosmove.h \
+    ../RibiClasses/CppPylos/pylosmustremovestate.h \
+    ../RibiClasses/CppPylos/pylosplayer.h \
+    ../RibiClasses/CppPylos/pylospositionstate.h \
+    ../RibiClasses/CppPylos/pyloswinner.h
 
 OTHER_FILES += \
-    ../../Classes/CppPylos/Licence.txt
+    ../RibiClasses/CppPylos/Licence.txt
 

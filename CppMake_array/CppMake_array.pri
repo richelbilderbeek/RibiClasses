@@ -1,11 +1,11 @@
 INCLUDEPATH += \
-    ../../Classes/CppMake_array
+    ../RibiClasses/CppMake_array
 
 SOURCES +=
 
 HEADERS  += \
-    ../../Classes/CppMake_array/make_array.h
+    ../RibiClasses/CppMake_array/make_array.h
 
 OTHER_FILES += \
-    ../../Classes/CppMake_array/Licence.txt
+    ../RibiClasses/CppMake_array/Licence.txt
 

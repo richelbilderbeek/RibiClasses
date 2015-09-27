@@ -1,21 +1,21 @@
 INCLUDEPATH += \
-    ../../Classes/CppQtOrnsteinUhlenbeck
+    ../RibiClasses/CppQtOrnsteinUhlenbeck
 
 OTHER_FILES += \
-    ../../Classes/CppQtOrnsteinUhlenbeck/Licence.txt
+    ../RibiClasses/CppQtOrnsteinUhlenbeck/Licence.txt
 
 FORMS += \
-    ../../Classes/CppQtOrnsteinUhlenbeck/qtornsteinuhlenbeckparameterswidget.ui \
-    ../../Classes/CppQtOrnsteinUhlenbeck/qtornsteinuhlenbecklikelihoodwidget.ui \
-    ../../Classes/CppQtOrnsteinUhlenbeck/qtornsteinuhlenbeckmaxlikelihoodwidget.ui
+    ../RibiClasses/CppQtOrnsteinUhlenbeck/qtornsteinuhlenbeckparameterswidget.ui \
+    ../RibiClasses/CppQtOrnsteinUhlenbeck/qtornsteinuhlenbecklikelihoodwidget.ui \
+    ../RibiClasses/CppQtOrnsteinUhlenbeck/qtornsteinuhlenbeckmaxlikelihoodwidget.ui
 
 HEADERS += \
-    ../../Classes/CppQtOrnsteinUhlenbeck/qtornsteinuhlenbeckparameterswidget.h \
-    ../../Classes/CppQtOrnsteinUhlenbeck/qtornsteinuhlenbecklikelihoodwidget.h \
-    ../../Classes/CppQtOrnsteinUhlenbeck/qtornsteinuhlenbeckmaxlikelihoodwidget.h
+    ../RibiClasses/CppQtOrnsteinUhlenbeck/qtornsteinuhlenbeckparameterswidget.h \
+    ../RibiClasses/CppQtOrnsteinUhlenbeck/qtornsteinuhlenbecklikelihoodwidget.h \
+    ../RibiClasses/CppQtOrnsteinUhlenbeck/qtornsteinuhlenbeckmaxlikelihoodwidget.h
 
 SOURCES += \
-    ../../Classes/CppQtOrnsteinUhlenbeck/qtornsteinuhlenbeckparameterswidget.cpp \
-    ../../Classes/CppQtOrnsteinUhlenbeck/qtornsteinuhlenbecklikelihoodwidget.cpp \
-    ../../Classes/CppQtOrnsteinUhlenbeck/qtornsteinuhlenbeckmaxlikelihoodwidget.cpp
+    ../RibiClasses/CppQtOrnsteinUhlenbeck/qtornsteinuhlenbeckparameterswidget.cpp \
+    ../RibiClasses/CppQtOrnsteinUhlenbeck/qtornsteinuhlenbecklikelihoodwidget.cpp \
+    ../RibiClasses/CppQtOrnsteinUhlenbeck/qtornsteinuhlenbeckmaxlikelihoodwidget.cpp
 

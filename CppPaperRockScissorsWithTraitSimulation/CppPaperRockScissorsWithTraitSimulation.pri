@@ -1,18 +1,18 @@
 INCLUDEPATH += \
-    ../../Classes/CppPaperRockScissorsWithTraitSimulation
+    ../RibiClasses/CppPaperRockScissorsWithTraitSimulation
 
 SOURCES += \
-    ../../Classes/CppPaperRockScissorsWithTraitSimulation/paperrockscissorswithtraitsimulation.cpp \
-    ../../Classes/CppPaperRockScissorsWithTraitSimulation/paperrockscissorswithtraitindividual.cpp \
-    ../../Classes/CppPaperRockScissorsWithTraitSimulation/paperrockscissorswithtraitinitialization.cpp \
-    ../../Classes/CppPaperRockScissorsWithTraitSimulation/paperrockscissorswithtraitparameters.cpp
+    ../RibiClasses/CppPaperRockScissorsWithTraitSimulation/paperrockscissorswithtraitsimulation.cpp \
+    ../RibiClasses/CppPaperRockScissorsWithTraitSimulation/paperrockscissorswithtraitindividual.cpp \
+    ../RibiClasses/CppPaperRockScissorsWithTraitSimulation/paperrockscissorswithtraitinitialization.cpp \
+    ../RibiClasses/CppPaperRockScissorsWithTraitSimulation/paperrockscissorswithtraitparameters.cpp
 
 HEADERS  += \
-    ../../Classes/CppPaperRockScissorsWithTraitSimulation/paperrockscissorswithtraitsimulation.h \
-    ../../Classes/CppPaperRockScissorsWithTraitSimulation/paperrockscissorswithtraitindividual.h \
-    ../../Classes/CppPaperRockScissorsWithTraitSimulation/paperrockscissorswithtraitinitialization.h \
-    ../../Classes/CppPaperRockScissorsWithTraitSimulation/paperrockscissorswithtraitparameters.h
+    ../RibiClasses/CppPaperRockScissorsWithTraitSimulation/paperrockscissorswithtraitsimulation.h \
+    ../RibiClasses/CppPaperRockScissorsWithTraitSimulation/paperrockscissorswithtraitindividual.h \
+    ../RibiClasses/CppPaperRockScissorsWithTraitSimulation/paperrockscissorswithtraitinitialization.h \
+    ../RibiClasses/CppPaperRockScissorsWithTraitSimulation/paperrockscissorswithtraitparameters.h
 
 OTHER_FILES += \
-    ../../Classes/CppPaperRockScissorsWithTraitSimulation/Licence.txt
+    ../RibiClasses/CppPaperRockScissorsWithTraitSimulation/Licence.txt
 

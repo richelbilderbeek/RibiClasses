@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppWtRichelBilderbeekGalleryDialog
+    ../RibiClasses/CppWtRichelBilderbeekGalleryDialog
 
 SOURCES += \
-    ../../Classes/CppWtRichelBilderbeekGalleryDialog/wtrichelbilderbeekgallerydialog.cpp
+    ../RibiClasses/CppWtRichelBilderbeekGalleryDialog/wtrichelbilderbeekgallerydialog.cpp
 
 HEADERS  += \
-    ../../Classes/CppWtRichelBilderbeekGalleryDialog/wtrichelbilderbeekgallerydialog.h
+    ../RibiClasses/CppWtRichelBilderbeekGalleryDialog/wtrichelbilderbeekgallerydialog.h
 
 OTHER_FILES += \
-    ../../Classes/CppWtRichelBilderbeekGalleryDialog/Licence.txt
+    ../RibiClasses/CppWtRichelBilderbeekGalleryDialog/Licence.txt
 

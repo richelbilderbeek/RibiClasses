@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppShapeWidget
+    ../RibiClasses/CppShapeWidget
 
 SOURCES += \
-    ../../Classes/CppShapeWidget/shapewidget.cpp
+    ../RibiClasses/CppShapeWidget/shapewidget.cpp
 
 HEADERS  += \
-    ../../Classes/CppShapeWidget/shapewidget.h
+    ../RibiClasses/CppShapeWidget/shapewidget.h
 
 OTHER_FILES += \
-    ../../Classes/CppShapeWidget/Licence.txt
+    ../RibiClasses/CppShapeWidget/Licence.txt
 

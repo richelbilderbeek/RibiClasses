@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppQuestionDialog
+    ../RibiClasses/CppQuestionDialog
 
 SOURCES += \
-    ../../Classes/CppQuestionDialog/questiondialog.cpp
+    ../RibiClasses/CppQuestionDialog/questiondialog.cpp
 
 HEADERS  += \
-    ../../Classes/CppQuestionDialog/questiondialog.h
+    ../RibiClasses/CppQuestionDialog/questiondialog.h
 
 OTHER_FILES += \
-    ../../Classes/CppQuestionDialog/Licence.txt
+    ../RibiClasses/CppQuestionDialog/Licence.txt
 

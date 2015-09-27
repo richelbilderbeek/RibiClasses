@@ -1,19 +1,19 @@
 INCLUDEPATH += \
-    ../../Classes/CppOrnsteinUhlenbeck
+    ../RibiClasses/CppOrnsteinUhlenbeck
 
 SOURCES += \
-    ../../Classes/CppOrnsteinUhlenbeck/ornsteinuhlenbeck.cpp \
-    ../../Classes/CppOrnsteinUhlenbeck/ornsteinuhlenbeckparameters.cpp \
-    ../../Classes/CppOrnsteinUhlenbeck/ornsteinuhlenbeckprocess.cpp \
-    ../../Classes/CppOrnsteinUhlenbeck/ornsteinuhlenbeckhelper.cpp
+    ../RibiClasses/CppOrnsteinUhlenbeck/ornsteinuhlenbeck.cpp \
+    ../RibiClasses/CppOrnsteinUhlenbeck/ornsteinuhlenbeckparameters.cpp \
+    ../RibiClasses/CppOrnsteinUhlenbeck/ornsteinuhlenbeckprocess.cpp \
+    ../RibiClasses/CppOrnsteinUhlenbeck/ornsteinuhlenbeckhelper.cpp
 
 HEADERS  += \
-    ../../Classes/CppOrnsteinUhlenbeck/ornsteinuhlenbeck.h \
-    ../../Classes/CppOrnsteinUhlenbeck/ornsteinuhlenbeckparameters.h \
-    ../../Classes/CppOrnsteinUhlenbeck/ornsteinuhlenbeckprocess.h \
-    ../../Classes/CppOrnsteinUhlenbeck/ornsteinuhlenbeckhelper.h
+    ../RibiClasses/CppOrnsteinUhlenbeck/ornsteinuhlenbeck.h \
+    ../RibiClasses/CppOrnsteinUhlenbeck/ornsteinuhlenbeckparameters.h \
+    ../RibiClasses/CppOrnsteinUhlenbeck/ornsteinuhlenbeckprocess.h \
+    ../RibiClasses/CppOrnsteinUhlenbeck/ornsteinuhlenbeckhelper.h
 
 OTHER_FILES += \
-    ../../Classes/CppOrnsteinUhlenbeck/Licence.txt \
-    ../../Classes/CppOrnsteinUhlenbeck/CppOrnsteinUhlenbeck.gnumeric
+    ../RibiClasses/CppOrnsteinUhlenbeck/Licence.txt \
+    ../RibiClasses/CppOrnsteinUhlenbeck/CppOrnsteinUhlenbeck.gnumeric
 

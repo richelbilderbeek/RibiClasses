@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppRibiApfloat
+    ../RibiClasses/CppRibiApfloat
 
 SOURCES += \
-    ../../Classes/CppRibiApfloat/ribi_apfloat.cpp
+    ../RibiClasses/CppRibiApfloat/ribi_apfloat.cpp
 
 HEADERS  += \
-    ../../Classes/CppRibiApfloat/ribi_apfloat.h
+    ../RibiClasses/CppRibiApfloat/ribi_apfloat.h
 
 OTHER_FILES += \
-    ../../Classes/CppRibiApfloat/Licence.txt
+    ../RibiClasses/CppRibiApfloat/Licence.txt
 

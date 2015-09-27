@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppHtmlPage
+    ../RibiClasses/CppHtmlPage
 
 SOURCES += \
-    ../../Classes/CppHtmlPage/htmlpage.cpp
+    ../RibiClasses/CppHtmlPage/htmlpage.cpp
 
 HEADERS  += \
-    ../../Classes/CppHtmlPage/htmlpage.h
+    ../RibiClasses/CppHtmlPage/htmlpage.h
 
 OTHER_FILES += \
-    ../../Classes/CppHtmlPage/Licence.txt
+    ../RibiClasses/CppHtmlPage/Licence.txt
 

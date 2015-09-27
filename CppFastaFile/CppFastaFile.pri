@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppFastaFile
+    ../RibiClasses/CppFastaFile
 
 SOURCES += \
-    ../../Classes/CppFastaFile/fastafile.cpp
+    ../RibiClasses/CppFastaFile/fastafile.cpp
 
 HEADERS  += \
-    ../../Classes/CppFastaFile/fastafile.h
+    ../RibiClasses/CppFastaFile/fastafile.h
 
 OTHER_FILES += \
-    ../../Classes/CppFastaFile/Licence.txt
+    ../RibiClasses/CppFastaFile/Licence.txt
 

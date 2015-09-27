@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppWtMysteryMachineWidget
+    ../RibiClasses/CppWtMysteryMachineWidget
 
 SOURCES += \
-    ../../Classes/CppWtMysteryMachineWidget/wtmysterymachinewidget.cpp
+    ../RibiClasses/CppWtMysteryMachineWidget/wtmysterymachinewidget.cpp
 
 HEADERS  += \
-    ../../Classes/CppWtMysteryMachineWidget/wtmysterymachinewidget.h
+    ../RibiClasses/CppWtMysteryMachineWidget/wtmysterymachinewidget.h
 
 OTHER_FILES += \
-    ../../Classes/CppWtMysteryMachineWidget/Licence.txt
+    ../RibiClasses/CppWtMysteryMachineWidget/Licence.txt
 

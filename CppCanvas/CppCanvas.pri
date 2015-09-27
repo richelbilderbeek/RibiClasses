@@ -1,20 +1,20 @@
 INCLUDEPATH += \
-    ../../Classes/CppCanvas
+    ../RibiClasses/CppCanvas
 
 SOURCES += \
-    ../../Classes/CppCanvas/canvas.cpp \
-    ../../Classes/CppCanvas/canvascolorsystem.cpp \
-    ../../Classes/CppCanvas/canvascoordinatsystem.cpp \
-    ../../Classes/CppCanvas/canvascoordinatsystems.cpp \
-    ../../Classes/CppCanvas/canvascolorsystems.cpp
+    ../RibiClasses/CppCanvas/canvas.cpp \
+    ../RibiClasses/CppCanvas/canvascolorsystem.cpp \
+    ../RibiClasses/CppCanvas/canvascoordinatsystem.cpp \
+    ../RibiClasses/CppCanvas/canvascoordinatsystems.cpp \
+    ../RibiClasses/CppCanvas/canvascolorsystems.cpp
 
 HEADERS  += \
-    ../../Classes/CppCanvas/canvas.h \
-    ../../Classes/CppCanvas/canvascolorsystem.h \
-    ../../Classes/CppCanvas/canvascoordinatsystem.h \
-    ../../Classes/CppCanvas/canvascoordinatsystems.h \
-    ../../Classes/CppCanvas/canvascolorsystems.h
+    ../RibiClasses/CppCanvas/canvas.h \
+    ../RibiClasses/CppCanvas/canvascolorsystem.h \
+    ../RibiClasses/CppCanvas/canvascoordinatsystem.h \
+    ../RibiClasses/CppCanvas/canvascoordinatsystems.h \
+    ../RibiClasses/CppCanvas/canvascolorsystems.h
 
 OTHER_FILES += \
-    ../../Classes/CppCanvas/Licence.txt
+    ../RibiClasses/CppCanvas/Licence.txt
 

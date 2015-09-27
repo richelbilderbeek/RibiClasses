@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppQtSprites
+    ../RibiClasses/CppQtSprites
 
 SOURCES += \
-    ../../Classes/CppQtSprites/qtsprites.cpp
+    ../RibiClasses/CppQtSprites/qtsprites.cpp
 
 HEADERS  += \
-    ../../Classes/CppQtSprites/qtsprites.h
+    ../RibiClasses/CppQtSprites/qtsprites.h
 
 OTHER_FILES += \
-    ../../Classes/CppQtSprites/Licence.txt
+    ../RibiClasses/CppQtSprites/Licence.txt
 

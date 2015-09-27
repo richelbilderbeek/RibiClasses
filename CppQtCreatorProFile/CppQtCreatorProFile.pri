@@ -1,14 +1,14 @@
 INCLUDEPATH += \
-    ../../Classes/CppQtCreatorProFile
+    ../RibiClasses/CppQtCreatorProFile
 
 SOURCES += \
-    ../../Classes/CppQtCreatorProFile/qtcreatorprofile.cpp \
-    ../../Classes/CppQtCreatorProFile/qtcreatorprofilezipscript.cpp
+    ../RibiClasses/CppQtCreatorProFile/qtcreatorprofile.cpp \
+    ../RibiClasses/CppQtCreatorProFile/qtcreatorprofilezipscript.cpp
 
 HEADERS  += \
-    ../../Classes/CppQtCreatorProFile/qtcreatorprofile.h \
-    ../../Classes/CppQtCreatorProFile/qtcreatorprofilezipscript.h
+    ../RibiClasses/CppQtCreatorProFile/qtcreatorprofile.h \
+    ../RibiClasses/CppQtCreatorProFile/qtcreatorprofilezipscript.h
 
 OTHER_FILES += \
-    ../../Classes/CppQtCreatorProFile/Licence.txt
+    ../RibiClasses/CppQtCreatorProFile/Licence.txt
 

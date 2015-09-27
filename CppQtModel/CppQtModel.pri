@@ -1,20 +1,20 @@
 INCLUDEPATH += \
-    ../../Classes/CppQtModel
+    ../RibiClasses/CppQtModel
 
 SOURCES += \
-    ../../Classes/CppQtModel/modelfunctionparser.cpp \
-    ../../Classes/CppQtModel/qtstdvectorfunctionmodel.cpp \
-    ../../Classes/CppQtModel/qtstdvectorstringmodel.cpp \
-    ../../Classes/CppQtModel/qtublasmatrixdoublemodel.cpp \
-    ../../Classes/CppQtModel/qtublasvectordoublemodel.cpp \
-    ../../Classes/CppQtModel/qtublasvectorintmodel.cpp
+    ../RibiClasses/CppQtModel/modelfunctionparser.cpp \
+    ../RibiClasses/CppQtModel/qtstdvectorfunctionmodel.cpp \
+    ../RibiClasses/CppQtModel/qtstdvectorstringmodel.cpp \
+    ../RibiClasses/CppQtModel/qtublasmatrixdoublemodel.cpp \
+    ../RibiClasses/CppQtModel/qtublasvectordoublemodel.cpp \
+    ../RibiClasses/CppQtModel/qtublasvectorintmodel.cpp
 
 HEADERS  += \
-    ../../Classes/CppQtModel/modelfunctionparser.h \
-    ../../Classes/CppQtModel/qtstdvectorfunctionmodel.h \
-    ../../Classes/CppQtModel/qtstdvectorstringmodel.h \
-    ../../Classes/CppQtModel/qtublasmatrixdoublemodel.h \
-    ../../Classes/CppQtModel/qtublasvectordoublemodel.h \
-    ../../Classes/CppQtModel/qtublasvectorintmodel.h
+    ../RibiClasses/CppQtModel/modelfunctionparser.h \
+    ../RibiClasses/CppQtModel/qtstdvectorfunctionmodel.h \
+    ../RibiClasses/CppQtModel/qtstdvectorstringmodel.h \
+    ../RibiClasses/CppQtModel/qtublasmatrixdoublemodel.h \
+    ../RibiClasses/CppQtModel/qtublasvectordoublemodel.h \
+    ../RibiClasses/CppQtModel/qtublasvectorintmodel.h
 
 

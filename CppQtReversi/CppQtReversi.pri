@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppQtReversi
+    ../RibiClasses/CppQtReversi
 
 SOURCES += \
-    ../../Classes/CppQtReversi/qtreversiwidget.cpp
+    ../RibiClasses/CppQtReversi/qtreversiwidget.cpp
 
 HEADERS  += \
-    ../../Classes/CppQtReversi/qtreversiwidget.h
+    ../RibiClasses/CppQtReversi/qtreversiwidget.h
 
 OTHER_FILES += \
-    ../../Classes/CppQtReversi/Licence.txt
+    ../RibiClasses/CppQtReversi/Licence.txt
 

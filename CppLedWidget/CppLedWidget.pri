@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppLedWidget
+    ../RibiClasses/CppLedWidget
 
 SOURCES += \
-    ../../Classes/CppLedWidget/ledwidget.cpp
+    ../RibiClasses/CppLedWidget/ledwidget.cpp
 
 HEADERS  += \
-    ../../Classes/CppLedWidget/ledwidget.h
+    ../RibiClasses/CppLedWidget/ledwidget.h
 
 OTHER_FILES += \
-    ../../Classes/CppLedWidget/Licence.txt
+    ../RibiClasses/CppLedWidget/Licence.txt
 

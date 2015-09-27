@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppMultipleChoiceQuestionDialog
+    ../RibiClasses/CppMultipleChoiceQuestionDialog
 
 SOURCES += \
-    ../../Classes/CppMultipleChoiceQuestionDialog/multiplechoicequestiondialog.cpp
+    ../RibiClasses/CppMultipleChoiceQuestionDialog/multiplechoicequestiondialog.cpp
 
 HEADERS  += \
-    ../../Classes/CppMultipleChoiceQuestionDialog/multiplechoicequestiondialog.h
+    ../RibiClasses/CppMultipleChoiceQuestionDialog/multiplechoicequestiondialog.h
 
 OTHER_FILES += \
-    ../../Classes/CppMultipleChoiceQuestionDialog/Licence.txt
+    ../RibiClasses/CppMultipleChoiceQuestionDialog/Licence.txt
 

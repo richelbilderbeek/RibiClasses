@@ -1,17 +1,17 @@
 INCLUDEPATH += \
-    ../../Classes/CppRichelBilderbeekProgram
+    ../RibiClasses/CppRichelBilderbeekProgram
 
 SOURCES += \
-    ../../Classes/CppRichelBilderbeekProgram/richelbilderbeekprogram.cpp \
-    ../../Classes/CppRichelBilderbeekProgram/richelbilderbeekprogramstatus.cpp \
-    ../../Classes/CppRichelBilderbeekProgram/richelbilderbeekprogramtype.cpp \
-    ../../Classes/CppRichelBilderbeekProgram/richelbilderbeekprogramtypes.cpp
+    ../RibiClasses/CppRichelBilderbeekProgram/richelbilderbeekprogram.cpp \
+    ../RibiClasses/CppRichelBilderbeekProgram/richelbilderbeekprogramstatus.cpp \
+    ../RibiClasses/CppRichelBilderbeekProgram/richelbilderbeekprogramtype.cpp \
+    ../RibiClasses/CppRichelBilderbeekProgram/richelbilderbeekprogramtypes.cpp
 
 HEADERS  += \
-    ../../Classes/CppRichelBilderbeekProgram/richelbilderbeekprogram.h \
-    ../../Classes/CppRichelBilderbeekProgram/richelbilderbeekprogramtype.h \
-    ../../Classes/CppRichelBilderbeekProgram/richelbilderbeekprogramtypes.h
+    ../RibiClasses/CppRichelBilderbeekProgram/richelbilderbeekprogram.h \
+    ../RibiClasses/CppRichelBilderbeekProgram/richelbilderbeekprogramtype.h \
+    ../RibiClasses/CppRichelBilderbeekProgram/richelbilderbeekprogramtypes.h
 
 OTHER_FILES += \
-    ../../Classes/CppRichelBilderbeekProgram/Licence.txt
+    ../RibiClasses/CppRichelBilderbeekProgram/Licence.txt
 

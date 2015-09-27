@@ -1,14 +1,14 @@
 INCLUDEPATH += \
-    ../../Classes/CppApproximator
+    ../RibiClasses/CppApproximator
 
 SOURCES += \
-    ../../Classes/CppApproximator/approximator.cpp
+    ../RibiClasses/CppApproximator/approximator.cpp
 
 HEADERS  += \
-    ../../Classes/CppApproximator/approximator.h \
-    ../../Classes/CppApproximator/exceptionnoextrapolation.h
+    ../RibiClasses/CppApproximator/approximator.h \
+    ../RibiClasses/CppApproximator/exceptionnoextrapolation.h
 
 
 OTHER_FILES += \
-    ../../Classes/CppApproximator/Licence.txt
+    ../RibiClasses/CppApproximator/Licence.txt
 

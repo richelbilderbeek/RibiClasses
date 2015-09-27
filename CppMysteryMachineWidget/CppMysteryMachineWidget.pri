@@ -1,14 +1,14 @@
 INCLUDEPATH += \
-    ../../Classes/CppMysteryMachineWidget
+    ../RibiClasses/CppMysteryMachineWidget
 
 SOURCES += \
-    ../../Classes/CppMysteryMachineWidget/mysterymachinewidget.cpp \
-    ../../Classes/CppMysteryMachineWidget/mysterymachinekey.cpp
+    ../RibiClasses/CppMysteryMachineWidget/mysterymachinewidget.cpp \
+    ../RibiClasses/CppMysteryMachineWidget/mysterymachinekey.cpp
 
 HEADERS  += \
-    ../../Classes/CppMysteryMachineWidget/mysterymachinewidget.h \
-    ../../Classes/CppMysteryMachineWidget/mysterymachinekey.h
+    ../RibiClasses/CppMysteryMachineWidget/mysterymachinewidget.h \
+    ../RibiClasses/CppMysteryMachineWidget/mysterymachinekey.h
 
 OTHER_FILES += \
-    ../../Classes/CppMysteryMachineWidget/Licence.txt
+    ../RibiClasses/CppMysteryMachineWidget/Licence.txt
 

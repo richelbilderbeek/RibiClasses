@@ -1,11 +1,11 @@
 INCLUDEPATH += \
-    ../../Classes/CppCopy_if
+    ../RibiClasses/CppCopy_if
 
 SOURCES +=
 
 HEADERS  += \
-    ../../Classes/CppCopy_if/copy_if.h
+    ../RibiClasses/CppCopy_if/copy_if.h
 
 OTHER_FILES += \
-    ../../Classes/CppCopy_if/Licence.txt
+    ../RibiClasses/CppCopy_if/Licence.txt
 

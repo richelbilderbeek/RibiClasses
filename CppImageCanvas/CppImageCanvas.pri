@@ -1,16 +1,16 @@
 INCLUDEPATH += \
-    ../../Classes/CppImageCanvas
+    ../RibiClasses/CppImageCanvas
 
 SOURCES += \
-    ../../Classes/CppImageCanvas/imagecanvas.cpp \
-    ../../Classes/CppImageCanvas/imagecanvas_test.cpp
+    ../RibiClasses/CppImageCanvas/imagecanvas.cpp \
+    ../RibiClasses/CppImageCanvas/imagecanvas_test.cpp
 
 HEADERS  += \
-    ../../Classes/CppImageCanvas/imagecanvas.h
+    ../RibiClasses/CppImageCanvas/imagecanvas.h
 
 OTHER_FILES += \
-    ../../Classes/CppImageCanvas/Licence.txt
+    ../RibiClasses/CppImageCanvas/Licence.txt
 
 RESOURCES += \
-    ../../Classes/CppImageCanvas/CppImageCanvas.qrc
+    ../RibiClasses/CppImageCanvas/CppImageCanvas.qrc
 

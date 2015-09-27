@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppPhp
+    ../RibiClasses/CppPhp
 
 SOURCES += \
-    ../../Classes/CppPhp/php.cpp
+    ../RibiClasses/CppPhp/php.cpp
 
 HEADERS  += \
-    ../../Classes/CppPhp/php.h
+    ../RibiClasses/CppPhp/php.h
 
 OTHER_FILES += \
-    ../../Classes/CppPhp/Licence.txt
+    ../RibiClasses/CppPhp/Licence.txt
 

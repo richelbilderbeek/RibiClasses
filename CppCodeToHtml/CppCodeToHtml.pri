@@ -1,43 +1,43 @@
 INCLUDEPATH += \
-    ../../Classes/CppCodeToHtml
+    ../RibiClasses/CppCodeToHtml
 
 SOURCES += \
-    ../../Classes/CppCodeToHtml/codetohtml.cpp \
-    ../../Classes/CppCodeToHtml/codetohtmldialog.cpp \
-    ../../Classes/CppCodeToHtml/codetohtmlfooter.cpp \
-    ../../Classes/CppCodeToHtml/codetohtmlheader.cpp \
-    ../../Classes/CppCodeToHtml/codetohtmlinfo.cpp \
-    ../../Classes/CppCodeToHtml/codetohtmlreplacements.cpp \
-    ../../Classes/CppCodeToHtml/codetohtmlreplacementscpp.cpp \
-    ../../Classes/CppCodeToHtml/codetohtmlreplacementspro.cpp \
-    ../../Classes/CppCodeToHtml/codetohtmltechinfo.cpp \
-    ../../Classes/CppCodeToHtml/codetohtmlversion.cpp \
-    ../../Classes/CppCodeToHtml/codetohtmlfile.cpp \
-    ../../Classes/CppCodeToHtml/codetohtmlreplacer.cpp \
-    ../../Classes/CppCodeToHtml/codetohtmlfiletypes.cpp \
-    ../../Classes/CppCodeToHtml/codetohtmlsnippettypes.cpp \
-    ../../Classes/CppCodeToHtml/codetohtmlfoldertypes.cpp
+    ../RibiClasses/CppCodeToHtml/codetohtml.cpp \
+    ../RibiClasses/CppCodeToHtml/codetohtmldialog.cpp \
+    ../RibiClasses/CppCodeToHtml/codetohtmlfooter.cpp \
+    ../RibiClasses/CppCodeToHtml/codetohtmlheader.cpp \
+    ../RibiClasses/CppCodeToHtml/codetohtmlinfo.cpp \
+    ../RibiClasses/CppCodeToHtml/codetohtmlreplacements.cpp \
+    ../RibiClasses/CppCodeToHtml/codetohtmlreplacementscpp.cpp \
+    ../RibiClasses/CppCodeToHtml/codetohtmlreplacementspro.cpp \
+    ../RibiClasses/CppCodeToHtml/codetohtmltechinfo.cpp \
+    ../RibiClasses/CppCodeToHtml/codetohtmlversion.cpp \
+    ../RibiClasses/CppCodeToHtml/codetohtmlfile.cpp \
+    ../RibiClasses/CppCodeToHtml/codetohtmlreplacer.cpp \
+    ../RibiClasses/CppCodeToHtml/codetohtmlfiletypes.cpp \
+    ../RibiClasses/CppCodeToHtml/codetohtmlsnippettypes.cpp \
+    ../RibiClasses/CppCodeToHtml/codetohtmlfoldertypes.cpp
 
 HEADERS  += \
-    ../../Classes/CppCodeToHtml/codetohtml.h \
-    ../../Classes/CppCodeToHtml/codetohtmldialog.h \
-    ../../Classes/CppCodeToHtml/codetohtmlfooter.h \
-    ../../Classes/CppCodeToHtml/codetohtmlheader.h \
-    ../../Classes/CppCodeToHtml/codetohtmlinfo.h \
-    ../../Classes/CppCodeToHtml/codetohtmlreplacements.h \
-    ../../Classes/CppCodeToHtml/codetohtmltechinfo.h \
-    ../../Classes/CppCodeToHtml/codetohtmlversion.h \
-    ../../Classes/CppCodeToHtml/codetohtmlfoldertype.h \
-    ../../Classes/CppCodeToHtml/codetohtmlsnippettype.h \
-    ../../Classes/CppCodeToHtml/codetohtmlfiletype.h \
-    ../../Classes/CppCodeToHtml/codetohtmlfootertype.h \
-    ../../Classes/CppCodeToHtml/codetohtmlheadertype.h \
-    ../../Classes/CppCodeToHtml/codetohtmlfile.h \
-    ../../Classes/CppCodeToHtml/codetohtmlreplacer.h \
-    ../../Classes/CppCodeToHtml/codetohtmlfwd.h \
-    ../../Classes/CppCodeToHtml/codetohtmlfiletypes.h \
-    ../../Classes/CppCodeToHtml/codetohtmlsnippettypes.h \
-    ../../Classes/CppCodeToHtml/codetohtmlfoldertypes.h
+    ../RibiClasses/CppCodeToHtml/codetohtml.h \
+    ../RibiClasses/CppCodeToHtml/codetohtmldialog.h \
+    ../RibiClasses/CppCodeToHtml/codetohtmlfooter.h \
+    ../RibiClasses/CppCodeToHtml/codetohtmlheader.h \
+    ../RibiClasses/CppCodeToHtml/codetohtmlinfo.h \
+    ../RibiClasses/CppCodeToHtml/codetohtmlreplacements.h \
+    ../RibiClasses/CppCodeToHtml/codetohtmltechinfo.h \
+    ../RibiClasses/CppCodeToHtml/codetohtmlversion.h \
+    ../RibiClasses/CppCodeToHtml/codetohtmlfoldertype.h \
+    ../RibiClasses/CppCodeToHtml/codetohtmlsnippettype.h \
+    ../RibiClasses/CppCodeToHtml/codetohtmlfiletype.h \
+    ../RibiClasses/CppCodeToHtml/codetohtmlfootertype.h \
+    ../RibiClasses/CppCodeToHtml/codetohtmlheadertype.h \
+    ../RibiClasses/CppCodeToHtml/codetohtmlfile.h \
+    ../RibiClasses/CppCodeToHtml/codetohtmlreplacer.h \
+    ../RibiClasses/CppCodeToHtml/codetohtmlfwd.h \
+    ../RibiClasses/CppCodeToHtml/codetohtmlfiletypes.h \
+    ../RibiClasses/CppCodeToHtml/codetohtmlsnippettypes.h \
+    ../RibiClasses/CppCodeToHtml/codetohtmlfoldertypes.h
 
 OTHER_FILES += \
-    ../../Classes/CppCodeToHtml/Licence.txt
+    ../RibiClasses/CppCodeToHtml/Licence.txt

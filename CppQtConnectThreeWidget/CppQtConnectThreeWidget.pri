@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppQtConnectThreeWidget
+    ../RibiClasses/CppQtConnectThreeWidget
 
 SOURCES += \
-    ../../Classes/CppQtConnectThreeWidget/qtconnectthreewidget.cpp
+    ../RibiClasses/CppQtConnectThreeWidget/qtconnectthreewidget.cpp
 
 HEADERS  += \
-    ../../Classes/CppQtConnectThreeWidget/qtconnectthreewidget.h
+    ../RibiClasses/CppQtConnectThreeWidget/qtconnectthreewidget.h
 
 OTHER_FILES += \
-    ../../Classes/CppQtConnectThreeWidget/Licence.txt
+    ../RibiClasses/CppQtConnectThreeWidget/Licence.txt
 

@@ -1,16 +1,16 @@
 INCLUDEPATH += \
-    ../../Classes/CppQtNewickDisplay
+    ../RibiClasses/CppQtNewickDisplay
 
 SOURCES += \
-    ../../Classes/CppQtNewickDisplay/qtnewickdisplay.cpp
+    ../RibiClasses/CppQtNewickDisplay/qtnewickdisplay.cpp
 
 HEADERS  += \
-    ../../Classes/CppQtNewickDisplay/qtnewickdisplay.h
+    ../RibiClasses/CppQtNewickDisplay/qtnewickdisplay.h
 
 FORMS += \
-    ../../Classes/CppQtNewickDisplay/qtnewickdisplay.ui
+    ../RibiClasses/CppQtNewickDisplay/qtnewickdisplay.ui
 
 OTHER_FILES += \
-    ../../Classes/CppQtNewickDisplay/Licence.txt
+    ../RibiClasses/CppQtNewickDisplay/Licence.txt
 
 

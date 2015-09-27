@@ -1,16 +1,16 @@
 INCLUDEPATH += \
-    ../../Classes/CppQtDnaSequencesDisplay
+    ../RibiClasses/CppQtDnaSequencesDisplay
 
 SOURCES += \
-    ../../Classes/CppQtDnaSequencesDisplay/qtdnasequencesdisplay.cpp
+    ../RibiClasses/CppQtDnaSequencesDisplay/qtdnasequencesdisplay.cpp
 
 HEADERS  += \
-    ../../Classes/CppQtDnaSequencesDisplay/qtdnasequencesdisplay.h
+    ../RibiClasses/CppQtDnaSequencesDisplay/qtdnasequencesdisplay.h
 
 FORMS += \
-    ../../Classes/CppQtDnaSequencesDisplay/qtdnasequencesdisplay.ui
+    ../RibiClasses/CppQtDnaSequencesDisplay/qtdnasequencesdisplay.ui
 
 OTHER_FILES += \
-    ../../Classes/CppQtDnaSequencesDisplay/Licence.txt
+    ../RibiClasses/CppQtDnaSequencesDisplay/Licence.txt
 
 

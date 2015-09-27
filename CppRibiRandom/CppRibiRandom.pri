@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppRibiRandom
+    ../RibiClasses/CppRibiRandom
 
 SOURCES += \
-    ../../Classes/CppRibiRandom/ribi_random.cpp
+    ../RibiClasses/CppRibiRandom/ribi_random.cpp
 
 HEADERS  += \
-    ../../Classes/CppRibiRandom/ribi_random.h
+    ../RibiClasses/CppRibiRandom/ribi_random.h
 
 OTHER_FILES += \
-    ../../Classes/CppRibiRandom/Licence.txt
+    ../RibiClasses/CppRibiRandom/Licence.txt
 

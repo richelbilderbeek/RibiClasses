@@ -1,15 +1,15 @@
 INCLUDEPATH += \
-    ../../Classes/CppQtMultipleChoiceQuestionDialog
+    ../RibiClasses/CppQtMultipleChoiceQuestionDialog
 
 SOURCES += \
-    ../../Classes/CppQtMultipleChoiceQuestionDialog/qtmultiplechoicequestiondialog.cpp
+    ../RibiClasses/CppQtMultipleChoiceQuestionDialog/qtmultiplechoicequestiondialog.cpp
 
 HEADERS  += \
-    ../../Classes/CppQtMultipleChoiceQuestionDialog/qtmultiplechoicequestiondialog.h
+    ../RibiClasses/CppQtMultipleChoiceQuestionDialog/qtmultiplechoicequestiondialog.h
 
 FORMS += \
-    ../../Classes/CppQtMultipleChoiceQuestionDialog/qtmultiplechoicequestiondialog.ui
+    ../RibiClasses/CppQtMultipleChoiceQuestionDialog/qtmultiplechoicequestiondialog.ui
 
 OTHER_FILES += \
-    ../../Classes/CppQtMultipleChoiceQuestionDialog/Licence.txt
+    ../RibiClasses/CppQtMultipleChoiceQuestionDialog/Licence.txt
 

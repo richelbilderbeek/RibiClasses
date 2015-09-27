@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppBiology
+    ../RibiClasses/CppBiology
 
 SOURCES += \
-    ../../Classes/CppBiology/biology.cpp
+    ../RibiClasses/CppBiology/biology.cpp
 
 HEADERS  += \
-    ../../Classes/CppBiology/biology.h
+    ../RibiClasses/CppBiology/biology.h
 
 OTHER_FILES += \
-    ../../Classes/CppBiology/Licence.txt
+    ../RibiClasses/CppBiology/Licence.txt
 

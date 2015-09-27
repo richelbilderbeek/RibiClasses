@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppSimpleLinearRegression
+    ../RibiClasses/CppSimpleLinearRegression
 
 SOURCES += \
-    ../../Classes/CppSimpleLinearRegression/simplelinearregression.cpp
+    ../RibiClasses/CppSimpleLinearRegression/simplelinearregression.cpp
 
 HEADERS  += \
-    ../../Classes/CppSimpleLinearRegression/simplelinearregression.h
+    ../RibiClasses/CppSimpleLinearRegression/simplelinearregression.h
 
 OTHER_FILES += \
-    ../../Classes/CppSimpleLinearRegression/Licence.txt
+    ../RibiClasses/CppSimpleLinearRegression/Licence.txt
 

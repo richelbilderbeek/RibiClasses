@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppQtShapeWidget
+    ../RibiClasses/CppQtShapeWidget
 
 SOURCES += \
-    ../../Classes/CppQtShapeWidget/qtshapewidget.cpp
+    ../RibiClasses/CppQtShapeWidget/qtshapewidget.cpp
 
 HEADERS  += \
-    ../../Classes/CppQtShapeWidget/qtshapewidget.h
+    ../RibiClasses/CppQtShapeWidget/qtshapewidget.h
 
 OTHER_FILES += \
-    ../../Classes/CppQtShapeWidget/Licence.txt
+    ../RibiClasses/CppQtShapeWidget/Licence.txt
 

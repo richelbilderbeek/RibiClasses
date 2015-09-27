@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppQtLabeledQuadBezierArrowItem
+    ../RibiClasses/CppQtLabeledQuadBezierArrowItem
 
 SOURCES += \
-    ../../Classes/CppQtLabeledQuadBezierArrowItem/qtlabeledquadbezierarrowitem.cpp
+    ../RibiClasses/CppQtLabeledQuadBezierArrowItem/qtlabeledquadbezierarrowitem.cpp
 
 HEADERS  += \
-    ../../Classes/CppQtLabeledQuadBezierArrowItem/qtlabeledquadbezierarrowitem.h
+    ../RibiClasses/CppQtLabeledQuadBezierArrowItem/qtlabeledquadbezierarrowitem.h
 
 OTHER_FILES += \
-    ../../Classes/CppQtLabeledQuadBezierArrowItem/Licence.txt
+    ../RibiClasses/CppQtLabeledQuadBezierArrowItem/Licence.txt
 

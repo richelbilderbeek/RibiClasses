@@ -1,14 +1,14 @@
 INCLUDEPATH += \
-    ../../Classes/CppOpenQuestionDialog
+    ../RibiClasses/CppOpenQuestionDialog
 
 SOURCES += \
-    ../../Classes/CppOpenQuestionDialog/openquestiondialog.cpp \
-    ../../Classes/CppOpenQuestionDialog/openquestiondialogfactory.cpp
+    ../RibiClasses/CppOpenQuestionDialog/openquestiondialog.cpp \
+    ../RibiClasses/CppOpenQuestionDialog/openquestiondialogfactory.cpp
 
 HEADERS  += \
-    ../../Classes/CppOpenQuestionDialog/openquestiondialog.h \
-    ../../Classes/CppOpenQuestionDialog/openquestiondialogfactory.h
+    ../RibiClasses/CppOpenQuestionDialog/openquestiondialog.h \
+    ../RibiClasses/CppOpenQuestionDialog/openquestiondialogfactory.h
 
 OTHER_FILES += \
-    ../../Classes/CppOpenQuestionDialog/Licence.txt
+    ../RibiClasses/CppOpenQuestionDialog/Licence.txt
 

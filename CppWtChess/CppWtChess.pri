@@ -1,0 +1,2 @@
+# INCLUDEPATH += \
+#   ../RibiClasses/[thisfolder]

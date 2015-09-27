@@ -1,20 +1,20 @@
 INCLUDEPATH += \
-    ../../Classes/CppQtBirthDeathModel
+    ../RibiClasses/CppQtBirthDeathModel
 
 HEADERS += \
-    ../../Classes/CppQtBirthDeathModel/qtbirthdeathmodelparameterswidget.h \
-    ../../Classes/CppQtBirthDeathModel/qtbirthdeathmodellikelihoodwidget.h \
-    ../../Classes/CppQtBirthDeathModel/qtbirthdeathmodelmaxlikelihoodwidget.h
+    ../RibiClasses/CppQtBirthDeathModel/qtbirthdeathmodelparameterswidget.h \
+    ../RibiClasses/CppQtBirthDeathModel/qtbirthdeathmodellikelihoodwidget.h \
+    ../RibiClasses/CppQtBirthDeathModel/qtbirthdeathmodelmaxlikelihoodwidget.h
 
 SOURCES += \
-    ../../Classes/CppQtBirthDeathModel/qtbirthdeathmodelparameterswidget.cpp \
-    ../../Classes/CppQtBirthDeathModel/qtbirthdeathmodellikelihoodwidget.cpp \
-    ../../Classes/CppQtBirthDeathModel/qtbirthdeathmodelmaxlikelihoodwidget.cpp
+    ../RibiClasses/CppQtBirthDeathModel/qtbirthdeathmodelparameterswidget.cpp \
+    ../RibiClasses/CppQtBirthDeathModel/qtbirthdeathmodellikelihoodwidget.cpp \
+    ../RibiClasses/CppQtBirthDeathModel/qtbirthdeathmodelmaxlikelihoodwidget.cpp
 
 FORMS += \
-    ../../Classes/CppQtBirthDeathModel/qtbirthdeathmodelparameterswidget.ui \
-    ../../Classes/CppQtBirthDeathModel/qtbirthdeathmodellikelihoodwidget.ui \
-    ../../Classes/CppQtBirthDeathModel/qtbirthdeathmodelmaxlikelihoodwidget.ui
+    ../RibiClasses/CppQtBirthDeathModel/qtbirthdeathmodelparameterswidget.ui \
+    ../RibiClasses/CppQtBirthDeathModel/qtbirthdeathmodellikelihoodwidget.ui \
+    ../RibiClasses/CppQtBirthDeathModel/qtbirthdeathmodelmaxlikelihoodwidget.ui
 
 OTHER_FILES += \
-    ../../Classes/CppQtBirthDeathModel/Licence.txt
+    ../RibiClasses/CppQtBirthDeathModel/Licence.txt

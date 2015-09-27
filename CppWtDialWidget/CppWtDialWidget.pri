@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppWtDialWidget
+    ../RibiClasses/CppWtDialWidget
 
 SOURCES += \
-    ../../Classes/CppWtDialWidget/wtdialwidget.cpp
+    ../RibiClasses/CppWtDialWidget/wtdialwidget.cpp
 
 HEADERS  += \
-    ../../Classes/CppWtDialWidget/wtdialwidget.h
+    ../RibiClasses/CppWtDialWidget/wtdialwidget.h
 
 OTHER_FILES += \
-    ../../Classes/CppWtDialWidget/Licence.txt
+    ../RibiClasses/CppWtDialWidget/Licence.txt
 

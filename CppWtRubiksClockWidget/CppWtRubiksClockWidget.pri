@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppWtRubiksClockWidget
+    ../RibiClasses/CppWtRubiksClockWidget
 
 SOURCES += \
-    ../../Classes/CppWtRubiksClockWidget/wtrubiksclockwidget.cpp
+    ../RibiClasses/CppWtRubiksClockWidget/wtrubiksclockwidget.cpp
 
 HEADERS  += \
-    ../../Classes/CppWtRubiksClockWidget/wtrubiksclockwidget.h
+    ../RibiClasses/CppWtRubiksClockWidget/wtrubiksclockwidget.h
 
 OTHER_FILES += \
-    ../../Classes/CppWtRubiksClockWidget/Licence.txt
+    ../RibiClasses/CppWtRubiksClockWidget/Licence.txt
 

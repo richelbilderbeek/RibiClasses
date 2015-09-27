@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppGaborFilterWidget
+    ../RibiClasses/CppGaborFilterWidget
 
 SOURCES += \
-    ../../Classes/CppGaborFilterWidget/gaborfilterwidget.cpp
+    ../RibiClasses/CppGaborFilterWidget/gaborfilterwidget.cpp
 
 HEADERS  += \
-    ../../Classes/CppGaborFilterWidget/gaborfilterwidget.h
+    ../RibiClasses/CppGaborFilterWidget/gaborfilterwidget.h
 
 OTHER_FILES += \
-    ../../Classes/CppGaborFilterWidget/Licence.txt
+    ../RibiClasses/CppGaborFilterWidget/Licence.txt
 

@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppQtMatrix
+    ../RibiClasses/CppQtMatrix
 
 SOURCES += \
-    ../../Classes/CppQtMatrix/qtmatrix.cpp
+    ../RibiClasses/CppQtMatrix/qtmatrix.cpp
 
 HEADERS  += \
-    ../../Classes/CppQtMatrix/qtmatrix.h
+    ../RibiClasses/CppQtMatrix/qtmatrix.h
 
 OTHER_FILES += \
-    ../../Classes/CppQtMatrix/Licence.txt
+    ../RibiClasses/CppQtMatrix/Licence.txt
 

@@ -1,16 +1,16 @@
 INCLUDEPATH += \
-    ../../Classes/CppQtDnaSequencesDialog
+    ../RibiClasses/CppQtDnaSequencesDialog
 
 SOURCES += \
-    ../../Classes/CppQtDnaSequencesDialog/qtdnasequencesdialog.cpp
+    ../RibiClasses/CppQtDnaSequencesDialog/qtdnasequencesdialog.cpp
 
 HEADERS  += \
-    ../../Classes/CppQtDnaSequencesDialog/qtdnasequencesdialog.h
+    ../RibiClasses/CppQtDnaSequencesDialog/qtdnasequencesdialog.h
 
 FORMS += \
-    ../../Classes/CppQtDnaSequencesDialog/qtdnasequencesdialog.ui
+    ../RibiClasses/CppQtDnaSequencesDialog/qtdnasequencesdialog.ui
 
 OTHER_FILES += \
-    ../../Classes/CppQtDnaSequencesDialog/Licence.txt
+    ../RibiClasses/CppQtDnaSequencesDialog/Licence.txt
 
 

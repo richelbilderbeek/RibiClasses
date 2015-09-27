@@ -1,12 +1,12 @@
 INCLUDEPATH += \
-    ../../Classes/CppDrawCanvas
+    ../RibiClasses/CppDrawCanvas
 
 SOURCES += \
-    ../../Classes/CppDrawCanvas/drawcanvas.cpp
+    ../RibiClasses/CppDrawCanvas/drawcanvas.cpp
 
 HEADERS  += \
-    ../../Classes/CppDrawCanvas/drawcanvas.h
+    ../RibiClasses/CppDrawCanvas/drawcanvas.h
 
 OTHER_FILES += \
-    ../../Classes/CppDrawCanvas/Licence.txt
+    ../RibiClasses/CppDrawCanvas/Licence.txt
 
