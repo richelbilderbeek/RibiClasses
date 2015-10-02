@@ -327,13 +327,23 @@ void ribi::QtKeyboardFriendlyGraphicsView::keyPressEvent(QKeyEvent *event) noexc
   }
 
   assert(focus_item);
+  //Really lose focus
+  focus_item->setEnabled(false);
+  focus_item->setSelected(false); // #239
   focus_item->clearFocus();
-  focus_item->setSelected(false);
+  focus_item->setEnabled(true);
   m_signal_update(focus_item);
+
+  for (const auto item: scene()->selectedItems())
+  {
+    item->setSelected(false);
+    m_signal_update(item);
+  }
+
 
   if (items.empty())
   {
-    if (m_verbose) { std::clog << "No items focussed on anymore" << std::endl; }
+    if (m_verbose) { std::clog << "No items focused on anymore" << std::endl; }
     return;
   }
   QGraphicsItem* const new_focus_item = GetClosest(focus_item,items);
@@ -375,7 +385,7 @@ void ribi::QtKeyboardFriendlyGraphicsView::SetRandomFocus()
   }
   else
   {
-    if (m_verbose) { std::clog << "No focussed item to remove focus of" << std::endl; }
+    if (m_verbose) { std::clog << "No focused item to remove focus of" << std::endl; }
   }
 
   if (m_verbose) { std::clog << "Remove selectedness of all " << scene()->selectedItems().size() << " selected items" << std::endl; }

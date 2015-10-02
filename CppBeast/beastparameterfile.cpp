@@ -3,11 +3,12 @@
 #include <cassert>
 #include <sstream>
 
+#include "beasttreeprior.h"
 #include "container.h"
 #include "dnasequence.h"
 //#include "fileio.h"
 
-BeastParameterFile::BeastParameterFile(
+ribi::BeastParameterFile::BeastParameterFile(
   const std::vector<ribi::DnaSequence>& sequences,
   const std::string& alignment_base_filename,
   const int mcmc_chainlength,
@@ -23,7 +24,7 @@ BeastParameterFile::BeastParameterFile(
   #endif
 }
 
-std::vector<std::string> BeastParameterFile::ToBirthDeathXml() const noexcept
+std::vector<std::string> ribi::BeastParameterFile::ToBirthDeathXml() const noexcept
 {
   // Birth death model
   std::vector<std::string> v;
@@ -95,14 +96,14 @@ std::vector<std::string> BeastParameterFile::ToBirthDeathXml() const noexcept
   v.push_back("        </tree>");
   v.push_back("        <stateNode id=\"RBcount.s:" + filename_base + "\" lower=\"0\" spec=\"parameter.IntegerParameter\" upper=\"5\">5</stateNode>");
   v.push_back("        <parameter dimension=\"5\" id=\"RBrates.s:" + filename_base + "\" lower=\"0.01\" name=\"stateNode\" upper=\"100.0\">1.0</parameter>");
-  if (GetTreePrior() == BeastParameterFile::TreePrior::birth_death)
+  if (GetTreePrior() == ribi::TreePrior::birth_death)
   {
     v.push_back("        <parameter id=\"birthRate2.t:" + filename_base + "\" lower=\"0.0\" name=\"stateNode\" upper=\"10000.0\">1.0</parameter>");
     v.push_back("        <parameter id=\"relativeDeathRate2.t:" + filename_base + "\" lower=\"0.0\" name=\"stateNode\" upper=\"1.0\">0.5</parameter>");
   }
   else
   {
-    assert(GetTreePrior() == BeastParameterFile::TreePrior::coalescent_constant_population);
+    assert(GetTreePrior() == ribi::TreePrior::coalescent_constant_population);
     v.push_back("        <parameter id=\"popSize.t:" + filename_base + "\" name=\"stateNode\">0.3</parameter>");
   }
   v.push_back("    </state>");
@@ -115,13 +116,13 @@ std::vector<std::string> BeastParameterFile::ToBirthDeathXml() const noexcept
   v.push_back("");
   v.push_back("    <distribution id=\"posterior\" spec=\"util.CompoundDistribution\">");
   v.push_back("        <distribution id=\"prior\" spec=\"util.CompoundDistribution\">");
-  if (GetTreePrior() == BeastParameterFile::TreePrior::birth_death)
+  if (GetTreePrior() == ribi::TreePrior::birth_death)
   {
     v.push_back("            <distribution birthDiffRate=\"@birthRate2.t:" + filename_base + "\" id=\"BirthDeath.t:" + filename_base + "\" relativeDeathRate=\"@relativeDeathRate2.t:" + filename_base + "\" spec=\"beast.evolution.speciation.BirthDeathGernhard08Model\" tree=\"@Tree.t:" + filename_base + "\"/>");
   }
   else
   {
-    assert(GetTreePrior() == BeastParameterFile::TreePrior::coalescent_constant_population);
+    assert(GetTreePrior() == ribi::TreePrior::coalescent_constant_population);
     v.push_back("            <distribution id=\"CoalescentConstant.t:" + filename_base + "\" spec=\"Coalescent\">");
     v.push_back("                <populationModel id=\"ConstantPopulation.t:" + filename_base + "\" popSize=\"@popSize.t:" + filename_base + "\" spec=\"ConstantPopulation\"/>");
     v.push_back("                <treeIntervals id=\"TreeIntervals.t:" + filename_base + "\" spec=\"TreeIntervals\" tree=\"@Tree.t:" + filename_base + "\"/>");
@@ -133,7 +134,7 @@ std::vector<std::string> BeastParameterFile::ToBirthDeathXml() const noexcept
   v.push_back("                    <parameter id=\"RealParameter.01\" lower=\"0.0\" name=\"beta\" upper=\"0.0\">5.0</parameter>");
   v.push_back("                </Gamma>");
   v.push_back("            </distribution>");
-  if (GetTreePrior() == BeastParameterFile::TreePrior::birth_death)
+  if (GetTreePrior() == ribi::TreePrior::birth_death)
   {
     v.push_back("            <prior id=\"BirthRatePrior.t:" + filename_base + "\" name=\"distribution\" x=\"@birthRate2.t:" + filename_base + "\">");
     v.push_back("                <Uniform id=\"Uniform.0\" name=\"distr\" upper=\"1000.0\"/>");
@@ -143,7 +144,7 @@ std::vector<std::string> BeastParameterFile::ToBirthDeathXml() const noexcept
   }
   else
   {
-    assert(GetTreePrior() == BeastParameterFile::TreePrior::coalescent_constant_population);
+    assert(GetTreePrior() == ribi::TreePrior::coalescent_constant_population);
     v.push_back("            <prior id=\"PopSizePrior.t:" + filename_base + "\" name=\"distribution\" x=\"@popSize.t:" + filename_base + "\">");
     v.push_back("                <OneOnX id=\"OneOnX.0\" name=\"distr\"/>");
   }
@@ -185,7 +186,7 @@ std::vector<std::string> BeastParameterFile::ToBirthDeathXml() const noexcept
   v.push_back("");
   v.push_back("    <operator count=\"@RBcount.s:" + filename_base + "\" id=\"RBratescaler.s:" + filename_base + "\" parameter=\"@RBrates.s:" + filename_base + "\" scaleFactor=\"0.5\" spec=\"RBScaleOperator\" weight=\"1.0\"/>");
   v.push_back("");
-  if (GetTreePrior() == BeastParameterFile::TreePrior::birth_death)
+  if (GetTreePrior() == ribi::TreePrior::birth_death)
   {
     v.push_back("    <operator id=\"BirthRateScaler.t:" + filename_base + "\" parameter=\"@birthRate2.t:" + filename_base + "\" scaleFactor=\"0.75\" spec=\"ScaleOperator\" weight=\"3.0\"/>");
     v.push_back("");
@@ -193,7 +194,7 @@ std::vector<std::string> BeastParameterFile::ToBirthDeathXml() const noexcept
   }
   else
   {
-    assert(GetTreePrior() == BeastParameterFile::TreePrior::coalescent_constant_population);
+    assert(GetTreePrior() == ribi::TreePrior::coalescent_constant_population);
     v.push_back("    <operator id=\"PopSizeScaler.t:" + filename_base + "\" parameter=\"@popSize.t:" + filename_base + "\" scaleFactor=\"0.75\" spec=\"ScaleOperator\" weight=\"3.0\"/>");
   }
   v.push_back("");
@@ -205,13 +206,13 @@ std::vector<std::string> BeastParameterFile::ToBirthDeathXml() const noexcept
   v.push_back("        <log id=\"TreeHeight.t:" + filename_base + "\" spec=\"beast.evolution.tree.TreeHeightLogger\" tree=\"@Tree.t:" + filename_base + "\"/>");
   v.push_back("        <log idref=\"RBcount.s:" + filename_base + "\"/>");
   v.push_back("        <parameter idref=\"RBrates.s:" + filename_base + "\" name=\"log\"/>");
-  if (GetTreePrior() == BeastParameterFile::TreePrior::birth_death)
+  if (GetTreePrior() == ribi::TreePrior::birth_death)
   {
     v.push_back("        <log idref=\"BirthDeath.t:" + filename_base + "\"/>");
   }
   else
   {
-    assert(GetTreePrior() == BeastParameterFile::TreePrior::coalescent_constant_population);
+    assert(GetTreePrior() == ribi::TreePrior::coalescent_constant_population);
     v.push_back("        <parameter idref=\"popSize.t:" + filename_base + "\" name=\"log\"/>");
     v.push_back("        <log idref=\"CoalescentConstant.t:" + filename_base + "\"/>");
   }
@@ -235,7 +236,7 @@ std::vector<std::string> BeastParameterFile::ToBirthDeathXml() const noexcept
 }
 
 
-std::ostream& operator<<(std::ostream& os, const BeastParameterFile file)
+std::ostream& ribi::operator<<(std::ostream& os, const BeastParameterFile file)
 {
   const std::vector<std::string> xml{
     file.ToBirthDeathXml()

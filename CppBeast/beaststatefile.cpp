@@ -6,7 +6,7 @@
 
 #include "fileio.h"
 
-BeastStateFile::BeastStateFile(const std::string& filename)
+ribi::BeastStateFile::BeastStateFile(const std::string& filename)
   : m_tree{FindTree(filename)}
 {
   #ifndef NDEBUG
@@ -15,17 +15,17 @@ BeastStateFile::BeastStateFile(const std::string& filename)
   if (!ribi::fileio::FileIo().IsRegularFile(filename))
   {
     std::stringstream s;
-    s << "BeastStateFile::BeastStateFile: file '" << filename << "' not found";
+    s << "ribi::BeastStateFile::BeastStateFile: file '" << filename << "' not found";
     throw std::logic_error(s.str().c_str());
   }
 }
 
-std::string BeastStateFile::FindTree(const std::string& filename) const
+std::string ribi::BeastStateFile::FindTree(const std::string& filename) const
 {
   if (!ribi::fileio::FileIo().IsRegularFile(filename))
   {
     std::stringstream s;
-    s << "BeastStateFile::FindTree: file '" << filename << "' not found";
+    s << "ribi::BeastStateFile::FindTree: file '" << filename << "' not found";
     throw std::logic_error(s.str().c_str());
   }
   const std::string s{FindTreeLine(filename)};
@@ -39,7 +39,7 @@ std::string BeastStateFile::FindTree(const std::string& filename) const
   return u;
 }
 
-std::string BeastStateFile::FindTreeLine(const std::string& filename) const
+std::string ribi::BeastStateFile::FindTreeLine(const std::string& filename) const
 {
   assert(ribi::fileio::FileIo().IsRegularFile(filename));
   const std::vector<std::string> v{

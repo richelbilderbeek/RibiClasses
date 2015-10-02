@@ -9,7 +9,7 @@
 #include "fileio.h"
 
 
-void BeastStateFile::Test() noexcept
+void ribi::BeastStateFile::Test() noexcept
 {
   {
     static bool is_tested {false};
