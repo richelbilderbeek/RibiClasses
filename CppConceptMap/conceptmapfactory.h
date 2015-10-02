@@ -63,6 +63,7 @@ struct ConceptMapFactory
 
   ///Get all the other tests as one vector
   ConceptMaps GetAllTests() const noexcept;
+  int GetNumberOfAllTests() const noexcept { return 39; }
 
   boost::shared_ptr<ConceptMap> GetEmptyConceptMap() const noexcept { return GetHeteromorphousTestConceptMap0(); }
 

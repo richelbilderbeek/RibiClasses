@@ -29,7 +29,8 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include <QKeyEvent>
 #include <QGraphicsSimpleTextItem>
 
-//#include "conceptmaphelper.h"
+#include "trace.h"
+
 #pragma GCC diagnostic pop
 
 ribi::QtKeyboardFriendlyGraphicsView::QtKeyboardFriendlyGraphicsView(QWidget* parent)
@@ -252,8 +253,9 @@ void ribi::QtKeyboardFriendlyGraphicsView::keyPressEvent(QKeyEvent *event) noexc
     return;
   }
 
-  //Can be nullptr
+  assert(!(event->modifiers() & Qt::ControlModifier)); //Already handled those
 
+  //Can be nullptr
   QGraphicsItem* const focus_item = scene()->focusItem();
   const auto selected = scene()->selectedItems();
 
@@ -327,16 +329,29 @@ void ribi::QtKeyboardFriendlyGraphicsView::keyPressEvent(QKeyEvent *event) noexc
   }
 
   assert(focus_item);
+  if (m_verbose) { TRACE("focus_item loses focus"); }
+
   //Really lose focus
   focus_item->setEnabled(false);
   focus_item->setSelected(false); // #239
   focus_item->clearFocus();
   focus_item->setEnabled(true);
+
+  if (m_verbose) { TRACE("focus_item send out a m_signal_update"); }
   m_signal_update(focus_item);
+
+  if (m_verbose)
+  {
+    std::stringstream s;
+    s << scene()->selectedItems().size() << " items will lose focus";
+    TRACE(s.str());
+  }
 
   for (const auto item: scene()->selectedItems())
   {
+    if (m_verbose) { TRACE("a selected item loses being selected"); }
     item->setSelected(false);
+    if (m_verbose) { TRACE("a selected item send out a m_signal_update"); }
     m_signal_update(item);
   }
 

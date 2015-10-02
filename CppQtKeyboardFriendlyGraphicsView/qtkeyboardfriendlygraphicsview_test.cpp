@@ -96,6 +96,7 @@ void ribi::QtKeyboardFriendlyGraphicsView::Test() noexcept
   if (verbose) { TRACE("When focus/selectedness is lost, one signal is emitted "); }
   for (int i=0; i!=100; ++i)
   {
+    TRACE("START");
     //item1 unselected and unfocused at right
     item1->setSelected(false);
     item1->setPos( 100.0,0.0);
@@ -115,8 +116,10 @@ void ribi::QtKeyboardFriendlyGraphicsView::Test() noexcept
     view.keyPressEvent(&left);
 
     TRACE(c.Get());
+    TRACE(view.scene()->selectedItems().size());
     assert(view.scene()->selectedItems().size() == 0);
     assert(c.Get() == 1);
+    TRACE("END");
   }
   assert(!"Green");
   if (verbose) { TRACE("Pressing space selects one item, when two items were selected"); }

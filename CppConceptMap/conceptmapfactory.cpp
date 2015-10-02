@@ -1708,6 +1708,15 @@ void ribi::cmap::ConceptMapFactory::Test() noexcept
   EdgeFactory();
   ConceptMapFactory().GetHeteromorphousTestConceptMap(0);
   const TestTimer test_timer(__func__,__FILE__,1.0);
+  {
+    ConceptMapFactory f;
+    if (f.GetNumberOfAllTests() != static_cast<int>(f.GetAllTests().size()))
+    {
+      TRACE(f.GetNumberOfAllTests());
+      TRACE(f.GetAllTests().size());
+    }
+    assert(f.GetNumberOfAllTests() == static_cast<int>(f.GetAllTests().size()));
+  }
   if (verbose) { TRACE("All testing concept maps must be valid"); }
   {
     for (const auto& conceptmap: ConceptMapFactory().GetAllTests())
@@ -1734,5 +1743,7 @@ void ribi::cmap::ConceptMapFactory::Test() noexcept
       }
     }
   }
+
+
 }
 #endif // NDEBUG
