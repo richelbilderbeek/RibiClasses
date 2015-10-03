@@ -13,7 +13,7 @@ struct BeastParameterFile
 
   /// alignment_base_filename: if the alignment was made
   ///   from e.g. 'MyData.fas', alignment_base_filename must be 'MyData'
-  BeastParameterFile(
+  explicit BeastParameterFile(
     const std::vector<ribi::DnaSequence>& sequences,
     const std::string& alignment_base_filename,
     const int mcmc_chainlength,

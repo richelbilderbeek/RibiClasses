@@ -31,7 +31,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "connectthree.h"
 #include "connectthreemove.h"
 #include "testtimer.h"
-#include "textcanvas.h"
 #include "trace.h"
 
 ribi::con3::ConnectThreeWidget::ConnectThreeWidget(
@@ -232,7 +231,7 @@ void ribi::con3::ConnectThreeWidget::Tick() noexcept
   }
 }
 
-
+/*
 const boost::shared_ptr<ribi::TextCanvas> ribi::con3::ConnectThreeWidget::ToTextCanvas() const noexcept
 {
   assert(m_game);
@@ -277,3 +276,4 @@ const boost::shared_ptr<ribi::TextCanvas> ribi::con3::ConnectThreeWidget::ToText
   canvas->PutChar(m_x,m_y,d);
   return canvas;
 }
+*/

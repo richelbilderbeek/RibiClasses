@@ -79,7 +79,7 @@ struct ConnectThreeWidget
   void Select(const int x, const int y) noexcept;
   void SetIsPlayerHuman(const std::bitset<3>& is_player_human) noexcept;
   const boost::shared_ptr<Move> SuggestMove() const noexcept;
-  const boost::shared_ptr<TextCanvas> ToTextCanvas() const noexcept;
+  //const boost::shared_ptr<TextCanvas> ToTextCanvas() const noexcept;
   void Tick() noexcept;
 
   private:

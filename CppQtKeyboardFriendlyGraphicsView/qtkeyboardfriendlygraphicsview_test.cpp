@@ -3,6 +3,7 @@
 #ifndef NDEBUG
 #include <cassert>
 
+#include <QApplication>
 #include <QKeyEvent>
 #include <QGraphicsRectItem>
 
@@ -17,6 +18,7 @@ namespace ribi {
     QKeyEvent CreateRight() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Right,Qt::NoModifier); }
     QKeyEvent CreateSpace() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Space,Qt::NoModifier); }
     QKeyEvent CreateUp() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Up,Qt::NoModifier); }
+    QKeyEvent CreateX() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_X,Qt::NoModifier); }
   }
 }
 
@@ -36,6 +38,8 @@ void ribi::QtKeyboardFriendlyGraphicsView::Test() noexcept
   QtKeyboardFriendlyGraphicsView view;
   QGraphicsRectItem * const item1{new QGraphicsRectItem};
   QGraphicsRectItem * const item2{new QGraphicsRectItem};
+  item1->setToolTip("Item1");
+  item2->setToolTip("Item2");
   item1->setFlag(QGraphicsItem::ItemIsFocusable);
   item2->setFlag(QGraphicsItem::ItemIsFocusable);
   item1->setFlag(QGraphicsItem::ItemIsSelectable);
@@ -68,6 +72,19 @@ void ribi::QtKeyboardFriendlyGraphicsView::Test() noexcept
 
     assert(c.Get() > 0);
   }
+  if (verbose) { TRACE("A useless key does nothing"); }
+  {
+    Counter c{0}; //For receiving the signal
+    view.m_signal_update.connect(
+      boost::bind(&ribi::Counter::Inc,&c) //Do not forget the &
+    );
+
+    auto key_x = CreateX();
+    view.SetVerbosity(true);
+    view.keyPressEvent(&key_x);
+
+    assert(c.Get() == 0);
+  }
   if (verbose) { TRACE("When focus/selectedness changes, two signals are emitted "); }
   {
     //item1 unselected and unfocused at right
@@ -85,12 +102,37 @@ void ribi::QtKeyboardFriendlyGraphicsView::Test() noexcept
     );
 
     auto right = CreateRight();
+    view.SetVerbosity(true);
     view.keyPressEvent(&right);
 
     assert(c.Get() == 2);
   }
+  if (verbose) { TRACE("When focus/selectedness is lost, one signal is emitted "); }
+  for (int i=0; i!=10; ++i)
+  {
+    //item1 unselected and unfocused at right
+    item1->setSelected(false);
+    item1->setPos( 100.0,0.0);
+    //item1 selected and focused at left
+    item2->setSelected(true);
+    item2->setFocus();
+    item2->setPos(-100.0,0.0);
+    assert(view.scene()->selectedItems().size() == 1);
 
+    Counter c{0}; //For receiving the signal
+    view.m_signal_update.connect(
+      boost::bind(&ribi::Counter::Inc,&c) //Do not forget the &
+    );
 
+    TRACE("START");
+    view.SetVerbosity(true);
+    auto left = CreateLeft();
+    view.keyPressEvent(&left);
+
+    TRACE(c.Get());
+    assert(c.Get() == 1);
+  }
+  assert(!"Green");
   if (verbose) { TRACE("Pressing space selects one item, when two items were selected"); }
   {
     item1->clearFocus();
