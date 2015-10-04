@@ -1282,31 +1282,33 @@ void ribi::cmap::QtConceptMap::TestMe(const boost::shared_ptr<const ribi::cmap::
   {
     ///Note that the ConceptMap read out again differs from the original,
     ///because the Nodes are placed
-    if (!cmap::ConceptMap::HasSameContent(*GetConceptMap(),*map))
+    if (!cmap::HasSameContent(*GetConceptMap(),*map))
     {
       //OH OH, AN ERROR! HELP ME OUT AND GIMME LOTS OF DEBUG INFO!
       {
+        assert(map);
         const std::vector<std::string> v
-          = xml::XmlToPretty(cmap::ConceptMap::ToXml(map));
+          = xml::XmlToPretty(ToXml(*map));
         std::clog << "original map:\n";
         std::clog << "\n";
         std::copy(v.begin(),v.end(),std::ostream_iterator<std::string>(std::clog,"\n"));
         std::clog << "\n";
       }
       {
+        assert(GetConceptMap());
         const std::vector<std::string> v
-          = xml::XmlToPretty(cmap::ConceptMap::ToXml(GetConceptMap()));
+          = xml::XmlToPretty(cmap::ToXml(*GetConceptMap()));
         std::clog << "GetConceptMap():\n";
         std::clog << "\n";
         std::copy(v.begin(),v.end(),std::ostream_iterator<std::string>(std::clog,"\n"));
         std::clog << "\n";
       }
 
-      TRACE(cmap::ConceptMap::ToXml(GetConceptMap()));
-      TRACE(cmap::ConceptMap::ToXml(map));
+      TRACE(cmap::ToXml(*GetConceptMap()));
+      TRACE(cmap::ToXml(*map));
     }
   }
-  assert(cmap::ConceptMap::HasSameContent(*GetConceptMap(),*map)
+  assert(cmap::HasSameContent(*GetConceptMap(),*map)
     && "The concept map supplied must be homomorphous to the one created in the widget");
 
 }

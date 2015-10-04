@@ -162,10 +162,6 @@ class ConceptMap
   bool IsSelected(const ReadOnlyEdgePtr& node) const noexcept;
   bool IsSelected(const ReadOnlyNodePtr& node) const noexcept;
 
-  ///Similar to operator==, except that the GUI member variables aren't checked for equality
-  static bool HasSameContent(const ConceptMap& lhs, const ConceptMap& rhs) noexcept;
-
-
   #ifndef NDEBUG
   ///Check if there are no nulls in the edges and nodes
   bool IsValid() const noexcept;
@@ -192,9 +188,6 @@ class ConceptMap
   void SetSelected(const ConstEdgesAndNodes& edges_and_nodes) noexcept;
 
   void SetVerbosity(const bool verbose) noexcept { m_verbose = verbose; }
-
-  ///Convert a ConceptMap from an XML std::string
-  static std::string ToXml(const ReadOnlyConceptMapPtr& c) noexcept;
 
   void Undo() noexcept;
 
@@ -333,6 +326,13 @@ int CountCenterNodes(const boost::shared_ptr<const ConceptMap>& conceptmap) noex
 
 ///Count the number of Edges connected to a CenterNodes
 int CountCenterNodeEdges(const boost::shared_ptr<const ConceptMap>& conceptmap) noexcept;
+
+///Similar to operator==, except that the GUI member variables aren't checked for equality
+bool HasSameContent(const ConceptMap& lhs, const ConceptMap& rhs) noexcept;
+
+///Convert a ConceptMap from an XML std::string
+std::string ToXml(const ConceptMap& c) noexcept;
+
 
 bool operator==(const ConceptMap& lhs, const ConceptMap& rhs) noexcept;
 bool operator!=(const ConceptMap& lhs, const ConceptMap& rhs) noexcept;

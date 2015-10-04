@@ -220,7 +220,7 @@ void ribi::cmap::QtExampleDialog::SetExample(const boost::shared_ptr<Example>& e
   }
   if (text_changed)
   {
-    m_example->m_signal_text_changed(m_example.get());
+    m_example->m_signal_text_changed(*m_example.get());
   }
 
   this->setMinimumHeight(GetMinimumHeight(*m_example));
@@ -268,10 +268,9 @@ void ribi::cmap::QtExampleDialog::OnIsSpecificChanged(const Example * const exam
   ui->box_is_specific->setChecked(example->GetIsSpecific());
 }
 
-void ribi::cmap::QtExampleDialog::OnTextChanged(const Example * const example)
+void ribi::cmap::QtExampleDialog::OnTextChanged(const Example& example)
 {
-  assert(example);
-  ui->edit_text->setText(example->GetText().c_str());
+  ui->edit_text->setText(example.GetText().c_str());
 }
 
 #ifndef NDEBUG

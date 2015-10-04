@@ -152,7 +152,7 @@ void ribi::cmap::Example::SetText(const std::string& text) noexcept
   if (m_text != text)
   {
     m_text = text;
-    m_signal_text_changed(this);
+    m_signal_text_changed(*this);
   }
 }
 

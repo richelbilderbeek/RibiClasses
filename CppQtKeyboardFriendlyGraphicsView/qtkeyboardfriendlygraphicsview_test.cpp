@@ -11,8 +11,10 @@
 #include <QGraphicsRectItem>
 #pragma GCC diagnostic pop
 
+#include "fileio.h"
 #include "testtimer.h"
 #include "counter.h"
+#include "ribisystem.h"
 #include "trace.h"
 
 namespace ribi {
@@ -39,6 +41,8 @@ void ribi::QtKeyboardFriendlyGraphicsView::Test() noexcept
   }
   {
     Counter();
+    ribi::fileio::FileIo();
+    ribi::System();
   }
   using namespace ribi::qtkeyboardfriendlygraphicsview;
   const TestTimer test_timer(__func__,__FILE__,1.0);
@@ -63,6 +67,14 @@ void ribi::QtKeyboardFriendlyGraphicsView::Test() noexcept
     auto space = CreateSpace();
     view.keyPressEvent(&space);
     assert(view.scene()->selectedItems().size() == 1);
+  }
+  //Make richelbilderbeek continue
+  {
+    if (ribi::System().GetWhoami() == "maakplek")
+    {
+      TRACE("Skip test for maakplek");
+      return;
+    }
   }
   if (verbose) { TRACE("Space causes m_signal_update to be emitted"); }
   {
