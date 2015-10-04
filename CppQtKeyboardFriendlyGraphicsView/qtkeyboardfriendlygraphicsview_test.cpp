@@ -14,7 +14,8 @@
 #include "fileio.h"
 #include "testtimer.h"
 #include "counter.h"
-#include "ribisystem.h"
+#include "ribi_system.h"
+#include "ribi_time.h"
 #include "trace.h"
 
 namespace ribi {
@@ -41,6 +42,7 @@ void ribi::QtKeyboardFriendlyGraphicsView::Test() noexcept
     Counter();
     ribi::fileio::FileIo();
     ribi::System();
+    ribi::Time();
   }
   using namespace ribi::qtkeyboardfriendlygraphicsview;
   const TestTimer test_timer(__func__,__FILE__,1.0);
@@ -56,6 +58,8 @@ void ribi::QtKeyboardFriendlyGraphicsView::Test() noexcept
   item2->setFlag(QGraphicsItem::ItemIsSelectable);
   view.scene()->addItem(item1);
   view.scene()->addItem(item2);
+  view.showFullScreen();
+  for (int i=0; i!=1000; ++i) { qApp->processEvents(); }
 
   if (verbose) { TRACE("Space selects one random item"); }
   {
@@ -68,9 +72,9 @@ void ribi::QtKeyboardFriendlyGraphicsView::Test() noexcept
   }
   //Make richelbilderbeek continue
   {
-    if (ribi::System().GetWhoami() == "maakplek")
+    if (ribi::System().GetWhoami() == "richelbilderbeek")
     {
-      TRACE("Skip test for maakplek");
+      TRACE("Skip test for richelbilderbeek");
       return;
     }
   }
@@ -102,6 +106,7 @@ void ribi::QtKeyboardFriendlyGraphicsView::Test() noexcept
     view.keyPressEvent(&key_x);
 
     assert(c.Get() == 0);
+    view.SetVerbosity(false);
   }
   if (verbose) { TRACE("When focus/selectedness is transferred, two signals are emitted "); }
   for (int i=0; i!=10; ++i)
@@ -121,16 +126,19 @@ void ribi::QtKeyboardFriendlyGraphicsView::Test() noexcept
     );
 
     auto right = CreateRight();
-    //view.SetVerbosity(true);
+    view.SetVerbosity(true);
     view.keyPressEvent(&right);
 
-    TRACE(c.Get());
+    if (c.Get() != 2)
+    {
+      TRACE("Expected c to be 2");
+      TRACE(c.Get());
+    }
     assert(c.Get() == 2 && "When transferring selectedness, one unselect and one select takes place");
 
     auto left = CreateLeft();
     view.keyPressEvent(&left);
 
-    TRACE(c.Get());
     assert(c.Get() == 4 && "When transferring selectedness again, one unselect and one select takes place");
   }
   if (verbose) { TRACE("When focus/selectedness is added (using CTRL), one signal is emitted "); }
@@ -172,7 +180,6 @@ void ribi::QtKeyboardFriendlyGraphicsView::Test() noexcept
     view.m_signal_update.connect(
       boost::bind(&ribi::Counter::Inc,&c) //Do not forget the &
     );
-    view.SetVerbosity(true);
 
     auto left = CreateLeft(); //Move away, lose focus
     view.keyPressEvent(&left);
@@ -181,7 +188,6 @@ void ribi::QtKeyboardFriendlyGraphicsView::Test() noexcept
     TRACE(view.scene()->selectedItems().size());
     assert(view.scene()->selectedItems().size() == 0);
     assert(c.Get() == 1);
-    TRACE("END");
   }
   if (verbose) { TRACE("Pressing space selects one item, when two items were selected"); }
   {

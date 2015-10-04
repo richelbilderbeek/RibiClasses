@@ -218,48 +218,70 @@ std::vector<std::string> ribi::QtKeyboardFriendlyGraphicsView::GetVersionHistory
 
 void ribi::QtKeyboardFriendlyGraphicsView::keyPressEvent(QKeyEvent *event) noexcept
 {
+  if (event->modifiers() & Qt::ControlModifier) {
+    KeyPressEventCtrl(event);
+  }
+  else if (event->modifiers() & Qt::ShiftModifier) {
+    KeyPressEventShift(event);
+  }
+  else {
+    KeyPressEventNoModifiers(event);
+  }
+
+}
+
+void ribi::QtKeyboardFriendlyGraphicsView::KeyPressEventCtrl(QKeyEvent *event) noexcept
+{
   //CTRL: Move items
-  if (event->modifiers() & Qt::ControlModifier)
+  assert(event->modifiers() & Qt::ControlModifier);
+  if (m_verbose) { std::clog << "CTRL pressed: try to move items" << std::endl; }
+  double delta_x{0.0};
+  double delta_y{0.0};
+  switch (event->key())
   {
-    if (m_verbose) { std::clog << "CTRL pressed: try to move items" << std::endl; }
-    double delta_x{0.0};
-    double delta_y{0.0};
-    switch (event->key())
-    {
-      case Qt::Key_Up:
-        if (m_verbose) { std::clog << "Moving selected item (s) up" << std::endl; }
-        delta_y = -10.0;
-        break;
-      case Qt::Key_Right:
-        if (m_verbose) { std::clog << "Moving selected item (s) right" << std::endl; }
-        delta_x =  10.0;
-        break;
-      case Qt::Key_Down:
-        if (m_verbose) { std::clog << "Moving selected item (s) down" << std::endl; }
-        delta_y =  10.0;
-        break;
-      case Qt::Key_Left:
-        if (m_verbose) { std::clog << "Moving selected item (s) left" << std::endl; }
-        delta_x = -10.0;
-        break;
-    }
-    for (const auto item: scene()->selectedItems())
-    {
-      assert(item);
-      if (!(item->flags() & QGraphicsItem::ItemIsMovable)) { continue; }
-      item->setPos(item->pos() + QPointF(delta_x,delta_y));
-      if (m_verbose) { std::clog << "(1) m_signal_update(item)" << std::endl; }
-      m_signal_update(item);
-    }
-    scene()->update();
+    case Qt::Key_Up:
+      if (m_verbose) { std::clog << "Moving selected item (s) up" << std::endl; }
+      delta_y = -10.0;
+      break;
+    case Qt::Key_Right:
+      if (m_verbose) { std::clog << "Moving selected item (s) right" << std::endl; }
+      delta_x =  10.0;
+      break;
+    case Qt::Key_Down:
+      if (m_verbose) { std::clog << "Moving selected item (s) down" << std::endl; }
+      delta_y =  10.0;
+      break;
+    case Qt::Key_Left:
+      if (m_verbose) { std::clog << "Moving selected item (s) left" << std::endl; }
+      delta_x = -10.0;
+      break;
+  }
+  for (const auto item: scene()->selectedItems())
+  {
+    assert(item);
+    if (!(item->flags() & QGraphicsItem::ItemIsMovable)) { continue; }
+    item->setPos(item->pos() + QPointF(delta_x,delta_y));
+    if (m_verbose) { std::clog << "(1) m_signal_update(item)" << std::endl; }
+    m_signal_update(item);
+  }
+  scene()->update();
+}
+
+void ribi::QtKeyboardFriendlyGraphicsView::KeyPressEventNoModifiers(QKeyEvent *event) noexcept
+{
+  assert(!(event->modifiers() & Qt::ShiftModifier));
+  assert(!(event->modifiers() & Qt::ControlModifier));
+  //Can be nullptr
+  QGraphicsItem* const current_focus_item = scene()->focusItem();
+
+  if (!current_focus_item &&
+    ( event->key() == Qt::Key_Up || event->key() == Qt::Key_Right || event->key() == Qt::Key_Down || event->key() == Qt::Key_Right )
+  )
+  {
+    if (m_verbose) { std::clog << "Cannot tranfer selectedness when there is no focus" << std::endl; }
     return;
   }
-  assert(!(event->modifiers() & Qt::ControlModifier));
 
-
-  //Can be nullptr
-  assert(!(event->modifiers() & Qt::ControlModifier)); //Already handled those
-  QGraphicsItem* const current_focus_item = scene()->focusItem();
   const auto current_selected_items = scene()->selectedItems();
 
   std::vector<QGraphicsItem *> new_selected_items;
@@ -267,40 +289,24 @@ void ribi::QtKeyboardFriendlyGraphicsView::keyPressEvent(QKeyEvent *event) noexc
   switch (event->key())
   {
     case Qt::Key_Up:
-      if (!current_focus_item)
-      {
-        if (m_verbose) { std::clog << "Cannot move focus up when there is no focus" << std::endl; }
-        return;
-      }
+      assert(current_focus_item);
       if (m_verbose) { std::clog << "Move focus up" << std::endl; }
       new_selected_items = GetItemsAbove(current_focus_item);
     break;
     case Qt::Key_Tab:
     case Qt::Key_Right:
-      if (!current_focus_item)
-      {
-        if (m_verbose) { std::clog << "Cannot move focus right when there is no focus" << std::endl; }
-        return;
-      }
+      assert(current_focus_item);
       if (m_verbose) { std::clog << "Move focus right" << std::endl; }
       new_selected_items = GetItemsRight(current_focus_item);
       break;
     case Qt::Key_Down:
-      if (!current_focus_item)
-      {
-        if (m_verbose) { std::clog << "Cannot move focus down when there is no focus" << std::endl; }
-        return;
-      }
+      assert(current_focus_item);
       if (m_verbose) { std::clog << "Move focus down" << std::endl; }
       new_selected_items = GetItemsBelow(current_focus_item);
       break;
     case Qt::Key_Left:
     case Qt::Key_Backtab:
-      if (!current_focus_item)
-      {
-        if (m_verbose) { std::clog << "Cannot move focus left when there is no focus" << std::endl; }
-        return;
-      }
+      assert(current_focus_item);
       if (m_verbose) { std::clog << "Move focus left" << std::endl; }
       new_selected_items = GetItemsLeft(current_focus_item);
       break;
@@ -332,77 +338,99 @@ void ribi::QtKeyboardFriendlyGraphicsView::keyPressEvent(QKeyEvent *event) noexc
     }
   }
 
-  assert(current_focus_item);
-  if (m_verbose) { std::clog << "clearFocus of current_focus_item" << std::endl; }
-  current_focus_item->setEnabled(false);
-  current_focus_item->clearFocus();
-  current_focus_item->setEnabled(true);
+  //assert(current_focus_item);
+  //if (m_verbose) { std::clog << "clearFocus of current_focus_item" << std::endl; }
+  //current_focus_item->setEnabled(false);
+  //current_focus_item->clearFocus();
+  //current_focus_item->setEnabled(true);
 
-  if (!(event->modifiers() & Qt::ShiftModifier))
+  //Unselect currently selected
+  for (const auto item: current_selected_items)
   {
-    if (m_verbose) { std::clog << "Unselect focus item" << std::endl; }
-    current_focus_item->setSelected(false);
-    if (m_verbose) { std::clog << "(2) m_signal_update(current_focus_item)" << std::endl; }
-    m_signal_update(current_focus_item);
+    item->setSelected(false);
+    m_signal_update(item);
   }
-
-
+  //Select newly selected
+  for (const auto item: new_selected_items)
+  {
+    item->setSelected(true);
+    m_signal_update(item);
+  }
+  //Transfer focus
+  current_focus_item->clearFocus();
   if (new_selected_items.empty())
   {
-    if (m_verbose) { std::clog << "1) Unselect all " << current_selected_items.size() << " previously selected items" << std::endl; }
-    for (const auto item: current_selected_items)
-    {
-      item->setSelected(false);
-      if (m_verbose) { std::clog << "(3) m_signal_update(item)" << std::endl; }
-      m_signal_update(item);
-    }
-    if (m_verbose) { std::clog << "No items focussed on anymore" << std::endl; }
-    return;
-  }
-  QGraphicsItem* const new_focus_item = GetClosest(current_focus_item,new_selected_items);
-  if (!new_focus_item)
-  {
-    if (m_verbose) { std::clog << "2) Unselect all " << current_selected_items.size() << " previously selected items" << std::endl; }
-    for (const auto item: current_selected_items)
-    {
-      item->setSelected(false);
-      if (m_verbose) { std::clog << "(4) m_signal_update(item)" << std::endl; }
-      m_signal_update(item);
-    }
-    if (m_verbose) { std::clog << "No closest item to focus on" << std::endl; }
-    return;
-  }
-  current_focus_item->setEnabled(false);
-  current_focus_item->clearFocus();
-  current_focus_item->setEnabled(true);
-  if (event->modifiers() & Qt::ShiftModifier)
-  {
-    if (m_verbose) { std::clog << "Adding selectedness" << std::endl; }
-    current_focus_item->setSelected(true);
-    if (m_verbose) { std::clog << "(5) m_signal_update(current_focus_item)" << std::endl; }
-    m_signal_update(current_focus_item);
-    new_focus_item->setSelected(true);
-    //m_signal_update(new_focus_item); Done at end
+    //Nothing, focus is already lost
   }
   else
   {
-    if (m_verbose) { std::clog << "Transferring focus" << std::endl; }
-    if (m_verbose) { std::clog << "3) Unselect all " << current_selected_items.size() << " previously selected items" << std::endl; }
-    for (const auto item: current_selected_items)
-    {
-      if (item->isSelected()) //current_focus_item will already be unselected
-      {
-        item->setSelected(false);
-        if (m_verbose) { std::clog << "(6) m_signal_update(item)" << std::endl; }
-        m_signal_update(item);
-      }
-    }
-    new_focus_item->setSelected(true);
-    //m_signal_update(new_focus_item); //Done at end
+    QGraphicsItem* const new_focus_item = GetClosest(current_focus_item,new_selected_items);
+    if (new_focus_item) { new_focus_item->setFocus(); }
   }
-  new_focus_item->setFocus();
-  if (m_verbose) { std::clog << "(7) m_signal_update(new_focus_item)" << std::endl; }
-  m_signal_update(new_focus_item);
+}
+
+void ribi::QtKeyboardFriendlyGraphicsView::KeyPressEventShift(QKeyEvent *event) noexcept
+{
+  assert(event->modifiers() & Qt::ShiftModifier);
+  //Can be nullptr
+  QGraphicsItem* const current_focus_item = scene()->focusItem();
+  if (!current_focus_item)
+  {
+    if (m_verbose) { std::clog << "Cannot add items without a focus" << std::endl; }
+    return;
+  }
+
+  std::vector<QGraphicsItem *> new_added_selected_items;
+
+  switch (event->key())
+  {
+    case Qt::Key_Up:
+      if (m_verbose) { std::clog << "Move focus up" << std::endl; }
+      new_added_selected_items = GetItemsAbove(current_focus_item);
+    break;
+    case Qt::Key_Tab:
+    case Qt::Key_Right:
+      if (m_verbose) { std::clog << "Move focus right" << std::endl; }
+      new_added_selected_items = GetItemsRight(current_focus_item);
+      break;
+    case Qt::Key_Down:
+      if (m_verbose) { std::clog << "Move focus down" << std::endl; }
+      new_added_selected_items = GetItemsBelow(current_focus_item);
+      break;
+    case Qt::Key_Left:
+    case Qt::Key_Backtab:
+      if (m_verbose) { std::clog << "Move focus left" << std::endl; }
+      new_added_selected_items = GetItemsLeft(current_focus_item);
+      break;
+    default:
+    {
+      if (m_verbose) { std::clog << "Calling QGraphicsView::keyPressEvent" << std::endl; }
+      QGraphicsView::keyPressEvent(event);
+      this->update();
+      return;
+    }
+  }
+
+  //Add selectedness
+  for (auto item: new_added_selected_items)
+  {
+    item->setSelected(true);
+    m_signal_update(item);
+  }
+
+   //Transfer focus
+  current_focus_item->clearFocus();
+  if (new_added_selected_items.empty())
+  {
+    //Nothing, focus is already lost
+  }
+  else
+  {
+    QGraphicsItem* const new_focus_item = GetClosest(current_focus_item,new_added_selected_items);
+    if (new_focus_item) { new_focus_item->setFocus(); }
+  }
+
+
   this->update();
 }
 

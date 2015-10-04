@@ -2,10 +2,10 @@ INCLUDEPATH += \
     ../RibiClasses/CppRibiSystem
 
 SOURCES += \
-    ../RibiClasses/CppRibiSystem/ribisystem.cpp
+    ../RibiClasses/CppRibiSystem/ribi_system.cpp
 
 HEADERS += \
-    ../RibiClasses/CppRibiSystem/ribisystem.h
+    ../RibiClasses/CppRibiSystem/ribi_system.h
 
 OTHER_FILES += \
     ../RibiClasses/CppRibiSystem/Licence.txt

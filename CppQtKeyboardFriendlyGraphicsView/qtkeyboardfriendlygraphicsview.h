@@ -83,6 +83,10 @@ struct QtKeyboardFriendlyGraphicsView : public QGraphicsView
   ///Obtain the items right of the focus_item
   std::vector<QGraphicsItem *> GetItemsRight(const QGraphicsItem* const focus_item) const;
 
+  void KeyPressEventCtrl(QKeyEvent *event) noexcept;
+  void KeyPressEventNoModifiers(QKeyEvent *event) noexcept;
+  void KeyPressEventShift(QKeyEvent *event) noexcept;
+
   ///Give focus to a random item
   void SetRandomFocus();
 

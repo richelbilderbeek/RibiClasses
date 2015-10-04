@@ -163,7 +163,7 @@ void ribi::cmap::ConceptMap::Test() noexcept
       );
       assert(map_b);
       assert(map_b->GetNodes().size() == 3);
-      assert(HasSameContent(*map_a,*map_b));
+      assert(cmap::HasSameContent(*map_a,*map_b));
       assert(map_a != map_b);
 
       const boost::shared_ptr<ConceptMap> map_c(
@@ -359,14 +359,14 @@ void ribi::cmap::ConceptMap::Test() noexcept
       //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,0.1);
       const boost::shared_ptr<const ConceptMap> a{ConceptMapFactory().GetHeteromorphousTestConceptMap(19)};
       const boost::shared_ptr<const ConceptMap> b{ConceptMapFactory().GetHeteromorphousTestConceptMap(19)};
-      assert(ConceptMap::HasSameContent(*a,*b));
+      assert(cmap::HasSameContent(*a,*b));
     }
     if (verbose) { TRACE("HasSameContent 7"); }
     {
       //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,0.1);
       const boost::shared_ptr<const ConceptMap> a{ConceptMapFactory().GetHeteromorphousTestConceptMap(18)};
       const boost::shared_ptr<const ConceptMap> b{ConceptMapFactory().GetHeteromorphousTestConceptMap(19)};
-      assert(!ConceptMap::HasSameContent(*a,*b));
+      assert(!cmap::HasSameContent(*a,*b));
     }
     if (verbose) { TRACE("Test simple homomorphous maps"); }
     {
@@ -388,16 +388,16 @@ void ribi::cmap::ConceptMap::Test() noexcept
           assert(a != b);
           if (i == j)
           {
-            assert(ConceptMap::HasSameContent(*a,*b));
+            assert(cmap::HasSameContent(*a,*b));
           }
           else
           {
-            if (!ConceptMap::HasSameContent(*a,*b))
+            if (!cmap::HasSameContent(*a,*b))
             {
               std::stringstream s;
               s << "Testing simple concept maps #" << i << " and #" << j << " must be homomorphous";
             }
-            assert(ConceptMap::HasSameContent(*a,*b));
+            assert(cmap::HasSameContent(*a,*b));
           }
         }
       }
@@ -412,7 +412,7 @@ void ribi::cmap::ConceptMap::Test() noexcept
         const int j = i - 1;
         const boost::shared_ptr<const ConceptMap> a{ConceptMapFactory().GetComplexHomomorphousTestConceptMap(i)};
         const boost::shared_ptr<const ConceptMap> b{ConceptMapFactory().GetComplexHomomorphousTestConceptMap(j)};
-        assert(ConceptMap::HasSameContent(*a,*b));
+        assert(cmap::HasSameContent(*a,*b));
       }
       //TRACE("ConceptMap::Test: complex homomorphous testing concept maps are successfully identified as being different, yet homomorphous");
     }
