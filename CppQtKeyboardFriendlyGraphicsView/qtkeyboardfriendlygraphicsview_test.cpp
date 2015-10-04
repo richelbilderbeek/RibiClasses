@@ -128,10 +128,6 @@ void ribi::QtKeyboardFriendlyGraphicsView::Test() noexcept
     );
 
     auto right = CreateRight();
-<<<<<<< HEAD
-=======
-    TRACE("START")
->>>>>>> fc8b5b9c1d55befeff3407ff61f90ca12ea4d2c8
     view.SetVerbosity(true);
     view.keyPressEvent(&right);
 
