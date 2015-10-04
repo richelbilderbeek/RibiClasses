@@ -31,8 +31,12 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <sstream>
 #include <boost/math/constants/constants.hpp>
 
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Weffc++"
 #include <QFile>
 #include <QImage>
+#pragma GCC diagnostic pop
 
 #include "canvascolorsystems.h"
 #include "canvascoordinatsystems.h"

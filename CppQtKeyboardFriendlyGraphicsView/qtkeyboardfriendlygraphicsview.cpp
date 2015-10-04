@@ -29,7 +29,8 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include <QKeyEvent>
 #include <QGraphicsSimpleTextItem>
 
-//#include "conceptmaphelper.h"
+#include "trace.h"
+
 #pragma GCC diagnostic pop
 
 ribi::QtKeyboardFriendlyGraphicsView::QtKeyboardFriendlyGraphicsView(QWidget* parent)
@@ -255,11 +256,14 @@ void ribi::QtKeyboardFriendlyGraphicsView::keyPressEvent(QKeyEvent *event) noexc
   }
   assert(!(event->modifiers() & Qt::ControlModifier));
 
+
   //Can be nullptr
+  assert(!(event->modifiers() & Qt::ControlModifier)); //Already handled those
   QGraphicsItem* const current_focus_item = scene()->focusItem();
   const auto current_selected_items = scene()->selectedItems();
 
   std::vector<QGraphicsItem *> new_selected_items;
+
   switch (event->key())
   {
     case Qt::Key_Up:
@@ -416,7 +420,7 @@ void ribi::QtKeyboardFriendlyGraphicsView::SetRandomFocus()
   }
   else
   {
-    if (m_verbose) { std::clog << "No focussed item to remove focus of" << std::endl; }
+    if (m_verbose) { std::clog << "No focused item to remove focus of" << std::endl; }
   }
 
   if (m_verbose) { std::clog << "Remove selectedness of all " << scene()->selectedItems().size() << " selected items" << std::endl; }

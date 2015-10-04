@@ -13,7 +13,7 @@
 
 #include "fileio.h"
 
-void BeastParameterFile::Test() noexcept
+void ribi::BeastParameterFile::Test() noexcept
 {
   {
     static bool is_tested {false};
@@ -27,7 +27,8 @@ void BeastParameterFile::Test() noexcept
   const std::string coalescent_constant_population_1{"coalescent_constant_population_1.xml"};
   const std::string fasta_filename_0{"test_output_0.fas"};
   const std::string fasta_filename_1{"test_output_1.fas"};
-  const std::string log_file{"CppBeastLogFile.log"};
+  const std::string log_file_birthdeath{"CppBeastLogFileBirthDeath.log"};
+  const std::string log_file_coalescent{"CppBeastLogFileCoalescent.log"};
   const std::vector<std::string> resource_filenames
     =
     {
@@ -37,7 +38,8 @@ void BeastParameterFile::Test() noexcept
       coalescent_constant_population_1,
       fasta_filename_0,
       fasta_filename_1,
-      log_file
+      log_file_birthdeath,
+      log_file_coalescent
     };
   //Create resources
   {
@@ -46,6 +48,10 @@ void BeastParameterFile::Test() noexcept
       if (!fileio.IsRegularFile(s))
       {
         QFile((std::string(":/CppBeast/") + s).c_str()).copy(s.c_str());
+      }
+      if (!fileio.IsRegularFile(s))
+      {
+        std::cerr << "File missing: :/CppBeast/" << s << std::endl;
       }
       assert(fileio.IsRegularFile(s));
     }
@@ -57,7 +63,7 @@ void BeastParameterFile::Test() noexcept
       fasta_file.GetSequences(),
       fileio.GetFileBasename(fasta_filename_0), //alignment_base_filename,
       10000000,
-      BeastParameterFile::TreePrior::birth_death
+      TreePrior::birth_death
     );
     const std::string temp_filename{"tmp.txt"};
     {
@@ -84,7 +90,7 @@ void BeastParameterFile::Test() noexcept
       fasta_file.GetSequences(),
       fileio.GetFileBasename(fasta_filename_1),
       10000000,
-      BeastParameterFile::TreePrior::birth_death
+      TreePrior::birth_death
     );
     const std::string temp_filename{"tmp.txt"};
     {
@@ -111,7 +117,7 @@ void BeastParameterFile::Test() noexcept
       fasta_file.GetSequences(),
       fileio.GetFileBasename(fasta_filename_0),
       10000000,
-      BeastParameterFile::TreePrior::coalescent_constant_population
+      TreePrior::coalescent_constant_population
     );
     const std::string temp_filename{"tmp.txt"};
     {
@@ -138,7 +144,7 @@ void BeastParameterFile::Test() noexcept
       fasta_file.GetSequences(),
       fileio.GetFileBasename(fasta_filename_1),
       10000000,
-      BeastParameterFile::TreePrior::coalescent_constant_population
+      TreePrior::coalescent_constant_population
     );
     const std::string temp_filename{"tmp.txt"};
     {

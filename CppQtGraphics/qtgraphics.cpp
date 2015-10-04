@@ -59,7 +59,12 @@ void ribi::QtGraphics::DrawImage(
   const int left, const int top
 ) const noexcept
 {
+  #if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
+  const int n_channels{source.byteCount()};
+  assert(n_channels == 3 || n_channels == 4);
+  #else
   const auto n_channels = source.pixelFormat().channelCount();
+  #endif
   const int width = source.width();
   const int height = source.height();
   for (int y=0; y!=height; ++y)
@@ -81,7 +86,12 @@ void ribi::QtGraphics::DrawImageSlow(
   const int left, const int top
 ) const noexcept
 {
+  #if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
+  const int n_channels{source.byteCount()};
+  assert(n_channels == 3 || n_channels == 4);
+  #else
   const auto n_channels = source.pixelFormat().channelCount();
+  #endif
   const int width = source.width();
   const int height = source.height();
   for (int y=0; y!=height; ++y)

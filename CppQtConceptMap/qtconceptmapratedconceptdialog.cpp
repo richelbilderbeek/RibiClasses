@@ -34,7 +34,10 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmapexamples.h"
 #include "conceptmapnode.h"
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Weffc++"
 #include "ui_qtconceptmapratedconceptdialog.h"
+#pragma GCC diagnostic pop
 
 ribi::cmap::QtConceptMapRatedConceptDialog::QtConceptMapRatedConceptDialog(
   const boost::shared_ptr<const ribi::cmap::ConceptMap> conceptmap,

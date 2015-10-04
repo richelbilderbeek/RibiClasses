@@ -3,6 +3,8 @@
 
 #include <string>
 
+namespace ribi {
+
 ///BEAST2 state file, the results of a BEAST2 run, has a .xml.state file extension
 struct BeastStateFile
 {
@@ -25,5 +27,7 @@ struct BeastStateFile
   std::string FindTreeLine(const std::string& filename) const;
 
 };
+
+} //~namespace ribi
 
 #endif // BEASTSTATEFILE_H

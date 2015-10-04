@@ -1,11 +1,15 @@
 #include "qtkeyboardfriendlygraphicsview.h"
 
 #ifndef NDEBUG
+//Everything only present in debug mode
 #include <cassert>
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Weffc++"
 #include <QApplication>
 #include <QKeyEvent>
 #include <QGraphicsRectItem>
+#pragma GCC diagnostic pop
 
 #include "testtimer.h"
 #include "counter.h"
@@ -13,6 +17,8 @@
 
 namespace ribi {
   namespace qtkeyboardfriendlygraphicsview {
+    QKeyEvent CreateCtrlLeft() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Left,Qt::ControlModifier); }
+    QKeyEvent CreateCtrlRight() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Right,Qt::ControlModifier); }
     QKeyEvent CreateDown() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Down,Qt::NoModifier); }
     QKeyEvent CreateLeft() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Left,Qt::NoModifier); }
     QKeyEvent CreateRight() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Right,Qt::NoModifier); }
@@ -85,12 +91,13 @@ void ribi::QtKeyboardFriendlyGraphicsView::Test() noexcept
 
     assert(c.Get() == 0);
   }
-  if (verbose) { TRACE("When focus/selectedness changes, two signals are emitted "); }
+  if (verbose) { TRACE("When focus/selectedness is transferred, two signals are emitted "); }
+  for (int i=0; i!=10; ++i)
   {
     //item1 unselected and unfocused at right
     item1->setSelected(false);
     item1->setPos( 100.0,0.0);
-    //item1 selected and focused at left
+    //item2 selected and focused at left
     item2->setSelected(true);
     item2->setFocus();
     item2->setPos(-100.0,0.0);
@@ -102,13 +109,19 @@ void ribi::QtKeyboardFriendlyGraphicsView::Test() noexcept
     );
 
     auto right = CreateRight();
-    view.SetVerbosity(true);
+    //view.SetVerbosity(true);
     view.keyPressEvent(&right);
 
-    assert(c.Get() == 2);
+    TRACE(c.Get());
+    assert(c.Get() == 2 && "When transferring selectedness, one unselect and one select takes place");
+
+    auto left = CreateLeft();
+    view.keyPressEvent(&left);
+
+    TRACE(c.Get());
+    assert(c.Get() == 4 && "When transferring selectedness again, one unselect and one select takes place");
   }
-  if (verbose) { TRACE("When focus/selectedness is lost, one signal is emitted "); }
-  for (int i=0; i!=10; ++i)
+  if (verbose) { TRACE("When focus/selectedness is added (using CTRL), one signal is emitted "); }
   {
     //item1 unselected and unfocused at right
     item1->setSelected(false);
@@ -124,15 +137,40 @@ void ribi::QtKeyboardFriendlyGraphicsView::Test() noexcept
       boost::bind(&ribi::Counter::Inc,&c) //Do not forget the &
     );
 
-    TRACE("START");
+    auto ctrl_right = CreateCtrlRight();
     view.SetVerbosity(true);
-    auto left = CreateLeft();
+    view.keyPressEvent(&ctrl_right);
+
+    assert(c.Get() == 1);
+  }
+  if (verbose) { TRACE("When focus/selectedness is lost, one signal is emitted "); }
+  for (int i=0; i!=100; ++i)
+  {
+    TRACE("START");
+    //item1 unselected and unfocused at right
+    item1->setSelected(false);
+    item1->setPos( 100.0,0.0);
+    //item1 selected and focused at left
+    item2->setSelected(true);
+    item2->setFocus();
+    item2->setPos(-100.0,0.0);
+    assert(view.scene()->selectedItems().size() == 1);
+
+    Counter c{0}; //For receiving the signal
+    view.m_signal_update.connect(
+      boost::bind(&ribi::Counter::Inc,&c) //Do not forget the &
+    );
+    view.SetVerbosity(true);
+
+    auto left = CreateLeft(); //Move away, lose focus
     view.keyPressEvent(&left);
 
     TRACE(c.Get());
+    TRACE(view.scene()->selectedItems().size());
+    assert(view.scene()->selectedItems().size() == 0);
     assert(c.Get() == 1);
+    TRACE("END");
   }
-  assert(!"Green");
   if (verbose) { TRACE("Pressing space selects one item, when two items were selected"); }
   {
     item1->clearFocus();
@@ -148,6 +186,7 @@ void ribi::QtKeyboardFriendlyGraphicsView::Test() noexcept
       assert(view.scene()->selectedItems().size() == 1);
     }
   }
+  assert(!"Green");
 }
 #endif
 

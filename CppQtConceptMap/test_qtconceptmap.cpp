@@ -602,7 +602,7 @@ void ribi::cmap::QtConceptMap::Test() noexcept
   //Selection by more direct/dirtier methods
   //
   //
-  if (verbose) { TRACE("Seleting a QtNode also updates the ConceptMap::m_selected"); }
+  if (verbose) { TRACE("Selecting a QtNode also updates the ConceptMap::m_selected"); }
   {
     boost::shared_ptr<ConceptMap> conceptmap = ribi::cmap::ConceptMapFactory().GetEmptyConceptMap();
     boost::shared_ptr<QtConceptMap> qtconceptmap(new QtConceptMap);
@@ -622,6 +622,27 @@ void ribi::cmap::QtConceptMap::Test() noexcept
     assert(conceptmap->GetSelectedNodes().size() == 1);
     assert(conceptmap->GetSelectedNodes().size() == qtconceptmap->GetSelectedQtNodes().size());
     assert(conceptmap->GetSelectedEdges().size() == qtconceptmap->GetSelectedQtEdges().size());
+  }
+  if (verbose) { TRACE("Unselecting a QtNode also updates the ConceptMap::m_selected"); }
+  {
+    boost::shared_ptr<ConceptMap> conceptmap = ribi::cmap::ConceptMapFactory().GetEmptyConceptMap();
+    boost::shared_ptr<QtConceptMap> qtconceptmap(new QtConceptMap);
+    qtconceptmap->SetConceptMap(conceptmap);
+    auto qtnode = qtconceptmap->AddNode(NodeFactory().GetTest(0));
+
+    assert(conceptmap->GetSelectedNodes().size() == 1);
+    assert(conceptmap->GetSelectedNodes().size() == qtconceptmap->GetSelectedQtNodes().size());
+
+    qtnode->SetSelected(true);
+
+    assert(conceptmap->GetSelectedNodes().size() == 1);
+    assert(conceptmap->GetSelectedNodes().size() == qtconceptmap->GetSelectedQtNodes().size());
+    assert(conceptmap->GetSelectedEdges().size() == qtconceptmap->GetSelectedQtEdges().size());
+
+    qtnode->SetSelected(false);
+
+    assert(conceptmap->GetSelectedNodes().size() == 0);
+    assert(conceptmap->GetSelectedNodes().size() == qtconceptmap->GetSelectedQtNodes().size());
   }
   if (verbose) { TRACE("Seleting a QtNode also updates the ConceptMap::m_selected"); }
   {

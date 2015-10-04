@@ -3,13 +3,15 @@
 
 #include <string>
 #include <vector>
+#include "beasttreeprior.h"
 
-namespace ribi { struct DnaSequence; }
+namespace ribi {
+
+struct DnaSequence;
 
 ///Creates a BEAST XML parameter file
 struct BeastParameterFile
 {
-  enum class TreePrior { birth_death, coalescent_constant_population };
 
   /// alignment_base_filename: if the alignment was made
   ///   from e.g. 'MyData.fas', alignment_base_filename must be 'MyData'
@@ -39,5 +41,7 @@ struct BeastParameterFile
 };
 
 std::ostream& operator<<(std::ostream& os, const BeastParameterFile file);
+
+} //~namespace ribi
 
 #endif // BEASTPARAMETERFILE_H
