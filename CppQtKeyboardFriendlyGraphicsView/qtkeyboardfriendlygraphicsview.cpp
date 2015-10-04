@@ -254,6 +254,7 @@ void ribi::QtKeyboardFriendlyGraphicsView::keyPressEvent(QKeyEvent *event) noexc
     scene()->update();
     return;
   }
+
   assert(!(event->modifiers() & Qt::ControlModifier));
 
 
@@ -378,9 +379,10 @@ void ribi::QtKeyboardFriendlyGraphicsView::keyPressEvent(QKeyEvent *event) noexc
   if (event->modifiers() & Qt::ShiftModifier)
   {
     if (m_verbose) { std::clog << "Adding selectedness" << std::endl; }
-    current_focus_item->setSelected(true);
-    if (m_verbose) { std::clog << "(5) m_signal_update(current_focus_item)" << std::endl; }
-    m_signal_update(current_focus_item);
+    assert(current_focus_item->isSelected());
+    //current_focus_item->setSelected(true);
+    //if (m_verbose) { std::clog << "(5) m_signal_update(current_focus_item)" << std::endl; }
+    //m_signal_update(current_focus_item);
     new_focus_item->setSelected(true);
     //m_signal_update(new_focus_item); Done at end
   }
