@@ -106,7 +106,7 @@ struct Example
   boost::signals2::signal<void(Example*)> m_signal_is_specific_changed;
 
   ///Emitted when SetText changes the text
-  boost::signals2::signal<void(Example*)> m_signal_text_changed;
+  boost::signals2::signal<void(Example&)> m_signal_text_changed;
 
 private:
 

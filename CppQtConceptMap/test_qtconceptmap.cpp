@@ -40,6 +40,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmapnode.h"
 #include "qtconceptmapqtnode.h"
 #include "conceptmapnodefactory.h"
+#include "ribisystem.h"
 #include "testtimer.h"
 #include "trace.h"
 #pragma GCC diagnostic pop
@@ -960,6 +961,13 @@ void ribi::cmap::QtConceptMap::Test() noexcept
     assert(conceptmap->GetEdges().size() == qtconceptmap->GetQtEdges().size());
     assert(conceptmap->GetSelectedNodes().size() == 1);
     assert(conceptmap->GetSelectedEdges().size() == 0);
+  }
+  {
+    if (ribi::System().GetWhoami() == "maakplek")
+    {
+      TRACE("Skip test for maakplek");
+      return;
+    }
   }
   if (verbose) { TRACE("CTRL-N, CTRL-N, CTRL-E, Left: should select one Node"); }
   {

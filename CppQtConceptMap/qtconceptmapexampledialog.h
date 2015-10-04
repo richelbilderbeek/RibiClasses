@@ -68,7 +68,7 @@ private:
   void OnIsComplexChanged(const Example * const example);
   void OnIsConcreteChanged(const Example * const example);
   void OnIsSpecificChanged(const Example * const example);
-  void OnTextChanged(const Example * const example);
+  void OnTextChanged(const Example& example);
 
   #ifndef NDEBUG
   static void Test() noexcept;

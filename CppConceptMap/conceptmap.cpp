@@ -536,7 +536,7 @@ bool ribi::cmap::ConceptMap::HasNode(const boost::shared_ptr<const Node>& node) 
   return std::count(std::begin(m_nodes),std::end(m_nodes),node);
 }
 
-bool ribi::cmap::ConceptMap::HasSameContent(
+bool ribi::cmap::HasSameContent(
   const ribi::cmap::ConceptMap& lhs,
   const ribi::cmap::ConceptMap& rhs
 ) noexcept
@@ -798,30 +798,6 @@ bool ribi::cmap::ConceptMap::IsValid() const noexcept
 }
 #endif
 
-std::string ribi::cmap::ConceptMap::ToXml(const ReadOnlyConceptMapPtr& map) noexcept
-{
-  std::stringstream s;
-  s << "<concept_map>";
-  s << "<nodes>";
-  const std::vector<boost::shared_ptr<const Node>>& nodes = map->GetNodes();
-  for (const boost::shared_ptr<const Node> node: nodes)
-  {
-    s << node->ToXml();
-  }
-  s << "</nodes>";
-  s << "<edges>";
-  const std::vector<boost::shared_ptr<const cmap::Edge>>& edges = map->GetEdges();
-  for (const boost::shared_ptr<const cmap::Edge> edge: edges)
-  {
-    s << Edge::ToXml(edge,nodes);
-  }
-  s << "</edges>";
-  s << "</concept_map>";
-
-  const std::string r = s.str();
-  return r;
-}
-
 int ribi::cmap::CountCenterNodes(
   const ribi::cmap::ConceptMap::ReadOnlyConceptMapPtr& conceptmap
 ) noexcept
@@ -858,13 +834,18 @@ int ribi::cmap::CountCenterNodeEdges(
   return cnt;
 }
 
-bool ribi::cmap::operator==(const ribi::cmap::ConceptMap& lhs, const ribi::cmap::ConceptMap& rhs) noexcept
+bool ribi::cmap::operator==(const ConceptMap& lhs, const ConceptMap& rhs) noexcept
 {
+  const bool verbose{true};
   //Compare nodes
   {
-    const std::vector<boost::shared_ptr<const Node>> lhs_nodes = lhs.GetNodes();
-    const std::vector<boost::shared_ptr<const Node>> rhs_nodes = rhs.GetNodes();
-    if (lhs_nodes.size() != rhs_nodes.size()) return false;
+    const auto lhs_nodes = lhs.GetNodes();
+    const auto rhs_nodes = rhs.GetNodes();
+    if (lhs_nodes.size() != rhs_nodes.size())
+    {
+      if (verbose) { TRACE("Number of nodes differs"); }
+      return false;
+    }
     if (!
       std::equal(
         std::begin(lhs_nodes),
@@ -878,6 +859,7 @@ bool ribi::cmap::operator==(const ribi::cmap::ConceptMap& lhs, const ribi::cmap:
       )
     )
     {
+      if (verbose) { TRACE("Node differs"); }
       return false;
     }
   }
@@ -885,7 +867,11 @@ bool ribi::cmap::operator==(const ribi::cmap::ConceptMap& lhs, const ribi::cmap:
   {
     const std::vector<boost::shared_ptr<const cmap::Edge>> lhs_edges = lhs.GetEdges();
     const std::vector<boost::shared_ptr<const cmap::Edge>> rhs_edges = rhs.GetEdges();
-    if (lhs_edges.size() != rhs_edges.size()) return false;
+    if (lhs_edges.size() != rhs_edges.size())
+    {
+      if (verbose) { TRACE("Number of edges differ"); }
+      return false;
+    }
     if (!
       std::equal(
         std::begin(lhs_edges),
@@ -899,14 +885,23 @@ bool ribi::cmap::operator==(const ribi::cmap::ConceptMap& lhs, const ribi::cmap:
       )
     )
     {
+      if (verbose) { TRACE("Edge differs"); }
       return false;
     }
   }
 
 
-  if (lhs.GetSelected() != rhs.GetSelected()) return false;
+  if (lhs.GetSelected() != rhs.GetSelected())
+  {
+    if (verbose) { TRACE("Selectedness differs"); }
+    return false;
+  }
   //if (lhs.m_undo != rhs.m_undo) return false; //Cannot do this :-(
-  if (lhs.m_undo.count() != rhs.m_undo.count()) return false; //Proxy
+  if (lhs.m_undo.count() != rhs.m_undo.count())
+  {
+    if (verbose) { TRACE("Undo stack differs"); }
+    return false; //Proxy
+  }
   /*
   return std::equal( //Does not work for QUndoStack :-(
     std::begin(lhs.m_undo),
@@ -1295,6 +1290,29 @@ void ribi::cmap::ConceptMap::SetSelected(const EdgesAndNodes& nodes_and_edges) n
 void ribi::cmap::ConceptMap::SetSelected(const ConstEdgesAndNodes& nodes_and_edges) noexcept
 {
   SetSelected(nodes_and_edges.first, nodes_and_edges.second);
+}
+
+std::string ribi::cmap::ToXml(const ConceptMap& map) noexcept
+{
+  std::stringstream s;
+  s << "<concept_map>";
+  s << "<nodes>";
+  const auto nodes = map.GetNodes();
+  for (const auto node: nodes)
+  {
+    s << node->ToXml();
+  }
+  s << "</nodes>";
+  s << "<edges>";
+  for (const auto edge: map.GetEdges())
+  {
+    s << Edge::ToXml(edge,nodes);
+  }
+  s << "</edges>";
+  s << "</concept_map>";
+
+  const std::string r = s.str();
+  return r;
 }
 
 void ribi::cmap::ConceptMap::Undo() noexcept

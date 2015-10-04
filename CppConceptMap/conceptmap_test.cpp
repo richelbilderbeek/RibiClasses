@@ -95,7 +95,8 @@ void ribi::cmap::ConceptMap::Test() noexcept
   if (verbose) { TRACE("ConceptMap->XML std::string has to be between <concept_map> tags"); }
   {
     const auto conceptmap = ConceptMapFactory().GetEmptyConceptMap();
-    const auto s = ConceptMap::ToXml(conceptmap);
+    assert(conceptmap);
+    const auto s = cmap::ToXml(*conceptmap);
     assert(s.size() >= 27);
     assert(s.substr(0,13) == "<concept_map>");
     assert(s.substr(s.size() - 14,14) == "</concept_map>");
@@ -104,7 +105,8 @@ void ribi::cmap::ConceptMap::Test() noexcept
   {
     //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,0.2);
     const boost::shared_ptr<const ConceptMap> m{ConceptMapFactory().GetHeteromorphousTestConceptMap(19)};
-    const std::string s{ToXml(m)};
+    assert(m);
+    const std::string s{cmap::ToXml(*m)};
     const boost::shared_ptr<ConceptMap> d = ConceptMapFactory().FromXml(s);
     assert(*m == *d);
   }
