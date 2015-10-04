@@ -22,6 +22,8 @@ namespace ribi {
   namespace qtkeyboardfriendlygraphicsview {
     QKeyEvent CreateCtrlLeft() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Left,Qt::ControlModifier); }
     QKeyEvent CreateCtrlRight() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Right,Qt::ControlModifier); }
+    QKeyEvent CreateShiftLeft() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Left,Qt::ShiftModifier); }
+    QKeyEvent CreateShiftRight() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Right,Qt::ShiftModifier); }
     QKeyEvent CreateDown() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Down,Qt::NoModifier); }
     QKeyEvent CreateLeft() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Left,Qt::NoModifier); }
     QKeyEvent CreateRight() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Right,Qt::NoModifier); }
@@ -109,7 +111,7 @@ void ribi::QtKeyboardFriendlyGraphicsView::Test() noexcept
     view.SetVerbosity(false);
   }
   if (verbose) { TRACE("When focus/selectedness is transferred, two signals are emitted "); }
-  for (int i=0; i!=10; ++i)
+  //for (int i=0; i!=10; ++i)
   {
     //item1 unselected and unfocused at right
     item1->setSelected(false);
@@ -126,6 +128,10 @@ void ribi::QtKeyboardFriendlyGraphicsView::Test() noexcept
     );
 
     auto right = CreateRight();
+<<<<<<< HEAD
+=======
+    TRACE("START")
+>>>>>>> fc8b5b9c1d55befeff3407ff61f90ca12ea4d2c8
     view.SetVerbosity(true);
     view.keyPressEvent(&right);
 
@@ -141,7 +147,7 @@ void ribi::QtKeyboardFriendlyGraphicsView::Test() noexcept
 
     assert(c.Get() == 4 && "When transferring selectedness again, one unselect and one select takes place");
   }
-  if (verbose) { TRACE("When focus/selectedness is added (using CTRL), one signal is emitted "); }
+  if (verbose) { TRACE("When focus/selectedness is added (using SHIFT), one signal is emitted "); }
   {
     //item1 unselected and unfocused at right
     item1->setSelected(false);
@@ -157,9 +163,9 @@ void ribi::QtKeyboardFriendlyGraphicsView::Test() noexcept
       boost::bind(&ribi::Counter::Inc,&c) //Do not forget the &
     );
 
-    auto ctrl_right = CreateCtrlRight();
+    auto shift_right = CreateShiftRight();
     view.SetVerbosity(true);
-    view.keyPressEvent(&ctrl_right);
+    view.keyPressEvent(&shift_right);
 
     assert(c.Get() == 1);
   }

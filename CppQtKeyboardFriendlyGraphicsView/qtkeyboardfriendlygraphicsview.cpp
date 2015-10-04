@@ -256,6 +256,7 @@ void ribi::QtKeyboardFriendlyGraphicsView::KeyPressEventCtrl(QKeyEvent *event) n
       delta_x = -10.0;
       break;
   }
+<<<<<<< HEAD
   for (const auto item: scene()->selectedItems())
   {
     assert(item);
@@ -266,6 +267,11 @@ void ribi::QtKeyboardFriendlyGraphicsView::KeyPressEventCtrl(QKeyEvent *event) n
   }
   scene()->update();
 }
+=======
+
+  assert(!(event->modifiers() & Qt::ControlModifier));
+
+>>>>>>> fc8b5b9c1d55befeff3407ff61f90ca12ea4d2c8
 
 void ribi::QtKeyboardFriendlyGraphicsView::KeyPressEventNoModifiers(QKeyEvent *event) noexcept
 {
@@ -422,7 +428,17 @@ void ribi::QtKeyboardFriendlyGraphicsView::KeyPressEventShift(QKeyEvent *event) 
   current_focus_item->clearFocus();
   if (new_added_selected_items.empty())
   {
+<<<<<<< HEAD
     //Nothing, focus is already lost
+=======
+    if (m_verbose) { std::clog << "Adding selectedness" << std::endl; }
+    assert(current_focus_item->isSelected());
+    //current_focus_item->setSelected(true);
+    //if (m_verbose) { std::clog << "(5) m_signal_update(current_focus_item)" << std::endl; }
+    //m_signal_update(current_focus_item);
+    new_focus_item->setSelected(true);
+    //m_signal_update(new_focus_item); Done at end
+>>>>>>> fc8b5b9c1d55befeff3407ff61f90ca12ea4d2c8
   }
   else
   {
