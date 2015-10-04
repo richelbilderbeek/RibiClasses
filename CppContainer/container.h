@@ -22,6 +22,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #define RIBI_CONTAINER_H
 
 #include <algorithm>
+#include <cassert>
 #include <set>
 #include <string>
 #include <sstream>
@@ -30,7 +31,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
-
 #pragma GCC diagnostic pop
 
 namespace ribi {
@@ -44,6 +44,17 @@ struct Container
     const std::vector<double>& v,
     const double tolerance
   ) const noexcept;
+
+  template <class T>
+  bool AllUnique(const T& v) const noexcept
+  {
+    typedef typename T::value_type ValueType;
+    std::set<ValueType> s;
+    std::copy(std::begin(v),std::end(v),std::inserter(s,std::end(s)));
+
+    //Thanks to Qt for making me do these casts, as QList::size returns an int
+    return static_cast<int>(s.size()) == static_cast<int>(v.size());
+  }
 
   ///Concatenate concatenates the strings, with a certain seperator
   std::string Concatenate(const std::vector<std::string>& v, const std::string& seperator = "") const noexcept;
@@ -63,6 +74,22 @@ struct Container
 
   ///Obtain the version history
   std::vector<std::string> GetVersionHistory() const noexcept;
+
+  template <class T, class U>
+  bool HasNoOverlap(const T& lhs,const U& rhs) const noexcept
+  {
+    assert(AllUnique(lhs));
+    assert(AllUnique(rhs));
+    typedef typename T::value_type ValueTypeT;
+    typedef typename U::value_type ValueTypeU;
+    static_assert(std::is_same<ValueTypeT,ValueTypeU>::value,"Containers must have the same value type");
+    std::set<ValueTypeT> s;
+    std::copy(std::begin(lhs),std::end(lhs),std::inserter(s,std::end(s)));
+    std::copy(std::begin(rhs),std::end(rhs),std::inserter(s,std::end(s)));
+
+    //Thanks to Qt for making me do these casts, as QList::size returns an int
+    return static_cast<int>(s.size()) == static_cast<int>(lhs.size()) + static_cast<int>(rhs.size());
+  }
 
   std::vector<std::string> SeperateString(
     const std::string& input,

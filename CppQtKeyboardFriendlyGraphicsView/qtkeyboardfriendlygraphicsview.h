@@ -66,7 +66,8 @@ struct QtKeyboardFriendlyGraphicsView : public QGraphicsView
   ///Returns nullptr if there is no focusable item in the items
   QGraphicsItem* GetClosest(
     const QGraphicsItem* const focus_item,
-    const std::vector<QGraphicsItem *>& items) const;
+    const std::vector<QGraphicsItem *>& items
+  ) const;
 
   ///Calculate the Euclidian distance between two points
   static double GetDistance(const QPointF& a, const QPointF& b);

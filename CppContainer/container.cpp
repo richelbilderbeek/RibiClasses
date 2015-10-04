@@ -205,5 +205,23 @@ void ribi::Container::Test() noexcept
     assert(c.AllAboutEqual(v,1.0));
     assert(!c.AllAboutEqual(v,0.01));
   }
+  //AllUnique
+  {
+    assert( c.AllUnique( std::vector<int>( {} ) ));
+    assert( c.AllUnique( std::vector<int>( {1} ) ));
+    assert( c.AllUnique( std::vector<int>( {1,2} ) ));
+    assert( c.AllUnique( std::vector<int>( {1,2,3} ) ));
+    assert(!c.AllUnique( std::vector<int>( {1,2,1} ) ));
+  }
+  //HasNoOverlap
+  {
+    assert( c.HasNoOverlap( std::vector<int>( {} ),std::vector<int>( {} )));
+    assert( c.HasNoOverlap( std::vector<int>( {1} ),std::vector<int>( {} )));
+    assert( c.HasNoOverlap( std::vector<int>( {1} ),std::vector<int>( {2} )));
+    assert(!c.HasNoOverlap( std::vector<int>( {1} ),std::vector<int>( {1} )));
+    assert( c.HasNoOverlap( std::vector<int>( {1,2} ),std::vector<int>( {3} )));
+    assert(!c.HasNoOverlap( std::vector<int>( {1,2,3} ),std::vector<int>( {1,2,3} )));
+    assert( c.HasNoOverlap( std::vector<int>( {1,2,3} ),std::vector<int>( {4,5,6} )));
+  }
 }
 #endif
