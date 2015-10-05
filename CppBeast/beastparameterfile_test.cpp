@@ -12,6 +12,7 @@
 #include "fastafile.h"
 
 #include "fileio.h"
+#include "trace.h"
 
 void ribi::BeastParameterFile::Test() noexcept
 {
@@ -164,6 +165,29 @@ void ribi::BeastParameterFile::Test() noexcept
     assert(
       fileio.FileToVector(temp_filename) == fileio.FileToVector(coalescent_constant_population_1)
     );
+  }
+  //MakeDescriptionsUnique
+  {
+    const DnaSequence s("not_unique","ATGC");
+    const DnaSequence t("not_unique","ATGC");
+    const std::vector<DnaSequence> v( {s,t} );
+    const std::vector<DnaSequence> w{MakeDescriptionsUnique(v)};
+    assert(w[0].GetDescription() != w[1].GetDescription());
+  }
+  //Allow BEAST to make sequences unique
+  {
+    const DnaSequence s("not_unique","ATGC");
+    const DnaSequence t("not_unique","ATGC");
+    const std::vector<ribi::DnaSequence> sequences_in( {s,t} );
+    const BeastParameterFile beast_file(
+      sequences_in,
+      "some_unused_filename",
+      1,
+      TreePrior::coalescent_constant_population
+    );
+    const auto sequences_out = beast_file.GetSequences();
+    assert(sequences_out.size() == 2);
+    assert(sequences_out[0].GetDescription() != sequences_out[1].GetDescription());
   }
 }
 #endif

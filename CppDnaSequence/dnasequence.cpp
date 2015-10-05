@@ -5,24 +5,37 @@
 #include <sstream>
 #include <stdexcept>
 
+#include "container.h"
+#include "testtimer.h"
+
 ribi::DnaSequence::DnaSequence(const std::string& description, const std::string& sequence)
   : m_description{description},
-    m_sequence{sequence}
+    m_sequence{CleanSequence(sequence)}
 {
   #ifndef NDEBUG
   Test();
   #endif
+}
+
+std::string ribi::CleanSequence(std::string s)
+{
+  //Remove all whitespace
+  s = Container().RemoveWhitespace(s);
+  s = Container().ToUpper(s);
   const auto iter = std::find_if_not(
-    std::begin(m_sequence),
-    std::end(m_sequence),
+    std::begin(s),
+    std::end(s),
     [](const char c) { return c == 'A' || c == 'C' ||  c == 'G' ||  c == 'T'; }
   );
-  if (iter != std::end(m_sequence))
+  if (iter != std::end(s))
   {
     std::stringstream s;
-    s << "Sequence::Sequence: sequence can only contain the characters 'A','C','G','T'";
+    s << "Sequence::Sequence: sequence can only contain the characters 'A','C','G','T'"
+      << ", found character: " << *iter
+    ;
     throw std::logic_error(s.str().c_str());
   }
+  return s;
 }
 
 
@@ -38,3 +51,4 @@ bool ribi::operator!=(const DnaSequence& lhs, const DnaSequence& rhs) noexcept
 {
   return !(lhs == rhs);
 }
+

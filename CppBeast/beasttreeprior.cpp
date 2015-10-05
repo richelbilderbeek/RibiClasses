@@ -1,6 +1,4 @@
 #include "beasttreeprior.h"
-<<<<<<< HEAD
-=======
 
 #include <cassert>
 #include <iostream>
@@ -22,4 +20,3 @@ std::ostream& ribi::operator<<(std::ostream& os, const TreePrior p) noexcept
   os << ToStr(p);
   return os;
 }
->>>>>>> 50893edd518d344390f109492f1a73bb5e75d898

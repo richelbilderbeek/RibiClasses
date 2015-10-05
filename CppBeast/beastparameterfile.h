@@ -12,11 +12,12 @@ struct DnaSequence;
 ///Creates a BEAST XML parameter file
 struct BeastParameterFile
 {
-
+  ///All sequences must have unique descriptions for BEAST2 to run.
+  ///If these descriptions are not unique, this class will make them unique by adding an index
   /// alignment_base_filename: if the alignment was made
   ///   from e.g. 'MyData.fas', alignment_base_filename must be 'MyData'
   explicit BeastParameterFile(
-    const std::vector<ribi::DnaSequence>& sequences,
+    std::vector<DnaSequence> sequences,
     const std::string& alignment_base_filename,
     const int mcmc_chainlength,
     const TreePrior tree_prior
@@ -39,6 +40,9 @@ struct BeastParameterFile
   static void Test() noexcept;
   #endif
 };
+
+//Make the descriptions of all sequences unique
+std::vector<DnaSequence> MakeDescriptionsUnique(std::vector<DnaSequence> sequences) noexcept;
 
 std::ostream& operator<<(std::ostream& os, const BeastParameterFile file);
 

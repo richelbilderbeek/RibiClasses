@@ -25,6 +25,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "container.h"
 
 #include <boost/algorithm/string/split.hpp>
+#include <boost/algorithm/string/erase.hpp>
 #include <boost/numeric/conversion/cast.hpp>
 
 #include "fuzzy_equal_to.h"
@@ -101,6 +102,14 @@ std::vector<std::string> ribi::Container::GetVersionHistory() const noexcept
   };
 }
 
+std::string ribi::Container::RemoveWhitespace(std::string s) const noexcept
+{
+  boost::algorithm::erase_all(s," ");
+  boost::algorithm::erase_all(s,"\t");
+  boost::algorithm::erase_all(s,"\n");
+  return s;
+}
+
 std::vector<std::string> ribi::Container::SeperateString(
   const std::string& input,
   const char seperator) const noexcept
@@ -110,6 +119,15 @@ std::vector<std::string> ribi::Container::SeperateString(
     std::bind2nd(std::equal_to<char>(),seperator),
     boost::algorithm::token_compress_on);
   return v;
+}
+
+std::string ribi::Container::ToUpper(std::string s) const
+{
+  std::transform(
+    std::begin(s), std::end(s), std::begin(s),
+    std::ptr_fun<int,int>(std::toupper)
+  );
+  return s;
 }
 
 #ifndef NDEBUG
@@ -222,6 +240,16 @@ void ribi::Container::Test() noexcept
     assert( c.HasNoOverlap( std::vector<int>( {1,2} ),std::vector<int>( {3} )));
     assert(!c.HasNoOverlap( std::vector<int>( {1,2,3} ),std::vector<int>( {1,2,3} )));
     assert( c.HasNoOverlap( std::vector<int>( {1,2,3} ),std::vector<int>( {4,5,6} )));
+  }
+  //ToUpper
+  {
+    assert(c.ToUpper("abc") == "ABC");
+    assert(c.ToUpper("ABC") == "ABC");
+  }
+  //RemoveWhitespace
+  {
+    assert(c.RemoveWhitespace("abc") == "abc");
+    assert(c.RemoveWhitespace("a\tb \nc") == "abc");
   }
 }
 #endif

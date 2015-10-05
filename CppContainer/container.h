@@ -91,6 +91,9 @@ struct Container
     return static_cast<int>(s.size()) == static_cast<int>(lhs.size()) + static_cast<int>(rhs.size());
   }
 
+
+  std::string RemoveWhitespace(std::string s) const noexcept;
+
   std::vector<std::string> SeperateString(
     const std::string& input,
     const char seperator) const noexcept;
@@ -118,6 +121,8 @@ struct Container
     return str;
   }
 
+  ///Convert a std::string to uppercase
+  std::string ToUpper(std::string s) const;
 
   private:
   #ifndef NDEBUG

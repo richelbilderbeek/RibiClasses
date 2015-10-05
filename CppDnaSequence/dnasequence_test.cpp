@@ -3,6 +3,9 @@
 #include <cassert>
 #include <stdexcept>
 
+#include "container.h"
+#include "testtimer.h"
+
 #ifndef NDEBUG
 void ribi::DnaSequence::Test() noexcept
 {
@@ -11,6 +14,11 @@ void ribi::DnaSequence::Test() noexcept
     if (is_tested) return;
     is_tested = true;
   }
+  {
+    Container();
+  }
+  const TestTimer test_timer(__func__,__FILE__,1.0);
+
   //Recovery of parameters
   {
     const std::string description{"description"};
@@ -51,6 +59,10 @@ void ribi::DnaSequence::Test() noexcept
     {
       //Well detected!
     }
+  }
+  //CleanSequence
+  {
+    assert(CleanSequence("a g c") == "AGC");
   }
 }
 #endif

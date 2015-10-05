@@ -284,13 +284,14 @@ void ribi::Beast::AnalyzeCoalescentRscript(
 
 std::string ribi::Beast::GetVersion() const noexcept
 {
-  return "1.0";
+  return "1.1";
 }
 
 std::vector<std::string> ribi::Beast::GetVersionHistory() const noexcept
 {
   return {
-    "2015-06-13: Version 1.0: started versioning"
+    "2015-06-13: Version 1.0: started versioning",
+    "2015-10-05: Version 1.1: BeastParameterFile renames duplicate sequence descriptions, fixed bug"
   };
 }
 
