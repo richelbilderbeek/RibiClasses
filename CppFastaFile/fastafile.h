@@ -6,7 +6,9 @@
 
 #include "dnasequence.h"
 
-namespace ribi { struct DnaSequence; }
+namespace ribi {
+
+struct DnaSequence;
 
 ///Creates a Fasta file
 struct FastaFile
@@ -15,6 +17,10 @@ struct FastaFile
   explicit FastaFile(const std::vector<ribi::DnaSequence>& sequences);
 
   const std::vector<ribi::DnaSequence>& GetSequences() const noexcept { return m_sequences; }
+
+  std::string GetVersion() const noexcept;
+  std::vector<std::string> GetVersionHistory() const noexcept;
+
   private:
   const std::vector<ribi::DnaSequence> m_sequences;
 
@@ -25,11 +31,11 @@ struct FastaFile
   static void Test() noexcept;
   #endif
 
-
-
   friend std::ostream& operator<<(std::ostream& os, const FastaFile file);
 };
 
 std::ostream& operator<<(std::ostream& os, const FastaFile file);
+
+}
 
 #endif // FASTAFILE_H

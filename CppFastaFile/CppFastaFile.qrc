@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/fasta_file/files">
+        <file>fasta_file_test_0.fasta</file>
+    </qresource>
+</RCC>
