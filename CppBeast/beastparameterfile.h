@@ -20,7 +20,8 @@ struct BeastParameterFile
     std::vector<DnaSequence> sequences,
     const std::string& alignment_base_filename,
     const int mcmc_chainlength,
-    const TreePrior tree_prior
+    const TreePrior tree_prior,
+    const int date_iso8601 // = 20151005
   );
 
   const std::vector<ribi::DnaSequence>& GetSequences() const noexcept { return m_sequences; }
@@ -32,6 +33,7 @@ struct BeastParameterFile
 
   private:
   const std::string m_alignment_base_filename;
+  const int m_date_iso8601;
   const int m_mcmc_chainlength;
   const std::vector<ribi::DnaSequence> m_sequences;
   const TreePrior m_tree_prior;
@@ -39,6 +41,9 @@ struct BeastParameterFile
   #ifndef NDEBUG
   static void Test() noexcept;
   #endif
+
+  std::vector<std::string> ToBirthDeathXml20150101() const noexcept;
+  std::vector<std::string> ToBirthDeathXml20151005() const noexcept;
 };
 
 //Make the descriptions of all sequences unique

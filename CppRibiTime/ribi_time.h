@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 /*
-RibiRegex, class for working with regular expressions
-Copyright (C) 2014-2015 Richel Bilderbeek
+RibiTime, class for working with time
+Copyright (C) 2015-2015 Richel Bilderbeek
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -16,10 +16,10 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 //---------------------------------------------------------------------------
-//From http://www.richelbilderbeek.nl/CppRibiRegex.htm
+//From http://www.richelbilderbeek.nl/CppRibiTime.htm
 //---------------------------------------------------------------------------
-#ifndef RIBI_REGEX_H
-#define RIBI_REGEX_H
+#ifndef RIBI_TIME_H
+#define RIBI_TIME_H
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
@@ -36,18 +36,29 @@ struct Time
 {
   Time();
 
+  //Returns date in YYYY-MM-DD format
+  std::string GetTodayIso8601() const noexcept { return GetTodayIso8601Stl(); }
+
+  //Returns date in YYYYMMDD format
+  int GetTodayIso8601AsInt() const noexcept;
+
   static std::string GetVersion() noexcept;
   static std::vector<std::string> GetVersionHistory() noexcept;
 
-  void Wait(const double n_secs) noexcept;
+  void Wait(const double n_secs) const noexcept;
 
   private:
+
+  std::string GetTodayIso8601Boost() const noexcept;
+  std::string GetTodayIso8601Stl() const noexcept;
 
   #ifndef NDEBUG
   static void Test() noexcept;
   #endif
+
+
 };
 
 } //~namespace ribi
 
-#endif // RIBI_REGEX_H
+#endif // RIBI_TIME_H

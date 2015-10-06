@@ -10,7 +10,7 @@
 
 //TODO: Move FastaFile check to FastaFile::Test
 #include "fastafile.h"
-
+#include "testtimer.h"
 #include "fileio.h"
 #include "trace.h"
 
@@ -21,9 +21,17 @@ void ribi::BeastParameterFile::Test() noexcept
     if (is_tested) return;
     is_tested = true;
   }
+  {
+    fileio::FileIo();
+  }
+  const ribi::TestTimer test_timer(__func__,__FILE__,1.0);
+  const bool verbose{false};
+
   const ribi::fileio::FileIo fileio;
-  const std::string beast_filename_birth_death_0{"birth_death_0.xml"};
-  const std::string beast_filename_birth_death_1{"birth_death_1.xml"};
+  const std::string beast_filename_birth_death_0_20150101{"birth_death_0_20150101.xml"};
+  const std::string beast_filename_birth_death_1_20150101{"birth_death_1_20150101.xml"};
+  const std::string beast_filename_birth_death_0_20151005{"birth_death_0_20151005.xml"};
+  const std::string beast_filename_birth_death_1_20151005{"birth_death_1_20151005.xml"};
   const std::string coalescent_constant_population_0{"coalescent_constant_population_0.xml"};
   const std::string coalescent_constant_population_1{"coalescent_constant_population_1.xml"};
   const std::string fasta_filename_0{"test_output_0.fas"};
@@ -33,8 +41,10 @@ void ribi::BeastParameterFile::Test() noexcept
   const std::vector<std::string> resource_filenames
     =
     {
-      beast_filename_birth_death_0,
-      beast_filename_birth_death_1,
+      beast_filename_birth_death_0_20150101,
+      beast_filename_birth_death_1_20150101,
+      beast_filename_birth_death_0_20151005,
+      beast_filename_birth_death_1_20151005,
       coalescent_constant_population_0,
       coalescent_constant_population_1,
       fasta_filename_0,
@@ -42,7 +52,7 @@ void ribi::BeastParameterFile::Test() noexcept
       log_file_birthdeath,
       log_file_coalescent
     };
-  //Create resources
+  if (verbose) { TRACE("Create resources"); }
   {
     for (const auto& s: resource_filenames)
     {
@@ -57,23 +67,24 @@ void ribi::BeastParameterFile::Test() noexcept
       assert(fileio.IsRegularFile(s));
     }
   }
-  //Compare fasta_filename_0 and birth_death
+  if (verbose) { TRACE("Compare fasta_filename_0 and beast_filename_birth_death_0_20150101"); }
   {
     const FastaFile fasta_file(fasta_filename_0);
     const BeastParameterFile beast_file(
       fasta_file.GetSequences(),
       fileio.GetFileBasename(fasta_filename_0), //alignment_base_filename,
       10000000,
-      TreePrior::birth_death
+      TreePrior::birth_death,
+      20150101
     );
-    const std::string temp_filename{"tmp.txt"};
+    const std::string temp_filename{fileio.GetTempFileName(".txt")};
     {
       std::ofstream f(temp_filename.c_str());
       f << beast_file;
     }
-    if (fileio.FileToVector(temp_filename) != fileio.FileToVector(beast_filename_birth_death_0))
+    if (fileio.FileToVector(temp_filename) != fileio.FileToVector(beast_filename_birth_death_0_20150101))
     {
-      std::stringstream cmd; cmd << "diff -w " << temp_filename << " " << beast_filename_birth_death_0;
+      std::stringstream cmd; cmd << "diff -w " << temp_filename << " " << beast_filename_birth_death_0_20150101;
       const int error{std::system(cmd.str().c_str())};
       if (error)
       {
@@ -81,26 +92,28 @@ void ribi::BeastParameterFile::Test() noexcept
       }
     }
     assert(
-      fileio.FileToVector(temp_filename) == fileio.FileToVector(beast_filename_birth_death_0)
+      fileio.FileToVector(temp_filename) == fileio.FileToVector(beast_filename_birth_death_0_20150101)
     );
+    fileio.DeleteFile(temp_filename);
   }
-  //Compare fasta_filename_1 and birth_death
+  if (verbose) { TRACE("Compare fasta_filename_1 and beast_filename_birth_death_1_20150101"); }
   {
     const FastaFile fasta_file(fasta_filename_1);
     const BeastParameterFile beast_file(
       fasta_file.GetSequences(),
       fileio.GetFileBasename(fasta_filename_1),
       10000000,
-      TreePrior::birth_death
+      TreePrior::birth_death,
+      20150101
     );
-    const std::string temp_filename{"tmp.txt"};
+    const std::string temp_filename{fileio.GetTempFileName(".txt")};
     {
       std::ofstream f(temp_filename.c_str());
       f << beast_file;
     }
-    if (fileio.FileToVector(temp_filename) != fileio.FileToVector(beast_filename_birth_death_1))
+    if (fileio.FileToVector(temp_filename) != fileio.FileToVector(beast_filename_birth_death_1_20150101))
     {
-      std::stringstream cmd; cmd << "diff -w " << temp_filename << " " << beast_filename_birth_death_1;
+      std::stringstream cmd; cmd << "diff -w " << temp_filename << " " << beast_filename_birth_death_1_20150101;
       const int error{std::system(cmd.str().c_str())};
       if (error)
       {
@@ -108,19 +121,79 @@ void ribi::BeastParameterFile::Test() noexcept
       }
     }
     assert(
-      fileio.FileToVector(temp_filename) == fileio.FileToVector(beast_filename_birth_death_1)
+      fileio.FileToVector(temp_filename) == fileio.FileToVector(beast_filename_birth_death_1_20150101)
     );
+    fileio.DeleteFile(temp_filename);
   }
-  //Compare fasta_filename_0 and coalescent_constant_population
+  if (verbose) { TRACE("Compare fasta_filename_0 and beast_filename_birth_death_0_20151005"); }
+  {
+    const FastaFile fasta_file(fasta_filename_0);
+    const BeastParameterFile beast_file(
+      fasta_file.GetSequences(),
+      fileio.GetFileBasename(fasta_filename_0), //alignment_base_filename,
+      10000000,
+      TreePrior::birth_death,
+      20151005
+    );
+    const std::string temp_filename{fileio.GetTempFileName(".txt")};
+    {
+      std::ofstream f(temp_filename.c_str());
+      f << beast_file;
+    }
+    if (fileio.FileToVector(temp_filename) != fileio.FileToVector(beast_filename_birth_death_0_20151005))
+    {
+      std::stringstream cmd; cmd << "diff -w " << temp_filename << " " << beast_filename_birth_death_0_20151005;
+      const int error{std::system(cmd.str().c_str())};
+      if (error)
+      {
+        std::clog << __FILE__ << ": error " << error << '\n';
+      }
+    }
+    assert(
+      fileio.FileToVector(temp_filename) == fileio.FileToVector(beast_filename_birth_death_0_20151005)
+    );
+    fileio.DeleteFile(temp_filename);
+  }
+  if (verbose) { TRACE("Compare fasta_filename_1 and beast_filename_birth_death_1_20151005"); }
+  {
+    const FastaFile fasta_file(fasta_filename_1);
+    const BeastParameterFile beast_file(
+      fasta_file.GetSequences(),
+      fileio.GetFileBasename(fasta_filename_1),
+      10000000,
+      TreePrior::birth_death,
+      20151005
+    );
+    const std::string temp_filename{fileio.GetTempFileName(".txt")};
+    {
+      std::ofstream f(temp_filename.c_str());
+      f << beast_file;
+    }
+    if (fileio.FileToVector(temp_filename) != fileio.FileToVector(beast_filename_birth_death_1_20151005))
+    {
+      std::stringstream cmd; cmd << "diff -w " << temp_filename << " " << beast_filename_birth_death_1_20151005;
+      const int error{std::system(cmd.str().c_str())};
+      if (error)
+      {
+        std::clog << __FILE__ << ": error " << error << '\n';
+      }
+    }
+    assert(
+      fileio.FileToVector(temp_filename) == fileio.FileToVector(beast_filename_birth_death_1_20151005)
+    );
+    fileio.DeleteFile(temp_filename);
+  }
+  if (verbose) { TRACE("Compare fasta_filename_0 and coalescent_constant_population"); }
   {
     const FastaFile fasta_file(fasta_filename_0);
     const BeastParameterFile beast_file(
       fasta_file.GetSequences(),
       fileio.GetFileBasename(fasta_filename_0),
       10000000,
-      TreePrior::coalescent_constant_population
+      TreePrior::coalescent_constant_population,
+      20150101
     );
-    const std::string temp_filename{"tmp.txt"};
+    const std::string temp_filename{fileio.GetTempFileName(".txt")};
     {
       std::ofstream f(temp_filename.c_str());
       f << beast_file;
@@ -137,17 +210,19 @@ void ribi::BeastParameterFile::Test() noexcept
     assert(
       fileio.FileToVector(temp_filename) == fileio.FileToVector(coalescent_constant_population_0)
     );
+    fileio.DeleteFile(temp_filename);
   }
-  //Compare fasta_filename_1 and coalescent_constant_population
+  if (verbose) { TRACE("Compare fasta_filename_1 and coalescent_constant_population"); }
   {
     const FastaFile fasta_file(fasta_filename_1);
     const BeastParameterFile beast_file(
       fasta_file.GetSequences(),
       fileio.GetFileBasename(fasta_filename_1),
       10000000,
-      TreePrior::coalescent_constant_population
+      TreePrior::coalescent_constant_population,
+      20150101
     );
-    const std::string temp_filename{"tmp.txt"};
+    const std::string temp_filename{fileio.GetTempFileName(".txt")};
     {
       std::ofstream f(temp_filename.c_str());
       f << beast_file;
@@ -165,8 +240,9 @@ void ribi::BeastParameterFile::Test() noexcept
     assert(
       fileio.FileToVector(temp_filename) == fileio.FileToVector(coalescent_constant_population_1)
     );
+    fileio.DeleteFile(temp_filename);
   }
-  //MakeDescriptionsUnique
+  if (verbose) { TRACE("MakeDescriptionsUnique"); }
   {
     const DnaSequence s("not_unique","ATGC");
     const DnaSequence t("not_unique","ATGC");
@@ -174,7 +250,7 @@ void ribi::BeastParameterFile::Test() noexcept
     const std::vector<DnaSequence> w{MakeDescriptionsUnique(v)};
     assert(w[0].GetDescription() != w[1].GetDescription());
   }
-  //Allow BEAST to make sequences unique
+  if (verbose) { TRACE("Allow BEAST to make sequences unique"); }
   {
     const DnaSequence s("not_unique","ATGC");
     const DnaSequence t("not_unique","ATGC");
@@ -183,7 +259,8 @@ void ribi::BeastParameterFile::Test() noexcept
       sequences_in,
       "some_unused_filename",
       1,
-      TreePrior::coalescent_constant_population
+      TreePrior::coalescent_constant_population,
+      20150101
     );
     const auto sequences_out = beast_file.GetSequences();
     assert(sequences_out.size() == 2);
