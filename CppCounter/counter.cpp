@@ -20,8 +20,12 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 #include "counter.h"
 
+#include <sstream>
+
+#include "trace.h"
+
 ribi::Counter::Counter(const int initial_count) noexcept
-  : m_count(initial_count)
+  : m_count(initial_count), m_verbosity{false}
 {
   #ifndef NDEBUG
   Test();
@@ -30,7 +34,7 @@ ribi::Counter::Counter(const int initial_count) noexcept
 
 std::string ribi::Counter::GetVersion() noexcept
 {
-  return "1.2";
+  return "1.3";
 }
 
 std::vector<std::string> ribi::Counter::GetVersionHistory() noexcept
@@ -38,8 +42,21 @@ std::vector<std::string> ribi::Counter::GetVersionHistory() noexcept
   return {
     "2011-08-20: Version 1.0: initial version",
     "2014-08-01: Version 1.1: added tests",
-    "2014-04-18: Version 1.2: added operator++, operator== and operator!="
+    "2014-04-18: Version 1.2: added operator++, operator== and operator!=",
+    "2014-04-18: Version 1.3: added verbosity"
   };
+}
+
+void ribi::Counter::Inc() noexcept
+{
+  ++m_count;
+
+  if (m_verbosity)
+  {
+    std::stringstream s;
+    s << "Incremented counter to " << m_count;
+    TRACE(s.str());
+  }
 }
 
 bool ribi::operator==(const ribi::Counter& lhs, const ribi::Counter& rhs) noexcept
@@ -51,4 +68,3 @@ bool ribi::operator!=(const ribi::Counter& lhs, const ribi::Counter& rhs) noexce
 {
   return !(lhs == rhs);
 }
-

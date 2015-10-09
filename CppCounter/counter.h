@@ -30,6 +30,7 @@ namespace ribi {
 ///It may appear to be a rather trivial class, but I use it mostly to test signals:
 ///  MyClass my_class;
 ///  Counter c{0}; //For receiving the signal
+///  c.SetVerbosity(true);
 ///  my_class.m_signal.connect(
 ///    boost::bind(&MyClass::AnyMemberFunction,&c)
 ///  );
@@ -42,7 +43,7 @@ struct Counter
   explicit Counter(const int initial_count = 0) noexcept;
 
   ///Increments count
-  void Inc() noexcept { ++m_count; }
+  void Inc() noexcept;
 
   //Prefix
   Counter& operator++()
@@ -57,9 +58,13 @@ struct Counter
   static std::string GetVersion() noexcept;
   static std::vector<std::string> GetVersionHistory() noexcept;
 
+  void SetVerbosity(const bool verbosity) noexcept { m_verbosity = verbosity; }
+
   private:
   ///The count
   int m_count;
+
+  bool m_verbosity;
 
   #ifndef NDEBUG
   static void Test() noexcept;

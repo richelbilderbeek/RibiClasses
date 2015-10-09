@@ -40,7 +40,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmapnode.h"
 #include "qtconceptmapqtnode.h"
 #include "conceptmapnodefactory.h"
-#include "ribisystem.h"
+#include "ribi_system.h"
 #include "testtimer.h"
 #include "trace.h"
 #pragma GCC diagnostic pop

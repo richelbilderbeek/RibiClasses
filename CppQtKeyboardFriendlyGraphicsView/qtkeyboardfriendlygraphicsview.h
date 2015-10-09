@@ -67,22 +67,22 @@ struct QtKeyboardFriendlyGraphicsView : public QGraphicsView
   QGraphicsItem* GetClosest(
     const QGraphicsItem* const focus_item,
     const std::vector<QGraphicsItem *>& items
-  ) const;
+  ) const noexcept;
 
   ///Calculate the Euclidian distance between two points
   static double GetDistance(const QPointF& a, const QPointF& b);
 
   ///Obtain the items above the focus_item
-  std::vector<QGraphicsItem *> GetItemsAbove(const QGraphicsItem* const focus_item) const;
+  QGraphicsItem * GetClosestItemAbove(const QGraphicsItem* const focus_item) const;
 
   ///Obtain the items below the focus_item
-  std::vector<QGraphicsItem *> GetItemsBelow(const QGraphicsItem* const focus_item) const;
+  QGraphicsItem * GetClosestItemBelow(const QGraphicsItem* const focus_item) const;
 
   ///Obtain the items left of the focus_item
-  std::vector<QGraphicsItem *> GetItemsLeft(const QGraphicsItem* const focus_item) const;
+  QGraphicsItem * GetClosestItemLeft(const QGraphicsItem* const focus_item) const;
 
   ///Obtain the items right of the focus_item
-  std::vector<QGraphicsItem *> GetItemsRight(const QGraphicsItem* const focus_item) const;
+  QGraphicsItem * GetClosestItemRight(const QGraphicsItem* const focus_item) const;
 
   void KeyPressEventCtrl(QKeyEvent *event) noexcept;
   void KeyPressEventNoModifiers(QKeyEvent *event) noexcept;

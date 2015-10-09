@@ -46,9 +46,9 @@ ribi::QtKeyboardFriendlyGraphicsView::QtKeyboardFriendlyGraphicsView(QWidget* pa
 
 QGraphicsItem* ribi::QtKeyboardFriendlyGraphicsView::GetClosest(
   const QGraphicsItem* const focus_item,
-  const std::vector<QGraphicsItem *>& items) const
+  const std::vector<QGraphicsItem *>& items) const noexcept
 {
-  assert(!items.empty());
+  if (items.empty()) return nullptr;
   assert(std::count(items.begin(),items.end(),focus_item) == 0);
 
   QGraphicsItem* best = nullptr;
@@ -78,7 +78,7 @@ double ribi::QtKeyboardFriendlyGraphicsView::GetDistance(const QPointF& a, const
   return std::sqrt((dx * dx) + (dy * dy));
 }
 
-std::vector<QGraphicsItem *> ribi::QtKeyboardFriendlyGraphicsView::GetItemsAbove(const QGraphicsItem* const focus_item) const
+QGraphicsItem * ribi::QtKeyboardFriendlyGraphicsView::GetClosestItemAbove(const QGraphicsItem* const focus_item) const
 {
   std::vector<QGraphicsItem *> v;
   const QList<QGraphicsItem *> items = this->items();
@@ -100,7 +100,9 @@ std::vector<QGraphicsItem *> ribi::QtKeyboardFriendlyGraphicsView::GetItemsAbove
   if (!v.empty())
   {
     assert(Container().AllUnique(v));
-    return v;
+    QGraphicsItem * const closest_item = GetClosest(focus_item,v);
+    assert(closest_item != focus_item);
+    return closest_item;
   }
 
   //Look for items North (from West, through North, through East)
@@ -114,10 +116,12 @@ std::vector<QGraphicsItem *> ribi::QtKeyboardFriendlyGraphicsView::GetItemsAbove
     }
   }
   assert(Container().AllUnique(v));
-  return v;
+  QGraphicsItem * const closest_item = GetClosest(focus_item,v);
+  assert(closest_item != focus_item);
+  return closest_item;
 }
 
-std::vector<QGraphicsItem *> ribi::QtKeyboardFriendlyGraphicsView::GetItemsBelow(const QGraphicsItem* const focus_item) const
+QGraphicsItem * ribi::QtKeyboardFriendlyGraphicsView::GetClosestItemBelow(const QGraphicsItem* const focus_item) const
 {
   std::vector<QGraphicsItem *> v;
   const QList<QGraphicsItem *> items = this->items();
@@ -139,7 +143,9 @@ std::vector<QGraphicsItem *> ribi::QtKeyboardFriendlyGraphicsView::GetItemsBelow
   if (!v.empty())
   {
     assert(Container().AllUnique(v));
-    return v;
+    QGraphicsItem * const closest_item = GetClosest(focus_item,v);
+    assert(closest_item != focus_item);
+    return closest_item;
   }
 
   //Look for items South
@@ -153,10 +159,12 @@ std::vector<QGraphicsItem *> ribi::QtKeyboardFriendlyGraphicsView::GetItemsBelow
     }
   }
   assert(Container().AllUnique(v));
-  return v;
+  QGraphicsItem * const closest_item = GetClosest(focus_item,v);
+  assert(closest_item != focus_item);
+  return closest_item;
 }
 
-std::vector<QGraphicsItem *> ribi::QtKeyboardFriendlyGraphicsView::GetItemsLeft(const QGraphicsItem* const focus_item) const
+QGraphicsItem * ribi::QtKeyboardFriendlyGraphicsView::GetClosestItemLeft(const QGraphicsItem* const focus_item) const
 {
   std::vector<QGraphicsItem *> v;
   const QList<QGraphicsItem *> items = this->items();
@@ -178,7 +186,9 @@ std::vector<QGraphicsItem *> ribi::QtKeyboardFriendlyGraphicsView::GetItemsLeft(
   if (!v.empty())
   {
     assert(Container().AllUnique(v));
-    return v;
+    QGraphicsItem * const closest_item = GetClosest(focus_item,v);
+    assert(closest_item != focus_item);
+    return closest_item;
   }
 
   //Look for items Westwards
@@ -191,11 +201,13 @@ std::vector<QGraphicsItem *> ribi::QtKeyboardFriendlyGraphicsView::GetItemsLeft(
       v.push_back(item);
     }
   }
- assert(Container().AllUnique(v));
- return v;
+  assert(Container().AllUnique(v));
+  QGraphicsItem * const closest_item = GetClosest(focus_item,v);
+  assert(closest_item != focus_item);
+  return closest_item;
 }
 
-std::vector<QGraphicsItem *> ribi::QtKeyboardFriendlyGraphicsView::GetItemsRight(const QGraphicsItem* const focus_item) const
+QGraphicsItem * ribi::QtKeyboardFriendlyGraphicsView::GetClosestItemRight(const QGraphicsItem* const focus_item) const
 {
   std::vector<QGraphicsItem *> v;
   const QList<QGraphicsItem *> items = this->items();
@@ -217,7 +229,9 @@ std::vector<QGraphicsItem *> ribi::QtKeyboardFriendlyGraphicsView::GetItemsRight
   if (!v.empty())
   {
     assert(Container().AllUnique(v));
-    return v;
+    QGraphicsItem * const closest_item = GetClosest(focus_item,v);
+    assert(closest_item != focus_item);
+    return closest_item;
   }
 
   //Look for items Eastwards
@@ -231,7 +245,9 @@ std::vector<QGraphicsItem *> ribi::QtKeyboardFriendlyGraphicsView::GetItemsRight
     }
   }
   assert(Container().AllUnique(v));
-  return v;
+  QGraphicsItem * const closest_item = GetClosest(focus_item,v);
+  assert(closest_item != focus_item);
+  return closest_item;
 }
 
 std::string ribi::QtKeyboardFriendlyGraphicsView::GetVersion() noexcept
@@ -324,33 +340,31 @@ void ribi::QtKeyboardFriendlyGraphicsView::KeyPressEventNoModifiers(QKeyEvent *e
     return;
   }
 
-  const auto current_selected_items = scene()->selectedItems();
-
-  std::vector<QGraphicsItem *> new_selected_items;
+  QGraphicsItem * new_selected_item = nullptr;
 
   switch (event->key())
   {
     case Qt::Key_Up:
       assert(current_focus_item);
       if (m_verbose) { std::clog << "Move focus up" << std::endl; }
-      new_selected_items = GetItemsAbove(current_focus_item);
+      new_selected_item = GetClosestItemAbove(current_focus_item);
     break;
     case Qt::Key_Tab:
     case Qt::Key_Right:
       assert(current_focus_item);
       if (m_verbose) { std::clog << "Move focus right" << std::endl; }
-      new_selected_items = GetItemsRight(current_focus_item);
+      new_selected_item = GetClosestItemRight(current_focus_item);
       break;
     case Qt::Key_Down:
       assert(current_focus_item);
       if (m_verbose) { std::clog << "Move focus down" << std::endl; }
-      new_selected_items = GetItemsBelow(current_focus_item);
+      new_selected_item = GetClosestItemBelow(current_focus_item);
       break;
     case Qt::Key_Left:
     case Qt::Key_Backtab:
       assert(current_focus_item);
       if (m_verbose) { std::clog << "Move focus left" << std::endl; }
-      new_selected_items = GetItemsLeft(current_focus_item);
+      new_selected_item = GetClosestItemLeft(current_focus_item);
       break;
     case Qt::Key_Space:
       if (m_verbose) { std::clog << "Set random focus" << std::endl; }
@@ -380,32 +394,30 @@ void ribi::QtKeyboardFriendlyGraphicsView::KeyPressEventNoModifiers(QKeyEvent *e
     }
   }
 
+  assert(new_selected_item != current_focus_item);
+
   //Unselect currently selected
-  assert(Container().AllUnique(new_selected_items));
+  const auto current_selected_items = scene()->selectedItems();
+  if (m_verbose) { std::clog << "Unselecting " << current_selected_items.size() << " items " << std::endl; }
   for (const auto item: current_selected_items)
   {
     if (m_verbose) { std::clog << "Unselect: " << item->toolTip().toStdString() << std::endl; }
+    assert(item->isSelected());
     item->setSelected(false);
     m_signal_update(item);
   }
+  assert(!current_focus_item->isSelected() && "Focus item must have lost focus now");
   //Select newly selected
-  for (const auto item: new_selected_items)
+  if (new_selected_item)
   {
-    if (m_verbose) { std::clog << "Select: " << item->toolTip().toStdString() << std::endl; }
-    item->setSelected(true);
-    m_signal_update(item);
+    if (m_verbose) { std::clog << "Select: " << new_selected_item->toolTip().toStdString() << std::endl; }
+    assert(!new_selected_item->isSelected());
+    new_selected_item->setSelected(true);
+    m_signal_update(new_selected_item);
   }
   //Transfer focus
   current_focus_item->clearFocus();
-  if (new_selected_items.empty())
-  {
-    //Nothing, focus is already lost
-  }
-  else
-  {
-    QGraphicsItem* const new_focus_item = GetClosest(current_focus_item,new_selected_items);
-    if (new_focus_item) { new_focus_item->setFocus(); }
-  }
+  if (new_selected_item) { new_selected_item->setFocus(); }
 }
 
 void ribi::QtKeyboardFriendlyGraphicsView::KeyPressEventShift(QKeyEvent *event) noexcept
@@ -421,27 +433,27 @@ void ribi::QtKeyboardFriendlyGraphicsView::KeyPressEventShift(QKeyEvent *event) 
     return;
   }
 
-  std::vector<QGraphicsItem *> new_added_selected_items;
+  QGraphicsItem * new_added_selected_item = nullptr;
 
   switch (event->key())
   {
     case Qt::Key_Up:
       if (m_verbose) { std::clog << "Move focus up" << std::endl; }
-      new_added_selected_items = GetItemsAbove(current_focus_item);
+      new_added_selected_item = GetClosestItemAbove(current_focus_item);
     break;
     case Qt::Key_Tab:
     case Qt::Key_Right:
       if (m_verbose) { std::clog << "Move focus right" << std::endl; }
-      new_added_selected_items = GetItemsRight(current_focus_item);
+      new_added_selected_item = GetClosestItemRight(current_focus_item);
       break;
     case Qt::Key_Down:
       if (m_verbose) { std::clog << "Move focus down" << std::endl; }
-      new_added_selected_items = GetItemsBelow(current_focus_item);
+      new_added_selected_item = GetClosestItemBelow(current_focus_item);
       break;
     case Qt::Key_Left:
     case Qt::Key_Backtab:
       if (m_verbose) { std::clog << "Move focus left" << std::endl; }
-      new_added_selected_items = GetItemsLeft(current_focus_item);
+      new_added_selected_item = GetClosestItemLeft(current_focus_item);
       break;
     default:
     {
@@ -451,31 +463,18 @@ void ribi::QtKeyboardFriendlyGraphicsView::KeyPressEventShift(QKeyEvent *event) 
       return;
     }
   }
-
-  assert(Container().HasNoOverlap(currently_selected_items,new_added_selected_items));
-
+  assert(new_added_selected_item != current_focus_item);
   //Add selectedness
-  assert(Container().AllUnique(new_added_selected_items));
-  if (m_verbose) { std::clog << "#items that will be selected: " << new_added_selected_items.size() << std::endl; }
-  for (auto item: new_added_selected_items)
   {
-    if (m_verbose) { std::clog << "Add select: " << item->toolTip().toStdString() << std::endl; }
-    assert(!item->isSelected());
-    item->setSelected(true);
-    m_signal_update(item);
+    if (m_verbose) { std::clog << "Add select: " << new_added_selected_item->toolTip().toStdString() << std::endl; }
+    assert(!new_added_selected_item->isSelected());
+    new_added_selected_item->setSelected(true);
+    m_signal_update(new_added_selected_item);
   }
 
    //Transfer focus
   current_focus_item->clearFocus();
-  if (new_added_selected_items.empty())
-  {
-    //Nothing, focus is already lost
-  }
-  else
-  {
-    QGraphicsItem* const new_focus_item = GetClosest(current_focus_item,new_added_selected_items);
-    if (new_focus_item) { new_focus_item->setFocus(); }
-  }
+  if (new_added_selected_item) { new_added_selected_item->setFocus(); }
   this->update();
 }
 
@@ -483,9 +482,11 @@ void ribi::QtKeyboardFriendlyGraphicsView::SetRandomFocus()
 {
   if (QGraphicsItem* const item = scene()->focusItem())
   {
+    assert(item);
     if (m_verbose) { std::clog << "Removing current focus" << std::endl; }
     //Really lose focus
     item->setEnabled(false);
+    //assert(item->isSelected()); //Not true
     item->setSelected(false); // #239
     item->clearFocus();
     item->setEnabled(true);
@@ -499,6 +500,7 @@ void ribi::QtKeyboardFriendlyGraphicsView::SetRandomFocus()
   if (m_verbose) { std::clog << "Remove selectedness of all " << scene()->selectedItems().size() << " selected items" << std::endl; }
   for (auto item: scene()->selectedItems())
   {
+    assert(item->isSelected());
     item->setSelected(false);
     m_signal_update(item);
   }
@@ -523,6 +525,7 @@ void ribi::QtKeyboardFriendlyGraphicsView::SetRandomFocus()
     assert(i >= 0);
     assert(i < items.size());
     auto& new_focus_item = items[i];
+    assert(!new_focus_item->isSelected());
     new_focus_item->setSelected(true); // #239
     new_focus_item->setFocus();
     m_signal_update(new_focus_item);
