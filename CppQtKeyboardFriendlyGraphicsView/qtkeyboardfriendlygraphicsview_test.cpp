@@ -50,7 +50,7 @@ void ribi::QtKeyboardFriendlyGraphicsView::Test() noexcept
   }
   using namespace ribi::qtkeyboardfriendlygraphicsview;
   const TestTimer test_timer(__func__,__FILE__,1.0);
-  const bool verbose{false};
+  bool verbose{false};
   QtKeyboardFriendlyGraphicsView view;
   QGraphicsRectItem * const item1{new QGraphicsRectItem};
   QGraphicsRectItem * const item2{new QGraphicsRectItem};
@@ -118,6 +118,8 @@ void ribi::QtKeyboardFriendlyGraphicsView::Test() noexcept
   }
   if (verbose) { TRACE("When focus/selectedness is transferred, two signals are emitted "); }
   {
+    TRACE("Verbose on");
+    verbose = true;
     //item1 unselected and unfocused at right
     item1->setSelected(false);
     item1->setPos( 100.0,0.0);
@@ -125,6 +127,7 @@ void ribi::QtKeyboardFriendlyGraphicsView::Test() noexcept
     item2->setSelected(true);
     item2->setFocus();
     item2->setPos(-100.0,0.0);
+    assert(view.scene()->items().size() == 2);
     assert(view.scene()->selectedItems().size() == 1);
 
     Counter c{0}; //For receiving the signal
