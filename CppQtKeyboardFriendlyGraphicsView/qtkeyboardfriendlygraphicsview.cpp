@@ -83,20 +83,36 @@ QGraphicsItem * ribi::QtKeyboardFriendlyGraphicsView::GetClosestNonselectedItem(
   const int key
 ) const
 {
+  QGraphicsItem * closest_nonselected_item = nullptr;
   switch (key)
   {
     case Qt::Key_Up:
-      return GetClosestNonselectedItem(focus_item,Direction::above);
-    case Qt::Key_Tab:
+      closest_nonselected_item = GetClosestNonselectedItem(focus_item,Direction::above);
+      break;
     case Qt::Key_Right:
-      return GetClosestNonselectedItem(focus_item,Direction::right);
+      closest_nonselected_item = GetClosestNonselectedItem(focus_item,Direction::right);
+      break;
     case Qt::Key_Down:
-      return GetClosestNonselectedItem(focus_item,Direction::below);
+      closest_nonselected_item = GetClosestNonselectedItem(focus_item,Direction::below);
+      break;
     case Qt::Key_Left:
-    case Qt::Key_Backtab:
-      return GetClosestNonselectedItem(focus_item,Direction::left);
+      closest_nonselected_item = GetClosestNonselectedItem(focus_item,Direction::left);
+      break;
   }
-  return nullptr;
+  if (!closest_nonselected_item) {
+    if (m_verbose) {
+      TRACE("Did not find a nonselected item");
+    }
+  }
+  else {
+    assert(closest_nonselected_item);
+    if (m_verbose) {
+      std::stringstream s;
+      s << "Found a nonselected item with tooltip " << closest_nonselected_item->toolTip().toStdString();
+      TRACE(s.str());
+    }
+  }
+  return closest_nonselected_item;
 }
 
 QGraphicsItem * ribi::QtKeyboardFriendlyGraphicsView::GetClosestNonselectedItem(
@@ -104,18 +120,20 @@ QGraphicsItem * ribi::QtKeyboardFriendlyGraphicsView::GetClosestNonselectedItem(
   const Direction direction
 ) const
 {
-  //Use '<' (instead of '<=') to leave out focus_item
+
+  //dx = item->pos().x() - focus_item->pos().x();
+  //dy = item->pos().y() - focus_item->pos().y();
   const auto my_function_loose_above  = [](const double /* dx */, const double dy) { return dy < 0.0; };
   const auto my_function_strict_above = [](const double dx, const double dy) { return dy < 0.0 && std::abs(dx) < std::abs(dy); };
 
   const auto my_function_loose_below  = [](const double /* dx */, const double dy) { return dy > 0.0; };
   const auto my_function_strict_below = [](const double dx, const double dy) { return dx > 0.0 && std::abs(dx) < std::abs(dy); };
 
-  const auto my_function_loose_left  = [](const double dx, const double /* dy */) { return dx > 0.0; };
-  const auto my_function_strict_left = [](const double dx, const double dy) { return dx > 0.0 && std::abs(dy) < std::abs(dx); };
+  const auto my_function_loose_left  = [](const double dx, const double /* dy */) { return dx < 0.0; };
+  const auto my_function_strict_left = [](const double dx, const double dy) { return dx < 0.0 && std::abs(dy) < std::abs(dx); };
 
-  const auto my_function_loose_right  = [](const double dx, const double /* dy */) { return dx < 0.0; };
-  const auto my_function_strict_right = [](const double dx, const double dy) { return dx < 0.0 && std::abs(dy) < std::abs(dx); };
+  const auto my_function_loose_right  = [](const double dx, const double /* dy */) { return dx > 0.0; };
+  const auto my_function_strict_right = [](const double dx, const double dy) { return dx > 0.0 && std::abs(dy) < std::abs(dx); };
 
   using Function = std::function<bool(const double, const double)>;
   Function my_function_loose  = my_function_loose_above;
@@ -153,33 +171,56 @@ QGraphicsItem * ribi::QtKeyboardFriendlyGraphicsView::GetClosestNonselectedItem(
     std::end(nonselected_items)
   );
   assert(std::count(std::begin(nonselected_items),std::end(nonselected_items),focus_item) == 0);
+  if (m_verbose) {
+    std::stringstream s;
+    s << "Finding the best item between " << nonselected_items.size() << " non-selected items";
+    TRACE(s.str());
+  }
 
   //Look for strict items
   for(QGraphicsItem* const item: nonselected_items)
   {
-    const double dy = item->pos().y() - focus_item->pos().y();
     const double dx = item->pos().x() - focus_item->pos().x();
+    const double dy = item->pos().y() - focus_item->pos().y();
     if (my_function_strict(dx,dy))
     {
       assert(item != focus_item);
       v.push_back(item);
     }
   }
+  if (m_verbose) {
+    std::stringstream s;
+    s << "Using a strict comparison " << v.size() << " non-selected items were found";
+    TRACE(s.str());
+  }
   //If nothing found, look more loosely
   if (v.empty())
   {
+
     for(QGraphicsItem* const item: nonselected_items)
     {
-      const double dy = item->pos().y() - focus_item->pos().y();
       const double dx = item->pos().x() - focus_item->pos().x();
+      const double dy = item->pos().y() - focus_item->pos().y();
       if (my_function_loose(dx,dy))
       {
         assert(item != focus_item);
         v.push_back(item);
       }
     }
+    if (m_verbose) {
+      std::stringstream s;
+      s << "Using a loose comparison " << v.size() << " non-selected items were found";
+      TRACE(s.str());
+    }
+
   }
   if (v.empty()) return nullptr;
+
+  if (m_verbose) {
+    std::stringstream s;
+    s << "Selecting the closest out of " << v.size() << " items";
+    TRACE(s.str());
+  }
 
   assert(Container().AllUnique(v));
   QGraphicsItem * const closest_item = GetClosest(focus_item,v);
@@ -261,27 +302,30 @@ void ribi::QtKeyboardFriendlyGraphicsView::KeyPressEventNoModifiers(QKeyEvent *e
 {
   assert(!(event->modifiers() & Qt::ShiftModifier));
   assert(!(event->modifiers() & Qt::ControlModifier));
-  //Can be nullptr
-  QGraphicsItem* const current_focus_item = scene()->focusItem();
 
-  if (!current_focus_item &&
-    (    event->key() == Qt::Key_Up
+  //Do special movements
+  if (event->key() == Qt::Key_Space) { this->SetRandomFocus(); return; }
+
+  QGraphicsItem* const current_focus_item = scene()->focusItem(); //Can be nullptr
+  if (!current_focus_item) {
+    if (m_verbose) { std::clog << "Cannot tranfer selectedness when there is no focus" << std::endl; }
+    return;
+  }
+  if (!(
+         event->key() == Qt::Key_Up
       || event->key() == Qt::Key_Right
       || event->key() == Qt::Key_Down
       || event->key() == Qt::Key_Left
       || event->key() == Qt::Key_Tab
       || event->key() == Qt::Key_Backtab
     )
-  )
-  {
-    if (m_verbose) { std::clog << "Cannot tranfer selectedness when there is no focus" << std::endl; }
+  ) {
+    if (m_verbose) { std::clog << "Do only movements here" << std::endl; }
     return;
   }
+
   assert(current_focus_item);
-
   QGraphicsItem * const new_selected_item = GetClosestNonselectedItem(current_focus_item,event->key());
-
-
   assert(new_selected_item != current_focus_item);
 
   //Unselect currently selected
@@ -324,8 +368,10 @@ void ribi::QtKeyboardFriendlyGraphicsView::KeyPressEventShift(QKeyEvent *event) 
   QGraphicsItem * const new_added_selected_item
     = GetClosestNonselectedItem(current_focus_item,event->key())
   ;
-  assert(new_added_selected_item != current_focus_item);
+  assert(!new_added_selected_item || new_added_selected_item != current_focus_item);
+
   //Add selectedness
+  if (new_added_selected_item)
   {
     if (m_verbose) { std::clog << "Add select: " << new_added_selected_item->toolTip().toStdString() << std::endl; }
     assert(new_added_selected_item);

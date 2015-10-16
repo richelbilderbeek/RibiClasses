@@ -141,8 +141,9 @@ void ribi::QtKeyboardFriendlyGraphicsView::Test() noexcept
 
     if (c.Get() != 2 && verbose)
     {
-      TRACE("Warning #1: expected 2 m_signal_update");
-      TRACE(c.Get());
+      std::stringstream s;
+      s << "Warning #1: expected 2 m_signal_updates, received " << c.Get() << " instead";
+      TRACE(s.str());
     }
     assert(c.Get() >= 2 && "When transferring selectedness, one unselect and one select takes place");
 
