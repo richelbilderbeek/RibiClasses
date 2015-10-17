@@ -72,6 +72,18 @@ struct QtKeyboardFriendlyGraphicsView : public QGraphicsView
   ///Calculate the Euclidian distance between two points
   static double GetDistance(const QPointF& a, const QPointF& b);
 
+  enum class Direction { above, below, left, right };
+  QGraphicsItem * GetClosestNonselectedItem(
+    const QGraphicsItem* const focus_item,
+    int key
+  ) const;
+
+  QGraphicsItem * GetClosestNonselectedItem(
+    const QGraphicsItem* const focus_item,
+    const Direction direction
+  ) const;
+
+  /*
   ///Obtain the items above the focus_item
   QGraphicsItem * GetClosestItemAbove(const QGraphicsItem* const focus_item) const;
 
@@ -83,6 +95,7 @@ struct QtKeyboardFriendlyGraphicsView : public QGraphicsView
 
   ///Obtain the items right of the focus_item
   QGraphicsItem * GetClosestItemRight(const QGraphicsItem* const focus_item) const;
+  */
 
   void KeyPressEventCtrl(QKeyEvent *event) noexcept;
   void KeyPressEventNoModifiers(QKeyEvent *event) noexcept;
