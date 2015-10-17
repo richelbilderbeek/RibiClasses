@@ -92,7 +92,7 @@ QGraphicsItem * ribi::QtKeyboardFriendlyGraphicsView::GetClosestItemAbove(const 
       if (std::abs(dx) < std::abs(dy))
       {
         assert(item != focus_item);
-        v.push_back(item);
+        if (!item->isSelected()) { v.push_back(item); }
       }
     }
   }
@@ -112,7 +112,7 @@ QGraphicsItem * ribi::QtKeyboardFriendlyGraphicsView::GetClosestItemAbove(const 
     if (dy < 0.0)  //Use '<' (instead of '<=') to leave out focus_item
     {
       assert(item != focus_item);
-      v.push_back(item);
+      if (!item->isSelected()) { v.push_back(item); }
     }
   }
   assert(Container().AllUnique(v));
@@ -135,7 +135,7 @@ QGraphicsItem * ribi::QtKeyboardFriendlyGraphicsView::GetClosestItemBelow(const 
       if (std::abs(dx) < std::abs(dy))
       {
         assert(item != focus_item);
-        v.push_back(item);
+        if (!item->isSelected()) { v.push_back(item); }
       }
     }
   }
@@ -155,7 +155,7 @@ QGraphicsItem * ribi::QtKeyboardFriendlyGraphicsView::GetClosestItemBelow(const 
     if (dy > 0.0)  //Use '>' (instead of '>=') to leave out focus_item
     {
       assert(item != focus_item);
-      v.push_back(item);
+      if (!item->isSelected()) { v.push_back(item); }
     }
   }
   assert(Container().AllUnique(v));
@@ -178,7 +178,7 @@ QGraphicsItem * ribi::QtKeyboardFriendlyGraphicsView::GetClosestItemLeft(const Q
       if (std::abs(dy) < std::abs(dx))
       {
         assert(item != focus_item);
-        v.push_back(item);
+        if (!item->isSelected()) { v.push_back(item); }
       }
     }
   }
@@ -198,7 +198,7 @@ QGraphicsItem * ribi::QtKeyboardFriendlyGraphicsView::GetClosestItemLeft(const Q
     if (dx < 0.0)  //Use '<' (instead of '<=') to leave out focus_item
     {
       assert(item != focus_item);
-      v.push_back(item);
+      if (!item->isSelected()) { v.push_back(item); }
     }
   }
   assert(Container().AllUnique(v));
@@ -221,7 +221,7 @@ QGraphicsItem * ribi::QtKeyboardFriendlyGraphicsView::GetClosestItemRight(const 
       if (std::abs(dy) < std::abs(dx))
       {
         assert(item != focus_item);
-        v.push_back(item);
+        if (!item->isSelected()) { v.push_back(item); }
       }
     }
   }
@@ -241,7 +241,7 @@ QGraphicsItem * ribi::QtKeyboardFriendlyGraphicsView::GetClosestItemRight(const 
     if (dx > 0.0) //Use '>' (instead of '>=') to leave out focus_item
     {
       assert(item != focus_item);
-      v.push_back(item);
+      if (!item->isSelected()) { v.push_back(item); }
     }
   }
   assert(Container().AllUnique(v));
@@ -465,6 +465,7 @@ void ribi::QtKeyboardFriendlyGraphicsView::KeyPressEventShift(QKeyEvent *event) 
   }
   assert(new_added_selected_item != current_focus_item);
   //Add selectedness
+  if (new_added_selected_item)
   {
     if (m_verbose) { std::clog << "Add select: " << new_added_selected_item->toolTip().toStdString() << std::endl; }
     assert(!new_added_selected_item->isSelected());

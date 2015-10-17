@@ -31,6 +31,20 @@ namespace ribi {
     QKeyEvent CreateSpace() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Space,Qt::NoModifier); }
     QKeyEvent CreateUp() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Up,Qt::NoModifier); }
     QKeyEvent CreateX() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_X,Qt::NoModifier); }
+    QKeyEvent CreateRandomKey() noexcept {
+      switch (std::rand() % 8)
+      {
+        case 0: return CreateCtrlLeft();
+        case 1: return CreateCtrlRight();
+        case 2: return CreateShiftLeft();
+        case 3: return CreateShiftRight();
+        case 4: return CreateLeft();
+        case 5: return CreateRight();
+        case 6: return CreateSpace();
+        case 7: return CreateX();
+      }
+      return CreateSpace();
+    }
   }
 }
 
@@ -62,7 +76,9 @@ void ribi::QtKeyboardFriendlyGraphicsView::Test() noexcept
   item2->setFlag(QGraphicsItem::ItemIsSelectable);
   view.scene()->addItem(item1);
   view.scene()->addItem(item2);
-  view.showFullScreen();
+  view.show();
+  view.setGeometry(0,0,300,300);
+
   for (int i=0; i!=1000; ++i) { qApp->processEvents(); }
 
   if (verbose) { TRACE("Space selects one random item"); }
@@ -136,17 +152,12 @@ void ribi::QtKeyboardFriendlyGraphicsView::Test() noexcept
     c.SetVerbosity(verbose);
     view.keyPressEvent(&right);
 
-    if (c.Get() != 2 && verbose)
-    {
-      TRACE("Warning #1: expected 2 m_signal_update");
-      TRACE(c.Get());
-    }
-    assert(c.Get() >= 2 && "When transferring selectedness, one unselect and one select takes place");
+    assert(c.Get() == 2 && "When transferring selectedness, one unselect and one select takes place");
 
     auto left = CreateLeft();
     view.keyPressEvent(&left);
 
-    assert(c.Get() >= 4 && "When transferring selectedness again, one unselect and one select takes place");
+    assert(c.Get() == 4 && "When transferring selectedness again, one unselect and one select takes place");
     view.m_signal_update.disconnect(
       boost::bind(&ribi::Counter::Inc,&c) //Do not forget the &
     );
@@ -173,12 +184,7 @@ void ribi::QtKeyboardFriendlyGraphicsView::Test() noexcept
     view.SetVerbosity(verbose);
     view.keyPressEvent(&shift_right);
 
-    if (c.Get() > 1 && verbose)
-    {
-      TRACE(c.Get());
-      TRACE("Warning #2: expected 1 m_signal_update");
-    }
-    assert(c.Get() >= 1);
+    assert(c.Get() == 1);
     view.m_signal_update.disconnect(
       boost::bind(&ribi::Counter::Inc,&c) //Do not forget the &
     );
@@ -202,12 +208,6 @@ void ribi::QtKeyboardFriendlyGraphicsView::Test() noexcept
     auto left = CreateLeft(); //Move away, tranfer selectedness to nothing
     view.keyPressEvent(&left);
 
-    if (c.Get() != 1 && verbose)
-    {
-      TRACE(c.Get());
-      TRACE("Warning #3: expected 1 m_signal_update");
-      TRACE(view.scene()->selectedItems().size());
-    }
     assert(view.scene()->selectedItems().size() == 0);
     assert(c.Get() == 1);
     view.m_signal_update.disconnect(
@@ -228,6 +228,20 @@ void ribi::QtKeyboardFriendlyGraphicsView::Test() noexcept
     {
       view.keyPressEvent(&space);
       assert(view.scene()->selectedItems().size() == 1);
+    }
+  }
+  if (verbose) { TRACE("Send random keys to widget"); }
+  {
+    item1->setPos(150,150);
+    item2->setPos(50,50);
+    assert(view.scene());
+    assert(!view.scene()->items().empty());
+    for (int i=0; i!=1000; ++i)
+    {
+      view.show();
+      for (int j=0; j!=10; ++j) qApp->processEvents();
+      auto key = CreateRandomKey();
+      view.keyPressEvent(&key);
     }
   }
 }
