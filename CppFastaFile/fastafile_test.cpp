@@ -24,7 +24,7 @@ void ribi::FastaFile::Test() noexcept
     DnaSequence("no_description","ATGC");
   }
   const TestTimer test_timer(__func__,__FILE__,1.0);
-  const bool verbose{true};
+  const bool verbose{false};
   if (verbose) { TRACE("One sequence"); }
   {
     const std::vector<DnaSequence> alignments{
