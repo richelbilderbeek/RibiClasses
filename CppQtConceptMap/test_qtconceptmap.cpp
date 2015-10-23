@@ -962,14 +962,8 @@ void ribi::cmap::QtConceptMap::Test() noexcept
     assert(conceptmap->GetSelectedNodes().size() == 1);
     assert(conceptmap->GetSelectedEdges().size() == 0);
   }
-  {
-    //if (ribi::System().GetWhoami() == "maakplek")
-    //{
-    //  TRACE("Skip test for maakplek");
-    //  return;
-    //}
-  }
-  #ifdef FIX_ISSUE_1
+  #define FIX_ISSUE_1
+  #ifdef  FIX_ISSUE_1
   if (verbose) { TRACE("CTRL-N, CTRL-N, CTRL-E, Left: should select one Node"); }
   {
     boost::shared_ptr<QtConceptMap> qtconceptmap(new QtConceptMap);
@@ -985,21 +979,28 @@ void ribi::cmap::QtConceptMap::Test() noexcept
     auto ctrle = CreateControlE();
     qtconceptmap->keyPressEvent(&ctrle);
 
+    assert(qtconceptmap->GetQtNodes().size() == 2);
+    qtconceptmap->GetQtNodes()[0]->SetCenterPos(-100.0,0.0);
+    qtconceptmap->GetQtNodes()[0]->setToolTip("QtNodes[0]");
+    qtconceptmap->GetQtNodes()[1]->SetCenterPos( 100.0,0.0);
+    qtconceptmap->GetQtNodes()[1]->setToolTip("QtNodes[1]");
+    qtconceptmap->GetQtEdges()[0]->setToolTip("QtEdges[0]");
+    qtconceptmap->GetQtEdges()[0]->GetQtNode()->setToolTip("QtEdges[0] its center QtNode");
+
     assert(conceptmap->GetNodes().size() == 2);
     assert(conceptmap->GetNodes().size() == qtconceptmap->GetQtNodes().size());
     assert(conceptmap->GetEdges().size() == 1);
     assert(conceptmap->GetEdges().size() == qtconceptmap->GetQtEdges().size());
-    assert(conceptmap->GetSelectedNodes().size() == qtconceptmap->GetSelectedQtNodes().size());
-    assert(conceptmap->GetSelectedEdges().size() == qtconceptmap->GetSelectedQtEdges().size());
     assert(conceptmap->GetSelectedNodes().size() == 0);
+    assert(conceptmap->GetSelectedNodes().size() == qtconceptmap->GetSelectedQtNodes().size());
     assert(conceptmap->GetSelectedEdges().size() == 1);
+    assert(conceptmap->GetSelectedEdges().size() == qtconceptmap->GetSelectedQtEdges().size());
 
-    qtconceptmap->GetQtNodes()[0]->SetCenterPos(-100.0,0.0);
-    qtconceptmap->GetQtNodes()[1]->SetCenterPos( 100.0,0.0);
 
     //Unselect the edge, select the node by pressing an arrow key
-    auto up = CreateUp();
+    auto up = CreateRight(); //Selects
     TRACE("START");
+    conceptmap->SetVerbosity(true);
     qtconceptmap->SetVerbosity(true);
     qtconceptmap->keyPressEvent(&up);
 

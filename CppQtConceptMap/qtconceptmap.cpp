@@ -806,6 +806,7 @@ void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event) noexcept
   {
     case Qt::Key_Delete:
     {
+      if (GetVerbosity()) { TRACE("Pressing delete"); }
       const auto nodes = GetConceptMap()->GetSelectedNodes();
       for (const auto node: nodes)
       {
@@ -828,9 +829,11 @@ void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event) noexcept
     return;
     case Qt::Key_Escape:
     {
+      if (GetVerbosity()) { TRACE("Pressing Escape"); }
       //Only remove the 'new arrow' if present
       if (m_arrow)
       {
+        if (GetVerbosity()) { TRACE("Remove the new arrow"); }
         this->scene()->removeItem(m_arrow);
         m_arrow = nullptr;
         return;
@@ -838,14 +841,17 @@ void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event) noexcept
     }
     break;
     case Qt::Key_Equal:
+      if (GetVerbosity()) { TRACE("Pressing Qt::Key_Equal"); }
       this->scale(1.1,1.1);
       break;
     case Qt::Key_Minus:
+      if (GetVerbosity()) { TRACE("Pressing Qt::Key_Minus"); }
       this->scale(0.9,0.9);
       break;
     case Qt::Key_E:
       if (event->modifiers() & Qt::ControlModifier)
       {
+        if (GetVerbosity()) { TRACE("Pressing CTRL-E"); }
         try { this->DoCommand(new CommandCreateNewEdge(GetConceptMap())); }
         catch (std::logic_error& ) {}
       }
@@ -853,6 +859,7 @@ void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event) noexcept
     case Qt::Key_N:
       if (event->modifiers() & Qt::ControlModifier)
       {
+        if (GetVerbosity()) { TRACE("Pressing CTRL-N"); }
         try { this->DoCommand(new CommandCreateNewNode(GetConceptMap())); }
         catch (std::logic_error& ) {}
       }
@@ -873,6 +880,7 @@ void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event) noexcept
       }
       return;
     case Qt::Key_Question:
+      if (GetVerbosity()) { TRACE("Pressing Qt::Key_Question"); }
       UpdateSelection();
       break;
 
@@ -1430,7 +1438,7 @@ void ribi::cmap::QtConceptMap::OnToolsClicked()
 
 void ribi::cmap::QtConceptMap::UpdateSelection()
 {
-
+  /*
   for (const auto item: this->scene()->items()) { item->update(); }
 
   //The QtKeyboardFriendlyGraphicsView may change the selected items
@@ -1461,4 +1469,5 @@ void ribi::cmap::QtConceptMap::UpdateSelection()
   this->m_conceptmap->SetSelected(edges_and_nodes);
 
   scene()->update();
+  */
 }

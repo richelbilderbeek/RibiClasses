@@ -1200,6 +1200,13 @@ void ribi::cmap::ConceptMap::Redo() noexcept
 
 void ribi::cmap::ConceptMap::RemoveSelected(const std::vector<boost::shared_ptr<Edge>>& edges) noexcept
 {
+  if (GetVerbosity())
+  {
+    std::clog << "ribi::cmap::ConceptMap::RemoveSelected of "
+      << edges.size() << " edges"
+    ;
+  }
+
   assert(std::count(std::begin(edges),std::end(edges),nullptr) == 0);
   for (const auto edge: edges)
   {
@@ -1219,6 +1226,13 @@ void ribi::cmap::ConceptMap::RemoveSelected(const std::vector<boost::shared_ptr<
 
 void ribi::cmap::ConceptMap::RemoveSelected(const std::vector<boost::shared_ptr<Node>>& nodes) noexcept
 {
+  if (GetVerbosity())
+  {
+    std::clog << "ribi::cmap::ConceptMap::RemoveSelected of "
+      << nodes.size() << " nodes"
+    ;
+  }
+
   //Take care: it may be node at the center of an edge
   assert(std::count(nodes.begin(),nodes.end(),nullptr) == 0);
   for (const auto node: nodes)
@@ -1267,6 +1281,14 @@ void ribi::cmap::ConceptMap::SetSelected(
   const Nodes& nodes
 ) noexcept
 {
+  if (GetVerbosity())
+  {
+    std::clog << "ribi::cmap::ConceptMap::SetSelected of "
+      << edges.size() << " edges and "
+      << nodes.size() << " nodes"
+      << '\n'
+    ;
+  }
   m_selected.first = edges;
   m_selected.second = nodes;
   m_signal_selected_changed(m_selected);

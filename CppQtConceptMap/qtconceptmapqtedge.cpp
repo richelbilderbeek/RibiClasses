@@ -81,16 +81,19 @@ ribi::cmap::QtEdge::QtEdge(
 
   //QtEdge is just the glue between a collection of things
   //this->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsFocusable);
-  this->setFlags(0);
+
   this->m_arrow->setFlags(0);
 
-  /*
+  #define BELIEF_THAT_QTEDGE_SHOULD_NOT_BE_SELECTABLE
+  #ifdef  BELIEF_THAT_QTEDGE_SHOULD_NOT_BE_SELECTABLE
+  this->setFlags(0);
+  #else
   this->setFlags(
       QGraphicsItem::ItemIsFocusable
     | QGraphicsItem::ItemIsMovable
     | QGraphicsItem::ItemIsSelectable
   );
-  */
+  #endif
 
   GetQtNode()->setFlags(
       QGraphicsItem::ItemIsFocusable

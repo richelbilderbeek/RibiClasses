@@ -23,6 +23,7 @@ namespace ribi {
   namespace qtkeyboardfriendlygraphicsview {
     QKeyEvent CreateCtrlLeft() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Left,Qt::ControlModifier); }
     QKeyEvent CreateCtrlRight() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Right,Qt::ControlModifier); }
+    QKeyEvent CreateShift() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Shift,Qt::NoModifier); }
     QKeyEvent CreateShiftLeft() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Left,Qt::ShiftModifier); }
     QKeyEvent CreateShiftRight() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Right,Qt::ShiftModifier); }
     QKeyEvent CreateDown() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Down,Qt::NoModifier); }
@@ -32,16 +33,17 @@ namespace ribi {
     QKeyEvent CreateUp() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Up,Qt::NoModifier); }
     QKeyEvent CreateX() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_X,Qt::NoModifier); }
     QKeyEvent CreateRandomKey() noexcept {
-      switch (std::rand() % 8)
+      switch (std::rand() % 9)
       {
         case 0: return CreateCtrlLeft();
         case 1: return CreateCtrlRight();
-        case 2: return CreateShiftLeft();
-        case 3: return CreateShiftRight();
-        case 4: return CreateLeft();
-        case 5: return CreateRight();
-        case 6: return CreateSpace();
-        case 7: return CreateX();
+        case 2: return CreateShift();
+        case 3: return CreateShiftLeft();
+        case 4: return CreateShiftRight();
+        case 5: return CreateLeft();
+        case 6: return CreateRight();
+        case 7: return CreateSpace();
+        case 8: return CreateX();
       }
       return CreateSpace();
     }
@@ -89,14 +91,6 @@ void ribi::QtKeyboardFriendlyGraphicsView::Test() noexcept
     auto space = CreateSpace();
     view.keyPressEvent(&space);
     assert(view.scene()->selectedItems().size() == 1);
-  }
-  //Make richelbilderbeek continue
-  {
-    if (ribi::System().GetWhoami() == "richelbilderbeek")
-    {
-      TRACE("Skip test for richelbilderbeek");
-      return;
-    }
   }
   if (verbose) { TRACE("Space causes m_signal_update to be emitted"); }
   {
@@ -238,11 +232,27 @@ void ribi::QtKeyboardFriendlyGraphicsView::Test() noexcept
     assert(!view.scene()->items().empty());
     for (int i=0; i!=1000; ++i)
     {
-      view.show();
       for (int j=0; j!=10; ++j) qApp->processEvents();
       auto key = CreateRandomKey();
       view.keyPressEvent(&key);
     }
+  }
+  if (verbose) { TRACE("Tapping SHIFT must not remove focus"); }
+  {
+    //item1 unselected and unfocused at right
+    item1->setSelected(false);
+    item1->setPos( 100.0,0.0);
+    //item2 selected and focused at left
+    item2->setSelected(true);
+    item2->setFocus();
+    item2->setPos(-100.0,0.0);
+    assert(item2->hasFocus());
+
+    auto shift = CreateShift();
+    view.SetVerbosity(verbose);
+    view.keyPressEvent(&shift);
+
+    assert(item2->hasFocus());
   }
 }
 #endif

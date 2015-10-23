@@ -221,6 +221,7 @@ QGraphicsItem * ribi::QtKeyboardFriendlyGraphicsView::GetClosestNonselectedItem(
 
   assert(Container().AllUnique(v));
   QGraphicsItem * const closest_item = GetClosest(focus_item,v);
+  if (!closest_item) return nullptr;
   assert(closest_item != focus_item);
   assert(!closest_item->isSelected());
   return closest_item;
@@ -346,16 +347,28 @@ void ribi::QtKeyboardFriendlyGraphicsView::KeyPressEventNoModifiers(QKeyEvent *e
   }
   //Transfer focus
   current_focus_item->clearFocus();
-  if (new_selected_item) { new_selected_item->setFocus(); }
+  if (new_selected_item) {
+    assert(new_selected_item->isSelected());
+    new_selected_item->setFocus();
+  }
 }
 
 void ribi::QtKeyboardFriendlyGraphicsView::KeyPressEventShift(QKeyEvent *event) noexcept
 {
+  const std::set<int> keys_accepted = { Qt::Key_Up, Qt::Key_Right, Qt::Key_Down, Qt::Key_Left };
+  if (keys_accepted.count(event->key()) == 0)
+  {
+    if (m_verbose)
+    {
+      std::clog << "SHIFT pressed with unaccepted key" << std::endl;
+    }
+    return;
+  }
+
   //Add selectedness to items
   assert(event->modifiers() & Qt::ShiftModifier);
   //Can be nullptr
   QGraphicsItem* const current_focus_item = scene()->focusItem();
-  const auto currently_selected_items = scene()->selectedItems();
   if (!current_focus_item)
   {
     if (m_verbose) { std::clog << "Cannot add items without a focus" << std::endl; }
