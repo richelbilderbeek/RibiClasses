@@ -133,7 +133,7 @@ protected:
   //const QtNode * FindQtNode     (const Node * const node) const noexcept { return FindQtNodeConst(node); }
         QtNode * GetQtNode(           Node * const node)       noexcept;
 
-  ///Obtain the center node
+  ///Obtain the center node, if there is any
   const QtNode * GetCenterNode() const noexcept;
         QtNode * GetCenterNode()       noexcept;
 

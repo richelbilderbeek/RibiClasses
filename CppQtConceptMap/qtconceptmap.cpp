@@ -546,9 +546,14 @@ const ribi::cmap::QtNode * ribi::cmap::QtConceptMap::GetCenterNode() const noexc
   assert(!scene()->items().isEmpty());
   assert(scene()->items()[0]);
   QList<QGraphicsItem *> v = scene()->items();
-  assert(std::count_if(v.begin(),v.end(),
+  const int n_centernodes{
+  std::count_if(v.begin(),v.end(),
     [this](const QGraphicsItem * const item) { return this->IsQtCenterNode(item); }
-    ) < 2 && "There is at most one center node (zero for most sub-concept maps, one for a complete concept map");
+    )
+  };
+  assert(n_centernodes == 0 || n_centernodes == 1);
+  if (n_centernodes == 0) return nullptr;
+  assert(n_centernodes == 1);
   const auto iter = std::find_if(v.begin(),v.end(),
     [this](const QGraphicsItem * const item) { return this->IsQtCenterNode(item); } );
   assert(iter != v.end());
@@ -1390,7 +1395,9 @@ void ribi::cmap::QtConceptMap::mousePressEvent(QMouseEvent *event)
   {
     //Let any node (in this case the central node) emit an update for the Examples
     //to hide.
-    this->GetCenterNode()->m_signal_node_changed(GetCenterNode());
+    if (GetCenterNode()) {
+      GetCenterNode()->m_signal_node_changed(GetCenterNode());
+    }
   }
 }
 

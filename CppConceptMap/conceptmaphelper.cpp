@@ -176,7 +176,7 @@ void ribi::cmap::TestHelperFunctions() noexcept
   }
   //Wordwrap
   {
-    const auto v {
+    const auto v = {
       "",
       "1",
       "12",

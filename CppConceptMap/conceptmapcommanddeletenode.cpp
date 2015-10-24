@@ -21,6 +21,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmapcommanddeletenode.h"
 
 #include <cassert>
+#include <iostream>
 
 #include "conceptmap.h"
 #include "conceptmapedge.h"

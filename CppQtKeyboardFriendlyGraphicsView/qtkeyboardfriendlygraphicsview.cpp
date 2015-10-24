@@ -309,15 +309,9 @@ void ribi::QtKeyboardFriendlyGraphicsView::KeyPressEventNoModifiers(QKeyEvent *e
     if (m_verbose) { std::clog << "Cannot tranfer selectedness when there is no focus" << std::endl; }
     return;
   }
-  if (!(
-         event->key() == Qt::Key_Up
-      || event->key() == Qt::Key_Right
-      || event->key() == Qt::Key_Down
-      || event->key() == Qt::Key_Left
-      || event->key() == Qt::Key_Tab
-      || event->key() == Qt::Key_Backtab
-    )
-  ) {
+
+  const std::set<int> keys = { Qt::Key_Up, Qt::Key_Right, Qt::Key_Left, Qt::Key_Down };
+  if (keys.count(event->key()) == 0) {
     if (m_verbose) { std::clog << "Do only movements here" << std::endl; }
     return;
   }

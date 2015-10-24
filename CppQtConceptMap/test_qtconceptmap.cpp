@@ -995,6 +995,7 @@ void ribi::cmap::QtConceptMap::Test() noexcept
     assert(conceptmap->GetSelectedNodes().size() == qtconceptmap->GetSelectedQtNodes().size());
     assert(conceptmap->GetSelectedEdges().size() == 1);
     assert(conceptmap->GetSelectedEdges().size() == qtconceptmap->GetSelectedQtEdges().size());
+    assert(qtconceptmap->scene()->selectedItems().count() > 0);
 
 
     //Unselect the edge, select the node by pressing an arrow key
@@ -1008,6 +1009,7 @@ void ribi::cmap::QtConceptMap::Test() noexcept
     TRACE(qtconceptmap->GetSelectedQtNodes().size());
     TRACE(conceptmap->GetSelectedEdges().size());
     TRACE(qtconceptmap->GetSelectedQtEdges().size());
+
 
     assert(conceptmap->GetNodes().size() == 2);
     assert(conceptmap->GetNodes().size() == qtconceptmap->GetQtNodes().size());
