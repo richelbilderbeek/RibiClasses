@@ -64,10 +64,10 @@ void ribi::cmap::QtConceptMap::Test() noexcept
     if (is_tested) return;
     is_tested = true;
   }
-  const TestTimer test_timer{__func__,__FILE__,1.0};
+  const TestTimer test_timer{__func__,__FILE__,2.0};
   TestTimer::SetMaxCnt(2); //Because the base class (QtKeyboardFriendlyGraphicsView)
                            //has to be tested as well
-  const bool verbose{false};
+  bool verbose{false};
 
   if (verbose) { TRACE("SetConceptMap and GetConceptMap return the same"); }
   {
@@ -282,6 +282,25 @@ void ribi::cmap::QtConceptMap::Test() noexcept
     assert(qtnode2->isSelected());
     assert(conceptmap->GetSelectedNodes().size() == 2);
     assert(conceptmap->GetSelectedNodes().size() == qtconceptmap->GetSelectedQtNodes().size());
+  }
+  if (verbose) { TRACE("AddNode: selected QtNode must be visible in QScene::selectedItems"); }
+  {
+    boost::shared_ptr<ConceptMap> conceptmap = ribi::cmap::ConceptMapFactory().GetEmptyConceptMap();
+    boost::shared_ptr<QtConceptMap> qtconceptmap(new QtConceptMap);
+    qtconceptmap->SetConceptMap(conceptmap);
+    const auto node = NodeFactory().GetTest(0);
+    const auto qtnode = qtconceptmap->AddNode(node);
+
+    assert(qtnode->isSelected());
+    assert(qtconceptmap->scene()->selectedItems().size() == 1);
+
+    qtnode->SetSelected(false);
+
+    assert(qtconceptmap->scene()->selectedItems().size() == 0);
+
+    qtnode->SetSelected(true);
+
+    assert(qtconceptmap->scene()->selectedItems().size() == 1);
   }
   if (verbose) { TRACE("DeleteNode: create two Nodes, delete one Node from QtConceptMap"); }
   {
@@ -521,7 +540,30 @@ void ribi::cmap::QtConceptMap::Test() noexcept
     assert(conceptmap->GetSelectedEdges().size() == qtconceptmap->GetSelectedQtEdges().size());
     assert(qtedge->isSelected());
   }
+  if (verbose) { TRACE("AddEdge: a selected QtEdge must also be detected by QScene::selectedItems"); }
+  {
+    boost::shared_ptr<ConceptMap> conceptmap = ribi::cmap::ConceptMapFactory().GetEmptyConceptMap();
+    boost::shared_ptr<QtConceptMap> qtconceptmap(new QtConceptMap);
+    qtconceptmap->SetConceptMap(conceptmap);
 
+    const auto from = NodeFactory().GetTest(0);
+    const auto to = NodeFactory().GetTest(0);
+    const auto edge = EdgeFactory().GetTest(0,from,to);
+    const auto qtedge = qtconceptmap->AddEdge(edge);
+
+    //Fails if item is invisible
+    qtconceptmap->showFullScreen();
+    for (int i=0; i!=1000; ++i) qApp->processEvents();
+    assert(qtconceptmap->scene()->selectedItems().size() == 1);
+
+    qtedge->SetSelected(false);
+
+    assert(qtconceptmap->scene()->selectedItems().size() == 0);
+
+    qtedge->SetSelected(true);
+
+    assert(qtconceptmap->scene()->selectedItems().size() == 1);
+  }
   if (verbose) { TRACE("AddEdge: QtEdge its QtNode must be in between the QtNodes"); }
   {
     boost::shared_ptr<ConceptMap> conceptmap = ribi::cmap::ConceptMapFactory().GetEmptyConceptMap();
@@ -553,6 +595,65 @@ void ribi::cmap::QtConceptMap::Test() noexcept
 
     assert(std::abs(qtedge->GetQtNode()->GetNode()->GetX() - x3) < 1.0);
     assert(std::abs(qtedge->GetQtNode()->GetNode()->GetY() - y3) < 1.0);
+  }
+  if (verbose) { TRACE("QtNode and Node coordinats must be in sync"); }
+  {
+    boost::shared_ptr<ConceptMap> conceptmap = ribi::cmap::ConceptMapFactory().GetEmptyConceptMap();
+    boost::shared_ptr<QtConceptMap> qtconceptmap(new QtConceptMap);
+    qtconceptmap->SetConceptMap(conceptmap);
+
+    const auto node = NodeFactory().GetTest(0);
+    const auto qtnode = qtconceptmap->AddNode(node);
+
+    const double x1{100.0};
+    const double y1{200.0};
+    const double max_error{0.1};
+    qtnode->GetNode()->SetX(x1);
+    qtnode->GetNode()->SetY(y1);
+    {
+      const double new_x = 12.34;
+      const double new_y = 43.21;
+
+      //Change via node
+      assert(node);
+      node->SetX(new_x);
+      node->SetY(new_y);
+
+      const double node_x = node->GetX();
+      const double qtnode_x = qtnode->GetCenterX();
+
+      if (std::abs(node_x - qtnode_x) >= max_error)
+      {
+        TRACE(node_x);
+        TRACE(qtnode_x);
+      }
+      assert(std::abs(node_x - qtnode_x) < max_error
+       && "X coordinat must be in sync");
+      const double node_y = node->GetY();
+      const double qtnode_y = qtnode->GetCenterY();
+
+      assert(node_y == qtnode_y
+       && "Y coordinat must be in sync");
+    }
+    //Change via Qt node
+    {
+      const double new_x = 123.456;
+      const double new_y = 654.321;
+
+      qtnode->SetCenterPos(new_x,new_y);
+
+      const double node_x = node->GetX();
+      const double qtnode_x = qtnode->GetCenterX();
+
+      assert(std::abs(node_x - qtnode_x) < max_error
+       && "X coordinat must be in sync");
+      const double node_y = node->GetY();
+      const double qtnode_y = qtnode->GetCenterY();
+
+      assert(std::abs(node_y - qtnode_y) < max_error
+       && "Y coordinat must be in sync");
+    }
+
   }
   if (verbose) { TRACE("DeleteEdge: delete of QtEdge from QtConceptMap"); }
   {
@@ -962,20 +1063,24 @@ void ribi::cmap::QtConceptMap::Test() noexcept
     assert(conceptmap->GetSelectedNodes().size() == 1);
     assert(conceptmap->GetSelectedEdges().size() == 0);
   }
-  #define FIX_ISSUE_1
+  //#define FIX_ISSUE_1
   #ifdef  FIX_ISSUE_1
+  verbose = true;
+  if (verbose) { TRACE("FIX_ISSUE_1"); }
   if (verbose) { TRACE("CTRL-N, CTRL-N, CTRL-E, Left: should select one Node"); }
   {
     boost::shared_ptr<QtConceptMap> qtconceptmap(new QtConceptMap);
     boost::shared_ptr<ConceptMap> conceptmap = ribi::cmap::ConceptMapFactory().GetEmptyConceptMap();
     qtconceptmap->SetConceptMap(conceptmap);
+    conceptmap->SetVerbosity(true);
+    qtconceptmap->SetVerbosity(true);
 
-    //Create two nodes
+    if (verbose) { TRACE("Create two nodes"); }
     auto ctrln = CreateControlN();
     qtconceptmap->keyPressEvent(&ctrln);
     qtconceptmap->keyPressEvent(&ctrln);
 
-    //Create an edge, edge is selected
+    if (verbose) { TRACE("Create an edge, edge is selected"); }
     auto ctrle = CreateControlE();
     qtconceptmap->keyPressEvent(&ctrle);
 
@@ -995,10 +1100,14 @@ void ribi::cmap::QtConceptMap::Test() noexcept
     assert(conceptmap->GetSelectedNodes().size() == qtconceptmap->GetSelectedQtNodes().size());
     assert(conceptmap->GetSelectedEdges().size() == 1);
     assert(conceptmap->GetSelectedEdges().size() == qtconceptmap->GetSelectedQtEdges().size());
+
+    //Fails if item is invisible
+    qtconceptmap->showFullScreen();
+    for (int i=0; i!=100; ++i) qApp->processEvents();
     assert(qtconceptmap->scene()->selectedItems().count() > 0);
 
 
-    //Unselect the edge, select the node by pressing an arrow key
+    if (verbose) { TRACE("Unselect the edge, select the node by pressing an arrow key"); }
     auto up = CreateRight(); //Selects
     TRACE("START");
     conceptmap->SetVerbosity(true);

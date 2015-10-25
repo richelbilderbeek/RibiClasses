@@ -472,61 +472,6 @@ void ribi::cmap::QtNode::Test() noexcept
     const std::string new_name_again{qtnode->GetNode()->GetConcept()->GetName()};
     assert(new_name_again == new_name);
   }
-
-
-  #ifdef DISABLED_FOR_NOW_20140730
-  assert(flags() & QGraphicsItem::ItemIsFocusable);
-  assert(flags() & QGraphicsItem::ItemIsSelectable);
-  assert(flags() & QGraphicsItem::ItemIsMovable);
-  assert(this->acceptHoverEvents()); //Must remove the 's' in Qt5?
-
-  {
-    {
-      const double new_x = 12.34;
-      const double new_y = 43.21;
-
-      //Change via node
-      assert(node);
-      node->SetX(new_x);
-      node->SetY(new_y);
-
-      const double node_x = node->GetX();
-      const double qtnode_x = qtnode->GetPos().x();
-
-      if (std::abs(node_x - qtnode_x) >= max_error)
-      {
-        TRACE(node_x);
-        TRACE(qtnode_x);
-      }
-      assert(std::abs(node_x - qtnode_x) < max_error
-       && "X coordinat must be in sync");
-      const double node_y = node->GetY();
-      const double qtnode_y = qtnode->GetPos().y();
-
-      assert(node_y == qtnode_y
-       && "Y coordinat must be in sync");
-    }
-    //Change via Qt node
-    {
-      const double new_x = 123.456;
-      const double new_y = 654.321;
-
-      qtnode->SetPos(new_x,new_y);
-
-      const double node_x = node->GetX();
-      const double qtnode_x = qtnode->GetPos().x();
-
-      assert(std::abs(node_x - qtnode_x) < max_error
-       && "X coordinat must be in sync");
-      const double node_y = node->GetY();
-      const double qtnode_y = qtnode->GetPos().y();
-
-      assert(std::abs(node_y - qtnode_y) < max_error
-       && "Y coordinat must be in sync");
-    }
-
-  }
-  #endif
 }
 #endif
 
