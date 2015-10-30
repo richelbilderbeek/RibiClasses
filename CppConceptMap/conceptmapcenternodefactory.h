@@ -38,13 +38,13 @@ struct  CenterNodeFactory
 {
   CenterNodeFactory();
 
-  const boost::shared_ptr<CenterNode> Create(
+  boost::shared_ptr<CenterNode> Create(
     const boost::shared_ptr<Concept>& concept,
     const double x = 0.0,
     const double y = 0.0
   ) const noexcept;
 
-  const boost::shared_ptr<CenterNode> CreateFromStrings(
+  boost::shared_ptr<CenterNode> CreateFromStrings(
     const std::string& name,
     const std::vector<std::pair<std::string,Competency> >& examples = {},
     const double x = 0.0,

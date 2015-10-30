@@ -27,6 +27,13 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmapnodefactory.h"
 #include "testtimer.h"
 
+bool ribi::cmap::IsCenterNode(const boost::shared_ptr<const ribi::cmap::Node> node) noexcept
+{
+  assert(node);
+  return node->IsCenterNode();
+}
+
+/*
 ribi::cmap::CenterNode::CenterNode(
   const boost::shared_ptr<Concept>& concept,
   const double x,
@@ -38,11 +45,6 @@ ribi::cmap::CenterNode::CenterNode(
 
 }
 
-bool ribi::cmap::IsCenterNode(const boost::shared_ptr<const ribi::cmap::Node> node) noexcept
-{
-  assert(node);
-  return boost::dynamic_pointer_cast<const CenterNode>(node).get();
-}
 
 std::string ribi::cmap::CenterNode::ToXml() const noexcept
 {
@@ -60,4 +62,4 @@ std::string ribi::cmap::CenterNode::ToXml() const noexcept
 
   return r;
 }
-
+*/

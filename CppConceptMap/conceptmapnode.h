@@ -63,8 +63,12 @@ struct  Node : public Element
   ///Similar to operator==, except that GUI elements are not tested for equality
   static bool HasSameContent(const boost::shared_ptr<const Node>& lhs, const boost::shared_ptr<const Node>& rhs) noexcept;
 
+  bool IsCenterNode() const noexcept { return m_is_center_node; }
+
   ///Set the concept
   void SetConcept(const boost::shared_ptr<Concept>& concept) noexcept;
+
+  void SetIsCenterNode(const bool is_center_node) noexcept { m_is_center_node = is_center_node; }
 
   ///Set the position
   void SetPos(const double x, const double y) noexcept { SetX(x); SetY(y); }
@@ -86,13 +90,13 @@ struct  Node : public Element
   ///Block construction, except for NodeFactory and derived classes
   Node() = delete;
   friend class NodeFactory;
+  friend class CenterNodeFactory;
 
   ///Use NodeFactory as an unused argument to enforce using it
   explicit Node(
     const boost::shared_ptr<Concept>& concept,
     const double x,
-    const double y,
-    const NodeFactory& lock
+    const double y
   );
 
   ///Block destructor, except for the friend boost::checked_delete
@@ -103,6 +107,8 @@ struct  Node : public Element
 
   ///The Concept
   boost::shared_ptr<Concept> m_concept;
+
+  bool m_is_center_node;
 
   ///The x-coordinat
   double m_x;

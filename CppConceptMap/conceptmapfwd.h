@@ -27,7 +27,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 namespace ribi {
 namespace cmap {
 
-struct CenterNode;
 struct CenterNodeFactory;
 //struct Cluster; //Remove for now, must be added at ProjectBrainweaver later
 struct Command;
@@ -45,6 +44,7 @@ struct Example;
 struct Examples;
 //struct File;
 struct Node;
+using CenterNode = Node;
 struct ConceptMap;
 
 } //~namespace cmap

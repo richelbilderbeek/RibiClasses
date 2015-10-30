@@ -547,8 +547,10 @@ const ribi::cmap::QtNode * ribi::cmap::QtConceptMap::GetCenterNode() const noexc
   assert(scene()->items()[0]);
   QList<QGraphicsItem *> v = scene()->items();
   const int n_centernodes{
-  std::count_if(v.begin(),v.end(),
-    [this](const QGraphicsItem * const item) { return this->IsQtCenterNode(item); }
+    static_cast<int>(
+      std::count_if(v.begin(),v.end(),
+        [this](const QGraphicsItem * const item) { return this->IsQtCenterNode(item); }
+      )
     )
   };
   assert(n_centernodes == 0 || n_centernodes == 1);

@@ -50,25 +50,26 @@ ribi::cmap::CenterNodeFactory::CenterNodeFactory()
   #endif
 }
 
-const boost::shared_ptr<ribi::cmap::CenterNode> ribi::cmap::CenterNodeFactory::Create(
+boost::shared_ptr<ribi::cmap::CenterNode> ribi::cmap::CenterNodeFactory::Create(
   const boost::shared_ptr<ribi::cmap::Concept>& concept,
   const double x,
   const double y) const noexcept
 {
   assert(concept);
-  boost::shared_ptr<CenterNode> node(
-    new cmap::CenterNode(
-      concept,x,y,*this
+  boost::shared_ptr<Node> node(
+    new Node(
+      concept,x,y
     )
   );
   assert(node);
+  node->SetIsCenterNode(true);
   assert(*concept == *node->GetConcept());
   assert(node->GetX() == x);
   assert(node->GetY() == y);
   return node;
 }
 
-const boost::shared_ptr<ribi::cmap::CenterNode> ribi::cmap::CenterNodeFactory::CreateFromStrings(
+boost::shared_ptr<ribi::cmap::CenterNode> ribi::cmap::CenterNodeFactory::CreateFromStrings(
   const std::string& name,
   const std::vector<std::pair<std::string,Competency> >& examples,
   const double x,
@@ -79,11 +80,11 @@ const boost::shared_ptr<ribi::cmap::CenterNode> ribi::cmap::CenterNodeFactory::C
     new CenterNode(
       ConceptFactory().Create(name,examples),
       x,
-      y,
-      *this
+      y
     )
   );
   assert(node);
+  node->SetIsCenterNode(true);
   assert(node->GetConcept());
   assert(node->GetX() == x);
   assert(node->GetY() == y);
@@ -110,6 +111,7 @@ const boost::shared_ptr<ribi::cmap::CenterNode> ribi::cmap::CenterNodeFactory::D
   assert(new_node);
   assert(new_node->GetConcept());
   assert(*node == *new_node);
+  new_node->SetIsCenterNode(true);
   return new_node;
 }
 #endif
@@ -153,9 +155,10 @@ const boost::shared_ptr<ribi::cmap::CenterNode> ribi::cmap::CenterNodeFactory::F
     y = boost::lexical_cast<double>(ribi::xml::StripXmlTag(v[0]));
   }
   assert(concept);
-  const boost::shared_ptr<CenterNode> node(new CenterNode(concept,x,y,*this));
+  const boost::shared_ptr<CenterNode> node(new CenterNode(concept,x,y));
   assert(node);
   assert(node->ToXml() == s);
+  node->SetIsCenterNode(true);
   return node;
 }
 

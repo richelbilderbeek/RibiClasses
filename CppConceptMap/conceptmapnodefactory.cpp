@@ -50,7 +50,7 @@ boost::shared_ptr<ribi::cmap::Node> ribi::cmap::NodeFactory::Create(
 {
   assert(concept);
   const boost::shared_ptr<Node> node(
-    new Node(concept,x,y,*this)
+    new Node(concept,x,y)
   );
   assert(node);
   assert(node->GetConcept());
@@ -71,8 +71,7 @@ boost::shared_ptr<ribi::cmap::Node> ribi::cmap::NodeFactory::CreateFromStrings(
     new Node(
       ConceptFactory().Create(name,examples),
       x,
-      y,
-      *this
+      y
     )
   );
   assert(node);

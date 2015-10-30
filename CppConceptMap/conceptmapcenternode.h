@@ -32,6 +32,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 namespace ribi {
 namespace cmap {
 
+/*
+
 ///The focal question of a ConceptMap
 ///- Every ConceptMap usually has one CenterNode
 ///- Every sub concept-map has none or one CenterNode
@@ -56,6 +58,7 @@ struct CenterNode : public Node
 
   std::string ToXml() const noexcept;
 };
+*/
 
 ///Returns true if Node is of derived class type CenterNode
 ///Returns true if Node is Node

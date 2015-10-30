@@ -42,12 +42,12 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 ribi::cmap::Node::Node(
   const boost::shared_ptr<ribi::cmap::Concept>& concept,
   const double x,
-  const double y,
-  const NodeFactory&
+  const double y
 ) : m_signal_concept_changed{},
     m_signal_x_changed{},
     m_signal_y_changed{},
     m_concept{},
+    m_is_center_node{false},
     m_x(x),
     m_y(y)
 {
