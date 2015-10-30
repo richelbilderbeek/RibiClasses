@@ -37,7 +37,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ribi::cmap::Concept::Concept(
   const std::string& name,
-  const boost::shared_ptr<ribi::cmap::Examples>& examples,
+  const Examples& examples,
   const bool is_complex,
   const int rating_complexity,
   const int rating_concreteness,
@@ -58,7 +58,6 @@ ribi::cmap::Concept::Concept(
 {
   #ifndef NDEBUG
   Test();
-  assert(m_examples);
   assert(m_rating_complexity   >= -1);
   assert(m_rating_complexity   <=  2);
   assert(m_rating_concreteness >= -1);
@@ -69,20 +68,11 @@ ribi::cmap::Concept::Concept(
 }
 
 
-boost::shared_ptr<const ribi::cmap::Examples> ribi::cmap::Concept::GetExamples() const noexcept
-{
-  assert(m_examples);
-  const boost::shared_ptr<const Examples> p(m_examples);
-  assert(p);
-  return p;
-}
-
-void ribi::cmap::Concept::SetExamples(const boost::shared_ptr<ribi::cmap::Examples>& examples) noexcept
+void ribi::cmap::Concept::SetExamples(const Examples& examples) noexcept
 {
   if (examples != m_examples)
   {
     m_examples = examples;
-    m_signal_examples_changed(this);
   }
 }
 
@@ -146,7 +136,7 @@ std::string ribi::cmap::Concept::ToStr() const noexcept
   std::stringstream s;
   s
     << GetName() << " "
-    << GetExamples()->ToStr() << " "
+    << GetExamples().ToStr() << " "
     << GetIsComplex() << " "
     << GetRatingComplexity() << " "
     << GetRatingConcreteness() << " "
@@ -163,7 +153,7 @@ std::string ribi::cmap::Concept::ToXml() const noexcept
     <<   "<name>"
     <<     GetName()
     <<   "</name>"
-    <<   GetExamples()->ToXml()
+    <<   GetExamples().ToXml()
     <<   "<concept_is_complex>"
     <<     GetIsComplex()
     <<   "</concept_is_complex>"
@@ -222,23 +212,7 @@ bool ribi::cmap::operator==(const ribi::cmap::Concept& lhs, const ribi::cmap::Co
   }
   const auto lhs_examples = lhs.GetExamples();
   const auto rhs_examples = rhs.GetExamples();
-  if (lhs_examples == nullptr)
-  {
-    if (rhs_examples == nullptr)
-    {
-      return true;
-    }
-    if (verbose) { TRACE("Concept::Examples differs: lhs is nullptr"); }
-    return false;
-  }
-  if (rhs_examples == nullptr)
-  {
-    if (verbose) { TRACE("Concept::Examples differs: rhs is nullptr"); }
-    return false;
-  }
-  assert(rhs_examples);
-  if (lhs_examples == rhs_examples) return true;
-  if (*lhs_examples == *rhs_examples)
+  if (lhs_examples == rhs_examples)
   {
     return true;
   }
@@ -258,9 +232,9 @@ bool ribi::cmap::operator<(const ribi::cmap::Concept& lhs, const ribi::cmap::Con
 {
   if (lhs.GetName() < rhs.GetName()) return true;
   if (lhs.GetName() > rhs.GetName()) return false;
-  if (*lhs.GetExamples() < *rhs.GetExamples()) return true;
-  if (*lhs.GetExamples() != *rhs.GetExamples()) return false;
-  assert(*lhs.GetExamples() == *rhs.GetExamples());
+  if (lhs.GetExamples() < rhs.GetExamples()) return true;
+  if (lhs.GetExamples() != rhs.GetExamples()) return false;
+  assert(lhs.GetExamples() == rhs.GetExamples());
   if (lhs.GetRatingComplexity() < rhs.GetRatingComplexity()) return true;
   if (lhs.GetRatingComplexity() > rhs.GetRatingComplexity()) return false;
   if (lhs.GetRatingConcreteness() < rhs.GetRatingConcreteness()) return true;

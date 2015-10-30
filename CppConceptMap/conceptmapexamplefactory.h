@@ -40,7 +40,7 @@ struct ExampleFactory
   ExampleFactory() noexcept;
 
   ///Create an example from string and enum
-  boost::shared_ptr<cmap::Example> Create(
+  Example Create(
     const std::string& text,
     const cmap::Competency& competency,
     const bool is_complex = true,
@@ -53,11 +53,11 @@ struct ExampleFactory
   //static const std::vector<boost::shared_ptr<cmap::Example> > CreateExamples(const std::vector<std::string>& v);
 
   ///Create an example from XML
-  boost::shared_ptr<Example> FromXml(const std::string& s) const noexcept;
+  Example FromXml(const std::string& s) const noexcept;
 
   int GetNumberOfTests() const noexcept { return static_cast<int>(GetTests().size()); }
-  boost::shared_ptr<Example> GetTest(const int i) const noexcept;
-  std::vector<boost::shared_ptr<Example>> GetTests() const noexcept;
+  Example GetTest(const int i) const noexcept;
+  std::vector<Example> GetTests() const noexcept;
 
   private:
 

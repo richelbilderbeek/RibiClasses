@@ -47,7 +47,7 @@ struct ConceptFactory
   //Default and complete Create method
   boost::shared_ptr<Concept> Create(
     const std::string& name,
-    const boost::shared_ptr<Examples>& examples,
+    const Examples& examples,
     const bool is_complex,
     const int rating_complexity,
     const int rating_concreteness,

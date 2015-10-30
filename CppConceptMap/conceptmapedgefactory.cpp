@@ -60,8 +60,6 @@ ribi::cmap::EdgeFactory::EdgePtr ribi::cmap::EdgeFactory::Create(
   const bool tail_arrow{false};
   const bool head_arrow{true};
   const auto concept = ConceptFactory().Create();
-  assert(concept->GetExamples());
-
   const auto node = NodeFactory().Create(concept,x,y);
   assert(node);
   const EdgePtr p {
@@ -87,7 +85,6 @@ ribi::cmap::EdgeFactory::EdgePtr ribi::cmap::EdgeFactory::Create(
 {
   assert(node);
   assert(node->GetConcept());
-  assert(node->GetConcept()->GetExamples());
   assert(from);
   assert(to);
   assert(from != to);
@@ -106,7 +103,6 @@ ribi::cmap::EdgeFactory::EdgePtr ribi::cmap::EdgeFactory::DeepCopy(
   assert(edge);
   assert(edge->GetNode());
   assert(edge->GetNode()->GetConcept());
-  assert(edge->GetNode()->GetConcept()->GetExamples());
   assert(from);
   assert(to);
   assert(from != to);

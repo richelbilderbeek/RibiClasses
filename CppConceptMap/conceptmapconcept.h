@@ -32,6 +32,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <boost/signals2.hpp>
 #include <QRegExp>
 #include "conceptmapfwd.h"
+#include "conceptmapexamples.h"
 #pragma GCC diagnostic pop
 
 namespace ribi {
@@ -48,13 +49,9 @@ struct ConceptFactory;
 /// - (as part of QtEdge)
 struct Concept
 {
-  ///Block copying, as signals cannot be copied
-  Concept(const Concept& other) = delete;
-  Concept& operator=(const Concept& other) = delete;
-
   ///Get the examples of the concept, e.g. 'Plato', 'Aristotle'
-  boost::shared_ptr<const Examples> GetExamples() const noexcept;
-  boost::shared_ptr<Examples>& GetExamples() noexcept { return m_examples; }
+  const Examples& GetExamples() const noexcept { return m_examples; }
+        Examples& GetExamples()       noexcept { return m_examples; }
 
   ///Has an assessor rated the name of this concept as being an addition to the complexity?
   ///This is something different than m_rating_complexity:
@@ -78,7 +75,7 @@ struct Concept
   int GetRatingSpecificity() const noexcept { return m_rating_specificity; }
 
   ///Set the examples
-  void SetExamples(const boost::shared_ptr<Examples>& examples) noexcept;
+  void SetExamples(const Examples& examples) noexcept;
 
   ///Has an assessor rated the name of this concept as being an addition to the complexity?
   ///This is something different than m_rating_complexity:
@@ -128,7 +125,7 @@ struct Concept
   private:
 
   ///Examples of the concept, e.g. 'Plato', 'Aristotle'
-  boost::shared_ptr<Examples> m_examples;
+  Examples m_examples;
 
   ///Has an assessor rated the name of this concept as being an addition to the complexity?
   ///This is something different than m_rating_complexity:
@@ -156,18 +153,15 @@ struct Concept
   static void Test() noexcept;
   #endif
 
-  ///Use checked_delete for destructor
-  ~Concept() noexcept {}
-  friend void boost::checked_delete<>(Concept* x);
-
   ///Let only ConceptFactory construct Concepts
   explicit Concept(
     const std::string& name,
-    const boost::shared_ptr<Examples>& examples,
+    const Examples& examples,
     const bool is_complex,
     const int rating_complexity,
     const int rating_concreteness,
-    const int rating_specificity);
+    const int rating_specificity
+  );
   friend class ConceptFactory;
 };
 

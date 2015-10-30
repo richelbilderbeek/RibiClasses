@@ -71,7 +71,7 @@ private:
   ///Item has updated, Examples must follow
   void OnItemUpdated( /*const QGraphicsItem * const item*/ );
 
-  void SetExamples(const boost::shared_ptr<const Examples>& examples);
+  void SetExamples(const Examples& examples);
 
   #ifndef NDEBUG
   static void Test() noexcept;

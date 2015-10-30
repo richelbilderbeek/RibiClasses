@@ -97,7 +97,7 @@ void ribi::cmap::QtExamplesItem::SetBuddyItem(const QGraphicsItem * const item)
     m_item = item;
     m_qtedge = dynamic_cast<const QtEdge*>(item);
     m_qtnode = dynamic_cast<const QtNode*>(item);
-    if (m_qtedge && !m_qtedge->GetQtNode()->GetNode()->GetConcept()->GetExamples()->Get().empty())
+    if (m_qtedge && !m_qtedge->GetQtNode()->GetNode()->GetConcept()->GetExamples().Get().empty())
     {
       m_qtedge->m_signal_edge_changed.connect(
         boost::bind(
@@ -107,7 +107,7 @@ void ribi::cmap::QtExamplesItem::SetBuddyItem(const QGraphicsItem * const item)
       this->SetExamples(m_qtedge->GetQtNode()->GetNode()->GetConcept()->GetExamples());
       this->setVisible(true);
     }
-    if (m_qtnode && !m_qtnode->GetNode()->GetConcept()->GetExamples()->Get().empty())
+    if (m_qtnode && !m_qtnode->GetNode()->GetConcept()->GetExamples().Get().empty())
     {
       m_qtnode->m_signal_node_changed.connect(
         boost::bind(
@@ -129,12 +129,12 @@ void ribi::cmap::QtExamplesItem::SetBuddyItem(const QGraphicsItem * const item)
   }
 }
 
-void ribi::cmap::QtExamplesItem::SetExamples(const boost::shared_ptr<const ribi::cmap::Examples>& examples)
+void ribi::cmap::QtExamplesItem::SetExamples(const Examples& examples)
 {
   std::vector<std::string> v;
-  for (const boost::shared_ptr<const Example>& example: examples->Get())
+  for (const Example& example: examples.Get())
   {
-    const std::string s {example->GetText()};
+    const std::string s {example.GetText()};
     const std::size_t wordwrap_length{40};
     const std::vector<std::string> w {Wordwrap(s,wordwrap_length)};
     std::copy(w.begin(),w.end(),std::back_inserter(v));

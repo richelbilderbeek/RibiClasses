@@ -25,9 +25,10 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic ignored "-Weffc++"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
-#include <boost/shared_ptr.hpp>
-#include <boost/signals2.hpp>
+#include <vector>
+//#include <boost/signals2.hpp>
 #include "conceptmapfwd.h"
+#include "conceptmapexample.h"
 #pragma GCC diagnostic pop
 
 namespace ribi {
@@ -39,34 +40,27 @@ namespace cmap {
 /// - QtExamplesDialog: a QDialog
 struct Examples
 {
-  explicit Examples(const std::vector<boost::shared_ptr<cmap::Example> >& v);
-  Examples(const Example& rhs) = delete;
-  Examples& operator=(const Example& rhs) = delete;
+  explicit Examples();
+  explicit Examples(const std::vector<Example>& v);
 
-
-  std::vector<boost::shared_ptr<Example>>& Get() noexcept { return m_v; }
-  std::vector<boost::shared_ptr<const Example>> Get() const noexcept;
+  const std::vector<Example>& Get() const noexcept { return m_v; }
+        std::vector<Example>& Get()       noexcept { return m_v; }
 
   std::string ToStr() const noexcept;
   std::string ToXml() const noexcept;
 
   ///Something of one of the examples was changed
-  mutable boost::signals2::signal<void(Examples*)> m_signal_examples_changed;
+  //mutable boost::signals2::signal<void(Examples*)> m_signal_examples_changed;
 private:
-  ~Examples() noexcept;
 
-  std::vector<boost::shared_ptr<Example>> m_v;
-
-  //void Add(const boost::shared_ptr<cmap::Example>& example);
+  std::vector<Example> m_v;
 
   ///All signals emitted from the examples are connected to this member function
-  void OnExampleChanged() noexcept;
+  //void OnExampleChanged() noexcept;
 
-  ///Test this class
+  #ifndef NDEBUG
   static void Test() noexcept;
-
-  ///Correct befriending, from http://richelbilderbeek.nl/CppChecked_delete.htm
-  friend void boost::checked_delete<>(Examples* x);
+  #endif
 };
 
 

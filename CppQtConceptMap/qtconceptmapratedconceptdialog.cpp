@@ -72,11 +72,11 @@ ribi::cmap::QtConceptMapRatedConceptDialog::QtConceptMapRatedConceptDialog(
   );
 
   //Put examples in list
-  for (const boost::shared_ptr<const cmap::Example> example: node->GetConcept()->GetExamples()->Get())
+  for (const Example& example: node->GetConcept()->GetExamples().Get())
   {
     ui->list_concept_examples->addItem(
       new QListWidgetItem(
-        (boost::lexical_cast<std::string>(static_cast<int>(example->GetCompetency())) + ". " + example->GetText()).c_str()
+        (boost::lexical_cast<std::string>(static_cast<int>(example.GetCompetency())) + ". " + example.GetText()).c_str()
       )
     );
   }
@@ -114,11 +114,11 @@ ribi::cmap::QtConceptMapRatedConceptDialog::QtConceptMapRatedConceptDialog(
         ui->list_cluster_relations->addItem(new QListWidgetItem(text.c_str()));
       }
       //Indendent on arrow: all examples
-      for (const boost::shared_ptr<const cmap::Example> example: edge->GetNode()->GetConcept()->GetExamples()->Get())
+      for (const Example& example: edge->GetNode()->GetConcept()->GetExamples().Get())
       {
         ui->list_cluster_relations->addItem(
           new QListWidgetItem(
-            ("  " + example->GetText()).c_str()
+            ("  " + example.GetText()).c_str()
           )
         );
       }

@@ -27,6 +27,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
 #include <boost/shared_ptr.hpp>
 #include "qthideandshowdialog.h"
+#include "conceptmapexample.h"
 
 #include "qtconceptmapfwd.h"
 #pragma GCC diagnostic pop
@@ -47,9 +48,10 @@ public:
   QtExampleDialog& operator=(const QtExampleDialog&) = delete;
   ~QtExampleDialog() noexcept;
 
-  boost::shared_ptr<Example> GetExample() const noexcept { return m_example; }
+  const Example& GetExample() const noexcept { return m_example; }
+        Example& GetExample()       noexcept { return m_example; }
   static int GetMinimumHeight(const Example& example) noexcept;
-  void SetExample(const boost::shared_ptr<Example>& example);
+  void SetExample(const Example& example);
 
 private slots:
   void on_box_competency_currentIndexChanged(int index);
@@ -62,7 +64,7 @@ private:
   Ui::QtExampleDialog *ui;
 
   ///The Example to work on
-  boost::shared_ptr<Example> m_example;
+  Example m_example;
 
   void OnCompetencyChanged(const Example * const example);
   void OnIsComplexChanged(const Example * const example);

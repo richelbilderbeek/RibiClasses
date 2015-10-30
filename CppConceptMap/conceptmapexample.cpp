@@ -45,19 +45,13 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic pop
 
 ribi::cmap::Example::Example(
-  const ExampleFactory&,
   const std::string& text,
   const cmap::Competency competency,
   const bool is_complex,
   const bool is_concrete,
   const bool is_specific
   )
-  : //m_signal_competency_changed{},
-    //m_signal_is_complex_changed{},
-    //m_signal_is_concrete_changed{},
-    //m_signal_is_specific_changed{},
-    //m_signal_text_changed{},
-    m_competency(competency),
+  : m_competency(competency),
     m_is_complex(is_complex),
     m_is_concrete(is_concrete),
     m_is_specific(is_specific),
@@ -67,25 +61,6 @@ ribi::cmap::Example::Example(
   Test();
   #endif
 }
-
-/*
-std::string ribi::cmap::Example::CompetencyToStr(const cmap::Competency competency) noexcept
-{
-  switch (competency)
-  {
-    case cmap::Competency::uninitialized: return "uninitialized";
-    case cmap::Competency::profession: return "profession";
-    case cmap::Competency::organisations: return "organisations";
-    case cmap::Competency::social_surroundings: return "social_surroundings";
-    case cmap::Competency::target_audience: return "target_audience";
-    case cmap::Competency::ti_knowledge: return "ti_knowledge";
-    case cmap::Competency::prof_growth: return "prof_growth";
-    case cmap::Competency::misc: return "misc";
-  }
-  assert(!"Should not get here");
-  throw std::logic_error("ribi::cmap::Example::CompetencyToStr: unknown Competency");
-}
-*/
 
 void ribi::cmap::Example::SetCompetency(const Competency competency) noexcept
 {
@@ -108,9 +83,6 @@ void ribi::cmap::Example::SetCompetency(const Competency competency) noexcept
 
     assert(m_competency == competency_after);
 
-    //m_signal_competency_changed(this);
-
-    //assert(m_competency == competency_after);
     if (verbose)
     {
       std::stringstream s;
@@ -125,7 +97,6 @@ void ribi::cmap::Example::SetIsComplex(const bool is_complex) noexcept
   if (m_is_complex != is_complex)
   {
     m_is_complex = is_complex;
-    //m_signal_is_complex_changed(this);
   }
 }
 
@@ -134,7 +105,6 @@ void ribi::cmap::Example::SetIsConcrete(const bool is_concrete) noexcept
   if (m_is_concrete != is_concrete)
   {
     m_is_concrete = is_concrete;
-    //m_signal_is_concrete_changed(this);
   }
 }
 
@@ -143,7 +113,6 @@ void ribi::cmap::Example::SetIsSpecific(const bool is_specific) noexcept
   if (m_is_specific != is_specific)
   {
     m_is_specific = is_specific;
-    //m_signal_is_specific_changed(this);
   }
 }
 
@@ -152,7 +121,6 @@ void ribi::cmap::Example::SetText(const std::string& text) noexcept
   if (m_text != text)
   {
     m_text = text;
-    //m_signal_text_changed(*this);
   }
 }
 
@@ -205,144 +173,119 @@ void ribi::cmap::Example::Test() noexcept
       is_concrete_before,
       is_specific_before
     );
-    assert(example->GetCompetency() == competency_before);
-    assert(example->GetCompetency() != competency_after);
-    assert(example->GetIsComplex() == is_complex_before);
-    assert(example->GetIsComplex() != is_complex_after);
-    assert(example->GetIsConcrete() == is_concrete_before);
-    assert(example->GetIsConcrete() != is_concrete_after);
-    assert(example->GetIsSpecific() == is_specific_before);
-    assert(example->GetIsSpecific() != is_specific_after);
-    assert(example->GetText() == text_before);
-    assert(example->GetText() != text_after);
+    assert(example.GetCompetency() == competency_before);
+    assert(example.GetCompetency() != competency_after);
+    assert(example.GetIsComplex() == is_complex_before);
+    assert(example.GetIsComplex() != is_complex_after);
+    assert(example.GetIsConcrete() == is_concrete_before);
+    assert(example.GetIsConcrete() != is_concrete_after);
+    assert(example.GetIsSpecific() == is_specific_before);
+    assert(example.GetIsSpecific() != is_specific_after);
+    assert(example.GetText() == text_before);
+    assert(example.GetText() != text_after);
 
-    example->SetCompetency(competency_after);
-    example->SetIsComplex(is_complex_after);
-    example->SetIsConcrete(is_concrete_after);
-    example->SetIsSpecific(is_specific_after);
-    example->SetText(text_after);
+    example.SetCompetency(competency_after);
+    example.SetIsComplex(is_complex_after);
+    example.SetIsConcrete(is_concrete_after);
+    example.SetIsSpecific(is_specific_after);
+    example.SetText(text_after);
 
-    assert(example->GetCompetency() != competency_before);
-    assert(example->GetCompetency() == competency_after);
-    assert(example->GetIsComplex() != is_complex_before);
-    assert(example->GetIsComplex() == is_complex_after);
-    assert(example->GetIsConcrete() != is_concrete_before);
-    assert(example->GetIsConcrete() == is_concrete_after);
-    assert(example->GetIsSpecific() != is_specific_before);
-    assert(example->GetIsSpecific() == is_specific_after);
-    assert(example->GetText() != text_before);
-    assert(example->GetText() == text_after);
+    assert(example.GetCompetency() != competency_before);
+    assert(example.GetCompetency() == competency_after);
+    assert(example.GetIsComplex() != is_complex_before);
+    assert(example.GetIsComplex() == is_complex_after);
+    assert(example.GetIsConcrete() != is_concrete_before);
+    assert(example.GetIsConcrete() == is_concrete_after);
+    assert(example.GetIsSpecific() != is_specific_before);
+    assert(example.GetIsSpecific() == is_specific_after);
+    assert(example.GetText() != text_before);
+    assert(example.GetText() == text_after);
   }
   if (verbose) { TRACE("Test of operator== and operator!="); }
   {
     const int sz = ExampleFactory().GetNumberOfTests();
     for (int i=0; i!=sz; ++i)
     {
-      boost::shared_ptr<const Example> a = ExampleFactory().GetTest(i);
-      boost::shared_ptr<      Example> b = ExampleFactory().GetTest(i);
-      assert(*a == *a);
-      assert(*a == *b);
-      assert(*b == *a);
-      assert(*b == *b);
+      const Example a = ExampleFactory().GetTest(i);
+            Example b = ExampleFactory().GetTest(i);
+      assert(a == a);
+      assert(a == b);
+      assert(b == a);
+      assert(b == b);
       for (int j=0; j!=sz; ++j)
       {
-        boost::shared_ptr<const Example> c = ExampleFactory().GetTest(j);
-        boost::shared_ptr<      Example> d = ExampleFactory().GetTest(j);
-        assert(*c == *c);
-        assert(*c == *d);
-        assert(*d == *c);
-        assert(*d == *d);
+        const Example c = ExampleFactory().GetTest(j);
+              Example d = ExampleFactory().GetTest(j);
+        assert(c == c);
+        assert(c == d);
+        assert(d == c);
+        assert(d == d);
         if (i==j)
         {
-          assert(*a == *c); assert(*a == *d);
-          assert(*b == *c); assert(*b == *d);
-          assert(*c == *a); assert(*c == *b);
-          assert(*d == *a); assert(*d == *b);
+          assert(a == c); assert(a == d);
+          assert(b == c); assert(b == d);
+          assert(c == a); assert(c == b);
+          assert(d == a); assert(d == b);
         }
         else
         {
-          assert(*a != *c); assert(*a != *d);
-          assert(*b != *c); assert(*b != *d);
-          assert(*c != *a); assert(*c != *b);
-          assert(*d != *a); assert(*d != *b);
+          assert(a != c); assert(a != d);
+          assert(b != c); assert(b != d);
+          assert(c != a); assert(c != b);
+          assert(d != a); assert(d != b);
         }
       }
     }
   }
   if (verbose) { TRACE("Unrated and rated examples must be noticed as different"); }
   {
-    const boost::shared_ptr<Example> a = ExampleFactory().Create("1",Competency::misc);
-    const boost::shared_ptr<Example> b = ExampleFactory().Create("1",Competency::misc);
-    const boost::shared_ptr<Example> c = ExampleFactory().Create("1",Competency::uninitialized);
-    assert(*a == *a); assert(*a == *b); assert(*a != *c);
-    assert(*b == *a); assert(*b == *b); assert(*b != *c);
-    assert(*c != *a); assert(*c != *b); assert(*c == *c);
+    const Example a = ExampleFactory().Create("1",Competency::misc);
+    const Example b = ExampleFactory().Create("1",Competency::misc);
+    const Example c = ExampleFactory().Create("1",Competency::uninitialized);
+    assert(a == a); assert(a == b); assert(a != c);
+    assert(b == a); assert(b == b); assert(b != c);
+    assert(c != a); assert(c != b); assert(c == c);
   }
   //Conversion between std::string and competency
   //Checked by Competencies
 
   if (verbose) { TRACE("Conversion from class->XML->class must result in something equal to the class"); }
   {
-    const std::vector<boost::shared_ptr<const Example>> v = AddConst(ExampleFactory().GetTests());
+    const std::vector<Example> v = ExampleFactory().GetTests();
     std::for_each(v.begin(),v.end(),
-      [](const boost::shared_ptr<const Example>& e)
+      [](const Example& e)
       {
-        assert(e);
-        const std::string s { e->ToXml() };
-        const boost::shared_ptr<const Example> f(ExampleFactory().FromXml(s));
-        assert(*e == *f);
+        const std::string s { e.ToXml() };
+        const Example f = ExampleFactory().FromXml(s);
+        assert(e == f);
       }
     );
   }
   if (verbose) { TRACE("Conversion from class->XML->class must differ between classes"); }
   {
-    const auto v = AddConst(ExampleFactory().GetTests());
+    const auto v = ExampleFactory().GetTests();
     const int sz = boost::numeric_cast<int>(v.size());
     for (int i=0; i!=sz; ++i)
     {
-      const boost::shared_ptr<const Example>& e = v[i];
-      const std::string s { e->ToXml() };
+      const Example& e = v[i];
+      const std::string s { e.ToXml() };
       for (int j=0; j!=sz; ++j)
       {
-        const boost::shared_ptr<const Example>& f = v[j];
-        const std::string t = f->ToXml();
+        const Example& f = v[j];
+        const std::string t = f.ToXml();
         if (i == j)
         {
-          assert(*e == *f);
+          assert(e == f);
           assert(s == t);
         }
         else
         {
-          assert(*e != *f);
-          assert( s !=  t);
+          assert(e != f);
+          assert(s != t);
         }
       }
     }
   }
-  /*
-  if (verbose) { TRACE("When setting the competency, a signal must be emitted"); }
-  {
-    const auto example = ExampleFactory().GetTest(0);
-    example->SetCompetency(Competency::uninitialized);
-    Counter c{0}; //For receiving the signal
-    example->m_signal_competency_changed.connect(
-      boost::bind(&ribi::Counter::Inc,&c) //Do not forget the &
-    );
-    example->SetCompetency(Competency::misc);
-    assert(c.Get() == 1);
-  }
-  if (verbose) { TRACE("When setting the text, a signal must be emitted"); }
-  {
-    const auto example = ExampleFactory().GetTest(0);
-    example->SetText("A");
-    Counter c{0}; //For receiving the signal
-    example->m_signal_text_changed.connect(
-      boost::bind(&ribi::Counter::Inc,&c) //Do not forget the &
-    );
-    example->SetText("B");
-    assert(c.Get() == 1);
-  }
-  */
 }
 #endif
 

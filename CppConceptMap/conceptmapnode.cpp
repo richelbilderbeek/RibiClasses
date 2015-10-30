@@ -141,9 +141,9 @@ void ribi::cmap::Node::SetConcept(const boost::shared_ptr<Concept>& concept) noe
         std::stringstream s;
         s
           << "Examples will change from "
-          << examples_before->ToStr()
+          << examples_before.ToStr()
           << " to "
-          << examples_after->ToStr()
+          << examples_after.ToStr()
           << '\n'
         ;
         TRACE(s.str());

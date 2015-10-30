@@ -45,7 +45,7 @@ ribi::cmap::ExampleFactory::ExampleFactory() noexcept
   #endif
 }
 
-boost::shared_ptr<ribi::cmap::Example> ribi::cmap::ExampleFactory::Create(
+ribi::cmap::Example ribi::cmap::ExampleFactory::Create(
   const std::string& text,
   const cmap::Competency& competency,
   const bool is_complex,
@@ -53,21 +53,17 @@ boost::shared_ptr<ribi::cmap::Example> ribi::cmap::ExampleFactory::Create(
   const bool is_specific
 ) const noexcept
 {
-  boost::shared_ptr<Example> example(
-    new Example(
-      *this,
-      text,
-      competency,
-      is_complex,
-      is_concrete,
-      is_specific
-    )
+  Example example(
+    text,
+    competency,
+    is_complex,
+    is_concrete,
+    is_specific
   );
-  assert(example);
   return example;
 }
 
-boost::shared_ptr<ribi::cmap::Example> ribi::cmap::ExampleFactory::FromXml(const std::string& s) const noexcept
+ribi::cmap::Example ribi::cmap::ExampleFactory::FromXml(const std::string& s) const noexcept
 {
   assert(s.size() >= 17);
   assert(s.substr(0,9) == "<example>");
@@ -115,21 +111,20 @@ boost::shared_ptr<ribi::cmap::Example> ribi::cmap::ExampleFactory::FromXml(const
     text = ribi::xml::StripXmlTag(v[0]);
   }
 
-  const boost::shared_ptr<Example> example
+  const Example example
     = Create(text,competency,is_complex,is_concrete,is_specific)
   ;
-  assert(example);
-  assert(example->ToXml() == s);
+  assert(example.ToXml() == s);
   return example;
 }
 
-boost::shared_ptr<ribi::cmap::Example> ribi::cmap::ExampleFactory::GetTest(const int i) const noexcept
+ribi::cmap::Example ribi::cmap::ExampleFactory::GetTest(const int i) const noexcept
 {
   assert(i < GetNumberOfTests());
   return GetTests()[i];
 }
 
-std::vector<boost::shared_ptr<ribi::cmap::Example>> ribi::cmap::ExampleFactory::GetTests() const noexcept
+std::vector<ribi::cmap::Example> ribi::cmap::ExampleFactory::GetTests() const noexcept
 {
   return
   {
@@ -153,7 +148,7 @@ void ribi::cmap::ExampleFactory::Test() noexcept
     is_tested = true;
   }
   Counter();
-  Example(ExampleFactory(),"Test example 0",Competency::profession,true,false,false);
+  Example("Test example 0",Competency::profession,true,false,false);
   ExampleFactory().GetTest(0);
   const TestTimer test_timer(__func__,__FILE__,1.0);
 }

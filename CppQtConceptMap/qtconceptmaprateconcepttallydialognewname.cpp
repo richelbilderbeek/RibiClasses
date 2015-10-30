@@ -137,9 +137,8 @@ ribi::cmap::QtRateConceptTallyDialogNewName::QtRateConceptTallyDialogNewName(
     }
     else
     {
-      assert(concept->GetExamples());
-      assert(example_index < static_cast<int>(concept->GetExamples()->Get().size()));
-      const boost::shared_ptr<cmap::Example> example = concept->GetExamples()->Get()[example_index];
+      assert(example_index < static_cast<int>(concept->GetExamples().Get().size()));
+      const Example& example = concept->GetExamples().Get()[example_index];
       //Display index'th example
       for (int col_index=0; col_index!=n_cols; ++col_index)
       {
@@ -149,9 +148,9 @@ ribi::cmap::QtRateConceptTallyDialogNewName::QtRateConceptTallyDialogNewName(
           item->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled | Qt::ItemIsSelectable);
           switch (col_index)
           {
-            case 0: item->setCheckState(example->GetIsComplex() ? Qt::Checked : Qt::Unchecked); break;
-            case 1: item->setCheckState(example->GetIsConcrete() ? Qt::Checked : Qt::Unchecked); break;
-            case 2: item->setCheckState(example->GetIsSpecific() ? Qt::Checked : Qt::Unchecked); break;
+            case 0: item->setCheckState(example.GetIsComplex() ? Qt::Checked : Qt::Unchecked); break;
+            case 1: item->setCheckState(example.GetIsConcrete() ? Qt::Checked : Qt::Unchecked); break;
+            case 2: item->setCheckState(example.GetIsSpecific() ? Qt::Checked : Qt::Unchecked); break;
             default: assert(!"Should not get here");
           }
           ui->table->setItem(row_index, col_index, item);
@@ -163,7 +162,7 @@ ribi::cmap::QtRateConceptTallyDialogNewName::QtRateConceptTallyDialogNewName(
           item->setFlags(
               Qt::ItemIsSelectable
             | Qt::ItemIsEnabled);
-          const std::string s = example->GetText();
+          const std::string s = example.GetText();
           item->setText(s.c_str());
           ui->table->setItem(row_index, col_index, item);
         }
@@ -211,7 +210,7 @@ std::vector<ribi::cmap::QtRateConceptTallyDialogNewName::Row>
   {
     const boost::shared_ptr<Concept> focal_concept = map->GetFocalNode()->GetConcept();
     assert(focal_concept);
-    const int n_examples = boost::numeric_cast<int>(focal_concept->GetExamples()->Get().size());
+    const int n_examples = boost::numeric_cast<int>(focal_concept->GetExamples().Get().size());
     for (int i=0; i!=n_examples; ++i)
     {
       boost::shared_ptr<Edge> empty_edge;
@@ -232,7 +231,7 @@ std::vector<ribi::cmap::QtRateConceptTallyDialogNewName::Row>
 
     const boost::shared_ptr<Concept> concept = edge->GetNode()->GetConcept();
     data.push_back(std::make_tuple(edge,concept,-1));
-    const int n_examples = boost::numeric_cast<int>(concept->GetExamples()->Get().size());
+    const int n_examples = boost::numeric_cast<int>(concept->GetExamples().Get().size());
     for (int i=0; i!=n_examples; ++i)
     {
       boost::shared_ptr<Edge> empty_edge;
@@ -323,9 +322,8 @@ int ribi::cmap::QtRateConceptTallyDialogNewName::GetSuggestedComplexity() const
         const int index = std::get<2>(row);
         if (index == -1) return init + 0;
         assert(std::get<1>(row));
-        assert(std::get<1>(row)->GetExamples());
-        assert(index < static_cast<int>(std::get<1>(row)->GetExamples()->Get().size()));
-        return init + (std::get<1>(row)->GetExamples()->Get()[index]->GetIsComplex() ? 1 : 0);
+        assert(index < static_cast<int>(std::get<1>(row)->GetExamples().Get().size()));
+        return init + (std::get<1>(row)->GetExamples().Get()[index].GetIsComplex() ? 1 : 0);
       }
     );
   const int n_tallied = n_examples + n_edges;
@@ -343,9 +341,8 @@ int ribi::cmap::QtRateConceptTallyDialogNewName::GetSuggestedConcreteness() cons
         const int index = std::get<2>(row);
         if (index == -1) return init + 0;
         assert(std::get<1>(row));
-        assert(std::get<1>(row)->GetExamples());
-        assert(index < static_cast<int>(std::get<1>(row)->GetExamples()->Get().size()));
-        return init + (std::get<1>(row)->GetExamples()->Get()[index]->GetIsConcrete() ? 1 : 0);
+        assert(index < static_cast<int>(std::get<1>(row)->GetExamples().Get().size()));
+        return init + (std::get<1>(row)->GetExamples().Get()[index].GetIsConcrete() ? 1 : 0);
       }
     );
   const int n_tallied = n_examples;
@@ -363,9 +360,8 @@ int ribi::cmap::QtRateConceptTallyDialogNewName::GetSuggestedSpecificity() const
         const int index = std::get<2>(row);
         if (index == -1) return init + 0;
         assert(std::get<1>(row));
-        assert(index < static_cast<int>(std::get<1>(row)->GetExamples()->Get().size()));
-        assert(std::get<1>(row)->GetExamples());
-        return init + (std::get<1>(row)->GetExamples()->Get()[index]->GetIsSpecific() ? 1 : 0);
+        assert(index < static_cast<int>(std::get<1>(row)->GetExamples().Get().size()));
+        return init + (std::get<1>(row)->GetExamples().Get()[index].GetIsSpecific() ? 1 : 0);
       }
     );
   const int n_tallied = n_examples;
@@ -431,13 +427,13 @@ void ribi::cmap::QtRateConceptTallyDialogNewName::OnCellChanged(int row_index, i
   else
   {
     //Concept example
-    assert(index < static_cast<int>(concept->GetExamples()->Get().size()));
-    const boost::shared_ptr<cmap::Example> example = concept->GetExamples()->Get()[index];
+    assert(index < static_cast<int>(concept->GetExamples().Get().size()));
+    Example& example = concept->GetExamples().Get()[index];
     switch (col)
     {
-      case 0: example->SetIsComplex( item->checkState() == Qt::Checked ); break;
-      case 1: example->SetIsConcrete( item->checkState() == Qt::Checked ); break;
-      case 2: example->SetIsSpecific( item->checkState() == Qt::Checked ); break;
+      case 0: example.SetIsComplex( item->checkState() == Qt::Checked ); break;
+      case 1: example.SetIsConcrete( item->checkState() == Qt::Checked ); break;
+      case 2: example.SetIsSpecific( item->checkState() == Qt::Checked ); break;
       case 3: break; //It's read-only! //example->SetText( item->text().toStdString() ); break;
     }
   }
@@ -521,10 +517,10 @@ void ribi::cmap::QtRateConceptTallyDialogNewName::Test() noexcept
 
   //Check current state, before modification
 
-  assert(d.ui->table->item(0,0)->checkState() == (focal_node->GetConcept()->GetExamples()->Get()[0]->GetIsComplex() ? Qt::Checked : Qt::Unchecked));
-  assert(d.ui->table->item(0,1)->checkState() == (focal_node->GetConcept()->GetExamples()->Get()[0]->GetIsConcrete() ? Qt::Checked : Qt::Unchecked));
-  assert(d.ui->table->item(0,2)->checkState() == (focal_node->GetConcept()->GetExamples()->Get()[0]->GetIsSpecific() ? Qt::Checked : Qt::Unchecked));
-  assert(d.ui->table->item(0,3)->text() == QString(focal_node->GetConcept()->GetExamples()->Get()[0]->GetText().c_str()));
+  assert(d.ui->table->item(0,0)->checkState() == (focal_node->GetConcept()->GetExamples().Get()[0].GetIsComplex() ? Qt::Checked : Qt::Unchecked));
+  assert(d.ui->table->item(0,1)->checkState() == (focal_node->GetConcept()->GetExamples().Get()[0].GetIsConcrete() ? Qt::Checked : Qt::Unchecked));
+  assert(d.ui->table->item(0,2)->checkState() == (focal_node->GetConcept()->GetExamples().Get()[0].GetIsSpecific() ? Qt::Checked : Qt::Unchecked));
+  assert(d.ui->table->item(0,3)->text() == QString(focal_node->GetConcept()->GetExamples().Get()[0].GetText().c_str()));
 
   assert(d.ui->table->item(1,0)->checkState() == (edge->GetNode()->GetConcept()->GetIsComplex() ? Qt::Checked : Qt::Unchecked));
   assert(d.ui->table->item(1,1)->text() == "");
@@ -536,10 +532,10 @@ void ribi::cmap::QtRateConceptTallyDialogNewName::Test() noexcept
   assert(d.ui->table->item(1,3)->text().toStdString().find(edge->GetTo()->GetConcept()->GetName()) != std::string::npos);
   //OLD assert(d.ui->table->item(1,3)->text() == QString(edge->GetConcept()->GetName().c_str()));
 
-  assert(d.ui->table->item(2,0)->checkState() == (edge->GetNode()->GetConcept()->GetExamples()->Get()[0]->GetIsComplex() ? Qt::Checked : Qt::Unchecked));
-  assert(d.ui->table->item(2,1)->checkState() == (edge->GetNode()->GetConcept()->GetExamples()->Get()[0]->GetIsConcrete() ? Qt::Checked : Qt::Unchecked));
-  assert(d.ui->table->item(2,2)->checkState() == (edge->GetNode()->GetConcept()->GetExamples()->Get()[0]->GetIsSpecific() ? Qt::Checked : Qt::Unchecked));
-  assert(d.ui->table->item(2,3)->text() == QString(edge->GetNode()->GetConcept()->GetExamples()->Get()[0]->GetText().c_str()));
+  assert(d.ui->table->item(2,0)->checkState() == (edge->GetNode()->GetConcept()->GetExamples().Get()[0].GetIsComplex() ? Qt::Checked : Qt::Unchecked));
+  assert(d.ui->table->item(2,1)->checkState() == (edge->GetNode()->GetConcept()->GetExamples().Get()[0].GetIsConcrete() ? Qt::Checked : Qt::Unchecked));
+  assert(d.ui->table->item(2,2)->checkState() == (edge->GetNode()->GetConcept()->GetExamples().Get()[0].GetIsSpecific() ? Qt::Checked : Qt::Unchecked));
+  assert(d.ui->table->item(2,3)->text() == QString(edge->GetNode()->GetConcept()->GetExamples().Get()[0].GetText().c_str()));
 
   //Modify table
   d.ui->table->item(0,0)->setCheckState(d.ui->table->item(0,0)->checkState() == Qt::Unchecked ? Qt::Checked : Qt::Unchecked);
@@ -557,10 +553,10 @@ void ribi::cmap::QtRateConceptTallyDialogNewName::Test() noexcept
 
   //Check that data is modified by GUI
 
-  assert(d.ui->table->item(0,0)->checkState() == (focal_node->GetConcept()->GetExamples()->Get()[0]->GetIsComplex() ? Qt::Checked : Qt::Unchecked));
-  assert(d.ui->table->item(0,1)->checkState() == (focal_node->GetConcept()->GetExamples()->Get()[0]->GetIsConcrete() ? Qt::Checked : Qt::Unchecked));
-  assert(d.ui->table->item(0,2)->checkState() == (focal_node->GetConcept()->GetExamples()->Get()[0]->GetIsSpecific() ? Qt::Checked : Qt::Unchecked));
-  assert(d.ui->table->item(0,3)->text() == QString(focal_node->GetConcept()->GetExamples()->Get()[0]->GetText().c_str()));
+  assert(d.ui->table->item(0,0)->checkState() == (focal_node->GetConcept()->GetExamples().Get()[0].GetIsComplex() ? Qt::Checked : Qt::Unchecked));
+  assert(d.ui->table->item(0,1)->checkState() == (focal_node->GetConcept()->GetExamples().Get()[0].GetIsConcrete() ? Qt::Checked : Qt::Unchecked));
+  assert(d.ui->table->item(0,2)->checkState() == (focal_node->GetConcept()->GetExamples().Get()[0].GetIsSpecific() ? Qt::Checked : Qt::Unchecked));
+  assert(d.ui->table->item(0,3)->text() == QString(focal_node->GetConcept()->GetExamples().Get()[0].GetText().c_str()));
 
   assert(d.ui->table->item(1,0)->checkState() == (edge->GetNode()->GetConcept()->GetIsComplex() ? Qt::Checked : Qt::Unchecked));
   assert(d.ui->table->item(1,1)->text() == "");
@@ -573,10 +569,10 @@ void ribi::cmap::QtRateConceptTallyDialogNewName::Test() noexcept
   assert(d.ui->table->item(1,3)->text().toStdString().find(edge->GetTo()->GetConcept()->GetName()) != std::string::npos);
   //OLD assert(d.ui->table->item(1,3)->text() == QString(edge->GetConcept()->GetName().c_str()));
 
-  assert(d.ui->table->item(2,0)->checkState() == (edge->GetNode()->GetConcept()->GetExamples()->Get()[0]->GetIsComplex() ? Qt::Checked : Qt::Unchecked));
-  assert(d.ui->table->item(2,1)->checkState() == (edge->GetNode()->GetConcept()->GetExamples()->Get()[0]->GetIsConcrete() ? Qt::Checked : Qt::Unchecked));
-  assert(d.ui->table->item(2,2)->checkState() == (edge->GetNode()->GetConcept()->GetExamples()->Get()[0]->GetIsSpecific() ? Qt::Checked : Qt::Unchecked));
-  assert(d.ui->table->item(2,3)->text() == QString(edge->GetNode()->GetConcept()->GetExamples()->Get()[0]->GetText().c_str()));
+  assert(d.ui->table->item(2,0)->checkState() == (edge->GetNode()->GetConcept()->GetExamples().Get()[0].GetIsComplex() ? Qt::Checked : Qt::Unchecked));
+  assert(d.ui->table->item(2,1)->checkState() == (edge->GetNode()->GetConcept()->GetExamples().Get()[0].GetIsConcrete() ? Qt::Checked : Qt::Unchecked));
+  assert(d.ui->table->item(2,2)->checkState() == (edge->GetNode()->GetConcept()->GetExamples().Get()[0].GetIsSpecific() ? Qt::Checked : Qt::Unchecked));
+  assert(d.ui->table->item(2,3)->text() == QString(edge->GetNode()->GetConcept()->GetExamples().Get()[0].GetText().c_str()));
 
 }
 #endif

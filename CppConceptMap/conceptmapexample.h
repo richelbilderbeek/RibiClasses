@@ -43,13 +43,6 @@ struct ExampleFactory;
 /// - QtExampleDialog
 struct Example
 {
-  Example(const Example&) = delete;
-  Example& operator=(const Example&) = delete;
-  ~Example() noexcept {}
-
-  ///Convert a cmap::Competency to a std::string
-  //static std::string CompetencyToStr(const Competency competency) noexcept;
-
   ///Get the competency, as might be judged by an assessor
   Competency GetCompetency() const noexcept { return m_competency; }
 
@@ -94,21 +87,6 @@ struct Example
   ///Convert Example to an XML std::string
   std::string ToXml() const noexcept;
 
-  ///Emitted when SetCompetency changes the competency
-  //boost::signals2::signal<void(Example*)> m_signal_competency_changed;
-
-  ///Emitted when m_is_complex is changed
-  //boost::signals2::signal<void(Example*)> m_signal_is_complex_changed;
-
-  ///Emitted when m_is_concrete is changed
-  //boost::signals2::signal<void(Example*)> m_signal_is_concrete_changed;
-
-  ///Emitted when m_is_specific is changed
-  //boost::signals2::signal<void(Example*)> m_signal_is_specific_changed;
-
-  ///Emitted when SetText changes the text
-  //boost::signals2::signal<void(Example&)> m_signal_text_changed;
-
 private:
 
   ///The competency, as might be judged by an assessor
@@ -130,10 +108,8 @@ private:
   ///Set the competency with a string
   void SetCompetencyAsStr(const std::string& s) const;
 
-
   ///Only let ExampleFactory create Example instances
   explicit Example(
-    const ExampleFactory& example_factory, //To enforce its use
     const std::string& text,
     const cmap::Competency competency = cmap::Competency::uninitialized,
     const bool is_complex = true,

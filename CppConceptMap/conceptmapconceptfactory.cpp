@@ -46,14 +46,13 @@ ribi::cmap::ConceptFactory::ConceptFactory() noexcept
 
 boost::shared_ptr<ribi::cmap::Concept> ribi::cmap::ConceptFactory::Create(
   const std::string& name,
-  const boost::shared_ptr<ribi::cmap::Examples>& examples,
+  const Examples& examples,
   const bool is_complex,
   const int rating_complexity,
   const int rating_concreteness,
   const int rating_specificity
 ) const noexcept
 {
-  assert(examples);
   assert(rating_complexity >= -1);
   assert(rating_complexity <=  2);
 
@@ -76,10 +75,9 @@ boost::shared_ptr<ribi::cmap::Concept> ribi::cmap::ConceptFactory::DeepCopy(
   const boost::shared_ptr<const ribi::cmap::Concept>& concept
 ) const noexcept
 {
-  const boost::shared_ptr<Examples> examples
+  const Examples examples
     = ExamplesFactory().Create(concept->GetExamples());
-  assert(examples);
-  assert(*examples == *concept->GetExamples());
+  assert(examples == concept->GetExamples());
 
   assert(concept->GetRatingComplexity() >= -1);
   assert(concept->GetRatingComplexity() <=  2);
@@ -93,7 +91,6 @@ boost::shared_ptr<ribi::cmap::Concept> ribi::cmap::ConceptFactory::DeepCopy(
       concept->GetRatingConcreteness(),
       concept->GetRatingSpecificity());
   assert(q);
-  assert(q->GetExamples());
   assert(*concept == *q);
   return q;
 }
@@ -119,22 +116,20 @@ boost::shared_ptr<ribi::cmap::Concept> ribi::cmap::ConceptFactory::Create(
   assert(rating_complexity >= -1);
   assert(rating_complexity <=  2);
 
-  std::vector<boost::shared_ptr<cmap::Example> > w;
+  std::vector<Example> w;
   std::transform(v.begin(),v.end(),std::back_inserter(w),
     [](const std::pair<std::string,Competency>& p)
     {
-      const boost::shared_ptr<cmap::Example> q
+      const Example q
         = ExampleFactory().Create(
           p.first,
-          p.second);
-      assert(q);
+          p.second
+      );
       return q;
     }
   );
 
-  const boost::shared_ptr<Examples> examples
-    = ExamplesFactory().Create(w);
-  assert(examples);
+  const Examples examples = ExamplesFactory().Create(w);
 
   const boost::shared_ptr<Concept> concept
     = Create(
@@ -155,7 +150,7 @@ boost::shared_ptr<ribi::cmap::Concept> ribi::cmap::ConceptFactory::FromXml(const
   assert(s.substr(s.size() - 10,10) == "</concept>");
 
   std::string name;
-  boost::shared_ptr<ribi::cmap::Examples> examples;
+  Examples examples;
   bool is_complex = false;
   int rating_complexity    = -2; //Not even unrated (which has -1 as its value)
   int rating_concreteness  = -2; //Not even unrated (which has -1 as its value)
@@ -240,8 +235,7 @@ std::vector<boost::shared_ptr<ribi::cmap::Concept> > ribi::cmap::ConceptFactory:
 {
   std::vector<boost::shared_ptr<Concept> > v;
   {
-    const boost::shared_ptr<Examples> examples = ExamplesFactory().Create();
-    assert(examples);
+    const Examples examples = ExamplesFactory().Create();
     const boost::shared_ptr<Concept> p = Create("Concept without examples", examples, false, 0, 1, 2);
     assert(p);
     assert(p->GetRatingComplexity() >= -1);
@@ -294,8 +288,6 @@ std::vector<boost::shared_ptr<ribi::cmap::Concept> > ribi::cmap::ConceptFactory:
     v.push_back(p);
   }
   assert(std::count_if(v.begin(),v.end(),[](const boost::shared_ptr<Concept>& p) { return !p; } ) == 0);
-  assert(v[0]->GetExamples());
-
   return v;
 }
 
@@ -318,7 +310,6 @@ void ribi::cmap::ConceptFactory::Test() noexcept
     for (const auto test: tests)
     {
       assert(test);
-      assert(test->GetExamples());
     }
   }
   if (verbose) { TRACE("Concept -> XML -> Concept "); }

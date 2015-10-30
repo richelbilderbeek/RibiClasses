@@ -70,7 +70,7 @@ private:
   const boost::shared_ptr<Concept> m_concept;
 
   ///Obtain the rated examples
-  const boost::shared_ptr<Examples> GetRatedExamples() const;
+  Examples GetRatedExamples() const;
 
   ///Test this class
   static void Test() noexcept;

@@ -80,19 +80,21 @@ ribi::cmap::QtConceptMapConceptEditDialog::QtConceptMapConceptEditDialog(
   //Add the name
   ui->edit_concept->setText(concept->GetName().c_str());
   //Add the examples
-  const std::vector<boost::shared_ptr<const cmap::Example> > v = AddConst(concept->GetExamples()->Get());
+  const std::vector<Example> v = concept->GetExamples().Get();
   std::for_each(v.begin(),v.end(),
-    [this](const boost::shared_ptr<const cmap::Example>& s)
+    [this](const Example& example)
     {
-      assert(!s->GetText().empty());
-      QtConceptMapListWidgetItem * const item = new QtConceptMapListWidgetItem(s->GetCompetency());
-      item->setText(s->GetText().c_str());
+      assert(!example.GetText().empty());
+      QtConceptMapListWidgetItem * const item
+        = new QtConceptMapListWidgetItem(example.GetCompetency());
+      item->setText(example.GetText().c_str());
       item->setFlags(
             Qt::ItemIsSelectable
           | Qt::ItemIsEnabled
           | Qt::ItemIsEditable
           | Qt::ItemIsDragEnabled
-          | Qt::ItemIsDropEnabled);
+          | Qt::ItemIsDropEnabled
+      );
       ui->list_examples->addItem(item);
     }
   );
@@ -102,7 +104,8 @@ ribi::cmap::QtConceptMapConceptEditDialog::QtConceptMapConceptEditDialog(
     ui->list_examples,
     SIGNAL(itemChanged(QListWidgetItem*)),
     this,
-    SLOT(RemoveEmptyItem(QListWidgetItem*)));
+    SLOT(RemoveEmptyItem(QListWidgetItem*))
+  );
 }
 
 ribi::cmap::QtConceptMapConceptEditDialog::~QtConceptMapConceptEditDialog() noexcept
@@ -250,15 +253,15 @@ void ribi::cmap::QtConceptMapConceptEditDialog::on_button_ok_clicked()
   //Name
   const std::string name = ui->edit_concept->text().toStdString();
   //Examples
-  std::vector<boost::shared_ptr<cmap::Example> > v;
+  std::vector<Example> v;
 
   const int n_items = ui->list_examples->count();
   for (int i=0; i!=n_items; ++i)
   {
     const QListWidgetItem * const item = ui->list_examples->item(i);
     const QtConceptMapListWidgetItem * const pvdb_item = dynamic_cast<const QtConceptMapListWidgetItem *>(item);
-    const cmap::Competency competency = pvdb_item ? pvdb_item->m_competency : cmap::Competency::uninitialized;
-    boost::shared_ptr<cmap::Example> p(
+    const Competency competency = pvdb_item ? pvdb_item->m_competency : Competency::uninitialized;
+    Example p(
       ExampleFactory().Create(
         item->text().toStdString(),
         competency
@@ -268,11 +271,8 @@ void ribi::cmap::QtConceptMapConceptEditDialog::on_button_ok_clicked()
   }
   assert(n_items == boost::numeric_cast<int>(v.size()));
   //Set to concept
-  const boost::shared_ptr<ribi::cmap::Examples> examples(new cmap::Examples(v));
-  assert(examples);
-  assert(this);
+  const Examples examples(v);
   assert(m_concept);
-  assert(m_concept->GetExamples());
   m_concept->SetName(name);
   m_concept->SetExamples(examples);
   #endif

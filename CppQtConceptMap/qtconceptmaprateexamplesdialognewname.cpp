@@ -39,10 +39,10 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 
 struct QtConceptMapListWidgetItem : public QListWidgetItem
 {
-  QtConceptMapListWidgetItem(const boost::shared_ptr<const ribi::cmap::Example>& example)
+  QtConceptMapListWidgetItem(const ribi::cmap::Example& example)
   {
     //Wordwrap text
-    const std::string s = example->GetText();
+    const std::string s = example.GetText();
     const std::vector<std::string> v { ribi::cmap::Wordwrap(s,40) };
     //Display multi-line
     std::string t;
@@ -50,7 +50,7 @@ struct QtConceptMapListWidgetItem : public QListWidgetItem
     if (!t.empty()) t.resize(t.size() - 1);
     this->setText(t.c_str());
     //Icon
-    this->setIcon(ribi::cmap::QtCompetency().CompetencyToIcon(example->GetCompetency()));
+    this->setIcon(ribi::cmap::QtCompetency().CompetencyToIcon(example.GetCompetency()));
   }
 };
 
@@ -66,7 +66,6 @@ ribi::cmap::QtRateExamplesDialogNewName::QtRateExamplesDialogNewName(
   #ifndef NDEBUG
   Test();
   assert(m_concept);
-  assert(m_concept->GetExamples());
   #endif
 
   //Ensure that the dialog does not resize beyond the screen's size
@@ -78,12 +77,12 @@ ribi::cmap::QtRateExamplesDialogNewName::QtRateExamplesDialogNewName(
   {
     ui->label_concept_name->setText(concept->GetName().c_str());
     ui->list->clear();
-    const auto v = concept->GetExamples()->Get();
+    const auto v = concept->GetExamples().Get();
     const std::size_t sz = v.size();
     for (std::size_t i=0; i!=sz; ++i)
     {
-      const boost::shared_ptr<const Example>& example = v[i];
-      const std::string s = example->GetText();
+      const Example& example = v[i];
+      const std::string s = example.GetText();
       //const int n_lines = ribi::cmap::Wordwrap(s,40).size();
       //ui->list->setRowHeight(row,ui->list->fontMetrics().height() * 2 * (n_lines + 1));
       QtConceptMapListWidgetItem * const item
@@ -120,9 +119,9 @@ ribi::cmap::QtRateExamplesDialogNewName::~QtRateExamplesDialogNewName() noexcept
   delete ui;
 }
 
-const boost::shared_ptr<ribi::cmap::Examples> ribi::cmap::QtRateExamplesDialogNewName::GetRatedExamples() const
+ribi::cmap::Examples ribi::cmap::QtRateExamplesDialogNewName::GetRatedExamples() const
 {
-  std::vector<boost::shared_ptr<Example> > v;
+  std::vector<Example> v;
 
   const int sz = ui->list->count();
   for (int i=0; i!=sz; ++i)
@@ -131,18 +130,15 @@ const boost::shared_ptr<ribi::cmap::Examples> ribi::cmap::QtRateExamplesDialogNe
     assert(qtitem);
     const QtConceptMapListWidgetItem* const item = dynamic_cast<const QtConceptMapListWidgetItem*>(qtitem);
     assert(item);
-    const boost::shared_ptr<Example> example
+    const Example example
       = ExampleFactory().Create(
         item->text().toStdString(),
-        cmap::QtCompetency().IconToCompetency(item->icon())
+        QtCompetency().IconToCompetency(item->icon())
       );
-    assert(example);
     v.push_back(example);
   }
 
-  const boost::shared_ptr<ribi::cmap::Examples> examples
-    = cmap::ExamplesFactory().Create(v);
-  assert(examples);
+  Examples examples = ExamplesFactory().Create(v);
   return examples;
 }
 
@@ -189,21 +185,19 @@ void ribi::cmap::QtRateExamplesDialogNewName::Test() noexcept
     for (int i=0; i!=sz; ++i)
     {
       assert(i < static_cast<int>(ConceptFactory().GetTests().size()));
-      const auto a = QtRateExamplesDialogNewName(cmap::ConceptFactory().GetTests()[i]).GetRatedExamples();
-      assert(a);
+      const auto a = QtRateExamplesDialogNewName(ConceptFactory().GetTests()[i]).GetRatedExamples();
       for (int j=0; j!=sz; ++j)
       {
         assert(j < static_cast<int>(ConceptFactory().GetTests().size()));
-        const auto b = QtRateExamplesDialogNewName(cmap::ConceptFactory().GetTests()[j]).GetRatedExamples();
-        assert(b);
+        const auto b = QtRateExamplesDialogNewName(ConceptFactory().GetTests()[j]).GetRatedExamples();
         assert(a != b);
         if (i == j)
         {
-          assert(*a == *b);
+          assert(a == b);
         }
         else
         {
-          assert(*a != *b);
+          assert(a != b);
         }
       }
     }
@@ -276,8 +270,7 @@ void ribi::cmap::QtRateExamplesDialogNewName::on_button_ti_knowledge_clicked()
 
 void ribi::cmap::QtRateExamplesDialogNewName::on_button_ok_clicked()
 {
-  const boost::shared_ptr<ribi::cmap::Examples> p = GetRatedExamples();
-  assert(p);
+  const Examples p = GetRatedExamples();
   assert(m_concept);
   m_concept->SetExamples(p);
   close();
