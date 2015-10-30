@@ -158,21 +158,21 @@ void ribi::cmap::QtExampleDialog::SetExample(const boost::shared_ptr<Example>& e
     }
 
     //Disconnect m_example
-    m_example->m_signal_competency_changed.disconnect(
-      boost::bind(&ribi::cmap::QtExampleDialog::OnCompetencyChanged,this,boost::lambda::_1)
-    );
-    m_example->m_signal_is_complex_changed.disconnect(
-      boost::bind(&ribi::cmap::QtExampleDialog::OnIsComplexChanged,this,boost::lambda::_1)
-    );
-    m_example->m_signal_is_concrete_changed.disconnect(
-      boost::bind(&ribi::cmap::QtExampleDialog::OnIsConcreteChanged,this,boost::lambda::_1)
-    );
-    m_example->m_signal_is_specific_changed.disconnect(
-      boost::bind(&ribi::cmap::QtExampleDialog::OnIsSpecificChanged,this,boost::lambda::_1)
-    );
-    m_example->m_signal_text_changed.disconnect(
-      boost::bind(&ribi::cmap::QtExampleDialog::OnTextChanged,this,boost::lambda::_1)
-    );
+//    m_example->m_signal_competency_changed.disconnect(
+//      boost::bind(&ribi::cmap::QtExampleDialog::OnCompetencyChanged,this,boost::lambda::_1)
+//    );
+//    m_example->m_signal_is_complex_changed.disconnect(
+//      boost::bind(&ribi::cmap::QtExampleDialog::OnIsComplexChanged,this,boost::lambda::_1)
+//    );
+//    m_example->m_signal_is_concrete_changed.disconnect(
+//      boost::bind(&ribi::cmap::QtExampleDialog::OnIsConcreteChanged,this,boost::lambda::_1)
+//    );
+//    m_example->m_signal_is_specific_changed.disconnect(
+//      boost::bind(&ribi::cmap::QtExampleDialog::OnIsSpecificChanged,this,boost::lambda::_1)
+//    );
+//    m_example->m_signal_text_changed.disconnect(
+//      boost::bind(&ribi::cmap::QtExampleDialog::OnTextChanged,this,boost::lambda::_1)
+//    );
   }
 
   //Replace m_example by the new one
@@ -185,43 +185,43 @@ void ribi::cmap::QtExampleDialog::SetExample(const boost::shared_ptr<Example>& e
   assert(m_example->GetIsSpecific() == is_specific_after);
   assert(m_example->GetText()       == text_after       );
 
-  m_example->m_signal_competency_changed.connect(
-    boost::bind(&ribi::cmap::QtExampleDialog::OnCompetencyChanged,this,boost::lambda::_1)
-  );
-  m_example->m_signal_is_complex_changed.connect(
-    boost::bind(&ribi::cmap::QtExampleDialog::OnIsComplexChanged,this,boost::lambda::_1)
-  );
-  m_example->m_signal_is_concrete_changed.connect(
-    boost::bind(&ribi::cmap::QtExampleDialog::OnIsConcreteChanged,this,boost::lambda::_1)
-  );
-  m_example->m_signal_is_specific_changed.connect(
-    boost::bind(&ribi::cmap::QtExampleDialog::OnIsSpecificChanged,this,boost::lambda::_1)
-  );
-  m_example->m_signal_text_changed.connect(
-    boost::bind(&ribi::cmap::QtExampleDialog::OnTextChanged,this,boost::lambda::_1)
-  );
+//  m_example->m_signal_competency_changed.connect(
+//    boost::bind(&ribi::cmap::QtExampleDialog::OnCompetencyChanged,this,boost::lambda::_1)
+//  );
+//  m_example->m_signal_is_complex_changed.connect(
+//    boost::bind(&ribi::cmap::QtExampleDialog::OnIsComplexChanged,this,boost::lambda::_1)
+//  );
+//  m_example->m_signal_is_concrete_changed.connect(
+//    boost::bind(&ribi::cmap::QtExampleDialog::OnIsConcreteChanged,this,boost::lambda::_1)
+//  );
+//  m_example->m_signal_is_specific_changed.connect(
+//    boost::bind(&ribi::cmap::QtExampleDialog::OnIsSpecificChanged,this,boost::lambda::_1)
+//  );
+//  m_example->m_signal_text_changed.connect(
+//    boost::bind(&ribi::cmap::QtExampleDialog::OnTextChanged,this,boost::lambda::_1)
+//  );
 
   //Emit everything that has changed
-  if (competency_changed)
-  {
-    m_example->m_signal_competency_changed(m_example.get());
-  }
-  if (is_complex_changed)
-  {
-    m_example->m_signal_is_complex_changed(m_example.get());
-  }
-  if (is_concrete_changed)
-  {
-    m_example->m_signal_is_concrete_changed(m_example.get());
-  }
-  if (is_specific_changed)
-  {
-    m_example->m_signal_is_specific_changed(m_example.get());
-  }
-  if (text_changed)
-  {
-    m_example->m_signal_text_changed(*m_example.get());
-  }
+//  if (competency_changed)
+//  {
+//    m_example->m_signal_competency_changed(m_example.get());
+//  }
+//  if (is_complex_changed)
+//  {
+//    m_example->m_signal_is_complex_changed(m_example.get());
+//  }
+//  if (is_concrete_changed)
+//  {
+//    m_example->m_signal_is_concrete_changed(m_example.get());
+//  }
+//  if (is_specific_changed)
+//  {
+//    m_example->m_signal_is_specific_changed(m_example.get());
+//  }
+//  if (text_changed)
+//  {
+//    m_example->m_signal_text_changed(*m_example.get());
+//  }
 
   this->setMinimumHeight(GetMinimumHeight(*m_example));
 

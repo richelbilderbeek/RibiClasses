@@ -52,11 +52,11 @@ ribi::cmap::Example::Example(
   const bool is_concrete,
   const bool is_specific
   )
-  : m_signal_competency_changed{},
-    m_signal_is_complex_changed{},
-    m_signal_is_concrete_changed{},
-    m_signal_is_specific_changed{},
-    m_signal_text_changed{},
+  : //m_signal_competency_changed{},
+    //m_signal_is_complex_changed{},
+    //m_signal_is_concrete_changed{},
+    //m_signal_is_specific_changed{},
+    //m_signal_text_changed{},
     m_competency(competency),
     m_is_complex(is_complex),
     m_is_concrete(is_concrete),
@@ -108,9 +108,9 @@ void ribi::cmap::Example::SetCompetency(const Competency competency) noexcept
 
     assert(m_competency == competency_after);
 
-    m_signal_competency_changed(this);
+    //m_signal_competency_changed(this);
 
-    assert(m_competency == competency_after);
+    //assert(m_competency == competency_after);
     if (verbose)
     {
       std::stringstream s;
@@ -125,7 +125,7 @@ void ribi::cmap::Example::SetIsComplex(const bool is_complex) noexcept
   if (m_is_complex != is_complex)
   {
     m_is_complex = is_complex;
-    m_signal_is_complex_changed(this);
+    //m_signal_is_complex_changed(this);
   }
 }
 
@@ -134,7 +134,7 @@ void ribi::cmap::Example::SetIsConcrete(const bool is_concrete) noexcept
   if (m_is_concrete != is_concrete)
   {
     m_is_concrete = is_concrete;
-    m_signal_is_concrete_changed(this);
+    //m_signal_is_concrete_changed(this);
   }
 }
 
@@ -143,7 +143,7 @@ void ribi::cmap::Example::SetIsSpecific(const bool is_specific) noexcept
   if (m_is_specific != is_specific)
   {
     m_is_specific = is_specific;
-    m_signal_is_specific_changed(this);
+    //m_signal_is_specific_changed(this);
   }
 }
 
@@ -152,7 +152,7 @@ void ribi::cmap::Example::SetText(const std::string& text) noexcept
   if (m_text != text)
   {
     m_text = text;
-    m_signal_text_changed(*this);
+    //m_signal_text_changed(*this);
   }
 }
 
@@ -319,6 +319,7 @@ void ribi::cmap::Example::Test() noexcept
       }
     }
   }
+  /*
   if (verbose) { TRACE("When setting the competency, a signal must be emitted"); }
   {
     const auto example = ExampleFactory().GetTest(0);
@@ -341,6 +342,7 @@ void ribi::cmap::Example::Test() noexcept
     example->SetText("B");
     assert(c.Get() == 1);
   }
+  */
 }
 #endif
 
@@ -367,7 +369,6 @@ std::string ribi::cmap::Example::ToXml() const noexcept
   s <<   "</text>";
   s <<   "<competency>";
   s << Competencies().ToStr(GetCompetency());
-  //s <<     CompetencyToStr(GetCompetency());
   s <<   "</competency>";
   s <<   "<is_complex>";
   s <<     GetIsComplex();

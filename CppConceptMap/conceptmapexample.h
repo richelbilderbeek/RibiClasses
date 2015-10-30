@@ -45,6 +45,7 @@ struct Example
 {
   Example(const Example&) = delete;
   Example& operator=(const Example&) = delete;
+  ~Example() noexcept {}
 
   ///Convert a cmap::Competency to a std::string
   //static std::string CompetencyToStr(const Competency competency) noexcept;
@@ -65,7 +66,7 @@ struct Example
   const std::string& GetText() const noexcept { return m_text; }
 
   ///Set the competency
-  void SetCompetency(const cmap::Competency competency) noexcept;
+  void SetCompetency(const Competency competency) noexcept;
 
   ///Has an assessor rated this example as being an addition to the complexity?
   void SetIsComplex(const bool is_complex) noexcept;
@@ -94,19 +95,19 @@ struct Example
   std::string ToXml() const noexcept;
 
   ///Emitted when SetCompetency changes the competency
-  boost::signals2::signal<void(Example*)> m_signal_competency_changed;
+  //boost::signals2::signal<void(Example*)> m_signal_competency_changed;
 
   ///Emitted when m_is_complex is changed
-  boost::signals2::signal<void(Example*)> m_signal_is_complex_changed;
+  //boost::signals2::signal<void(Example*)> m_signal_is_complex_changed;
 
   ///Emitted when m_is_concrete is changed
-  boost::signals2::signal<void(Example*)> m_signal_is_concrete_changed;
+  //boost::signals2::signal<void(Example*)> m_signal_is_concrete_changed;
 
   ///Emitted when m_is_specific is changed
-  boost::signals2::signal<void(Example*)> m_signal_is_specific_changed;
+  //boost::signals2::signal<void(Example*)> m_signal_is_specific_changed;
 
   ///Emitted when SetText changes the text
-  boost::signals2::signal<void(Example&)> m_signal_text_changed;
+  //boost::signals2::signal<void(Example&)> m_signal_text_changed;
 
 private:
 
@@ -129,12 +130,6 @@ private:
   ///Set the competency with a string
   void SetCompetencyAsStr(const std::string& s) const;
 
-  ///Use checked_delete only
-  ~Example() noexcept {}
-  friend void boost::checked_delete<>(Example* x);
-  friend void boost::checked_delete<>(const Example* x);
-  friend class boost::detail::sp_ms_deleter<      Example>;
-  friend class boost::detail::sp_ms_deleter<const Example>;
 
   ///Only let ExampleFactory create Example instances
   explicit Example(

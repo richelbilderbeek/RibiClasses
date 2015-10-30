@@ -49,21 +49,22 @@ ribi::cmap::Examples::Examples(const std::vector<boost::shared_ptr<cmap::Example
   for(const auto example: m_v)
   {
     assert(example);
-    example->m_signal_competency_changed.connect(
-      boost::bind(&Examples::OnExampleChanged,this)
-    );
-    example->m_signal_is_complex_changed.connect(
-      boost::bind(&Examples::OnExampleChanged,this)
-    );
-    example->m_signal_is_concrete_changed.connect(
-      boost::bind(&Examples::OnExampleChanged,this)
-    );
-    example->m_signal_is_specific_changed.connect(
-      boost::bind(&Examples::OnExampleChanged,this)
-    );
-    example->m_signal_text_changed.connect(
-      boost::bind(&Examples::OnExampleChanged,this)
-    );
+
+//    example->m_signal_competency_changed.connect(
+//      boost::bind(&Examples::OnExampleChanged,this)
+//    );
+//    example->m_signal_is_complex_changed.connect(
+//      boost::bind(&Examples::OnExampleChanged,this)
+//    );
+//    example->m_signal_is_concrete_changed.connect(
+//      boost::bind(&Examples::OnExampleChanged,this)
+//    );
+//    example->m_signal_is_specific_changed.connect(
+//      boost::bind(&Examples::OnExampleChanged,this)
+//    );
+//    example->m_signal_text_changed.connect(
+//      boost::bind(&Examples::OnExampleChanged,this)
+//    );
   }
 
   assert(std::count_if(m_v.begin(),m_v.end(),
@@ -76,21 +77,21 @@ ribi::cmap::Examples::~Examples() noexcept
   for(const auto example: m_v)
   {
     assert(example);
-    example->m_signal_competency_changed.disconnect(
-      boost::bind(&Examples::OnExampleChanged,this)
-    );
-    example->m_signal_is_complex_changed.disconnect(
-      boost::bind(&Examples::OnExampleChanged,this)
-    );
-    example->m_signal_is_concrete_changed.disconnect(
-      boost::bind(&Examples::OnExampleChanged,this)
-    );
-    example->m_signal_is_specific_changed.disconnect(
-      boost::bind(&Examples::OnExampleChanged,this)
-    );
-    example->m_signal_text_changed.disconnect(
-      boost::bind(&Examples::OnExampleChanged,this)
-    );
+//    example->m_signal_competency_changed.disconnect(
+//      boost::bind(&Examples::OnExampleChanged,this)
+//    );
+//    example->m_signal_is_complex_changed.disconnect(
+//      boost::bind(&Examples::OnExampleChanged,this)
+//    );
+//    example->m_signal_is_concrete_changed.disconnect(
+//      boost::bind(&Examples::OnExampleChanged,this)
+//    );
+//    example->m_signal_is_specific_changed.disconnect(
+//      boost::bind(&Examples::OnExampleChanged,this)
+//    );
+//    example->m_signal_text_changed.disconnect(
+//      boost::bind(&Examples::OnExampleChanged,this)
+//    );
   }
 
 }
@@ -270,7 +271,7 @@ std::string ribi::cmap::Examples::ToXml() const noexcept
   return r;
 }
 
-bool ribi::cmap::operator==(const cmap::Examples& lhs, const cmap::Examples& rhs)
+bool ribi::cmap::operator==(const Examples& lhs, const Examples& rhs)
 {
   if (lhs.Get().size() != rhs.Get().size())
   {
@@ -287,12 +288,12 @@ bool ribi::cmap::operator==(const cmap::Examples& lhs, const cmap::Examples& rhs
   );
 }
 
-bool ribi::cmap::operator!=(const cmap::Examples& lhs, const cmap::Examples& rhs)
+bool ribi::cmap::operator!=(const Examples& lhs, const Examples& rhs)
 {
   return !(lhs == rhs);
 }
 
-bool ribi::cmap::operator<(const cmap::Examples& lhs, const cmap::Examples& rhs)
+bool ribi::cmap::operator<(const Examples& lhs, const Examples& rhs)
 {
   if (lhs.Get().size() < rhs.Get().size()) return true;
   if (lhs.Get().size() > rhs.Get().size()) return false;
