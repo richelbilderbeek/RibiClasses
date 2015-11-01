@@ -29,7 +29,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <boost/shared_ptr.hpp>
 #include "conceptmapfwd.h"
 #include "conceptmapconcept.h"
-#include "conceptmapelement.h"
 #pragma GCC diagnostic pop
 
 namespace ribi {
@@ -43,7 +42,7 @@ struct NodeFactory;
 /// - QtNodeDialog (as a QDialog, to be used in a QDialog)
 ///Node is used as a base class by:
 /// - CenterNode
-struct  Node //: public Element
+struct  Node
 {
   ///Get the Concept
   const Concept  GetConcept() const noexcept { return m_concept; }

@@ -28,7 +28,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <boost/shared_ptr.hpp>
 #include <boost/signals2.hpp>
 #include "conceptmapfwd.h"
-#include "conceptmapelement.h"
 #pragma GCC diagnostic pop
 
 
@@ -40,7 +39,7 @@ struct EdgeFactory;
 ///An Edge is the GUI-independent part of the edges used in QtConceptMap.
 ///An Edge goes from one Node to another, which must a different Node,
 /// at the center of the Edge is a Node
-struct Edge //: public Element
+struct Edge
 {
   typedef boost::shared_ptr<const Edge> ReadOnlyEdgePtr;
   typedef boost::shared_ptr<Edge> EdgePtr;

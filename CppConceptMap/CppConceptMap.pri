@@ -24,7 +24,6 @@ HEADERS += \
     ../RibiClasses/CppConceptMap/conceptmaphelper.h \
     ../RibiClasses/CppConceptMap/conceptmapedge.h \
     ../RibiClasses/CppConceptMap/conceptmapcommand.h \
-    ../RibiClasses/CppConceptMap/conceptmapelement.h \
     ../RibiClasses/CppConceptMap/conceptmapcommandfactory.h \
     ../RibiClasses/CppConceptMap/conceptmapcommandcreatenewnode.h \
     ../RibiClasses/CppConceptMap/conceptmapcommanddeletenode.h \
@@ -54,7 +53,6 @@ SOURCES += \
     ../RibiClasses/CppConceptMap/conceptmapnodefactory.cpp \
     ../RibiClasses/CppConceptMap/conceptmaphelper.cpp \
     ../RibiClasses/CppConceptMap/conceptmapcommand.cpp \
-    ../RibiClasses/CppConceptMap/conceptmapelement.cpp \
     ../RibiClasses/CppConceptMap/conceptmapcommandfactory.cpp \
     ../RibiClasses/CppConceptMap/conceptmapcommandcreatenewnode.cpp \
     ../RibiClasses/CppConceptMap/conceptmapcommanddeletenode.cpp \
