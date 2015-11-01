@@ -49,6 +49,9 @@ struct ConceptFactory;
 /// - (as part of QtEdge)
 struct Concept
 {
+  Concept(const Concept&) = default;
+  Concept& operator=(const Concept&) = default;
+
   ///Get the examples of the concept, e.g. 'Plato', 'Aristotle'
   const Examples& GetExamples() const noexcept { return m_examples; }
         Examples& GetExamples()       noexcept { return m_examples; }
@@ -104,24 +107,6 @@ struct Concept
   ///Convert Concept to a std::string to write to file
   std::string ToXml() const noexcept;
 
-  ///Emitted when the examples are changed
-  //mutable boost::signals2::signal<void(Concept*)> m_signal_examples_changed;
-
-  ///Emitted when IsComplex
-  //mutable boost::signals2::signal<void(Concept*)> m_signal_is_complex_changed;
-
-  ///Emitted when the name is changed
-  //mutable boost::signals2::signal<void(Concept*)> m_signal_name_changed;
-
-  ///Emitted when the rating of the complexity is changed
-  //mutable boost::signals2::signal<void(Concept*)> m_signal_rating_complexity_changed;
-
-  ///Emitted when the rating of the complexity is changed
-  //mutable boost::signals2::signal<void(Concept*)> m_signal_rating_concreteness_changed;
-
-  ///Emitted when the rating of the specificity is changed
-  //mutable boost::signals2::signal<void(Concept*)> m_signal_rating_specificity_changed;
-
   private:
 
   ///Examples of the concept, e.g. 'Plato', 'Aristotle'
@@ -149,10 +134,8 @@ struct Concept
   int m_rating_specificity;
 
   #ifndef NDEBUG
-  ///Test this class
   static void Test() noexcept;
   #endif
-
 
   ///Let only ConceptFactory construct Concepts
   explicit Concept(

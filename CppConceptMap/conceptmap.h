@@ -47,23 +47,23 @@ class ConceptMap
 {
   public:
 
-  using CenterNodePtr = boost::shared_ptr<CenterNode> ;
+  ~ConceptMap() noexcept {}
+
   using ConceptMapPtr = boost::shared_ptr<ConceptMap>;
   using ConceptMaps = std::vector<ConceptMapPtr>;
   using ConstEdges = std::vector<boost::shared_ptr<const Edge>>;
-  using ConstNodes = std::vector<boost::shared_ptr<const Node>>;
+  using ConstNodes = const std::vector<Node>;
   using ConstEdgesAndNodes = std::pair<ConstEdges,ConstNodes>;
   using EdgePtr = boost::shared_ptr<Edge>;
   using Edges = std::vector<EdgePtr>;
-  using NodePtr = boost::shared_ptr<Node>;
-  using Nodes = std::vector<boost::shared_ptr<Node>>;
+  using Nodes = std::vector<Node>;
   using EdgesAndNodes = std::pair<Edges,Nodes>;
   using ReadOnlyCenterNodePtr = boost::shared_ptr<const CenterNode>;
   using ReadOnlyConceptMapPtr = boost::shared_ptr<const ConceptMap>;
   using ReadOnlyEdgePtr = boost::shared_ptr<const Edge>;
   using ReadOnlyEdges = std::vector<ReadOnlyEdgePtr>;
-  using ReadOnlyNodePtr = boost::shared_ptr<const Node>;
-  using ReadOnlyNodes = std::vector<ReadOnlyNodePtr>;
+  using ReadOnlyNodePtr = const Node;
+  using ReadOnlyNodes = const std::vector<Node>;
   using SubConceptMaps = ConceptMaps; //Just to let the code speak more for itself
 
   ConceptMap(const ConceptMap&) = delete;
@@ -73,7 +73,7 @@ class ConceptMap
   void AddEdge(const EdgePtr& edge) noexcept;
 
   //Add a node, always works
-  void AddNode(const NodePtr& node) noexcept;
+  void AddNode(const Node& node) noexcept;
 
   ///Add the nodes to the current (can be zero) selected nodes
   void AddSelected(const Edges& edges) noexcept;
@@ -90,7 +90,7 @@ class ConceptMap
   bool CanUndo() const noexcept { return m_undo.canUndo(); }
 
   ///Prepend the question as a first node, before adding the supplied nodes
-  static std::vector<NodePtr> CreateNodes(
+  static Nodes CreateNodes(
     const std::string& question,
     const Nodes& nodes
   ) noexcept;
@@ -104,8 +104,7 @@ class ConceptMap
   void DeleteEdge(const EdgePtr& edge) noexcept;
 
   ///Delete a node and all the edges connected to it
-  void DeleteNode(const ReadOnlyNodePtr& node) noexcept;
-  void DeleteNode(const NodePtr& node) noexcept;
+  void DeleteNode(const Node& node) noexcept;
 
   ///ConceptMap takes over ownership of the Command
   void DoCommand(Command * const command) noexcept;
@@ -114,14 +113,12 @@ class ConceptMap
   bool Empty() const noexcept;
 
   ///Find the CenterNode, if any
-  ReadOnlyCenterNodePtr FindCenterNode() const noexcept;
-  CenterNodePtr FindCenterNode() noexcept;
+  const CenterNode* FindCenterNode() const noexcept;
+        CenterNode* FindCenterNode()       noexcept;
 
   ///Find the Edge that has the node as its center Node
   ///Returns nullptr if not present
-  EdgePtr GetEdgeHaving(const NodePtr& node) const noexcept;
-  EdgePtr GetEdgeHaving(const ReadOnlyNodePtr& node) const noexcept;
-
+  EdgePtr GetEdgeHaving(const Node& node) const noexcept;
 
   ReadOnlyEdges GetEdges() const noexcept;
   Edges& GetEdges() noexcept { return m_edges; }
@@ -129,27 +126,28 @@ class ConceptMap
   ///Find the Edges that start or end at the node
   Edges GetEdgesConnectedTo(const ReadOnlyNodePtr& node) const noexcept;
 
-  ///Get the focal node (always at index zero)
-  ReadOnlyNodePtr GetFocalNode() const noexcept;
-  NodePtr GetFocalNode() noexcept;
+  ///Get the focal node (always at index zero), if any
+  const Node* GetFocalNode() const noexcept;
+        Node* GetFocalNode()       noexcept;
 
-  ReadOnlyNodes GetNodes() const noexcept;
-  Nodes& GetNodes() noexcept { return m_nodes; }
+  const Nodes& GetNodes() const noexcept { return m_nodes; }
+        Nodes& GetNodes()       noexcept { return m_nodes; }
 
   ///There can be multiple items selected
-  ConstEdgesAndNodes GetSelected() const noexcept;
-       EdgesAndNodes GetSelected()       noexcept { return m_selected; }
+  const EdgesAndNodes& GetSelected() const noexcept { return m_selected; }
+        EdgesAndNodes& GetSelected()       noexcept { return m_selected; }
 
-  ConstEdges GetSelectedEdges() const noexcept;
-       Edges GetSelectedEdges()       noexcept { return m_selected.first; }
+  const Edges& GetSelectedEdges() const noexcept { return m_selected.first; }
+        Edges& GetSelectedEdges()       noexcept { return m_selected.first; }
 
-  ConstNodes GetSelectedNodes() const noexcept;
-       Nodes GetSelectedNodes()       noexcept { return m_selected.second; }
+  const Nodes& GetSelectedNodes() const noexcept { return m_selected.second; }
+        Nodes& GetSelectedNodes()       noexcept { return m_selected.second; }
 
   const QUndoStack& GetUndo() const noexcept { return m_undo; }
         QUndoStack& GetUndo()       noexcept { return m_undo; }
 
   bool GetVerbosity() const noexcept { return m_verbose; }
+
   ///Obtain the version
   static std::string GetVersion() noexcept;
 
@@ -157,7 +155,7 @@ class ConceptMap
   static std::vector<std::string> GetVersionHistory() noexcept;
 
   bool HasEdge(const ReadOnlyEdgePtr& edge) const noexcept;
-  bool HasNode(const ReadOnlyNodePtr& node) const noexcept;
+  bool HasNode(const Node& node) const noexcept;
 
   bool IsSelected(const ReadOnlyEdgePtr& node) const noexcept;
   bool IsSelected(const ReadOnlyNodePtr& node) const noexcept;
@@ -178,12 +176,10 @@ class ConceptMap
   void RemoveSelected(const Edges& edges,const Nodes& nodes) noexcept;
 
   ///Set the nodes to the only nodes selected
-  void SetSelected(const ConstNodes& nodes) noexcept;
   void SetSelected(const ConstEdges& edges) noexcept;
   void SetSelected(const Nodes& nodes) noexcept;
   void SetSelected(const Edges& edges) noexcept;
-  void SetSelected(const Edges& edges,const Nodes& nodes) noexcept;
-  void SetSelected(const ConstEdges& edges,const ConstNodes& nodes) noexcept;
+  void SetSelected(const Edges& edges,const Nodes& nodes) noexcept; //WORK
   void SetSelected(const EdgesAndNodes& edges_and_nodes) noexcept;
   void SetSelected(const ConstEdgesAndNodes& edges_and_nodes) noexcept;
 
@@ -197,7 +193,7 @@ class ConceptMap
 
   ///Emitted when a Node is added
   ///This has to be handled by QtConceptMapWidget
-  boost::signals2::signal<void(boost::shared_ptr<Node>)> m_signal_add_node;
+  boost::signals2::signal<void(const Node&)> m_signal_add_node;
 
   ///Emitted when the ConceptMap is modified as a whole: deleted, created or overwritten
   boost::signals2::signal<void()> m_signal_conceptmap_changed;
@@ -244,13 +240,7 @@ private:
 
   ///Creates a new Node in the concept map. The return value is
   ///that node. This is used by CommandCreateNode::Undo
-  boost::shared_ptr<Node> CreateNewNode() noexcept;
-
-
-  ///Find a Node at a coordinat
-  ///Returns nullptr if none is present
-  boost::shared_ptr<      Node> FindNodeAt(const double x, const double y)       noexcept;
-  boost::shared_ptr<const Node> FindNodeAt(const double x, const double y) const noexcept;
+  Node CreateNewNode() noexcept;
 
   ///Used by CommandAddSelectedRandom and CommandSetSelectedRandom
   ///Of all the concept maps its nodes, except for the uses supplied as the
@@ -264,8 +254,8 @@ private:
   ///Of all the concept maps its nodes, except for the uses supplied as the
   ///argument, return 1 to all the nodes, except when there is no node
   ///left (as all are excluded) or the concept map does not have any nodes
-  std::vector<boost::shared_ptr<Node>> GetRandomNodes(std::vector<boost::shared_ptr<const Node>> nodes_to_exclude = {}) noexcept;
-  boost::shared_ptr<Node> GetRandomNode(std::vector<boost::shared_ptr<const Node>> nodes_to_exclude = {}) noexcept;
+  std::vector<Node> GetRandomNodes(Nodes nodes_to_exclude = {}) noexcept;
+  Node GetRandomNode(const Nodes& nodes_to_exclude = {});
 
   void OnUndo() noexcept;
 
@@ -278,7 +268,7 @@ private:
 
   void Unselect(const ConstEdgesAndNodes& edges_and_nodes) noexcept;
   void Unselect(const ConstEdges& edges) noexcept;
-  void Unselect(const ConstNodes& nodes) noexcept;
+  void Unselect(const Nodes& nodes) noexcept;
 
   ///Block constructor, except for the friend ConceptMapFactory
   ConceptMap(const std::string& question) noexcept;
@@ -296,15 +286,11 @@ private:
   #endif
 
   ///To make the compiler use the const version
-  ReadOnlyCenterNodePtr FindCenterNodeConst() const noexcept { return FindCenterNode(); }
+  const CenterNode* FindCenterNodeConst() const noexcept { return FindCenterNode(); }
   ///To make the compiler use the const version
-  ReadOnlyNodePtr GetFocalNodeConst() const noexcept { return GetFocalNode(); }
+  //ReadOnlyNodePtr GetFocalNodeConst() const noexcept { return GetFocalNode(); }
 
   friend ConceptMapFactory;
-  ///Block destructor, except for the friend boost::checked_delete
-  ~ConceptMap() noexcept;
-  friend void boost::checked_delete<>(ConceptMap* x);
-  friend void boost::checked_delete<>(const ConceptMap* x);
 
   //friend class Command;
   friend class CommandAddSelectedRandom;

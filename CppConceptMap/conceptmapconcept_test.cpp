@@ -44,6 +44,24 @@ void ribi::cmap::Concept::Test() noexcept
   TestHelperFunctions();
   const bool verbose{false};
   const TestTimer test_timer(__func__,__FILE__,1.0);
+
+  if (verbose) { TRACE("Copy constructor"); }
+  {
+    const Concept c;
+    Concept d(c);
+    assert(d == c);
+  }
+  if (verbose) { TRACE("Assignment operator"); }
+  {
+    const Concept c;
+    const Concept d;
+    const Concept e(c);
+    assert(e == c);
+    assert(e != d);
+    e = d;
+    assert(e != c);
+    assert(e == d);
+  }
   if (verbose) { TRACE("Test operator== and operator!="); }
   {
     const int sz = static_cast<int>(ConceptFactory().GetTests().size());

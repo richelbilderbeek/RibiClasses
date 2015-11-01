@@ -25,7 +25,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmapcenternodefactory.h"
 
 #include <cassert>
-
+#include <sstream>
+#include <stdexcept>
 #include <boost/lexical_cast.hpp>
 
 #include "conceptmapcenternode.h"
@@ -50,80 +51,60 @@ ribi::cmap::CenterNodeFactory::CenterNodeFactory()
   #endif
 }
 
-boost::shared_ptr<ribi::cmap::CenterNode> ribi::cmap::CenterNodeFactory::Create(
+ribi::cmap::CenterNode ribi::cmap::CenterNodeFactory::Create(
   const Concept& concept,
   const double x,
   const double y) const noexcept
 {
-  boost::shared_ptr<Node> node(
-    new Node(
-      concept,x,y
-    )
-  );
-  assert(node);
-  node->SetIsCenterNode(true);
-  assert(concept == node->GetConcept());
-  assert(node->GetX() == x);
-  assert(node->GetY() == y);
+  Node node(concept,x,y);
+  node.SetIsCenterNode(true);
+  assert(concept == node.GetConcept());
+  assert(node.GetX() == x);
+  assert(node.GetY() == y);
   return node;
 }
 
-boost::shared_ptr<ribi::cmap::CenterNode> ribi::cmap::CenterNodeFactory::CreateFromStrings(
+/*
+ribi::cmap::CenterNode ribi::cmap::CenterNodeFactory::CreateFromStrings(
   const std::string& name,
   const std::vector<std::pair<std::string,Competency> >& examples,
   const double x,
   const double y
 ) const noexcept
 {
-  boost::shared_ptr<CenterNode> node(
-    new CenterNode(
-      ConceptFactory().Create(name,examples),
-      x,
-      y
-    )
+  CenterNode node(
+    ConceptFactory().Create(name,examples),
+    x,
+    y
   );
-  assert(node);
-  node->SetIsCenterNode(true);
-  assert(node->GetX() == x);
-  assert(node->GetY() == y);
+  node.SetIsCenterNode(true);
+  assert(node.GetX() == x);
+  assert(node.GetY() == y);
   return node;
 }
+*/
 
-#ifndef NDEBUG
-const boost::shared_ptr<ribi::cmap::CenterNode> ribi::cmap::CenterNodeFactory::DeepCopy(
-  const boost::shared_ptr<const cmap::CenterNode>& node
-) const noexcept
-{
-  assert(node);
-  const Concept new_concept(node->GetConcept());
-  assert(node->GetConcept() == new_concept);
-  const boost::shared_ptr<CenterNode> new_node
-    = Create(new_concept,
-      node->GetX(),
-      node->GetY()
-    );
-  assert(new_node);
-  assert(*node == *new_node);
-  new_node->SetIsCenterNode(true);
-  return new_node;
-}
-#endif
-
-const boost::shared_ptr<ribi::cmap::CenterNode> ribi::cmap::CenterNodeFactory::FromXml(
+ribi::cmap::CenterNode ribi::cmap::CenterNodeFactory::FromXml(
   const std::string& s
-) const noexcept
+) const
 {
   if (s.size() < 27)
   {
-    return boost::shared_ptr<CenterNode>();
+    std::stringstream msg;
+    msg << __func__ << ": XML string '" << s << "' is only " << s.size() << " characters long, need at least 27";
+    throw std::logic_error(msg.str());
   }
   if (s.substr(0,13) != "<center_node>")
   {
-    return boost::shared_ptr<CenterNode>();
+    std::stringstream msg;
+    msg << __func__ << ": XML string '" << s << "' does not begin with <center_node>";
+    throw std::logic_error(msg.str());
   }
   if (s.substr(s.size() - 14,14) != "</center_node>")
   {
-    return boost::shared_ptr<CenterNode>();
+    std::stringstream msg;
+    msg << __func__ << ": XML string '" << s << "' does not end with </center_node>";
+    throw std::logic_error(msg.str());
   }
 
   //m_concept
@@ -147,10 +128,10 @@ const boost::shared_ptr<ribi::cmap::CenterNode> ribi::cmap::CenterNodeFactory::F
     assert(v.size() == 1);
     y = boost::lexical_cast<double>(ribi::xml::StripXmlTag(v[0]));
   }
-  const boost::shared_ptr<CenterNode> node(new CenterNode(concept,x,y));
-  assert(node);
-  assert(node->ToXml() == s);
-  node->SetIsCenterNode(true);
+  CenterNode node(concept,x,y);
+  node.SetIsCenterNode(true);
+
+  assert(node.ToXml() == s);
   return node;
 }
 
@@ -162,24 +143,34 @@ void ribi::cmap::CenterNodeFactory::Test() noexcept
     if (is_tested) return;
     is_tested = true;
   }
-  NodeFactory();
-  ConceptFactory();
-  Counter();
-  ExampleFactory();
-  ExamplesFactory();
-  ::ribi::Regex();
-  ::ribi::cmap::TestHelperFunctions();
-  ::ribi::cmap::Regex();
-
+  {
+    NodeFactory();
+    ConceptFactory();
+    Counter();
+    ExampleFactory();
+    ExamplesFactory();
+    ::ribi::Regex();
+    ::ribi::cmap::TestHelperFunctions();
+    ::ribi::cmap::Regex();
+  }
   const TestTimer test_timer{__func__,__FILE__,0.1};
-
-  const auto concept = ConceptFactory().GetTest(0);
-  const double x{0.1};
-  const double y{2.3};
-  const auto node = CenterNodeFactory().Create(concept,x,y);
-  assert(node);
-  assert(concept == node->GetConcept());
-  assert(node->GetX() == x);
-  assert(node->GetY() == y);
+  //Create from Concept constructor
+  {
+    const auto concept = ConceptFactory().GetTest(0);
+    const double x{0.1};
+    const double y{2.3};
+    const auto node = CenterNodeFactory().Create(concept,x,y);
+    assert(node.IsCenterNode());
+    assert(concept == node.GetConcept());
+    assert(node.GetX() == x);
+    assert(node.GetY() == y);
+    TRACE(node.ToXml());
+  }
+  {
+    const std::string xml = "";
+    const auto node = CenterNodeFactory().FromXml(xml);
+    assert(node.IsCenterNode());
+  }
+  assert(!"Green");
 }
 #endif

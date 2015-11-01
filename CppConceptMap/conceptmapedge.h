@@ -43,10 +43,10 @@ struct Edge
 {
   typedef boost::shared_ptr<const Edge> ReadOnlyEdgePtr;
   typedef boost::shared_ptr<Edge> EdgePtr;
-  typedef boost::shared_ptr<const Node> ReadOnlyNodePtr;
-  typedef boost::shared_ptr<Node> NodePtr;
+  typedef const Node* ReadOnlyNodePtr;
+  typedef Node* NodePtr;
   typedef std::vector<ReadOnlyNodePtr> ReadOnlyNodes;
-  typedef std::vector<NodePtr> Nodes;
+  typedef std::vector<Node> Nodes;
 
   Edge(const Edge&) = delete;
   Edge& operator=(const Edge&) = delete;
@@ -92,8 +92,8 @@ struct Edge
   ///field to indices
   static std::string ToXml(
     const ReadOnlyEdgePtr& c,
-    const ReadOnlyNodes& nodes
-    ) noexcept;
+    const Nodes& nodes
+  ) noexcept;
 
   ///Emitted when an Edge attribute has changed
   boost::signals2::signal<void (Edge*)> m_signal_from_changed;

@@ -52,7 +52,7 @@ ribi::cmap::ConceptMapFactory::ConceptMapFactory() noexcept
 }
 
 boost::shared_ptr<ribi::cmap::ConceptMap> ribi::cmap::ConceptMapFactory::Create(
-  const std::vector<boost::shared_ptr<Node>>& nodes,
+  const std::vector<Node>& nodes,
   const std::vector<boost::shared_ptr<Edge>>& edges
 ) const noexcept
 {
@@ -72,24 +72,24 @@ boost::shared_ptr<ribi::cmap::ConceptMap> ribi::cmap::ConceptMapFactory::DeepCop
 
   //Deep-copy the center node if present
   //Deep-copy the non-center nodes
-  const std::vector<boost::shared_ptr<const Node>> nodes = map->GetNodes();
-  std::vector<boost::shared_ptr<Node>> new_nodes;
-  for (const boost::shared_ptr<const Node> node: nodes)
+  const auto nodes = map->GetNodes();
+  Nodes new_nodes;
+  for (const auto& node: nodes)
   {
-    assert(node);
-    boost::shared_ptr<Node> new_node;
-    if (const boost::shared_ptr<const CenterNode> center_node
-     = boost::dynamic_pointer_cast<const CenterNode>(node))
+    Node new_node = NodeFactory().Create();
+
+    //Just to be sure, these eight lines...
+    if (node.IsCenterNode())
     {
-      assert(center_node);
-      new_node = CenterNodeFactory().DeepCopy(center_node);
+      new_node = node;
+      assert(new_node.IsCenterNode());
     }
     else
     {
-      new_node = NodeFactory().DeepCopy(node);
+      new_node = node;
+      assert(!new_node.IsCenterNode());
     }
-    assert(new_node);
-    assert(*new_node == *node);
+    assert(new_node == node);
     new_nodes.push_back(new_node);
   }
 
@@ -105,14 +105,14 @@ boost::shared_ptr<ribi::cmap::ConceptMap> ribi::cmap::ConceptMapFactory::DeepCop
     assert(from_iter != nodes.end());
     const int from_index = std::distance(nodes.begin(),from_iter);
     assert(from_index < boost::numeric_cast<int>(new_nodes.size()));
-    const boost::shared_ptr<Node> from = new_nodes[from_index];
+    Node* const from = &new_nodes[from_index];
 
     //Find the new to node
     const auto to_iter = std::find(nodes.begin(),nodes.end(),edge->GetTo());
     assert(to_iter != nodes.end());
     const int to_index = std::distance(nodes.begin(),to_iter);
     assert(to_index < boost::numeric_cast<int>(new_nodes.size()));
-    const boost::shared_ptr<Node> to = new_nodes[to_index];
+    Node* const to = &new_nodes[to_index];
 
     assert(from_index != to_index);
     assert(from);
@@ -150,7 +150,7 @@ boost::shared_ptr<ribi::cmap::ConceptMap> ribi::cmap::ConceptMapFactory::FromXml
   //Strip the <conceptmap> tags
   const std::string conceptmap_str = ribi::xml::StripXmlTag(v[0]);
 
-  std::vector<boost::shared_ptr<Node>> nodes;
+  Nodes nodes;
   {
     //Obtain the <nodes> ... </nodes> strings
     const std::vector<std::string> w
@@ -167,11 +167,16 @@ boost::shared_ptr<ribi::cmap::ConceptMap> ribi::cmap::ConceptMapFactory::FromXml
       std::for_each(x.begin(),x.end(),
         [&nodes](const std::string& s)
         {
-          const boost::shared_ptr<CenterNode> node {
-            CenterNodeFactory().FromXml(s)
-          };
-          assert(node);
-          nodes.push_back(node);
+          try {
+            CenterNode node {
+              CenterNodeFactory().FromXml(s)
+            };
+            nodes.push_back(node);
+          }
+          catch (std::logic_error&)
+          {
+            assert(!"Should not get here");
+          }
         }
       );
     }
@@ -182,10 +187,9 @@ boost::shared_ptr<ribi::cmap::ConceptMap> ribi::cmap::ConceptMapFactory::FromXml
       std::for_each(x.begin(),x.end(),
         [&nodes](const std::string& s)
         {
-          const boost::shared_ptr<Node> node {
+          const Node node {
             NodeFactory().FromXml(s)
           };
-          assert(node);
           nodes.push_back(node);
         }
       );
@@ -193,15 +197,14 @@ boost::shared_ptr<ribi::cmap::ConceptMap> ribi::cmap::ConceptMapFactory::FromXml
     //Replace the first node by its CenterNode equivalent
     if (!nodes.empty() && !IsCenterNode(nodes[0]))
     {
-      const boost::shared_ptr<Node> old_node = nodes[0];
-      const auto concept = old_node->GetConcept();
-      const double x = old_node->GetX();
-      const double y = old_node->GetY();
-      const boost::shared_ptr<CenterNode> center_node {
+      const auto old_node = nodes[0];
+      const auto concept = old_node.GetConcept();
+      const double x = old_node.GetX();
+      const double y = old_node.GetY();
+      const auto center_node {
         CenterNodeFactory().Create(concept,x,y)
       };
       nodes[0] = center_node;
-      assert(*old_node == *center_node);
     }
     assert(nodes.empty() || IsCenterNode(nodes[0]));
   }
@@ -254,10 +257,6 @@ std::vector<boost::shared_ptr<ribi::cmap::ConceptMap> > ribi::cmap::ConceptMapFa
   {
     assert(conceptmap);
     assert(conceptmap->IsValid());
-    for (const auto& node: conceptmap->GetNodes())
-    {
-      assert(node);
-    }
     for (const auto& edge: conceptmap->GetEdges())
     {
       assert(edge);
@@ -266,7 +265,8 @@ std::vector<boost::shared_ptr<ribi::cmap::ConceptMap> > ribi::cmap::ConceptMapFa
       assert(std::count(
         conceptmap->GetNodes().begin(),
         conceptmap->GetNodes().end(),
-        edge->GetTo()) == 1);
+        edge->GetTo()
+      ) == 1);
       assert(std::count(
         conceptmap->GetNodes().begin(),
         conceptmap->GetNodes().end(),
@@ -750,9 +750,9 @@ boost::shared_ptr<ribi::cmap::ConceptMap> ribi::cmap::ConceptMapFactory::GetHete
   const auto concept_c(ConceptFactory().Create("B", { {"B-1",cmap::Competency::uninitialized} },0,1,2));
   const auto concept_d(ConceptFactory().Create("C", { {"C-1",cmap::Competency::uninitialized},{"C-2",cmap::Competency::misc}},-1,1,2));
   const auto concept_e(ConceptFactory().Create("D", { {"D-1",cmap::Competency::misc},{"D-2",cmap::Competency::misc},{"D-3",cmap::Competency::misc}},-1,-1,-1));
-  const boost::shared_ptr<Node> node_c(NodeFactory().Create(concept_c));
-  const boost::shared_ptr<Node> node_d(NodeFactory().Create(concept_d));
-  const boost::shared_ptr<Node> node_e(NodeFactory().Create(concept_e));
+  const Node node_c(NodeFactory().Create(concept_c));
+  const Node node_d(NodeFactory().Create(concept_d));
+  const Node node_e(NodeFactory().Create(concept_e));
 
   const Nodes nodes
     =
@@ -798,9 +798,9 @@ boost::shared_ptr<ribi::cmap::ConceptMap> ribi::cmap::ConceptMapFactory::GetHete
   const auto concept_c(ConceptFactory().Create("B", { {"B-1: profession",cmap::Competency::profession} },0,1,2));
   const auto concept_d(ConceptFactory().Create("C", { {"C-1: organisations",cmap::Competency::organisations},{"C-2: social_surroundings",cmap::Competency::social_surroundings}},2,1,0));
   const auto concept_e(ConceptFactory().Create("D", { {"D-1: target_audience",cmap::Competency::target_audience},{"D-2: ti_knowledge",cmap::Competency::ti_knowledge},{"D-3: prof_growth",cmap::Competency::prof_growth},{"D-4: misc",cmap::Competency::misc}},0,1,2));
-  const boost::shared_ptr<Node> node_c(NodeFactory().Create(concept_c));
-  const boost::shared_ptr<Node> node_d(NodeFactory().Create(concept_d));
-  const boost::shared_ptr<Node> node_e(NodeFactory().Create(concept_e));
+  const Node node_c(NodeFactory().Create(concept_c));
+  const Node node_d(NodeFactory().Create(concept_d));
+  const Node node_e(NodeFactory().Create(concept_e));
 
   const Nodes nodes
     =
@@ -860,9 +860,9 @@ boost::shared_ptr<ribi::cmap::ConceptMap> ribi::cmap::ConceptMapFactory::GetHete
   const auto concept_e(ConceptFactory().Create("D",
     { {"D-1: target_audience",cmap::Competency::target_audience},{"D-2: ti_knowledge",cmap::Competency::ti_knowledge},{"D-3: prof_growth",cmap::Competency::prof_growth},{"D-4: misc",cmap::Competency::misc}},
     0,1,2));
-  const boost::shared_ptr<Node> node_c(NodeFactory().Create(concept_c));
-  const boost::shared_ptr<Node> node_d(NodeFactory().Create(concept_d));
-  const boost::shared_ptr<Node> node_e(NodeFactory().Create(concept_e));
+  const Node node_c(NodeFactory().Create(concept_c));
+  const Node node_d(NodeFactory().Create(concept_d));
+  const Node node_e(NodeFactory().Create(concept_e));
 
   const Nodes nodes
     =
@@ -942,9 +942,9 @@ boost::shared_ptr<ribi::cmap::ConceptMap> ribi::cmap::ConceptMapFactory::GetHete
       {"D-M: this is D its fourth example (out of four) and it is categorized as a competency in the misc domain",cmap::Competency::misc}
     },
     0,1,2));
-  const boost::shared_ptr<Node> node_c(NodeFactory().Create(concept_c));
-  const boost::shared_ptr<Node> node_d(NodeFactory().Create(concept_d));
-  const boost::shared_ptr<Node> node_e(NodeFactory().Create(concept_e));
+  const Node node_c(NodeFactory().Create(concept_c));
+  const Node node_d(NodeFactory().Create(concept_d));
+  const Node node_e(NodeFactory().Create(concept_e));
 
   const Nodes nodes
     =
@@ -1030,9 +1030,9 @@ boost::shared_ptr<ribi::cmap::ConceptMap> ribi::cmap::ConceptMapFactory::GetHete
   const auto concept_c(ConceptFactory().Create("B", { {"B-1: profession",cmap::Competency::profession} },0,1,2));
   const auto concept_d(ConceptFactory().Create("C", { {"C-1: organisations",cmap::Competency::organisations},{"C-2: social_surroundings",cmap::Competency::social_surroundings}},2,1,0));
   const auto concept_e(ConceptFactory().Create("D", { {"D-1: target_audience",cmap::Competency::target_audience},{"D-2: ti_knowledge",cmap::Competency::ti_knowledge},{"D-3: prof_growth",cmap::Competency::prof_growth},{"D-4: misc",cmap::Competency::misc}},0,1,2));
-  const boost::shared_ptr<Node> node_c(NodeFactory().Create(concept_c));
-  const boost::shared_ptr<Node> node_d(NodeFactory().Create(concept_d));
-  const boost::shared_ptr<Node> node_e(NodeFactory().Create(concept_e));
+  const Node node_c(NodeFactory().Create(concept_c));
+  const Node node_d(NodeFactory().Create(concept_d));
+  const Node node_e(NodeFactory().Create(concept_e));
 
   const Nodes nodes
     =
@@ -1415,10 +1415,10 @@ boost::shared_ptr<ribi::cmap::ConceptMap> ribi::cmap::ConceptMapFactory::GetComp
   const auto concept_b(ConceptFactory().Create("B"));
   const auto concept_c(ConceptFactory().Create("A"));
   const auto concept_d(ConceptFactory().Create("C"));
-  const boost::shared_ptr<Node> node_a(NodeFactory().Create(concept_a));
-  const boost::shared_ptr<Node> node_b(NodeFactory().Create(concept_b));
-  const boost::shared_ptr<Node> node_c(NodeFactory().Create(concept_c));
-  const boost::shared_ptr<Node> node_d(NodeFactory().Create(concept_d));
+  const Node node_a(NodeFactory().Create(concept_a));
+  const Node node_b(NodeFactory().Create(concept_b));
+  const Node node_c(NodeFactory().Create(concept_c));
+  const Node node_d(NodeFactory().Create(concept_d));
 
   const auto concept_e(ConceptFactory().Create("1"));
   const auto concept_f(ConceptFactory().Create("2"));
@@ -1456,10 +1456,10 @@ boost::shared_ptr<ribi::cmap::ConceptMap> ribi::cmap::ConceptMapFactory::GetComp
   const auto concept_b(ConceptFactory().Create("B"));
   const auto concept_c(ConceptFactory().Create("C"));
   const auto concept_d(ConceptFactory().Create("A"));
-  const boost::shared_ptr<Node> node_a(NodeFactory().Create(concept_a));
-  const boost::shared_ptr<Node> node_b(NodeFactory().Create(concept_b));
-  const boost::shared_ptr<Node> node_c(NodeFactory().Create(concept_c));
-  const boost::shared_ptr<Node> node_d(NodeFactory().Create(concept_d));
+  const Node node_a(NodeFactory().Create(concept_a));
+  const Node node_b(NodeFactory().Create(concept_b));
+  const Node node_c(NodeFactory().Create(concept_c));
+  const Node node_d(NodeFactory().Create(concept_d));
 
   const auto concept_e(ConceptFactory().Create("1"));
   const auto concept_f(ConceptFactory().Create("2"));
@@ -1723,10 +1723,6 @@ void ribi::cmap::ConceptMapFactory::Test() noexcept
     {
       if (!conceptmap) continue;
       assert(conceptmap);
-      for (const auto& node: conceptmap->GetNodes())
-      {
-        assert(node);
-      }
       for (const auto& edge: conceptmap->GetEdges())
       {
         assert(edge);

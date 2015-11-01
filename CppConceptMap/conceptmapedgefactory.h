@@ -39,21 +39,20 @@ struct EdgeFactory
 
   typedef boost::shared_ptr<Edge> EdgePtr;
   typedef boost::shared_ptr<const Edge> ReadOnlyEdge;
-  typedef boost::shared_ptr<Node> NodePtr;
-  typedef boost::shared_ptr<const Node> ReadOnlyNode;
+  typedef const Node* ReadOnlyNode;
   typedef std::vector<EdgePtr> Edges;
-  typedef std::vector<NodePtr> Nodes;
+  typedef std::vector<Node*> Nodes;
 
   EdgePtr Create(
-    const NodePtr& from,
-    const NodePtr& to
+    const Node* from,
+    const Node* to
   ) const noexcept;
 
   EdgePtr Create(
-    const NodePtr& node,
-    const NodePtr& from,
+    const Node& node,
+    const Node& from,
     const bool tail_arrow,
-    const NodePtr& to,
+    const Node& to,
     const bool head_arrow
   ) const noexcept;
 
@@ -62,8 +61,8 @@ struct EdgeFactory
   ///The nodes need to be the deepcopied ones
   EdgePtr DeepCopy(
     const ReadOnlyEdge& edge,
-    const NodePtr& from,
-    const NodePtr& to
+    const Node* from,
+    const Node* to
   ) const noexcept;
   #endif
 
@@ -71,7 +70,7 @@ struct EdgeFactory
   ///You need the real nodes to connect the edge to
   EdgePtr FromXml(
     const std::string& s,
-    const Nodes& nodes
+    const std::vector<Node>& nodes
   ) const noexcept;
 
 
@@ -79,14 +78,14 @@ struct EdgeFactory
 
   EdgePtr GetTest(
     const int index,
-    const NodePtr& from,
-    const NodePtr& to
+    const Node* from,
+    const Node* to
  ) const noexcept;
 
   ///Get testing edges connecting the two supplied nodes
   Edges GetTests(
-    const NodePtr& from,
-    const NodePtr& to
+    const Node* from,
+    const Node* to
   ) const noexcept;
 
   private:

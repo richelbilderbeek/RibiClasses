@@ -42,8 +42,10 @@ struct NodeFactory;
 /// - QtNodeDialog (as a QDialog, to be used in a QDialog)
 ///Node is used as a base class by:
 /// - CenterNode
-struct  Node
+struct Node
 {
+  ~Node() noexcept {}
+
   ///Get the Concept
   const Concept  GetConcept() const noexcept { return m_concept; }
         Concept& GetConcept()       noexcept { return m_concept; }
@@ -79,13 +81,11 @@ struct  Node
   virtual std::string ToXml() const noexcept;
   std::string ToStr() const noexcept;
 
-  mutable boost::signals2::signal<void(Node *)> m_signal_concept_changed;
-  mutable boost::signals2::signal<void(Node *)> m_signal_x_changed;
-  mutable boost::signals2::signal<void(Node *)> m_signal_y_changed;
+  //mutable boost::signals2::signal<void(Node *)> m_signal_concept_changed;
+  //mutable boost::signals2::signal<void(Node *)> m_signal_x_changed;
+  //mutable boost::signals2::signal<void(Node *)> m_signal_y_changed;
 
   protected:
-  ///Block construction, except for NodeFactory and derived classes
-  Node() = delete;
   friend class NodeFactory;
   friend class CenterNodeFactory;
 
@@ -95,10 +95,6 @@ struct  Node
     const double x,
     const double y
   );
-
-  ///Block destructor, except for the friend boost::checked_delete
-  virtual ~Node() noexcept {}
-  friend void boost::checked_delete<>(Node* x);
 
   private:
 

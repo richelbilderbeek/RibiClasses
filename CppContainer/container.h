@@ -75,6 +75,12 @@ struct Container
     return std::count_if(std::begin(t),std::end(t),p);
   }
 
+  template <class T, class Predicate>
+  decltype(auto) FindIf(const T& t, const Predicate& p) const noexcept
+  {
+    return std::find_if(std::begin(t),std::end(t),p);
+  }
+
   ///Obtain the version
   std::string GetVersion() const noexcept;
 

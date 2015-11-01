@@ -40,7 +40,7 @@ namespace cmap {
 ///ConceptMapFactory is the only class using the ConceptMap constructor
 struct ConceptMapFactory
 {
-  typedef std::vector<boost::shared_ptr<Node>> Nodes;
+  using Nodes = std::vector<Node>;
   typedef std::vector<boost::shared_ptr<Edge>> Edges;
   typedef std::vector<boost::shared_ptr<ConceptMap>> ConceptMaps;
 

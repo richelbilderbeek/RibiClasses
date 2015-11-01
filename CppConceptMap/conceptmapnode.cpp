@@ -228,6 +228,22 @@ void ribi::cmap::Node::Test() noexcept
   }
   const TestTimer test_timer(__func__,__FILE__,1.0);
   const bool verbose{false};
+  //Copy constructable
+  {
+    const Node a;
+    const Node b(a);
+    assert(a == b);
+  }
+  {
+    const Node a;
+    const Node b(a);
+    Node c(a);
+    assert(c == a);
+    assert(c != b);
+    c = a;
+    assert(c != a);
+    assert(c == b);
+  }
   {
     const std::vector<boost::shared_ptr<Node> > v = Node::GetTests();
     std::for_each(v.begin(),v.end(),

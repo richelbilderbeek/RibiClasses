@@ -322,7 +322,7 @@ std::string ribi::cmap::Edge::ToStr() const noexcept
 
 std::string ribi::cmap::Edge::ToXml(
   const ReadOnlyEdgePtr& edge,
-  const ReadOnlyNodes& nodes
+  const Nodes& nodes
 ) noexcept
 {
   std::stringstream s;

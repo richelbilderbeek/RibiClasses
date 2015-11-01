@@ -38,27 +38,22 @@ struct  CenterNodeFactory
 {
   CenterNodeFactory();
 
-  boost::shared_ptr<CenterNode> Create(
+  CenterNode Create(
     const Concept& concept,
     const double x = 0.0,
     const double y = 0.0
   ) const noexcept;
 
-  boost::shared_ptr<CenterNode> CreateFromStrings(
+  CenterNode CreateFromStrings(
     const std::string& name,
     const std::vector<std::pair<std::string,Competency> >& examples = {},
     const double x = 0.0,
     const double y = 0.0
   ) const noexcept;
 
-  #ifndef NDEBUG
-  const boost::shared_ptr<CenterNode> DeepCopy(
-    const boost::shared_ptr<const CenterNode>& node
-  ) const noexcept;
-  #endif
-
   ///Obtain a CenterNode from an XML std::string
-  const boost::shared_ptr<CenterNode> FromXml(const std::string& s) const noexcept;
+  ///Throws if it is no CenterNode
+  CenterNode FromXml(const std::string& s) const;
 
   #ifndef NDEBUG
   static void Test() noexcept;
