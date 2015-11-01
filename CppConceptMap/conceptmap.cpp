@@ -23,6 +23,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #include "conceptmap.h"
 
+#include <iostream>
 #include <set>
 #include <sstream>
 #include <functional>
@@ -1020,15 +1021,19 @@ boost::shared_ptr<ribi::cmap::Node> ribi::cmap::ConceptMap::CreateNewNode() noex
 
 void ribi::cmap::ConceptMap::DoCommand(Command * const command) noexcept
 {
+  #ifndef NDEBUG
   const int before{m_undo.count()};
+  #endif //NDEBUG
 
   assert(command);
 
   //Push and, by this, do the command
   m_undo.push(command);
 
+  #ifndef NDEBUG
   const int after{m_undo.count()};
   assert(after == before + 1);
+  #endif // NDEBUG
 }
 
 boost::shared_ptr<const ribi::cmap::Node> ribi::cmap::ConceptMap::FindNodeAt(

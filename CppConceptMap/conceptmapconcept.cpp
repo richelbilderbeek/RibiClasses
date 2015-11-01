@@ -242,38 +242,3 @@ bool ribi::cmap::operator<(const ribi::cmap::Concept& lhs, const ribi::cmap::Con
   return lhs.GetRatingSpecificity() < rhs.GetRatingSpecificity();
 
 }
-
-/*
-bool ribi::cmap::operator<(const boost::shared_ptr<const ribi::cmap::Concept>& lhs, const boost::shared_ptr<const ribi::cmap::Concept>& rhs)
-{
-  assert(lhs); assert(rhs);
-  if (lhs->GetName() < rhs->GetName()) return true;
-  if (lhs->GetName() > rhs->GetName()) return false;
-  if (lhs->GetExamples() < rhs->GetExamples()) return true;
-  if (lhs->GetExamples() != rhs->GetExamples()) return false;
-  assert(lhs->GetExamples() == rhs->GetExamples());
-  if (lhs->GetRatingComplexity() < rhs->GetRatingComplexity()) return true;
-  if (lhs->GetRatingComplexity() > rhs->GetRatingComplexity()) return false;
-  if (lhs->GetRatingConcreteness() < rhs->GetRatingConcreteness()) return true;
-  if (lhs->GetRatingConcreteness() > rhs->GetRatingConcreteness()) return false;
-  return lhs->GetRatingSpecificity() < rhs->GetRatingSpecificity();
-}
-
-bool ribi::cmap::operator<(const boost::shared_ptr<const ribi::cmap::Concept>& lhs, const boost::shared_ptr<ribi::cmap::Concept>& rhs)
-{
-  assert(lhs); assert(rhs);
-  return boost::shared_ptr<const ribi::cmap::Concept>(lhs) < boost::shared_ptr<const ribi::cmap::Concept>(rhs);
-}
-
-bool ribi::cmap::operator<(const boost::shared_ptr<ribi::cmap::Concept>& lhs, const boost::shared_ptr<const ribi::cmap::Concept>& rhs)
-{
-  assert(lhs); assert(rhs);
-  return boost::shared_ptr<const ribi::cmap::Concept>(lhs) < boost::shared_ptr<const ribi::cmap::Concept>(rhs);
-}
-
-bool ribi::cmap::operator<(const boost::shared_ptr<ribi::cmap::Concept>& lhs, const boost::shared_ptr<ribi::cmap::Concept>& rhs)
-{
-  assert(lhs); assert(rhs);
-  return boost::shared_ptr<const ribi::cmap::Concept>(lhs) < boost::shared_ptr<const ribi::cmap::Concept>(rhs);
-}
-*/

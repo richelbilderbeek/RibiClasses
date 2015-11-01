@@ -71,7 +71,7 @@ ribi::cmap::QtConceptDialog::~QtConceptDialog() noexcept
 int ribi::cmap::QtConceptDialog::GetMinimumHeight(const Concept& concept) noexcept
 {
   return
-      QtExamplesDialog::GetMinimumHeight(*concept.GetExamples())
+      QtExamplesDialog::GetMinimumHeight(concept.GetExamples())
     + 197
   ;
 }
@@ -133,9 +133,9 @@ void ribi::cmap::QtConceptDialog::SetConcept(const boost::shared_ptr<Concept>& c
         std::stringstream s;
         s
           << "Examples will change from "
-          << examples_before->ToStr()
+          << examples_before.ToStr()
           << " to "
-          << examples_after->ToStr()
+          << examples_after.ToStr()
           << '\n'
         ;
         TRACE(s.str());
@@ -266,14 +266,16 @@ void ribi::cmap::QtConceptDialog::OnExamplesChanged(Concept * const concept) noe
   assert(concept);
 
   const auto examples_before = m_qtexamplesdialog->GetExamples();
-  const boost::shared_ptr<Examples> examples_after = concept->GetExamples();
+  const Examples examples_after = concept->GetExamples();
 
   if (verbose)
   {
     std::stringstream s;
     s << "Change examples from "
-    << (examples_before ? examples_before->ToStr() : "[NONE]")
-    << " to " << examples_after->ToStr();
+      << examples_before.ToStr()
+      << " to "
+      << examples_after.ToStr()
+    ;
     TRACE(s.str());
   }
 

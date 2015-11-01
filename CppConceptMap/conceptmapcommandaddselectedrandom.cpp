@@ -1,9 +1,9 @@
 #include "conceptmapcommandaddselectedrandom.h"
 
 #include <cassert>
+#include <sstream>
 
 #include "conceptmap.h"
-
 #include "conceptmaphelper.h"
 #include "trace.h"
 

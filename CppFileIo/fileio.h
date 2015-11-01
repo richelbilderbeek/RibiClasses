@@ -215,6 +215,9 @@ struct FileIo
 };
 
 } //~namespace fileio
+
+using FileIo = fileio::FileIo;
+
 } //~namespace ribi
 
 #endif // RIBI_FILEIO_H

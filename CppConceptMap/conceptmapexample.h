@@ -22,16 +22,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #define CONCEPTMAPEXAMPLE_H
 
 #include <string>
-
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
-#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
-#include <boost/make_shared.hpp>
-#include <boost/shared_ptr.hpp>
-#include <boost/signals2.hpp>
 #include "conceptmapcompetency.h"
-#pragma GCC diagnostic pop
 
 namespace ribi {
 namespace cmap {
@@ -124,15 +115,6 @@ bool operator!=(const Example& lhs, const Example& rhs) noexcept;
 
 bool operator<(const Example& lhs,const Example& rhs) noexcept;
 bool operator>(const Example& lhs,const Example& rhs) noexcept;
-
-bool operator<(const boost::shared_ptr<const Example>& lhs,const boost::shared_ptr<const Example>& rhs) = delete;
-bool operator<(const boost::shared_ptr<const Example>& lhs,const boost::shared_ptr<Example>& rhs) = delete;
-bool operator<(const boost::shared_ptr<Example>& lhs,const boost::shared_ptr<Example>& rhs) = delete;
-bool operator<(const boost::shared_ptr<Example>& lhs,const boost::shared_ptr<const Example>& rhs) = delete;
-bool operator>(const boost::shared_ptr<const Example>& lhs,const boost::shared_ptr<const Example>& rhs) = delete;
-bool operator>(const boost::shared_ptr<const Example>& lhs,const boost::shared_ptr<Example>& rhs) = delete;
-bool operator>(const boost::shared_ptr<Example>& lhs,const boost::shared_ptr<const Example>& rhs) = delete;
-bool operator>(const boost::shared_ptr<Example>& lhs,const boost::shared_ptr<Example>& rhs) = delete;
 
 } //~namespace cmap
 } //~namespace ribi

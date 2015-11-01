@@ -97,7 +97,7 @@ void ribi::cmap::QtExampleDialog::SetExample(const Example& example)
   bool is_specific_changed = true;
   bool text_changed = true;
 
-  if (m_example)
+  //if (m_example)
   {
     const auto competency_before  = m_example.GetCompetency();
     const auto is_complex_before  = m_example.GetIsComplex();
@@ -155,6 +155,7 @@ void ribi::cmap::QtExampleDialog::SetExample(const Example& example)
         TRACE(s.str());
       }
     }
+  }
 
   //Replace m_example by the new one
   m_example = example;
@@ -166,16 +167,14 @@ void ribi::cmap::QtExampleDialog::SetExample(const Example& example)
   assert(m_example.GetIsSpecific() == is_specific_after);
   assert(m_example.GetText()       == text_after       );
 
-  this->setMinimumHeight(GetMinimumHeight(*m_example));
+  this->setMinimumHeight(GetMinimumHeight(m_example));
 
   assert(example == m_example);
 }
 
-void ribi::cmap::QtExampleDialog::OnCompetencyChanged(const Example * const example)
+void ribi::cmap::QtExampleDialog::OnCompetencyChanged(const Example& example)
 {
   const bool verbose{false};
-  assert(example);
-
   const int index_before = ui->box_competency->currentIndex();
   const int index_after = Competencies().ToIndex(example.GetCompetency());
   assert(index_after >= 0);
@@ -192,21 +191,18 @@ void ribi::cmap::QtExampleDialog::OnCompetencyChanged(const Example * const exam
   assert(ui->box_competency->currentIndex() == index_after);
 }
 
-void ribi::cmap::QtExampleDialog::OnIsComplexChanged(const Example * const example)
+void ribi::cmap::QtExampleDialog::OnIsComplexChanged(const Example& example)
 {
-  assert(example);
   ui->box_is_complex->setChecked(example.GetIsComplex());
 }
 
-void ribi::cmap::QtExampleDialog::OnIsConcreteChanged(const Example * const example)
+void ribi::cmap::QtExampleDialog::OnIsConcreteChanged(const Example& example)
 {
-  assert(example);
   ui->box_is_concrete->setChecked(example.GetIsConcrete());
 }
 
-void ribi::cmap::QtExampleDialog::OnIsSpecificChanged(const Example * const example)
+void ribi::cmap::QtExampleDialog::OnIsSpecificChanged(const Example& example)
 {
-  assert(example);
   ui->box_is_specific->setChecked(example.GetIsSpecific());
 }
 
@@ -233,12 +229,6 @@ void ribi::cmap::QtExampleDialog::on_box_competency_currentIndexChanged(int inde
 {
   const bool verbose{false};
 
-  if (!m_example)
-  {
-    //Used in construction
-    return;
-  }
-
   assert(index >= 0);
   assert(index < static_cast<int>(Competencies().GetAllCompetencies().size()));
   const auto competency = Competencies().GetAllCompetencies()[index];
@@ -248,7 +238,7 @@ void ribi::cmap::QtExampleDialog::on_box_competency_currentIndexChanged(int inde
     std::stringstream s;
     s << "QtExampleDialog will set competency " << Competencies().ToStr(competency)
       << " (index " << index << ", current competency is "
-      << (m_example ? Competencies().ToStr(m_example.GetCompetency()) : "[nullptr]")
+      << m_example.GetCompetency()
       << ")";
     TRACE(s.str());
   }

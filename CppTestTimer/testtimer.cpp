@@ -91,7 +91,7 @@ ribi::TestTimer::TestTimer(
   const std::string& function_name,
   const std::string& file_name,
   const double max_time_sec
-)
+) noexcept
 
 #if __cplusplus >= 201402L
   : m_impl(std::make_unique<TestTimerImpl>(function_name,file_name,max_time_sec))

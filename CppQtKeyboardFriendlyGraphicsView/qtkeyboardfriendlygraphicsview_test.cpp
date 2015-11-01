@@ -59,7 +59,7 @@ void ribi::QtKeyboardFriendlyGraphicsView::Test() noexcept
   }
   {
     Counter();
-    ribi::fileio::FileIo();
+    ribi::FileIo();
     ribi::System();
     ribi::Time();
     ribi::Container();

@@ -29,8 +29,8 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
 #include <boost/shared_ptr.hpp>
 #include <boost/signals2.hpp>
+#include "conceptmapexamples.h"
 #include "qthideandshowdialog.h"
-
 #include "qtconceptmapfwd.h"
 #pragma GCC diagnostic pop
 
@@ -50,8 +50,9 @@ public:
   QtExamplesDialog& operator=(const QtExamplesDialog&) = delete;
   ~QtExamplesDialog() noexcept;
 
-  void SetExamples(const boost::shared_ptr<Examples>& examples);
-  boost::shared_ptr<Examples> GetExamples() const noexcept { return m_examples; }
+  void SetExamples(const Examples& examples);
+  const Examples& GetExamples() const noexcept { return m_examples; }
+        Examples& GetExamples()       noexcept { return m_examples; }
 
   ///Something of one of the examples was changed
   mutable boost::signals2::signal<void(QtExamplesDialog*)> m_signal_qtexamplesdialog_changed;
@@ -61,9 +62,9 @@ public:
 private:
   Ui::QtExamplesDialog *ui;
   std::vector<boost::shared_ptr<QtExampleDialog>> m_dialogs;
-  boost::shared_ptr<Examples> m_examples;
+  Examples m_examples;
 
-  void OnExamplesChanged(Examples* const examples) noexcept;
+  void OnExamplesChanged(Examples& examples) noexcept;
 
   #ifndef NDEBUG
   static void Test() noexcept;

@@ -25,7 +25,6 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic ignored "-Weffc++"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
-#include <boost/shared_ptr.hpp>
 #include "qthideandshowdialog.h"
 #include "conceptmapexample.h"
 
@@ -66,10 +65,10 @@ private:
   ///The Example to work on
   Example m_example;
 
-  void OnCompetencyChanged(const Example * const example);
-  void OnIsComplexChanged(const Example * const example);
-  void OnIsConcreteChanged(const Example * const example);
-  void OnIsSpecificChanged(const Example * const example);
+  void OnCompetencyChanged(const Example& example);
+  void OnIsComplexChanged(const Example& example);
+  void OnIsConcreteChanged(const Example& example);
+  void OnIsSpecificChanged(const Example& example);
   void OnTextChanged(const Example& example);
 
   #ifndef NDEBUG

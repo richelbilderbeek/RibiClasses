@@ -19,4 +19,20 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //From http://www.richelbilderbeek.nl/CppConceptMap.htm
 //---------------------------------------------------------------------------
 #include "conceptmapcompetency.h"
+#include "conceptmapcompetencies.h"
 
+std::string ribi::cmap::CompetencyToStr(const Competency competency) noexcept
+{
+  return Competencies().ToStr(competency);
+}
+
+ribi::cmap::Competency ribi::cmap::StrToCompetency(const std::string s)
+{
+  return Competencies().ToType(s);
+}
+
+std::ostream& ribi::cmap::operator<<(std::ostream& os, const Competency competency)
+{
+  os << Competencies().ToStr(competency);
+  return os;
+}

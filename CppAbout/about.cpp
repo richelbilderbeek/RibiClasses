@@ -69,7 +69,10 @@ ribi::About::About(
 void ribi::About::AddLibrary(const std::string& s) noexcept
 {
   m_libraries.push_back(s);
-  std::sort(m_libraries.begin(),m_libraries.end());
+  std::sort(
+    std::begin(m_libraries),
+    std::end(m_libraries)
+  );
 }
 
 std::vector<std::string> ribi::About::CreateAboutText() const noexcept
@@ -153,7 +156,12 @@ std::vector<std::string> ribi::About::GetAboutVersionHistory() noexcept
 std::string ribi::About::GetBoostVersion() noexcept
 {
   std::string s = BOOST_LIB_VERSION;
-  std::replace(s.begin(),s.end(),'_','.');
+  std::replace(
+    std::begin(s),
+    std::end(s),
+    '_',
+    '.'
+  );
   return s;
 }
 
@@ -166,26 +174,42 @@ std::ostream& ribi::operator<<(std::ostream& os,const About& a) noexcept
 {
   {
     const std::vector<std::string> v{a.CreateAboutText()};
-    std::copy(v.begin(),v.end(),std::ostream_iterator<std::string>(os,"\n"));
+    std::copy(
+      std::begin(v),
+      std::end(v),
+      std::ostream_iterator<std::string>(os,"\n")
+    );
   }
   os
     << '\n';
   {
     std::vector<std::string> v{a.CreateLibrariesUsedText()};
-    std::copy(v.begin(),v.end(),std::ostream_iterator<std::string>(os,"\n"));
+    std::copy(
+      std::begin(v),
+      std::end(v),
+      std::ostream_iterator<std::string>(os,"\n")
+    );
   }
   os
     << '\n';
   {
     std::vector<std::string> v{a.CreateVersionHistory()};
-    std::copy(v.begin(),v.end(),std::ostream_iterator<std::string>(os,"\n"));
+    std::copy(
+      std::begin(v),
+      std::end(v),
+      std::ostream_iterator<std::string>(os,"\n")
+    );
   }
   os
     << '\n'
     << "Licence:\n";
   {
     std::vector<std::string> v{a.CreateLicenceText()};
-    std::copy(v.begin(),v.end(),std::ostream_iterator<std::string>(os,"\n"));
+    std::copy(
+      begin(v),
+      end(v),
+      std::ostream_iterator<std::string>(os,"\n")
+    );
   }
   os
     << '\n'

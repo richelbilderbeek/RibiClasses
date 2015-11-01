@@ -66,13 +66,13 @@ int ribi::cmap::QtExamplesDialog::GetMinimumHeight(const Examples& examples) noe
   for (const auto example: examples.Get())
   {
     const int margin = 16;
-    height += QtExampleDialog::GetMinimumHeight(*example);
+    height += QtExampleDialog::GetMinimumHeight(example);
     height += margin;
   }
   return height;
 }
 
-void ribi::cmap::QtExamplesDialog::OnExamplesChanged(Examples* examples) noexcept
+void ribi::cmap::QtExamplesDialog::OnExamplesChanged(Examples& examples) noexcept
 {
   const bool verbose{false};
 
@@ -81,16 +81,16 @@ void ribi::cmap::QtExamplesDialog::OnExamplesChanged(Examples* examples) noexcep
   //Check if the dialog needs to change
   {
     bool will_change = false;
-    if (examples->Get().size() != m_dialogs.size())
+    if (examples.Get().size() != m_dialogs.size())
     {
       will_change = true;
     }
     else
     {
-      const int n = static_cast<int>(examples->Get().size());
+      const int n = static_cast<int>(examples.Get().size());
       for (int i=0; i!=n; ++i)
       {
-        if (m_dialogs[i]->GetExample() != examples->Get()[i])
+        if (m_dialogs[i]->GetExample() != examples.Get()[i])
         {
           will_change = true;
         }
@@ -100,8 +100,7 @@ void ribi::cmap::QtExamplesDialog::OnExamplesChanged(Examples* examples) noexcep
   }
 
   //Creating the right number of QtExampleDialog instances
-  assert(examples);
-  while (examples->Get().size() < m_dialogs.size())
+  while (examples.Get().size() < m_dialogs.size())
   {
     //Need to remove m_dialogs
     assert(layout());
@@ -115,7 +114,7 @@ void ribi::cmap::QtExamplesDialog::OnExamplesChanged(Examples* examples) noexcep
       TRACE(s.str());
     }
   }
-  while (examples->Get().size() > m_dialogs.size())
+  while (examples.Get().size() > m_dialogs.size())
   {
     boost::shared_ptr<QtExampleDialog> dialog(new QtExampleDialog);
     assert(layout());
@@ -129,64 +128,59 @@ void ribi::cmap::QtExamplesDialog::OnExamplesChanged(Examples* examples) noexcep
       TRACE(s.str());
     }
   }
-  assert(examples->Get().size() == m_dialogs.size());
+  assert(examples.Get().size() == m_dialogs.size());
 
 
   const int n = static_cast<int>(m_dialogs.size());
   for (int i=0; i!=n; ++i)
   {
     assert(m_dialogs[i]);
-    assert(examples->Get()[i]);
-    m_dialogs[i]->SetExample(examples->Get()[i]);
+    m_dialogs[i]->SetExample(examples.Get()[i]);
     if (verbose)
     {
       std::stringstream s;
-      s << "QtExamplesDialog will set Example '" << examples->Get()[i]->ToStr() << "'\n";
+      s << "QtExamplesDialog will set Example '" << examples.Get()[i].ToStr() << "'\n";
       TRACE(s.str());
     }
-    assert( examples->Get()[i] ==  m_dialogs[i]->GetExample());
-    assert(*examples->Get()[i] == *m_dialogs[i]->GetExample());
+    assert( examples.Get()[i] ==  m_dialogs[i]->GetExample());
   }
 
 }
 
-void ribi::cmap::QtExamplesDialog::SetExamples(const boost::shared_ptr<Examples>& examples)
+void ribi::cmap::QtExamplesDialog::SetExamples(const Examples& examples)
 {
   //const bool verbose{false};
-  assert(examples);
 
   if (m_examples == examples) return;
 
   bool examples_changed = true;
-  if (m_examples)
   {
-    examples_changed = *m_examples != *examples;
+    examples_changed = m_examples != examples;
 
     //Disconnect m_examples
-    m_examples->m_signal_examples_changed.disconnect(
-      boost::bind(&ribi::cmap::QtExamplesDialog::OnExamplesChanged,this,boost::lambda::_1)
-    );
+    //m_examples->m_signal_examples_changed.disconnect(
+    //  boost::bind(&ribi::cmap::QtExamplesDialog::OnExamplesChanged,this,boost::lambda::_1)
+    //);
   }
 
   //Replace m_example by the new one
   m_examples = examples;
 
-  m_examples->m_signal_examples_changed.connect(
-    boost::bind(&ribi::cmap::QtExamplesDialog::OnExamplesChanged,this,boost::lambda::_1)
-  );
+  //m_examples->m_signal_examples_changed.connect(
+  //  boost::bind(&ribi::cmap::QtExamplesDialog::OnExamplesChanged,this,boost::lambda::_1)
+  //);
   //Emit that everything has changed
   if (examples_changed)
   {
     //For those interested in m_examples
-    m_examples->m_signal_examples_changed(m_examples.get());
+    //m_examples->m_signal_examples_changed(m_examples.get());
 
     //For those interested in this dialog
     m_signal_qtexamplesdialog_changed(this);
   }
 
   assert( m_examples ==  examples);
-  assert(*m_examples == *examples);
-  this->setMinimumHeight(GetMinimumHeight(*m_examples));
+  this->setMinimumHeight(GetMinimumHeight(m_examples));
 }
 
 #ifndef NDEBUG

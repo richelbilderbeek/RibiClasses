@@ -54,7 +54,11 @@ int ribi::MenuDialog::Execute(const std::vector<std::string>& argv) noexcept
   if (s == "--about" || s == "-a")
   {
     const std::vector<std::string> v { GetAbout().CreateAboutText() };
-    std::copy(v.begin(),v.end(),std::ostream_iterator<std::string>(std::cout,"\n"));
+    std::copy(
+      std::begin(v),
+      std::end(v),
+      std::ostream_iterator<std::string>(std::cout,"\n")
+    );
     std::cout
       << "\n"
       << "Source code built on "
@@ -79,19 +83,31 @@ int ribi::MenuDialog::Execute(const std::vector<std::string>& argv) noexcept
   else if (s == "--history" || s == "-i")
   {
     const std::vector<std::string> v { GetVersionHistory() };
-    std::copy(v.begin(),v.end(),std::ostream_iterator<std::string>(std::cout,"\n"));
+    std::copy(
+      std::begin(v),
+      std::end(v),
+      std::ostream_iterator<std::string>(std::cout,"\n")
+    );
     return 0;
   }
   else if (s == "--licence" || s == "-l")
   {
     const std::vector<std::string> v { GetAbout().CreateLicenceText() };
-    std::copy(v.begin(),v.end(),std::ostream_iterator<std::string>(std::cout,"\n"));
+    std::copy(
+      std::begin(v),
+      std::end(v),
+      std::ostream_iterator<std::string>(std::cout,"\n")
+    );
     return 0;
   }
   else if (s == "--version" || s == "-v")
   {
     const std::vector<std::string> v = { GetAbout().CreateLibrariesUsedText() };
-    std::copy(v.begin(),v.end(),std::ostream_iterator<std::string>(std::cout,"\n"));
+    std::copy(
+      std::begin(v),
+      std::end(v),
+      std::ostream_iterator<std::string>(std::cout,"\n")
+    );
     return 0;
   }
   return ExecuteSpecific(argv);

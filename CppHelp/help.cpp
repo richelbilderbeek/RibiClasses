@@ -110,7 +110,8 @@ const std::vector<ribi::Help::Option> ribi::Help::AddDefaultOptions(const std::v
   const int max_length {
     static_cast<int>(
       std::max_element(
-        v.begin(), v.end(),
+        std::begin(v),
+        std::end(v),
         [](const Option& lhs, const Option& rhs)
         {
           return lhs.m_long.size() < rhs.m_long.size();
@@ -136,7 +137,8 @@ const std::vector<ribi::Help::Option> ribi::Help::AddDefaultOptions(const std::v
   //Sorts by short option
   //Also checks if there are no short or long option occurring twice
   std::sort(
-    w.begin(),w.end(),
+    std::begin(w),
+    std::end(w),
     [](const Option& lhs, const Option& rhs)
       {
         #ifndef NDEBUG

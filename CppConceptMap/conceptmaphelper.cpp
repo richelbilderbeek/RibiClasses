@@ -56,7 +56,7 @@ double ribi::cmap::GetDistance(const double x1, const double y1, const double x2
 
 std::vector<std::string> ribi::cmap::SafeFileToVector(const std::string& filename) noexcept
 {
-  std::vector<std::string> v = ribi::fileio::FileIo().FileToVector(filename);
+  std::vector<std::string> v = ribi::FileIo().FileToVector(filename);
   if (!v.empty() && v.back().empty()) v.pop_back();
   return v;
 }

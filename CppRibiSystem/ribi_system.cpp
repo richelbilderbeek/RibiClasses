@@ -26,6 +26,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
 #include <cassert>
 #include <fstream>
+#include <sstream>
+#include <iostream>
 
 #include "fileio.h"
 #include "testtimer.h"
@@ -41,15 +43,19 @@ ribi::System::System()
 
 std::string ribi::System::GetWhoami() const noexcept
 {
-  const auto tempfilename = ribi::fileio::FileIo().GetTempFileName();
+  const auto tempfilename = ribi::FileIo().GetTempFileName();
   std::stringstream cmd;
   cmd << "whoami > " << tempfilename;
-  std::system(cmd.str().c_str());
-  assert(fileio::FileIo().IsRegularFile(tempfilename));
+  const int error_code = std::system(cmd.str().c_str());
+  if (error_code)
+  {
+    std::cerr << "Command '" << cmd.str() << "' had non-OK exit code " << error_code << std::endl;
+  }
+  assert(FileIo().IsRegularFile(tempfilename));
   std::ifstream file(tempfilename);
   std::string user;
   file >> user;
-  fileio::FileIo().DeleteFile(tempfilename);
+  FileIo().DeleteFile(tempfilename);
   return user;
 }
 
@@ -62,7 +68,7 @@ void ribi::System::Test() noexcept
     is_tested = true;
   }
   {
-    fileio::FileIo();
+    FileIo();
   }
   const TestTimer test_timer(__func__,__FILE__,1.0);
   {

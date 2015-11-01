@@ -4,10 +4,13 @@
 #pragma GCC diagnostic ignored "-Weffc++"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
+#include <sstream>
+
 #include <QImage>
 #include <QPixmap>
 #include <QScreen>
 #include <QApplication>
+
 #include "testtimer.h"
 #include "trace.h"
 #pragma GCC diagnostic pop

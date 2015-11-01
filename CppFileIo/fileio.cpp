@@ -274,7 +274,11 @@ std::string ribi::fileio::FileIo::GetExtensionNoDot(const std::string& filename)
 std::string ribi::fileio::FileIo::GetExtensionWithDot(const std::string& filename) const noexcept
 {
   return
-    ( std::count(filename.begin(),filename.end(),'.')
+    ( std::count(
+        std::begin(filename),
+        std::end(filename),
+        '.'
+    )
     ? "."
     : ""
     )
@@ -309,7 +313,9 @@ std::vector<std::string> ribi::fileio::FileIo::GetFilesInFolder(
   const int size{list.size()};
   for (int i{0}; i != size; ++i)
   {
-    const std::string file_name{list.at(i).fileName().toStdString()};
+    assert(i >= 0);
+    assert(i < static_cast<int>(list.size()));
+    const std::string file_name{list[i].fileName().toStdString()};
     v.push_back(file_name);
   }
   return v;
@@ -327,7 +333,10 @@ std::vector<std::string> ribi::fileio::FileIo::GetFilesInFolderRecursive(
       GetFilesInFolder(root_folder)
     };
     //Copy the files and folders with path added
-    std::transform(files_here.begin(),files_here.end(),std::back_inserter(v),
+    std::transform(
+      std::begin(files_here),
+      std::end(files_here),
+      std::back_inserter(v),
       [this,root_folder](const std::string& filename)
       {
         const std::string filename_here{
@@ -342,7 +351,10 @@ std::vector<std::string> ribi::fileio::FileIo::GetFilesInFolderRecursive(
   std::vector<std::string> folders_todo;
   {
     const auto folders_here = GetFoldersInFolder(root_folder);
-    std::transform(folders_here.begin(),folders_here.end(),std::back_inserter(folders_todo),
+    std::transform(
+      std::begin(folders_here),
+      std::end(folders_here),
+      std::back_inserter(folders_todo),
       [this,root_folder](const std::string& foldername)
       {
         const auto folder_here = root_folder + GetPathSeperator() + foldername;
@@ -381,7 +393,10 @@ std::vector<std::string> ribi::fileio::FileIo::GetFilesInFolderRecursive(
     #endif
 
     //Copy the files and folders with path added
-    std::transform(files_here.begin(),files_here.end(),std::back_inserter(v),
+    std::transform(
+      std::begin(files_here),
+      std::end(files_here),
+      std::back_inserter(v),
       [this,folder_todo](const std::string& filename)
       {
         const std::string file_here {
@@ -391,7 +406,10 @@ std::vector<std::string> ribi::fileio::FileIo::GetFilesInFolderRecursive(
         return file_here;
       }
     );
-    std::transform(folders_here.begin(),folders_here.end(),std::back_inserter(folders_todo),
+    std::transform(
+      std::begin(folders_here),
+      std::end(folders_here),
+      std::back_inserter(folders_todo),
       [this,folder_todo](const std::string& foldername)
       {
         assert(!foldername.empty());
@@ -430,7 +448,7 @@ std::vector<std::string> ribi::fileio::FileIo::GetFilesInFolderByRegex(
   std::vector<std::string> w;
 
   //Copy all filenames matching the regex in the resulting std::vector
-  std::copy_if(v.begin(),v.end(),std::back_inserter(w),
+  std::copy_if(std::begin(v),std::end(v),std::back_inserter(w),
     [rex](const std::string& s)
     {
       boost::xpressive::smatch what;
@@ -462,7 +480,8 @@ std::vector<std::string> ribi::fileio::FileIo::GetFoldersInFolder(
   #ifndef NDEBUG
   for (const auto& s: v)
   {
-    assert(std::count(v.begin(),v.end(),s) == 1
+    assert(
+      std::count(std::begin(v),std::end(v),s) == 1
       && "Every folder name is unique");
   }
   #endif
@@ -1266,7 +1285,11 @@ void ribi::fileio::FileIo::VectorToFile(
   }
   {
     std::ofstream f(filename.c_str());
-    std::copy(v.begin(),v.end(),std::ostream_iterator<std::string>(f,"\n"));
+    std::copy(
+      std::begin(v),
+      std::end(v),
+      std::ostream_iterator<std::string>(f,"\n")
+    );
   }
   assert(IsRegularFile(filename));
 }

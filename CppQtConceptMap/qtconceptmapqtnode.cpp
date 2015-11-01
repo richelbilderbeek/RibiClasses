@@ -229,7 +229,7 @@ void ribi::cmap::QtNode::paint(
 {
   Base::paint(painter,item,widget);
 
-  if (!GetNode()->GetConcept()->GetExamples()->Get().empty())
+  if (!GetNode()->GetConcept()->GetExamples().Get().empty())
   {
     //painter->setBrush(m_display_strategy->GetIndicatorBrush());
     //painter->setPen(m_display_strategy->GetIndicatorPen());

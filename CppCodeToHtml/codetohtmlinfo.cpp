@@ -833,7 +833,6 @@ ToolHometrainerExerciseMilling
 ToolHometrainer_exercises_French
 ToolImageRotater
 ToolKalmanFilterer
-ToolKTouchLectureCreator
 ToolLambdaBot
 ToolLizardPaperRockScissorsSpock
 ToolLogisticGrowthSimulator
@@ -16089,37 +16088,6 @@ ToolTestNewickVector
       }
     }
   );
-  m.push_back(
-    { "ToolKTouchLectureCreator",
-      {
-        "<p><a href=\"ToolKTouchLectureCreator.htm\">KTouchLectureCreator</a> is a <a href=\"Tools.htm\">tool</a> to create random ",
-        "KTouch lectures for a C++ programmer.</p>",
-        "<p>&nbsp;</p>",
-        "<p>&nbsp;</p>",
-        "<p>&nbsp;</p>",
-        "<p>&nbsp;</p>",
-        "<p>&nbsp;</p>",
-        "<h2>Downloads</h2>",
-        "<p>&nbsp;</p>",
-        "<ul>",
-        "  <li><img src=\"PicDesktop.png\" alt=\"Desktop\"/> <a href=\"ToolKTouchLectureCreatorLecture.zip\">Download a lecture created by 'KTouchLectureCreator' (zip)</a></li>",
-        "  <li><img src=\"PicDesktop.png\" alt=\"Desktop\"/> <a href=\"ToolKTouchLectureCreatorSource_1_0.zip\">Download the 'KTouchLectureCreator' source code (version 1.0)(zip)</a></li>",
-        "  <li><img src=\"PicDesktop.png\" alt=\"Desktop\"/> <a href=\"ToolKTouchLectureCreatorSource_1_0.htm\">View the 'KTouchLectureCreator' source code as web page (version 1.0)(htm)</a></li>",
-        "</ul>",
-        "<p>&nbsp;</p>",
-        "<p>&nbsp;</p>",
-        "<p>&nbsp;</p>",
-        "<p>&nbsp;</p>",
-        "<p>&nbsp;</p>",
-        "<h2>External links</h2>",
-        "<p>&nbsp;</p>",
-        "<ul>",
-        "  <li><a href=\"http://ktouch.sourceforge.net\">KTouch homepage</a></li>",
-        "</ul>",
-      }
-    }
-  );
-
   m.push_back(
     { "ToolLambdaBot",
       {

@@ -21,6 +21,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #ifndef CONCEPTMAPCOMPETENCY_H
 #define CONCEPTMAPCOMPETENCY_H
 
+#include <iosfwd>
 
 namespace ribi {
 namespace cmap {
@@ -38,6 +39,9 @@ enum class Competency
   n_competencies       //Used for debugging only
 };
 
+std::string CompetencyToStr(const Competency competency) noexcept;
+Competency StrToCompetency(const std::string s);
+std::ostream& operator<<(std::ostream& os, const Competency competency);
 
 } //~namespace cmap
 } //~namespace ribi

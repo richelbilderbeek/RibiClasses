@@ -35,7 +35,7 @@ struct TestTimer
     const std::string& function_name,
     const std::string& file_name,
     const double max_time_sec = 1.0
-  );
+  ) noexcept;
   TestTimer(const TestTimer&) = delete;
   TestTimer& operator=(const TestTimer&) = delete;
   ~TestTimer() noexcept; //But might terminate the program instead
@@ -47,6 +47,8 @@ struct TestTimer
   private:
   const std::unique_ptr<TestTimerImpl> m_impl;
 };
+
+using test_timer = TestTimer; //Alias
 
 } //~namespace ribi
 
