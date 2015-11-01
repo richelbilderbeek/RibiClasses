@@ -44,7 +44,7 @@ ribi::cmap::ConceptFactory::ConceptFactory() noexcept
   #endif
 }
 
-boost::shared_ptr<ribi::cmap::Concept> ribi::cmap::ConceptFactory::Create(
+ribi::cmap::Concept ribi::cmap::ConceptFactory::Create(
   const std::string& name,
   const Examples& examples,
   const bool is_complex,
@@ -56,55 +56,18 @@ boost::shared_ptr<ribi::cmap::Concept> ribi::cmap::ConceptFactory::Create(
   assert(rating_complexity >= -1);
   assert(rating_complexity <=  2);
 
-  boost::shared_ptr<Concept> concept(
-    new Concept(
-      name,
-      examples,
-      is_complex,
-      rating_complexity,
-      rating_concreteness,
-      rating_specificity
-    )
+  Concept concept(
+    name,
+    examples,
+    is_complex,
+    rating_complexity,
+    rating_concreteness,
+    rating_specificity
   );
-  assert(concept);
   return concept;
 }
 
-#ifndef NDEBUG
-boost::shared_ptr<ribi::cmap::Concept> ribi::cmap::ConceptFactory::DeepCopy(
-  const boost::shared_ptr<const ribi::cmap::Concept>& concept
-) const noexcept
-{
-  const Examples examples
-    = ExamplesFactory().Create(concept->GetExamples());
-  assert(examples == concept->GetExamples());
-
-  assert(concept->GetRatingComplexity() >= -1);
-  assert(concept->GetRatingComplexity() <=  2);
-
-  const boost::shared_ptr<Concept> q
-    = Create(
-      concept->GetName(),
-      examples,
-      concept->GetIsComplex(),
-      concept->GetRatingComplexity(),
-      concept->GetRatingConcreteness(),
-      concept->GetRatingSpecificity());
-  assert(q);
-  assert(*concept == *q);
-  return q;
-}
-#endif
-
-//Do not create this version: it will lead to ambiguities
-//static const boost::shared_ptr<ribi::cmap::Concept> ribi::cmap::ConceptFactory::Create(
-//  const std::string& name,
-//  const std::vector<boost::shared_ptr<const cmap::Example> >& examples)
-//{
-//  return Create(name,ExamplesFactory::Create(examples));
-//}
-
-boost::shared_ptr<ribi::cmap::Concept> ribi::cmap::ConceptFactory::Create(
+ribi::cmap::Concept ribi::cmap::ConceptFactory::Create(
   const std::string& name,
   const std::vector<std::pair<std::string,Competency> >& v,
   const bool is_complex,
@@ -131,19 +94,19 @@ boost::shared_ptr<ribi::cmap::Concept> ribi::cmap::ConceptFactory::Create(
 
   const Examples examples = ExamplesFactory().Create(w);
 
-  const boost::shared_ptr<Concept> concept
+  Concept concept
     = Create(
     name,
     examples,
     is_complex,
     rating_complexity,
     rating_concreteness,
-    rating_specificity);
-  assert(concept);
+    rating_specificity
+  );
   return concept;
 }
 
-boost::shared_ptr<ribi::cmap::Concept> ribi::cmap::ConceptFactory::FromXml(const std::string& s) const noexcept
+ribi::cmap::Concept ribi::cmap::ConceptFactory::FromXml(const std::string& s) const noexcept
 {
   assert(s.size() >= 19);
   assert(s.substr(0,9) == "<concept>");
@@ -214,66 +177,63 @@ boost::shared_ptr<ribi::cmap::Concept> ribi::cmap::ConceptFactory::FromXml(const
     rating_specificity = boost::lexical_cast<int>(ribi::xml::StripXmlTag(v[0]));
   }
 
-  const boost::shared_ptr<Concept> concept {
+  Concept concept {
     ConceptFactory().Create(name,examples,is_complex,rating_complexity,rating_concreteness,rating_specificity)
   };
   return concept;
 }
 
-boost::shared_ptr<ribi::cmap::Concept> ribi::cmap::ConceptFactory::GetTest(
+ribi::cmap::Concept ribi::cmap::ConceptFactory::GetTest(
   const int i) const noexcept
 {
   assert(i < GetNumberOfTests());
-  const boost::shared_ptr<Concept> concept {
+  const Concept concept {
     GetTests()[i]
   };
-  assert(concept);
   return concept;
 }
 
-std::vector<boost::shared_ptr<ribi::cmap::Concept> > ribi::cmap::ConceptFactory::GetTests() const noexcept
+std::vector<ribi::cmap::Concept> ribi::cmap::ConceptFactory::GetTests() const noexcept
 {
-  std::vector<boost::shared_ptr<Concept> > v;
+  std::vector<Concept> v;
   {
     const Examples examples = ExamplesFactory().Create();
-    const boost::shared_ptr<Concept> p = Create("Concept without examples", examples, false, 0, 1, 2);
-    assert(p);
-    assert(p->GetRatingComplexity() >= -1);
-    assert(p->GetRatingComplexity() <=  2);
+    const Concept p = Create("Concept without examples", examples, false, 0, 1, 2);
+    assert(p.GetRatingComplexity() >= -1);
+    assert(p.GetRatingComplexity() <=  2);
     v.push_back(p);
   }
   {
-    const boost::shared_ptr<Concept> p = Create("Concept with one example", { { "Only example", cmap::Competency::profession } }, 1, 2, 0);
-    assert(p);
-    assert(p->GetRatingComplexity() >= -1);
-    assert(p->GetRatingComplexity() <=  2);
+    const Concept p = Create("Concept with one example", { { "Only example", cmap::Competency::profession } }, 1, 2, 0);
+    assert(p.GetRatingComplexity() >= -1);
+    assert(p.GetRatingComplexity() <=  2);
     v.push_back(p);
   }
   /*
   {
-    const boost::shared_ptr<Concept> p = Create("Concept with two examples", { { "First example", cmap::Competency::organisations }, { "Second example", cmap::Competency::social_surroundings } }, 2, 0, 1);
+    const Concept p = Create("Concept with two examples", { { "First example", cmap::Competency::organisations }, { "Second example", cmap::Competency::social_surroundings } }, 2, 0, 1);
     assert(p);
-    assert(p->GetRatingComplexity() >= -1);
-    assert(p->GetRatingComplexity() <=  2);
+    assert(p.GetRatingComplexity() >= -1);
+    assert(p.GetRatingComplexity() <=  2);
     v.push_back(p);
   }
   {
-    const boost::shared_ptr<Concept> p = Create("Concept with three examples", { { "Example 1 of 3", cmap::Competency::target_audience }, { "Example 2 of 3", cmap::Competency::ti_knowledge }, { "Example 3 of 3", cmap::Competency::prof_growth } }, 0, 1, 2);
+    const Concept p = Create("Concept with three examples", { { "Example 1 of 3", cmap::Competency::target_audience }, { "Example 2 of 3", cmap::Competency::ti_knowledge }, { "Example 3 of 3", cmap::Competency::prof_growth } }, 0, 1, 2);
     assert(p);
-    assert(p->GetRatingComplexity() >= -1);
-    assert(p->GetRatingComplexity() <=  2);
+    assert(p.GetRatingComplexity() >= -1);
+    assert(p.GetRatingComplexity() <=  2);
     v.push_back(p);
   }
   {
-    const boost::shared_ptr<Concept> p = Create("Concept with four Roman examples", { { "Example I/IV", cmap::Competency::misc }, { "Example II/IV", cmap::Competency::uninitialized }, { "Example III/IV", cmap::Competency::profession }, { "Example III/IV", cmap::Competency::social_surroundings } }, 1, 2, 0);
+    const Concept p = Create("Concept with four Roman examples", { { "Example I/IV", cmap::Competency::misc }, { "Example II/IV", cmap::Competency::uninitialized }, { "Example III/IV", cmap::Competency::profession }, { "Example III/IV", cmap::Competency::social_surroundings } }, 1, 2, 0);
     assert(p);
-    assert(p->GetRatingComplexity() >= -1);
-    assert(p->GetRatingComplexity() <=  2);
+    assert(p.GetRatingComplexity() >= -1);
+    assert(p.GetRatingComplexity() <=  2);
     v.push_back(p);
   }
   */
   {
-    const boost::shared_ptr<Concept> p = Create(
+    const Concept p = Create(
       "Very long multi-line concept with four Roman examples that also each span multiple lines, that is, eighty characters",
       {
         { "Example I/IV, spanning multiple lines (that is, having at least eight characters) and is rated as cmap::Competency::misc", cmap::Competency::misc },
@@ -282,12 +242,10 @@ std::vector<boost::shared_ptr<ribi::cmap::Concept> > ribi::cmap::ConceptFactory:
         { "Example III/IV, spanning multiple lines (that is, having at least eight characters) and is rated as cmap::Competency::social_surroundings", cmap::Competency::social_surroundings }
       }, 1, 2, 0
     );
-    assert(p);
-    assert(p->GetRatingComplexity() >= -1);
-    assert(p->GetRatingComplexity() <=  2);
+    assert(p.GetRatingComplexity() >= -1);
+    assert(p.GetRatingComplexity() <=  2);
     v.push_back(p);
   }
-  assert(std::count_if(v.begin(),v.end(),[](const boost::shared_ptr<Concept>& p) { return !p; } ) == 0);
   return v;
 }
 
@@ -304,20 +262,12 @@ void ribi::cmap::ConceptFactory::Test() noexcept
   ExamplesFactory();
   const bool verbose{false};
   const TestTimer test_timer(__func__,__FILE__,1.0);
-  if (verbose) { TRACE("GetTests all valid"); }
-  {
-    const auto tests = ConceptFactory().GetTests();
-    for (const auto test: tests)
-    {
-      assert(test);
-    }
-  }
   if (verbose) { TRACE("Concept -> XML -> Concept "); }
   {
     const auto concept = ConceptFactory().GetTest(2);
-    const auto xml = concept->ToXml();
+    const auto xml = concept.ToXml();
     const auto new_concept = ConceptFactory().FromXml(xml);
-    const auto new_xml = new_concept->ToXml();
+    const auto new_xml = new_concept.ToXml();
     assert(xml == new_xml);
   }
 }

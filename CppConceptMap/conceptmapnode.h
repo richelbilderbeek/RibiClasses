@@ -28,6 +28,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <boost/signals2.hpp>
 #include <boost/shared_ptr.hpp>
 #include "conceptmapfwd.h"
+#include "conceptmapconcept.h"
 #include "conceptmapelement.h"
 #pragma GCC diagnostic pop
 
@@ -42,14 +43,11 @@ struct NodeFactory;
 /// - QtNodeDialog (as a QDialog, to be used in a QDialog)
 ///Node is used as a base class by:
 /// - CenterNode
-struct  Node : public Element
+struct  Node //: public Element
 {
-  Node(const Node&) = delete;
-  Node& operator=(const Node&) = delete;
-
   ///Get the Concept
-  boost::shared_ptr<const Concept>  GetConcept() const noexcept { return m_concept; }
-  boost::shared_ptr<      Concept>& GetConcept()       noexcept { return m_concept; }
+  const Concept  GetConcept() const noexcept { return m_concept; }
+        Concept& GetConcept()       noexcept { return m_concept; }
 
   ///Get some test nodes
   static std::vector<boost::shared_ptr<Node>> GetTests() noexcept;
@@ -66,7 +64,7 @@ struct  Node : public Element
   bool IsCenterNode() const noexcept { return m_is_center_node; }
 
   ///Set the concept
-  void SetConcept(const boost::shared_ptr<Concept>& concept) noexcept;
+  void SetConcept(const Concept& concept) noexcept;
 
   void SetIsCenterNode(const bool is_center_node) noexcept { m_is_center_node = is_center_node; }
 
@@ -94,7 +92,7 @@ struct  Node : public Element
 
   ///Use NodeFactory as an unused argument to enforce using it
   explicit Node(
-    const boost::shared_ptr<Concept>& concept,
+    const Concept& concept,
     const double x,
     const double y
   );
@@ -106,7 +104,7 @@ struct  Node : public Element
   private:
 
   ///The Concept
-  boost::shared_ptr<Concept> m_concept;
+  Concept m_concept;
 
   bool m_is_center_node;
 

@@ -64,9 +64,15 @@ struct Container
 
   ///Shorthand for std::count(std::begin(t),std::end(t),u)
   template <class T, class U>
-  static int Count(const T& t, const U& u) noexcept
+  int Count(const T& t, const U& u) const noexcept
   {
     return std::count(std::begin(t),std::end(t),u);
+  }
+
+  template <class T, class Predicate>
+  int CountIf(const T& t, const Predicate& p) const noexcept
+  {
+    return std::count_if(std::begin(t),std::end(t),p);
   }
 
   ///Obtain the version
@@ -98,7 +104,12 @@ struct Container
     const std::string& input,
     const char seperator) const noexcept;
 
-
+  ///Shorthand for std::sort(std::begin(t),std::end(t))
+  template <class T>
+  void Sort(T& t) const noexcept
+  {
+    return std::sort(std::begin(t),std::end(t));
+  }
 
   template <class T>
   static std::string ToStr(const std::set<T>& set) noexcept
@@ -131,6 +142,8 @@ struct Container
   static void Test() noexcept;
   #endif
 };
+
+using container = Container;
 
 } //~namespace ribi
 

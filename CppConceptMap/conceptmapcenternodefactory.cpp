@@ -51,11 +51,10 @@ ribi::cmap::CenterNodeFactory::CenterNodeFactory()
 }
 
 boost::shared_ptr<ribi::cmap::CenterNode> ribi::cmap::CenterNodeFactory::Create(
-  const boost::shared_ptr<ribi::cmap::Concept>& concept,
+  const Concept& concept,
   const double x,
   const double y) const noexcept
 {
-  assert(concept);
   boost::shared_ptr<Node> node(
     new Node(
       concept,x,y
@@ -63,7 +62,7 @@ boost::shared_ptr<ribi::cmap::CenterNode> ribi::cmap::CenterNodeFactory::Create(
   );
   assert(node);
   node->SetIsCenterNode(true);
-  assert(*concept == *node->GetConcept());
+  assert(concept == node->GetConcept());
   assert(node->GetX() == x);
   assert(node->GetY() == y);
   return node;
@@ -85,7 +84,6 @@ boost::shared_ptr<ribi::cmap::CenterNode> ribi::cmap::CenterNodeFactory::CreateF
   );
   assert(node);
   node->SetIsCenterNode(true);
-  assert(node->GetConcept());
   assert(node->GetX() == x);
   assert(node->GetY() == y);
   return node;
@@ -97,19 +95,14 @@ const boost::shared_ptr<ribi::cmap::CenterNode> ribi::cmap::CenterNodeFactory::D
 ) const noexcept
 {
   assert(node);
-  assert(node->GetConcept());
-  const boost::shared_ptr<Concept> new_concept {
-    ConceptFactory().DeepCopy(node->GetConcept())
-  };
-  assert(new_concept);
-  assert(*node->GetConcept() == *new_concept);
+  const Concept new_concept(node->GetConcept());
+  assert(node->GetConcept() == new_concept);
   const boost::shared_ptr<CenterNode> new_node
     = Create(new_concept,
       node->GetX(),
       node->GetY()
     );
   assert(new_node);
-  assert(new_node->GetConcept());
   assert(*node == *new_node);
   new_node->SetIsCenterNode(true);
   return new_node;
@@ -134,7 +127,7 @@ const boost::shared_ptr<ribi::cmap::CenterNode> ribi::cmap::CenterNodeFactory::F
   }
 
   //m_concept
-  boost::shared_ptr<Concept> concept;
+  Concept concept = ConceptFactory().Create();
   {
     const auto v = Regex().GetRegexMatches(s,Regex().GetRegexConcept());
     assert(v.size() == 1);
@@ -154,7 +147,6 @@ const boost::shared_ptr<ribi::cmap::CenterNode> ribi::cmap::CenterNodeFactory::F
     assert(v.size() == 1);
     y = boost::lexical_cast<double>(ribi::xml::StripXmlTag(v[0]));
   }
-  assert(concept);
   const boost::shared_ptr<CenterNode> node(new CenterNode(concept,x,y));
   assert(node);
   assert(node->ToXml() == s);

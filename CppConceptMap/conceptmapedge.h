@@ -40,7 +40,7 @@ struct EdgeFactory;
 ///An Edge is the GUI-independent part of the edges used in QtConceptMap.
 ///An Edge goes from one Node to another, which must a different Node,
 /// at the center of the Edge is a Node
-struct Edge : public Element
+struct Edge //: public Element
 {
   typedef boost::shared_ptr<const Edge> ReadOnlyEdgePtr;
   typedef boost::shared_ptr<Edge> EdgePtr;

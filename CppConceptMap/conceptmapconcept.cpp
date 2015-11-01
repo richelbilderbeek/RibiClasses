@@ -42,12 +42,12 @@ ribi::cmap::Concept::Concept(
   const int rating_complexity,
   const int rating_concreteness,
   const int rating_specificity)
-  : m_signal_examples_changed{},
-    m_signal_is_complex_changed{},
-    m_signal_name_changed{},
-    m_signal_rating_complexity_changed{},
-    m_signal_rating_concreteness_changed{},
-    m_signal_rating_specificity_changed{},
+  : //m_signal_examples_changed{},
+    //m_signal_is_complex_changed{},
+    //m_signal_name_changed{},
+    //m_signal_rating_complexity_changed{},
+    //m_signal_rating_concreteness_changed{},
+    //m_signal_rating_specificity_changed{},
     m_examples{examples},
     m_is_complex{is_complex},
     m_name{name},
@@ -81,7 +81,7 @@ void ribi::cmap::Concept::SetIsComplex(const bool is_complex) noexcept
   if (is_complex != m_is_complex)
   {
     m_is_complex = is_complex;
-    m_signal_is_complex_changed(this);
+    //m_signal_is_complex_changed(this);
   }
 }
 
@@ -91,7 +91,7 @@ void ribi::cmap::Concept::SetName(const std::string& name) noexcept
   if (name != m_name)
   {
     m_name = name;
-    m_signal_name_changed(this);
+    //m_signal_name_changed(this);
   }
 }
 
@@ -105,7 +105,7 @@ void ribi::cmap::Concept::SetRatingComplexity(const int rating_complexity) noexc
     m_rating_complexity = rating_complexity;
     assert(m_rating_complexity >= -1);
     assert(m_rating_complexity <=  2);
-    m_signal_rating_complexity_changed(this);
+    //m_signal_rating_complexity_changed(this);
   }
 }
 
@@ -116,7 +116,7 @@ void ribi::cmap::Concept::SetRatingConcreteness(const int rating_concreteness) n
     m_rating_concreteness = rating_concreteness;
     assert(m_rating_concreteness >= -1);
     assert(m_rating_concreteness <=  2);
-    m_signal_rating_concreteness_changed(this);
+    //m_signal_rating_concreteness_changed(this);
   }
 }
 
@@ -127,7 +127,7 @@ void ribi::cmap::Concept::SetRatingSpecificity(const int rating_specificity) noe
     m_rating_specificity = rating_specificity;
     assert(m_rating_specificity >= -1);
     assert(m_rating_specificity <=  2);
-    m_signal_rating_specificity_changed(this);
+    //m_signal_rating_specificity_changed(this);
   }
 }
 

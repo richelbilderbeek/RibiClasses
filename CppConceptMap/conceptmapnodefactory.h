@@ -43,7 +43,7 @@ struct NodeFactory
   NodeFactory();
 
   boost::shared_ptr<Node> Create(
-    const boost::shared_ptr<Concept>& concept,
+    const Concept& concept,
     const double x = 0.0,
     const double y = 0.0
   ) const noexcept;

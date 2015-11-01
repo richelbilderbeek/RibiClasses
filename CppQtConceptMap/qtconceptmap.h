@@ -43,9 +43,7 @@ class QtConceptMap : public ribi::QtKeyboardFriendlyGraphicsView
 
 public:
 
-  explicit QtConceptMap(
-    QWidget* parent = 0
-  );
+  explicit QtConceptMap(QWidget* parent = 0);
   QtConceptMap(const QtConceptMap&) = delete;
   QtConceptMap& operator=(const QtConceptMap&) = delete;
   ~QtConceptMap() noexcept;

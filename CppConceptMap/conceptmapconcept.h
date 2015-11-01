@@ -29,7 +29,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
 #include <boost/shared_ptr.hpp>
-#include <boost/signals2.hpp>
+//#include <boost/signals2.hpp>
 #include <QRegExp>
 #include "conceptmapfwd.h"
 #include "conceptmapexamples.h"
@@ -105,22 +105,22 @@ struct Concept
   std::string ToXml() const noexcept;
 
   ///Emitted when the examples are changed
-  mutable boost::signals2::signal<void(Concept*)> m_signal_examples_changed;
+  //mutable boost::signals2::signal<void(Concept*)> m_signal_examples_changed;
 
   ///Emitted when IsComplex
-  mutable boost::signals2::signal<void(Concept*)> m_signal_is_complex_changed;
+  //mutable boost::signals2::signal<void(Concept*)> m_signal_is_complex_changed;
 
   ///Emitted when the name is changed
-  mutable boost::signals2::signal<void(Concept*)> m_signal_name_changed;
+  //mutable boost::signals2::signal<void(Concept*)> m_signal_name_changed;
 
   ///Emitted when the rating of the complexity is changed
-  mutable boost::signals2::signal<void(Concept*)> m_signal_rating_complexity_changed;
+  //mutable boost::signals2::signal<void(Concept*)> m_signal_rating_complexity_changed;
 
   ///Emitted when the rating of the complexity is changed
-  mutable boost::signals2::signal<void(Concept*)> m_signal_rating_concreteness_changed;
+  //mutable boost::signals2::signal<void(Concept*)> m_signal_rating_concreteness_changed;
 
   ///Emitted when the rating of the specificity is changed
-  mutable boost::signals2::signal<void(Concept*)> m_signal_rating_specificity_changed;
+  //mutable boost::signals2::signal<void(Concept*)> m_signal_rating_specificity_changed;
 
   private:
 
@@ -153,6 +153,7 @@ struct Concept
   static void Test() noexcept;
   #endif
 
+
   ///Let only ConceptFactory construct Concepts
   explicit Concept(
     const std::string& name,
@@ -174,19 +175,6 @@ bool operator!=(const Concept& lhs, const Concept& rhs);
 ///(1) Alphabetically on the name
 ///(2) (if the names are equal) On their Examples
 bool operator<(const Concept& lhs, const Concept& rhs);
-
-bool operator<(
-  const boost::shared_ptr<Concept>& lhs,
-  const boost::shared_ptr<Concept>& rhs) = delete;
-bool operator<(
-  const boost::shared_ptr<const Concept>& lhs,
-  const boost::shared_ptr<      Concept>& rhs) = delete;
-bool operator<(
-  const boost::shared_ptr<      Concept>& lhs,
-  const boost::shared_ptr<const Concept>& rhs) = delete;
-bool operator<(
-  const boost::shared_ptr<const Concept>& lhs,
-  const boost::shared_ptr<const Concept>& rhs) = delete;
 
 } //~namespace cmap
 } //~namespace ribi

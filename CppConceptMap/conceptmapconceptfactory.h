@@ -45,7 +45,7 @@ struct ConceptFactory
   ConceptFactory() noexcept;
 
   //Default and complete Create method
-  boost::shared_ptr<Concept> Create(
+  Concept Create(
     const std::string& name,
     const Examples& examples,
     const bool is_complex,
@@ -54,7 +54,7 @@ struct ConceptFactory
     const int rating_specificity
   ) const noexcept;
 
-  boost::shared_ptr<Concept> Create(
+  Concept Create(
     const std::string& name = "...",
     const std::vector<std::pair<std::string,Competency> >& examples = {},
     const bool is_complex = true,
@@ -63,20 +63,12 @@ struct ConceptFactory
     const int rating_specificity = -1
   ) const noexcept;
 
-  #ifndef NDEBUG
-  ///Like a Concept deep-copy constructor
-  ///DeepCopy is only used for debugging
-  boost::shared_ptr<Concept> DeepCopy(
-    const boost::shared_ptr<const Concept>& concept
-  ) const noexcept;
-  #endif
-
   ///Read concept from a std::string read from file
-  boost::shared_ptr<Concept> FromXml(const std::string& s) const noexcept;
+  Concept FromXml(const std::string& s) const noexcept;
 
   ///Obtain some testing concepts
-  boost::shared_ptr<Concept> GetTest(const int i) const noexcept;
-  std::vector<boost::shared_ptr<Concept>> GetTests() const noexcept;
+  Concept GetTest(const int i) const noexcept;
+  std::vector<Concept> GetTests() const noexcept;
   int GetNumberOfTests() const noexcept { return static_cast<int>(GetTests().size()); }
 
   #ifndef NDEBUG

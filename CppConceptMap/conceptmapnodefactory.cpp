@@ -43,18 +43,16 @@ ribi::cmap::NodeFactory::NodeFactory()
 }
 
 boost::shared_ptr<ribi::cmap::Node> ribi::cmap::NodeFactory::Create(
-  const boost::shared_ptr<ribi::cmap::Concept>& concept,
+  const Concept& concept,
   const double x,
   const double y
 ) const noexcept
 {
-  assert(concept);
   const boost::shared_ptr<Node> node(
     new Node(concept,x,y)
   );
   assert(node);
-  assert(node->GetConcept());
-  assert(*concept == *node->GetConcept());
+  assert(concept == node->GetConcept());
   assert(node->GetX() == x);
   assert(node->GetY() == y);
   return node;
@@ -75,7 +73,6 @@ boost::shared_ptr<ribi::cmap::Node> ribi::cmap::NodeFactory::CreateFromStrings(
     )
   );
   assert(node);
-  assert(node->GetConcept());
   assert(node->GetX() == x);
   assert(node->GetY() == y);
   return node;
@@ -86,10 +83,7 @@ boost::shared_ptr<ribi::cmap::Node> ribi::cmap::NodeFactory::DeepCopy(
   const boost::shared_ptr<const cmap::Node>& node) const noexcept
 {
   assert(node);
-  assert(node->GetConcept());
-  const boost::shared_ptr<Concept> new_concept{
-    ConceptFactory().DeepCopy(node->GetConcept())
-  };
+  const Concept new_concept(node->GetConcept());
   const boost::shared_ptr<Node> new_node{
     Create(
       new_concept,
@@ -129,7 +123,7 @@ boost::shared_ptr<ribi::cmap::Node> ribi::cmap::NodeFactory::FromXml(const std::
   }
 
   //m_concept
-  boost::shared_ptr<Concept> concept;
+  Concept concept = ConceptFactory().Create();
   {
     const std::vector<std::string> v
       = Regex().GetRegexMatches(s,Regex().GetRegexConcept());
@@ -152,7 +146,6 @@ boost::shared_ptr<ribi::cmap::Node> ribi::cmap::NodeFactory::FromXml(const std::
     assert(v.size() == 1);
     y = boost::lexical_cast<double>(ribi::xml::StripXmlTag(v[0]));
   }
-  assert(concept);
   const boost::shared_ptr<Node> node(NodeFactory().Create(concept,x,y));
   assert(node);
   return node;
@@ -176,7 +169,7 @@ std::vector<boost::shared_ptr<ribi::cmap::Node>> ribi::cmap::NodeFactory::GetTes
   std::vector<boost::shared_ptr<ribi::cmap::Node> > nodes;
   const auto v = ConceptFactory().GetTests();
   std::transform(v.begin(),v.end(),std::back_inserter(nodes),
-    [](const boost::shared_ptr<Concept>& c)
+    [](const Concept& c)
     {
       const int x = 0;
       const int y = 0;

@@ -53,6 +53,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmaphelper.h"
 #include "conceptmapnode.h"
 #include "conceptmapnodefactory.h"
+#include "container.h"
 #include "testtimer.h"
 #include "trace.h"
 #include "xml.h"
@@ -67,6 +68,7 @@ void ribi::cmap::ConceptMap::Test() noexcept
     is_tested = true;
   }
   {
+    container();
     CenterNodeFactory();
     ConceptFactory();
     ExamplesFactory();
@@ -117,13 +119,13 @@ void ribi::cmap::ConceptMap::Test() noexcept
   }
   {
     //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,0.1);
-    const boost::shared_ptr<Concept> concept(ConceptFactory().Create("FOCAL QUESTION"));
+    const Concept concept(ConceptFactory().Create("FOCAL QUESTION"));
     const boost::shared_ptr<Node> node = NodeFactory().Create(concept,123,234);
     assert(CanConstruct( { node }, {} ) && "Assume focal question without examples can be constructed");
   }
   {
     //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,0.1);
-    const boost::shared_ptr<Concept> concept(ConceptFactory().Create("FOCAL QUESTION", { {"No",Competency::misc},{"examples",Competency::misc},{"allowed",Competency::misc} } ));
+    const Concept concept(ConceptFactory().Create("FOCAL QUESTION", { {"No",Competency::misc},{"examples",Competency::misc},{"allowed",Competency::misc} } ));
     const boost::shared_ptr<Node> node = NodeFactory().Create(concept,123,234);
     assert(CanConstruct( { node }, {} )
       && "Assume focal question with examples can be constructed"
@@ -183,8 +185,8 @@ void ribi::cmap::ConceptMap::Test() noexcept
     if (verbose) { TRACE("HasSameContent 2"); }
     {
       //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,0.1);
-      const boost::shared_ptr<Concept> concept_b(ConceptFactory().Create("1", { {"2",Competency::misc},{"3",Competency::misc} } ));
-      const boost::shared_ptr<Concept> concept_f(ConceptFactory().Create("1", { {"2",Competency::misc},{"3",Competency::misc} } ));
+      const Concept concept_b(ConceptFactory().Create("1", { {"2",Competency::misc},{"3",Competency::misc} } ));
+      const Concept concept_f(ConceptFactory().Create("1", { {"2",Competency::misc},{"3",Competency::misc} } ));
       const boost::shared_ptr<Node> node_b(NodeFactory().Create(concept_b,321,432));
       const boost::shared_ptr<ConceptMap> map_a(
         ConceptMapFactory().Create(
@@ -223,12 +225,12 @@ void ribi::cmap::ConceptMap::Test() noexcept
     if (verbose) { TRACE("HasSameContent 3"); }
     {
       //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,0.1);
-      const boost::shared_ptr<Concept> concept_a(ConceptFactory().Create("FOCAL QUESTION"));
-      const boost::shared_ptr<Concept> concept_b(ConceptFactory().Create("1",{{"2",Competency::misc},{"3",Competency::misc}}));
-      const boost::shared_ptr<Concept> concept_c(ConceptFactory().Create("4",{{"5",Competency::misc},{"6",Competency::misc}}));
-      const boost::shared_ptr<Concept> concept_d(ConceptFactory().Create("FOCAL QUESTION"));
-      const boost::shared_ptr<Concept> concept_e(ConceptFactory().Create("4",{{"5",Competency::misc},{"6",Competency::misc} } ));
-      const boost::shared_ptr<Concept> concept_f(ConceptFactory().Create("1",{{"2",Competency::misc},{"3",Competency::misc} } ));
+      const Concept concept_a(ConceptFactory().Create("FOCAL QUESTION"));
+      const Concept concept_b(ConceptFactory().Create("1",{{"2",Competency::misc},{"3",Competency::misc}}));
+      const Concept concept_c(ConceptFactory().Create("4",{{"5",Competency::misc},{"6",Competency::misc}}));
+      const Concept concept_d(ConceptFactory().Create("FOCAL QUESTION"));
+      const Concept concept_e(ConceptFactory().Create("4",{{"5",Competency::misc},{"6",Competency::misc} } ));
+      const Concept concept_f(ConceptFactory().Create("1",{{"2",Competency::misc},{"3",Competency::misc} } ));
       const boost::shared_ptr<Node> node_a(CenterNodeFactory().Create(concept_a,123,234));
       const boost::shared_ptr<Node> node_b(NodeFactory().Create(concept_b,123,234));
       const boost::shared_ptr<Node> node_c(NodeFactory().Create(concept_c,345,456));
@@ -248,12 +250,12 @@ void ribi::cmap::ConceptMap::Test() noexcept
     if (verbose) { TRACE("HasSameContent 4"); }
     {
       //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,0.1);
-      const boost::shared_ptr<Concept> concept_n11(ConceptFactory().Create("1"));
-      const boost::shared_ptr<Concept> concept_n12(ConceptFactory().Create("2"));
-      const boost::shared_ptr<Concept> concept_n13(ConceptFactory().Create("3"));
-      const boost::shared_ptr<Concept> concept_n21(ConceptFactory().Create("1"));
-      const boost::shared_ptr<Concept> concept_n22(ConceptFactory().Create("2"));
-      const boost::shared_ptr<Concept> concept_n23(ConceptFactory().Create("3"));
+      const Concept concept_n11(ConceptFactory().Create("1"));
+      const Concept concept_n12(ConceptFactory().Create("2"));
+      const Concept concept_n13(ConceptFactory().Create("3"));
+      const Concept concept_n21(ConceptFactory().Create("1"));
+      const Concept concept_n22(ConceptFactory().Create("2"));
+      const Concept concept_n23(ConceptFactory().Create("3"));
 
       const boost::shared_ptr<Node> node_11(CenterNodeFactory().Create(concept_n11,123,234));
       const boost::shared_ptr<Node> node_12(NodeFactory().Create(concept_n12,321,432));
@@ -262,12 +264,12 @@ void ribi::cmap::ConceptMap::Test() noexcept
       const boost::shared_ptr<Node> node_22(NodeFactory().Create(concept_n22,789,890));
       const boost::shared_ptr<Node> node_23(NodeFactory().Create(concept_n23,901,012));
 
-      const boost::shared_ptr<Concept> concept_e11(ConceptFactory().Create("9"));
-      const boost::shared_ptr<Concept> concept_e12(ConceptFactory().Create("8"));
-      const boost::shared_ptr<Concept> concept_e13(ConceptFactory().Create("7"));
-      const boost::shared_ptr<Concept> concept_e21(ConceptFactory().Create("9"));
-      const boost::shared_ptr<Concept> concept_e22(ConceptFactory().Create("8"));
-      const boost::shared_ptr<Concept> concept_e23(ConceptFactory().Create("7"));
+      const Concept concept_e11(ConceptFactory().Create("9"));
+      const Concept concept_e12(ConceptFactory().Create("8"));
+      const Concept concept_e13(ConceptFactory().Create("7"));
+      const Concept concept_e21(ConceptFactory().Create("9"));
+      const Concept concept_e22(ConceptFactory().Create("8"));
+      const Concept concept_e23(ConceptFactory().Create("7"));
 
       const Nodes nodes_1 = { node_11, node_12, node_13 };
       const Nodes nodes_2 = { node_21, node_22, node_23 };
@@ -306,29 +308,29 @@ void ribi::cmap::ConceptMap::Test() noexcept
     if (verbose) { TRACE("HasSameContent 5"); }
     {
       //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,0.1);
-      const boost::shared_ptr<Concept> concept_n11(ConceptFactory().Create("1"));
-      const boost::shared_ptr<Concept> concept_n12(ConceptFactory().Create("2"));
-      const boost::shared_ptr<Concept> concept_n13(ConceptFactory().Create("3"));
+      const Concept concept_n11(ConceptFactory().Create("1"));
+      const Concept concept_n12(ConceptFactory().Create("2"));
+      const Concept concept_n13(ConceptFactory().Create("3"));
 
       const boost::shared_ptr<Node> node_11(CenterNodeFactory().Create(concept_n11,123,234));
       const boost::shared_ptr<Node> node_12(NodeFactory().Create(concept_n12,321,432));
       const boost::shared_ptr<Node> node_13(NodeFactory().Create(concept_n13,345,456));
 
-      const boost::shared_ptr<Concept> concept_e11(ConceptFactory().Create("1->2"));
-      const boost::shared_ptr<Concept> concept_e12(ConceptFactory().Create("1->3"));
-      const boost::shared_ptr<Concept> concept_e13(ConceptFactory().Create("2->3"));
+      const Concept concept_e11(ConceptFactory().Create("1->2"));
+      const Concept concept_e12(ConceptFactory().Create("1->3"));
+      const Concept concept_e13(ConceptFactory().Create("2->3"));
 
-      const boost::shared_ptr<Concept> concept_n21(ConceptFactory().Create("1"));
-      const boost::shared_ptr<Concept> concept_n22(ConceptFactory().Create("3"));
-      const boost::shared_ptr<Concept> concept_n23(ConceptFactory().Create("2"));
+      const Concept concept_n21(ConceptFactory().Create("1"));
+      const Concept concept_n22(ConceptFactory().Create("3"));
+      const Concept concept_n23(ConceptFactory().Create("2"));
 
       const boost::shared_ptr<Node> node_21(CenterNodeFactory().Create(concept_n21,123,234));
       const boost::shared_ptr<Node> node_22(NodeFactory().Create(concept_n22,321,432));
       const boost::shared_ptr<Node> node_23(NodeFactory().Create(concept_n23,345,456));
 
-      const boost::shared_ptr<Concept> concept_e21(ConceptFactory().Create("2->3"));
-      const boost::shared_ptr<Concept> concept_e22(ConceptFactory().Create("1->2"));
-      const boost::shared_ptr<Concept> concept_e23(ConceptFactory().Create("1->3"));
+      const Concept concept_e21(ConceptFactory().Create("2->3"));
+      const Concept concept_e22(ConceptFactory().Create("1->2"));
+      const Concept concept_e23(ConceptFactory().Create("1->3"));
 
       const Nodes nodes_1 = { node_11, node_12, node_13 };
       const Nodes nodes_2 = { node_21, node_22, node_23 };

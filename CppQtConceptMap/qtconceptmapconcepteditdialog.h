@@ -28,6 +28,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include <boost/shared_ptr.hpp>
 #include "qthideandshowdialog.h"
 #include "qtconceptmapfwd.h"
+#include "conceptmapconcept.h"
 #pragma GCC diagnostic pop
 
 struct QListWidgetItem;
@@ -45,11 +46,15 @@ public:
   ///concept is not const as user might want to modify it
   ///concept is only modified if user clicks OK
   explicit QtConceptMapConceptEditDialog(
-    const boost::shared_ptr<Concept> concept,
-    QWidget* parent = 0);
+    const Concept& concept,
+    QWidget* parent = 0
+  );
   QtConceptMapConceptEditDialog(const QtConceptMapConceptEditDialog&) = delete;
   QtConceptMapConceptEditDialog& operator=(const QtConceptMapConceptEditDialog&) = delete;
   ~QtConceptMapConceptEditDialog() noexcept;
+
+  ///The concept being modified
+  const Concept& GetConcept() const noexcept { return m_concept; }
 
 protected:
   void keyPressEvent(QKeyEvent *);
@@ -66,18 +71,15 @@ private:
   Ui::QtConceptMapConceptEditDialog *ui;
 
 
-#ifdef CONCEPTMAP_WRITE_TO_CONCEPT
-  const int m_rating_complexity;
-  const int m_rating_concreteness;
-  const int m_rating_specificity;
-#else
-  ///The concept being modified, cannot be const
-  const boost::shared_ptr<Concept> m_concept;
+  ///The concept being modified
+  Concept m_concept;
 
-#endif
+  ///The original concept, used if user presses cancel
+  const Concept m_concept_original;
 
-  ///Test this class
+  #ifndef NDEBUG
   static void Test() noexcept;
+  #endif //NDEBUG
 };
 
 } //~namespace cmap

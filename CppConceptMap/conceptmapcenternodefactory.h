@@ -39,7 +39,7 @@ struct  CenterNodeFactory
   CenterNodeFactory();
 
   boost::shared_ptr<CenterNode> Create(
-    const boost::shared_ptr<Concept>& concept,
+    const Concept& concept,
     const double x = 0.0,
     const double y = 0.0
   ) const noexcept;

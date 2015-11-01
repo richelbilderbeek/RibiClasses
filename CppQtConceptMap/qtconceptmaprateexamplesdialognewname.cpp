@@ -56,17 +56,17 @@ struct QtConceptMapListWidgetItem : public QListWidgetItem
 
 
 ribi::cmap::QtRateExamplesDialogNewName::QtRateExamplesDialogNewName(
-  const boost::shared_ptr<Concept> concept,
+  const Concept& concept,
   QWidget* parent)
   : QtHideAndShowDialog(parent),
     ui(new Ui::QtRateExamplesDialogNewName),
-    m_concept(concept)
+    m_concept(concept),
+    m_concept_at_start(concept)
 {
+#ifndef NDEBUG
+Test();
+#endif
   ui->setupUi(this);
-  #ifndef NDEBUG
-  Test();
-  assert(m_concept);
-  #endif
 
   //Ensure that the dialog does not resize beyond the screen's size
   {
@@ -75,9 +75,9 @@ ribi::cmap::QtRateExamplesDialogNewName::QtRateExamplesDialogNewName(
 
   //Convert the Concept to GUI elements
   {
-    ui->label_concept_name->setText(concept->GetName().c_str());
+    ui->label_concept_name->setText(concept.GetName().c_str());
     ui->list->clear();
-    const auto v = concept->GetExamples().Get();
+    const auto v = concept.GetExamples().Get();
     const std::size_t sz = v.size();
     for (std::size_t i=0; i!=sz; ++i)
     {
@@ -271,7 +271,6 @@ void ribi::cmap::QtRateExamplesDialogNewName::on_button_ti_knowledge_clicked()
 void ribi::cmap::QtRateExamplesDialogNewName::on_button_ok_clicked()
 {
   const Examples p = GetRatedExamples();
-  assert(m_concept);
-  m_concept->SetExamples(p);
+  m_concept.SetExamples(p);
   close();
 }

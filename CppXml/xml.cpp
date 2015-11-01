@@ -69,8 +69,8 @@ std::vector<std::string> ribi::xml::GetVersionHistory() noexcept
 std::vector<std::string> ribi::xml::SplitXml(const std::string& s)
 {
   std::vector<std::string> v;
-  std::string::const_iterator i = s.begin();
-  std::string::const_iterator j = s.begin();
+  std::string::const_iterator i = begin(s);
+  std::string::const_iterator j = begin(s);
   const std::string::const_iterator end = s.end();
   while (j!=end)
   {
@@ -198,7 +198,7 @@ void ribi::xml::Test() noexcept
       };
       assert(p.first == tag_name);
       assert(p.second.size() == m.size());
-      assert(std::equal(m.begin(),m.end(),p.second.begin()));
+      assert(std::equal(std::begin(m),std::end(m),p.second.begin()));
       //Again convert pointers to XML
       std::stringstream s;
       s << MapToXml(p.first,p.second);

@@ -325,7 +325,7 @@ void ribi::cmap::QtEdge::OnConceptChanged(Node * const node) noexcept
   //Node changed, sync QtRoundedRectItem
   assert(node);
   assert(node == m_edge->GetNode().get());
-  const std::string new_str{node->GetConcept()->GetName()};
+  const std::string new_str{node->GetConcept().GetName()};
   const std::vector<std::string> new_text{new_str};
   assert(new_text.size() == 1);
   m_qtnode->SetText(new_text);
@@ -363,7 +363,7 @@ void ribi::cmap::QtEdge1::OnNodeChanged(QtNode * const node) noexcept
 {
   m_qtnode->SetCenterX(edge->GetNode()->GetX());
   m_qtnode->SetCenterY(edge->GetNode()->GetY());
-  m_qtnode->SetText( { edge->GetNode()->GetConcept()->GetName() } );
+  m_qtnode->SetText( { edge->GetNode()->GetConcept().GetName() } );
   this->update();
   m_signal_edge_changed(this);
 }
@@ -373,7 +373,7 @@ void ribi::cmap::QtEdge::OnNodeChanged(Edge * const edge) noexcept
 {
   m_qtnode->SetCenterX(edge->GetNode()->GetX());
   m_qtnode->SetCenterY(edge->GetNode()->GetY());
-  m_qtnode->SetText( { edge->GetNode()->GetConcept()->GetName() } );
+  m_qtnode->SetText( { edge->GetNode()->GetConcept().GetName() } );
   this->update();
   if (this->scene()) { this->scene()->update(); }
   m_signal_edge_changed(this);
@@ -398,10 +398,10 @@ void ribi::cmap::QtEdge::OnTailArrowChanged(Edge * const edge) noexcept
 void ribi::cmap::QtEdge::OnTextChanged(QtRoundedEditRectItem* item) noexcept
 {
   const auto new_name = item->GetText()[0];
-  const auto old_name = GetEdge()->GetNode()->GetConcept()->GetName();
+  const auto old_name = GetEdge()->GetNode()->GetConcept().GetName();
   if (old_name != new_name)
   {
-    this->GetEdge()->GetNode()->GetConcept()->SetName(new_name);
+    this->GetEdge()->GetNode()->GetConcept().SetName(new_name);
     m_signal_edge_changed(this);
   }
 }
@@ -417,7 +417,7 @@ void ribi::cmap::QtEdge::OnToChanged(Edge * const edge) noexcept
 
 void ribi::cmap::QtEdge::OnArrowChanged(const QtQuadBezierArrowItem* const item)
 {
-  GetEdge()->GetNode()->GetConcept()->SetName(
+  GetEdge()->GetNode()->GetConcept().SetName(
     Container().Concatenate(m_qtnode->GetText())
   );
   GetEdge()->SetHeadArrow(item->HasHead());
@@ -624,7 +624,7 @@ void ribi::cmap::QtEdge::SetEdge(const boost::shared_ptr<Edge>& edge) noexcept
   //Sync
   m_qtnode->SetCenterX(m_edge->GetNode()->GetX());
   m_qtnode->SetCenterY(m_edge->GetNode()->GetY());
-  m_qtnode->SetText( { m_edge->GetNode()->GetConcept()->GetName() } );
+  m_qtnode->SetText( { m_edge->GetNode()->GetConcept().GetName() } );
 
   m_edge->m_signal_from_changed.connect(
     boost::bind(&ribi::cmap::QtEdge::OnFromChanged,this,boost::lambda::_1)

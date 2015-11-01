@@ -29,6 +29,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "qthideandshowdialog.h"
 
 #include "qtconceptmapfwd.h"
+#include "conceptmapconcept.h"
 #pragma GCC diagnostic pop
 
 namespace Ui { class QtRateExamplesDialogNewName; }
@@ -43,7 +44,7 @@ class QtRateExamplesDialogNewName : public ribi::QtHideAndShowDialog
   
 public:
   explicit QtRateExamplesDialogNewName(
-    const boost::shared_ptr<Concept> concept,
+    const Concept& concept,
     QWidget* parent = 0);
   QtRateExamplesDialogNewName(const QtRateExamplesDialogNewName&) = delete;
   QtRateExamplesDialogNewName& operator=(const QtRateExamplesDialogNewName&) = delete;
@@ -67,7 +68,9 @@ private:
 
   ///The concept, which is modified when clicking OK, but remains unmodified when
   ///the user clicks cancel
-  const boost::shared_ptr<Concept> m_concept;
+  Concept m_concept;
+
+  const Concept m_concept_at_start;
 
   ///Obtain the rated examples
   Examples GetRatedExamples() const;

@@ -43,7 +43,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 ribi::cmap::QtConceptDialog::QtConceptDialog(QWidget *parent) :
   ribi::QtHideAndShowDialog(parent),
   ui(new Ui::QtConceptDialog),
-  m_concept{},
+  m_concept{ConceptFactory().Create()},
   m_qtexamplesdialog{new QtExamplesDialog}
 {
   ui->setupUi(this);
@@ -81,11 +81,10 @@ std::string ribi::cmap::QtConceptDialog::GetUiName() const noexcept
   return ui->edit_name->text().toStdString();
 }
 
-void ribi::cmap::QtConceptDialog::SetConcept(const boost::shared_ptr<Concept>& concept) noexcept
+void ribi::cmap::QtConceptDialog::SetConcept(const Concept& concept) noexcept
 {
   const bool verbose{false};
 
-  assert(concept);
   if (m_concept == concept)
   {
     return;
@@ -93,14 +92,14 @@ void ribi::cmap::QtConceptDialog::SetConcept(const boost::shared_ptr<Concept>& c
   if (verbose)
   {
     std::stringstream s;
-    s << "Setting concept '" << concept->ToStr() << "'\n";
+    s << "Setting concept '" << concept.ToStr() << "'\n";
   }
-  const auto examples_after = concept->GetExamples();
-  const auto is_complex_after = concept->GetIsComplex();
-  const auto name_after = concept->GetName();
-  const auto rating_complexity_after = concept->GetRatingComplexity();
-  const auto rating_concreteness_after = concept->GetRatingConcreteness();
-  const auto rating_specificity_after = concept->GetRatingSpecificity();
+  const auto examples_after = concept.GetExamples();
+  const auto is_complex_after = concept.GetIsComplex();
+  const auto name_after = concept.GetName();
+  const auto rating_complexity_after = concept.GetRatingComplexity();
+  const auto rating_concreteness_after = concept.GetRatingConcreteness();
+  const auto rating_specificity_after = concept.GetRatingSpecificity();
 
   bool examples_changed  = true;
   bool is_complex_changed  = true;
@@ -109,14 +108,14 @@ void ribi::cmap::QtConceptDialog::SetConcept(const boost::shared_ptr<Concept>& c
   bool rating_concreteness_changed = true;
   bool rating_specificity_changed = true;
 
-  if (m_concept)
+  //if (m_concept)
   {
-    const auto examples_before = m_concept->GetExamples();
-    const auto is_complex_before = m_concept->GetIsComplex();
-    const auto name_before = m_concept->GetName();
-    const auto rating_complexity_before = m_concept->GetRatingComplexity();
-    const auto rating_concreteness_before = m_concept->GetRatingConcreteness();
-    const auto rating_specificity_before = m_concept->GetRatingSpecificity();
+    const auto examples_before = m_concept.GetExamples();
+    const auto is_complex_before = m_concept.GetIsComplex();
+    const auto name_before = m_concept.GetName();
+    const auto rating_complexity_before = m_concept.GetRatingComplexity();
+    const auto rating_concreteness_before = m_concept.GetRatingConcreteness();
+    const auto rating_specificity_before = m_concept.GetRatingSpecificity();
 
     examples_changed  = examples_before != examples_after;
     is_complex_changed  = is_complex_before != is_complex_after;
@@ -178,95 +177,29 @@ void ribi::cmap::QtConceptDialog::SetConcept(const boost::shared_ptr<Concept>& c
         TRACE(s.str());
       }
     }
-    //Disconnect m_concept
-    m_concept->m_signal_examples_changed.disconnect(
-      boost::bind(&ribi::cmap::QtConceptDialog::OnExamplesChanged,this,boost::lambda::_1)
-    );
-    m_concept->m_signal_is_complex_changed.disconnect(
-      boost::bind(&ribi::cmap::QtConceptDialog::OnIsComplexChanged,this,boost::lambda::_1)
-    );
-    m_concept->m_signal_name_changed.disconnect(
-      boost::bind(&ribi::cmap::QtConceptDialog::OnNameChanged,this,boost::lambda::_1)
-    );
-    m_concept->m_signal_rating_complexity_changed.disconnect(
-      boost::bind(&ribi::cmap::QtConceptDialog::OnRatingComplexityChanged,this,boost::lambda::_1)
-    );
-    m_concept->m_signal_rating_concreteness_changed.disconnect(
-      boost::bind(&ribi::cmap::QtConceptDialog::OnRatingConcretenessChanged,this,boost::lambda::_1)
-    );
-    m_concept->m_signal_rating_specificity_changed.disconnect(
-      boost::bind(&ribi::cmap::QtConceptDialog::OnRatingSpecificityChanged,this,boost::lambda::_1)
-    );
   }
 
   //Replace m_example by the new one
   m_concept = concept;
 
-  assert(m_concept->GetExamples() == examples_after );
-  assert(m_concept->GetIsComplex()  == is_complex_after );
-  assert(m_concept->GetName() == name_after);
-  assert(m_concept->GetRatingComplexity() == rating_complexity_after);
-  assert(m_concept->GetRatingConcreteness() == rating_concreteness_after);
-  assert(m_concept->GetRatingSpecificity() == rating_specificity_after);
+  assert(m_concept.GetExamples() == examples_after );
+  assert(m_concept.GetIsComplex()  == is_complex_after );
+  assert(m_concept.GetName() == name_after);
+  assert(m_concept.GetRatingComplexity() == rating_complexity_after);
+  assert(m_concept.GetRatingConcreteness() == rating_concreteness_after);
+  assert(m_concept.GetRatingSpecificity() == rating_specificity_after);
 
-  m_concept->m_signal_examples_changed.connect(
-    boost::bind(&ribi::cmap::QtConceptDialog::OnExamplesChanged,this,boost::lambda::_1)
-  );
-  m_concept->m_signal_is_complex_changed.connect(
-    boost::bind(&ribi::cmap::QtConceptDialog::OnIsComplexChanged,this,boost::lambda::_1)
-  );
-  m_concept->m_signal_name_changed.connect(
-    boost::bind(&ribi::cmap::QtConceptDialog::OnNameChanged,this,boost::lambda::_1)
-  );
-  m_concept->m_signal_rating_complexity_changed.connect(
-    boost::bind(&ribi::cmap::QtConceptDialog::OnRatingComplexityChanged,this,boost::lambda::_1)
-  );
-  m_concept->m_signal_rating_concreteness_changed.connect(
-    boost::bind(&ribi::cmap::QtConceptDialog::OnRatingConcretenessChanged,this,boost::lambda::_1)
-  );
-  m_concept->m_signal_rating_specificity_changed.connect(
-    boost::bind(&ribi::cmap::QtConceptDialog::OnRatingSpecificityChanged,this,boost::lambda::_1)
-  );
-
-  //Emit everything that has changed
-  if (examples_changed)
-  {
-    m_concept->m_signal_examples_changed(m_concept.get());
-  }
-  if (is_complex_changed)
-  {
-    m_concept->m_signal_is_complex_changed(m_concept.get());
-  }
-  if (name_changed)
-  {
-    m_concept->m_signal_name_changed(m_concept.get());
-  }
-  if (rating_complexity_changed)
-  {
-    m_concept->m_signal_rating_complexity_changed(m_concept.get());
-  }
-  if (rating_concreteness_changed)
-  {
-    m_concept->m_signal_rating_concreteness_changed(m_concept.get());
-  }
-  if (rating_specificity_changed)
-  {
-    m_concept->m_signal_rating_specificity_changed(m_concept.get());
-  }
-
-  setMinimumHeight(GetMinimumHeight(*m_concept));
+  setMinimumHeight(GetMinimumHeight(m_concept));
 
   assert( concept ==  m_concept);
-  assert(*concept == *m_concept);
 }
 
-void ribi::cmap::QtConceptDialog::OnExamplesChanged(Concept * const concept) noexcept
+void ribi::cmap::QtConceptDialog::OnExamplesChanged(Concept& concept) noexcept
 {
   const bool verbose{false};
-  assert(concept);
 
   const auto examples_before = m_qtexamplesdialog->GetExamples();
-  const Examples examples_after = concept->GetExamples();
+  const Examples examples_after = concept.GetExamples();
 
   if (verbose)
   {
@@ -284,39 +217,34 @@ void ribi::cmap::QtConceptDialog::OnExamplesChanged(Concept * const concept) noe
   assert(m_qtexamplesdialog->GetExamples() == examples_after);
 }
 
-void ribi::cmap::QtConceptDialog::OnIsComplexChanged(Concept * const concept) noexcept
+void ribi::cmap::QtConceptDialog::OnIsComplexChanged(Concept& concept) noexcept
 {
-  assert(concept);
-  ui->box_is_complex->setChecked(concept->GetIsComplex());
+  ui->box_is_complex->setChecked(concept.GetIsComplex());
 }
 
-void ribi::cmap::QtConceptDialog::OnNameChanged(Concept * const concept) noexcept
+void ribi::cmap::QtConceptDialog::OnNameChanged(Concept& concept) noexcept
 {
-  assert(concept);
-  ui->edit_name->setText(concept->GetName().c_str());
+  ui->edit_name->setText(concept.GetName().c_str());
 }
 
-void ribi::cmap::QtConceptDialog::OnRatingComplexityChanged(Concept * const concept) noexcept
+void ribi::cmap::QtConceptDialog::OnRatingComplexityChanged(Concept& concept) noexcept
 {
-  assert(concept);
   ui->box_rating_complexity->setValue(
-    concept->GetRatingComplexity()
+    concept.GetRatingComplexity()
   );
 }
 
-void ribi::cmap::QtConceptDialog::OnRatingConcretenessChanged(Concept * const concept) noexcept
+void ribi::cmap::QtConceptDialog::OnRatingConcretenessChanged(Concept& concept) noexcept
 {
-  assert(concept);
   ui->box_rating_concreteness->setValue(
-    concept->GetRatingConcreteness()
+    concept.GetRatingConcreteness()
   );
 }
 
-void ribi::cmap::QtConceptDialog::OnRatingSpecificityChanged(Concept * const concept) noexcept
+void ribi::cmap::QtConceptDialog::OnRatingSpecificityChanged(Concept& concept) noexcept
 {
-  assert(concept);
   ui->box_rating_specificity->setValue(
-    concept->GetRatingSpecificity()
+    concept.GetRatingSpecificity()
   );
 }
 
@@ -361,41 +289,41 @@ void ribi::cmap::QtConceptDialog::on_box_competency_currentIndexChanged(int inde
     std::stringstream s;
     s << "QtConceptDialog will set competency " << Competencies().ToStr(competency)
       << " (index " << index << ", current competency is "
-      << (m_concept ? Competencies().ToStr(m_concept->GetCompetency()) : "[nullptr]")
+      << (m_concept ? Competencies().ToStr(m_concept.GetCompetency()) : "[nullptr]")
       << ")";
     TRACE(s.str());
   }
   //Let the Concept figure out itself if this changes anything;
   //Allow setting a new competency if it equals the current
-  m_concept->SetCompetency(competency);
+  m_concept.SetCompetency(competency);
 
-  assert(m_concept->GetCompetency() == competency);
+  assert(m_concept.GetCompetency() == competency);
 }
 */
 
 void ribi::cmap::QtConceptDialog::on_box_is_complex_stateChanged(int) noexcept
 {
   //OK
-  m_concept->SetIsComplex(ui->box_is_complex->isChecked());
+  m_concept.SetIsComplex(ui->box_is_complex->isChecked());
 }
 
 void ribi::cmap::QtConceptDialog::on_edit_name_textChanged(const QString &arg1) noexcept
 {
   //OK
-  m_concept->SetName(arg1.toStdString());
+  m_concept.SetName(arg1.toStdString());
 }
 
 void ribi::cmap::QtConceptDialog::on_box_rating_complexity_valueChanged(int arg1) noexcept
 {
-  m_concept->SetRatingComplexity(arg1);
+  m_concept.SetRatingComplexity(arg1);
 }
 
 void ribi::cmap::QtConceptDialog::on_box_rating_concreteness_valueChanged(int arg1) noexcept
 {
-  m_concept->SetRatingConcreteness(arg1);
+  m_concept.SetRatingConcreteness(arg1);
 }
 
 void ribi::cmap::QtConceptDialog::on_box_rating_specificity_valueChanged(int arg1) noexcept
 {
-  m_concept->SetRatingSpecificity(arg1);
+  m_concept.SetRatingSpecificity(arg1);
 }

@@ -29,6 +29,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "qthideandshowdialog.h"
 
 #include "qtconceptmapfwd.h"
+#include "conceptmapconcept.h"
 #pragma GCC diagnostic pop
 
 namespace Ui { class QtConceptDialog; }
@@ -47,11 +48,12 @@ public:
   QtConceptDialog& operator=(const QtConceptDialog&) = delete;
   ~QtConceptDialog() noexcept;
 
-  boost::shared_ptr<Concept> GetConcept() const noexcept { return m_concept; }
+  const Concept& GetConcept() const noexcept { return m_concept; }
+        Concept& GetConcept()       noexcept { return m_concept; }
   static int GetMinimumHeight(const Concept& concept) noexcept;
   std::string GetUiName() const noexcept;
 
-  void SetConcept(const boost::shared_ptr<Concept>& concept) noexcept;
+  void SetConcept(const Concept& concept) noexcept;
   void SetUiName(const std::string& name) noexcept;
 
 
@@ -66,27 +68,27 @@ private:
   Ui::QtConceptDialog *ui;
 
   ///The Concept to work on
-  boost::shared_ptr<Concept> m_concept;
+  Concept m_concept;
 
   boost::shared_ptr<QtExamplesDialog> m_qtexamplesdialog;
 
   //concept is non-const, as its displayal by this dialog renders it editable
-  void OnExamplesChanged(Concept * const concept) noexcept;
+  void OnExamplesChanged(Concept& concept) noexcept;
 
   //concept is non-const, as its displayal by this dialog renders it editable
-  void OnIsComplexChanged(Concept * const concept) noexcept;
+  void OnIsComplexChanged(Concept& concept) noexcept;
 
   //concept is non-const, as its displayal by this dialog renders it editable
-  void OnNameChanged(Concept * const concept) noexcept;
+  void OnNameChanged(Concept& concept) noexcept;
 
   //concept is non-const, as its displayal by this dialog renders it editable
-  void OnRatingComplexityChanged(Concept * const concept) noexcept;
+  void OnRatingComplexityChanged(Concept& concept) noexcept;
 
   //concept is non-const, as its displayal by this dialog renders it editable
-  void OnRatingConcretenessChanged(Concept * const concept) noexcept;
+  void OnRatingConcretenessChanged(Concept& concept) noexcept;
 
   //concept is non-const, as its displayal by this dialog renders it editable
-  void OnRatingSpecificityChanged(Concept * const concept) noexcept;
+  void OnRatingSpecificityChanged(Concept& concept) noexcept;
 
   #ifndef NDEBUG
   static void Test() noexcept;

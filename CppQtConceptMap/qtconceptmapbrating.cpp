@@ -49,10 +49,9 @@ int ribi::cmap::Rating::SuggestComplexity(const boost::shared_ptr<const ribi::cm
   assert(sub_conceptmap);
   const int n_edges = boost::numeric_cast<int>(sub_conceptmap->GetEdges().size());
   assert(!sub_conceptmap->GetNodes().empty());
-  assert(sub_conceptmap->GetFocalNode()->GetConcept());
   const int n_examples
     = boost::numeric_cast<int>(
-      sub_conceptmap->GetFocalNode()->GetConcept()->GetExamples().Get().size()
+      sub_conceptmap->GetFocalNode()->GetConcept().GetExamples().Get().size()
     );
   return SuggestComplexity(n_edges,n_examples);
 }
@@ -72,10 +71,9 @@ int ribi::cmap::Rating::SuggestConcreteness(const boost::shared_ptr<const ribi::
 {
   assert(sub_conceptmap);
   assert(!sub_conceptmap->GetNodes().empty());
-  assert(sub_conceptmap->GetFocalNode()->GetConcept());
   const int n_examples
     = boost::numeric_cast<int>(
-      sub_conceptmap->GetFocalNode()->GetConcept()->GetExamples().Get().size()
+      sub_conceptmap->GetFocalNode()->GetConcept().GetExamples().Get().size()
     );
   return SuggestConcreteness(n_examples);
 }
@@ -90,10 +88,9 @@ int ribi::cmap::Rating::SuggestSpecificity(const boost::shared_ptr<const ribi::c
 {
   assert(sub_conceptmap);
   assert(!sub_conceptmap->GetNodes().empty());
-  assert(sub_conceptmap->GetFocalNode()->GetConcept());
   const int n_examples
     = boost::numeric_cast<int>(
-      sub_conceptmap->GetFocalNode()->GetConcept()->GetExamples().Get().size()
+      sub_conceptmap->GetFocalNode()->GetConcept().GetExamples().Get().size()
     );
   return SuggestSpecificity(n_examples);
 }

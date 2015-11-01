@@ -67,7 +67,7 @@ ribi::cmap::QtNodeDialog::~QtNodeDialog()
 
 int ribi::cmap::QtNodeDialog::GetMinimumHeight(const Node& node) noexcept
 {
-  return QtConceptDialog::GetMinimumHeight(*node.GetConcept()) + 82;
+  return QtConceptDialog::GetMinimumHeight(node.GetConcept()) + 82;
 }
 
 
@@ -128,9 +128,9 @@ void ribi::cmap::QtNodeDialog::SetNode(const boost::shared_ptr<Node>& node) noex
         std::stringstream s;
         s
           << "Concept will change from "
-          << concept_before->ToStr()
+          << concept_before.ToStr()
           << " to "
-          << concept_after->ToStr()
+          << concept_after.ToStr()
           << '\n'
         ;
         TRACE(s.str());
@@ -210,14 +210,14 @@ void ribi::cmap::QtNodeDialog::OnConceptChanged(Node * const node)
   assert(node);
 
   const auto concept_before = m_qtconceptdialog->GetConcept();
-  const boost::shared_ptr<Concept> concept_after = node->GetConcept();
+  const Concept concept_after = node->GetConcept();
 
   if (verbose)
   {
     std::stringstream s;
     s << "Change concept from "
-    << (concept_before ? concept_before->ToStr() : "[NONE]")
-    << " to " << concept_after->ToStr();
+    << concept_before.ToStr()
+    << " to " << concept_after.ToStr();
     TRACE(s.str());
   }
 

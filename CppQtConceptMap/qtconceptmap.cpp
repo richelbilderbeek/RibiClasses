@@ -1332,7 +1332,7 @@ void ribi::cmap::QtConceptMap::TestMe(const boost::shared_ptr<const ribi::cmap::
 
 void ribi::cmap::QtConceptMap::mouseDoubleClickEvent(QMouseEvent *event)
 {
-  const boost::shared_ptr<Concept> concept(
+  const Concept concept(
     ribi::cmap::ConceptFactory().Create("..."));
   const boost::shared_ptr<Node> node(NodeFactory().Create(concept));
   assert(node);

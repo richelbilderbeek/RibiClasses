@@ -84,7 +84,6 @@ ribi::cmap::EdgeFactory::EdgePtr ribi::cmap::EdgeFactory::Create(
 ) const noexcept
 {
   assert(node);
-  assert(node->GetConcept());
   assert(from);
   assert(to);
   assert(from != to);
@@ -102,11 +101,10 @@ ribi::cmap::EdgeFactory::EdgePtr ribi::cmap::EdgeFactory::DeepCopy(
 {
   assert(edge);
   assert(edge->GetNode());
-  assert(edge->GetNode()->GetConcept());
   assert(from);
   assert(to);
   assert(from != to);
-  //const boost::shared_ptr<Concept> concept = ConceptFactory().DeepCopy(edge->GetNode());
+  //const Concept concept = ConceptFactory().DeepCopy(edge->GetNode());
   const auto node = NodeFactory().DeepCopy(edge->GetNode());
   assert(node);
   const EdgePtr p {
@@ -133,7 +131,7 @@ ribi::cmap::EdgeFactory::EdgePtr ribi::cmap::EdgeFactory::FromXml(
   assert(s.substr(0,6) == "<edge>");
   assert(s.substr(s.size() - 7,7) == "</edge>");
   //m_concept
-  boost::shared_ptr<Concept> concept;
+  Concept concept = ConceptFactory().Create();
   {
     const std::vector<std::string> v
       = Regex().GetRegexMatches(s,Regex().GetRegexConcept());

@@ -35,7 +35,7 @@ bool ribi::cmap::IsCenterNode(const boost::shared_ptr<const ribi::cmap::Node> no
 
 /*
 ribi::cmap::CenterNode::CenterNode(
-  const boost::shared_ptr<Concept>& concept,
+  const Concept& concept,
   const double x,
   const double y,
   const CenterNodeFactory&
@@ -50,7 +50,7 @@ std::string ribi::cmap::CenterNode::ToXml() const noexcept
 {
   std::stringstream s;
   s << "<center_node>";
-  s << GetConcept()->ToXml();
+  s << GetConcept().ToXml();
   s << "<x>" << GetX() << "</x>";
   s << "<y>" << GetY() << "</y>";
   s << "</center_node>";

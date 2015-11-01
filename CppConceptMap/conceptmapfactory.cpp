@@ -194,7 +194,7 @@ boost::shared_ptr<ribi::cmap::ConceptMap> ribi::cmap::ConceptMapFactory::FromXml
     if (!nodes.empty() && !IsCenterNode(nodes[0]))
     {
       const boost::shared_ptr<Node> old_node = nodes[0];
-      const boost::shared_ptr<Concept> concept = old_node->GetConcept();
+      const auto concept = old_node->GetConcept();
       const double x = old_node->GetX();
       const double y = old_node->GetY();
       const boost::shared_ptr<CenterNode> center_node {

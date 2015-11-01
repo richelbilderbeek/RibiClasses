@@ -166,7 +166,7 @@ void ribi::cmap::QtNode::OnConceptChanged(Node * const node) noexcept
   //Node changed, sync QtRoundedRectItem
   assert(node);
   assert(node == m_node.get());
-  const std::string new_str = node->GetConcept()->GetName();
+  const std::string new_str = node->GetConcept().GetName();
   const std::vector<std::string> new_text{new_str};
   assert(new_text.size() == 1);
   this->SetText(new_text);
@@ -196,7 +196,7 @@ void ribi::cmap::QtNode::OnTextChanged(const QtRoundedRectItem * const
   );
   const std::string s{Container().Concatenate(new_text)};
   assert(std::count(std::begin(s),std::end(s),'\n') ==  0 && "Keep it single-line");
-  m_node->GetConcept()->SetName(s);
+  m_node->GetConcept().SetName(s);
 }
 
 
@@ -229,7 +229,7 @@ void ribi::cmap::QtNode::paint(
 {
   Base::paint(painter,item,widget);
 
-  if (!GetNode()->GetConcept()->GetExamples().Get().empty())
+  if (!GetNode()->GetConcept().GetExamples().Get().empty())
   {
     //painter->setBrush(m_display_strategy->GetIndicatorBrush());
     //painter->setPen(m_display_strategy->GetIndicatorPen());
@@ -319,9 +319,9 @@ void ribi::cmap::QtNode::SetNode(const boost::shared_ptr<Node>& node) noexcept
         std::stringstream s;
         s
           << "Concept will change from "
-          << concept_before->ToStr()
+          << concept_before.ToStr()
           << " to "
-          << concept_after->ToStr()
+          << concept_after.ToStr()
           << '\n'
         ;
         TRACE(s.str());
@@ -442,7 +442,7 @@ void ribi::cmap::QtNode::Test() noexcept
     const auto qtnode = QtNodeFactory().GetTest(1);
     const boost::shared_ptr<QtRoundedEditRectItem> edit_rect{boost::dynamic_pointer_cast<QtRoundedEditRectItem>(qtnode)};
     const auto node = qtnode->GetNode();
-    const std::string node_text{node->GetConcept()->GetName()};
+    const std::string node_text{node->GetConcept().GetName()};
     const std::string edit_rect_text{Container().Concatenate(edit_rect->GetText())};
     if (node_text != edit_rect_text)
     {
@@ -451,17 +451,6 @@ void ribi::cmap::QtNode::Test() noexcept
     }
     assert(node_text == edit_rect_text);
   }
-  if (verbose) {TRACE("When changing the concept's name via Node, the QtNode must be changed as well");}
-  {
-    const auto qtnode = QtNodeFactory().GetTest(1);
-    const boost::shared_ptr<QtRoundedEditRectItem> qtrectitem{boost::dynamic_pointer_cast<QtRoundedEditRectItem>(qtnode)};
-    const std::string old_name{qtnode->GetNode()->GetConcept()->GetName()};
-    const std::string new_name{old_name + " (modified)"};
-    qtnode->GetNode()->GetConcept()->SetName(new_name);
-    const auto v = qtrectitem->GetText();
-    const auto t = v[0];
-    assert(t == new_name);
-  }
   if (verbose) {TRACE("When changing the concept's name via QtNode, the Node must be changed as well");}
   {
     const auto qtnode = QtNodeFactory().GetTest(1);
@@ -469,7 +458,7 @@ void ribi::cmap::QtNode::Test() noexcept
     const std::string old_name = qtrectitem->GetText()[0];
     const std::string new_name{old_name + " (modified)"};
     qtrectitem->SetText( { new_name } );
-    const std::string new_name_again{qtnode->GetNode()->GetConcept()->GetName()};
+    const std::string new_name_again{qtnode->GetNode()->GetConcept().GetName()};
     assert(new_name_again == new_name);
   }
 }

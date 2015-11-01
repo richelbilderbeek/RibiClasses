@@ -29,6 +29,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "qthideandshowdialog.h"
 
 #include "qtconceptmapfwd.h"
+#include "conceptmapconcept.h"
 #pragma GCC diagnostic pop
 
 namespace Ui { class QtRateConceptDialogNewName; }
@@ -72,7 +73,7 @@ private:
   bool m_button_ok_clicked;
 
   ///The center concept, may be changed when the user clicks OK
-  const boost::shared_ptr</* NO CONST */ Concept> m_concept;
+  Concept m_concept;
 
   ///The complexity at this dialog its creation, stored so that the user can cancel the dialog
   const int m_initial_complexity;

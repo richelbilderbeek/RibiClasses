@@ -48,14 +48,9 @@ struct Examples
   std::string ToStr() const noexcept;
   std::string ToXml() const noexcept;
 
-  ///Something of one of the examples was changed
-  //mutable boost::signals2::signal<void(Examples*)> m_signal_examples_changed;
 private:
 
   std::vector<Example> m_v;
-
-  ///All signals emitted from the examples are connected to this member function
-  //void OnExampleChanged() noexcept;
 
   #ifndef NDEBUG
   static void Test() noexcept;

@@ -163,34 +163,16 @@ void ribi::cmap::QtEdge::Test() noexcept
   if (verbose) { TRACE("Text of QtEdge and QtRoundedEditRectItem must match at creation"); }
   {
     const std::string qtitem_name{qtitem->GetText()[0]};
-    const std::string qtedge_name{qtedge->GetEdge()->GetNode()->GetConcept()->GetName()};
+    const std::string qtedge_name{qtedge->GetEdge()->GetNode()->GetConcept().GetName()};
     assert(qtitem_name == qtedge_name);
-  }
-  if (verbose) { TRACE("If a QtEdge its text is changed, a signal must be emitted"); }
-  {
-    qtedge->GetEdge()->GetNode()->GetConcept()->SetName("A");
-    Counter c{0}; //For receiving the signal
-    qtedge->m_signal_edge_changed.connect(
-      boost::bind(&ribi::Counter::Inc,&c) //Do not forget the &
-    );
-    qtedge->GetEdge()->GetNode()->GetConcept()->SetName("B");
-    assert(c.Get()>0);
-  }
-  if (verbose) { TRACE("If text is set via QtEdge, QtRoundedEditRectItem must sync"); }
-  {
-    qtedge->GetEdge()->GetNode()->GetConcept()->SetName("A");
-    assert(qtitem->GetText()[0] == "A");
-    qtedge->GetEdge()->GetNode()->GetConcept()->SetName("B");
-    assert(qtitem->GetText()[0] == "B");
   }
   if (verbose) { TRACE("If text is set via QtRoundedEditRectItem, QtEdge must sync"); }
   {
     qtitem->SetText( { "A" } );
-    assert(qtedge->GetEdge()->GetNode()->GetConcept()->GetName() == "A");
+    assert(qtedge->GetEdge()->GetNode()->GetConcept().GetName() == "A");
     qtitem->SetText( { "B" } );
-    assert(qtedge->GetEdge()->GetNode()->GetConcept()->GetName() == "B");
+    assert(qtedge->GetEdge()->GetNode()->GetConcept().GetName() == "B");
   }
-
   //X
   if (verbose) { TRACE("X of QtEdge and QtRoundedEditRectItem must match at creation"); }
   {

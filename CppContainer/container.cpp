@@ -251,5 +251,26 @@ void ribi::Container::Test() noexcept
     assert(c.RemoveWhitespace("abc") == "abc");
     assert(c.RemoveWhitespace("a\tb \nc") == "abc");
   }
+  //Sort
+  {
+    std::vector<int> v = {3,1,2};
+    const std::vector<int> w = {1,2,3};
+    c.Sort(v);
+    assert(v == w);
+  }
+  //Count
+  {
+    const auto v = {3,1,2};
+    assert(c.Count(v,1) == 1);
+    assert(c.Count(v,4) == 0);
+  }
+  //CountIf
+  {
+    const auto v = {3,1,2};
+    assert(c.CountIf(v, [](const auto i) { return i > 0; }) == 3);
+    assert(c.CountIf(v, [](const auto i) { return i > 1; }) == 2);
+    assert(c.CountIf(v, [](const auto i) { return i > 2; }) == 1);
+    assert(c.CountIf(v, [](const auto i) { return i > 3; }) == 0);
+  }
 }
 #endif

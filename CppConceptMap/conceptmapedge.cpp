@@ -272,17 +272,6 @@ void ribi::cmap::Edge::Test() noexcept
     assert( edge_before !=  edge_after);
     assert(*edge_before == *edge_after);
   }
-  if (verbose) { TRACE("When setting the name, a signal must be emitted"); }
-  {
-    const boost::shared_ptr<Edge> edge{EdgeFactory().GetTest(0,from,to)};
-    edge->GetNode()->GetConcept()->SetName("A");
-    Counter c{0}; //For receiving the signal
-    edge->m_signal_node_changed.connect(
-      boost::bind(&ribi::Counter::Inc,&c) //Do not forget the &
-    );
-    edge->GetNode()->GetConcept()->SetName("B");
-    assert(c.Get() == 1);
-  }
   if (verbose) { TRACE("If a Edge's head arrow is changed, a signal must be emitted"); }
   {
     const boost::shared_ptr<Edge> edge{EdgeFactory().GetTest(0,from,to)};
@@ -338,7 +327,7 @@ std::string ribi::cmap::Edge::ToXml(
 {
   std::stringstream s;
   s << "<edge>";
-  s << edge->GetNode()->GetConcept()->ToXml();
+  s << edge->GetNode()->GetConcept().ToXml();
 
   const auto from_iter = std::find(nodes.begin(),nodes.end(),edge->GetFrom());
   const auto to_iter = std::find(nodes.begin(),nodes.end(),edge->GetTo());

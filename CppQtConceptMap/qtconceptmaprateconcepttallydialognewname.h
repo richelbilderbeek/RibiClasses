@@ -72,12 +72,12 @@ private:
 
   ///The concept map is converted to this data type
   ///The std::vector index equals the row
-  ///Every row is a pair of a boost::shared_ptr<Concept> and an integer
-  ///The boost::shared_ptr<Concept> is the concept being judged,
+  ///Every row is a pair of a Concept and an integer
+  ///The Concept is the concept being judged,
   ///  which might be the concept on the focal node and the concept on the egdes connected to the focal node
   ///The index is the index of the example being judged, or -1, denoting it is the concept name being judged
-  //typedef std::pair<boost::shared_ptr<Concept>,int> Row;
-  typedef std::tuple<boost::shared_ptr<const Edge>,boost::shared_ptr<Concept>,int> Row;
+  //typedef std::pair<Concept,int> Row;
+  typedef std::tuple<boost::shared_ptr<const Edge>,Concept,int> Row;
   const std::vector<Row> m_data;
 
   ///The name of this concept, for example 'my own development'

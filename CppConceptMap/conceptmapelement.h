@@ -31,13 +31,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 namespace ribi {
 namespace cmap {
 
-///A focusable element of a concept map, which is either a Node or an Edge
-struct Element
-{
-  Element() {}
-  virtual ~Element() noexcept {}
-};
-
 } //~namespace cmap
 } //~namespace ribi
 

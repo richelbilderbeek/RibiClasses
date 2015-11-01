@@ -50,7 +50,7 @@ struct CenterNode : public Node
 
   //lock to enforce use of CenterNodeFactory
   explicit CenterNode(
-    const boost::shared_ptr<Concept>& concept,
+    const Concept& concept,
     const double x,
     const double y,
     const CenterNodeFactory& lock

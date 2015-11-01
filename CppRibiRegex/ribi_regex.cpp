@@ -75,7 +75,11 @@ std::vector<std::string>
   ;
 
   std::vector<std::string> v;
-  boost::xpressive::sregex_iterator cur(s.begin(),s.end(),r);
+  boost::xpressive::sregex_iterator cur(
+    std::begin(s),
+    std::end(s),
+    r
+  );
   boost::xpressive::sregex_iterator end;
   for( ; cur != end; ++cur )
   {
