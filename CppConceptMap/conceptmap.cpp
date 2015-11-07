@@ -302,7 +302,7 @@ ribi::cmap::ConceptMap::SubConceptMaps ribi::cmap::ConceptMap::CreateSubs() cons
     assert(!nodes.empty());
     //Put CenterNode in front
     //const auto iter = container().FindIf(nodes,[](const auto& node) { return IsCenterNode(node); } );
-    const auto iter = std::find_if(std::begin(nodes),std::end(nodes),[](const auto& node) { return IsCenterNode(node); } );
+    const auto iter = std::find_if(std::begin(nodes),std::end(nodes),[](const Node& node) { return IsCenterNode(node); } );
     if (iter != nodes.end()) { std::swap(nodes.front(),*iter); }
     assert(ConceptMap::CanConstruct(nodes,edges) && "Only construct valid concept maps");
     const boost::shared_ptr<ConceptMap> conceptmap(new ConceptMap(nodes,edges));
@@ -400,6 +400,8 @@ bool ribi::cmap::ConceptMap::Empty() const noexcept
 
 const ribi::cmap::CenterNode* ribi::cmap::ConceptMap::FindCenterNode() const noexcept
 {
+  return ribi::cmap::FindCenterNode(m_nodes);
+  /*
   const auto iter = std::find_if(std::begin(m_nodes),std::end(m_nodes),
     [](const auto& node)
     {
@@ -414,6 +416,7 @@ const ribi::cmap::CenterNode* ribi::cmap::ConceptMap::FindCenterNode() const noe
   {
     return &(*iter);
   }
+  */
 }
 
 ribi::cmap::CenterNode* ribi::cmap::ConceptMap::FindCenterNode() noexcept
@@ -434,7 +437,7 @@ ribi::cmap::ConceptMap::EdgePtr ribi::cmap::ConceptMap::GetEdgeHaving(const Node
   const auto iter = std::find_if(
     std::begin(m_edges),
     std::end(m_edges),
-    [node](const auto& edge) { return edge->GetNode() == node; }
+    [node](const EdgePtr& edge) { return edge->GetNode() == node; }
   );
   if (iter == std::end(m_edges)) { return EdgePtr(); }
   return *iter;
@@ -452,7 +455,7 @@ ribi::cmap::ConceptMap::Edges ribi::cmap::ConceptMap::GetEdgesConnectedTo(const 
     std::begin(m_edges),
     std::end(m_edges),
     std::back_inserter(edges),
-    [node](const auto& edge)
+    [node](const EdgePtr& edge)
     {
       return edge->GetFrom() == &node || edge->GetTo() == &node;
     }
@@ -536,7 +539,7 @@ bool ribi::cmap::HasSameContent(
     std::transform(
       std::begin(nodes_lhs),std::end(nodes_lhs),
       std::inserter(concepts_lhs,std::begin(concepts_lhs)),
-      [](const auto& node) { return node.GetConcept(); }
+      [](const Node& node) { return node.GetConcept(); }
     );
 
     const auto& nodes_rhs = rhs.GetNodes();
@@ -545,7 +548,7 @@ bool ribi::cmap::HasSameContent(
       std::begin(nodes_rhs),
       std::end(nodes_rhs),
       std::inserter(concepts_rhs,std::begin(concepts_rhs)),
-      [](const auto& node) { return node.GetConcept(); }
+      [](const Node& node) { return node.GetConcept(); }
     );
     if (std::mismatch(std::begin(concepts_lhs),concepts_lhs.end(),std::begin(concepts_rhs))
       != std::make_pair(concepts_lhs.end(),concepts_rhs.end()))
@@ -717,13 +720,7 @@ int ribi::cmap::CountCenterNodes(
   const ribi::cmap::ConceptMap::ReadOnlyConceptMapPtr& conceptmap
 ) noexcept
 {
-  const auto v = conceptmap->GetNodes();
-  const int cnt = container().CountIf(v,
-    [](const auto& node)
-    {
-      return IsCenterNode(node);
-    }
-  );
+  const int cnt = CountCenterNodes(conceptmap->GetNodes());
   assert(cnt < 2 && "A concept map can have one or zero (a sub-conceptmap) center nodes");
   return cnt;
 }
@@ -766,8 +763,8 @@ bool ribi::cmap::operator==(const ConceptMap& lhs, const ConceptMap& rhs) noexce
         std::begin(lhs_nodes),
         std::end(  lhs_nodes),
         std::begin(rhs_nodes),
-        [](const auto& lhs_node,
-           const auto& rhs_node)
+        [](const Node& lhs_node,
+           const Node& rhs_node)
         {
           return lhs_node == rhs_node;
         }

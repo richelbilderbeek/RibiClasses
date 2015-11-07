@@ -199,9 +199,7 @@ boost::shared_ptr<ribi::cmap::ConceptMap> ribi::cmap::ConceptMapFactory::FromXml
       const auto concept = old_node.GetConcept();
       const double x = old_node.GetX();
       const double y = old_node.GetY();
-      const auto center_node {
-        CenterNodeFactory().Create(concept,x,y)
-      };
+      const auto center_node = CenterNodeFactory().Create(concept,x,y);
       nodes[0] = center_node;
     }
     assert(nodes.empty() || IsCenterNode(nodes[0]));

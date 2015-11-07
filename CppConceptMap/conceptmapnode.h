@@ -117,9 +117,13 @@ struct Node
 
 };
 
+///Count the number of CenterNodes
+int CountCenterNodes(const std::vector<Node>& nodes) noexcept;
 
 ///Similar to operator==, except that GUI elements are not tested for equality
 bool HasSameContent(const Node& lhs, const Node& rhs) noexcept;
+
+Node * FindCenterNode(const std::vector<Node>& nodes) noexcept;
 
 bool operator==(const Node& lhs, const Node& rhs) noexcept;
 bool operator!=(const Node& lhs, const Node& rhs) noexcept;

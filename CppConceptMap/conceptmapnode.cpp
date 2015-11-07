@@ -59,6 +59,25 @@ ribi::cmap::Node::Node(
   assert(m_concept == concept);
 }
 
+int ribi::cmap::CountCenterNodes(
+  const std::vector<Node>& nodes
+) noexcept
+{
+  const int cnt = container().CountIf(v,
+    [](const Node& node)
+    {
+      return IsCenterNode(node);
+    }
+  );
+  return cnt;
+}
+
+
+ribi::cmap::Node * ribi::cmap::FindCenterNode(const std::vector<Node>& nodes) noexcept
+{
+  const auto iter = std::find_if(std::begin(nodes),std::end(nodes),[](const Node& node) { return IsCenterNode(node); } );
+  return iter;
+}
 
 std::vector<ribi::cmap::Node> ribi::cmap::Node::GetTests() noexcept
 {

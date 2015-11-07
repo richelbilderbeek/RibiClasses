@@ -75,11 +75,13 @@ struct Container
     return std::count_if(std::begin(t),std::end(t),p);
   }
 
+#if __cplusplus >= 201402L //C++17
   template <class T, class Predicate>
   decltype(auto) FindIf(const T& t, const Predicate& p) const noexcept
   {
     return std::find_if(std::begin(t),std::end(t),p);
   }
+#endif // __cplusplus >= 201402L
 
   ///Obtain the version
   std::string GetVersion() const noexcept;
