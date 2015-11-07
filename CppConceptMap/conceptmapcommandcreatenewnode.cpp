@@ -37,19 +37,19 @@ ribi::cmap::CommandCreateNewNode::CommandCreateNewNode(
 
 void ribi::cmap::CommandCreateNewNode::redo()
 {
-  if (!m_node)
+  if (m_node.empty())
   {
-    m_node = m_conceptmap->CreateNewNode(); //CreateNewNode adds it to the selected nodes
+    m_node.push_back(m_conceptmap->CreateNewNode()); //CreateNewNode adds it to the selected nodes
   }
   else
   {
-    m_conceptmap->AddNode(m_node);
+    m_conceptmap->AddNode(m_node.front());
   }
-  assert(m_node);
 }
 
 void ribi::cmap::CommandCreateNewNode::undo()
 {
   assert(m_conceptmap);
-  m_conceptmap->DeleteNode(m_node);
+  assert(!m_node.empty());
+  m_conceptmap->DeleteNode(m_node.front());
 }

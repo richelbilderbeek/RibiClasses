@@ -26,6 +26,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
 #include "conceptmapcommand.h"
+#include "conceptmapnode.h"
 #pragma GCC diagnostic pop
 
 namespace ribi {
@@ -48,7 +49,8 @@ class CommandCreateNewNode final : public Command
   void undo() override;
 
   private:
-  boost::shared_ptr<Node> m_node;
+  ///There can be one or zero Nodes
+  std::vector<Node> m_node;
   const boost::shared_ptr<ConceptMap> m_conceptmap;
 };
 

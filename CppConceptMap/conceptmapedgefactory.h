@@ -39,13 +39,12 @@ struct EdgeFactory
 
   typedef boost::shared_ptr<Edge> EdgePtr;
   typedef boost::shared_ptr<const Edge> ReadOnlyEdge;
-  typedef const Node* ReadOnlyNode;
   typedef std::vector<EdgePtr> Edges;
-  typedef std::vector<Node*> Nodes;
+  typedef std::vector<Node> Nodes;
 
   EdgePtr Create(
-    const Node* from,
-    const Node* to
+    const Node& from,
+    const Node& to
   ) const noexcept;
 
   EdgePtr Create(
@@ -61,8 +60,8 @@ struct EdgeFactory
   ///The nodes need to be the deepcopied ones
   EdgePtr DeepCopy(
     const ReadOnlyEdge& edge,
-    const Node* from,
-    const Node* to
+    const Node& from,
+    const Node& to
   ) const noexcept;
   #endif
 
@@ -78,14 +77,14 @@ struct EdgeFactory
 
   EdgePtr GetTest(
     const int index,
-    const Node* from,
-    const Node* to
+    const Node& from,
+    const Node& to
  ) const noexcept;
 
   ///Get testing edges connecting the two supplied nodes
   Edges GetTests(
-    const Node* from,
-    const Node* to
+    const Node& from,
+    const Node& to
   ) const noexcept;
 
   private:

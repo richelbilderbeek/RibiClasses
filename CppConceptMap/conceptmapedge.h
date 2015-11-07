@@ -28,6 +28,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <boost/shared_ptr.hpp>
 #include <boost/signals2.hpp>
 #include "conceptmapfwd.h"
+#include "conceptmapnode.h"
 #pragma GCC diagnostic pop
 
 
@@ -48,18 +49,20 @@ struct Edge
   typedef std::vector<ReadOnlyNodePtr> ReadOnlyNodes;
   typedef std::vector<Node> Nodes;
 
+  Edge() = delete;
   Edge(const Edge&) = delete;
   Edge& operator=(const Edge&) = delete;
-  ReadOnlyNodePtr GetNode() const noexcept { return m_node; }
-  NodePtr GetNode()       noexcept { return m_node; }
+  ~Edge() noexcept;
+  const Node& GetNode() const noexcept { return m_node; }
+        Node& GetNode()       noexcept { return m_node; }
 
   ///Get the Node this edge originates from
-  ReadOnlyNodePtr GetFrom() const noexcept { return m_from; }
-  NodePtr GetFrom()       noexcept { return m_from; }
+  const Node * GetFrom() const noexcept { return m_from; }
+  //      Node * GetFrom()       noexcept { return m_from; }
 
   ///Get the Node index this edge goes to
-  ReadOnlyNodePtr GetTo() const noexcept { return m_to; }
-  NodePtr GetTo()       noexcept { return m_to; }
+  const Node * GetTo() const noexcept { return m_to; }
+  //      Node * GetTo()       noexcept { return m_to; }
 
   static std::string GetVersion() noexcept;
   static std::vector<std::string> GetVersionHistory() noexcept;
@@ -104,38 +107,31 @@ struct Edge
 
   private:
   ///The Node this edge originates from
-  const NodePtr m_from;
+  const Node * m_from;
 
   ///Is there an arrowhead at the 'to' node?
   bool m_head_arrow;
 
   ///The Node on the Edge
-  NodePtr m_node;
+  Node m_node;
 
   ///Is there an arrowhead at the 'from' node?
   bool m_tail_arrow;
 
   ///The Node this edge goes to
-  const NodePtr m_to;
+  const Node * m_to;
 
   #ifndef NDEBUG
   static void Test() noexcept;
   #endif
 
-  Edge() = delete;
-
-  ///Block destructor, except for the friend boost::checked_delete
-  ~Edge() noexcept;
-  friend void boost::checked_delete<>(      Edge*);
-  friend void boost::checked_delete<>(const Edge*);
-
   ///Block constructor, except for EdgeFactory
   friend class EdgeFactory;
   explicit Edge(
-    const NodePtr& node,
-    const NodePtr& from,
+    const Node& node,
+    const Node& from,
     const bool tail_arrow,
-    const NodePtr& to,
+    const Node& to,
     const bool head_arrow
   );
 

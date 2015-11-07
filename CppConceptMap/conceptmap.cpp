@@ -434,7 +434,7 @@ ribi::cmap::ConceptMap::EdgePtr ribi::cmap::ConceptMap::GetEdgeHaving(const Node
   const auto iter = std::find_if(
     std::begin(m_edges),
     std::end(m_edges),
-    [node](const EdgePtr& edge) { return edge->GetNode() == &node; }
+    [node](const auto& edge) { return edge->GetNode() == node; }
   );
   if (iter == std::end(m_edges)) { return EdgePtr(); }
   return *iter;
@@ -563,7 +563,7 @@ bool ribi::cmap::HasSameContent(
       [](const boost::shared_ptr<const Edge>& edge)
       {
         assert(edge);
-        return edge->GetNode()->GetConcept();
+        return edge->GetNode().GetConcept();
       }
     );
 
@@ -575,7 +575,7 @@ bool ribi::cmap::HasSameContent(
       [](const boost::shared_ptr<const cmap::Edge>& edge)
       {
         assert(edge);
-        return edge->GetNode()->GetConcept();
+        return edge->GetNode().GetConcept();
       }
     );
     if (std::mismatch(std::begin(concepts_lhs),concepts_lhs.end(),std::begin(concepts_rhs))
@@ -598,7 +598,7 @@ bool ribi::cmap::HasSameContent(
     {
       const auto from_node = lhs.GetEdges()[i]->GetFrom();
       const std::string str_from = from_node->GetConcept().GetName();
-      const std::string str_mid = lhs.GetEdges()[i]->GetNode()->GetConcept().GetName();
+      const std::string str_mid = lhs.GetEdges()[i]->GetNode().GetConcept().GetName();
       const auto to_node = lhs.GetEdges()[i]->GetTo();
       const std::string str_to = to_node->GetConcept().GetName();
       //Only if arrow is reversed, reverse the fake edge
@@ -627,7 +627,7 @@ bool ribi::cmap::HasSameContent(
     {
       const auto from_node = rhs.GetEdges()[i]->GetFrom();
       const std::string str_from = from_node->GetConcept().GetName();
-      const std::string str_mid = rhs.GetEdges()[i]->GetNode()->GetConcept().GetName();
+      const std::string str_mid = rhs.GetEdges()[i]->GetNode().GetConcept().GetName();
       const auto to_node = rhs.GetEdges()[i]->GetTo();
       const std::string str_to = to_node->GetConcept().GetName();
       //w.push_back(std::make_tuple(str_from,str_mid,str_to));
@@ -888,8 +888,8 @@ boost::shared_ptr<ribi::cmap::Edge> ribi::cmap::ConceptMap::CreateNewEdge() noex
 {
   assert(GetSelectedNodes().size() == 2);
 
-  const Node* from { &GetSelectedNodes()[0] };
-  const Node* to   { &GetSelectedNodes()[1] };
+  const Node from = GetSelectedNodes()[0];
+  const Node to   = GetSelectedNodes()[1];
   const boost::shared_ptr<Edge> edge {
     EdgeFactory().Create(from,to)
   };

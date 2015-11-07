@@ -30,10 +30,10 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ribi::cmap::CommandDeleteNode::CommandDeleteNode(
   const boost::shared_ptr<ConceptMap> conceptmap,
-  const boost::shared_ptr<Node> node
+  const Node& node
 ) :
     m_conceptmap{conceptmap},
-    m_deleted_edges{conceptmap && node ? conceptmap->GetEdgesConnectedTo(node) : Edges()},
+    m_deleted_edges{conceptmap ? conceptmap->GetEdgesConnectedTo(node) : Edges()},
     m_node{node},
     m_old_selected{conceptmap->GetSelected()},
     m_verbose{false}

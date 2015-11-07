@@ -48,20 +48,17 @@ ribi::cmap::EdgeFactory::EdgeFactory() noexcept
 
 
 ribi::cmap::EdgeFactory::EdgePtr ribi::cmap::EdgeFactory::Create(
-  const NodePtr& from,
-  const NodePtr& to
+  const Node& from,
+  const Node& to
 ) const noexcept
 {
-  assert(from);
-  assert(to);
   assert(from != to);
-  const double x{(from->GetX() + to->GetX()) / 2.0};
-  const double y{(from->GetY() + to->GetY()) / 2.0};
+  const double x{(from.GetX() + to.GetX()) / 2.0};
+  const double y{(from.GetY() + to.GetY()) / 2.0};
   const bool tail_arrow{false};
   const bool head_arrow{true};
   const auto concept = ConceptFactory().Create();
   const auto node = NodeFactory().Create(concept,x,y);
-  assert(node);
   const EdgePtr p {
     new Edge(
       node,
@@ -76,17 +73,15 @@ ribi::cmap::EdgeFactory::EdgePtr ribi::cmap::EdgeFactory::Create(
 }
 
 ribi::cmap::EdgeFactory::EdgePtr ribi::cmap::EdgeFactory::Create(
-  const NodePtr& node,
-  const NodePtr& from,
+  const Node& node,
+  const Node& from,
   const bool tail_arrow,
-  const NodePtr& to,
+  const Node& to,
   const bool head_arrow
 ) const noexcept
 {
-  assert(node);
-  assert(from);
-  assert(to);
   assert(from != to);
+  assert(from != node);
   EdgePtr p(new Edge(node,from,tail_arrow,to,head_arrow));
   assert(p);
   return p;
@@ -95,18 +90,15 @@ ribi::cmap::EdgeFactory::EdgePtr ribi::cmap::EdgeFactory::Create(
 #ifndef NDEBUG
 ribi::cmap::EdgeFactory::EdgePtr ribi::cmap::EdgeFactory::DeepCopy(
   const ReadOnlyEdge& edge,
-  const NodePtr& from,
-  const NodePtr& to
+  const Node& from,
+  const Node& to
 ) const noexcept
 {
   assert(edge);
-  assert(edge->GetNode());
-  assert(from);
-  assert(to);
   assert(from != to);
-  //const Concept concept = ConceptFactory().DeepCopy(edge->GetNode());
-  const auto node = NodeFactory().DeepCopy(edge->GetNode());
-  assert(node);
+  assert(from != edge->GetNode());
+  assert(to != edge->GetNode());
+  const Node node(edge->GetNode());
   const EdgePtr p {
     EdgeFactory::Create(
       node,
@@ -202,24 +194,22 @@ int ribi::cmap::EdgeFactory::GetNumberOfTests() const noexcept
 
 ribi::cmap::EdgeFactory::EdgePtr ribi::cmap::EdgeFactory::GetTest(
   const int index,
-  const NodePtr& from,
-  const NodePtr& to
+  const Node& from,
+  const Node& to
 ) const noexcept
 {
-  assert(from);
-  assert(to);
+  assert(from != to);
   assert(index >= 0);
   assert(index < GetNumberOfTests());
   return GetTests(from,to)[index];
 }
 
 ribi::cmap::EdgeFactory::Edges ribi::cmap::EdgeFactory::GetTests(
-  const NodePtr& from,
-  const NodePtr& to
+  const Node& from,
+  const Node& to
 ) const noexcept
 {
-  assert(from);
-  assert(to);
+  assert(from != to);
   const int n{NodeFactory().GetNumberOfTests()};
   std::vector<EdgePtr> result;
 

@@ -59,7 +59,7 @@ struct NodeFactory
 
   #ifndef NDEBUG
   ///DeepCopy is only used for debugging
-  boost::shared_ptr<Node> DeepCopy(
+  Node DeepCopy(
     const Node& node
   ) const noexcept;
   #endif

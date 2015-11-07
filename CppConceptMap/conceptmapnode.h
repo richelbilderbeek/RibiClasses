@@ -51,16 +51,13 @@ struct Node
         Concept& GetConcept()       noexcept { return m_concept; }
 
   ///Get some test nodes
-  static std::vector<boost::shared_ptr<Node>> GetTests() noexcept;
+  static std::vector<Node> GetTests() noexcept;
 
   ///Get the x coordinat
   double GetX() const noexcept { return m_x; }
 
   ///Get the y coordinat
   double GetY() const noexcept { return m_y; }
-
-  ///Similar to operator==, except that GUI elements are not tested for equality
-  static bool HasSameContent(const boost::shared_ptr<const Node>& lhs, const boost::shared_ptr<const Node>& rhs) noexcept;
 
   bool IsCenterNode() const noexcept { return m_is_center_node; }
 
@@ -89,12 +86,13 @@ struct Node
   friend class NodeFactory;
   friend class CenterNodeFactory;
 
+
   ///Use NodeFactory as an unused argument to enforce using it
   explicit Node(
     const Concept& concept,
     const double x,
     const double y
-  );
+  ) noexcept;
 
   private:
 
@@ -119,6 +117,9 @@ struct Node
 
 };
 
+
+///Similar to operator==, except that GUI elements are not tested for equality
+bool HasSameContent(const Node& lhs, const Node& rhs) noexcept;
 
 bool operator==(const Node& lhs, const Node& rhs) noexcept;
 bool operator!=(const Node& lhs, const Node& rhs) noexcept;

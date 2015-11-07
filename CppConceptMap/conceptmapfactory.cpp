@@ -101,22 +101,20 @@ boost::shared_ptr<ribi::cmap::ConceptMap> ribi::cmap::ConceptMapFactory::DeepCop
   {
     assert(edge);
     //Find the new from node
-    const auto from_iter = std::find(nodes.begin(),nodes.end(),edge->GetFrom());
+    const auto from_iter = std::find(nodes.begin(),nodes.end(),*edge->GetFrom());
     assert(from_iter != nodes.end());
     const int from_index = std::distance(nodes.begin(),from_iter);
     assert(from_index < boost::numeric_cast<int>(new_nodes.size()));
-    Node* const from = &new_nodes[from_index];
+    const Node from = new_nodes[from_index];
 
     //Find the new to node
-    const auto to_iter = std::find(nodes.begin(),nodes.end(),edge->GetTo());
+    const auto to_iter = std::find(nodes.begin(),nodes.end(),*edge->GetTo());
     assert(to_iter != nodes.end());
     const int to_index = std::distance(nodes.begin(),to_iter);
     assert(to_index < boost::numeric_cast<int>(new_nodes.size()));
-    Node* const to = &new_nodes[to_index];
+    const Node to = new_nodes[to_index];
 
     assert(from_index != to_index);
-    assert(from);
-    assert(to);
     assert(from != to);
     const boost::shared_ptr<Edge> new_edge {
       EdgeFactory().DeepCopy(edge,from,to)
@@ -262,15 +260,18 @@ std::vector<boost::shared_ptr<ribi::cmap::ConceptMap> > ribi::cmap::ConceptMapFa
       assert(edge);
       assert(edge->GetTo());
       assert(edge->GetFrom());
+      const auto nodes = conceptmap->GetNodes();
       assert(std::count(
-        conceptmap->GetNodes().begin(),
-        conceptmap->GetNodes().end(),
-        edge->GetTo()
+        std::begin(nodes),
+        std::end(nodes),
+        *edge->GetTo()
       ) == 1);
       assert(std::count(
-        conceptmap->GetNodes().begin(),
-        conceptmap->GetNodes().end(),
-        edge->GetFrom()) == 1);
+        begin(nodes),
+        end(nodes),
+        *edge->GetFrom()
+        ) == 1
+      );
     }
   }
   #endif
@@ -1731,11 +1732,11 @@ void ribi::cmap::ConceptMapFactory::Test() noexcept
         assert(std::count(
           conceptmap->GetNodes().begin(),
           conceptmap->GetNodes().end(),
-          edge->GetTo()) == 1);
+          *edge->GetTo()) == 1);
         assert(std::count(
           conceptmap->GetNodes().begin(),
           conceptmap->GetNodes().end(),
-          edge->GetFrom()) == 1);
+          *edge->GetFrom()) == 1);
       }
     }
   }

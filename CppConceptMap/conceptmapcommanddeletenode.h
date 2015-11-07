@@ -26,6 +26,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
 #include "conceptmapcommand.h"
+#include "conceptmapnode.h"
 #pragma GCC diagnostic pop
 
 namespace ribi {
@@ -44,7 +45,7 @@ class CommandDeleteNode final : public Command
 
   CommandDeleteNode(
     const boost::shared_ptr<ConceptMap> conceptmap,
-    const boost::shared_ptr<Node> node
+    const Node& node
   );
   CommandDeleteNode(const CommandDeleteNode&) = delete;
   CommandDeleteNode& operator=(const CommandDeleteNode&) = delete;
@@ -57,7 +58,7 @@ class CommandDeleteNode final : public Command
   private:
   const boost::shared_ptr<ConceptMap> m_conceptmap;
   const Edges m_deleted_edges;
-  const boost::shared_ptr<Node> m_node;
+  const Node m_node;
   const EdgesAndNodes m_old_selected; //Selected before command
   bool m_verbose;
 };
