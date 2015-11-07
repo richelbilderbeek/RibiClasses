@@ -112,6 +112,11 @@ void ribi::cmap::Examples::Test() noexcept
       }
     }
   }
+  {
+    const std::string xml = "<examples></examples>";
+    const auto examples = ExamplesFactory().FromXml(xml);
+    assert(examples.Get().empty());
+  }
   //Conversion between class and XML, test for equality
   {
     const std::vector<Examples> v = ExamplesFactory().GetTests();

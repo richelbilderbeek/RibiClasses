@@ -267,18 +267,18 @@ void ribi::Container::Test() noexcept
   //CountIf
   {
     const auto v = {3,1,2};
-    assert(c.CountIf(v, [](const auto i) { return i > 0; }) == 3);
-    assert(c.CountIf(v, [](const auto i) { return i > 1; }) == 2);
-    assert(c.CountIf(v, [](const auto i) { return i > 2; }) == 1);
-    assert(c.CountIf(v, [](const auto i) { return i > 3; }) == 0);
+    assert(c.CountIf(v, [](const int i) { return i > 0; }) == 3);
+    assert(c.CountIf(v, [](const int i) { return i > 1; }) == 2);
+    assert(c.CountIf(v, [](const int i) { return i > 2; }) == 1);
+    assert(c.CountIf(v, [](const int i) { return i > 3; }) == 0);
   }
   //CountIf
   {
     const auto v = {3,1,2};
-    assert(c.FindIf(v, [](const auto i) { return i > 0; }) != std::end(v));
-    assert(c.FindIf(v, [](const auto i) { return i > 1; }) != std::end(v));
-    assert(c.FindIf(v, [](const auto i) { return i > 2; }) != std::end(v));
-    assert(c.FindIf(v, [](const auto i) { return i > 3; }) == std::end(v));
+    assert(c.FindIf(v, [](const int i) { return i > 0; }) != std::end(v));
+    assert(c.FindIf(v, [](const int i) { return i > 1; }) != std::end(v));
+    assert(c.FindIf(v, [](const int i) { return i > 2; }) != std::end(v));
+    assert(c.FindIf(v, [](const int i) { return i > 3; }) == std::end(v));
   }
 }
 #endif

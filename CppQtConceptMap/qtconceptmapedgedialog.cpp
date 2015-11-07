@@ -88,7 +88,7 @@ int ribi::cmap::QtEdgeDialog::GetMinimumHeight(const Edge& edge) noexcept
 {
   return
       QtNodeDialog::GetMinimumHeight(*edge.GetFrom())
-    + QtNodeDialog::GetMinimumHeight(*edge.GetNode())
+    + QtNodeDialog::GetMinimumHeight(edge.GetNode())
     + QtNodeDialog::GetMinimumHeight(*edge.GetTo())
     + 200
   ;
@@ -189,9 +189,9 @@ void ribi::cmap::QtEdgeDialog::SetEdge(const boost::shared_ptr<Edge>& edge)
         std::stringstream s;
         s
           << "Node will change from "
-          << node_before->ToStr()
+          << node_before.ToStr()
           << " to "
-          << node_after->ToStr()
+          << node_after.ToStr()
           << '\n'
         ;
         TRACE(s.str());
@@ -298,21 +298,23 @@ void ribi::cmap::QtEdgeDialog::OnFromChanged(Edge * const edge)
   const bool verbose{false};
   assert(edge);
 
-  const auto from_before = m_qtnodedialog_from->GetNode();
-  const auto from_after = edge->GetFrom();
+  const Node from_before = m_qtnodedialog_from->GetNode();
+  const Node * from_after = edge->GetFrom();
+  assert(from_after);
 
   if (verbose)
   {
     std::stringstream s;
     s << "Change from from "
-    << (from_before ? from_before->ToStr() : "[NONE]")
-    << " to " << from_after->ToStr();
+      << from_before.ToStr()
+      << " to " << from_after->ToStr()
+    ;
     TRACE(s.str());
   }
 
-  m_qtnodedialog_from->SetNode(from_after);
+  m_qtnodedialog_from->SetNode(*from_after);
 
-  assert(m_qtnodedialog_from->GetNode() == from_after);
+  assert(m_qtnodedialog_from->GetNode() == *from_after);
 }
 
 void ribi::cmap::QtEdgeDialog::OnHeadArrowChanged(Edge * const edge)
@@ -345,13 +347,12 @@ void ribi::cmap::QtEdgeDialog::OnNodeChanged(Edge * const edge)
 
   const auto node_before = m_qtnodedialog->GetNode();
   const auto node_after = edge->GetNode();
-
   if (verbose)
   {
     std::stringstream s;
     s << "Change center node from "
-    << (node_before ? node_before->ToStr() : "[NONE]")
-    << " to " << node_after->ToStr();
+    << node_before.ToStr()
+    << " to " << node_after.ToStr();
     TRACE(s.str());
   }
 
@@ -397,14 +398,15 @@ void ribi::cmap::QtEdgeDialog::OnToChanged(Edge * const edge)
   {
     std::stringstream s;
     s << "Change to from "
-    << (to_before ? to_before->ToStr() : "[NONE]")
-    << " to " << to_after->ToStr();
+      << to_before.ToStr()
+      << " to " << to_after->ToStr()
+    ;
     TRACE(s.str());
   }
 
-  m_qtnodedialog_to->SetNode(to_after);
+  m_qtnodedialog_to->SetNode(*to_after);
 
-  assert(m_qtnodedialog_to->GetNode() == to_after);
+  assert(m_qtnodedialog_to->GetNode() == *to_after);
 }
 
 void ribi::cmap::QtEdgeDialog::SetUiHasHeadArrow(const bool has_head) noexcept
@@ -445,14 +447,14 @@ void ribi::cmap::QtEdgeDialog::Test() noexcept
 
   const TestTimer test_timer(__func__,__FILE__,1.0);
   const bool verbose{false};
-  const auto from = NodeFactory().GetTest(0);
-  const auto to = NodeFactory().GetTest(0);
+  const Node from = NodeFactory().GetTest(0);
+  const Node to = NodeFactory().GetTest(0);
   const boost::shared_ptr<Edge> edge = EdgeFactory().GetTest(0,from,to);
   QtEdgeDialog dialog;
   dialog.SetEdge(edge);
   if (verbose) { TRACE("X of QtNode and QtNodeDialog must match at start"); }
   {
-    assert(std::abs(dialog.GetUiX() - edge->GetNode()->GetX()) < 2.0);
+    assert(std::abs(dialog.GetUiX() - edge->GetNode().GetX()) < 2.0);
   }
   if (verbose) { TRACE("SetX and GetX must be symmetric"); }
   {
@@ -468,9 +470,9 @@ void ribi::cmap::QtEdgeDialog::Test() noexcept
   }
   if (verbose) { TRACE("If X is set via Edge, QtNodeDialog must sync"); }
   {
-    const double old_x{edge->GetNode()->GetX()};
+    const double old_x{edge->GetNode().GetX()};
     const double new_x{old_x + 10.0};
-    edge->GetNode()->SetX(new_x);
+    edge->GetNode().SetX(new_x);
     assert(std::abs(new_x - dialog.GetUiX()) < 2.0);
   }
   if (verbose) { TRACE("If X is set via QtNodeDialog, Edge must sync"); }
@@ -478,7 +480,7 @@ void ribi::cmap::QtEdgeDialog::Test() noexcept
     const double old_x{dialog.GetUiX()};
     const double new_x{old_x + 10.0};
     dialog.SetUiX(new_x);
-    assert(std::abs(new_x - edge->GetNode()->GetX()) < 2.0);
+    assert(std::abs(new_x - edge->GetNode().GetX()) < 2.0);
   }
 
   if (verbose) { TRACE("SetUiHasHeadArrow and GetUiHasHeadArrow must be symmetric"); }

@@ -78,7 +78,7 @@ void ribi::cmap::ConceptMap::Test() noexcept
   }
   const TestTimer test_timer(__func__,__FILE__,2.0);
   const bool verbose{false};
-  typedef std::vector<boost::shared_ptr<Node>> Nodes;
+  typedef std::vector<Node> Nodes;
 
   if (verbose) { TRACE("Create tests"); }
   {
@@ -120,13 +120,13 @@ void ribi::cmap::ConceptMap::Test() noexcept
   {
     //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,0.1);
     const Concept concept(ConceptFactory().Create("FOCAL QUESTION"));
-    const boost::shared_ptr<Node> node = NodeFactory().Create(concept,123,234);
+    const Node node = NodeFactory().Create(concept,123,234);
     assert(CanConstruct( { node }, {} ) && "Assume focal question without examples can be constructed");
   }
   {
     //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,0.1);
     const Concept concept(ConceptFactory().Create("FOCAL QUESTION", { {"No",Competency::misc},{"examples",Competency::misc},{"allowed",Competency::misc} } ));
-    const boost::shared_ptr<Node> node = NodeFactory().Create(concept,123,234);
+    const Node node = NodeFactory().Create(concept,123,234);
     assert(CanConstruct( { node }, {} )
       && "Assume focal question with examples can be constructed"
       && "for example, when creating a sub-concept map");
@@ -137,12 +137,9 @@ void ribi::cmap::ConceptMap::Test() noexcept
     {
       //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,0.1);
       assert(NodeFactory().GetNumberOfTests() >= 3);
-      const boost::shared_ptr<CenterNode> node_a(CenterNodeFactory().CreateFromStrings("FOCAL QUESTION"));
-      assert(node_a);
-      const boost::shared_ptr<Node> node_b(NodeFactory().GetTests().at(1));
-      assert(node_b);
-      const boost::shared_ptr<Node> node_c(NodeFactory().GetTests().at(2));
-      assert(node_c);
+      const CenterNode node_a(CenterNodeFactory().CreateFromStrings("FOCAL QUESTION"));
+      const Node node_b(NodeFactory().GetTests().at(1));
+      const Node node_c(NodeFactory().GetTests().at(2));
       const boost::shared_ptr<ConceptMap> map_a(
         ConceptMapFactory().Create(
           {
@@ -187,7 +184,7 @@ void ribi::cmap::ConceptMap::Test() noexcept
       //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,0.1);
       const Concept concept_b(ConceptFactory().Create("1", { {"2",Competency::misc},{"3",Competency::misc} } ));
       const Concept concept_f(ConceptFactory().Create("1", { {"2",Competency::misc},{"3",Competency::misc} } ));
-      const boost::shared_ptr<Node> node_b(NodeFactory().Create(concept_b,321,432));
+      const Node node_b(NodeFactory().Create(concept_b,321,432));
       const boost::shared_ptr<ConceptMap> map_a(
         ConceptMapFactory().Create(
           {
@@ -209,7 +206,7 @@ void ribi::cmap::ConceptMap::Test() noexcept
       assert(HasSameContent(*map_a,*map_b));
       assert(map_a != map_b);
 
-      const boost::shared_ptr<Node> node_g = NodeFactory().Create(concept_f,901,012);
+      const Node node_g = NodeFactory().Create(concept_f,901,012);
       const boost::shared_ptr<ConceptMap> map_c(
         ConceptMapFactory().Create(
           {
@@ -231,12 +228,12 @@ void ribi::cmap::ConceptMap::Test() noexcept
       const Concept concept_d(ConceptFactory().Create("FOCAL QUESTION"));
       const Concept concept_e(ConceptFactory().Create("4",{{"5",Competency::misc},{"6",Competency::misc} } ));
       const Concept concept_f(ConceptFactory().Create("1",{{"2",Competency::misc},{"3",Competency::misc} } ));
-      const boost::shared_ptr<Node> node_a(CenterNodeFactory().Create(concept_a,123,234));
-      const boost::shared_ptr<Node> node_b(NodeFactory().Create(concept_b,123,234));
-      const boost::shared_ptr<Node> node_c(NodeFactory().Create(concept_c,345,456));
-      const boost::shared_ptr<Node> node_d(CenterNodeFactory().Create(concept_d,567,678));
-      const boost::shared_ptr<Node> node_e(NodeFactory().Create(concept_e,789,890));
-      const boost::shared_ptr<Node> node_f(NodeFactory().Create(concept_f,901,012));
+      const Node node_a(CenterNodeFactory().Create(concept_a,123,234));
+      const Node node_b(NodeFactory().Create(concept_b,123,234));
+      const Node node_c(NodeFactory().Create(concept_c,345,456));
+      const Node node_d(CenterNodeFactory().Create(concept_d,567,678));
+      const Node node_e(NodeFactory().Create(concept_e,789,890));
+      const Node node_f(NodeFactory().Create(concept_f,901,012));
       const boost::shared_ptr<ConceptMap> map_a(ConceptMapFactory().Create( { node_a, node_b, node_c } ));
       const boost::shared_ptr<ConceptMap> map_b(ConceptMapFactory().Create( { node_d, node_f, node_e } )); //Swap e and f
       assert(HasSameContent(*map_a,*map_b));
@@ -257,12 +254,12 @@ void ribi::cmap::ConceptMap::Test() noexcept
       const Concept concept_n22(ConceptFactory().Create("2"));
       const Concept concept_n23(ConceptFactory().Create("3"));
 
-      const boost::shared_ptr<Node> node_11(CenterNodeFactory().Create(concept_n11,123,234));
-      const boost::shared_ptr<Node> node_12(NodeFactory().Create(concept_n12,321,432));
-      const boost::shared_ptr<Node> node_13(NodeFactory().Create(concept_n13,345,456));
-      const boost::shared_ptr<Node> node_21(CenterNodeFactory().Create(concept_n21,567,678));
-      const boost::shared_ptr<Node> node_22(NodeFactory().Create(concept_n22,789,890));
-      const boost::shared_ptr<Node> node_23(NodeFactory().Create(concept_n23,901,012));
+      const Node node_11(CenterNodeFactory().Create(concept_n11,123,234));
+      const Node node_12(NodeFactory().Create(concept_n12,321,432));
+      const Node node_13(NodeFactory().Create(concept_n13,345,456));
+      const Node node_21(CenterNodeFactory().Create(concept_n21,567,678));
+      const Node node_22(NodeFactory().Create(concept_n22,789,890));
+      const Node node_23(NodeFactory().Create(concept_n23,901,012));
 
       const Concept concept_e11(ConceptFactory().Create("9"));
       const Concept concept_e12(ConceptFactory().Create("8"));
@@ -312,9 +309,9 @@ void ribi::cmap::ConceptMap::Test() noexcept
       const Concept concept_n12(ConceptFactory().Create("2"));
       const Concept concept_n13(ConceptFactory().Create("3"));
 
-      const boost::shared_ptr<Node> node_11(CenterNodeFactory().Create(concept_n11,123,234));
-      const boost::shared_ptr<Node> node_12(NodeFactory().Create(concept_n12,321,432));
-      const boost::shared_ptr<Node> node_13(NodeFactory().Create(concept_n13,345,456));
+      const Node node_11(CenterNodeFactory().Create(concept_n11,123,234));
+      const Node node_12(NodeFactory().Create(concept_n12,321,432));
+      const Node node_13(NodeFactory().Create(concept_n13,345,456));
 
       const Concept concept_e11(ConceptFactory().Create("1->2"));
       const Concept concept_e12(ConceptFactory().Create("1->3"));
@@ -324,9 +321,9 @@ void ribi::cmap::ConceptMap::Test() noexcept
       const Concept concept_n22(ConceptFactory().Create("3"));
       const Concept concept_n23(ConceptFactory().Create("2"));
 
-      const boost::shared_ptr<Node> node_21(CenterNodeFactory().Create(concept_n21,123,234));
-      const boost::shared_ptr<Node> node_22(NodeFactory().Create(concept_n22,321,432));
-      const boost::shared_ptr<Node> node_23(NodeFactory().Create(concept_n23,345,456));
+      const Node node_21(CenterNodeFactory().Create(concept_n21,123,234));
+      const Node node_22(NodeFactory().Create(concept_n22,321,432));
+      const Node node_23(NodeFactory().Create(concept_n23,345,456));
 
       const Concept concept_e21(ConceptFactory().Create("2->3"));
       const Concept concept_e22(ConceptFactory().Create("1->2"));
@@ -510,12 +507,12 @@ void ribi::cmap::ConceptMap::Test() noexcept
   }
   if (verbose) { TRACE("IsValid"); }
   {
-    boost::shared_ptr<Node> node_a = CenterNodeFactory().CreateFromStrings("...");
+    Node node_a = CenterNodeFactory().CreateFromStrings("...");
     boost::shared_ptr<ConceptMap> conceptmap = ConceptMapFactory().Create(
       { node_a } );
     assert(conceptmap);
     assert(conceptmap->IsValid());
-    const boost::shared_ptr<Node> node = NodeFactory().CreateFromStrings("...");
+    const Node node = NodeFactory().CreateFromStrings("...");
     conceptmap->AddNode(node);
     assert(conceptmap->IsValid());
   }
@@ -601,16 +598,16 @@ void ribi::cmap::ConceptMap::Test() noexcept
     const double y2{400.0};
     const double x3{(x1+x2)/2.0};
     const double y3{(y1+y2)/2.0};
-    const auto node_a = NodeFactory().GetTests().at(0);
-    const auto node_b = NodeFactory().GetTests().at(0);
-    node_a->SetX(x1);
-    node_a->SetY(y1);
-    node_b->SetX(x2);
-    node_b->SetY(y2);
+    auto node_a = NodeFactory().GetTests().at(0);
+    auto node_b = NodeFactory().GetTests().at(0);
+    node_a.SetX(x1);
+    node_a.SetY(y1);
+    node_b.SetX(x2);
+    node_b.SetY(y2);
     const auto edge = EdgeFactory().Create(node_a,node_b);
     conceptmap->AddEdge(edge);
-    assert(std::abs(edge->GetNode()->GetX() - x3) < 1.0);
-    assert(std::abs(edge->GetNode()->GetY() - y3) < 1.0);
+    assert(std::abs(edge->GetNode().GetX() - x3) < 1.0);
+    assert(std::abs(edge->GetNode().GetY() - y3) < 1.0);
   }
   if (verbose) { TRACE("Add nodes and edge, check selected"); }
   {

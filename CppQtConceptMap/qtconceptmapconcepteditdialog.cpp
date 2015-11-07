@@ -168,7 +168,7 @@ void ribi::cmap::QtConceptMapConceptEditDialog::Test() noexcept
     //Assume reading in a concept and clicking OK without modification does not modify anything
     const auto v = ribi::cmap::ConceptFactory().GetTests();
     std::for_each(v.begin(),v.end(),
-      [](const auto& concept)
+      [](const Concept& concept)
       {
         const Concept old_concept(concept);
         assert(concept == old_concept);
@@ -187,7 +187,7 @@ void ribi::cmap::QtConceptMapConceptEditDialog::Test() noexcept
     //Assume reading in a concept and clicking OK after modification of the name does modify concept
     const auto v = ribi::cmap::ConceptFactory().GetTests();
     std::for_each(v.begin(),v.end(),
-      [](const auto& concept)
+      [](const Concept& concept)
       {
         const Concept old_concept(concept);
         assert(concept == old_concept);
@@ -202,7 +202,7 @@ void ribi::cmap::QtConceptMapConceptEditDialog::Test() noexcept
     //Assume reading in a concept and clicking OK after adding an example
     const auto v = ribi::cmap::ConceptFactory().GetTests();
     std::for_each(v.begin(),v.end(),
-      [](const auto& concept)
+      [](const Concept& concept)
       {
         const Concept old_concept(concept);
         assert(concept == old_concept);
@@ -220,7 +220,7 @@ void ribi::cmap::QtConceptMapConceptEditDialog::Test() noexcept
     //even when having changed the name and examples in the GUI
     const auto v = ribi::cmap::ConceptFactory().GetTests();
     std::for_each(v.begin(),v.end(),
-      [](const auto& concept)
+      [](const Concept& concept)
       {
         const Concept old_concept(concept);
         assert(concept == old_concept);

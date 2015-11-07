@@ -47,8 +47,9 @@ public:
 
   explicit QtConceptMapRatedConceptDialog(
     const boost::shared_ptr<const ConceptMap> conceptmap,
-    const boost::shared_ptr<const cmap::Node> node,
-    QWidget *parent = 0);
+    const Node& node,
+    QWidget *parent = 0
+  );
   QtConceptMapRatedConceptDialog(const QtConceptMapRatedConceptDialog&) = delete;
   QtConceptMapRatedConceptDialog& operator=(const QtConceptMapRatedConceptDialog&) = delete;
   ~QtConceptMapRatedConceptDialog() noexcept;

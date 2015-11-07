@@ -41,8 +41,8 @@ struct ExampleFactory
 
   ///Create an example from string and enum
   Example Create(
-    const std::string& text,
-    const cmap::Competency& competency,
+    const std::string& text = "",
+    const Competency& competency = Competency::uninitialized,
     const bool is_complex = true,
     const bool is_concrete = true,
     const bool is_specific = true

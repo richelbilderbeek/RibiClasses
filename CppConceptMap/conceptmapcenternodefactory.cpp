@@ -35,6 +35,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmapexamplefactory.h"
 #include "conceptmapexamplesfactory.h"
 #include "conceptmaphelper.h"
+#include "conceptmapnode.h"
 #include "conceptmapnodefactory.h"
 #include "conceptmapregex.h"
 #include "counter.h"
@@ -64,7 +65,6 @@ ribi::cmap::CenterNode ribi::cmap::CenterNodeFactory::Create(
   return node;
 }
 
-/*
 ribi::cmap::CenterNode ribi::cmap::CenterNodeFactory::CreateFromStrings(
   const std::string& name,
   const std::vector<std::pair<std::string,Competency> >& examples,
@@ -82,7 +82,6 @@ ribi::cmap::CenterNode ribi::cmap::CenterNodeFactory::CreateFromStrings(
   assert(node.GetY() == y);
   return node;
 }
-*/
 
 ribi::cmap::CenterNode ribi::cmap::CenterNodeFactory::FromXml(
   const std::string& s

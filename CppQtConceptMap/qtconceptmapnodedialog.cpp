@@ -45,7 +45,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 ribi::cmap::QtNodeDialog::QtNodeDialog(QWidget *parent)
   : ribi::QtHideAndShowDialog(parent),
     ui(new Ui::QtNodeDialog),
-    m_node{},
+    m_node{NodeFactory().Create()},
     m_qtconceptdialog{new QtConceptDialog}
 {
   ui->setupUi(this);
@@ -86,11 +86,10 @@ std::string ribi::cmap::QtNodeDialog::GetUiName() const noexcept
   return m_qtconceptdialog->GetUiName();
 }
 
-void ribi::cmap::QtNodeDialog::SetNode(const boost::shared_ptr<Node>& node) noexcept
+void ribi::cmap::QtNodeDialog::SetNode(const Node& node) noexcept
 {
   const bool verbose{false};
 
-  assert(node);
   if (m_node == node)
   {
 
@@ -100,21 +99,21 @@ void ribi::cmap::QtNodeDialog::SetNode(const boost::shared_ptr<Node>& node) noex
   if (verbose)
   {
     std::stringstream s;
-    s << "Setting node '" << node->ToStr() << "'\n";
+    s << "Setting node '" << node.ToStr() << "'\n";
   }
-  const auto concept_after = node->GetConcept();
-  const auto x_after = node->GetX();
-  const auto y_after = node->GetY();
+  const auto concept_after = node.GetConcept();
+  const auto x_after = node.GetX();
+  const auto y_after = node.GetY();
 
   bool concept_changed  = true;
   bool x_changed  = true;
   bool y_changed = true;
 
-  if (m_node)
+  //if (m_node)
   {
-    const auto concept_before = m_node->GetConcept();
-    const auto x_before = m_node->GetX();
-    const auto y_before = m_node->GetY();
+    const auto concept_before = m_node.GetConcept();
+    const auto x_before = m_node.GetX();
+    const auto y_before = m_node.GetY();
 
     concept_changed = concept_before != concept_after;
     x_changed = x_before != x_after;
@@ -151,66 +150,63 @@ void ribi::cmap::QtNodeDialog::SetNode(const boost::shared_ptr<Node>& node) noex
       }
     }
     //Disconnect m_concept
-    m_node->m_signal_concept_changed.disconnect(
-      boost::bind(&ribi::cmap::QtNodeDialog::OnConceptChanged,this,boost::lambda::_1)
-    );
-    m_node->m_signal_x_changed.disconnect(
-      boost::bind(&ribi::cmap::QtNodeDialog::OnXchanged,this,boost::lambda::_1)
-    );
-    m_node->m_signal_y_changed.disconnect(
-      boost::bind(&ribi::cmap::QtNodeDialog::OnYchanged,this,boost::lambda::_1)
-    );
+//    m_node.m_signal_concept_changed.disconnect(
+//      boost::bind(&ribi::cmap::QtNodeDialog::OnConceptChanged,this,boost::lambda::_1)
+//    );
+//    m_node.m_signal_x_changed.disconnect(
+//      boost::bind(&ribi::cmap::QtNodeDialog::OnXchanged,this,boost::lambda::_1)
+//    );
+//    m_node.m_signal_y_changed.disconnect(
+//      boost::bind(&ribi::cmap::QtNodeDialog::OnYchanged,this,boost::lambda::_1)
+//    );
   }
 
   //Replace m_example by the new one
   m_node = node;
 
 
-  assert(m_node->GetConcept() == concept_after );
-  assert(m_node->GetX() == x_after );
-  assert(m_node->GetY() == y_after);
+  assert(m_node.GetConcept() == concept_after );
+  assert(m_node.GetX() == x_after );
+  assert(m_node.GetY() == y_after);
 
-  m_node->m_signal_concept_changed.connect(
-    boost::bind(&ribi::cmap::QtNodeDialog::OnConceptChanged,this,boost::lambda::_1)
-  );
-  m_node->m_signal_x_changed.connect(
-    boost::bind(&ribi::cmap::QtNodeDialog::OnXchanged,this,boost::lambda::_1)
-  );
-  m_node->m_signal_y_changed.connect(
-    boost::bind(&ribi::cmap::QtNodeDialog::OnYchanged,this,boost::lambda::_1)
-  );
+//  m_node.m_signal_concept_changed.connect(
+//    boost::bind(&ribi::cmap::QtNodeDialog::OnConceptChanged,this,boost::lambda::_1)
+//  );
+//  m_node.m_signal_x_changed.connect(
+//    boost::bind(&ribi::cmap::QtNodeDialog::OnXchanged,this,boost::lambda::_1)
+//  );
+//  m_node.m_signal_y_changed.connect(
+//    boost::bind(&ribi::cmap::QtNodeDialog::OnYchanged,this,boost::lambda::_1)
+//  );
 
-  //Emit everything that has changed
-  if (concept_changed)
-  {
-    m_node->m_signal_concept_changed(m_node.get());
-  }
-  if (x_changed)
-  {
-    m_node->m_signal_x_changed(m_node.get());
-  }
-  if (y_changed)
-  {
-    m_node->m_signal_y_changed(m_node.get());
-  }
+//  //Emit everything that has changed
+//  if (concept_changed)
+//  {
+//    m_node.m_signal_concept_changed(m_node.get());
+//  }
+//  if (x_changed)
+//  {
+//    m_node.m_signal_x_changed(m_node.get());
+//  }
+//  if (y_changed)
+//  {
+//    m_node.m_signal_y_changed(m_node.get());
+//  }
 
   this->setMinimumHeight(
     this->GetMinimumHeight(
-      *m_node
+      m_node
     )
   );
 
   assert( node ==  m_node);
-  assert(*node == *m_node);
 }
 
-void ribi::cmap::QtNodeDialog::OnConceptChanged(Node * const node)
+void ribi::cmap::QtNodeDialog::OnConceptChanged(const Node& node)
 {
   const bool verbose{false};
-  assert(node);
-
   const auto concept_before = m_qtconceptdialog->GetConcept();
-  const Concept concept_after = node->GetConcept();
+  const Concept concept_after = node.GetConcept();
 
   if (verbose)
   {
@@ -226,16 +222,14 @@ void ribi::cmap::QtNodeDialog::OnConceptChanged(Node * const node)
   assert(m_qtconceptdialog->GetConcept() == concept_after);
 }
 
-void ribi::cmap::QtNodeDialog::OnXchanged(Node * const node)
+void ribi::cmap::QtNodeDialog::OnXchanged(const Node& node)
 {
-  assert(node);
-  ui->box_x->setValue(node->GetX());
+  ui->box_x->setValue(node.GetX());
 }
 
-void ribi::cmap::QtNodeDialog::OnYchanged(Node * const node)
+void ribi::cmap::QtNodeDialog::OnYchanged(const Node& node)
 {
-  assert(node);
-  ui->box_y->setValue(node->GetY());
+  ui->box_y->setValue(node.GetY());
 }
 
 void ribi::cmap::QtNodeDialog::SetUiName(const std::string& name) noexcept
@@ -256,7 +250,7 @@ void ribi::cmap::QtNodeDialog::SetUiY(const double y) noexcept
   ui->box_y->setValue(y);
   //Calls 'on_box_y_valueChanged' automatically
   //ui->box_y does not immediatly update
-  //m_node->SetY(y);
+  //m_node.SetY(y);
   //on_box_y_valueChanged(y);
 }
 
@@ -275,17 +269,17 @@ void ribi::cmap::QtNodeDialog::Test() noexcept
   const TestTimer test_timer(__func__,__FILE__,1.0);
   const bool verbose{false};
   QtNodeDialog dialog;
-  const boost::shared_ptr<Node> node{NodeFactory().GetTest(1)};
+  Node node(NodeFactory().GetTest(1));
   dialog.SetNode(node);
   if (verbose) { TRACE("X of QtNode and QtNodeDialog must match at start"); }
   {
-    assert(std::abs(dialog.GetUiX() - node->GetX()) < 2.0);
+    assert(std::abs(dialog.GetUiX() - node.GetX()) < 2.0);
   }
   if (verbose) { TRACE("If X is set via QtNode, QtNodeDialog must sync"); }
   {
-    const double old_x{node->GetX()};
+    const double old_x{node.GetX()};
     const double new_x{old_x + 10.0};
-    node->SetX(new_x);
+    node.SetX(new_x);
     assert(std::abs(new_x - dialog.GetUiX()) < 2.0);
   }
   if (verbose) { TRACE("If X is set via QtNodeDialog, QtNode must sync"); }
@@ -293,18 +287,17 @@ void ribi::cmap::QtNodeDialog::Test() noexcept
     const double old_x{dialog.GetUiX()};
     const double new_x{old_x + 10.0};
     dialog.SetUiX(new_x);
-    assert(std::abs(new_x - node->GetX()) < 2.0);
+    assert(std::abs(new_x - node.GetX()) < 2.0);
   }
 }
 #endif
 
 void ribi::cmap::QtNodeDialog::on_box_x_valueChanged(double arg1)
 {
-  assert(m_node);
-  m_node->SetX(arg1);
+  m_node.SetX(arg1);
 }
 
 void ribi::cmap::QtNodeDialog::on_box_y_valueChanged(double arg1)
 {
-  m_node->SetY(arg1);
+  m_node.SetY(arg1);
 }

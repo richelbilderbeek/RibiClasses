@@ -6,6 +6,7 @@
 
 #include "conceptmap.h"
 #include "conceptmaphelper.h"
+#include "conceptmapnode.h"
 #include "trace.h"
 
 ribi::cmap::CommandUnselectRandom::CommandUnselectRandom(

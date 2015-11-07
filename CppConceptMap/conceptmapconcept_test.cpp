@@ -47,15 +47,16 @@ void ribi::cmap::Concept::Test() noexcept
 
   if (verbose) { TRACE("Copy constructor"); }
   {
-    const Concept c;
+    const Concept c = ConceptFactory().Create();
     Concept d(c);
     assert(d == c);
   }
   if (verbose) { TRACE("Assignment operator"); }
   {
-    const Concept c;
-    const Concept d;
-    const Concept e(c);
+    const Concept c = ConceptFactory().GetTest(1);
+    const Concept d = ConceptFactory().GetTest(2);
+    assert(c != d);
+    Concept e(c);
     assert(e == c);
     assert(e != d);
     e = d;
@@ -141,11 +142,17 @@ void ribi::cmap::Concept::Test() noexcept
       assert(b < c); assert(b < d);
     }
   }
+  {
+    const std::string xml = "";
+    const auto concept = ConceptFactory().FromXml(xml);
+    assert(!concept.GetName().empty());
+    assert(!"Green");
+  }
   if (verbose) { TRACE("Test XML conversion"); }
   {
     const auto v = ConceptFactory().GetTests();
     std::for_each(v.begin(),v.end(),
-      [](const auto& original)
+      [](const Concept& original)
       {
         //Test copy constructor and operator==
         Concept c(original);

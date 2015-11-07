@@ -143,7 +143,7 @@ ribi::cmap::ConceptMap::ConceptMap(
   {
     const int x = 0;
     const int y = 0;
-    const boost::shared_ptr<Node> node = NodeFactory().Create(v[i],x,y);
+    const Node node = NodeFactory().Create(v[i],x,y);
     assert(node);
     m_nodes.push_back(node);
   }
@@ -400,23 +400,8 @@ bool ribi::cmap::ConceptMap::Empty() const noexcept
 
 const ribi::cmap::CenterNode* ribi::cmap::ConceptMap::FindCenterNode() const noexcept
 {
-  return ribi::cmap::FindCenterNode(m_nodes);
-  /*
-  const auto iter = std::find_if(std::begin(m_nodes),std::end(m_nodes),
-    [](const auto& node)
-    {
-      return IsCenterNode(node);
-    }
-  );
-  if (iter == std::end(m_nodes))
-  {
-    return nullptr;
-  }
-  else
-  {
-    return &(*iter);
-  }
-  */
+  const auto iter = ribi::cmap::FindCenterNode(m_nodes);
+  return iter == std::end(m_nodes) ? nullptr : &(*iter);
 }
 
 ribi::cmap::CenterNode* ribi::cmap::ConceptMap::FindCenterNode() noexcept
@@ -914,7 +899,7 @@ ribi::cmap::Node ribi::cmap::ConceptMap::CreateNewNode() noexcept
   };
   ++my_string[0];
   #else
-  const boost::shared_ptr<Node> node {
+  const Node node {
     NodeFactory().CreateFromStrings("...")
   };
   #endif

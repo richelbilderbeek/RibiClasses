@@ -16,10 +16,9 @@ ribi::cmap::QtNodeFactory::QtNodeFactory()
 }
 
 boost::shared_ptr<ribi::cmap::QtNode> ribi::cmap::QtNodeFactory::Create(
-  const boost::shared_ptr<Node>& node
+  const Node& node
 ) const noexcept
 {
-  assert(node);
   boost::shared_ptr<QtNode> qtnode{new QtNode(node)};
   assert(qtnode);
   return qtnode;
@@ -44,7 +43,7 @@ std::vector<boost::shared_ptr<ribi::cmap::QtNode>> ribi::cmap::QtNodeFactory::Ge
   std::vector<boost::shared_ptr<QtNode>> qtnodes;
   const auto v = NodeFactory().GetTests();
   std::transform(v.begin(),v.end(),std::back_inserter(qtnodes),
-    [](const boost::shared_ptr<Node>& c)
+    [](const Node& c)
     {
       const boost::shared_ptr<QtNode> q{QtNodeFactory().Create(c)};
       assert(q);

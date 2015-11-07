@@ -41,14 +41,13 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 
 ribi::cmap::QtConceptMapRatedConceptDialog::QtConceptMapRatedConceptDialog(
   const boost::shared_ptr<const ribi::cmap::ConceptMap> conceptmap,
-  const boost::shared_ptr<const cmap::Node> node,
+  const Node& node,
   QWidget *parent)
   : QDialog(parent),
     ui(new Ui::QtConceptMapRatedConceptDialog),
     m_timer(new QTimer)
 {
   ui->setupUi(this);
-  assert(node);
 
   //const int font_in_list_height = 16;
   {
@@ -59,20 +58,20 @@ ribi::cmap::QtConceptMapRatedConceptDialog::QtConceptMapRatedConceptDialog(
   }
 
   ui->label_name->setText(
-    ("Cluster bij concept: " + node->GetConcept().GetName()).c_str()
+    ("Cluster bij concept: " + node.GetConcept().GetName()).c_str()
   );
   ui->label_complexity->setText(
-    ("Complexiteit: " + boost::lexical_cast<std::string>(node->GetConcept().GetRatingComplexity())).c_str()
+    ("Complexiteit: " + boost::lexical_cast<std::string>(node.GetConcept().GetRatingComplexity())).c_str()
   );
   ui->label_concreteness->setText(
-    ("Concreetheid: " + boost::lexical_cast<std::string>(node->GetConcept().GetRatingConcreteness())).c_str()
+    ("Concreetheid: " + boost::lexical_cast<std::string>(node.GetConcept().GetRatingConcreteness())).c_str()
   );
   ui->label_specificity->setText(
-    ("Specificiteit: " + boost::lexical_cast<std::string>(node->GetConcept().GetRatingSpecificity())).c_str()
+    ("Specificiteit: " + boost::lexical_cast<std::string>(node.GetConcept().GetRatingSpecificity())).c_str()
   );
 
   //Put examples in list
-  for (const Example& example: node->GetConcept().GetExamples().Get())
+  for (const Example& example: node.GetConcept().GetExamples().Get())
   {
     ui->list_concept_examples->addItem(
       new QListWidgetItem(
@@ -84,10 +83,10 @@ ribi::cmap::QtConceptMapRatedConceptDialog::QtConceptMapRatedConceptDialog(
 
   for (const boost::shared_ptr<const cmap::Edge> edge: conceptmap->GetEdges())
   {
-    if (edge->GetFrom() == node || edge->GetTo() == node)
+    if (*edge->GetFrom() == node || *edge->GetTo() == node)
     {
       //Dependent on arrow
-      if (edge->GetFrom() == node)
+      if (*edge->GetFrom() == node)
       {
         const std::string first_arrow
           = ( edge->HasTailArrow() ? "<- " : "-- ");
@@ -95,26 +94,26 @@ ribi::cmap::QtConceptMapRatedConceptDialog::QtConceptMapRatedConceptDialog(
           = ( edge->HasHeadArrow() ? " -> " : " -- ");
         const std::string text
           = first_arrow
-          + edge->GetNode()->GetConcept().GetName()
+          + edge->GetNode().GetConcept().GetName()
           + second_arrow
-          //+ node->GetConcept().GetName();
+          //+ node.GetConcept().GetName();
           + edge->GetTo()->GetConcept().GetName();
         ui->list_cluster_relations->addItem(new QListWidgetItem(text.c_str()));
       }
-      else if (edge->GetTo() == node)
+      else
       {
-        assert(edge->GetTo() == node);
+        assert(*edge->GetTo() == node);
         const std::string first_arrow  = (edge->HasHeadArrow() ? "<- " : "-- ");
         const std::string second_arrow = (edge->HasTailArrow() ? " -> " : " -- ");
         const std::string text
           = first_arrow
-          + edge->GetNode()->GetConcept().GetName()
+          + edge->GetNode().GetConcept().GetName()
           + second_arrow
           + edge->GetFrom()->GetConcept().GetName();
         ui->list_cluster_relations->addItem(new QListWidgetItem(text.c_str()));
       }
       //Indendent on arrow: all examples
-      for (const Example& example: edge->GetNode()->GetConcept().GetExamples().Get())
+      for (const Example& example: edge->GetNode().GetConcept().GetExamples().Get())
       {
         ui->list_cluster_relations->addItem(
           new QListWidgetItem(

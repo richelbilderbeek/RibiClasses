@@ -50,8 +50,8 @@ class CommandCreateNewEdge final : public Command
 
   private:
   boost::shared_ptr<Edge> m_edge;
-  std::vector<boost::shared_ptr<Node>> m_selected_nodes;
-  std::vector<boost::shared_ptr<ribi::cmap::Node>> m_prev_selected; //Selected before Edge was added
+  std::vector<Node> m_selected_nodes;
+  std::vector<Node> m_prev_selected; //Selected before Edge was added
 
   const boost::shared_ptr<ConceptMap> m_conceptmap;
 

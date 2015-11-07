@@ -37,9 +37,9 @@ class CommandUnselectRandom final : public Command
   public:
 
   using ConstEdges = std::vector<boost::shared_ptr<const Edge>>;
-  using ConstNodes = std::vector<boost::shared_ptr<const Node>>;
+  using ConstNodes = std::vector<Node>;
   using Edges = std::vector<boost::shared_ptr<Edge>>;
-  using Nodes = std::vector<boost::shared_ptr<Node>>;
+  using Nodes = std::vector<Node>;
   using EdgesAndNodes = std::pair<Edges,Nodes>;
   using ConstEdgesAndNodes = std::pair<ConstEdges,ConstNodes>;
 

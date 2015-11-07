@@ -95,7 +95,7 @@ int ribi::cmap::QtQtNodeDialog::GetMinimumHeight(const QtNode& qtnode) noexcept
 {
   const int margin = 16;
   return
-    QtNodeDialog::GetMinimumHeight(*qtnode.GetNode())
+    QtNodeDialog::GetMinimumHeight(qtnode.GetNode())
   + margin
   + QtRoundedEditRectItemDialog::GetMinimumHeight(qtnode)
   ;
@@ -176,7 +176,7 @@ void ribi::cmap::QtQtNodeDialog::SetQtNode(const boost::shared_ptr<QtNode>& qtno
   }
 
   const auto qtroundededitrectitem_after = qtnode.get();
-  const auto node_after = qtnode->GetNode();
+  const Node node_after = qtnode->GetNode();
 
   bool qtroundededitrectitem_changed = true;
   bool node_changed = true;
@@ -184,7 +184,7 @@ void ribi::cmap::QtQtNodeDialog::SetQtNode(const boost::shared_ptr<QtNode>& qtno
   if (m_qtnode)
   {
     const auto qtroundededitrectitem_before = m_qtnode.get();
-    const auto node_before = m_qtnode->GetNode();
+    const Node node_before = m_qtnode->GetNode();
 
     qtroundededitrectitem_changed = qtroundededitrectitem_before != qtroundededitrectitem_after;
     node_changed = node_before != node_after;
@@ -207,8 +207,9 @@ void ribi::cmap::QtQtNodeDialog::SetQtNode(const boost::shared_ptr<QtNode>& qtno
       if (node_changed)
       {
         std::stringstream s;
-        s << "QtNode will change from " << (*node_before)
-          << " to " << (*node_after) << '\n';
+        s << "QtNode will change from " << node_before
+          << " to " << node_after << '\n'
+         ;
         TRACE(s.str());
       }
     }

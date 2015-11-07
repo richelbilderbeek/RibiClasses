@@ -39,8 +39,7 @@ class CommandDeleteNode final : public Command
 
   using EdgePtr = boost::shared_ptr<Edge>;
   using Edges = std::vector<EdgePtr>;
-  using NodePtr = boost::shared_ptr<Node>;
-  using Nodes = std::vector<boost::shared_ptr<Node>>;
+  using Nodes = std::vector<Node>;
   using EdgesAndNodes = std::pair<Edges,Nodes>;
 
   CommandDeleteNode(

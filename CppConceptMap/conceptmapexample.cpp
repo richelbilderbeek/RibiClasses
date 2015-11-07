@@ -249,6 +249,12 @@ void ribi::cmap::Example::Test() noexcept
   //Conversion between std::string and competency
   //Checked by Competencies
 
+  {
+    const std::string xml = "<example><text>TEST</text><competency>uninitialized</competency><is_complex>1</is_complex><is_concrete>1</is_concrete><is_specific>1</is_specific></example>";
+    const auto example = ExampleFactory().FromXml(xml);
+    assert(example.GetText() == "TEST");
+  }
+
   if (verbose) { TRACE("Conversion from class->XML->class must result in something equal to the class"); }
   {
     const std::vector<Example> v = ExampleFactory().GetTests();

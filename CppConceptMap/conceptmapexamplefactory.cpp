@@ -65,9 +65,29 @@ ribi::cmap::Example ribi::cmap::ExampleFactory::Create(
 
 ribi::cmap::Example ribi::cmap::ExampleFactory::FromXml(const std::string& s) const noexcept
 {
+  if (s.size() < 17)
+  {
+    std::stringstream msg;
+    msg << __func__ << ": XML string '" << s << "' is only " << s.size() << " characters long, need at least 27";
+    throw std::logic_error(msg.str());
+  }
+  if (s.substr(0,9) != "<example>")
+  {
+    std::stringstream msg;
+    msg << __func__ << ": XML string '" << s << "' does not begin with <example>";
+    throw std::logic_error(msg.str());
+  }
+  if (s.substr(s.size() - 10,10) != "</example>")
+  {
+    std::stringstream msg;
+    msg << __func__ << ": XML string '" << s << "' does not end with </example>";
+    throw std::logic_error(msg.str());
+  }
+
   assert(s.size() >= 17);
   assert(s.substr(0,9) == "<example>");
   assert(s.substr(s.size() - 10,10) == "</example>");
+
 
   std::string text;
   cmap::Competency competency = cmap::Competency::uninitialized;

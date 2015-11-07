@@ -20,6 +20,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 #include "conceptmapcommandsetselectedwithcoordinat.h"
 
+/*
+
 #include <cassert>
 #include <sstream>
 
@@ -58,3 +60,5 @@ void ribi::cmap::CommandSetSelectedWithCoordinat::undo()
   //Give back previous selection
   m_conceptmap->SetSelected(m_prev_selected);
 }
+
+*/

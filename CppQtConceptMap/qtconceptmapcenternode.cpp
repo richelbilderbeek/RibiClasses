@@ -32,24 +32,11 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "trace.h"
 #pragma GCC diagnostic pop
 
-ribi::cmap::QtCenterNode::QtCenterNode(
-  const boost::shared_ptr<CenterNode> node
-)
+ribi::cmap::QtCenterNode::QtCenterNode(const CenterNode& node)
   : QtNode(node)
 {
-  assert(node);
+  assert(IsCenterNode(node));
   //assert(this->GetDisplayStrategy());
   this->setFlags(QGraphicsItem::ItemIsFocusable);
   //this->GetDisplayStrategy()->SetMainBrush(QtBrushFactory::CreateGoldGradientBrush());
 }
-
-/*
-const boost::shared_ptr<ribi::cmap::QtItemDisplayStrategy> ribi::cmap::QtCenterNode::CreateConceptItem(
-  const boost::shared_ptr<Node> node)
-{
-  assert(node);
-  const boost::shared_ptr<QtDisplayStrategy> item(new QtDisplayStrategy(node->GetConcept()));
-  assert(item);
-  return item;
-}
-*/

@@ -49,7 +49,7 @@ struct QtEdge : public QGraphicsItem
 
   using Arrow = boost::shared_ptr<QtQuadBezierArrowItem>;
   using ReadOnlyArrow = boost::shared_ptr<const QtQuadBezierArrowItem> ;
-  using NodePtr = boost::shared_ptr<Node>;
+  using NodePtr = Node;
   using ReadOnlyNodePtr = boost::shared_ptr<const Node>;
   using QtNodePtr =  QtNode *;
   using ReadOnlyQtNodePtr = const QtNode *;

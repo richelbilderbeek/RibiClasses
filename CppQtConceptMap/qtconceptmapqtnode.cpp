@@ -49,20 +49,17 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "trace.h"
 #pragma GCC diagnostic pop
 
-ribi::cmap::QtNode::QtNode(
-  const boost::shared_ptr<Node> node
-)
+ribi::cmap::QtNode::QtNode(const Node& node)
   : QtRoundedEditRectItem(),
     m_signal_base_changed{},
     m_signal_key_down_pressed{},
     m_signal_node_changed{},
-    m_node{},
+    m_node{node},
     m_show_bounding_rect{false}
 {
   #ifndef NDEBUG
   Test();
   #endif
-  assert(node);
 
   //Allow mouse tracking
   this->setAcceptHoverEvents(true);
@@ -75,7 +72,6 @@ ribi::cmap::QtNode::QtNode(
     | QGraphicsItem::ItemIsMovable
     | QGraphicsItem::ItemIsSelectable
   );
-
 
   SetNode(node);
 
@@ -119,20 +115,6 @@ void ribi::cmap::QtNode::focusOutEvent(QFocusEvent* e) noexcept
   assert(!hasFocus());
 }
 
-boost::shared_ptr<const ribi::cmap::Node> ribi::cmap::QtNode::GetNode() const noexcept
-{
-  const auto p = m_node;
-  assert(p);
-  return p;
-}
-
-boost::shared_ptr<ribi::cmap::Node> ribi::cmap::QtNode::GetNode() noexcept
-{
-  const auto p = m_node;
-  assert(p);
-  return p;
-}
-
 void ribi::cmap::QtNode::hoverMoveEvent(QGraphicsSceneHoverEvent*) noexcept
 {
   this->setCursor(QCursor(Qt::PointingHandCursor));
@@ -165,7 +147,7 @@ void ribi::cmap::QtNode::OnConceptChanged(Node * const node) noexcept
 {
   //Node changed, sync QtRoundedRectItem
   assert(node);
-  assert(node == m_node.get());
+  assert(*node == m_node);
   const std::string new_str = node->GetConcept().GetName();
   const std::vector<std::string> new_text{new_str};
   assert(new_text.size() == 1);
@@ -178,7 +160,7 @@ void ribi::cmap::QtNode::OnPosChanged(const QtRoundedRectItem * const item) noex
   //QtRoundedRectItem changed, sync Node
   assert(item);
   const auto new_pos = item->GetCenterPos();
-  m_node->SetPos(new_pos.x(),new_pos.y());
+  m_node.SetPos(new_pos.x(),new_pos.y());
 }
 
 void ribi::cmap::QtNode::OnTextChanged(const QtRoundedRectItem * const
@@ -196,7 +178,7 @@ void ribi::cmap::QtNode::OnTextChanged(const QtRoundedRectItem * const
   );
   const std::string s{Container().Concatenate(new_text)};
   assert(std::count(std::begin(s),std::end(s),'\n') ==  0 && "Keep it single-line");
-  m_node->GetConcept().SetName(s);
+  m_node.GetConcept().SetName(s);
 }
 
 
@@ -229,7 +211,7 @@ void ribi::cmap::QtNode::paint(
 {
   Base::paint(painter,item,widget);
 
-  if (!GetNode()->GetConcept().GetExamples().Get().empty())
+  if (!GetNode().GetConcept().GetExamples().Get().empty())
   {
     //painter->setBrush(m_display_strategy->GetIndicatorBrush());
     //painter->setPen(m_display_strategy->GetIndicatorPen());
@@ -278,11 +260,10 @@ void ribi::cmap::QtNode::paint(
   }
 }
 
-void ribi::cmap::QtNode::SetNode(const boost::shared_ptr<Node>& node) noexcept
+void ribi::cmap::QtNode::SetNode(const Node& node) noexcept
 {
   const bool verbose{false};
 
-  assert(node);
   if (m_node == node)
   {
     return;
@@ -291,21 +272,21 @@ void ribi::cmap::QtNode::SetNode(const boost::shared_ptr<Node>& node) noexcept
   if (verbose)
   {
     std::stringstream s;
-    s << "Setting node '" << node->ToStr() << "'\n";
+    s << "Setting node '" << node.ToStr() << "'\n";
   }
-  const auto concept_after = node->GetConcept();
-  const auto x_after = node->GetX();
-  const auto y_after = node->GetY();
+  const auto concept_after = node.GetConcept();
+  const auto x_after = node.GetX();
+  const auto y_after = node.GetY();
 
   bool concept_changed{true};
   bool x_changed{true};
   bool y_changed{true};
 
-  if (m_node)
+  //if (m_node)
   {
-    const auto concept_before = m_node->GetConcept();
-    const auto x_before = m_node->GetX();
-    const auto y_before = m_node->GetY();
+    const auto concept_before = m_node.GetConcept();
+    const auto x_before = m_node.GetX();
+    const auto y_before = m_node.GetY();
 
     concept_changed = concept_before != concept_after;
     x_changed = x_before != x_after;
@@ -342,55 +323,54 @@ void ribi::cmap::QtNode::SetNode(const boost::shared_ptr<Node>& node) noexcept
       }
     }
     //Disconnect m_concept
-    m_node->m_signal_concept_changed.disconnect(
-      boost::bind(&ribi::cmap::QtNode::OnConceptChanged,this,boost::lambda::_1)
-    );
-    m_node->m_signal_x_changed.disconnect(
-      boost::bind(&ribi::cmap::QtNode::OnXchanged,this,boost::lambda::_1)
-    );
-    m_node->m_signal_y_changed.disconnect(
-      boost::bind(&ribi::cmap::QtNode::OnYchanged,this,boost::lambda::_1)
-    );
+//    m_node.m_signal_concept_changed.disconnect(
+//      boost::bind(&ribi::cmap::QtNode::OnConceptChanged,this,boost::lambda::_1)
+//    );
+//    m_node.m_signal_x_changed.disconnect(
+//      boost::bind(&ribi::cmap::QtNode::OnXchanged,this,boost::lambda::_1)
+//    );
+//    m_node.m_signal_y_changed.disconnect(
+//      boost::bind(&ribi::cmap::QtNode::OnYchanged,this,boost::lambda::_1)
+//    );
   }
 
   //Replace m_example by the new one
   m_node = node;
 
 
-  assert(m_node->GetConcept() == concept_after );
-  assert(m_node->GetX() == x_after );
-  assert(m_node->GetY() == y_after);
+  assert(m_node.GetConcept() == concept_after );
+  assert(m_node.GetX() == x_after );
+  assert(m_node.GetY() == y_after);
 
-  //SetPos(m_node->GetX(),m_node->GetY());
-  //assert(GetPos().x() == m_node->GetX());
-  //assert(GetPos().y() == m_node->GetY());
+  //SetPos(m_node.GetX(),m_node.GetY());
+  //assert(GetPos().x() == m_node.GetX());
+  //assert(GetPos().y() == m_node.GetY());
 
-  m_node->m_signal_concept_changed.connect(
-    boost::bind(&ribi::cmap::QtNode::OnConceptChanged,this,boost::lambda::_1)
-  );
-  m_node->m_signal_x_changed.connect(
-    boost::bind(&ribi::cmap::QtNode::OnXchanged,this,boost::lambda::_1)
-  );
-  m_node->m_signal_y_changed.connect(
-    boost::bind(&ribi::cmap::QtNode::OnYchanged,this,boost::lambda::_1)
-  );
+//  m_node.m_signal_concept_changed.connect(
+//    boost::bind(&ribi::cmap::QtNode::OnConceptChanged,this,boost::lambda::_1)
+//  );
+//  m_node.m_signal_x_changed.connect(
+//    boost::bind(&ribi::cmap::QtNode::OnXchanged,this,boost::lambda::_1)
+//  );
+//  m_node.m_signal_y_changed.connect(
+//    boost::bind(&ribi::cmap::QtNode::OnYchanged,this,boost::lambda::_1)
+//  );
 
-  //Emit everything that has changed
-  if (concept_changed)
-  {
-    m_node->m_signal_concept_changed(m_node.get());
-  }
-  if (x_changed)
-  {
-    m_node->m_signal_x_changed(m_node.get());
-  }
-  if (y_changed)
-  {
-    m_node->m_signal_y_changed(m_node.get());
-  }
+//  //Emit everything that has changed
+//  if (concept_changed)
+//  {
+//    m_node.m_signal_concept_changed(m_node.get());
+//  }
+//  if (x_changed)
+//  {
+//    m_node.m_signal_x_changed(m_node.get());
+//  }
+//  if (y_changed)
+//  {
+//    m_node.m_signal_y_changed(m_node.get());
+//  }
 
-  assert( node ==  m_node);
-  assert(*node == *m_node);
+  assert(node == m_node);
 }
 
 #ifndef NDEBUG
@@ -424,7 +404,7 @@ void ribi::cmap::QtNode::Test() noexcept
     const auto qtnode = QtNodeFactory().GetTest(1);
     const boost::shared_ptr<QtRoundedEditRectItem> edit_rect{boost::dynamic_pointer_cast<QtRoundedEditRectItem>(qtnode)};
     const auto node = qtnode->GetNode();
-    const double node_x = node->GetX();
+    const double node_x = node.GetX();
     const double edit_rect_x = edit_rect->GetCenterX();
     assert(std::abs(node_x - edit_rect_x) < max_error);
   }
@@ -433,7 +413,7 @@ void ribi::cmap::QtNode::Test() noexcept
     const auto qtnode = QtNodeFactory().GetTest(1);
     const boost::shared_ptr<QtRoundedEditRectItem> edit_rect{boost::dynamic_pointer_cast<QtRoundedEditRectItem>(qtnode)};
     const auto node = qtnode->GetNode();
-    const double node_y = node->GetY();
+    const double node_y = node.GetY();
     const double edit_rect_y = edit_rect->GetCenterY();
     assert(std::abs(node_y - edit_rect_y) < max_error);
   }
@@ -442,7 +422,7 @@ void ribi::cmap::QtNode::Test() noexcept
     const auto qtnode = QtNodeFactory().GetTest(1);
     const boost::shared_ptr<QtRoundedEditRectItem> edit_rect{boost::dynamic_pointer_cast<QtRoundedEditRectItem>(qtnode)};
     const auto node = qtnode->GetNode();
-    const std::string node_text{node->GetConcept().GetName()};
+    const std::string node_text{node.GetConcept().GetName()};
     const std::string edit_rect_text{Container().Concatenate(edit_rect->GetText())};
     if (node_text != edit_rect_text)
     {
@@ -458,7 +438,7 @@ void ribi::cmap::QtNode::Test() noexcept
     const std::string old_name = qtrectitem->GetText()[0];
     const std::string new_name{old_name + " (modified)"};
     qtrectitem->SetText( { new_name } );
-    const std::string new_name_again{qtnode->GetNode()->GetConcept().GetName()};
+    const std::string new_name_again{qtnode->GetNode().GetConcept().GetName()};
     assert(new_name_again == new_name);
   }
 }
@@ -474,7 +454,7 @@ std::string ribi::cmap::QtNode::ToStr() const noexcept
 std::ostream& ribi::cmap::operator<<(std::ostream& os, const QtNode& qtnode) noexcept
 {
   os
-    << (*qtnode.GetNode())
+    << qtnode.GetNode()
   ;
   return os;
 }

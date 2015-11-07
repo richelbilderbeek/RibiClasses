@@ -42,10 +42,6 @@ ribi::cmap::CommandDeleteNode::CommandDeleteNode(
   {
     throw std::logic_error("Cannot delete Node from an empty concept map");
   }
-  if (!m_node)
-  {
-    throw std::logic_error("Cannot delete empty Node");
-  }
   if (!m_conceptmap->HasNode(m_node))
   {
     throw std::logic_error("Cannot delete Node that is not in ConceptMap");
@@ -68,7 +64,7 @@ void ribi::cmap::CommandDeleteNode::redo()
     {
       std::clog
         << "Deleting edge with text '"
-        << edge->GetNode()->GetConcept().GetName() << "'" << std::endl
+        << edge->GetNode().GetConcept().GetName() << "'" << std::endl
       ;
     }
     m_conceptmap->DeleteEdge(edge);
@@ -77,7 +73,7 @@ void ribi::cmap::CommandDeleteNode::redo()
   {
     std::clog
       << "Deleting node with text '"
-      << m_node->GetConcept().GetName() << "'" << std::endl
+      << m_node.GetConcept().GetName() << "'" << std::endl
     ;
   }
   m_conceptmap->DeleteNode(m_node);
@@ -96,7 +92,7 @@ void ribi::cmap::CommandDeleteNode::undo()
   {
     std::clog
       << "Adding node with text '"
-      << m_node->GetConcept().GetName() << "'" << std::endl
+      << m_node.GetConcept().GetName() << "'" << std::endl
     ;
   }
   m_conceptmap->AddNode(m_node);
@@ -107,7 +103,7 @@ void ribi::cmap::CommandDeleteNode::undo()
     {
       std::clog
         << "Adding edge with text '"
-        << edge->GetNode()->GetConcept().GetName() << "'" << std::endl
+        << edge->GetNode().GetConcept().GetName() << "'" << std::endl
       ;
     }
     m_conceptmap->AddEdge(edge);

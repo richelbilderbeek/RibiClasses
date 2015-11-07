@@ -80,6 +80,26 @@ ribi::cmap::Examples ribi::cmap::ExamplesFactory::FromXml(const std::string& s) 
 {
   if (s.size() < 20)
   {
+    std::stringstream msg;
+    msg << __func__ << ": XML string '" << s << "' is only " << s.size() << " characters long, need at least 20";
+    throw std::logic_error(msg.str());
+  }
+  if (s.substr(0,10) != "<examples>")
+  {
+    std::stringstream msg;
+    msg << __func__ << ": XML string '" << s << "' does not begin with <examples>";
+    throw std::logic_error(msg.str());
+  }
+  if (s.substr(s.size() - 11,11) != "</examples>")
+  {
+    std::stringstream msg;
+    msg << __func__ << ": XML string '" << s << "' does not end with </examples>";
+    throw std::logic_error(msg.str());
+  }
+
+  /*
+  if (s.size() < 20)
+  {
     return Examples();
   }
   if (s.substr(0,10) != "<examples>")
@@ -90,6 +110,7 @@ ribi::cmap::Examples ribi::cmap::ExamplesFactory::FromXml(const std::string& s) 
   {
     return Examples();
   }
+  */
   assert(Regex().GetRegexMatches(s,"(<examples>)").size()
       == Regex().GetRegexMatches(s,"(</examples>)").size());
 

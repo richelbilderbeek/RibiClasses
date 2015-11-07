@@ -26,6 +26,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmap.h"
 
 #include "conceptmapedgefactory.h"
+#include "conceptmapnode.h"
 #include "trace.h"
 
 ribi::cmap::CommandCreateNewEdge::CommandCreateNewEdge(

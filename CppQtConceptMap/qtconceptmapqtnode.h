@@ -27,8 +27,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
 #include <boost/shared_ptr.hpp>
 #include "qtroundededitrectitem.h"
-//
-
+#include "conceptmapnode.h"
 #include "conceptmapfwd.h"
 #pragma GCC diagnostic pop
 
@@ -43,19 +42,17 @@ struct QtNode : public QtRoundedEditRectItem
 
   ///Node cannot be const as it contains a Concept that the user might want to edit
   ///concept_item contains the Stategy to display (and respond to the concept)
-  explicit QtNode(
-    const boost::shared_ptr<Node> node
-  );
+  explicit QtNode(const Node& node);
 
   virtual QRectF boundingRect() const { return Base::boundingRect(); }
 
   void DisableAll();
   void EnableAll();
 
-  boost::shared_ptr<const Node>  GetNode() const noexcept;
-  boost::shared_ptr<      Node>  GetNode()       noexcept;
+  const Node& GetNode() const noexcept { return m_node; }
+        Node& GetNode()       noexcept { return m_node; }
 
-  void SetNode(const boost::shared_ptr<Node>& node) noexcept;
+  void SetNode(const Node& node) noexcept;
 
   std::string ToStr() const noexcept;
 
@@ -91,7 +88,7 @@ private:
   //const QPen m_focus_pen;
 
   ///The node being edited, or displayed and not changed, or rated
-  boost::shared_ptr<Node> m_node;
+  Node m_node;
 
   bool m_show_bounding_rect;
 

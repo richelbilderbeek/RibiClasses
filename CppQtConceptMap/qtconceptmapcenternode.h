@@ -41,7 +41,7 @@ struct QtCenterNode : public QtNode
   ///(that is, when a sub-concept map is created from a concept map and the
   ///focal node needs to be rated)
   ///concept_item is the display Strategy
-  explicit QtCenterNode(const boost::shared_ptr<CenterNode> node);
+  explicit QtCenterNode(const CenterNode& node);
 
   private:
   //static const boost::shared_ptr<QtItemDisplayStrategy> CreateConceptItem(const boost::shared_ptr<Node> node);

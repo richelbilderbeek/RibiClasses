@@ -5,6 +5,7 @@
 
 #include "conceptmap.h"
 #include "conceptmaphelper.h"
+#include "conceptmapnode.h"
 #include "trace.h"
 
 ribi::cmap::CommandAddSelectedRandom::CommandAddSelectedRandom(const boost::shared_ptr<ConceptMap> conceptmap)
@@ -20,7 +21,7 @@ ribi::cmap::CommandAddSelectedRandom::CommandAddSelectedRandom(const boost::shar
   {
     throw std::logic_error("AddSelected needs nodes to focus on");
   }
-  const auto to_add = m_conceptmap->GetRandomNodes(AddConst(conceptmap->GetSelectedNodes()));
+  const auto to_add = m_conceptmap->GetRandomNodes(conceptmap->GetSelectedNodes());
   if (to_add.empty())
   {
     std::stringstream s;

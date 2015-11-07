@@ -28,7 +28,9 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <vector>
 
 #include "conceptmapcommand.h"
+#include "conceptmapnode.h"
 #pragma GCC diagnostic pop
+/*
 
 namespace ribi {
 namespace cmap {
@@ -41,9 +43,9 @@ class CommandSetSelectedWithCoordinat final : public Command
   public:
 
   using ConstEdges = std::vector<boost::shared_ptr<const Edge>>;
-  using ConstNodes = std::vector<boost::shared_ptr<const Node>>;
+  using ConstNodes = std::vector<Node>;
   using Edges = std::vector<boost::shared_ptr<Edge>>;
-  using Nodes = std::vector<boost::shared_ptr<Node>>;
+  using Nodes = std::vector<Node>;
   using EdgesAndNodes = std::pair<Edges,Nodes>;
   using ConstEdgesAndNodes = std::pair<ConstEdges,ConstNodes>;
 
@@ -62,7 +64,7 @@ class CommandSetSelectedWithCoordinat final : public Command
   private:
   EdgesAndNodes m_prev_selected;
   const boost::shared_ptr<ConceptMap> m_conceptmap;
-  const boost::shared_ptr<Node> m_node;
+  const Node m_node;
 
   const int m_x;
   const int m_y;
@@ -71,5 +73,5 @@ class CommandSetSelectedWithCoordinat final : public Command
 } //~namespace cmap
 } //~namespace ribi
 
-
+*/
 #endif // CONCEPTMAPCOMMANDSETSELECTEDWITHCOORDINAT_H

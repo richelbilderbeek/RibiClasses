@@ -241,7 +241,7 @@ void ribi::cmap::QtConceptMap::Test() noexcept
     qtconceptmap->SetConceptMap(conceptmap);
     const auto node = NodeFactory().GetTest(0);
     qtconceptmap->AddNode(node);
-    assert(qtconceptmap->GetQtNode(node.get()));
+    assert(qtconceptmap->GetQtNode(node));
   }
   if (verbose) { TRACE("AddNode: added QtNode must get selected"); }
   {
@@ -581,20 +581,20 @@ void ribi::cmap::QtConceptMap::Test() noexcept
     const double y2{400.0};
     const double x3{(x1+x2)/2.0};
     const double y3{(y1+y2)/2.0};
-    qtfrom->GetNode()->SetX(x1);
-    qtfrom->GetNode()->SetY(y1);
-    qtto->GetNode()->SetX(x2);
-    qtto->GetNode()->SetY(y2);
+    qtfrom->GetNode().SetX(x1);
+    qtfrom->GetNode().SetY(y1);
+    qtto->GetNode().SetX(x2);
+    qtto->GetNode().SetY(y2);
 
     const auto edge = EdgeFactory().Create(from,to);
 
-    assert(std::abs(edge->GetNode()->GetX() - x3) < 1.0);
-    assert(std::abs(edge->GetNode()->GetY() - y3) < 1.0);
+    assert(std::abs(edge->GetNode().GetX() - x3) < 1.0);
+    assert(std::abs(edge->GetNode().GetY() - y3) < 1.0);
 
     const auto qtedge = qtconceptmap->AddEdge(edge);
 
-    assert(std::abs(qtedge->GetQtNode()->GetNode()->GetX() - x3) < 1.0);
-    assert(std::abs(qtedge->GetQtNode()->GetNode()->GetY() - y3) < 1.0);
+    assert(std::abs(qtedge->GetQtNode()->GetNode().GetX() - x3) < 1.0);
+    assert(std::abs(qtedge->GetQtNode()->GetNode().GetY() - y3) < 1.0);
   }
   if (verbose) { TRACE("QtNode and Node coordinats must be in sync"); }
   {
@@ -602,24 +602,23 @@ void ribi::cmap::QtConceptMap::Test() noexcept
     boost::shared_ptr<QtConceptMap> qtconceptmap(new QtConceptMap);
     qtconceptmap->SetConceptMap(conceptmap);
 
-    const auto node = NodeFactory().GetTest(0);
+    Node node = NodeFactory().GetTest(0);
     const auto qtnode = qtconceptmap->AddNode(node);
 
     const double x1{100.0};
     const double y1{200.0};
     const double max_error{0.1};
-    qtnode->GetNode()->SetX(x1);
-    qtnode->GetNode()->SetY(y1);
+    qtnode->GetNode().SetX(x1);
+    qtnode->GetNode().SetY(y1);
     {
       const double new_x = 12.34;
       const double new_y = 43.21;
 
       //Change via node
-      assert(node);
-      node->SetX(new_x);
-      node->SetY(new_y);
+      node.SetX(new_x);
+      node.SetY(new_y);
 
-      const double node_x = node->GetX();
+      const double node_x = node.GetX();
       const double qtnode_x = qtnode->GetCenterX();
 
       if (std::abs(node_x - qtnode_x) >= max_error)
@@ -629,7 +628,7 @@ void ribi::cmap::QtConceptMap::Test() noexcept
       }
       assert(std::abs(node_x - qtnode_x) < max_error
        && "X coordinat must be in sync");
-      const double node_y = node->GetY();
+      const double node_y = node.GetY();
       const double qtnode_y = qtnode->GetCenterY();
 
       assert(node_y == qtnode_y
@@ -642,12 +641,12 @@ void ribi::cmap::QtConceptMap::Test() noexcept
 
       qtnode->SetCenterPos(new_x,new_y);
 
-      const double node_x = node->GetX();
+      const double node_x = node.GetX();
       const double qtnode_x = qtnode->GetCenterX();
 
       assert(std::abs(node_x - qtnode_x) < max_error
        && "X coordinat must be in sync");
-      const double node_y = node->GetY();
+      const double node_y = node.GetY();
       const double qtnode_y = qtnode->GetCenterY();
 
       assert(std::abs(node_y - qtnode_y) < max_error
@@ -846,8 +845,8 @@ void ribi::cmap::QtConceptMap::Test() noexcept
 
     assert(conceptmap->GetNodes().size() == 1);
     assert(conceptmap->GetNodes().size() == qtconceptmap->GetQtNodes().size());
-    assert(qtconceptmap->GetQtNodes()[0]->x() == qtconceptmap->GetConceptMap()->GetNodes()[0]->GetX());
-    assert(qtconceptmap->GetQtNodes()[0]->y() == qtconceptmap->GetConceptMap()->GetNodes()[0]->GetY());
+    assert(qtconceptmap->GetQtNodes()[0]->x() == qtconceptmap->GetConceptMap()->GetNodes()[0].GetX());
+    assert(qtconceptmap->GetQtNodes()[0]->y() == qtconceptmap->GetConceptMap()->GetNodes()[0].GetY());
 
     const double x_before{qtconceptmap->GetQtNodes()[0]->x()};
     const double y_before{qtconceptmap->GetQtNodes()[0]->y()};
@@ -980,8 +979,8 @@ void ribi::cmap::QtConceptMap::Test() noexcept
     const double y2{400.0};
     const double x3{(x1+x2)/2.0};
     const double y3{(y1+y2)/2.0};
-    qtfrom->GetNode()->SetPos(x1,y1);
-    qtto->GetNode()->SetPos(x2,y2);
+    qtfrom->GetNode().SetPos(x1,y1);
+    qtto->GetNode().SetPos(x2,y2);
 
     auto ctrl_e = CreateControlE();
     qtconceptmap->keyPressEvent(&ctrl_e);
@@ -992,8 +991,8 @@ void ribi::cmap::QtConceptMap::Test() noexcept
 
     assert(std::abs(qtedge->GetQtNode()->x() - x3) < 1.0);
     assert(std::abs(qtedge->GetQtNode()->y() - y3) < 1.0);
-    assert(std::abs(qtedge->GetQtNode()->GetNode()->GetX() - x3) < 1.0);
-    assert(std::abs(qtedge->GetQtNode()->GetNode()->GetY() - y3) < 1.0);
+    assert(std::abs(qtedge->GetQtNode()->GetNode().GetX() - x3) < 1.0);
+    assert(std::abs(qtedge->GetQtNode()->GetNode().GetY() - y3) < 1.0);
   }
   if (verbose) { TRACE("CTRL-N, CTRL-N, Down 10x, CTRL-E: new Edge its QtNode must be between the two QtNodes"); }
   if (!"Not sure of the usefulness of this test")
@@ -1012,16 +1011,16 @@ void ribi::cmap::QtConceptMap::Test() noexcept
 
     for (int i=0; i!=100; ++i)
     {
-      TRACE(qtfrom->GetNode()->GetY());
-      TRACE(qtto->GetNode()->GetY());
+      TRACE(qtfrom->GetNode().GetY());
+      TRACE(qtto->GetNode().GetY());
 
       auto ctrl_down = CreateControlDown();
       qtconceptmap->keyPressEvent(&ctrl_down);
       //for (int j=0; j!=1000; ++j) { qApp->processEvents(); }
       //qtconceptmap->showFullScreen();
     }
-    assert(qtfrom->GetNode()->GetY() > 100.0);
-    assert(qtto->GetNode()->GetY() > 100.0);
+    assert(qtfrom->GetNode().GetY() > 100.0);
+    assert(qtto->GetNode().GetY() > 100.0);
 
     auto ctrl_e = CreateControlE();
     qtconceptmap->keyPressEvent(&ctrl_e);

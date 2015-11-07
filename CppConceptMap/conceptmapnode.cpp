@@ -24,11 +24,10 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
 #include "conceptmapnode.h"
 
-//#include <boost/lexical_cast.hpp>
 #include <boost/lambda/lambda.hpp>
-//#include <QRegExp>
 
 #include "counter.h"
+#include "container.h"
 #include "conceptmapconcept.h"
 #include "conceptmapconceptfactory.h"
 #include "conceptmapnodefactory.h"
@@ -63,7 +62,7 @@ int ribi::cmap::CountCenterNodes(
   const std::vector<Node>& nodes
 ) noexcept
 {
-  const int cnt = container().CountIf(v,
+  const int cnt = container().CountIf(nodes,
     [](const Node& node)
     {
       return IsCenterNode(node);
@@ -73,10 +72,10 @@ int ribi::cmap::CountCenterNodes(
 }
 
 
-ribi::cmap::Node * ribi::cmap::FindCenterNode(const std::vector<Node>& nodes) noexcept
+
+std::vector<ribi::cmap::Node>::const_iterator  ribi::cmap::FindCenterNode(const std::vector<Node>& nodes) noexcept
 {
-  const auto iter = std::find_if(std::begin(nodes),std::end(nodes),[](const Node& node) { return IsCenterNode(node); } );
-  return iter;
+  return std::find_if(std::begin(nodes),std::end(nodes),[](const Node& node) { return IsCenterNode(node); } );
 }
 
 std::vector<ribi::cmap::Node> ribi::cmap::Node::GetTests() noexcept
@@ -98,6 +97,11 @@ std::vector<ribi::cmap::Node> ribi::cmap::Node::GetTests() noexcept
 bool ribi::cmap::HasSameContent(const Node& lhs, const Node& rhs) noexcept
 {
   return lhs.GetConcept() == rhs.GetConcept();
+}
+
+bool ribi::cmap::IsCenterNode(const Node& node) noexcept
+{
+  return node.IsCenterNode();
 }
 
 void ribi::cmap::Node::OnConceptChanged(Concept * const) noexcept
@@ -253,19 +257,20 @@ void ribi::cmap::Node::Test() noexcept
     assert(a == b);
   }
   {
-    const Node a = NodeFactory().Create();
-    const Node b(a);
+    const Node a = NodeFactory().GetTest(1);
+    const Node b = NodeFactory().GetTest(2);
+    assert(a != b);
     Node c(a);
     assert(c == a);
     assert(c != b);
-    c = a;
+    c = b;
     assert(c != a);
     assert(c == b);
   }
   {
     const std::vector<Node> v = Node::GetTests();
     std::for_each(v.begin(),v.end(),
-      [](const auto& node)
+      [](const Node& node)
       {
         //Test copy constructor
         const Node c(node);

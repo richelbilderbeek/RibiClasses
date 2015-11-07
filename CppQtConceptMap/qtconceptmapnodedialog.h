@@ -27,7 +27,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
 #include <boost/shared_ptr.hpp>
 #include "qthideandshowdialog.h"
-
+#include "conceptmapnode.h"
 #include "qtconceptmapfwd.h"
 #pragma GCC diagnostic pop
 
@@ -48,14 +48,15 @@ public:
   ~QtNodeDialog() noexcept;
 
   static int GetMinimumHeight(const Node& node) noexcept;
-  boost::shared_ptr<Node> GetNode() const noexcept { return m_node; }
+  const Node& GetNode() const noexcept { return m_node; }
+        Node& GetNode()       noexcept { return m_node; }
   std::string GetUiName() const noexcept;
   ///Read the X value directly from GUI
   double GetUiX() const noexcept;
   ///Read the Y value directly from GUI
   double GetUiY() const noexcept;
 
-  void SetNode(const boost::shared_ptr<Node>& node) noexcept;
+  void SetNode(const Node& node) noexcept;
 
   ///Set the name directly to GUI
   void SetUiName(const std::string& name) noexcept;
@@ -73,15 +74,15 @@ private:
   Ui::QtNodeDialog *ui;
 
   ///The Node to work on
-  boost::shared_ptr<Node> m_node;
+  Node m_node;
 
   boost::shared_ptr<QtConceptDialog> m_qtconceptdialog;
 
 
   //concept is non-const, as its displayal by this dialog renders it editable
-  void OnConceptChanged(Node * const node);
-  void OnXchanged(Node * const node);
-  void OnYchanged(Node * const node);
+  void OnConceptChanged(const Node& node);
+  void OnXchanged(const Node& node);
+  void OnYchanged(const Node& node);
 
   #ifndef NDEBUG
   static void Test() noexcept;

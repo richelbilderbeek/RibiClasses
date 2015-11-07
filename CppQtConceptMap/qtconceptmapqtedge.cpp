@@ -324,7 +324,7 @@ void ribi::cmap::QtEdge::OnConceptChanged(Node * const node) noexcept
 {
   //Node changed, sync QtRoundedRectItem
   assert(node);
-  assert(node == m_edge->GetNode().get());
+  assert(*node == m_edge->GetNode());
   const std::string new_str{node->GetConcept().GetName()};
   const std::vector<std::string> new_text{new_str};
   assert(new_text.size() == 1);
@@ -344,8 +344,8 @@ void ribi::cmap::QtEdge::OnEdgeChanged(Edge * const edge) noexcept
 
 void ribi::cmap::QtEdge::OnFromChanged(Edge * const edge) noexcept
 {
-  this->GetFrom()->SetNode(edge->GetFrom());
-  assert(edge->GetFrom() == this->GetFrom()->GetNode());
+  this->GetFrom()->SetNode(*edge->GetFrom());
+  assert(*edge->GetFrom() == this->GetFrom()->GetNode());
   m_signal_edge_changed(this);
   this->update(); //Obligatory: when the 'source/from' QtNode moves, this update causes the QtEdge keep pointing to
   //if (this->scene()) { this->scene()->update(); } // Not needed
@@ -361,9 +361,9 @@ void ribi::cmap::QtEdge::OnHeadArrowChanged(Edge * const edge) noexcept
 /*
 void ribi::cmap::QtEdge1::OnNodeChanged(QtNode * const node) noexcept
 {
-  m_qtnode->SetCenterX(edge->GetNode()->GetX());
-  m_qtnode->SetCenterY(edge->GetNode()->GetY());
-  m_qtnode->SetText( { edge->GetNode()->GetConcept().GetName() } );
+  m_qtnode->SetCenterX(edge->GetNode().GetX());
+  m_qtnode->SetCenterY(edge->GetNode().GetY());
+  m_qtnode->SetText( { edge->GetNode().GetConcept().GetName() } );
   this->update();
   m_signal_edge_changed(this);
 }
@@ -371,9 +371,9 @@ void ribi::cmap::QtEdge1::OnNodeChanged(QtNode * const node) noexcept
 
 void ribi::cmap::QtEdge::OnNodeChanged(Edge * const edge) noexcept
 {
-  m_qtnode->SetCenterX(edge->GetNode()->GetX());
-  m_qtnode->SetCenterY(edge->GetNode()->GetY());
-  m_qtnode->SetText( { edge->GetNode()->GetConcept().GetName() } );
+  m_qtnode->SetCenterX(edge->GetNode().GetX());
+  m_qtnode->SetCenterY(edge->GetNode().GetY());
+  m_qtnode->SetText( { edge->GetNode().GetConcept().GetName() } );
   this->update();
   if (this->scene()) { this->scene()->update(); }
   m_signal_edge_changed(this);
@@ -398,18 +398,18 @@ void ribi::cmap::QtEdge::OnTailArrowChanged(Edge * const edge) noexcept
 void ribi::cmap::QtEdge::OnTextChanged(QtRoundedEditRectItem* item) noexcept
 {
   const auto new_name = item->GetText()[0];
-  const auto old_name = GetEdge()->GetNode()->GetConcept().GetName();
+  const auto old_name = GetEdge()->GetNode().GetConcept().GetName();
   if (old_name != new_name)
   {
-    this->GetEdge()->GetNode()->GetConcept().SetName(new_name);
+    this->GetEdge()->GetNode().GetConcept().SetName(new_name);
     m_signal_edge_changed(this);
   }
 }
 
 void ribi::cmap::QtEdge::OnToChanged(Edge * const edge) noexcept
 {
-  this->GetTo()->SetNode(edge->GetTo());
-  assert(edge->GetTo() == this->GetTo()->GetNode());
+  this->GetTo()->SetNode(*edge->GetTo());
+  assert(*edge->GetTo() == this->GetTo()->GetNode());
   m_signal_edge_changed(this);
   this->update(); //Obligatory: when the 'target/to' QtNode moves, this update causes the QtEdge keep pointing to
 }
@@ -417,7 +417,7 @@ void ribi::cmap::QtEdge::OnToChanged(Edge * const edge) noexcept
 
 void ribi::cmap::QtEdge::OnArrowChanged(const QtQuadBezierArrowItem* const item)
 {
-  GetEdge()->GetNode()->GetConcept().SetName(
+  GetEdge()->GetNode().GetConcept().SetName(
     Container().Concatenate(m_qtnode->GetText())
   );
   GetEdge()->SetHeadArrow(item->HasHead());
@@ -525,13 +525,13 @@ void ribi::cmap::QtEdge::SetEdge(const boost::shared_ptr<Edge>& edge) noexcept
     const auto from_after = edge->GetFrom();
     const auto has_head_after = edge->HasHeadArrow();
     const auto has_tail_after = edge->HasTailArrow();
-    const auto node_after = edge->GetNode();
+    const Node node_after = edge->GetNode();
     const auto to_after = edge->GetTo();
 
     const auto from_before = m_edge->GetFrom();
     const auto has_head_before = m_edge->HasHeadArrow();
     const auto has_tail_before = m_edge->HasTailArrow();
-    const auto node_before = m_edge->GetNode();
+    const Node node_before = m_edge->GetNode();
     const auto to_before = m_edge->GetTo();
 
     from_changed = from_before != from_after;
@@ -582,8 +582,8 @@ void ribi::cmap::QtEdge::SetEdge(const boost::shared_ptr<Edge>& edge) noexcept
       if (node_changed)
       {
         std::stringstream s;
-        s << "Node will change from " << node_before->ToStr()
-          << " to " << node_after->ToStr() << '\n';
+        s << "Node will change from " << node_before.ToStr()
+          << " to " << node_after.ToStr() << '\n';
         TRACE(s.str());
       }
       if (to_changed)
@@ -622,9 +622,9 @@ void ribi::cmap::QtEdge::SetEdge(const boost::shared_ptr<Edge>& edge) noexcept
   if (!m_edge) { return; }
 
   //Sync
-  m_qtnode->SetCenterX(m_edge->GetNode()->GetX());
-  m_qtnode->SetCenterY(m_edge->GetNode()->GetY());
-  m_qtnode->SetText( { m_edge->GetNode()->GetConcept().GetName() } );
+  m_qtnode->SetCenterX(m_edge->GetNode().GetX());
+  m_qtnode->SetCenterY(m_edge->GetNode().GetY());
+  m_qtnode->SetText( { m_edge->GetNode().GetConcept().GetName() } );
 
   m_edge->m_signal_from_changed.connect(
     boost::bind(&ribi::cmap::QtEdge::OnFromChanged,this,boost::lambda::_1)

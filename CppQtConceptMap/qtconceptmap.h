@@ -126,10 +126,11 @@ protected:
     const QtNode* const to) const noexcept;
 
   ///Find the QtNode containing the Node
-  //QtNode * FindQtNode(boost::shared_ptr<Node> node) const { return FindQtNode(node.get()); }
-  const QtNode * GetQtNodeConst(const Node * const node) const noexcept;
+  //QtNode * FindQtNode(Node node) const { return FindQtNode(node.get()); }
+  const QtNode * GetQtNodeConst(const Node& node) const noexcept;
   //const QtNode * FindQtNode     (const Node * const node) const noexcept { return FindQtNodeConst(node); }
-        QtNode * GetQtNode(           Node * const node)       noexcept;
+  const QtNode * GetQtNode(const Node& node) const noexcept;
+        QtNode * GetQtNode(const Node& node)       noexcept;
 
   ///Obtain the center node, if there is any
   const QtNode * GetCenterNode() const noexcept;
@@ -144,7 +145,7 @@ protected:
 
   ///Have the nodes in the concept map be positioned once already, or must
   ///these be (re)positioned. '(re)', because the nodes are initially positioned at the origin
-  bool MustReposition(const std::vector<boost::shared_ptr<const cmap::Node> >& nodes) const;
+  bool MustReposition(const std::vector<Node>& nodes) const;
 
   ///All items from a ConceptMap are put in at the center and need to be repositioned
   void RepositionItems();
@@ -180,7 +181,7 @@ private:
   QtEdge * AddEdge(const boost::shared_ptr<Edge> edge);
 
   ///Adds a Node, returns the freshly created QtNode
-  QtNode * AddNode(const boost::shared_ptr<Node> node);
+  QtNode * AddNode(const Node& node);
 
   ///Remove all Qt and non-Qt items
   void CleanMe();
@@ -189,7 +190,7 @@ private:
   void DeleteEdge(const boost::shared_ptr<const Edge> edge);
 
   ///Called when a Node gets deleted from the ConceptMap
-  void DeleteNode(const boost::shared_ptr<const Node> node);
+  void DeleteNode(const Node& node);
 
 
   ///Called when an item wants to be edited

@@ -85,7 +85,7 @@ ribi::cmap::Node ribi::cmap::NodeFactory::DeepCopy(
 {
   /*
   const Concept new_concept(node->GetConcept());
-  const boost::shared_ptr<Node> new_node{
+  const Node new_node{
     Create(
       new_concept,
       node->GetX(),

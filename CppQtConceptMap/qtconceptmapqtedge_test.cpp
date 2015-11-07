@@ -56,8 +56,8 @@ void ribi::cmap::QtEdge::Test() noexcept
     QtRoundedEditRectItem a;
     QtRoundedEditRectItem b;
     QtQuadBezierArrowItem(&a,false,nullptr,true,&b);
-    const boost::shared_ptr<Node> node_from{NodeFactory().GetTest(0)};
-    const boost::shared_ptr<Node> node_to{NodeFactory().GetTest(0)};
+    const Node node_from{NodeFactory().GetTest(0)};
+    const Node node_to{NodeFactory().GetTest(0)};
     const boost::shared_ptr<QtNode> qtnode_from{new QtNode(node_from)};
     const boost::shared_ptr<QtNode> qtnode_to{new QtNode(node_to)};
     const boost::shared_ptr<Edge> edge{EdgeFactory().GetTest(0,node_from,node_to)};
@@ -69,8 +69,8 @@ void ribi::cmap::QtEdge::Test() noexcept
   const bool verbose{false};
   const int node_test_index{0};
   const int edge_test_index{0};
-  const boost::shared_ptr<Node> node_from{NodeFactory().GetTest(node_test_index)};
-  const boost::shared_ptr<Node> node_to{NodeFactory().GetTest(node_test_index)};
+  const Node node_from{NodeFactory().GetTest(node_test_index)};
+  const Node node_to{NodeFactory().GetTest(node_test_index)};
   const boost::shared_ptr<QtNode> qtnode_from{new QtNode(node_from)};
   const boost::shared_ptr<QtNode> qtnode_to{new QtNode(node_to)};
   const boost::shared_ptr<Edge> edge{EdgeFactory().GetTest(edge_test_index,node_from,node_to)};
@@ -163,20 +163,20 @@ void ribi::cmap::QtEdge::Test() noexcept
   if (verbose) { TRACE("Text of QtEdge and QtRoundedEditRectItem must match at creation"); }
   {
     const std::string qtitem_name{qtitem->GetText()[0]};
-    const std::string qtedge_name{qtedge->GetEdge()->GetNode()->GetConcept().GetName()};
+    const std::string qtedge_name{qtedge->GetEdge()->GetNode().GetConcept().GetName()};
     assert(qtitem_name == qtedge_name);
   }
   if (verbose) { TRACE("If text is set via QtRoundedEditRectItem, QtEdge must sync"); }
   {
     qtitem->SetText( { "A" } );
-    assert(qtedge->GetEdge()->GetNode()->GetConcept().GetName() == "A");
+    assert(qtedge->GetEdge()->GetNode().GetConcept().GetName() == "A");
     qtitem->SetText( { "B" } );
-    assert(qtedge->GetEdge()->GetNode()->GetConcept().GetName() == "B");
+    assert(qtedge->GetEdge()->GetNode().GetConcept().GetName() == "B");
   }
   //X
   if (verbose) { TRACE("X of QtEdge and QtRoundedEditRectItem must match at creation"); }
   {
-    const double edge_x{edge->GetNode()->GetX()};
+    const double edge_x{edge->GetNode().GetX()};
     const double qtedge_x{qtitem->GetCenterX()};
     assert(edge_x == qtedge_x);
   }
@@ -197,7 +197,7 @@ void ribi::cmap::QtEdge::Test() noexcept
   //Y
   if (verbose) { TRACE("Y of QtEdge and QtRoundedEditRectItem must match at creation"); }
   {
-    const double edge_y{edge->GetNode()->GetY()};
+    const double edge_y{edge->GetNode().GetY()};
     const double qtedge_y{qtitem->GetCenterY()};
     assert(edge_y == qtedge_y);
   }

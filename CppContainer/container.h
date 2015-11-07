@@ -81,6 +81,12 @@ struct Container
   {
     return std::find_if(std::begin(t),std::end(t),p);
   }
+#else
+  template <class T, class Predicate>
+  typename T::const_iterator FindIf(const T& t, const Predicate& p) const noexcept
+  {
+    return std::find_if(std::begin(t),std::end(t),p);
+  }
 #endif // __cplusplus >= 201402L
 
   ///Obtain the version

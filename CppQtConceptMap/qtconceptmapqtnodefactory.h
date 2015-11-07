@@ -18,13 +18,11 @@ struct QtNodeFactory
 {
   QtNodeFactory();
 
-  boost::shared_ptr<QtNode> Create(
-    const boost::shared_ptr<Node>& node
-  ) const noexcept;
+  boost::shared_ptr<QtNode> Create(const Node& node) const noexcept;
 
 
   ///Obtain a Node or CenterNode from an XML std::string
-  boost::shared_ptr<Node> FromXml(const std::string& s) const noexcept;
+  Node FromXml(const std::string& s) const noexcept;
 
   ///Obtain testing nodes
   int GetNumberOfTests() const noexcept;
