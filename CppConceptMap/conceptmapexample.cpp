@@ -64,56 +64,22 @@ ribi::cmap::Example::Example(
 
 void ribi::cmap::Example::SetCompetency(const Competency competency) noexcept
 {
-  const bool verbose{false};
-  const Competency competency_before = m_competency;
-  const Competency competency_after  =   competency;
-  if (competency_before != competency_after)
-  {
-    assert(m_competency == competency_before);
-
-    if (verbose)
-    {
-      std::stringstream s;
-      s << "Example will change Competency from " << Competencies().ToStr(competency_before)
-        << " to " << Competencies().ToStr(competency_after);
-      TRACE(s.str());
-    }
-
-    m_competency = competency;
-
-    assert(m_competency == competency_after);
-
-    if (verbose)
-    {
-      std::stringstream s;
-      s << "Competency changed to " << Competencies().ToStr(m_competency);
-      TRACE(s.str());
-    }
-  }
+  m_competency = competency;
 }
 
 void ribi::cmap::Example::SetIsComplex(const bool is_complex) noexcept
 {
-  if (m_is_complex != is_complex)
-  {
-    m_is_complex = is_complex;
-  }
+  m_is_complex = is_complex;
 }
 
 void ribi::cmap::Example::SetIsConcrete(const bool is_concrete) noexcept
 {
-  if (m_is_concrete != is_concrete)
-  {
-    m_is_concrete = is_concrete;
-  }
+  m_is_concrete = is_concrete;
 }
 
 void ribi::cmap::Example::SetIsSpecific(const bool is_specific) noexcept
 {
-  if (m_is_specific != is_specific)
-  {
-    m_is_specific = is_specific;
-  }
+  m_is_specific = is_specific;
 }
 
 void ribi::cmap::Example::SetText(const std::string& text) noexcept
@@ -122,20 +88,6 @@ void ribi::cmap::Example::SetText(const std::string& text) noexcept
   {
     m_text = text;
   }
-}
-
-ribi::cmap::Competency ribi::cmap::Example::StrToCompetency(const std::string& s)
-{
-  if (s == "uninitialized") return cmap::Competency::uninitialized;
-  if (s == "profession") return cmap::Competency::profession;
-  if (s == "organisations") return cmap::Competency::organisations;
-  if (s == "social_surroundings") return cmap::Competency::social_surroundings;
-  if (s == "target_audience") return cmap::Competency::target_audience;
-  if (s == "ti_knowledge") return cmap::Competency::ti_knowledge;
-  if (s == "prof_growth") return cmap::Competency::prof_growth;
-  if (s == "misc") return cmap::Competency::misc;
-  assert(!"Should not get here");
-  throw std::logic_error("ribi::cmap::Example::StrToCompetency: unknown string");
 }
 
 #ifndef NDEBUG

@@ -47,7 +47,7 @@ struct Node
   ~Node() noexcept {}
 
   ///Get the Concept
-  const Concept  GetConcept() const noexcept { return m_concept; }
+  const Concept& GetConcept() const noexcept { return m_concept; }
         Concept& GetConcept()       noexcept { return m_concept; }
 
   ///Get some test nodes
@@ -86,10 +86,10 @@ struct Node
   friend class NodeFactory;
   friend class CenterNodeFactory;
 
-
   ///Use NodeFactory as an unused argument to enforce using it
   explicit Node(
     const Concept& concept,
+    const bool is_center_node,
     const double x,
     const double y
   ) noexcept;
@@ -99,6 +99,8 @@ struct Node
   ///The Concept
   Concept m_concept;
 
+  int m_id; //Unique ID
+
   bool m_is_center_node;
 
   ///The x-coordinat
@@ -107,6 +109,8 @@ struct Node
   ///The y-coordinat
   double m_y;
 
+  static int sm_ids; //ID to assign
+
   ///Called whenever something on Concept changes
   ///Re-emits m_concept_changed with 'this'
   void OnConceptChanged(Concept * const this_concept) noexcept;
@@ -114,6 +118,8 @@ struct Node
   #ifndef NDEBUG
   static void Test() noexcept;
   #endif
+
+  friend bool HaveSameIds(const Node& lhs, const Node& rhs) noexcept;
 
 };
 
@@ -128,6 +134,9 @@ bool HasSameContent(const Node& lhs, const Node& rhs) noexcept;
 ///Returns true if Node is of derived class type CenterNode
 ///Returns true if Node is Node
 bool IsCenterNode(const Node& node) noexcept;
+
+///To uniquely identify all Nodes
+bool HaveSameIds(const Node& lhs, const Node& rhs) noexcept;
 
 bool operator==(const Node& lhs, const Node& rhs) noexcept;
 bool operator!=(const Node& lhs, const Node& rhs) noexcept;

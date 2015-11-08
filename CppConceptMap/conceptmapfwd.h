@@ -43,8 +43,8 @@ struct Element;
 struct Example;
 struct Examples;
 //struct File;
-struct Node;
-using CenterNode = Node;
+//struct Node;
+//using CenterNode = Node;
 struct ConceptMap;
 
 } //~namespace cmap

@@ -97,20 +97,6 @@ ribi::cmap::Examples ribi::cmap::ExamplesFactory::FromXml(const std::string& s) 
     throw std::logic_error(msg.str());
   }
 
-  /*
-  if (s.size() < 20)
-  {
-    return Examples();
-  }
-  if (s.substr(0,10) != "<examples>")
-  {
-    return Examples();
-  }
-  if (s.substr(s.size() - 11,11) != "</examples>")
-  {
-    return Examples();
-  }
-  */
   assert(Regex().GetRegexMatches(s,"(<examples>)").size()
       == Regex().GetRegexMatches(s,"(</examples>)").size());
 

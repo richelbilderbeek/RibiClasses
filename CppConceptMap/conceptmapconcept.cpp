@@ -42,13 +42,7 @@ ribi::cmap::Concept::Concept(
   const int rating_complexity,
   const int rating_concreteness,
   const int rating_specificity)
-  : //m_signal_examples_changed{},
-    //m_signal_is_complex_changed{},
-    //m_signal_name_changed{},
-    //m_signal_rating_complexity_changed{},
-    //m_signal_rating_concreteness_changed{},
-    //m_signal_rating_specificity_changed{},
-    m_examples{examples},
+  : m_examples{examples},
     m_is_complex{is_complex},
     m_name{name},
     m_rating_complexity{rating_complexity},
@@ -70,65 +64,39 @@ ribi::cmap::Concept::Concept(
 
 void ribi::cmap::Concept::SetExamples(const Examples& examples) noexcept
 {
-  if (examples != m_examples)
-  {
-    m_examples = examples;
-  }
+  m_examples = examples;
 }
 
 void ribi::cmap::Concept::SetIsComplex(const bool is_complex) noexcept
 {
-  if (is_complex != m_is_complex)
-  {
-    m_is_complex = is_complex;
-    //m_signal_is_complex_changed(this);
-  }
+  m_is_complex = is_complex;
 }
 
 
 void ribi::cmap::Concept::SetName(const std::string& name) noexcept
 {
-  if (name != m_name)
-  {
-    m_name = name;
-    //m_signal_name_changed(this);
-  }
+  m_name = name;
 }
 
 void ribi::cmap::Concept::SetRatingComplexity(const int rating_complexity) noexcept
 {
-  assert(rating_complexity >= -1);
-  assert(rating_complexity <=  2);
-
-  if (m_rating_complexity != rating_complexity)
-  {
-    m_rating_complexity = rating_complexity;
-    assert(m_rating_complexity >= -1);
-    assert(m_rating_complexity <=  2);
-    //m_signal_rating_complexity_changed(this);
-  }
+  m_rating_complexity = rating_complexity;
+  assert(m_rating_complexity >= -1);
+  assert(m_rating_complexity <=  2);
 }
 
 void ribi::cmap::Concept::SetRatingConcreteness(const int rating_concreteness) noexcept
 {
-  if (m_rating_concreteness != rating_concreteness)
-  {
-    m_rating_concreteness = rating_concreteness;
-    assert(m_rating_concreteness >= -1);
-    assert(m_rating_concreteness <=  2);
-    //m_signal_rating_concreteness_changed(this);
-  }
+  m_rating_concreteness = rating_concreteness;
+  assert(m_rating_concreteness >= -1);
+  assert(m_rating_concreteness <=  2);
 }
 
 void ribi::cmap::Concept::SetRatingSpecificity(const int rating_specificity) noexcept
 {
-  if (m_rating_specificity != rating_specificity)
-  {
-    m_rating_specificity = rating_specificity;
-    assert(m_rating_specificity >= -1);
-    assert(m_rating_specificity <=  2);
-    //m_signal_rating_specificity_changed(this);
-  }
+  m_rating_specificity = rating_specificity;
+  assert(m_rating_specificity >= -1);
+  assert(m_rating_specificity <=  2);
 }
 
 std::string ribi::cmap::Concept::ToStr() const noexcept
@@ -240,5 +208,4 @@ bool ribi::cmap::operator<(const ribi::cmap::Concept& lhs, const ribi::cmap::Con
   if (lhs.GetRatingConcreteness() < rhs.GetRatingConcreteness()) return true;
   if (lhs.GetRatingConcreteness() > rhs.GetRatingConcreteness()) return false;
   return lhs.GetRatingSpecificity() < rhs.GetRatingSpecificity();
-
 }

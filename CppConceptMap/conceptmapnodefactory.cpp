@@ -22,7 +22,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic ignored "-Weffc++"
 #include "conceptmapnodefactory.h"
 
-#include "conceptmapcenternode.h"
+
 #include "conceptmapcenternodefactory.h"
 #include "conceptmaphelper.h"
 #include "conceptmapnode.h"
@@ -45,17 +45,18 @@ ribi::cmap::NodeFactory::NodeFactory()
 ribi::cmap::Node ribi::cmap::NodeFactory::Create(
 ) const noexcept
 {
-  Node node(ConceptFactory().Create(),0.0,0.0);
+  Node node(ConceptFactory().Create(),false,0.0,0.0);
   return node;
 }
 
 ribi::cmap::Node ribi::cmap::NodeFactory::Create(
   const Concept& concept,
+  bool is_center_node,
   const double x,
   const double y
 ) const noexcept
 {
-  Node node(concept,x,y);
+  Node node(concept,is_center_node,x,y);
   assert(concept == node.GetConcept());
   assert(node.GetX() == x);
   assert(node.GetY() == y);
@@ -65,12 +66,14 @@ ribi::cmap::Node ribi::cmap::NodeFactory::Create(
 ribi::cmap::Node ribi::cmap::NodeFactory::CreateFromStrings(
   const std::string& name,
   const std::vector<std::pair<std::string,Competency> >& examples,
+  bool is_center_node,
   const double x,
   const double y
 ) const noexcept
 {
   Node node(
     ConceptFactory().Create(name,examples),
+    is_center_node,
     x,
     y
   );
@@ -79,38 +82,8 @@ ribi::cmap::Node ribi::cmap::NodeFactory::CreateFromStrings(
   return node;
 }
 
-#ifndef NDEBUG
-ribi::cmap::Node ribi::cmap::NodeFactory::DeepCopy(
-  const Node& node) const noexcept
-{
-  /*
-  const Concept new_concept(node->GetConcept());
-  const Node new_node{
-    Create(
-      new_concept,
-      node->GetX(),
-      node->GetY()
-    )
-  };
-  */
-  return Node(node);
-}
-#endif
-
 ribi::cmap::Node ribi::cmap::NodeFactory::FromXml(const std::string& s) const
 {
-  try
-  {
-    const CenterNode center_node {
-      CenterNodeFactory().FromXml(s)
-    };
-    return center_node;
-  }
-  catch (std::logic_error& e)
-  {
-    //OK, probably is a Node
-  }
-
   //const bool verbose{false};
   if (s.size() < 13)
   {
@@ -139,6 +112,16 @@ ribi::cmap::Node ribi::cmap::NodeFactory::FromXml(const std::string& s) const
     assert(v.size() == 1);
     concept = ConceptFactory().FromXml(v[0]);
   }
+
+  //m_is_centernode
+  bool is_center_node = false;
+  {
+    const std::vector<std::string> v
+      = Regex().GetRegexMatches(s,Regex().GetRegexIsCenterNode());
+    if (v.size() == 1) {
+      is_center_node = boost::lexical_cast<bool>(ribi::xml::StripXmlTag(v[0]));
+    }
+  }
   //m_x
   double x = 0.0;
   {
@@ -155,7 +138,7 @@ ribi::cmap::Node ribi::cmap::NodeFactory::FromXml(const std::string& s) const
     assert(v.size() == 1);
     y = boost::lexical_cast<double>(ribi::xml::StripXmlTag(v[0]));
   }
-  Node node(NodeFactory().Create(concept,x,y));
+  Node node(NodeFactory().Create(concept,is_center_node,x,y));
   return node;
 }
 
@@ -205,7 +188,9 @@ void ribi::cmap::NodeFactory::Test() noexcept
   }
   //Deep copy
   {
-    assert(NodeFactory().DeepCopy(NodeFactory().GetTest(0)) == NodeFactory().GetTest(0));
+    const Node a = NodeFactory().GetTest(0);
+    const Node b(a);
+    assert(b == NodeFactory().GetTest(0));
   }
   //XLM <-> std::string conversions
   {

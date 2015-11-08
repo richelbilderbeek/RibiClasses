@@ -275,20 +275,6 @@ void ribi::cmap::QtNodeDialog::Test() noexcept
   {
     assert(std::abs(dialog.GetUiX() - node.GetX()) < 2.0);
   }
-  if (verbose) { TRACE("If X is set via QtNode, QtNodeDialog must sync"); }
-  {
-    const double old_x{node.GetX()};
-    const double new_x{old_x + 10.0};
-    node.SetX(new_x);
-    assert(std::abs(new_x - dialog.GetUiX()) < 2.0);
-  }
-  if (verbose) { TRACE("If X is set via QtNodeDialog, QtNode must sync"); }
-  {
-    const double old_x{dialog.GetUiX()};
-    const double new_x{old_x + 10.0};
-    dialog.SetUiX(new_x);
-    assert(std::abs(new_x - node.GetX()) < 2.0);
-  }
 }
 #endif
 

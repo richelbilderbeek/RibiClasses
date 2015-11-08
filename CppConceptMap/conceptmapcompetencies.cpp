@@ -167,20 +167,54 @@ std::string ribi::cmap::Competencies::ToStrDutch(const Competency type) const no
   return s;
 }
 
-ribi::cmap::Competency ribi::cmap::Competencies::ToType(const std::string& s) const noexcept
+ribi::cmap::Competency ribi::cmap::Competencies::ToType(const std::string& s) const
 {
   if (m_map_english.right.empty()) m_map_english = CreateMapEnglish();
   assert(!m_map_english.right.empty());
+  if (m_map_english.right.count(s) == 0)
+  {
+    std::stringstream msg;
+    msg << __func__
+      << ": cannot find competency '"
+      << s << "' in English dictionary"
+    ;
+    throw std::logic_error(msg.str());
+  }
   assert(m_map_english.right.count(s) == 1);
   const Competency t = m_map_english.right.find(s)->second;
   return t;
 }
 
-ribi::cmap::Competency ribi::cmap::Competencies::ToTypeFromDutch(const std::string& s) const noexcept
+ribi::cmap::Competency ribi::cmap::Competencies::ToTypeFromDutch(const std::string& s) const
 {
   if (m_map_dutch.right.empty()) m_map_dutch = CreateMapDutch();
   assert(!m_map_dutch.right.empty());
+  if (m_map_dutch.right.count(s) == 0)
+  {
+    std::stringstream msg;
+    msg << __func__
+      << ": cannot find competency '"
+      << s << "' in Dutch dictionary"
+    ;
+    throw std::logic_error(msg.str());
+  }
   assert(m_map_dutch.right.count(s) == 1);
   const Competency t = m_map_dutch.right.find(s)->second;
   return t;
 }
+
+/*
+ribi::cmap::Competency ribi::cmap::Example::StrToCompetency(const std::string& s)
+{
+  if (s == "uninitialized") return cmap::Competency::uninitialized;
+  if (s == "profession") return cmap::Competency::profession;
+  if (s == "organisations") return cmap::Competency::organisations;
+  if (s == "social_surroundings") return cmap::Competency::social_surroundings;
+  if (s == "target_audience") return cmap::Competency::target_audience;
+  if (s == "ti_knowledge") return cmap::Competency::ti_knowledge;
+  if (s == "prof_growth") return cmap::Competency::prof_growth;
+  if (s == "misc") return cmap::Competency::misc;
+  assert(!"Should not get here");
+  throw std::logic_error("ribi::cmap::Example::StrToCompetency: unknown string");
+}
+*/

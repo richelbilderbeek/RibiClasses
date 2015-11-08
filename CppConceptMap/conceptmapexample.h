@@ -64,9 +64,6 @@ struct Example
   ///Set the text
   void SetText(const std::string& text) noexcept;
 
-  ///Convert a std::string to a cmap::Competency
-  static Competency StrToCompetency(const std::string& s);
-
   #ifndef NDEBUG
   ///Test this class
   static void Test() noexcept;

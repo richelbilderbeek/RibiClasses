@@ -26,9 +26,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include <cassert>
 
-//#include <boost/lexical_cast.hpp>
-//#include <boost/make_shared.hpp>
 
+#include "conceptmapcompetencies.h"
 #include "conceptmaphelper.h"
 #include "counter.h"
 #include "conceptmapexample.h"
@@ -100,7 +99,8 @@ ribi::cmap::Example ribi::cmap::ExampleFactory::FromXml(const std::string& s) co
     const std::vector<std::string> v
       = Regex().GetRegexMatches(s,Regex().GetRegexCompetency());
     assert(v.size() == 1);
-    competency = Example::StrToCompetency(ribi::xml::StripXmlTag(v[0]));
+    competency = Competencies().ToType(ribi::xml::StripXmlTag(v[0]));
+    //competency = Example::StrToCompetency(ribi::xml::StripXmlTag(v[0]));
   }
   //is_complex
   {

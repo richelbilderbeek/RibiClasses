@@ -46,6 +46,7 @@ struct NodeFactory
 
   Node Create(
     const Concept& concept,
+    bool is_center_node = false,
     const double x = 0.0,
     const double y = 0.0
   ) const noexcept;
@@ -53,16 +54,10 @@ struct NodeFactory
   Node CreateFromStrings(
     const std::string& name,
     const std::vector<std::pair<std::string,Competency> >& examples = {},
+    bool is_center_node = false,
     const double x = 0.0,
     const double y = 0.0
   ) const noexcept;
-
-  #ifndef NDEBUG
-  ///DeepCopy is only used for debugging
-  Node DeepCopy(
-    const Node& node
-  ) const noexcept;
-  #endif
 
   ///Obtain a Node or CenterNode from an XML std::string
   Node FromXml(const std::string& s) const;

@@ -7,7 +7,6 @@ OTHER_FILES += \
 
 HEADERS += \
     ../RibiClasses/CppConceptMap/conceptmapfwd.h \
-    ../RibiClasses/CppConceptMap/conceptmapcenternode.h \
     ../RibiClasses/CppConceptMap/conceptmapcenternodefactory.h \
     ../RibiClasses/CppConceptMap/conceptmapcompetency.h \
     ../RibiClasses/CppConceptMap/conceptmapconcept.h \
@@ -33,10 +32,10 @@ HEADERS += \
     ../RibiClasses/CppConceptMap/conceptmapcompetencies.h \
     ../RibiClasses/CppConceptMap/conceptmapregex.h \
     ../RibiClasses/CppConceptMap/conceptmapcommandsetselectedwithcoordinat.h \
-    ../RibiClasses/CppConceptMap/conceptmapcommanddeleteedge.h
+    ../RibiClasses/CppConceptMap/conceptmapcommanddeleteedge.h \
+    $$PWD/conceptmapconceptrating.h
 
 SOURCES += \
-    ../RibiClasses/CppConceptMap/conceptmapcenternode.cpp \
     ../RibiClasses/CppConceptMap/conceptmapcenternodefactory.cpp \
     ../RibiClasses/CppConceptMap/conceptmapcompetency.cpp \
     ../RibiClasses/CppConceptMap/conceptmapconcept.cpp \
@@ -64,4 +63,5 @@ SOURCES += \
     ../RibiClasses/CppConceptMap/conceptmapconcept_test.cpp \
     ../RibiClasses/CppConceptMap/conceptmap_test.cpp \
     ../RibiClasses/CppConceptMap/conceptmapcommandsetselectedwithcoordinat.cpp \
-    ../RibiClasses/CppConceptMap/conceptmapcommanddeleteedge.cpp
+    ../RibiClasses/CppConceptMap/conceptmapcommanddeleteedge.cpp \
+    $$PWD/conceptmapconceptrating.cpp

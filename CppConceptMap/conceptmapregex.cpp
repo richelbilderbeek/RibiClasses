@@ -74,6 +74,11 @@ std::string ribi::cmap::Regex::GetRegexHeadArrow() const noexcept
   return "(<head_arrow>.*?</head_arrow>)";
 }
 
+std::string ribi::cmap::Regex::GetRegexIsCenterNode() const noexcept
+{
+  return "(<is_center_node>.*?</is_center_node>)";
+}
+
 std::string ribi::cmap::Regex::GetRegexIsComplex() const noexcept
 {
   return "(<is_complex>.*?</is_complex>)";

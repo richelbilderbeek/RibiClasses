@@ -271,7 +271,7 @@ void ribi::cmap::QtConceptMapConceptEditDialog::on_button_ok_clicked()
 }
 
 #ifdef CONCEPTMAP_WRITE_TO_CONCEPT
-const boost::shared_ptr<ribi::cmap::Concept> ribi::cmap::QtConceptMapConceptEditDialog::WriteToConcept() const
+const ribi::cmap::Concept ribi::cmap::QtConceptMapConceptEditDialog::WriteToConcept() const
 {
   //Name
   const std::string name = ui->edit_concept->text().toStdString();

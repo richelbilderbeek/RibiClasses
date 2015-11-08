@@ -21,15 +21,8 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #ifndef QTCONCEPTMAPCENTERNODE_H
 #define QTCONCEPTMAPCENTERNODE_H
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
-#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
-#include <boost/shared_ptr.hpp>
 #include "qtconceptmapqtnode.h"
-
-#include "conceptmapfwd.h"
-#pragma GCC diagnostic pop
+#include "conceptmapnode.h"
 
 namespace ribi {
 namespace cmap {
@@ -41,10 +34,7 @@ struct QtCenterNode : public QtNode
   ///(that is, when a sub-concept map is created from a concept map and the
   ///focal node needs to be rated)
   ///concept_item is the display Strategy
-  explicit QtCenterNode(const CenterNode& node);
-
-  private:
-  //static const boost::shared_ptr<QtItemDisplayStrategy> CreateConceptItem(const boost::shared_ptr<Node> node);
+  explicit QtCenterNode(const Node& node);
 };
 
 } //~namespace cmap

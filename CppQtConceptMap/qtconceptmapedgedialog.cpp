@@ -475,14 +475,6 @@ void ribi::cmap::QtEdgeDialog::Test() noexcept
     edge->GetNode().SetX(new_x);
     assert(std::abs(new_x - dialog.GetUiX()) < 2.0);
   }
-  if (verbose) { TRACE("If X is set via QtNodeDialog, Edge must sync"); }
-  {
-    const double old_x{dialog.GetUiX()};
-    const double new_x{old_x + 10.0};
-    dialog.SetUiX(new_x);
-    assert(std::abs(new_x - edge->GetNode().GetX()) < 2.0);
-  }
-
   if (verbose) { TRACE("SetUiHasHeadArrow and GetUiHasHeadArrow must be symmetric"); }
   {
     dialog.SetUiHasHeadArrow(true);

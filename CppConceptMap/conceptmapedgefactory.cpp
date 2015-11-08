@@ -52,7 +52,9 @@ ribi::cmap::EdgeFactory::EdgePtr ribi::cmap::EdgeFactory::Create(
   const Node& to
 ) const noexcept
 {
-  assert(from != to);
+  //Nodes may be similar, but not the same
+  assert(&from != &to);
+
   const double x{(from.GetX() + to.GetX()) / 2.0};
   const double y{(from.GetY() + to.GetY()) / 2.0};
   const bool tail_arrow{false};
@@ -80,7 +82,11 @@ ribi::cmap::EdgeFactory::EdgePtr ribi::cmap::EdgeFactory::Create(
   const bool head_arrow
 ) const noexcept
 {
-  assert(from != to);
+  //Nodes may be similar, but not the same
+  assert(&from != &to);
+  assert(&from != &node);
+  assert(&to != &node);
+
   assert(from != node);
   EdgePtr p(new Edge(node,from,tail_arrow,to,head_arrow));
   assert(p);
@@ -95,9 +101,12 @@ ribi::cmap::EdgeFactory::EdgePtr ribi::cmap::EdgeFactory::DeepCopy(
 ) const noexcept
 {
   assert(edge);
-  assert(from != to);
-  assert(from != edge->GetNode());
-  assert(to != edge->GetNode());
+
+  //Nodes may be similar, but not the same
+  assert(&from != &to);
+  assert(&from != &edge->GetNode());
+  assert(&to   != &edge->GetNode());
+
   const Node node(edge->GetNode());
   const EdgePtr p {
     EdgeFactory::Create(
@@ -198,7 +207,8 @@ ribi::cmap::EdgeFactory::EdgePtr ribi::cmap::EdgeFactory::GetTest(
   const Node& to
 ) const noexcept
 {
-  assert(from != to);
+  //Nodes may be similar, but not the same
+  assert(&from != &to);
   assert(index >= 0);
   assert(index < GetNumberOfTests());
   return GetTests(from,to)[index];
@@ -209,7 +219,9 @@ ribi::cmap::EdgeFactory::Edges ribi::cmap::EdgeFactory::GetTests(
   const Node& to
 ) const noexcept
 {
-  assert(from != to);
+  //Nodes may be similar, but not the same
+  assert(&from != &to);
+
   const int n{NodeFactory().GetNumberOfTests()};
   std::vector<EdgePtr> result;
 

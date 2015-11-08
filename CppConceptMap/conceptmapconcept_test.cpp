@@ -143,10 +143,9 @@ void ribi::cmap::Concept::Test() noexcept
     }
   }
   {
-    const std::string xml = "";
+    const std::string xml = "<concept><name>TEST</name><examples></examples><concept_is_complex>1</concept_is_complex><complexity>-1</complexity><concreteness>-1</concreteness><specificity>-1</specificity></concept>";
     const auto concept = ConceptFactory().FromXml(xml);
-    assert(!concept.GetName().empty());
-    assert(!"Green");
+    assert(concept.GetName() == "TEST");
   }
   if (verbose) { TRACE("Test XML conversion"); }
   {

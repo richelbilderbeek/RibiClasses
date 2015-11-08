@@ -123,11 +123,12 @@ protected:
         QtEdge * GetQtEdge(const QtEdge* const edge)       noexcept;
   const QtEdge * GetQtEdgeConst(
     const QtNode* const from,
-    const QtNode* const to) const noexcept;
+    const QtNode* const to) const noexcept
+  ;
 
   ///Find the QtNode containing the Node
   //QtNode * FindQtNode(Node node) const { return FindQtNode(node.get()); }
-  const QtNode * GetQtNodeConst(const Node& node) const noexcept;
+  //const QtNode * GetQtNodeConst(const Node& node) const noexcept;
   //const QtNode * FindQtNode     (const Node * const node) const noexcept { return FindQtNodeConst(node); }
   const QtNode * GetQtNode(const Node& node) const noexcept;
         QtNode * GetQtNode(const Node& node)       noexcept;

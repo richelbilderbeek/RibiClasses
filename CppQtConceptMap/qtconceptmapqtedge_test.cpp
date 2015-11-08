@@ -166,13 +166,6 @@ void ribi::cmap::QtEdge::Test() noexcept
     const std::string qtedge_name{qtedge->GetEdge()->GetNode().GetConcept().GetName()};
     assert(qtitem_name == qtedge_name);
   }
-  if (verbose) { TRACE("If text is set via QtRoundedEditRectItem, QtEdge must sync"); }
-  {
-    qtitem->SetText( { "A" } );
-    assert(qtedge->GetEdge()->GetNode().GetConcept().GetName() == "A");
-    qtitem->SetText( { "B" } );
-    assert(qtedge->GetEdge()->GetNode().GetConcept().GetName() == "B");
-  }
   //X
   if (verbose) { TRACE("X of QtEdge and QtRoundedEditRectItem must match at creation"); }
   {
@@ -215,57 +208,7 @@ void ribi::cmap::QtEdge::Test() noexcept
     qtitem->SetCenterY(new_y);
     assert(std::abs(qtedge->m_qtnode->GetCenterY() - new_y) < 2.0);
   }
-  //From
-  if (verbose) { TRACE("If qtnode_from is moved, a signal must be emitted by -at least- QtEdge"); }
-  {
-    Counter c{0}; //For receiving the signal
-    qtedge->GetEdge()->m_signal_from_changed.connect(
-      boost::bind(&ribi::Counter::Inc,&c) //Do not forget the &
-    );
-    qtnode_from->SetCenterX(qtnode_from->GetCenterX() + 10.0);
-    assert(c.Get() > 0);
-  }
-  if (verbose) { TRACE("If qtnode_from is moved, a signal must be emitted by QtEdge"); }
-  {
-    Counter c{0}; //For receiving the signal
-    qtedge->m_signal_edge_changed.connect(
-      boost::bind(&ribi::Counter::Inc,&c) //Do not forget the &
-    );
-    qtnode_from->SetCenterX(qtnode_from->GetCenterX() + 10.0);
-    assert(c.Get() > 0);
-  }
-  //To
-  if (verbose) { TRACE("If qtnode_to is moved, a signal must be emitted by -at least- Edge"); }
-  {
-    Counter c{0}; //For receiving the signal
-    qtedge->GetEdge()->m_signal_to_changed.connect(
-      boost::bind(&ribi::Counter::Inc,&c) //Do not forget the &
-    );
-    qtnode_to->SetCenterX(qtnode_to->GetCenterX() + 10.0);
-    assert(c.Get() > 0);
-  }
-  if (verbose) { TRACE("If qtnode_to is moved, a signal must be emitted by QtEdge"); }
-  {
-    Counter c{0}; //For receiving the signal
-    qtedge->m_signal_edge_changed.connect(
-      boost::bind(&ribi::Counter::Inc,&c) //Do not forget the &
-    );
-    qtnode_to->SetCenterX(qtnode_to->GetCenterX() + 10.0);
-    assert(c.Get() > 0);
-  }
-
   //Center
-  if (verbose) { TRACE("If a QtEdge its center node is changed, a signal must be emitted by Edge"); }
-  {
-    Counter c{0}; //For receiving the signal
-
-    qtedge->m_signal_edge_changed.connect(
-      boost::bind(&ribi::Counter::Inc,&c) //Do not forget the &
-    );
-    qtedge->GetQtNode()->SetCenterX( qtedge->GetQtNode()->GetCenterX() + 123.45);
-    assert(c.Get() > 0);
-  }
-
   {
     const double new_x{qtedge->GetQtNode()->GetCenterX() + 123.45};
     qtedge->GetQtNode()->SetCenterX(new_x);

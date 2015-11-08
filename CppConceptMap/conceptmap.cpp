@@ -33,7 +33,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <boost/lexical_cast.hpp>
 
 #include "conceptmapcenternodefactory.h"
-#include "conceptmapcenternode.h"
+
 #include "conceptmapconceptfactory.h"
 #include "conceptmapconcept.h"
 #include "conceptmapedgefactory.h"
@@ -137,7 +137,7 @@ ribi::cmap::ConceptMap::ConceptMap(
   Test();
   #endif
 
-  const std::vector<boost::shared_ptr<ribi::cmap::Concept>>& v = cluster->Get();
+  const std::vector<ribi::cmap::Concept>& v = cluster->Get();
   const int n = boost::numeric_cast<int>(v.size());
   for (int i=0; i!=n; ++i)
   {
@@ -264,7 +264,7 @@ ribi::cmap::ConceptMap::Nodes ribi::cmap::ConceptMap::CreateNodes(
       -1  //No rated specificity
     )
   };
-  const CenterNode center_node {
+  const Node center_node {
     CenterNodeFactory().Create(concept,0.0,0.0)
   };
   v.push_back(center_node);
@@ -398,23 +398,23 @@ bool ribi::cmap::ConceptMap::Empty() const noexcept
   return m_nodes.empty(); // && m_edges.empty();
 }
 
-const ribi::cmap::CenterNode* ribi::cmap::ConceptMap::FindCenterNode() const noexcept
+const ribi::cmap::Node* ribi::cmap::ConceptMap::FindCenterNode() const noexcept
 {
   const auto iter = ribi::cmap::FindCenterNode(m_nodes);
   return iter == std::end(m_nodes) ? nullptr : &(*iter);
 }
 
-ribi::cmap::CenterNode* ribi::cmap::ConceptMap::FindCenterNode() noexcept
+ribi::cmap::Node* ribi::cmap::ConceptMap::FindCenterNode() noexcept
 {
   //Calls the const version of this member function
   //To avoid duplication in const and non-const member functions [1]
   //[1] Scott Meyers. Effective C++ (3rd edition). ISBN: 0-321-33487-6.
   //    Item 3, paragraph 'Avoid duplication in const and non-const member functions'
-  const CenterNode* center_node {
+  const Node* center_node {
     const_cast<const ConceptMap*>(this)->FindCenterNode() //Add const because compiler cannt find the right version
     //?used to be dynamic_cast?
   };
-  return const_cast<CenterNode*>(center_node);
+  return const_cast<Node*>(center_node);
 }
 
 ribi::cmap::ConceptMap::EdgePtr ribi::cmap::ConceptMap::GetEdgeHaving(const Node& node) const noexcept
@@ -584,10 +584,14 @@ bool ribi::cmap::HasSameContent(
     const int sz = lhs.GetEdges().size();
     for (int i=0; i!=sz; ++i)
     {
+      assert(i >= 0);
+      assert(i < static_cast<int>(lhs.GetEdges().size()));
       const auto from_node = lhs.GetEdges()[i]->GetFrom();
+      assert(from_node);
       const std::string str_from = from_node->GetConcept().GetName();
       const std::string str_mid = lhs.GetEdges()[i]->GetNode().GetConcept().GetName();
       const auto to_node = lhs.GetEdges()[i]->GetTo();
+      assert(to_node);
       const std::string str_to = to_node->GetConcept().GetName();
       //Only if arrow is reversed, reverse the fake edge
       if (
@@ -686,12 +690,12 @@ bool ribi::cmap::ConceptMap::IsValid() const noexcept
       TRACE("edge->GetFrom() is nullptr");
       return false;
     }
-    if (container().Count(m_nodes,*edge->GetTo()) != 1)
+    if (container().Count(m_nodes,*edge->GetTo()) == 0)
     {
       TRACE("edge->GetTo() points to node not in the concept map");
       return false;
     }
-    if(container().Count(m_nodes,*edge->GetFrom()) != 1)
+    if(container().Count(m_nodes,*edge->GetFrom()) == 0)
     {
       TRACE("edge->GetFrom() points to node not in the concept map");
       return false;

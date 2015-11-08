@@ -32,7 +32,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmapedgefactory.h"
 #include "conceptmapnode.h"
 #include "conceptmapnodefactory.h"
-#include "conceptmapcenternode.h"
+
 #include "conceptmapconceptfactory.h"
 #include "conceptmaphelper.h"
 #include "testtimer.h"
@@ -61,9 +61,9 @@ ribi::cmap::Edge::Edge(
   #endif
   assert(m_from);
   assert(m_to);
-  assert(m_from != m_to);
-  assert(*m_from != m_node);
-  assert(*m_to != m_node);
+  assert(m_from !=  m_to);
+  assert(m_from != &m_node);
+  assert(m_to   != &m_node);
 
   //Subscribe to all Concept signals to re-emit m_signal_edge_changed
   //this->m_node->m_signal_concept_changed.connect(
@@ -265,26 +265,6 @@ void ribi::cmap::Edge::Test() noexcept
     assert(*edge->GetFrom() == from);
     assert(*edge->GetTo() == to);
   }
-  if (verbose) { TRACE("If Edge its source/from is moved, a signal must be emitted"); }
-  {
-    const boost::shared_ptr<Edge> edge{EdgeFactory().GetTest(0,from,to)};
-    Counter c{0}; //For receiving the signal
-    edge->m_signal_from_changed.connect(
-      boost::bind(&ribi::Counter::Inc,&c) //Do not forget the &
-    );
-    from.SetX(from.GetX() + 10.0);
-    assert(c.Get() > 0);
-  }
-  if (verbose) { TRACE("If Edge its target/to is moved, a signal must be emitted"); }
-  {
-    const boost::shared_ptr<Edge> edge{EdgeFactory().GetTest(0,from,to)};
-    Counter c{0}; //For receiving the signal
-    edge->m_signal_to_changed.connect(
-      boost::bind(&ribi::Counter::Inc,&c) //Do not forget the &
-    );
-    to.SetX(to.GetX() + 10.0);
-    assert(c.Get() > 0);
-  }
 }
 #endif
 
@@ -305,8 +285,10 @@ std::string ribi::cmap::Edge::ToXml(
   s << "<edge>";
   s << edge->GetNode().GetConcept().ToXml();
 
-  const auto from_iter = std::find(nodes.begin(),nodes.end(),*edge->GetFrom());
-  const auto to_iter = std::find(nodes.begin(),nodes.end(),*edge->GetTo());
+  assert(edge->GetFrom());
+  assert(edge->GetTo());
+  const auto from_iter = std::find(begin(nodes),end(nodes),*edge->GetFrom());
+  const auto to_iter = std::find(begin(nodes),end(nodes),*edge->GetTo());
   assert(from_iter != nodes.end());
   assert(to_iter != nodes.end());
   const int from_index = std::distance(nodes.begin(),from_iter);

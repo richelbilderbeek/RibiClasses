@@ -56,13 +56,6 @@ ribi::cmap::Examples::Examples(
   #endif
 }
 
-/*
-void ribi::cmap::Examples::OnExampleChanged() noexcept
-{
-  m_signal_examples_changed(this); 
-}
-*/
-
 #ifndef NDEBUG
 void ribi::cmap::Examples::Test() noexcept
 {

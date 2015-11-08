@@ -59,7 +59,7 @@ class ConceptMap
   using Edges = std::vector<EdgePtr>;
   using Nodes = std::vector<Node>;
   using EdgesAndNodes = std::pair<Edges,Nodes>;
-  using ReadOnlyCenterNodePtr = boost::shared_ptr<const CenterNode>;
+  using ReadOnlyCenterNodePtr = boost::shared_ptr<const Node>;
   using ReadOnlyConceptMapPtr = boost::shared_ptr<const ConceptMap>;
   using ReadOnlyEdgePtr = boost::shared_ptr<const Edge>;
   using ReadOnlyEdges = std::vector<ReadOnlyEdgePtr>;
@@ -114,8 +114,8 @@ class ConceptMap
   bool Empty() const noexcept;
 
   ///Find the CenterNode, if any
-  const CenterNode* FindCenterNode() const noexcept;
-        CenterNode* FindCenterNode()       noexcept;
+  const Node* FindCenterNode() const noexcept;
+        Node* FindCenterNode()       noexcept;
 
   ///Find the Edge that has the node as its center Node
   ///Returns nullptr if not present
@@ -287,7 +287,7 @@ private:
   #endif
 
   ///To make the compiler use the const version
-  const CenterNode* FindCenterNodeConst() const noexcept { return FindCenterNode(); }
+  const Node* FindCenterNodeConst() const noexcept { return FindCenterNode(); }
   ///To make the compiler use the const version
   //ReadOnlyNodePtr GetFocalNodeConst() const noexcept { return GetFocalNode(); }
 

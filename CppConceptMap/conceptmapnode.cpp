@@ -38,16 +38,17 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "xml.h"
 #pragma GCC diagnostic pop
 
+int ribi::cmap::Node::sm_ids = 0; //ID to assign
+
 ribi::cmap::Node::Node(
   const Concept& concept,
+  const bool is_center_node,
   const double x,
   const double y
 ) noexcept
-  : //m_signal_concept_changed{},
-    //m_signal_x_changed{},
-    //m_signal_y_changed{},
-    m_concept{concept},
-    m_is_center_node{false},
+  : m_concept{concept},
+    m_id{sm_ids++},
+    m_is_center_node{is_center_node},
     m_x(x),
     m_y(y)
 {
@@ -97,6 +98,11 @@ std::vector<ribi::cmap::Node> ribi::cmap::Node::GetTests() noexcept
 bool ribi::cmap::HasSameContent(const Node& lhs, const Node& rhs) noexcept
 {
   return lhs.GetConcept() == rhs.GetConcept();
+}
+
+bool ribi::cmap::HaveSameIds(const Node& lhs, const Node& rhs) noexcept
+{
+  return lhs.m_id == rhs.m_id;
 }
 
 bool ribi::cmap::IsCenterNode(const Node& node) noexcept
@@ -395,8 +401,8 @@ std::string ribi::cmap::Node::ToXml() const noexcept
   s << GetConcept().ToXml();
   s << "<x>" << GetX() << "</x>";
   s << "<y>" << GetY() << "</y>";
+  s << "<is_center_node>" << IsCenterNode() << "</is_center_node>";
   s << "</node>";
-
   const std::string r = s.str();
   assert(r.size() >= 13);
   assert(r.substr(0,6) == "<node>");
@@ -404,6 +410,8 @@ std::string ribi::cmap::Node::ToXml() const noexcept
 
   return r;
 }
+
+
 
 bool ribi::cmap::operator==(const Node& lhs, const Node& rhs) noexcept
 {

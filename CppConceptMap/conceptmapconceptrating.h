@@ -18,44 +18,22 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppConceptMap.htm
 //---------------------------------------------------------------------------
-#ifndef CONCEPTMAPCENTERNODEFACTORY_H
-#define CONCEPTMAPCENTERNODEFACTORY_H
-
-#include <string>
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
-#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
-#include <boost/shared_ptr.hpp>
-#include "conceptmapcompetency.h"
-#include "conceptmapnode.h"
-#pragma GCC diagnostic pop
+#ifndef CONCEPTMAPCONCEPTRATING_H
+#define CONCEPTMAPCONCEPTRATING_H
 
 namespace ribi {
 namespace cmap {
 
-struct CenterNodeFactory
+///The rating of a Concept for complexity/concreteness/specificity
+///-1: not rated, 0: lowest, 2: highest
+struct ConceptRating
 {
-  CenterNodeFactory();
+  ConceptRating(const int rating = -1);
 
-  Node Create() const noexcept;
+  void SetRating(const int rating);
 
-  Node Create(
-    const Concept& concept,
-    const double x = 0.0,
-    const double y = 0.0
-  ) const noexcept;
-
-  Node CreateFromStrings(
-    const std::string& name,
-    const std::vector<std::pair<std::string,Competency> >& examples = {},
-    const double x = 0.0,
-    const double y = 0.0
-  ) const noexcept;
-
-  ///Obtain a CenterNode from an XML std::string
-  ///Throws if it is no CenterNode
-  Node FromXml(const std::string& s) const;
+  private:
+  int m_rating;
 
   #ifndef NDEBUG
   static void Test() noexcept;
@@ -65,4 +43,4 @@ struct CenterNodeFactory
 } //~namespace cmap
 } //~namespace ribi
 
-#endif // CONCEPTMAPCENTERNODEFACTORY_H
+#endif // CONCEPTMAPCONCEPTRATING_H

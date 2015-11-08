@@ -44,8 +44,8 @@ struct Competencies
   int ToIndex(const Competency competency) const noexcept;
   std::string ToStrDutch(const Competency competency) const noexcept;
   std::string ToStr(const Competency competency) const noexcept;
-  Competency ToTypeFromDutch(const std::string& dutch_string) const noexcept;
-  Competency ToType(const std::string& s) const noexcept;
+  Competency ToTypeFromDutch(const std::string& dutch_string) const;
+  Competency ToType(const std::string& s) const;
 
   private:
   static boost::bimap<Competency,std::string> m_map_dutch;
@@ -57,6 +57,9 @@ struct Competencies
   static void Test() noexcept;
   #endif
 };
+
+///Convert a std::string to a cmap::Competency
+//static Competency StrToCompetency(const std::string& s);
 
 } //~namespace cmap
 } //~namespace ribi

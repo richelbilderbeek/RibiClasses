@@ -417,20 +417,6 @@ void ribi::cmap::QtNode::Test() noexcept
     const double edit_rect_y = edit_rect->GetCenterY();
     assert(std::abs(node_y - edit_rect_y) < max_error);
   }
-  if (verbose) { TRACE("Test text in Node and QtRoundedEditRectItem being equal at creation") }
-  {
-    const auto qtnode = QtNodeFactory().GetTest(1);
-    const boost::shared_ptr<QtRoundedEditRectItem> edit_rect{boost::dynamic_pointer_cast<QtRoundedEditRectItem>(qtnode)};
-    const auto node = qtnode->GetNode();
-    const std::string node_text{node.GetConcept().GetName()};
-    const std::string edit_rect_text{Container().Concatenate(edit_rect->GetText())};
-    if (node_text != edit_rect_text)
-    {
-      TRACE(node_text);
-      TRACE(edit_rect_text);
-    }
-    assert(node_text == edit_rect_text);
-  }
   if (verbose) {TRACE("When changing the concept's name via QtNode, the Node must be changed as well");}
   {
     const auto qtnode = QtNodeFactory().GetTest(1);

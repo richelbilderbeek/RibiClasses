@@ -29,7 +29,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <stdexcept>
 #include <boost/lexical_cast.hpp>
 
-#include "conceptmapcenternode.h"
+
 #include "conceptmapconcept.h"
 #include "conceptmapconceptfactory.h"
 #include "conceptmapexamplefactory.h"
@@ -52,85 +52,62 @@ ribi::cmap::CenterNodeFactory::CenterNodeFactory()
   #endif
 }
 
-ribi::cmap::CenterNode ribi::cmap::CenterNodeFactory::Create(
-  const Concept& concept,
-  const double x,
-  const double y) const noexcept
+ribi::cmap::Node ribi::cmap::CenterNodeFactory::Create() const noexcept
 {
-  Node node(concept,x,y);
-  node.SetIsCenterNode(true);
-  assert(concept == node.GetConcept());
-  assert(node.GetX() == x);
-  assert(node.GetY() == y);
+  Node node(
+    ConceptFactory().Create(),
+    true, //is_center_node
+    0.0, //x
+    0.0  //y
+  );
   return node;
 }
 
-ribi::cmap::CenterNode ribi::cmap::CenterNodeFactory::CreateFromStrings(
+ribi::cmap::Node ribi::cmap::CenterNodeFactory::Create(
+  const Concept& concept,
+  const double x,
+  const double y
+) const noexcept
+{
+  Node node(
+    concept,
+    true, //is_center_node
+    x,
+    y
+  );
+  assert(concept == node.GetConcept());
+  assert(node.GetX() == x);
+  assert(node.GetY() == y);
+  assert(node.IsCenterNode());
+  return node;
+}
+
+ribi::cmap::Node ribi::cmap::CenterNodeFactory::CreateFromStrings(
   const std::string& name,
   const std::vector<std::pair<std::string,Competency> >& examples,
   const double x,
   const double y
 ) const noexcept
 {
-  CenterNode node(
+  Node node(
     ConceptFactory().Create(name,examples),
+    true,
     x,
     y
   );
-  node.SetIsCenterNode(true);
   assert(node.GetX() == x);
   assert(node.GetY() == y);
+  assert(node.IsCenterNode());
   return node;
 }
 
-ribi::cmap::CenterNode ribi::cmap::CenterNodeFactory::FromXml(
+ribi::cmap::Node ribi::cmap::CenterNodeFactory::FromXml(
   const std::string& s
 ) const
 {
-  if (s.size() < 27)
-  {
-    std::stringstream msg;
-    msg << __func__ << ": XML string '" << s << "' is only " << s.size() << " characters long, need at least 27";
-    throw std::logic_error(msg.str());
-  }
-  if (s.substr(0,13) != "<center_node>")
-  {
-    std::stringstream msg;
-    msg << __func__ << ": XML string '" << s << "' does not begin with <center_node>";
-    throw std::logic_error(msg.str());
-  }
-  if (s.substr(s.size() - 14,14) != "</center_node>")
-  {
-    std::stringstream msg;
-    msg << __func__ << ": XML string '" << s << "' does not end with </center_node>";
-    throw std::logic_error(msg.str());
-  }
-
-  //m_concept
-  Concept concept = ConceptFactory().Create();
-  {
-    const auto v = Regex().GetRegexMatches(s,Regex().GetRegexConcept());
-    assert(v.size() == 1);
-    concept = ConceptFactory().FromXml(v[0]);
-  }
-  //m_x
-  double x = 0.0;
-  {
-    const std::vector<std::string> v = Regex().GetRegexMatches(s,Regex().GetRegexX());
-    assert(v.size() == 1);
-    x = boost::lexical_cast<double>(ribi::xml::StripXmlTag(v[0]));
-  }
-  //m_x
-  double y = 0.0;
-  {
-    const auto v = Regex().GetRegexMatches(s,Regex().GetRegexY());
-    assert(v.size() == 1);
-    y = boost::lexical_cast<double>(ribi::xml::StripXmlTag(v[0]));
-  }
-  CenterNode node(concept,x,y);
-  node.SetIsCenterNode(true);
-
+  Node node = NodeFactory().FromXml(s);
   assert(node.ToXml() == s);
+  assert(node.IsCenterNode());
   return node;
 }
 
@@ -163,13 +140,11 @@ void ribi::cmap::CenterNodeFactory::Test() noexcept
     assert(concept == node.GetConcept());
     assert(node.GetX() == x);
     assert(node.GetY() == y);
-    TRACE(node.ToXml());
   }
   {
-    const std::string xml = "";
+    const std::string xml = "<node><concept><name>Concept without examples</name><examples></examples><concept_is_complex>0</concept_is_complex><complexity>0</complexity><concreteness>1</concreteness><specificity>2</specificity></concept><x>0.1</x><y>2.3</y><is_center_node>1</is_center_node></node>";
     const auto node = CenterNodeFactory().FromXml(xml);
     assert(node.IsCenterNode());
   }
-  assert(!"Green");
 }
 #endif

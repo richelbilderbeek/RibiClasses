@@ -37,7 +37,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 
 #include "fuzzy_equal_to.h"
 #include "qtconceptmapcollect.h"
-#include "conceptmapcenternode.h"
+
 #include "container.h"
 #include "conceptmapconceptfactory.h"
 #include "conceptmapconcept.h"
@@ -720,7 +720,7 @@ ribi::cmap::QtNode * ribi::cmap::QtConceptMap::GetQtNode(
   return qtnode;
 }
 
-const ribi::cmap::QtNode * ribi::cmap::QtConceptMap::GetQtNodeConst(
+const ribi::cmap::QtNode * ribi::cmap::QtConceptMap::GetQtNode(
   const Node& node) const noexcept
 {
   const std::vector<QtNode *> qtnodes = Collect<QtNode>(scene());

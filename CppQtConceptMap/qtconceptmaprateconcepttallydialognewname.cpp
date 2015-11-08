@@ -32,7 +32,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include <QKeyEvent>
 
 #include "conceptmapconceptfactory.h"
-#include "conceptmapcenternode.h"
+
 #include "conceptmapcenternodefactory.h"
 #include "conceptmap.h"
 #include "conceptmapfactory.h"
