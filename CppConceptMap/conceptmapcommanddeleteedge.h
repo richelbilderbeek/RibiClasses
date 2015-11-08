@@ -2,6 +2,7 @@
 #define CONCEPTMAPCOMMANDDELETEEDGE_H
 
 #include "conceptmapcommand.h"
+#include "conceptmapedge.h"
 
 namespace ribi {
 namespace cmap {
@@ -13,7 +14,7 @@ class CommandDeleteEdge final : public Command
 
   CommandDeleteEdge(
     const boost::shared_ptr<ConceptMap> conceptmap,
-    const boost::shared_ptr<Edge> edge
+    const Edge& edge
   );
   CommandDeleteEdge(const CommandDeleteEdge&) = delete;
   CommandDeleteEdge& operator=(const CommandDeleteEdge&) = delete;
@@ -24,7 +25,7 @@ class CommandDeleteEdge final : public Command
 
   private:
   const boost::shared_ptr<ConceptMap> m_conceptmap;
-  const boost::shared_ptr<Edge> m_edge;
+  const Edge m_edge;
 };
 
 } //~namespace cmap

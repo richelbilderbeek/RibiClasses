@@ -499,7 +499,7 @@ void ribi::cmap::QtEdge::paint(QPainter* painter, const QStyleOptionGraphicsItem
   }
 }
 
-void ribi::cmap::QtEdge::SetEdge(const boost::shared_ptr<Edge>& edge) noexcept
+void ribi::cmap::QtEdge::SetEdge(const Edge& edge) noexcept
 {
   const bool verbose{false};
 

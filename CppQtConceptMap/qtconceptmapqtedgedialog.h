@@ -24,7 +24,10 @@ class QtQtEdgeDialog : public ::ribi::QtHideAndShowDialog
   Q_OBJECT
 
 public:
-  explicit QtQtEdgeDialog(QWidget *parent = 0);
+  explicit QtQtEdgeDialog(
+    const boost::shared_ptr<QtEdge>& qtedge,
+    QWidget *parent = 0
+  );
   QtQtEdgeDialog(const QtQtEdgeDialog&) = delete;
   QtQtEdgeDialog& operator=(const QtQtEdgeDialog&) = delete;
   ~QtQtEdgeDialog() noexcept;

@@ -276,13 +276,13 @@ void ribi::cmap::ConceptMap::Test() noexcept
       const Nodes nodes_1 = { node_11, node_12, node_13 };
       const Nodes nodes_2 = { node_21, node_22, node_23 };
 
-      const boost::shared_ptr<Edge> edge_11(EdgeFactory().Create(NodeFactory().Create(concept_e11,1.2,3.4),nodes_1.at(0),false,nodes_1.at(1),true));
-      const boost::shared_ptr<Edge> edge_12(EdgeFactory().Create(NodeFactory().Create(concept_e12,2.3,4.5),nodes_1.at(0),false,nodes_1.at(2),true));
-      const boost::shared_ptr<Edge> edge_13(EdgeFactory().Create(NodeFactory().Create(concept_e13,3.4,5.6),nodes_1.at(1),false,nodes_1.at(2),true));
+      const Edge edge_11(EdgeFactory().Create(NodeFactory().Create(concept_e11,1.2,3.4),nodes_1.at(0),false,nodes_1.at(1),true));
+      const Edge edge_12(EdgeFactory().Create(NodeFactory().Create(concept_e12,2.3,4.5),nodes_1.at(0),false,nodes_1.at(2),true));
+      const Edge edge_13(EdgeFactory().Create(NodeFactory().Create(concept_e13,3.4,5.6),nodes_1.at(1),false,nodes_1.at(2),true));
 
-      const boost::shared_ptr<Edge> edge_21(EdgeFactory().Create(NodeFactory().Create(concept_e21,4.5,6.7),nodes_2.at(0),false,nodes_2.at(1),true));
-      const boost::shared_ptr<Edge> edge_22(EdgeFactory().Create(NodeFactory().Create(concept_e22,5.6,7.8),nodes_2.at(0),false,nodes_2.at(2),true));
-      const boost::shared_ptr<Edge> edge_23(EdgeFactory().Create(NodeFactory().Create(concept_e23,6.7,8.9),nodes_2.at(1),false,nodes_2.at(2),true));
+      const Edge edge_21(EdgeFactory().Create(NodeFactory().Create(concept_e21,4.5,6.7),nodes_2.at(0),false,nodes_2.at(1),true));
+      const Edge edge_22(EdgeFactory().Create(NodeFactory().Create(concept_e22,5.6,7.8),nodes_2.at(0),false,nodes_2.at(2),true));
+      const Edge edge_23(EdgeFactory().Create(NodeFactory().Create(concept_e23,6.7,8.9),nodes_2.at(1),false,nodes_2.at(2),true));
 
       const boost::shared_ptr<ConceptMap> map_a(ConceptMapFactory().Create(
         { node_11, node_12, node_13 },
@@ -337,13 +337,13 @@ void ribi::cmap::ConceptMap::Test() noexcept
       const Nodes nodes_1 = { node_11, node_12, node_13 };
       const Nodes nodes_2 = { node_21, node_22, node_23 };
 
-      const boost::shared_ptr<Edge> edge_21(EdgeFactory().Create(NodeFactory().Create(concept_e21,1.2,3.4),nodes_2.at(2),false,nodes_2.at(1),true));
-      const boost::shared_ptr<Edge> edge_22(EdgeFactory().Create(NodeFactory().Create(concept_e22,2.3,4.5),nodes_2.at(0),false,nodes_2.at(2),true));
-      const boost::shared_ptr<Edge> edge_23(EdgeFactory().Create(NodeFactory().Create(concept_e23,3.4,4.5),nodes_2.at(0),false,nodes_2.at(1),true));
+      const Edge edge_21(EdgeFactory().Create(NodeFactory().Create(concept_e21,1.2,3.4),nodes_2.at(2),false,nodes_2.at(1),true));
+      const Edge edge_22(EdgeFactory().Create(NodeFactory().Create(concept_e22,2.3,4.5),nodes_2.at(0),false,nodes_2.at(2),true));
+      const Edge edge_23(EdgeFactory().Create(NodeFactory().Create(concept_e23,3.4,4.5),nodes_2.at(0),false,nodes_2.at(1),true));
 
-      const boost::shared_ptr<Edge> edge_11(EdgeFactory().Create(NodeFactory().Create(concept_e11,1.2,3.4),nodes_1.at(0),false,nodes_1.at(1),true));
-      const boost::shared_ptr<Edge> edge_12(EdgeFactory().Create(NodeFactory().Create(concept_e12,2.3,4.5),nodes_1.at(0),false,nodes_1.at(2),true));
-      const boost::shared_ptr<Edge> edge_13(EdgeFactory().Create(NodeFactory().Create(concept_e13,3.4,5.6),nodes_1.at(1),false,nodes_1.at(2),true));
+      const Edge edge_11(EdgeFactory().Create(NodeFactory().Create(concept_e11,1.2,3.4),nodes_1.at(0),false,nodes_1.at(1),true));
+      const Edge edge_12(EdgeFactory().Create(NodeFactory().Create(concept_e12,2.3,4.5),nodes_1.at(0),false,nodes_1.at(2),true));
+      const Edge edge_13(EdgeFactory().Create(NodeFactory().Create(concept_e13,3.4,5.6),nodes_1.at(1),false,nodes_1.at(2),true));
 
       const boost::shared_ptr<ConceptMap> map_a(ConceptMapFactory().Create(
         { node_11, node_12, node_13 },
@@ -373,7 +373,6 @@ void ribi::cmap::ConceptMap::Test() noexcept
       const boost::shared_ptr<ConceptMap> b{ConceptMapFactory().GetHeteromorphousTestConceptMap(19)};
       assert(!cmap::HasSameContent(*a,*b));
     }
-    #endif // FIX_ISSUE_10
     if (verbose) { TRACE("Test simple homomorphous maps"); }
     {
       //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,0.1);
@@ -409,7 +408,6 @@ void ribi::cmap::ConceptMap::Test() noexcept
       }
       //TRACE("ConceptMap::Test: simple homomorphous testing concept maps are successfully identified as being different, yet homomorphous");
     }
-    #ifdef FIX_ISSUE_10
     if (verbose) { TRACE("Test complex homomorphous maps"); }
     {
       //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,0.1);
@@ -677,7 +675,7 @@ void ribi::cmap::ConceptMap::Test() noexcept
       assert(conceptmap);
       assert(conceptmap->GetEdges().size() == n_edges);
       assert(j < conceptmap->GetEdges().size());
-      const boost::shared_ptr<Edge> edge = conceptmap->GetEdges()[j];
+      const Edge edge = conceptmap->GetEdges()[j];
       conceptmap->DeleteEdge(edge);
       assert(conceptmap->GetEdges().size() == n_edges - 1
         && "Edge must really be gone");

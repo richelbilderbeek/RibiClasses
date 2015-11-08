@@ -64,7 +64,7 @@ void ribi::cmap::CommandDeleteNode::redo()
     {
       std::clog
         << "Deleting edge with text '"
-        << edge->GetNode().GetConcept().GetName() << "'" << std::endl
+        << edge.GetNode().GetConcept().GetName() << "'" << std::endl
       ;
     }
     m_conceptmap->DeleteEdge(edge);
@@ -103,7 +103,7 @@ void ribi::cmap::CommandDeleteNode::undo()
     {
       std::clog
         << "Adding edge with text '"
-        << edge->GetNode().GetConcept().GetName() << "'" << std::endl
+        << edge.GetNode().GetConcept().GetName() << "'" << std::endl
       ;
     }
     m_conceptmap->AddEdge(edge);

@@ -26,7 +26,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
 #include <boost/shared_ptr.hpp>
-#include <boost/signals2.hpp>
 #include "conceptmapfwd.h"
 #include "conceptmapnode.h"
 #pragma GCC diagnostic pop
@@ -42,27 +41,16 @@ struct EdgeFactory;
 /// at the center of the Edge is a Node
 struct Edge
 {
-  typedef boost::shared_ptr<const Edge> ReadOnlyEdgePtr;
-  typedef boost::shared_ptr<Edge> EdgePtr;
-  typedef const Node* ReadOnlyNodePtr;
-  typedef Node* NodePtr;
-  typedef std::vector<ReadOnlyNodePtr> ReadOnlyNodes;
-  typedef std::vector<Node> Nodes;
-
-  Edge() = delete;
-  Edge(const Edge&) = delete;
-  Edge& operator=(const Edge&) = delete;
   ~Edge() noexcept;
+
   const Node& GetNode() const noexcept { return m_node; }
         Node& GetNode()       noexcept { return m_node; }
 
   ///Get the Node this edge originates from
   const Node * GetFrom() const noexcept { return m_from; }
-  //      Node * GetFrom()       noexcept { return m_from; }
 
   ///Get the Node index this edge goes to
   const Node * GetTo() const noexcept { return m_to; }
-  //      Node * GetTo()       noexcept { return m_to; }
 
   static std::string GetVersion() noexcept;
   static std::vector<std::string> GetVersionHistory() noexcept;
@@ -80,7 +68,7 @@ struct Edge
   void SetHeadArrow(const bool has_head_arrow) noexcept;
 
   ///Set the center Node
-  void SetNode(const NodePtr& node) noexcept;
+  void SetNode(const Node& node) noexcept;
 
   ///Set if the tail has an arrow
   void SetTailArrow(const bool has_tail_arrow) noexcept;
@@ -94,16 +82,9 @@ struct Edge
   ///The container of nodes is needed to convert the 'to' and 'from'
   ///field to indices
   static std::string ToXml(
-    const ReadOnlyEdgePtr& c,
-    const Nodes& nodes
+    const Edge& c,
+    const std::vector<Node>& nodes
   ) noexcept;
-
-  ///Emitted when an Edge attribute has changed
-  boost::signals2::signal<void (Edge*)> m_signal_from_changed;
-  boost::signals2::signal<void (Edge*)> m_signal_head_arrow_changed;
-  mutable boost::signals2::signal<void (Edge*)> m_signal_node_changed;
-  boost::signals2::signal<void (Edge*)> m_signal_tail_arrow_changed;
-  boost::signals2::signal<void (Edge*)> m_signal_to_changed;
 
   private:
   ///The Node this edge originates from
@@ -141,12 +122,13 @@ struct Edge
   void OnToChanged(Node * const node) noexcept;
 };
 
-bool IsConnectedToCenterNode(const boost::shared_ptr<const Edge> edge) noexcept;
+bool IsConnectedToCenterNode(const Edge& edge) noexcept;
 
 std::ostream& operator<<(std::ostream& os, const Edge& edge) noexcept;
 
 bool operator==(const Edge& lhs, const Edge& rhs);
 bool operator!=(const Edge& lhs, const Edge& rhs);
+bool operator<(const Edge& lhs, const Edge& rhs);
 
 } //~namespace cmap
 } //~namespace ribi

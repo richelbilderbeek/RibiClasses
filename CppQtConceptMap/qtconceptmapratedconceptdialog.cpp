@@ -81,39 +81,39 @@ ribi::cmap::QtConceptMapRatedConceptDialog::QtConceptMapRatedConceptDialog(
   }
 
 
-  for (const boost::shared_ptr<const cmap::Edge> edge: conceptmap->GetEdges())
+  for (const Edge& edge: conceptmap->GetEdges())
   {
-    if (*edge->GetFrom() == node || *edge->GetTo() == node)
+    if (*edge.GetFrom() == node || *edge.GetTo() == node)
     {
       //Dependent on arrow
-      if (*edge->GetFrom() == node)
+      if (*edge.GetFrom() == node)
       {
         const std::string first_arrow
-          = ( edge->HasTailArrow() ? "<- " : "-- ");
+          = ( edge.HasTailArrow() ? "<- " : "-- ");
         const std::string second_arrow
-          = ( edge->HasHeadArrow() ? " -> " : " -- ");
+          = ( edge.HasHeadArrow() ? " -> " : " -- ");
         const std::string text
           = first_arrow
-          + edge->GetNode().GetConcept().GetName()
+          + edge.GetNode().GetConcept().GetName()
           + second_arrow
           //+ node.GetConcept().GetName();
-          + edge->GetTo()->GetConcept().GetName();
+          + edge.GetTo()->GetConcept().GetName();
         ui->list_cluster_relations->addItem(new QListWidgetItem(text.c_str()));
       }
       else
       {
-        assert(*edge->GetTo() == node);
-        const std::string first_arrow  = (edge->HasHeadArrow() ? "<- " : "-- ");
-        const std::string second_arrow = (edge->HasTailArrow() ? " -> " : " -- ");
+        assert(*edge.GetTo() == node);
+        const std::string first_arrow  = (edge.HasHeadArrow() ? "<- " : "-- ");
+        const std::string second_arrow = (edge.HasTailArrow() ? " -> " : " -- ");
         const std::string text
           = first_arrow
-          + edge->GetNode().GetConcept().GetName()
+          + edge.GetNode().GetConcept().GetName()
           + second_arrow
-          + edge->GetFrom()->GetConcept().GetName();
+          + edge.GetFrom()->GetConcept().GetName();
         ui->list_cluster_relations->addItem(new QListWidgetItem(text.c_str()));
       }
       //Indendent on arrow: all examples
-      for (const Example& example: edge->GetNode().GetConcept().GetExamples().Get())
+      for (const Example& example: edge.GetNode().GetConcept().GetExamples().Get())
       {
         ui->list_cluster_relations->addItem(
           new QListWidgetItem(

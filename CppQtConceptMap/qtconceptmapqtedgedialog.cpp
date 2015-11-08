@@ -48,11 +48,14 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "ui_qtconceptmapqtedgedialog.h"
 #pragma GCC diagnostic pop
 
-ribi::cmap::QtQtEdgeDialog::QtQtEdgeDialog(QWidget *parent)
+ribi::cmap::QtQtEdgeDialog::QtQtEdgeDialog(
+  const boost::shared_ptr<QtEdge>& qtedge,
+  QWidget *parent
+)
   : QtHideAndShowDialog(parent),
   ui(new Ui::QtQtEdgeDialog),
   m_qtedge{},
-  m_qtedgedialog{new QtEdgeDialog},
+  m_qtedgedialog{new QtEdgeDialog(qtedge->GetEdge())},
   m_qtroundededitrectitem_dialog{new QtRoundedEditRectItemDialog}
 {
   #ifndef NDEBUG
@@ -90,7 +93,7 @@ int ribi::cmap::QtQtEdgeDialog::GetMinimumHeight(const QtEdge& qtedge) noexcept
 {
   const int margin = 16;
   return
-    QtEdgeDialog::GetMinimumHeight(*qtedge.GetEdge())
+    QtEdgeDialog::GetMinimumHeight(qtedge.GetEdge())
   + margin
   + QtRoundedEditRectItemDialog::GetMinimumHeight()
   ;
@@ -185,8 +188,8 @@ void ribi::cmap::QtQtEdgeDialog::SetQtEdge(const boost::shared_ptr<QtEdge>& qted
       if (edge_changed)
       {
         std::stringstream s;
-        s << "QtEdge will change from " << (*edge_before)
-          << " to " << (*edge_after) << '\n';
+        s << "QtEdge will change from " << (edge_before)
+          << " to " << (edge_after) << '\n';
         TRACE(s.str());
       }
     }
@@ -265,7 +268,6 @@ void ribi::cmap::QtQtEdgeDialog::Test() noexcept
   }
   {
     NodeFactory();
-    QtEdgeDialog();
     QtNodeFactory();
     QtRoundedEditRectItemDialog();
     QtRoundedEditRectItem();
@@ -273,27 +275,22 @@ void ribi::cmap::QtQtEdgeDialog::Test() noexcept
     const auto to = NodeFactory().GetTest(1);
     const auto qtfrom = QtNodeFactory().Create(from);
     const auto qtto = QtNodeFactory().Create(to);
-    const auto edge = EdgeFactory().GetTest(1,from,to);
+    const Edge edge = EdgeFactory().GetTest(1,from,to);
+    QtEdgeDialog qtedgedial(edge);
     //QtEdge(edge,qtfrom.get(),qtto.get());
-    QtEdge(edge,qtfrom.get(),qtto.get());
+    QtEdge qtedge(edge,qtfrom.get(),qtto.get());
   }
 
   const TestTimer test_timer(__func__,__FILE__,1.0);
   const bool verbose{false};
 
-  if (verbose) { TRACE("Constructor"); }
-  {
-    QtQtEdgeDialog();
-  }
-  QtQtEdgeDialog dialog;
   const auto from = NodeFactory().GetTest(1);
   const auto to = NodeFactory().GetTest(1);
   const auto edge = EdgeFactory().GetTest(1,from,to);
   const auto qtfrom = QtNodeFactory().Create(from);
   const auto qtto = QtNodeFactory().Create(to);
   const boost::shared_ptr<QtEdge> qtedge(new QtEdge(edge,qtfrom.get(),qtto.get()));
-  //const boost::shared_ptr<QtEdge> qtedge(new QtEdge(edge,qtfrom,qtto));
-  dialog.SetQtEdge(qtedge);
+  QtQtEdgeDialog dialog(qtedge);
 
   if (verbose) { TRACE("SetX and GetX must be symmetric"); }
   {

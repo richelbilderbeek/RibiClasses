@@ -112,13 +112,13 @@ ribi::cmap::ConceptMap::ConceptMap(
     for (std::size_t i=0; i!=n_edges; ++i)
     {
       const auto edge = edges[i];
-      const auto from_iter = std::find(std::begin(nodes),std::end(nodes),*edge->GetFrom());
-      const auto to_iter = std::find(std::begin(nodes),std::end(nodes),*edge->GetTo());
+      const auto from_iter = std::find(std::begin(nodes),std::end(nodes),*edge.GetFrom());
+      const auto to_iter = std::find(std::begin(nodes),std::end(nodes),*edge.GetTo());
       assert(from_iter != nodes.end());
       assert(to_iter != nodes.end());
       std::cout
         << i << ": "
-        << Edge::ToXml(boost::const_pointer_cast<const Edge>(edge),nodes)
+        << Edge::ToXml(edge,nodes)
         << '\n';
     }
   }
@@ -152,35 +152,32 @@ ribi::cmap::ConceptMap::ConceptMap(
 }
 #endif //TO_ADD_TO_PROJECTBRAINWEAVER
 
-void ribi::cmap::ConceptMap::AddEdge(const EdgePtr& edge) noexcept
+void ribi::cmap::ConceptMap::AddEdge(const Edge& edge) noexcept
 {
-  assert(edge);
   if (std::find(std::begin(m_edges),std::end(m_edges),edge) != std::end(m_edges))
   {
     if (m_verbose) { TRACE("Warning: edge already added"); }
     return;
   }
 
-  assert(edge->GetFrom());
-  assert(edge->GetTo());
+  assert(edge.GetFrom());
+  assert(edge.GetTo());
 
   //Add Nodes if they are not present yet
-  //if (!HasNode(edge->GetFrom())) { AddNode(edge->GetFrom()); }
-  //if (!HasNode(edge->GetTo())  ) { AddNode(edge->GetTo()  ); }
+  //if (!HasNode(edge.GetFrom())) { AddNode(edge.GetFrom()); }
+  //if (!HasNode(edge.GetTo())  ) { AddNode(edge.GetTo()  ); }
 
 
-  assert(HasNode(*edge->GetFrom()));
-  assert(HasNode(*edge->GetTo()));
+  assert(HasNode(*edge.GetFrom()));
+  assert(HasNode(*edge.GetTo()));
 
-  assert(std::count(std::begin(m_nodes),std::end(m_nodes),*edge->GetFrom()) == 1
+  assert(std::count(std::begin(m_nodes),std::end(m_nodes),*edge.GetFrom()) == 1
     && "First enter the node this edge originates from");
-  assert(std::count(std::begin(m_nodes),std::end(m_nodes),*edge->GetTo()) == 1
+  assert(std::count(std::begin(m_nodes),std::end(m_nodes),*edge.GetTo()) == 1
     && "First enter the node this edge targets to");
   m_edges.push_back(edge);
 
   this->SetSelected( Edges( { edge } ) );
-
-  m_signal_add_edge(edge);
 }
 
 void ribi::cmap::ConceptMap::AddNode(const Node& node) noexcept
@@ -216,17 +213,16 @@ bool ribi::cmap::ConceptMap::CanConstruct(
     const int n_edges = edges.size();
     for (int i=0; i!=n_edges; ++i)
     {
-      const boost::shared_ptr<ribi::cmap::Edge> & a = edges[i];
-      const auto a_from = a->GetFrom();
-      const auto a_to   = a->GetTo();
+      const auto& a = edges[i];
+      const auto a_from = a.GetFrom();
+      const auto a_to   = a.GetTo();
       for (int j=i+1; j!=n_edges; ++j)
       {
         assert(i != j);
         assert(j < n_edges);
-        const boost::shared_ptr<Edge> & b = edges[j];
-        assert(a.get() != b.get() && "Assume different pointers");
-        const auto b_from = b->GetFrom();
-        const auto b_to   = b->GetTo();
+        const auto& b = edges[j];
+        const auto b_from = b.GetFrom();
+        const auto b_to   = b.GetTo();
         if (a_from == b_from && a_to == b_to)
         {
           if (trace_verbose)
@@ -284,19 +280,19 @@ ribi::cmap::ConceptMap::SubConceptMaps ribi::cmap::ConceptMap::CreateSubs() cons
 
     nodes.push_back(focal_node);
 
-    for (const boost::shared_ptr<Edge>& focal_edge: m_edges)
+    for (const Edge& focal_edge: m_edges)
     {
-     if (focal_edge->GetFrom() == &focal_node)
+     if (focal_edge.GetFrom() == &focal_node)
       {
         edges.push_back(focal_edge);
-        assert(focal_edge->GetTo() != &focal_node);
-        nodes.push_back(*focal_edge->GetTo());
+        assert(focal_edge.GetTo() != &focal_node);
+        nodes.push_back(*focal_edge.GetTo());
       }
-      else if (focal_edge->GetTo() == &focal_node)
+      else if (focal_edge.GetTo() == &focal_node)
       {
         edges.push_back(focal_edge);
-        assert(focal_edge->GetFrom() != &focal_node);
-        nodes.push_back(*focal_edge->GetFrom());
+        assert(focal_edge.GetFrom() != &focal_node);
+        nodes.push_back(*focal_edge.GetFrom());
       }
     }
     assert(!nodes.empty());
@@ -312,15 +308,9 @@ ribi::cmap::ConceptMap::SubConceptMaps ribi::cmap::ConceptMap::CreateSubs() cons
   return v;
 }
 
-void ribi::cmap::ConceptMap::DeleteEdge(const EdgePtr& edge) noexcept
-{
-  DeleteEdge(boost::dynamic_pointer_cast<const Edge>(edge));
-}
-
-void ribi::cmap::ConceptMap::DeleteEdge(const ReadOnlyEdgePtr& edge) noexcept
+void ribi::cmap::ConceptMap::DeleteEdge(const Edge& edge) noexcept
 {
   #ifndef NDEBUG
-  assert(edge);
   //One cannot be sure if the edges are already deleted or not
   if(std::count(begin(m_edges),end(m_edges),edge) == 0) return;
   assert(std::count(begin(m_edges),end(m_edges),edge) != 0
@@ -331,7 +321,6 @@ void ribi::cmap::ConceptMap::DeleteEdge(const ReadOnlyEdgePtr& edge) noexcept
   #endif
 
 
-  assert(edge);
 
   ///Edge might already be deleted by something else
   if (GetEdges().empty()) return;
@@ -341,9 +330,6 @@ void ribi::cmap::ConceptMap::DeleteEdge(const ReadOnlyEdgePtr& edge) noexcept
   }
 
   m_edges.erase(std::remove(begin(m_edges),end(m_edges),edge),m_edges.end());
-
-  m_signal_delete_edge(edge);
-
 
   #ifndef NDEBUG
   const std::size_t n_edges_after = m_edges.size();
@@ -364,7 +350,7 @@ void ribi::cmap::ConceptMap::DeleteNode(const Node& node) noexcept
 
   const auto to_be_deleted = GetEdgesConnectedTo(node);
 
-  for (boost::shared_ptr<Edge> edge: to_be_deleted)
+  for (const auto& edge: to_be_deleted)
   {
     DeleteEdge(edge);
   }
@@ -417,20 +403,13 @@ ribi::cmap::Node* ribi::cmap::ConceptMap::FindCenterNode() noexcept
   return const_cast<Node*>(center_node);
 }
 
-ribi::cmap::ConceptMap::EdgePtr ribi::cmap::ConceptMap::GetEdgeHaving(const Node& node) const noexcept
+std::vector<ribi::cmap::Edge>::const_iterator ribi::cmap::ConceptMap::GetEdgeHaving(const Node& node) const noexcept
 {
-  const auto iter = std::find_if(
-    std::begin(m_edges),
-    std::end(m_edges),
-    [node](const EdgePtr& edge) { return edge->GetNode() == node; }
+  auto iter = Container().FindIf(
+    m_edges,
+    [node](const Edge& edge) { return edge.GetNode() == node; }
   );
-  if (iter == std::end(m_edges)) { return EdgePtr(); }
-  return *iter;
-}
-
-ribi::cmap::ConceptMap::ReadOnlyEdges ribi::cmap::ConceptMap::GetEdges() const noexcept
-{
-  return AddConst(m_edges);
+  return iter;
 }
 
 ribi::cmap::ConceptMap::Edges ribi::cmap::ConceptMap::GetEdgesConnectedTo(const ReadOnlyNodePtr& node) const noexcept
@@ -440,9 +419,9 @@ ribi::cmap::ConceptMap::Edges ribi::cmap::ConceptMap::GetEdgesConnectedTo(const 
     std::begin(m_edges),
     std::end(m_edges),
     std::back_inserter(edges),
-    [node](const EdgePtr& edge)
+    [node](const Edge& edge)
     {
-      return edge->GetFrom() == &node || edge->GetTo() == &node;
+      return edge.GetFrom() == &node || edge.GetTo() == &node;
     }
   );
   return edges;
@@ -485,9 +464,9 @@ std::vector<std::string> ribi::cmap::ConceptMap::GetVersionHistory() noexcept
   };
 }
 
-bool ribi::cmap::ConceptMap::HasEdge(const boost::shared_ptr<const Edge>& edge) const noexcept
+bool ribi::cmap::ConceptMap::HasEdge(const Edge& edge) const noexcept
 {
-  return std::count(std::begin(m_edges),std::end(m_edges),edge);
+  return container().Count(m_edges,edge);
 }
 
 bool ribi::cmap::ConceptMap::HasNode(const Node& node) const noexcept
@@ -496,8 +475,8 @@ bool ribi::cmap::ConceptMap::HasNode(const Node& node) const noexcept
 }
 
 bool ribi::cmap::HasSameContent(
-  const ribi::cmap::ConceptMap& lhs,
-  const ribi::cmap::ConceptMap& rhs
+  const ConceptMap& lhs,
+  const ConceptMap& rhs
 ) noexcept
 {
   const bool trace_verbose{false};
@@ -544,26 +523,24 @@ bool ribi::cmap::HasSameContent(
   }
   //Same Edges
   {
-    const std::vector<boost::shared_ptr<const Edge>> edges_lhs = lhs.GetEdges();
+    const std::vector<Edge> edges_lhs = lhs.GetEdges();
     std::multiset<Concept> concepts_lhs;
     std::transform(std::begin(edges_lhs),std::end(edges_lhs),
       std::inserter(concepts_lhs,std::begin(concepts_lhs)),
-      [](const boost::shared_ptr<const Edge>& edge)
+      [](const Edge& edge)
       {
-        assert(edge);
-        return edge->GetNode().GetConcept();
+        return edge.GetNode().GetConcept();
       }
     );
 
-    const std::vector<boost::shared_ptr<const Edge>> edges_rhs = rhs.GetEdges();
+    const std::vector<Edge> edges_rhs = rhs.GetEdges();
 
     std::multiset<Concept> concepts_rhs;
     std::transform(begin(edges_rhs),end(edges_rhs),
       std::inserter(concepts_rhs,std::begin(concepts_rhs)),
-      [](const boost::shared_ptr<const cmap::Edge>& edge)
+      [](const Edge& edge)
       {
-        assert(edge);
-        return edge->GetNode().GetConcept();
+        return edge.GetNode().GetConcept();
       }
     );
     if (std::mismatch(std::begin(concepts_lhs),concepts_lhs.end(),std::begin(concepts_rhs))
@@ -586,21 +563,21 @@ bool ribi::cmap::HasSameContent(
     {
       assert(i >= 0);
       assert(i < static_cast<int>(lhs.GetEdges().size()));
-      const auto from_node = lhs.GetEdges()[i]->GetFrom();
+      const auto from_node = lhs.GetEdges()[i].GetFrom();
       assert(from_node);
       const std::string str_from = from_node->GetConcept().GetName();
-      const std::string str_mid = lhs.GetEdges()[i]->GetNode().GetConcept().GetName();
-      const auto to_node = lhs.GetEdges()[i]->GetTo();
+      const std::string str_mid = lhs.GetEdges()[i].GetNode().GetConcept().GetName();
+      const auto to_node = lhs.GetEdges()[i].GetTo();
       assert(to_node);
       const std::string str_to = to_node->GetConcept().GetName();
       //Only if arrow is reversed, reverse the fake edge
       if (
-           lhs.GetEdges()[i]->HasTailArrow() == true
-        && lhs.GetEdges()[i]->HasHeadArrow() == false)
+           lhs.GetEdges()[i].HasTailArrow() == true
+        && lhs.GetEdges()[i].HasHeadArrow() == false)
       {
         v.push_back(std::make_tuple(str_to,str_mid,str_from));
       }
-      else if (lhs.GetEdges()[i]->HasTailArrow() == lhs.GetEdges()[i]->HasHeadArrow())
+      else if (lhs.GetEdges()[i].HasTailArrow() == lhs.GetEdges()[i].HasHeadArrow())
       {
         //Two-way or zero-way arrow, add it in both directions
         v.push_back(std::make_tuple(str_to,str_mid,str_from));
@@ -617,20 +594,20 @@ bool ribi::cmap::HasSameContent(
     FakeEdges w;
     for (int i=0; i!=sz; ++i)
     {
-      const auto from_node = rhs.GetEdges()[i]->GetFrom();
+      const auto from_node = rhs.GetEdges()[i].GetFrom();
       const std::string str_from = from_node->GetConcept().GetName();
-      const std::string str_mid = rhs.GetEdges()[i]->GetNode().GetConcept().GetName();
-      const auto to_node = rhs.GetEdges()[i]->GetTo();
+      const std::string str_mid = rhs.GetEdges()[i].GetNode().GetConcept().GetName();
+      const auto to_node = rhs.GetEdges()[i].GetTo();
       const std::string str_to = to_node->GetConcept().GetName();
       //w.push_back(std::make_tuple(str_from,str_mid,str_to));
       //Only if arrow is reversed, reverse the fake edge
       if (
-           rhs.GetEdges()[i]->HasTailArrow() == true
-        && rhs.GetEdges()[i]->HasHeadArrow() == false)
+           rhs.GetEdges()[i].HasTailArrow() == true
+        && rhs.GetEdges()[i].HasHeadArrow() == false)
       {
         w.push_back(std::make_tuple(str_to,str_mid,str_from));
       }
-      else if (rhs.GetEdges()[i]->HasTailArrow() == rhs.GetEdges()[i]->HasHeadArrow())
+      else if (rhs.GetEdges()[i].HasTailArrow() == rhs.GetEdges()[i].HasHeadArrow())
       {
         //Two-way or zero-way arrow, add it in both directions
         w.push_back(std::make_tuple(str_to,str_mid,str_from));
@@ -673,31 +650,26 @@ bool ribi::cmap::HasSameContent(
 #ifndef NDEBUG
 bool ribi::cmap::ConceptMap::IsValid() const noexcept
 {
-  for (const boost::shared_ptr<Edge>& edge: m_edges)
+  for (const Edge& edge: m_edges)
   {
-    if (!edge)
+    if (!edge.GetTo())
     {
-      TRACE("Edge is nullptr");
+      TRACE("edge.GetTo() is nullptr");
       return false;
     }
-    if (!edge->GetTo())
+    if (!edge.GetFrom())
     {
-      TRACE("edge->GetTo() is nullptr");
+      TRACE("edge.GetFrom() is nullptr");
       return false;
     }
-    if (!edge->GetFrom())
+    if (container().Count(m_nodes,*edge.GetTo()) == 0)
     {
-      TRACE("edge->GetFrom() is nullptr");
+      TRACE("edge.GetTo() points to node not in the concept map");
       return false;
     }
-    if (container().Count(m_nodes,*edge->GetTo()) == 0)
+    if(container().Count(m_nodes,*edge.GetFrom()) == 0)
     {
-      TRACE("edge->GetTo() points to node not in the concept map");
-      return false;
-    }
-    if(container().Count(m_nodes,*edge->GetFrom()) == 0)
-    {
-      TRACE("edge->GetFrom() points to node not in the concept map");
+      TRACE("edge.GetFrom() points to node not in the concept map");
       return false;
     }
   }
@@ -725,7 +697,7 @@ int ribi::cmap::CountCenterNodeEdges(
   const int cnt{
     static_cast<int>(
       container().CountIf(v, //std::count_if(v.begin(),v.end(),
-        [](const boost::shared_ptr<const Edge> edge)
+        [](const Edge& edge)
         {
           return IsConnectedToCenterNode(edge);
         }
@@ -766,8 +738,8 @@ bool ribi::cmap::operator==(const ConceptMap& lhs, const ConceptMap& rhs) noexce
   }
   //Compare edges
   {
-    const std::vector<boost::shared_ptr<const cmap::Edge>> lhs_edges = lhs.GetEdges();
-    const std::vector<boost::shared_ptr<const cmap::Edge>> rhs_edges = rhs.GetEdges();
+    const auto& lhs_edges = lhs.GetEdges();
+    const auto& rhs_edges = rhs.GetEdges();
     if (lhs_edges.size() != rhs_edges.size())
     {
       if (verbose) { TRACE("Number of edges differ"); }
@@ -777,12 +749,7 @@ bool ribi::cmap::operator==(const ConceptMap& lhs, const ConceptMap& rhs) noexce
       std::equal(
         std::begin(lhs_edges),
         std::end(  lhs_edges),
-        std::begin(rhs_edges),
-        [](const boost::shared_ptr<const cmap::Edge> lhs_edge,
-           const boost::shared_ptr<const cmap::Edge> rhs_edge)
-        {
-          return *lhs_edge == *rhs_edge;
-        }
+        std::begin(rhs_edges)
       )
     )
     {
@@ -827,9 +794,8 @@ bool ribi::cmap::operator!=(const ribi::cmap::ConceptMap& lhs, const ribi::cmap:
 
 
 
-void ribi::cmap::ConceptMap::AddSelected(const std::vector<boost::shared_ptr<Edge>>& edges) noexcept
+void ribi::cmap::ConceptMap::AddSelected(const std::vector<Edge>& edges) noexcept
 {
-  assert(container().Count(edges,nullptr) == 0);
   std::copy(edges.begin(),edges.end(),std::back_inserter(m_selected.first));
 
   //Remove duplicates
@@ -853,7 +819,7 @@ void ribi::cmap::ConceptMap::AddSelected(const Nodes& nodes) noexcept
 }
 
 void ribi::cmap::ConceptMap::AddSelected(
-  const std::vector<boost::shared_ptr<Edge>>& edges,
+  const std::vector<Edge>& edges,
   const Nodes& nodes
 ) noexcept
 {
@@ -870,15 +836,13 @@ boost::shared_ptr<ribi::cmap::ConceptMap> ribi::cmap::ConceptMap::CreateEmptyCon
   return conceptmap;
 }
 
-boost::shared_ptr<ribi::cmap::Edge> ribi::cmap::ConceptMap::CreateNewEdge() noexcept
+ribi::cmap::Edge ribi::cmap::ConceptMap::CreateNewEdge() noexcept
 {
   assert(GetSelectedNodes().size() == 2);
 
   const Node from = GetSelectedNodes()[0];
   const Node to   = GetSelectedNodes()[1];
-  const boost::shared_ptr<Edge> edge {
-    EdgeFactory().Create(from,to)
-  };
+  const Edge edge(EdgeFactory().Create(from,to));
 
   //Add the Edge
   AddEdge(edge);
@@ -888,8 +852,8 @@ boost::shared_ptr<ribi::cmap::Edge> ribi::cmap::ConceptMap::CreateNewEdge() noex
 
   //Keep track of what is selected
   this->AddSelected( { edge } );
-  this->Unselect( { *edge->GetFrom() } );
-  this->Unselect( { *edge->GetTo() } );
+  this->Unselect( { *(edge.GetFrom()) } );
+  this->Unselect( { *(edge.GetTo()) } );
 
   return edge;
 }
@@ -937,13 +901,13 @@ void ribi::cmap::ConceptMap::DoCommand(Command * const command) noexcept
   #endif // NDEBUG
 }
 
-std::vector<boost::shared_ptr<ribi::cmap::Edge>> ribi::cmap::ConceptMap::GetRandomEdges(
-  std::vector<boost::shared_ptr<const Edge>> edges_to_exclude
+std::vector<ribi::cmap::Edge> ribi::cmap::ConceptMap::GetRandomEdges(
+  std::vector<Edge> edges_to_exclude
 ) noexcept
 {
   if (GetEdges().empty()) { return Edges(); }
   Edges edges = GetEdges();
-  const auto cmp = [](const boost::shared_ptr<const Edge>& lhs, const boost::shared_ptr<const Edge>& rhs) { return lhs.get() < rhs.get(); };
+  const auto cmp = [](const Edge& lhs, const Edge& rhs) { return lhs < rhs; };
   std::sort(std::begin(edges),std::end(edges),cmp);
   std::sort(std::begin(edges_to_exclude),std::end(edges_to_exclude),cmp);
   //Find the Edges present in nodes, absent in nodes_to_exclude
@@ -959,17 +923,26 @@ std::vector<boost::shared_ptr<ribi::cmap::Edge>> ribi::cmap::ConceptMap::GetRand
   if (focus_edges.size() == 1) return focus_edges;
   std::random_shuffle(focus_edges.begin(),focus_edges.end());
   const int n = 1 + (std::rand() % (focus_edges.size() - 1));
-  focus_edges.resize(n);
+  while (n < static_cast<int>(focus_edges.size())) {
+    assert(!focus_edges.empty());
+    focus_edges.pop_back();
+  }
+  //focus_edges.resize(n);
   return focus_edges;
 }
 
-boost::shared_ptr<ribi::cmap::Edge> ribi::cmap::ConceptMap::GetRandomEdge(
-  std::vector<boost::shared_ptr<const Edge>> edges_to_exclude) noexcept
+ribi::cmap::Edge ribi::cmap::ConceptMap::GetRandomEdge(
+  std::vector<Edge> edges_to_exclude)
 {
   const auto v(GetRandomEdges(edges_to_exclude));
-  boost::shared_ptr<Edge> p;
-  if (!v.empty()) p = v[0];
-  return p;
+  if (v.empty())
+  {
+    std::stringstream msg;
+    msg << __func__ << ": no random edge found";
+    throw std::logic_error(msg.str());
+  }
+  assert(!v.empty());
+  return v[0];
 }
 
 ribi::cmap::ConceptMap::Nodes ribi::cmap::ConceptMap::GetRandomNodes(
@@ -1014,7 +987,7 @@ ribi::cmap::Node ribi::cmap::ConceptMap::GetRandomNode(
   return v[0];
 }
 
-bool ribi::cmap::ConceptMap::IsSelected(const ReadOnlyEdgePtr& edge) const noexcept
+bool ribi::cmap::ConceptMap::IsSelected(const Edge& edge) const noexcept
 {
   const auto iter = std::find(
     std::begin(m_selected.first),
@@ -1025,16 +998,20 @@ bool ribi::cmap::ConceptMap::IsSelected(const ReadOnlyEdgePtr& edge) const noexc
   return false;
 }
 
-bool ribi::cmap::ConceptMap::IsSelected(const ReadOnlyNodePtr& node) const noexcept
+bool ribi::cmap::ConceptMap::IsSelected(const Node& node) const noexcept
 {
-  const auto iter = std::find(
-    std::begin(m_selected.second),
-    std::end(m_selected.second),
+  const int n_found_in_nodes = Container().Count(
+    m_selected.second,
     node
   );
-  if (iter != std::end(m_selected.second)) return true;
-  const auto edge = this->GetEdgeHaving(node);
-  return edge ? true : false;
+  if (n_found_in_nodes) return true;
+
+  const int n_found_in_edge = Container().CountIf(
+    m_selected.first,
+    [node](const Edge& edge) { return edge.GetNode() == node; }
+  );
+  if (n_found_in_edge) return true;
+  return false;
 }
 
 void ribi::cmap::ConceptMap::OnUndo() noexcept
@@ -1059,7 +1036,7 @@ void ribi::cmap::ConceptMap::Redo() noexcept
   m_undo.redo();
 }
 
-void ribi::cmap::ConceptMap::RemoveSelected(const std::vector<boost::shared_ptr<Edge>>& edges) noexcept
+void ribi::cmap::ConceptMap::RemoveSelected(const std::vector<Edge>& edges) noexcept
 {
   if (GetVerbosity())
   {
@@ -1068,7 +1045,6 @@ void ribi::cmap::ConceptMap::RemoveSelected(const std::vector<boost::shared_ptr<
     ;
   }
 
-  assert(std::count(std::begin(edges),std::end(edges),nullptr) == 0);
   for (const auto edge: edges)
   {
     const auto new_end = std::remove(
@@ -1106,15 +1082,15 @@ void ribi::cmap::ConceptMap::RemoveSelected(
     );
     if (new_end == std::end(m_selected.second))
     {
-      const auto edge = this->GetEdgeHaving(node);
-      if (!edge)
+      const auto iter = this->GetEdgeHaving(node);
+      if (iter == std::end(m_edges))
       {
         if (m_verbose) { std::clog << "Warning: cannot find node to unselect" << std::endl; }
       }
       else
       {
         if (m_verbose) { std::clog << "Removing selectedness of edge containing node" << std::endl; }
-        this->RemoveSelected( Edges( { edge } ) );
+        this->RemoveSelected( Edges( { *iter } ) );
       }
     }
     else
@@ -1130,7 +1106,7 @@ void ribi::cmap::ConceptMap::RemoveSelected(
 }
 
 void ribi::cmap::ConceptMap::RemoveSelected(
-  const std::vector<boost::shared_ptr<Edge>>& edges,
+  const std::vector<Edge>& edges,
   const Nodes& nodes
 ) noexcept
 {
@@ -1173,7 +1149,7 @@ void ribi::cmap::ConceptMap::SetSelected(const EdgesAndNodes& nodes_and_edges) n
 
 void ribi::cmap::ConceptMap::SetSelected(const ConstEdgesAndNodes& nodes_and_edges) noexcept
 {
-  SetSelected(RemoveConst(nodes_and_edges.first), nodes_and_edges.second);
+  SetSelected(nodes_and_edges.first, nodes_and_edges.second);
 }
 
 std::string ribi::cmap::ToXml(const ConceptMap& map) noexcept

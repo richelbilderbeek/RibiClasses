@@ -168,10 +168,10 @@ ribi::cmap::QtConceptMap::~QtConceptMap()
 }
 
 ribi::cmap::QtEdge * ribi::cmap::QtConceptMap::AddEdge(
-  const boost::shared_ptr<Edge> edge)
+  const Edge& edge
+)
 {
-  assert(edge);
-  if (GetVerbosity()) { TRACE("Start of 'QtConceptMap::AddEdge(const boost::shared_ptr<Edge> edge)'"); }
+  if (GetVerbosity()) { TRACE("Start of 'QtConceptMap::AddEdge(const Edge edge)'"); }
 
   //Add Node to ConceptMap if this has not been done yet
   {
@@ -194,22 +194,22 @@ ribi::cmap::QtEdge * ribi::cmap::QtConceptMap::AddEdge(
   }
 
   //Be helpful here
-  if (!GetQtNode(*edge->GetFrom()))
+  if (!GetQtNode(*edge.GetFrom()))
   {
     if (GetVerbosity()) { TRACE("Adding 'from' Node to QtConceptMap (as it was not yet in there)"); }
     //Note: this cases ConceptMap::GetSelectedEdges() to be empty again, this has to be fixed later on
-    AddNode(*edge->GetFrom());
+    AddNode(*edge.GetFrom());
   }
-  if (!GetQtNode(*edge->GetTo()))
+  if (!GetQtNode(*edge.GetTo()))
   {
     if (GetVerbosity()) { TRACE("Adding 'to' Node to QtConceptMap (as it was not yet in there)"); }
     //Note: this cases ConceptMap::GetSelectedEdges() to be empty again, this has to be fixed later on
-    AddNode(*edge->GetTo());
+    AddNode(*edge.GetTo());
   }
 
-  QtNode * const qtfrom = GetQtNode(*edge->GetFrom());
+  QtNode * const qtfrom = GetQtNode(*edge.GetFrom());
   assert(qtfrom);
-  QtNode * const qtto   = GetQtNode(*edge->GetTo());
+  QtNode * const qtto   = GetQtNode(*edge.GetTo());
   assert(qtto);
   assert(qtfrom != qtto);
   QtEdge * const qtedge = new QtEdge(
@@ -221,7 +221,7 @@ ribi::cmap::QtEdge * ribi::cmap::QtConceptMap::AddEdge(
   //Edges connected to the center node do not show their concepts
   if (IsQtCenterNode(qtfrom) || IsQtCenterNode(qtto))
   {
-    //assert(qtconcept == qtedge->GetDisplayStrategy());
+    //assert(qtconcept == qtedge.GetDisplayStrategy());
     //qtconcept->setVisible(false);
   }
 
@@ -399,14 +399,12 @@ void ribi::cmap::QtConceptMap::CleanMe()
 }
 
 
-void ribi::cmap::QtConceptMap::DeleteEdge(const boost::shared_ptr<const Edge> edge)
+void ribi::cmap::QtConceptMap::DeleteEdge(const Edge& edge)
 {
-  assert(edge);
-
   //Already deleted
-  if (!GetQtEdgeConst(edge)) { return; }
+  if (!GetQtEdge(edge)) { return; }
 
-  const auto qtedge = GetQtEdgeConst(edge);
+  const auto qtedge = GetQtEdge(edge);
 
   assert(qtedge->scene() == this->GetScene());
   const auto qtfrom = qtedge->GetFrom();
@@ -601,8 +599,8 @@ ribi::cmap::QtNode* ribi::cmap::QtConceptMap::GetItemBelowCursor(const QPointF& 
   return nullptr;
 }
 
-const ribi::cmap::QtEdge * ribi::cmap::QtConceptMap::GetQtEdgeConst(
-  const boost::shared_ptr<const Edge> edge) const noexcept
+const ribi::cmap::QtEdge * ribi::cmap::QtConceptMap::GetQtEdge(
+  const Edge& edge) const noexcept
 {
   const auto v(GetQtEdges());
   for (const auto e:v)
@@ -613,7 +611,7 @@ const ribi::cmap::QtEdge * ribi::cmap::QtConceptMap::GetQtEdgeConst(
 }
 
 ribi::cmap::QtEdge * ribi::cmap::QtConceptMap::GetQtEdge(
-  const boost::shared_ptr<Edge> edge) noexcept
+  const Edge& edge) noexcept
 {
   //Calls the const version of this member function
   //To avoid duplication in const and non-const member functions [1]
@@ -621,7 +619,7 @@ ribi::cmap::QtEdge * ribi::cmap::QtConceptMap::GetQtEdge(
   //    Item 3, paragraph 'Avoid duplication in const and non-const member functions'
   QtEdge * const qtedge(
     const_cast<QtEdge *>(
-      dynamic_cast<const QtConceptMap*>(this)->GetQtEdgeConst(edge)
+      dynamic_cast<const QtConceptMap*>(this)->GetQtEdge(edge)
     )
   );
   return qtedge;
@@ -695,15 +693,6 @@ std::vector<ribi::cmap::QtEdge *> ribi::cmap::QtConceptMap::GetQtEdges()
   return Collect<QtEdge>(this->scene());
 }
 
-
-/*
-ribi::cmap::QtNode * ribi::cmap::QtConceptMap::GetQtNode(Node * const node) noexcept
-{
-  return const_cast<QtNode *>(GetQtNodeConst(node));
-}
-
-
-*/
 
 ribi::cmap::QtNode * ribi::cmap::QtConceptMap::GetQtNode(
   const Node& node) noexcept
@@ -1050,8 +1039,8 @@ void ribi::cmap::QtConceptMap::RepositionItems()
         const QPointF p((qtedge->GetFrom()->GetCenterPos() + qtedge->GetTo()->GetCenterPos()) / 2.0);
         const double new_x = p.x();
         const double new_y = p.y();
-        qtedge->GetEdge()->GetNode().SetX(new_x);
-        qtedge->GetEdge()->GetNode().SetY(new_y);
+        qtedge->GetEdge().GetNode().SetX(new_x);
+        qtedge->GetEdge().GetNode().SetY(new_y);
       }
     );
   }
@@ -1100,8 +1089,8 @@ void ribi::cmap::QtConceptMap::RepositionItems()
           {
             QtEdge * const qtedge = dynamic_cast<QtEdge *>(node_or_edge);
             assert(qtedge && "Every item is either a Qt node or Qt edge");
-            qtedge->GetEdge()->GetNode().SetX(new_x);
-            qtedge->GetEdge()->GetNode().SetY(new_y);
+            qtedge->GetEdge().GetNode().SetX(new_x);
+            qtedge->GetEdge().GetNode().SetY(new_y);
             //node->setPos(QPointF(new_x,new_y));
           }
           done = false;
@@ -1191,13 +1180,13 @@ void ribi::cmap::QtConceptMap::SetConceptMap(const boost::shared_ptr<ConceptMap>
   }
   //Add the Concepts on the Edges
   {
-    const std::vector<boost::shared_ptr<ribi::cmap::Edge> > edges = m_conceptmap->GetEdges();
+    const std::vector<Edge> edges = m_conceptmap->GetEdges();
     std::for_each(edges.begin(),edges.end(),
-      [this,qtnodes](const boost::shared_ptr<Edge> edge)
+      [this,qtnodes](const Edge& edge)
       {
-        assert(edge->GetFrom());
-        assert(edge->GetTo());
-        assert(edge->GetFrom() != edge->GetTo());
+        assert(edge.GetFrom());
+        assert(edge.GetTo());
+        assert(edge.GetFrom() != edge.GetTo());
         this->AddEdge(edge);
       }
     );
@@ -1269,12 +1258,12 @@ void ribi::cmap::QtConceptMap::TestMe(const boost::shared_ptr<const ribi::cmap::
     assert(v.size() == w.size() && "All nodes must be unique");
   }
   {
-    std::set<const cmap::Edge*> w;
-    const std::vector<boost::shared_ptr<const cmap::Edge> > v = map->GetEdges();
+    std::set<Edge> w;
+    const std::vector<Edge> v = map->GetEdges();
     std::transform(v.begin(),v.end(),std::inserter(w,w.begin()),
-      [](const boost::shared_ptr<const cmap::Edge>  ptr)
+      [](const Edge& ptr)
       {
-        return ptr.get();
+        return ptr; //TODO: replace by std::copy
       }
     );
     assert(v.size() == w.size() && "All edges must be unique");

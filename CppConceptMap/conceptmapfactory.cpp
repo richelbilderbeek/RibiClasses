@@ -53,7 +53,7 @@ ribi::cmap::ConceptMapFactory::ConceptMapFactory() noexcept
 
 boost::shared_ptr<ribi::cmap::ConceptMap> ribi::cmap::ConceptMapFactory::Create(
   const std::vector<Node>& nodes,
-  const std::vector<boost::shared_ptr<Edge>>& edges
+  const std::vector<Edge>& edges
 ) const noexcept
 {
   boost::shared_ptr<ConceptMap> p(new ConceptMap(nodes,edges));
@@ -64,6 +64,7 @@ boost::shared_ptr<ribi::cmap::ConceptMap> ribi::cmap::ConceptMapFactory::Create(
 }
 
 #ifndef NDEBUG
+/*
 boost::shared_ptr<ribi::cmap::ConceptMap> ribi::cmap::ConceptMapFactory::DeepCopy(
   const boost::shared_ptr<const ribi::cmap::ConceptMap> map) const noexcept
 {
@@ -95,11 +96,10 @@ boost::shared_ptr<ribi::cmap::ConceptMap> ribi::cmap::ConceptMapFactory::DeepCop
 
 
   //Deep-copy the edges
-  const std::vector<boost::shared_ptr<const Edge> > edges = map->GetEdges();
-  std::vector<boost::shared_ptr<Edge>> new_edges;
-  for (const boost::shared_ptr<const Edge> edge: edges)
+  const std::vector<Edge> edges = map->GetEdges();
+  std::vector<Edge> new_edges;
+  for (const Edge& edge: edges)
   {
-    assert(edge);
     //Find the new from node
     const auto from_iter = std::find(nodes.begin(),nodes.end(),*edge->GetFrom());
     assert(from_iter != nodes.end());
@@ -116,7 +116,7 @@ boost::shared_ptr<ribi::cmap::ConceptMap> ribi::cmap::ConceptMapFactory::DeepCop
 
     assert(from_index != to_index);
     assert(from != to);
-    const boost::shared_ptr<Edge> new_edge {
+    const Edge new_edge {
       EdgeFactory().DeepCopy(edge,from,to)
     };
     assert(new_edge);
@@ -131,6 +131,7 @@ boost::shared_ptr<ribi::cmap::ConceptMap> ribi::cmap::ConceptMapFactory::DeepCop
   assert(p->IsValid() && "Must be a valid copy");
   return p;
 }
+*/
 #endif
 
 ///NOTE: maybe let CenterNodes manage their own <center_node> tags
@@ -204,7 +205,7 @@ boost::shared_ptr<ribi::cmap::ConceptMap> ribi::cmap::ConceptMapFactory::FromXml
     }
     assert(nodes.empty() || IsCenterNode(nodes[0]));
   }
-  std::vector<boost::shared_ptr<Edge>> edges;
+  std::vector<Edge> edges;
   {
     //Obtain the <edges> ... </edges> strings
     const std::vector<std::string> w
@@ -217,11 +218,10 @@ boost::shared_ptr<ribi::cmap::ConceptMap> ribi::cmap::ConceptMapFactory::FromXml
       = Regex().GetRegexMatches(nodes_str,Regex().GetRegexEdge());
     for (const std::string& s: x)
     {
-      const boost::shared_ptr<Edge> edge {
+      Edge edge(
         EdgeFactory().FromXml(s,nodes)
-      };
-      assert(edge);
-      edges.push_back(edge);
+      );
+      edges.push_back(edge); //TODO: emplace_back here
     }
   }
 
@@ -539,7 +539,7 @@ boost::shared_ptr<ribi::cmap::ConceptMap> ribi::cmap::ConceptMapFactory::GetHete
 
   const auto concept_e(ConceptFactory().Create());
   const auto node_e(NodeFactory().Create(concept_e,1.2,3.4));
-  const boost::shared_ptr<Edge> edge_a(EdgeFactory().Create(node_e,nodes.at(2),false,nodes.at(3),true));
+  const Edge edge_a(EdgeFactory().Create(node_e,nodes.at(2),false,nodes.at(3),true));
 
   const Edges edges
     =

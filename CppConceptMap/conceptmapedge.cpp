@@ -45,12 +45,7 @@ ribi::cmap::Edge::Edge(
   const bool tail_arrow,
   const Node& to,
   const bool head_arrow)
-  : m_signal_from_changed{},
-    m_signal_head_arrow_changed{},
-    m_signal_node_changed{},
-    m_signal_tail_arrow_changed{},
-    m_signal_to_changed{},
-    m_from(&from),
+  : m_from(&from),
     m_head_arrow(head_arrow),
     m_node(node),
     m_tail_arrow(tail_arrow),
@@ -142,7 +137,6 @@ void ribi::cmap::Edge::OnConceptChanged(Node * const
 ) noexcept
 {
   assert(*node == GetNode());
-  this->m_signal_node_changed(this);
 }
 
 void ribi::cmap::Edge::OnFromChanged(Node * const
@@ -154,8 +148,6 @@ void ribi::cmap::Edge::OnFromChanged(Node * const
   const bool verbose{false};
   if (verbose) { TRACE("Slot ribi::cmap::Edge::OnFromChanged"); }
   assert(node == this->GetFrom());
-  if (verbose) { TRACE("Emitting ribi::cmap::Edge::m_signal_from_changed"); }
-  this->m_signal_from_changed(this);
 }
 
 void ribi::cmap::Edge::OnToChanged(Node * const
@@ -168,37 +160,21 @@ void ribi::cmap::Edge::OnToChanged(Node * const
   if (verbose) { TRACE("Slot ribi::cmap::Edge::OnFromChanged"); }
 
   assert(node == this->GetTo());
-  if (verbose) { TRACE("Emitting ribi::cmap::Edge::m_signal_to_changed"); }
-
-  this->m_signal_to_changed(this);
 }
 
-void ribi::cmap::Edge::SetNode(const NodePtr& node) noexcept
+void ribi::cmap::Edge::SetNode(const Node& node) noexcept
 {
-  assert(node);
-  if (m_node != *node)
-  {
-    m_node = *node;
-    m_signal_node_changed(this);
-  }
+  m_node = node;
 }
 
 void ribi::cmap::Edge::SetHeadArrow(const bool has_head_arrow) noexcept
 {
-  if (m_head_arrow != has_head_arrow)
-  {
-    m_head_arrow = has_head_arrow;
-    m_signal_head_arrow_changed(this);
-  }
+  m_head_arrow = has_head_arrow;
 }
 
 void ribi::cmap::Edge::SetTailArrow(const bool has_tail_arrow) noexcept
 {
-  if (m_tail_arrow != has_tail_arrow)
-  {
-    m_tail_arrow = has_tail_arrow;
-    m_signal_tail_arrow_changed(this);
-  }
+  m_tail_arrow = has_tail_arrow;
 }
 
 
@@ -215,55 +191,45 @@ void ribi::cmap::Edge::Test() noexcept
   Node from{NodeFactory().GetTest(0)};
   Node to{NodeFactory().GetTest(1)};
   const std::vector<Node> nodes = {from,to};
+  if (verbose) { TRACE("Copy constructor"); }
+  {
+    const auto edge1 = EdgeFactory().GetTest(0,from,to);
+    const auto edge2(edge1);
+    assert(edge1 == edge2);
+  }
+  if (verbose) { TRACE("Assignment operator"); }
+  {
+    const auto edge1 = EdgeFactory().GetTest(0,from,to);
+    auto edge2 = EdgeFactory().GetTest(1,from,to);
+    assert(edge1 != edge2);
+    edge2 = edge1;
+    assert(edge1 == edge2);
+  }
   if (verbose) { TRACE("Operator=="); }
   {
     const auto edge1 = EdgeFactory().GetTest(0,from,to);
     const auto edge2 = EdgeFactory().GetTest(0,from,to);
-    assert( edge1 !=  edge2);
-    assert(*edge1 == *edge2);
+    assert(edge1 == edge2);
   }
   if (verbose) { TRACE("Operator!="); }
   {
     const auto edge1 = EdgeFactory().GetTest(0,from,to);
     const auto edge2 = EdgeFactory().GetTest(1,from,to);
-    assert( edge1 !=  edge2);
-    assert(*edge1 != *edge2);
-  }
-  if (verbose) { TRACE("Deep copy"); }
-  {
-    const auto nodes = Node::GetTests();
-    assert(nodes.size() >= 2);
-    const Node node_from = nodes[0];
-    const Node node_to   = nodes[1];
-    const boost::shared_ptr<const Edge> edge{EdgeFactory().GetTest(0,node_from,node_to)};
-    const boost::shared_ptr<const Edge> copy{EdgeFactory().DeepCopy(edge,node_from,node_to)};
-    assert( edge !=  copy);
-    assert(*edge == *copy);
+    assert(edge1 != edge2);
   }
   if (verbose) { TRACE("Edge->XML->Edge must result in the same edge"); }
   {
     const auto edge_before = EdgeFactory().GetTest(0,from,to);
     const std::string s{ToXml(edge_before,nodes)};
     const auto edge_after = EdgeFactory().FromXml(s,nodes);
-    assert( edge_before !=  edge_after);
-    assert(*edge_before == *edge_after);
-  }
-  if (verbose) { TRACE("If a Edge's head arrow is changed, a signal must be emitted"); }
-  {
-    const boost::shared_ptr<Edge> edge{EdgeFactory().GetTest(0,from,to)};
-    Counter c{0}; //For receiving the signal
-    edge->m_signal_head_arrow_changed.connect(
-      boost::bind(&ribi::Counter::Inc,&c) //Do not forget the &
-    );
-    edge->SetHeadArrow(!edge->HasHeadArrow());
-    assert(c.Get()==1);
+    assert(edge_before == edge_after);
   }
   //From
   if (verbose) { TRACE("If Edge its source/from is equal to the one given in the constructor"); }
   {
-    const boost::shared_ptr<Edge> edge{EdgeFactory().GetTest(0,from,to)};
-    assert(*edge->GetFrom() == from);
-    assert(*edge->GetTo() == to);
+    const Edge edge{EdgeFactory().GetTest(0,from,to)};
+    assert(*edge.GetFrom() == from);
+    assert(*edge.GetTo() == to);
   }
 }
 #endif
@@ -277,18 +243,18 @@ std::string ribi::cmap::Edge::ToStr() const noexcept
 }
 
 std::string ribi::cmap::Edge::ToXml(
-  const ReadOnlyEdgePtr& edge,
-  const Nodes& nodes
+  const Edge& edge,
+  const std::vector<Node>& nodes
 ) noexcept
 {
   std::stringstream s;
   s << "<edge>";
-  s << edge->GetNode().GetConcept().ToXml();
+  s << edge.GetNode().GetConcept().ToXml();
 
-  assert(edge->GetFrom());
-  assert(edge->GetTo());
-  const auto from_iter = std::find(begin(nodes),end(nodes),*edge->GetFrom());
-  const auto to_iter = std::find(begin(nodes),end(nodes),*edge->GetTo());
+  assert(edge.GetFrom());
+  assert(edge.GetTo());
+  const auto from_iter = std::find(begin(nodes),end(nodes),*edge.GetFrom());
+  const auto to_iter = std::find(begin(nodes),end(nodes),*edge.GetTo());
   assert(from_iter != nodes.end());
   assert(to_iter != nodes.end());
   const int from_index = std::distance(nodes.begin(),from_iter);
@@ -300,11 +266,11 @@ std::string ribi::cmap::Edge::ToXml(
   assert(from_index != to_index);
 
   s << "<from>" << from_index << "</from>";
-  s << "<head_arrow>" << edge->HasHeadArrow() << "</head_arrow>";
-  s << "<tail_arrow>" << edge->HasTailArrow() << "</tail_arrow>";
+  s << "<head_arrow>" << edge.HasHeadArrow() << "</head_arrow>";
+  s << "<tail_arrow>" << edge.HasTailArrow() << "</tail_arrow>";
   s << "<to>" << to_index << "</to>";
-  s << "<x>" << edge->GetNode().GetX() << "</x>";
-  s << "<y>" << edge->GetNode().GetY() << "</y>";
+  s << "<x>" << edge.GetNode().GetX() << "</x>";
+  s << "<y>" << edge.GetNode().GetY() << "</y>";
   s << "</edge>";
 
   const std::string r = s.str();
@@ -315,11 +281,11 @@ std::string ribi::cmap::Edge::ToXml(
   return r;
 }
 
-bool ribi::cmap::IsConnectedToCenterNode(const boost::shared_ptr<const Edge> edge) noexcept
+bool ribi::cmap::IsConnectedToCenterNode(const Edge& edge) noexcept
 {
-  assert(!(IsCenterNode(*edge->GetFrom()) && IsCenterNode(*edge->GetTo()))
+  assert(!(IsCenterNode(*edge.GetFrom()) && IsCenterNode(*edge.GetTo()))
     && "An Edge cannot be connected to two CenterNodes");
-  return IsCenterNode(*edge->GetFrom()) || IsCenterNode(*edge->GetTo());
+  return IsCenterNode(*edge.GetFrom()) || IsCenterNode(*edge.GetTo());
 
 }
 

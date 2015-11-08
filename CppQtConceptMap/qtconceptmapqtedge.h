@@ -30,6 +30,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include <QGraphicsItem>
 #include "qtconceptmapfwd.h"
 #include "conceptmapnode.h"
+#include "conceptmapedge.h"
 
 #pragma GCC diagnostic pop
 
@@ -46,15 +47,11 @@ namespace cmap {
 struct QtEdge : public QGraphicsItem
 {
   using Base = QGraphicsItem;
-
   using Arrow = boost::shared_ptr<QtQuadBezierArrowItem>;
   using ReadOnlyArrow = boost::shared_ptr<const QtQuadBezierArrowItem> ;
-  using NodePtr = Node;
   using ReadOnlyNodePtr = boost::shared_ptr<const Node>;
   using QtNodePtr =  QtNode *;
   using ReadOnlyQtNodePtr = const QtNode *;
-  using EdgePtr = boost::shared_ptr<Edge>;
-  using ReadOnlyEdgePtr = boost::shared_ptr<const Edge>;
 
   using From = QtNodePtr;
   using ReadOnlyFrom = ReadOnlyQtNodePtr;
@@ -62,7 +59,7 @@ struct QtEdge : public QGraphicsItem
   using ReadOnlyTo = ReadOnlyQtNodePtr;
 
   QtEdge(
-    const EdgePtr& edge,
+    const Edge& edge,
     const From& from,
     const To& to
   );
@@ -78,8 +75,8 @@ struct QtEdge : public QGraphicsItem
   ReadOnlyArrow GetArrow() const noexcept { return m_arrow; }
   const Arrow& GetArrow() noexcept { return m_arrow; }
 
-  ReadOnlyEdgePtr GetEdge() const noexcept { return m_edge; }
-  EdgePtr GetEdge() noexcept { return m_edge; }
+  const Edge& GetEdge() const noexcept { return m_edge; }
+        Edge& GetEdge()       noexcept { return m_edge; }
 
   ///The node item the arrow originates from
   ReadOnlyFrom GetFrom() const noexcept { return m_from; }
@@ -97,7 +94,7 @@ struct QtEdge : public QGraphicsItem
 
   bool isSelected() const;
 
-  void SetEdge(const EdgePtr& edge) noexcept;
+  void SetEdge(const Edge& edge) noexcept;
 
   void SetFrom(const From& from) noexcept;
 
@@ -138,7 +135,7 @@ private:
   Arrow m_arrow;
 
   ///The edge
-  boost::shared_ptr<Edge> m_edge;
+  Edge m_edge;
 
   ///The node item the arrow originates from
   From m_from;

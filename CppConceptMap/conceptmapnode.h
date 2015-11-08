@@ -78,9 +78,6 @@ struct Node
   virtual std::string ToXml() const noexcept;
   std::string ToStr() const noexcept;
 
-  //mutable boost::signals2::signal<void(Node *)> m_signal_concept_changed;
-  //mutable boost::signals2::signal<void(Node *)> m_signal_x_changed;
-  //mutable boost::signals2::signal<void(Node *)> m_signal_y_changed;
 
   protected:
   friend class NodeFactory;

@@ -19,7 +19,7 @@ ribi::cmap::QtEdgeFactory::QtEdgeFactory()
 }
 
 boost::shared_ptr<ribi::cmap::QtEdge> ribi::cmap::QtEdgeFactory::Create(
-  const boost::shared_ptr<Edge>& edge,
+  const Edge& edge,
   QtNode* const from,
   QtNode* const to
 ) const noexcept
@@ -61,7 +61,7 @@ std::vector<boost::shared_ptr<ribi::cmap::QtEdge>> ribi::cmap::QtEdgeFactory::Ge
   std::vector<boost::shared_ptr<QtEdge>> qtedges;
   const auto v = EdgeFactory().GetTests(from->GetNode(),to->GetNode());
   std::transform(v.begin(),v.end(),std::back_inserter(qtedges),
-    [from,to](const boost::shared_ptr<Edge>& c)
+    [from,to](const Edge& c)
     {
       const boost::shared_ptr<QtEdge> q{QtEdgeFactory().Create(c,from.get(),to.get())};
       //const boost::shared_ptr<QtEdge> q{QtEdgeFactory().Create(c,from,to)};

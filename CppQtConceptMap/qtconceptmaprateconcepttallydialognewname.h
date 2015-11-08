@@ -77,7 +77,7 @@ private:
   ///  which might be the concept on the focal node and the concept on the egdes connected to the focal node
   ///The index is the index of the example being judged, or -1, denoting it is the concept name being judged
   //typedef std::pair<Concept,int> Row;
-  typedef std::tuple<boost::shared_ptr<const Edge>,Concept,int> Row;
+  typedef std::tuple<Edge,Concept,int> Row;
   const std::vector<Row> m_data;
 
   ///The name of this concept, for example 'my own development'

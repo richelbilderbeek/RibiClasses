@@ -116,8 +116,8 @@ protected:
   std::vector<QtEdge*> GetQtEdges(const QtNode * const from) const noexcept;
 
   //Find the Qt edge with the same from and to
-  const QtEdge * GetQtEdgeConst(const boost::shared_ptr<const Edge> edge) const noexcept;
-        QtEdge * GetQtEdge(const boost::shared_ptr<      Edge> edge)       noexcept;
+  const QtEdge * GetQtEdge(const Edge& edge) const noexcept;
+        QtEdge * GetQtEdge(const Edge& edge)       noexcept;
   const QtEdge * GetQtEdge(     const QtEdge* const edge) const noexcept { return GetQtEdgeConst(edge); }
   const QtEdge * GetQtEdgeConst(const QtEdge* const edge) const noexcept;
         QtEdge * GetQtEdge(const QtEdge* const edge)       noexcept;
@@ -179,7 +179,7 @@ private:
   QtTool * m_tools;
 
   ///Adds an Edge, returns the freshly created QtEdge
-  QtEdge * AddEdge(const boost::shared_ptr<Edge> edge);
+  QtEdge * AddEdge(const Edge& edge);
 
   ///Adds a Node, returns the freshly created QtNode
   QtNode * AddNode(const Node& node);
@@ -188,7 +188,7 @@ private:
   void CleanMe();
 
   ///Called when an Edge gets deleted from the ConceptMap
-  void DeleteEdge(const boost::shared_ptr<const Edge> edge);
+  void DeleteEdge(const Edge& edge);
 
   ///Called when a Node gets deleted from the ConceptMap
   void DeleteNode(const Node& node);

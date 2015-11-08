@@ -46,10 +46,13 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 
 #pragma GCC diagnostic pop
 
-ribi::cmap::QtEdgeDialog::QtEdgeDialog(QWidget *parent)
+ribi::cmap::QtEdgeDialog::QtEdgeDialog(
+  const Edge& edge,
+  QWidget *parent
+)
   : ribi::QtHideAndShowDialog(parent),
     ui(new Ui::QtEdgeDialog),
-    m_edge{},
+    m_edge{edge},
     m_qtnodedialog{new QtNodeDialog},
     m_qtnodedialog_from{new QtNodeDialog},
     m_qtnodedialog_to{new QtNodeDialog}
@@ -115,11 +118,10 @@ double ribi::cmap::QtEdgeDialog::GetUiY() const noexcept
   return m_qtnodedialog->GetUiY();
 }
 
-void ribi::cmap::QtEdgeDialog::SetEdge(const boost::shared_ptr<Edge>& edge)
+void ribi::cmap::QtEdgeDialog::SetEdge(const Edge& edge)
 {
   const bool verbose{false};
 
-  assert(edge);
   if (m_edge == edge)
   {
     return;
@@ -128,13 +130,13 @@ void ribi::cmap::QtEdgeDialog::SetEdge(const boost::shared_ptr<Edge>& edge)
   if (verbose)
   {
     std::stringstream s;
-    s << "Setting edge '" << edge->ToStr() << "'\n";
+    s << "Setting edge '" << edge.ToStr() << "'\n";
   }
-  const auto from_after = edge->GetFrom();
-  const auto head_arrow_after = edge->HasHeadArrow();
-  const auto node_after = edge->GetNode();
-  const auto tail_arrow_after = edge->HasTailArrow();
-  const auto to_after = edge->GetTo();
+  const auto from_after = edge.GetFrom();
+  const auto head_arrow_after = edge.HasHeadArrow();
+  const auto node_after = edge.GetNode();
+  const auto tail_arrow_after = edge.HasTailArrow();
+  const auto to_after = edge.GetTo();
 
   bool from_changed  = true;
   bool head_arrow_changed  = true;
@@ -142,13 +144,12 @@ void ribi::cmap::QtEdgeDialog::SetEdge(const boost::shared_ptr<Edge>& edge)
   bool tail_arrow_changed  = true;
   bool to_changed  = true;
 
-  if (m_edge)
   {
-    const auto from_before = m_edge->GetFrom();
-    const auto head_arrow_before = m_edge->HasHeadArrow();
-    const auto node_before = m_edge->GetNode();
-    const auto tail_arrow_before = m_edge->HasTailArrow();
-    const auto to_before = m_edge->GetTo();
+    const auto from_before = m_edge.GetFrom();
+    const auto head_arrow_before = m_edge.HasHeadArrow();
+    const auto node_before = m_edge.GetNode();
+    const auto tail_arrow_before = m_edge.HasTailArrow();
+    const auto to_before = m_edge.GetTo();
 
 
     from_changed = from_before != from_after;
@@ -221,193 +222,137 @@ void ribi::cmap::QtEdgeDialog::SetEdge(const boost::shared_ptr<Edge>& edge)
         TRACE(s.str());
       }
     }
-    //Disconnect
-    m_edge->m_signal_from_changed.disconnect(
-      boost::bind(&ribi::cmap::QtEdgeDialog::OnFromChanged,this,boost::lambda::_1)
-    );
-    m_edge->m_signal_head_arrow_changed.disconnect(
-      boost::bind(&ribi::cmap::QtEdgeDialog::OnHeadArrowChanged,this,boost::lambda::_1)
-    );
-    m_edge->m_signal_node_changed.disconnect(
-      boost::bind(&ribi::cmap::QtEdgeDialog::OnNodeChanged,this,boost::lambda::_1)
-    );
-    m_edge->m_signal_tail_arrow_changed.disconnect(
-      boost::bind(&ribi::cmap::QtEdgeDialog::OnTailArrowChanged,this,boost::lambda::_1)
-    );
-    m_edge->m_signal_to_changed.disconnect(
-      boost::bind(&ribi::cmap::QtEdgeDialog::OnToChanged,this,boost::lambda::_1)
-    );
   }
 
   //Replace m_example by the new one
   m_edge = edge;
 
-  assert(m_edge->GetFrom() == from_after );
-  assert(m_edge->HasHeadArrow() == head_arrow_after );
-  assert(m_edge->GetNode() == node_after );
-  assert(m_edge->HasTailArrow() == tail_arrow_after );
-  assert(m_edge->GetTo() == to_after );
+  assert(m_edge.GetFrom() == from_after );
+  assert(m_edge.HasHeadArrow() == head_arrow_after );
+  assert(m_edge.GetNode() == node_after );
+  assert(m_edge.HasTailArrow() == tail_arrow_after );
+  assert(m_edge.GetTo() == to_after );
 
-  //Connect
-  m_edge->m_signal_from_changed.connect(
-    boost::bind(&ribi::cmap::QtEdgeDialog::OnFromChanged,this,boost::lambda::_1)
-  );
-  m_edge->m_signal_head_arrow_changed.connect(
-    boost::bind(&ribi::cmap::QtEdgeDialog::OnHeadArrowChanged,this,boost::lambda::_1)
-  );
-  m_edge->m_signal_node_changed.connect(
-    boost::bind(&ribi::cmap::QtEdgeDialog::OnNodeChanged,this,boost::lambda::_1)
-  );
-  m_edge->m_signal_tail_arrow_changed.connect(
-    boost::bind(&ribi::cmap::QtEdgeDialog::OnTailArrowChanged,this,boost::lambda::_1)
-  );
-  m_edge->m_signal_to_changed.connect(
-    boost::bind(&ribi::cmap::QtEdgeDialog::OnToChanged,this,boost::lambda::_1)
-  );
+  setMinimumHeight(GetMinimumHeight(m_edge));
 
-  //Emit everything that has changed
-  if (from_changed)
-  {
-    m_edge->m_signal_from_changed(m_edge.get());
-  }
-  if (head_arrow_changed)
-  {
-    m_edge->m_signal_head_arrow_changed(m_edge.get());
-  }
-  if (node_changed)
-  {
-    m_edge->m_signal_node_changed(m_edge.get());
-  }
-  if (tail_arrow_changed)
-  {
-    m_edge->m_signal_tail_arrow_changed(m_edge.get());
-  }
-  if (to_changed)
-  {
-    m_edge->m_signal_to_changed(m_edge.get());
-  }
-
-  setMinimumHeight(GetMinimumHeight(*m_edge));
-
-  assert( edge ==  m_edge);
-  assert(*edge == *m_edge);
+  assert(edge == m_edge);
 }
 
-void ribi::cmap::QtEdgeDialog::OnFromChanged(Edge * const edge)
-{
-  const bool verbose{false};
-  assert(edge);
+//void ribi::cmap::QtEdgeDialog::OnFromChanged(Edge * const edge)
+//{
+//  const bool verbose{false};
+//  assert(edge);
 
-  const Node from_before = m_qtnodedialog_from->GetNode();
-  const Node * from_after = edge->GetFrom();
-  assert(from_after);
+//  const Node from_before = m_qtnodedialog_from->GetNode();
+//  const Node * from_after = edge.GetFrom();
+//  assert(from_after);
 
-  if (verbose)
-  {
-    std::stringstream s;
-    s << "Change from from "
-      << from_before.ToStr()
-      << " to " << from_after->ToStr()
-    ;
-    TRACE(s.str());
-  }
+//  if (verbose)
+//  {
+//    std::stringstream s;
+//    s << "Change from from "
+//      << from_before.ToStr()
+//      << " to " << from_after->ToStr()
+//    ;
+//    TRACE(s.str());
+//  }
 
-  m_qtnodedialog_from->SetNode(*from_after);
+//  m_qtnodedialog_from->SetNode(*from_after);
 
-  assert(m_qtnodedialog_from->GetNode() == *from_after);
-}
+//  assert(m_qtnodedialog_from->GetNode() == *from_after);
+//}
 
-void ribi::cmap::QtEdgeDialog::OnHeadArrowChanged(Edge * const edge)
-{
-  const bool verbose{false};
-  assert(edge);
+//void ribi::cmap::QtEdgeDialog::OnHeadArrowChanged(Edge * const edge)
+//{
+//  const bool verbose{false};
+//  assert(edge);
 
-  const auto head_arrow_before = ui->box_head_arrow->isChecked();
-  const auto head_arrow_after = edge->HasHeadArrow();
+//  const auto head_arrow_before = ui->box_head_arrow->isChecked();
+//  const auto head_arrow_after = edge.HasHeadArrow();
 
-  if (verbose)
-  {
-    std::stringstream s;
-    s << "Change head arrow from "
-      << head_arrow_before
-      << " to " << head_arrow_after
-    ;
-    TRACE(s.str());
-  }
+//  if (verbose)
+//  {
+//    std::stringstream s;
+//    s << "Change head arrow from "
+//      << head_arrow_before
+//      << " to " << head_arrow_after
+//    ;
+//    TRACE(s.str());
+//  }
 
-  ui->box_head_arrow->setChecked(head_arrow_after);
+//  ui->box_head_arrow->setChecked(head_arrow_after);
 
-  assert(ui->box_head_arrow->isChecked() == head_arrow_after);
-}
+//  assert(ui->box_head_arrow->isChecked() == head_arrow_after);
+//}
 
-void ribi::cmap::QtEdgeDialog::OnNodeChanged(Edge * const edge)
-{
-  const bool verbose{false};
-  assert(edge);
+//void ribi::cmap::QtEdgeDialog::OnNodeChanged(Edge * const edge)
+//{
+//  const bool verbose{false};
+//  assert(edge);
 
-  const auto node_before = m_qtnodedialog->GetNode();
-  const auto node_after = edge->GetNode();
-  if (verbose)
-  {
-    std::stringstream s;
-    s << "Change center node from "
-    << node_before.ToStr()
-    << " to " << node_after.ToStr();
-    TRACE(s.str());
-  }
+//  const auto node_before = m_qtnodedialog->GetNode();
+//  const auto node_after = edge.GetNode();
+//  if (verbose)
+//  {
+//    std::stringstream s;
+//    s << "Change center node from "
+//    << node_before.ToStr()
+//    << " to " << node_after.ToStr();
+//    TRACE(s.str());
+//  }
 
-  m_qtnodedialog->SetNode(node_after);
+//  m_qtnodedialog->SetNode(node_after);
 
-  assert(m_qtnodedialog->GetNode() == node_after);
-}
-
-
-void ribi::cmap::QtEdgeDialog::OnTailArrowChanged(Edge * const edge)
-{
-  const bool verbose{false};
-  assert(edge);
-
-  const auto tail_arrow_before = ui->box_tail_arrow->isChecked();
-  const auto tail_arrow_after = edge->HasTailArrow();
-
-  if (verbose)
-  {
-    std::stringstream s;
-    s << "Change tail arrow from "
-      << tail_arrow_before
-      << " to " << tail_arrow_after
-    ;
-    TRACE(s.str());
-  }
-
-  ui->box_tail_arrow->setChecked(tail_arrow_after);
-
-  assert(ui->box_tail_arrow->isChecked() == tail_arrow_after);
-}
+//  assert(m_qtnodedialog->GetNode() == node_after);
+//}
 
 
-void ribi::cmap::QtEdgeDialog::OnToChanged(Edge * const edge)
-{
-  const bool verbose{false};
-  assert(edge);
+//void ribi::cmap::QtEdgeDialog::OnTailArrowChanged(Edge * const edge)
+//{
+//  const bool verbose{false};
+//  assert(edge);
 
-  const auto to_before = m_qtnodedialog_to->GetNode();
-  const auto to_after = edge->GetTo();
+//  const auto tail_arrow_before = ui->box_tail_arrow->isChecked();
+//  const auto tail_arrow_after = edge.HasTailArrow();
 
-  if (verbose)
-  {
-    std::stringstream s;
-    s << "Change to from "
-      << to_before.ToStr()
-      << " to " << to_after->ToStr()
-    ;
-    TRACE(s.str());
-  }
+//  if (verbose)
+//  {
+//    std::stringstream s;
+//    s << "Change tail arrow from "
+//      << tail_arrow_before
+//      << " to " << tail_arrow_after
+//    ;
+//    TRACE(s.str());
+//  }
 
-  m_qtnodedialog_to->SetNode(*to_after);
+//  ui->box_tail_arrow->setChecked(tail_arrow_after);
 
-  assert(m_qtnodedialog_to->GetNode() == *to_after);
-}
+//  assert(ui->box_tail_arrow->isChecked() == tail_arrow_after);
+//}
+
+
+//void ribi::cmap::QtEdgeDialog::OnToChanged(Edge * const edge)
+//{
+//  const bool verbose{false};
+//  assert(edge);
+
+//  const auto to_before = m_qtnodedialog_to->GetNode();
+//  const auto to_after = edge.GetTo();
+
+//  if (verbose)
+//  {
+//    std::stringstream s;
+//    s << "Change to from "
+//      << to_before.ToStr()
+//      << " to " << to_after->ToStr()
+//    ;
+//    TRACE(s.str());
+//  }
+
+//  m_qtnodedialog_to->SetNode(*to_after);
+
+//  assert(m_qtnodedialog_to->GetNode() == *to_after);
+//}
 
 void ribi::cmap::QtEdgeDialog::SetUiHasHeadArrow(const bool has_head) noexcept
 {
@@ -449,12 +394,11 @@ void ribi::cmap::QtEdgeDialog::Test() noexcept
   const bool verbose{false};
   const Node from = NodeFactory().GetTest(0);
   const Node to = NodeFactory().GetTest(0);
-  const boost::shared_ptr<Edge> edge = EdgeFactory().GetTest(0,from,to);
-  QtEdgeDialog dialog;
-  dialog.SetEdge(edge);
+  Edge edge = EdgeFactory().GetTest(0,from,to);
+  QtEdgeDialog dialog(edge);
   if (verbose) { TRACE("X of QtNode and QtNodeDialog must match at start"); }
   {
-    assert(std::abs(dialog.GetUiX() - edge->GetNode().GetX()) < 2.0);
+    assert(std::abs(dialog.GetUiX() - edge.GetNode().GetX()) < 2.0);
   }
   if (verbose) { TRACE("SetX and GetX must be symmetric"); }
   {
@@ -470,9 +414,9 @@ void ribi::cmap::QtEdgeDialog::Test() noexcept
   }
   if (verbose) { TRACE("If X is set via Edge, QtNodeDialog must sync"); }
   {
-    const double old_x{edge->GetNode().GetX()};
+    const double old_x{edge.GetNode().GetX()};
     const double new_x{old_x + 10.0};
-    edge->GetNode().SetX(new_x);
+    edge.GetNode().SetX(new_x);
     assert(std::abs(new_x - dialog.GetUiX()) < 2.0);
   }
   if (verbose) { TRACE("SetUiHasHeadArrow and GetUiHasHeadArrow must be symmetric"); }
@@ -494,10 +438,10 @@ void ribi::cmap::QtEdgeDialog::Test() noexcept
 
 void ribi::cmap::QtEdgeDialog::on_box_head_arrow_stateChanged(int)
 {
-  m_edge->SetHeadArrow(ui->box_head_arrow->isChecked());
+  m_edge.SetHeadArrow(ui->box_head_arrow->isChecked());
 }
 
 void ribi::cmap::QtEdgeDialog::on_box_tail_arrow_stateChanged(int)
 {
-  m_edge->SetTailArrow(ui->box_tail_arrow->isChecked());
+  m_edge.SetTailArrow(ui->box_tail_arrow->isChecked());
 }

@@ -27,8 +27,8 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
 #include <boost/shared_ptr.hpp>
 #include "qthideandshowdialog.h"
-
 #include "qtconceptmapfwd.h"
+#include "conceptmapedge.h"
 #pragma GCC diagnostic pop
 
 namespace Ui { class QtEdgeDialog; }
@@ -42,12 +42,15 @@ class QtEdgeDialog : public ribi::QtHideAndShowDialog
   Q_OBJECT
 
 public:
-  explicit QtEdgeDialog(QWidget *parent = 0);
+  explicit QtEdgeDialog(
+    const Edge& edge,
+    QWidget *parent = 0
+  );
   QtEdgeDialog(const QtEdgeDialog&) = delete;
   QtEdgeDialog& operator=(const QtEdgeDialog&) = delete;
   ~QtEdgeDialog() noexcept;
 
-  boost::shared_ptr<Edge> GetEdge() const noexcept { return m_edge; }
+  Edge GetEdge() const noexcept { return m_edge; }
   static int GetMinimumHeight(const Edge& edge) noexcept;
 
   ///Get if there is an arrow at the head of the edge directly from the GUI
@@ -59,7 +62,7 @@ public:
   ///Get the Y coordinat directly from the GUI
   double GetUiY() const noexcept;
 
-  void SetEdge(const boost::shared_ptr<Edge>& edge);
+  void SetEdge(const Edge& edge);
 
   ///Set if there is an arrow at the head of the edge directly to the GUI
   void SetUiHasHeadArrow(const bool has_head) noexcept;
@@ -79,18 +82,18 @@ private:
   Ui::QtEdgeDialog *ui;
 
   ///The Edge to work on
-  boost::shared_ptr<Edge> m_edge;
+  Edge m_edge;
 
   boost::shared_ptr<QtNodeDialog> m_qtnodedialog; //The center node
   boost::shared_ptr<QtNodeDialog> m_qtnodedialog_from;
   boost::shared_ptr<QtNodeDialog> m_qtnodedialog_to;
 
   //edge is non-const, as its displayal by this dialog renders it editable
-  void OnFromChanged(Edge * const edge);
-  void OnHeadArrowChanged(Edge * const edge);
-  void OnNodeChanged(Edge * const edge);
-  void OnTailArrowChanged(Edge * const edge);
-  void OnToChanged(Edge * const edge);
+//  void OnFromChanged(Edge * const edge);
+//  void OnHeadArrowChanged(Edge * const edge);
+//  void OnNodeChanged(Edge * const edge);
+//  void OnTailArrowChanged(Edge * const edge);
+//  void OnToChanged(Edge * const edge);
 
   #ifndef NDEBUG
   static void Test() noexcept;

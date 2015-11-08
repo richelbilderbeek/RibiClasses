@@ -33,6 +33,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <QPointF>
 #include <QUndoStack>
 #include "conceptmapfwd.h"
+#include "conceptmapedge.h"
 #include "conceptmapnode.h"
 #pragma GCC diagnostic pop
 
@@ -52,17 +53,17 @@ class ConceptMap
 
   using ConceptMapPtr = boost::shared_ptr<ConceptMap>;
   using ConceptMaps = std::vector<ConceptMapPtr>;
-  using ConstEdges = std::vector<boost::shared_ptr<const Edge>>;
+  using ConstEdges = std::vector<Edge>;
   using ConstNodes = const std::vector<Node>;
   using ConstEdgesAndNodes = std::pair<ConstEdges,ConstNodes>;
-  using EdgePtr = boost::shared_ptr<Edge>;
-  using Edges = std::vector<EdgePtr>;
+  using EdgePtr = Edge*;
+  using Edges = std::vector<Edge>;
   using Nodes = std::vector<Node>;
   using EdgesAndNodes = std::pair<Edges,Nodes>;
-  using ReadOnlyCenterNodePtr = boost::shared_ptr<const Node>;
+  using ReadOnlyCenterNodePtr = Node*;
   using ReadOnlyConceptMapPtr = boost::shared_ptr<const ConceptMap>;
-  using ReadOnlyEdgePtr = boost::shared_ptr<const Edge>;
-  using ReadOnlyEdges = std::vector<ReadOnlyEdgePtr>;
+  using ReadOnlyEdgePtr = Edge*;
+  using ReadOnlyEdges = std::vector<Edge>;
   using ReadOnlyNodePtr = const Node;
   using ReadOnlyNodes = const std::vector<Node>;
   using SubConceptMaps = ConceptMaps; //Just to let the code speak more for itself
@@ -71,7 +72,7 @@ class ConceptMap
   ConceptMap& operator=(const ConceptMap&) = delete;
 
   //Add an Edge, assumes that the nodes it points to are in the concept map
-  void AddEdge(const EdgePtr& edge) noexcept;
+  void AddEdge(const Edge& edge) noexcept;
 
   //Add a node, always works
   void AddNode(const Node& node) noexcept;
@@ -101,8 +102,7 @@ class ConceptMap
   SubConceptMaps CreateSubs() const noexcept;
 
   ///Delete an edge
-  void DeleteEdge(const ReadOnlyEdgePtr& edge) noexcept;
-  void DeleteEdge(const EdgePtr& edge) noexcept;
+  void DeleteEdge(const Edge& edge) noexcept;
 
   ///Delete a node and all the edges connected to it
   void DeleteNode(const Node& node) noexcept;
@@ -119,13 +119,13 @@ class ConceptMap
 
   ///Find the Edge that has the node as its center Node
   ///Returns nullptr if not present
-  EdgePtr GetEdgeHaving(const Node& node) const noexcept;
+  const Edge * GetEdgeHaving(const Node& node) const noexcept;
 
-  ReadOnlyEdges GetEdges() const noexcept;
-  Edges& GetEdges() noexcept { return m_edges; }
+  const Edges& GetEdges() const noexcept { return m_edges; }
+        Edges& GetEdges()       noexcept { return m_edges; }
 
   ///Find the Edges that start or end at the node
-  Edges GetEdgesConnectedTo(const ReadOnlyNodePtr& node) const noexcept;
+  Edges GetEdgesConnectedTo(const Node& node) const noexcept;
 
   ///Get the focal node (always at index zero), if any
   const Node* GetFocalNode() const noexcept;
@@ -155,11 +155,11 @@ class ConceptMap
   ///Obtain the version history
   static std::vector<std::string> GetVersionHistory() noexcept;
 
-  bool HasEdge(const ReadOnlyEdgePtr& edge) const noexcept;
+  bool HasEdge(const Edge& edge) const noexcept;
   bool HasNode(const Node& node) const noexcept;
 
-  bool IsSelected(const ReadOnlyEdgePtr& node) const noexcept;
-  bool IsSelected(const ReadOnlyNodePtr& node) const noexcept;
+  bool IsSelected(const Edge& node) const noexcept;
+  bool IsSelected(const Node& node) const noexcept;
 
   #ifndef NDEBUG
   ///Check if there are no nulls in the edges and nodes
@@ -177,7 +177,6 @@ class ConceptMap
   void RemoveSelected(const Edges& edges,const Nodes& nodes) noexcept;
 
   ///Set the nodes to the only nodes selected
-  void SetSelected(const ConstEdges& edges) noexcept;
   void SetSelected(const Nodes& nodes) noexcept;
   void SetSelected(const Edges& edges) noexcept;
   void SetSelected(const Edges& edges,const Nodes& nodes) noexcept; //WORK
@@ -190,7 +189,7 @@ class ConceptMap
 
   ///Emitted when an Edge is added
   ///This has to be handled by QtConceptMapWidget
-  boost::signals2::signal<void(boost::shared_ptr<Edge>)> m_signal_add_edge;
+  boost::signals2::signal<void(Edge)> m_signal_add_edge;
 
   ///Emitted when a Node is added
   ///This has to be handled by QtConceptMapWidget
@@ -201,7 +200,7 @@ class ConceptMap
 
   ///Emitted when an Edge is deleted
   ///This has to be handled by QtConceptMapWidget
-  boost::signals2::signal<void(const ReadOnlyEdgePtr)> m_signal_delete_edge;
+  boost::signals2::signal<void(const Edge&)> m_signal_delete_edge;
 
   ///Emitted when a Node is deleted
   ///This has to be handled by QtConceptMapWidget
@@ -235,9 +234,9 @@ private:
 
   static boost::shared_ptr<ConceptMap> CreateEmptyConceptMap() noexcept;
 
-  ///Creates a new Node in the concept map. The return value is
+  ///Creates a new Edge in the concept map. The return value is
   ///that node. This is used by CommandCreateNode::Undo
-  boost::shared_ptr<Edge> CreateNewEdge() noexcept;
+  Edge CreateNewEdge() noexcept;
 
   ///Creates a new Node in the concept map. The return value is
   ///that node. This is used by CommandCreateNode::Undo
@@ -247,8 +246,8 @@ private:
   ///Of all the concept maps its nodes, except for the uses supplied as the
   ///argument, return 1 to all the nodes, except when there is no node
   ///left (as all are excluded) or the concept map does not have any nodes
-  std::vector<boost::shared_ptr<Edge>> GetRandomEdges(std::vector<boost::shared_ptr<const Edge>> edges_to_exclude = {}) noexcept;
-  boost::shared_ptr<Edge> GetRandomEdge(std::vector<boost::shared_ptr<const Edge>> edges_to_exclude = {}) noexcept;
+  std::vector<Edge> GetRandomEdges(std::vector<Edge> edges_to_exclude = {}) noexcept;
+  Edge GetRandomEdge(std::vector<Edge> edges_to_exclude = {});
 
 
   ///Used by CommandAddSelectedRandom and CommandSetSelectedRandom

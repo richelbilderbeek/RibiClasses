@@ -41,7 +41,7 @@ namespace cmap {
 struct ConceptMapFactory
 {
   using Nodes = std::vector<Node>;
-  typedef std::vector<boost::shared_ptr<Edge>> Edges;
+  typedef std::vector<Edge> Edges;
   typedef std::vector<boost::shared_ptr<ConceptMap>> ConceptMaps;
 
   ConceptMapFactory() noexcept;
@@ -52,10 +52,12 @@ struct ConceptMapFactory
   ) const noexcept;
 
   #ifndef NDEBUG
+  /*
   ///DeepCopy is only used for debugging
   boost::shared_ptr<ConceptMap> DeepCopy(
     const boost::shared_ptr<const ConceptMap> map
   ) const noexcept;
+  */
   #endif
 
   ///Obtain a ConceptMap from an XML std::string

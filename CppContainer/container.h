@@ -76,6 +76,20 @@ struct Container
   }
 
 #if __cplusplus >= 201402L //C++17
+  template <class T, class U>
+  decltype(auto) Find(const T& t, const U& p) const noexcept
+  {
+    return std::find(std::begin(t),std::end(t),p);
+  }
+#else
+  template <class T, class U>
+  typename T::const_iterator FindIf(const T& t, const U& p) const noexcept
+  {
+    return std::find(std::begin(t),std::end(t),p);
+  }
+#endif // __cplusplus >= 201402L
+
+#if __cplusplus >= 201402L //C++17
   template <class T, class Predicate>
   decltype(auto) FindIf(const T& t, const Predicate& p) const noexcept
   {

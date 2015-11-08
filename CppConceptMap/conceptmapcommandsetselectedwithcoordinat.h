@@ -42,9 +42,9 @@ class CommandSetSelectedWithCoordinat final : public Command
 {
   public:
 
-  using ConstEdges = std::vector<boost::shared_ptr<const Edge>>;
+  using ConstEdges = std::vector<Edge>;
   using ConstNodes = std::vector<Node>;
-  using Edges = std::vector<boost::shared_ptr<Edge>>;
+  using Edges = std::vector<Edge>;
   using Nodes = std::vector<Node>;
   using EdgesAndNodes = std::pair<Edges,Nodes>;
   using ConstEdgesAndNodes = std::pair<ConstEdges,ConstNodes>;

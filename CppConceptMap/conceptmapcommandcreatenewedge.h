@@ -23,6 +23,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "conceptmapcommand.h"
 #include "conceptmapnode.h"
+#include "conceptmapedge.h"
 
 namespace ribi {
 namespace cmap {
@@ -45,7 +46,7 @@ class CommandCreateNewEdge final : public Command
 
 
   private:
-  boost::shared_ptr<Edge> m_edge;
+  std::vector<Edge> m_edge;
   std::vector<Node> m_selected_nodes;
   std::vector<Node> m_prev_selected; //Selected before Edge was added
 

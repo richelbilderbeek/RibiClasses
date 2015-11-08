@@ -59,18 +59,22 @@ ribi::cmap::CommandCreateNewEdge::CommandCreateNewEdge(
 void ribi::cmap::CommandCreateNewEdge::redo()
 {
   m_conceptmap->SetSelected(m_selected_nodes);
-  if (!m_edge)
+  if (m_edge.empty())
   {
-    m_edge = m_conceptmap->CreateNewEdge();
+    m_edge.push_back(m_conceptmap->CreateNewEdge());
   }
   else
   {
-    m_conceptmap->AddEdge(m_edge);
+    assert(!m_edge.empty());
+    assert(m_edge.size() == 1);
+    m_conceptmap->AddEdge(m_edge.front());
   }
 }
 
 void ribi::cmap::CommandCreateNewEdge::undo()
 {
-  m_conceptmap->DeleteEdge(m_edge);
+  assert(!m_edge.empty());
+  assert(m_edge.size() == 1);
+  m_conceptmap->DeleteEdge(m_edge.front());
   m_conceptmap->SetSelected(m_prev_selected);
 }
