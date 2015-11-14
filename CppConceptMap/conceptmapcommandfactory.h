@@ -41,7 +41,7 @@ struct CommandFactory
 
   Command* CreateTestCommand(
     const int index,
-    boost::shared_ptr<ConceptMap> conceptmap
+    ConceptMap conceptmap
   ) const noexcept;
 
   ///The number of Commands
@@ -53,7 +53,7 @@ struct CommandFactory
   ///These are raw pointers! This is because QUndoStack takes up ownership of
   ///the pointer.
   std::vector<Command*> CreateTestCommands(
-    boost::shared_ptr<ConceptMap> conceptmap
+    ConceptMap conceptmap
   ) const noexcept;
 };
 

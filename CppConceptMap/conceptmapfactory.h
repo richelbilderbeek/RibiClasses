@@ -28,6 +28,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
 #include <boost/shared_ptr.hpp>
+#include "conceptmap.h"
 #include "conceptmapnode.h"
 #include "conceptmapfwd.h"
 #pragma GCC diagnostic pop
@@ -41,12 +42,12 @@ namespace cmap {
 struct ConceptMapFactory
 {
   using Nodes = std::vector<Node>;
-  typedef std::vector<Edge> Edges;
-  typedef std::vector<boost::shared_ptr<ConceptMap>> ConceptMaps;
+  using Edges = std::vector<Edge>;
+  using ConceptMaps = std::vector<ConceptMap>;
 
   ConceptMapFactory() noexcept;
 
-  boost::shared_ptr<ConceptMap> Create(
+  ConceptMap Create(
     const Nodes& nodes = {},
     const Edges& edges = {}
   ) const noexcept;
@@ -54,68 +55,75 @@ struct ConceptMapFactory
   #ifndef NDEBUG
   /*
   ///DeepCopy is only used for debugging
-  boost::shared_ptr<ConceptMap> DeepCopy(
-    const boost::shared_ptr<const ConceptMap> map
+  ConceptMap DeepCopy(
+    const ConceptMap map
   ) const noexcept;
   */
   #endif
 
+  ///Obtain the main constituents of a
+  ///ConceptMap from an XML std::string
+  std::tuple<
+    std::vector<Edge>,
+    std::vector<Node>
+  > FromXmlAsTuple(const std::string& s) const;
+
   ///Obtain a ConceptMap from an XML std::string
-  boost::shared_ptr<ConceptMap> FromXml(const std::string& s) const noexcept;
+  ConceptMap FromXml(const std::string& s) const;
 
   ///Get all the other tests as one vector
   ConceptMaps GetAllTests() const noexcept;
   int GetNumberOfAllTests() const noexcept { return 39; }
 
-  boost::shared_ptr<ConceptMap> GetEmptyConceptMap() const noexcept { return GetHeteromorphousTestConceptMap0(); }
+  ConceptMap GetEmptyConceptMap() const noexcept { return GetHeteromorphousTestConceptMap0(); }
 
   ///Get the documented heteromorphous test concept maps
   ConceptMaps GetHeteromorphousTestConceptMaps() const noexcept;
-  boost::shared_ptr<ConceptMap> GetHeteromorphousTestConceptMap(const int index) const noexcept;
+  ConceptMap GetHeteromorphousTestConceptMap(const int index) const noexcept;
 
   ///Get the documented complex homomorphous test concept maps
   ConceptMaps GetComplexHomomorphousTestConceptMaps() const noexcept;
-  boost::shared_ptr<ConceptMap> GetComplexHomomorphousTestConceptMap(const int index) const noexcept;
+  ConceptMap GetComplexHomomorphousTestConceptMap(const int index) const noexcept;
   int GetNumberOfComplexHomomorphousTestConceptMaps() const noexcept { return 12; }
 
   ///Get the documented simple homomorphous test concept maps
    ConceptMaps GetSimpleHomomorphousTestConceptMaps() const noexcept;
 
   private:
-  boost::shared_ptr<ConceptMap> GetComplexHomomorphousTestConceptMap0() const noexcept;
-  boost::shared_ptr<ConceptMap> GetComplexHomomorphousTestConceptMap1() const noexcept;
-  boost::shared_ptr<ConceptMap> GetComplexHomomorphousTestConceptMap2() const noexcept;
-  boost::shared_ptr<ConceptMap> GetComplexHomomorphousTestConceptMap3() const noexcept;
-  boost::shared_ptr<ConceptMap> GetComplexHomomorphousTestConceptMap4() const noexcept;
-  boost::shared_ptr<ConceptMap> GetComplexHomomorphousTestConceptMap5() const noexcept;
-  boost::shared_ptr<ConceptMap> GetComplexHomomorphousTestConceptMap6() const noexcept;
-  boost::shared_ptr<ConceptMap> GetComplexHomomorphousTestConceptMap7() const noexcept;
-  boost::shared_ptr<ConceptMap> GetComplexHomomorphousTestConceptMap8() const noexcept;
-  boost::shared_ptr<ConceptMap> GetComplexHomomorphousTestConceptMap9() const noexcept;
-  boost::shared_ptr<ConceptMap> GetComplexHomomorphousTestConceptMap10() const noexcept;
-  boost::shared_ptr<ConceptMap> GetComplexHomomorphousTestConceptMap11() const noexcept;
+  ConceptMap GetComplexHomomorphousTestConceptMap0() const noexcept;
+  ConceptMap GetComplexHomomorphousTestConceptMap1() const noexcept;
+  ConceptMap GetComplexHomomorphousTestConceptMap2() const noexcept;
+  ConceptMap GetComplexHomomorphousTestConceptMap3() const noexcept;
+  ConceptMap GetComplexHomomorphousTestConceptMap4() const noexcept;
+  ConceptMap GetComplexHomomorphousTestConceptMap5() const noexcept;
+  ConceptMap GetComplexHomomorphousTestConceptMap6() const noexcept;
+  ConceptMap GetComplexHomomorphousTestConceptMap7() const noexcept;
+  ConceptMap GetComplexHomomorphousTestConceptMap8() const noexcept;
+  ConceptMap GetComplexHomomorphousTestConceptMap9() const noexcept;
+  ConceptMap GetComplexHomomorphousTestConceptMap10() const noexcept;
+  ConceptMap GetComplexHomomorphousTestConceptMap11() const noexcept;
 
-  boost::shared_ptr<ConceptMap> GetHeteromorphousTestConceptMap0() const noexcept;
-  boost::shared_ptr<ConceptMap> GetHeteromorphousTestConceptMap1() const noexcept;
-  boost::shared_ptr<ConceptMap> GetHeteromorphousTestConceptMap2() const noexcept;
-  boost::shared_ptr<ConceptMap> GetHeteromorphousTestConceptMap3() const noexcept;
-  boost::shared_ptr<ConceptMap> GetHeteromorphousTestConceptMap4() const noexcept;
-  boost::shared_ptr<ConceptMap> GetHeteromorphousTestConceptMap5() const noexcept;
-  boost::shared_ptr<ConceptMap> GetHeteromorphousTestConceptMap6() const noexcept;
-  boost::shared_ptr<ConceptMap> GetHeteromorphousTestConceptMap7() const noexcept;
-  boost::shared_ptr<ConceptMap> GetHeteromorphousTestConceptMap8() const noexcept;
-  boost::shared_ptr<ConceptMap> GetHeteromorphousTestConceptMap9() const noexcept;
-  boost::shared_ptr<ConceptMap> GetHeteromorphousTestConceptMap10() const noexcept;
-  boost::shared_ptr<ConceptMap> GetHeteromorphousTestConceptMap11() const noexcept;
-  boost::shared_ptr<ConceptMap> GetHeteromorphousTestConceptMap12() const noexcept;
-  boost::shared_ptr<ConceptMap> GetHeteromorphousTestConceptMap13() const noexcept;
-  boost::shared_ptr<ConceptMap> GetHeteromorphousTestConceptMap14() const noexcept;
-  boost::shared_ptr<ConceptMap> GetHeteromorphousTestConceptMap15() const noexcept;
-  boost::shared_ptr<ConceptMap> GetHeteromorphousTestConceptMap16() const noexcept;
-  boost::shared_ptr<ConceptMap> GetHeteromorphousTestConceptMap17() const noexcept;
-  boost::shared_ptr<ConceptMap> GetHeteromorphousTestConceptMap18() const noexcept;
-  boost::shared_ptr<ConceptMap> GetHeteromorphousTestConceptMap19() const noexcept;
-  boost::shared_ptr<ConceptMap> GetHeteromorphousTestConceptMap20() const noexcept;
+  ConceptMap GetHeteromorphousTestConceptMap0() const noexcept;
+  ConceptMap GetHeteromorphousTestConceptMap1() const noexcept;
+  ConceptMap GetHeteromorphousTestConceptMap2() const noexcept;
+  ConceptMap GetHeteromorphousTestConceptMap3() const noexcept;
+  ConceptMap GetHeteromorphousTestConceptMap4() const noexcept;
+  ConceptMap GetHeteromorphousTestConceptMap5() const noexcept;
+  ConceptMap GetHeteromorphousTestConceptMap6() const noexcept;
+  ConceptMap GetHeteromorphousTestConceptMap7() const noexcept;
+  ConceptMap GetHeteromorphousTestConceptMap8() const noexcept;
+  ConceptMap GetHeteromorphousTestConceptMap9() const noexcept;
+  ConceptMap GetHeteromorphousTestConceptMap10() const noexcept;
+  ConceptMap GetHeteromorphousTestConceptMap11() const noexcept;
+  ConceptMap GetHeteromorphousTestConceptMap12() const noexcept;
+  ConceptMap GetHeteromorphousTestConceptMap13() const noexcept;
+  ConceptMap GetHeteromorphousTestConceptMap14() const noexcept;
+  ConceptMap GetHeteromorphousTestConceptMap15() const noexcept;
+  ConceptMap GetHeteromorphousTestConceptMap16() const noexcept;
+  ConceptMap GetHeteromorphousTestConceptMap17() const noexcept;
+  ConceptMap GetHeteromorphousTestConceptMap18() const noexcept;
+  ConceptMap GetHeteromorphousTestConceptMap19() const noexcept;
+  ConceptMap GetHeteromorphousTestConceptMap20() const noexcept;
 
   #ifndef NDEBUG
   static void Test() noexcept;

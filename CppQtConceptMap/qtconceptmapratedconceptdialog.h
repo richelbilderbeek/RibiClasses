@@ -47,7 +47,7 @@ class QtConceptMapRatedConceptDialog : public QDialog
 public:
 
   explicit QtConceptMapRatedConceptDialog(
-    const boost::shared_ptr<const ConceptMap> conceptmap,
+    const ConceptMap conceptmap,
     const Node& node,
     QWidget *parent = 0
   );

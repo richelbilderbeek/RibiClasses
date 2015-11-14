@@ -27,7 +27,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmapnode.h"
 
 ribi::cmap::CommandCreateNewNode::CommandCreateNewNode(
-  const boost::shared_ptr<ConceptMap> conceptmap
+  ConceptMap& conceptmap
 )
   : m_node{},
     m_conceptmap{conceptmap}
@@ -39,17 +39,16 @@ void ribi::cmap::CommandCreateNewNode::redo()
 {
   if (m_node.empty())
   {
-    m_node.push_back(m_conceptmap->CreateNewNode()); //CreateNewNode adds it to the selected nodes
+    m_node.push_back(m_conceptmap.CreateNewNode()); //CreateNewNode adds it to the selected nodes
   }
   else
   {
-    m_conceptmap->AddNode(m_node.front());
+    m_conceptmap.AddNode(m_node.front());
   }
 }
 
 void ribi::cmap::CommandCreateNewNode::undo()
 {
-  assert(m_conceptmap);
   assert(!m_node.empty());
-  m_conceptmap->DeleteNode(m_node.front());
+  m_conceptmap.DeleteNode(m_node.front());
 }

@@ -51,7 +51,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic pop
 
 ribi::cmap::QtRateConceptTallyDialogNewName::QtRateConceptTallyDialogNewName(
-  const boost::shared_ptr</* const */ ribi::cmap::ConceptMap> sub_conceptmap,
+  const ConceptMap& sub_conceptmap,
   QWidget *parent)
   : QtHideAndShowDialog(parent),
     ui(new Ui::QtRateConceptTallyDialogNewName),
@@ -116,7 +116,7 @@ ribi::cmap::QtRateConceptTallyDialogNewName::QtRateConceptTallyDialogNewName(
           | Qt::ItemIsEnabled);
         const Edge& edge { std::get<0>(row) };
         const bool center_is_from {
-          edge.GetFrom()->GetConcept() == sub_conceptmap->GetFocalNode()->GetConcept()
+          edge.GetFrom()->GetConcept() == sub_conceptmap.GetFocalNode()->GetConcept()
         };
         const Node * other {
           center_is_from ? edge.GetTo() : edge.GetFrom()
@@ -195,11 +195,11 @@ ribi::cmap::QtRateConceptTallyDialogNewName::~QtRateConceptTallyDialogNewName() 
 }
 
 std::vector<ribi::cmap::QtRateConceptTallyDialogNewName::Row>
-  ribi::cmap::QtRateConceptTallyDialogNewName::CreateData(const boost::shared_ptr</* const */ ribi::cmap::ConceptMap> map)
+  ribi::cmap::QtRateConceptTallyDialogNewName::CreateData(
+  const ConceptMap& /* map */
+)
 {
   std::vector<Row> data;
-
-  if (!map) return data;
 
   #ifdef FIX_ISSUE_10
   assert(map);
@@ -240,7 +240,7 @@ std::vector<ribi::cmap::QtRateConceptTallyDialogNewName::Row>
   return data;
 }
 
-const boost::shared_ptr<ribi::cmap::ConceptMap> ribi::cmap::QtRateConceptTallyDialogNewName::CreateTestConceptMap()
+const ribi::cmap::ConceptMap ribi::cmap::QtRateConceptTallyDialogNewName::CreateTestConceptMap()
 {
   //Create a subconcept map for testing:
   // - node with a concept with (1) text 'TextNode' (2) one example with text 'TextExampleNode'
@@ -269,7 +269,7 @@ const boost::shared_ptr<ribi::cmap::ConceptMap> ribi::cmap::QtRateConceptTallyDi
   const Node node_focal(NodeFactory().Create(concept_node_focal));
   const Node node_other(NodeFactory().Create(concept_node_other));
 
-  const boost::shared_ptr<ConceptMap> sub_conceptmap(
+  const ConceptMap sub_conceptmap(
     ConceptMapFactory().Create(
       {
         node_focal,
@@ -282,23 +282,15 @@ const boost::shared_ptr<ribi::cmap::ConceptMap> ribi::cmap::QtRateConceptTallyDi
       }
     )
   );
-  assert(sub_conceptmap);
   return sub_conceptmap;
 }
 
 std::string ribi::cmap::QtRateConceptTallyDialogNewName::GetFocusName(
-  const boost::shared_ptr<const ribi::cmap::ConceptMap> sub_conceptmap) noexcept
+  const ConceptMap& sub_conceptmap) noexcept
 {
-  if (sub_conceptmap)
-  {
-    assert(sub_conceptmap->GetFocalNode());
-    const Concept focal_concept(sub_conceptmap->GetFocalNode()->GetConcept());
-    return focal_concept.GetName();
-  }
-  else
-  {
-    return "(geen concept)";
-  }
+  assert(sub_conceptmap.GetFocalNode());
+  const Concept focal_concept(sub_conceptmap.GetFocalNode()->GetConcept());
+  return focal_concept.GetName();
 }
 
 int ribi::cmap::QtRateConceptTallyDialogNewName::GetSuggestedComplexity() const
@@ -467,13 +459,12 @@ void ribi::cmap::QtRateConceptTallyDialogNewName::Test() noexcept
   const TestTimer test_timer{__func__,__FILE__,0.1};
   //Empty table
   {
-    const boost::shared_ptr<ConceptMap> conceptmap;
-    assert(!conceptmap);
+    const ConceptMap conceptmap(ConceptMapFactory().Create());
     QtRateConceptTallyDialogNewName d(conceptmap);
   }
 
-  const boost::shared_ptr<ConceptMap> conceptmap = CreateTestConceptMap();
-  assert(conceptmap);
+  const ConceptMap conceptmap = CreateTestConceptMap();
+  
 
 
   QtRateConceptTallyDialogNewName d(conceptmap);
@@ -487,11 +478,11 @@ void ribi::cmap::QtRateConceptTallyDialogNewName::Test() noexcept
 
   assert(d.ui->table->columnCount() == 4);
   assert(d.ui->table->rowCount() == 3);
-  assert(conceptmap->GetNodes().size() == 2);
-  assert(conceptmap->GetEdges().size() == 1);
-  const Node * const focal_node = conceptmap->GetFocalNode();
-  //const Node other_node = conceptmap->GetNodes()[1]; //Don't care
-  const Edge edge = conceptmap->GetEdges()[0];
+  assert(conceptmap.GetNodes().size() == 2);
+  assert(conceptmap.GetEdges().size() == 1);
+  const Node * const focal_node = conceptmap.GetFocalNode();
+  //const Node other_node = conceptmap.GetNodes()[1]; //Don't care
+  const Edge edge = conceptmap.GetEdges()[0];
 
   assert(d.ui->table->item(0,0)->flags() == (Qt::ItemIsUserCheckable | Qt::ItemIsEnabled | Qt::ItemIsSelectable));
   assert(d.ui->table->item(0,1)->flags() == (Qt::ItemIsUserCheckable | Qt::ItemIsEnabled | Qt::ItemIsSelectable));

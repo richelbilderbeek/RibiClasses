@@ -31,7 +31,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ribi::cmap::Command* ribi::cmap::CommandFactory::CreateTestCommand(
   const int index,
-  boost::shared_ptr<ConceptMap> conceptmap
+  ConceptMap conceptmap
 ) const noexcept
 {
   try
@@ -76,7 +76,7 @@ ribi::cmap::Command* ribi::cmap::CommandFactory::CreateTestCommand(
 
 std::vector<ribi::cmap::Command*>
 ribi::cmap::CommandFactory::CreateTestCommands(
-  boost::shared_ptr<ConceptMap> conceptmap
+  ConceptMap conceptmap
 ) const noexcept
 {
   std::vector<Command*> v;

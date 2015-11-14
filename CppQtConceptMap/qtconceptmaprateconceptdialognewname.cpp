@@ -51,25 +51,15 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic pop
 
 ribi::cmap::QtRateConceptDialogNewName::QtRateConceptDialogNewName(
-  const boost::shared_ptr<ConceptMap> sub_conceptmap,
+  const ConceptMap sub_conceptmap,
   QWidget* parent)
   : QtHideAndShowDialog(parent),
     ui(new Ui::QtRateConceptDialogNewName),
     m_button_ok_clicked(false),
-    m_concept{sub_conceptmap
-      ? sub_conceptmap->GetFocalNode()->GetConcept()
-      : ConceptFactory().Create()
-    },
-    m_initial_complexity(sub_conceptmap
-      ? sub_conceptmap->GetFocalNode()->GetConcept().GetRatingComplexity()
-      : -1 ),
-    m_initial_concreteness(sub_conceptmap
-      ? sub_conceptmap->GetFocalNode()->GetConcept().GetRatingConcreteness()
-      : -1),
-    m_initial_specificity(sub_conceptmap
-      ? sub_conceptmap->GetFocalNode()->GetConcept().GetRatingSpecificity()
-      : -1),
-
+    m_concept{sub_conceptmap.GetFocalNode()->GetConcept()},
+    m_initial_complexity(sub_conceptmap.GetFocalNode()->GetConcept().GetRatingComplexity()),
+    m_initial_concreteness(sub_conceptmap.GetFocalNode()->GetConcept().GetRatingConcreteness()),
+    m_initial_specificity(sub_conceptmap.GetFocalNode()->GetConcept().GetRatingSpecificity()),
     m_sub_conceptmap(sub_conceptmap),
     m_widget(new QtConceptMap)
 {
@@ -77,10 +67,8 @@ ribi::cmap::QtRateConceptDialogNewName::QtRateConceptDialogNewName(
   #ifndef NDEBUG
   Test();
   #endif
-  if (!m_sub_conceptmap) return;
   m_widget->SetConceptMap(sub_conceptmap);
-  assert(m_sub_conceptmap);
-  assert(!m_sub_conceptmap->GetNodes().empty());
+  assert(!m_sub_conceptmap.GetNodes().empty());
 
   assert(m_widget);
   assert(ui->conceptmap_layout);
@@ -203,18 +191,18 @@ void ribi::cmap::QtRateConceptDialogNewName::Test() noexcept
   const TestTimer test_timer{__func__,__FILE__,0.1};
   #ifdef RJCB_TODO //TODO RJCB: Put back in
   {
-    const std::vector<boost::shared_ptr<ConceptMap> > conceptmaps
+    const std::vector<ConceptMap> conceptmaps
       = ConceptMapFactory().GetAllTests();
     const std::size_t n_conceptmaps = conceptmaps.size();
     for (std::size_t i=0; i!=n_conceptmaps; ++i)
     {
-      const boost::shared_ptr<ConceptMap> conceptmap = conceptmaps[i];
+      const ConceptMap conceptmap = conceptmaps[i];
       if (!conceptmap)
       {
         QtRateConceptDialogNewName d(conceptmap);
         continue;
       }
-      assert(conceptmap);
+      
       const Concept concept = conceptmap->GetFocalNode()->GetConcept();
       assert(concept);
       const Concept old_concept = ConceptFactory().DeepCopy(concept);
@@ -238,18 +226,18 @@ void ribi::cmap::QtRateConceptDialogNewName::Test() noexcept
     }
   }
   {
-    const std::vector<boost::shared_ptr<ConceptMap> > conceptmaps
+    const std::vector<ConceptMap> conceptmaps
       = ConceptMapFactory().GetAllTests();
     const std::size_t n_conceptmaps = conceptmaps.size();
     for (std::size_t i=0; i!=n_conceptmaps; ++i)
     {
-      const boost::shared_ptr<ConceptMap> conceptmap = conceptmaps[i];
+      const ConceptMap conceptmap = conceptmaps[i];
       if (!conceptmap)
       {
         QtRateConceptDialogNewName d(conceptmap);
         continue;
       }
-      assert(conceptmap);
+      
       const Concept concept = conceptmap->GetFocalNode()->GetConcept();
       assert(concept);
       const boost::shared_ptr<const Concept> old_concept = ConceptFactory().DeepCopy(concept);
@@ -276,12 +264,8 @@ void ribi::cmap::QtRateConceptDialogNewName::Test() noexcept
 
 void ribi::cmap::QtRateConceptDialogNewName::on_button_tally_relevancies_clicked()
 {
-  #ifndef NDEBUG
-  const bool has_conceptmap = m_sub_conceptmap.get(); //.get() needed for crosscompiler
-  #endif
-   QtRateConceptTallyDialogNewName d(m_sub_conceptmap);
+ QtRateConceptTallyDialogNewName d(m_sub_conceptmap);
   d.exec(); //Keep this dialog visible, as of 2013-08-30
-  assert(has_conceptmap == static_cast<bool>(m_sub_conceptmap.get()));
   ui->box_complexity->setCurrentIndex(d.GetSuggestedComplexity());
   ui->box_concreteness->setCurrentIndex(d.GetSuggestedConcreteness());
   ui->box_specificity->setCurrentIndex(d.GetSuggestedSpecificity());

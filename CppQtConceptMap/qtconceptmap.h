@@ -28,6 +28,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "qtkeyboardfriendlygraphicsview.h"
 #include "qtconceptmapfwd.h"
 #include "qtconceptmapqtedge.h"
+#include "conceptmap.h"
 #pragma GCC diagnostic pop
 
 namespace ribi {
@@ -52,8 +53,8 @@ public:
   void DoCommand(Command * const command) noexcept;
 
   ///Obtain the concept map
-  boost::shared_ptr<const ConceptMap> GetConceptMap() const noexcept { return m_conceptmap; }
-  boost::shared_ptr<      ConceptMap> GetConceptMap()       noexcept { return m_conceptmap; }
+  const ConceptMap& GetConceptMap() const noexcept { return m_conceptmap; }
+        ConceptMap& GetConceptMap()       noexcept { return m_conceptmap; }
 
   ///The square showing the examples
   const QtExamplesItem * GetQtExamplesItem() const noexcept { return m_examples_item; }
@@ -81,7 +82,7 @@ public:
 
   void RemoveExamplesItem() noexcept { SetExamplesItem(nullptr); }
 
-  void SetConceptMap(const boost::shared_ptr<ConceptMap> conceptmap);
+  void SetConceptMap(const ConceptMap& conceptmap);
 
   #ifndef NDEBUG
   ///Shuffle the concepts (used in debugging)
@@ -94,7 +95,7 @@ public:
   ///Signal emitted when a concept map item requests to be edited
   boost::signals2::signal<void(QtRoundedEditRectItem*)> m_signal_conceptmapitem_requests_edit;
 
-  boost::signals2::signal<void(const boost::shared_ptr<ConceptMap> sub_conceptmap)> m_signal_request_rate_concept;
+  boost::signals2::signal<void(const ConceptMap sub_conceptmap)> m_signal_request_rate_concept;
 
 public slots:
 
@@ -157,7 +158,7 @@ protected:
   #ifndef NDEBUG
   ///Test the internals of this class:
   ///Does the current content really reflect the map
-  void TestMe(const boost::shared_ptr<const ConceptMap> map) const;
+  void TestMe(const ConceptMap map) const;
   #endif
 
 private:
@@ -167,7 +168,7 @@ private:
   QtNewArrow * m_arrow;
 
   ///The concept map to work on, the Model
-  boost::shared_ptr<ConceptMap> m_conceptmap;
+  ConceptMap m_conceptmap;
 
   ///The item showing the examples
   QtExamplesItem * m_examples_item;

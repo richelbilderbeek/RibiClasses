@@ -42,13 +42,14 @@ class QtRateConceptTallyDialogNewName : public ribi::QtHideAndShowDialog
 public:
   ///Sub concept map is modified by this dialog
   explicit QtRateConceptTallyDialogNewName(
-    const boost::shared_ptr</* const */ ConceptMap> sub_conceptmap,
-    QWidget *parent = 0);
+    const ConceptMap& sub_conceptmap,
+    QWidget *parent = 0
+  );
   QtRateConceptTallyDialogNewName(const QtRateConceptTallyDialogNewName&) = delete;
   QtRateConceptTallyDialogNewName& operator=(const QtRateConceptTallyDialogNewName&) = delete;
   ~QtRateConceptTallyDialogNewName() noexcept;
 
-  static const boost::shared_ptr<ConceptMap> CreateTestConceptMap();
+  static const ConceptMap CreateTestConceptMap();
 
   ///Obtain the suggested complexity, calculated from this dialog
   int GetSuggestedComplexity() const;
@@ -68,7 +69,7 @@ private slots:
 
 private:
   Ui::QtRateConceptTallyDialogNewName *ui;
-  //const boost::shared_ptr</* const */ ConceptMap> m_map;
+  //const ConceptMap m_map;
 
   ///The concept map is converted to this data type
   ///The std::vector index equals the row
@@ -84,10 +85,10 @@ private:
   const std::string m_focus_name;
 
   static std::vector<Row>
-    CreateData(const boost::shared_ptr</* const */ ConceptMap> map);
+    CreateData(const ConceptMap& map);
 
   static std::string
-    GetFocusName(const boost::shared_ptr<const ConceptMap> sub_conceptmap) noexcept;
+    GetFocusName(const ConceptMap& sub_conceptmap) noexcept;
 
   #ifndef NDEBUG
   static void Test() noexcept;

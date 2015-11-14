@@ -4,7 +4,7 @@
 namespace ribi {
 namespace con3 {
 
-struct ConnectThreeResources;
+struct Resources;
 struct ConnectThreeWidget;
 struct Move;
 struct WtConnectThreeGameDialog;

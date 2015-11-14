@@ -29,7 +29,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmapnode.h"
 
 ribi::cmap::CommandSetSelectedWithCoordinat::CommandSetSelectedWithCoordinat(
-  const boost::shared_ptr<ConceptMap> conceptmap,
+  const ConceptMap conceptmap,
   const int x, const int y)
   : m_prev_selected{},
     m_conceptmap{conceptmap},

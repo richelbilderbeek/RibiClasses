@@ -30,10 +30,10 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "trace.h"
 
 ribi::cmap::CommandCreateNewEdge::CommandCreateNewEdge(
-  const boost::shared_ptr<ConceptMap> conceptmap
+  ConceptMap& conceptmap
 )
  : m_edge{},
-   m_selected_nodes{conceptmap->GetSelectedNodes()},
+   m_selected_nodes{conceptmap.GetSelectedNodes()},
    m_prev_selected{},
    m_conceptmap{conceptmap},
    m_verbose{false}
@@ -43,14 +43,14 @@ ribi::cmap::CommandCreateNewEdge::CommandCreateNewEdge(
   if (m_selected_nodes.size() != 2)
   {
     std::stringstream msg;
-    msg << "Number of selected nodes (" << m_conceptmap->GetSelectedNodes().size() << " is not equal to two";
+    msg << "Number of selected nodes (" << m_conceptmap.GetSelectedNodes().size() << " is not equal to two";
     throw std::logic_error(msg.str());
   }
-  if (!m_conceptmap->HasNode(m_selected_nodes[0]))
+  if (!m_conceptmap.HasNode(m_selected_nodes[0]))
   {
     throw std::logic_error("From node is member of an edge");
   }
-  if (!m_conceptmap->HasNode(m_selected_nodes[1]))
+  if (!m_conceptmap.HasNode(m_selected_nodes[1]))
   {
     throw std::logic_error("'To' node is member of an edge");
   }
@@ -58,16 +58,16 @@ ribi::cmap::CommandCreateNewEdge::CommandCreateNewEdge(
 
 void ribi::cmap::CommandCreateNewEdge::redo()
 {
-  m_conceptmap->SetSelected(m_selected_nodes);
+  m_conceptmap.SetSelected(m_selected_nodes);
   if (m_edge.empty())
   {
-    m_edge.push_back(m_conceptmap->CreateNewEdge());
+    m_edge.push_back(m_conceptmap.CreateNewEdge());
   }
   else
   {
     assert(!m_edge.empty());
     assert(m_edge.size() == 1);
-    m_conceptmap->AddEdge(m_edge.front());
+    m_conceptmap.AddEdge(m_edge.front());
   }
 }
 
@@ -75,6 +75,6 @@ void ribi::cmap::CommandCreateNewEdge::undo()
 {
   assert(!m_edge.empty());
   assert(m_edge.size() == 1);
-  m_conceptmap->DeleteEdge(m_edge.front());
-  m_conceptmap->SetSelected(m_prev_selected);
+  m_conceptmap.DeleteEdge(m_edge.front());
+  m_conceptmap.SetSelected(m_prev_selected);
 }

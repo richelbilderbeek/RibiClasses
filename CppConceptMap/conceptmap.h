@@ -49,27 +49,18 @@ class ConceptMap
 {
   public:
 
+  ConceptMap(const ConceptMap&);
+  ConceptMap& operator=(const ConceptMap&);
   ~ConceptMap() noexcept {}
 
-  using ConceptMapPtr = boost::shared_ptr<ConceptMap>;
-  using ConceptMaps = std::vector<ConceptMapPtr>;
-  using ConstEdges = std::vector<Edge>;
-  using ConstNodes = const std::vector<Node>;
-  using ConstEdgesAndNodes = std::pair<ConstEdges,ConstNodes>;
+  using ConceptMaps = std::vector<ConceptMap>;
   using EdgePtr = Edge*;
   using Edges = std::vector<Edge>;
   using Nodes = std::vector<Node>;
+  using NodePtr = Node*;
   using EdgesAndNodes = std::pair<Edges,Nodes>;
   using ReadOnlyCenterNodePtr = Node*;
-  using ReadOnlyConceptMapPtr = boost::shared_ptr<const ConceptMap>;
-  using ReadOnlyEdgePtr = Edge*;
-  using ReadOnlyEdges = std::vector<Edge>;
-  using ReadOnlyNodePtr = const Node;
-  using ReadOnlyNodes = const std::vector<Node>;
   using SubConceptMaps = ConceptMaps; //Just to let the code speak more for itself
-
-  ConceptMap(const ConceptMap&) = delete;
-  ConceptMap& operator=(const ConceptMap&) = delete;
 
   //Add an Edge, assumes that the nodes it points to are in the concept map
   void AddEdge(const Edge& edge) noexcept;
@@ -181,34 +172,10 @@ class ConceptMap
   void SetSelected(const Edges& edges) noexcept;
   void SetSelected(const Edges& edges,const Nodes& nodes) noexcept; //WORK
   void SetSelected(const EdgesAndNodes& edges_and_nodes) noexcept;
-  void SetSelected(const ConstEdgesAndNodes& edges_and_nodes) noexcept;
 
   void SetVerbosity(const bool verbose) noexcept { m_verbose = verbose; }
 
   void Undo() noexcept;
-
-  ///Emitted when an Edge is added
-  ///This has to be handled by QtConceptMapWidget
-  boost::signals2::signal<void(Edge)> m_signal_add_edge;
-
-  ///Emitted when a Node is added
-  ///This has to be handled by QtConceptMapWidget
-  boost::signals2::signal<void(const Node&)> m_signal_add_node;
-
-  ///Emitted when the ConceptMap is modified as a whole: deleted, created or overwritten
-  boost::signals2::signal<void()> m_signal_conceptmap_changed;
-
-  ///Emitted when an Edge is deleted
-  ///This has to be handled by QtConceptMapWidget
-  boost::signals2::signal<void(const Edge&)> m_signal_delete_edge;
-
-  ///Emitted when a Node is deleted
-  ///This has to be handled by QtConceptMapWidget
-  boost::signals2::signal<void(const ReadOnlyNodePtr)> m_signal_delete_node;
-
-  ///Emitted when multiple Nodes are selected
-  ///This has to be handled by QtConceptMapWidget
-  boost::signals2::signal<void(const EdgesAndNodes&)> m_signal_selected_changed;
 
 private:
 
@@ -224,15 +191,13 @@ private:
   ///- the CenterNode
   EdgesAndNodes m_selected;
 
-  ///The undo stack (use std::vector because it is a true STL container)
+  ///The undo stack
   ///The Commands aren't const, because Command::Undo changes their state
-  //std::vector<boost::shared_ptr<Command>> m_undo;
   QUndoStack m_undo;
 
   bool m_verbose;
 
-
-  static boost::shared_ptr<ConceptMap> CreateEmptyConceptMap() noexcept;
+  static ConceptMap CreateEmptyConceptMap() noexcept;
 
   ///Creates a new Edge in the concept map. The return value is
   ///that node. This is used by CommandCreateNode::Undo
@@ -266,8 +231,8 @@ private:
 
   ///Unselect the node, assumes it is selected
 
-  void Unselect(const ConstEdgesAndNodes& edges_and_nodes) noexcept;
-  void Unselect(const ConstEdges& edges) noexcept;
+  void Unselect(const EdgesAndNodes& edges_and_nodes) noexcept;
+  void Unselect(const Edges& edges) noexcept;
   void Unselect(const Nodes& nodes) noexcept;
 
   ///Block constructor, except for the friend ConceptMapFactory
@@ -290,7 +255,8 @@ private:
   ///To make the compiler use the const version
   //ReadOnlyNodePtr GetFocalNodeConst() const noexcept { return GetFocalNode(); }
 
-  friend ConceptMapFactory;
+  friend class ConceptMapFactory;
+
 
   //friend class Command;
   friend class CommandAddSelectedRandom;
@@ -308,10 +274,10 @@ private:
 ///Count the number of CenterNodes
 ///- regular concept map: 1, the focus
 ///- sub-concept map: 0 or 1, if the focus is connected to the sub's focus node
-int CountCenterNodes(const boost::shared_ptr<const ConceptMap>& conceptmap) noexcept;
+int CountCenterNodes(const ConceptMap& conceptmap) noexcept;
 
 ///Count the number of Edges connected to a CenterNodes
-int CountCenterNodeEdges(const boost::shared_ptr<const ConceptMap>& conceptmap) noexcept;
+int CountCenterNodeEdges(const ConceptMap& conceptmap) noexcept;
 
 ///Similar to operator==, except that the GUI member variables aren't checked for equality
 bool HasSameContent(const ConceptMap& lhs, const ConceptMap& rhs) noexcept;

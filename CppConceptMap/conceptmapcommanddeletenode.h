@@ -27,6 +27,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
 #include "conceptmapcommand.h"
 #include "conceptmapnode.h"
+#include "conceptmap.h"
 #pragma GCC diagnostic pop
 
 namespace ribi {
@@ -43,7 +44,7 @@ class CommandDeleteNode final : public Command
   using EdgesAndNodes = std::pair<Edges,Nodes>;
 
   CommandDeleteNode(
-    const boost::shared_ptr<ConceptMap> conceptmap,
+    ConceptMap& conceptmap,
     const Node& node
   );
   CommandDeleteNode(const CommandDeleteNode&) = delete;
@@ -55,7 +56,7 @@ class CommandDeleteNode final : public Command
   void SetVerbosity(const bool verbose) noexcept { m_verbose = verbose; }
 
   private:
-  const boost::shared_ptr<ConceptMap> m_conceptmap;
+  ConceptMap& m_conceptmap;
   const Edges m_deleted_edges;
   const Node m_node;
   const EdgesAndNodes m_old_selected; //Selected before command

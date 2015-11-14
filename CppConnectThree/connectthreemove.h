@@ -1,6 +1,8 @@
 #ifndef CONNECTTHREEMOVE_H
 #define CONNECTTHREEMOVE_H
 
+#include <string>
+#include <vector>
 #include "connectthreeplayer.h"
 
 namespace ribi {
@@ -12,6 +14,10 @@ struct Move
     : m_player{player}, m_x{x}, m_y{y} {}
 
   Player GetPlayer() const noexcept { return m_player; }
+
+  static std::string GetVersion() noexcept;
+  static std::vector<std::string> GetVersionHistory() noexcept;
+
   int GetX() const noexcept { return m_x; }
   int GetY() const noexcept { return m_y; }
 

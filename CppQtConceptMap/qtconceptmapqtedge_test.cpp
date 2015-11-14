@@ -90,19 +90,9 @@ void ribi::cmap::QtEdge::Test() noexcept
   //Head arrow
   if (verbose) { TRACE("An Edge's head arrow and it QtQuadBezierArrowItem must match at creation"); }
   {
-    const bool edge_has_head{qtedge->GetEdge()->HasHeadArrow()};
+    const bool edge_has_head{qtedge->GetEdge().HasHeadArrow()};
     const bool arrow_has_head{qtedge->GetArrow()->HasHead()};
     assert(edge_has_head == arrow_has_head);
-  }
-  if (verbose) { TRACE("If a QtEdge its Edge's head arrow is changed, a signal must be emitted by Edge"); }
-  {
-    Counter c{0}; //For receiving the signal
-    qtedge->GetEdge()->m_signal_head_arrow_changed.connect(
-      boost::bind(&ribi::Counter::Inc,&c) //Do not forget the &
-    );
-    qtedge->GetEdge()->SetHeadArrow(true);
-    qtedge->GetEdge()->SetHeadArrow(false);
-    assert(c.Get() > 0);
   }
   if (verbose) { TRACE("If a QtEdge its Edge's head arrow is changed, a signal must be emitted by QtEdge"); }
   {
@@ -110,33 +100,23 @@ void ribi::cmap::QtEdge::Test() noexcept
     qtedge->m_signal_edge_changed.connect(
       boost::bind(&ribi::Counter::Inc,&c) //Do not forget the &
     );
-    qtedge->GetEdge()->SetHeadArrow(false);
-    qtedge->GetEdge()->SetHeadArrow(true);
+    qtedge->GetEdge().SetHeadArrow(false);
+    qtedge->GetEdge().SetHeadArrow(true);
     assert(c.Get() > 0);
   }
   if (verbose) { TRACE("If a QtEdge its Edge's head arrow is changed, it QtQuadBezier must match"); }
   {
-    qtedge->GetEdge()->SetHeadArrow(false);
+    qtedge->GetEdge().SetHeadArrow(false);
     assert(!qtedge->GetArrow()->HasHead());
-    qtedge->GetEdge()->SetHeadArrow(true);
+    qtedge->GetEdge().SetHeadArrow(true);
     assert(qtedge->GetArrow()->HasHead());
   }
   //Tail arrow
   if (verbose) { TRACE("An Edge's tail arrow and it QtQuadBezierArrowItem must match at creation"); }
   {
-    const bool edge_has_tail{qtedge->GetEdge()->HasTailArrow()};
+    const bool edge_has_tail{qtedge->GetEdge().HasTailArrow()};
     const bool arrow_has_tail{qtedge->GetArrow()->HasTail()};
     assert(edge_has_tail == arrow_has_tail);
-  }
-  if (verbose) { TRACE("If a QtEdge its Edge's tail arrow is changed, a signal must be emitted by Edge"); }
-  {
-    Counter c{0}; //For receiving the signal
-    qtedge->GetEdge()->m_signal_tail_arrow_changed.connect(
-      boost::bind(&ribi::Counter::Inc,&c) //Do not forget the &
-    );
-    qtedge->GetEdge()->SetTailArrow(true);
-    qtedge->GetEdge()->SetTailArrow(false);
-    assert(c.Get() > 0);
   }
   if (verbose) { TRACE("If a QtEdge its Edge's tail arrow is changed, a signal must be emitted by QtEdge"); }
   {
@@ -144,15 +124,15 @@ void ribi::cmap::QtEdge::Test() noexcept
     qtedge->m_signal_edge_changed.connect(
       boost::bind(&ribi::Counter::Inc,&c) //Do not forget the &
     );
-    qtedge->GetEdge()->SetTailArrow(false);
-    qtedge->GetEdge()->SetTailArrow(true);
+    qtedge->GetEdge().SetTailArrow(false);
+    qtedge->GetEdge().SetTailArrow(true);
     assert(c.Get() > 0);
   }
   if (verbose) { TRACE("If a QtEdge its Edge's tail arrow is changed, it QtQuadBezier must match"); }
   {
-    qtedge->GetEdge()->SetTailArrow(false);
+    qtedge->GetEdge().SetTailArrow(false);
     assert(!qtedge->GetArrow()->HasTail());
-    qtedge->GetEdge()->SetTailArrow(true);
+    qtedge->GetEdge().SetTailArrow(true);
     assert(qtedge->GetArrow()->HasTail());
   }
   //Text
@@ -163,13 +143,13 @@ void ribi::cmap::QtEdge::Test() noexcept
   if (verbose) { TRACE("Text of QtEdge and QtRoundedEditRectItem must match at creation"); }
   {
     const std::string qtitem_name{qtitem->GetText()[0]};
-    const std::string qtedge_name{qtedge->GetEdge()->GetNode().GetConcept().GetName()};
+    const std::string qtedge_name{qtedge->GetEdge().GetNode().GetConcept().GetName()};
     assert(qtitem_name == qtedge_name);
   }
   //X
   if (verbose) { TRACE("X of QtEdge and QtRoundedEditRectItem must match at creation"); }
   {
-    const double edge_x{edge->GetNode().GetX()};
+    const double edge_x{edge.GetNode().GetX()};
     const double qtedge_x{qtitem->GetCenterX()};
     assert(edge_x == qtedge_x);
   }
@@ -190,7 +170,7 @@ void ribi::cmap::QtEdge::Test() noexcept
   //Y
   if (verbose) { TRACE("Y of QtEdge and QtRoundedEditRectItem must match at creation"); }
   {
-    const double edge_y{edge->GetNode().GetY()};
+    const double edge_y{edge.GetNode().GetY()};
     const double qtedge_y{qtitem->GetCenterY()};
     assert(edge_y == qtedge_y);
   }

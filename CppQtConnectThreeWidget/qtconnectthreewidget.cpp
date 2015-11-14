@@ -7,18 +7,17 @@
 #include <QMouseEvent>
 #include <QPainter>
 
-#include "connectthree.h"
+#include "connectthreegame.h"
 #include "connectthreemove.h"
 #include "connectthreeresources.h"
 #include "connectthreewidget.h"
-#include "qtconnectthreeresources.h"
 #pragma GCC diagnostic pop
 
 const int ribi::con3::QtConnectThreeWidget::m_sprite_width  = 50;
 const int ribi::con3::QtConnectThreeWidget::m_sprite_height = 50;
 
 ribi::con3::QtConnectThreeWidget::QtConnectThreeWidget(
-  const boost::shared_ptr<const ConnectThreeResources> resources,
+  const Resources& resources,
   QWidget *parent,
   const std::bitset<3>& is_player_human,
   const int n_cols,
@@ -26,10 +25,10 @@ ribi::con3::QtConnectThreeWidget::QtConnectThreeWidget(
   : QWidget(parent),
     m_signal_valid_move{},
     m_widget(new ConnectThreeWidget(is_player_human,n_cols,n_rows)),
-    m_player1(resources->GetPlayersFilenames()[0].c_str()),
-    m_player2(resources->GetPlayersFilenames()[1].c_str()),
-    m_player3(resources->GetPlayersFilenames()[2].c_str()),
-    m_empty(resources->GetEmptyFilename().c_str())
+    m_player1(resources.GetPlayersFilenames()[0].c_str()),
+    m_player2(resources.GetPlayersFilenames()[1].c_str()),
+    m_player3(resources.GetPlayersFilenames()[2].c_str()),
+    m_empty(resources.GetEmptyFilename().c_str())
 {
   this->setMinimumWidth( n_cols * m_sprite_width );
   this->setMinimumHeight(n_rows * m_sprite_height);
@@ -46,7 +45,7 @@ void ribi::con3::QtConnectThreeWidget::DoComputerTurn()
 
 ribi::con3::Player ribi::con3::QtConnectThreeWidget::GetActivePlayer() const noexcept
 {
-  return m_widget->GetGame()->GetActivePlayer();
+  return m_widget->GetGame().GetActivePlayer();
 }
 
 std::string ribi::con3::QtConnectThreeWidget::GetVersion() noexcept
@@ -64,7 +63,7 @@ std::vector<std::string> ribi::con3::QtConnectThreeWidget::GetVersionHistory() n
 
 ribi::con3::Winner ribi::con3::QtConnectThreeWidget::GetWinner() const noexcept
 {
-  return m_widget->GetGame()->GetWinner();
+  return m_widget->GetGame().GetWinner();
 }
 
 bool ribi::con3::QtConnectThreeWidget::IsComputerTurn() const noexcept
@@ -96,8 +95,8 @@ void ribi::con3::QtConnectThreeWidget::mousePressEvent(QMouseEvent * e)
 void ribi::con3::QtConnectThreeWidget::paintEvent(QPaintEvent *)
 {
   QPainter painter(this);
-  const int n_rows = m_widget->GetGame()->GetRows();
-  const int n_cols = m_widget->GetGame()->GetCols();
+  const int n_rows = m_widget->GetGame().GetRows();
+  const int n_cols = m_widget->GetGame().GetCols();
   for (int y = 0; y!=n_rows; ++y)
   {
     for (int x = 0; x!=n_cols; ++x)
@@ -105,7 +104,7 @@ void ribi::con3::QtConnectThreeWidget::paintEvent(QPaintEvent *)
       painter.drawImage(
         x * m_sprite_width,
         y * m_sprite_height,
-        GetImage(m_widget->GetGame()->GetSquare(x,y))
+        GetImage(m_widget->GetGame().GetSquare(x,y))
       );
     }
   }

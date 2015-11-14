@@ -34,7 +34,7 @@ class CommandCreateNewEdge final : public Command
 {
   public:
 
-  CommandCreateNewEdge(const boost::shared_ptr<ConceptMap> conceptmap);
+  CommandCreateNewEdge(ConceptMap& conceptmap);
   CommandCreateNewEdge(const CommandCreateNewEdge&) = delete;
   CommandCreateNewEdge& operator=(const CommandCreateNewEdge&) = delete;
   ~CommandCreateNewEdge() noexcept {}
@@ -50,7 +50,7 @@ class CommandCreateNewEdge final : public Command
   std::vector<Node> m_selected_nodes;
   std::vector<Node> m_prev_selected; //Selected before Edge was added
 
-  const boost::shared_ptr<ConceptMap> m_conceptmap;
+  ConceptMap& m_conceptmap;
 
   bool m_verbose;
 

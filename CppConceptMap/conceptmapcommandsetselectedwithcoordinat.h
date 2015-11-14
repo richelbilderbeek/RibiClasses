@@ -29,6 +29,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "conceptmapcommand.h"
 #include "conceptmapnode.h"
+#include "conceptmap.h"
 #pragma GCC diagnostic pop
 /*
 
@@ -50,7 +51,7 @@ class CommandSetSelectedWithCoordinat final : public Command
   using ConstEdgesAndNodes = std::pair<ConstEdges,ConstNodes>;
 
   CommandSetSelectedWithCoordinat(
-    const boost::shared_ptr<ConceptMap> conceptmap,
+    const ConceptMap conceptmap,
     const int x, const int y
   );
 
@@ -63,7 +64,7 @@ class CommandSetSelectedWithCoordinat final : public Command
 
   private:
   EdgesAndNodes m_prev_selected;
-  const boost::shared_ptr<ConceptMap> m_conceptmap;
+  const ConceptMap m_conceptmap;
   const Node m_node;
 
   const int m_x;

@@ -15,7 +15,7 @@
 namespace ribi {
 namespace con3 {
 
-struct ConnectThreeResources;
+struct Resources;
 struct ConnectThreeWidget;
 
 class QtConnectThreeWidget : public QWidget
@@ -23,11 +23,12 @@ class QtConnectThreeWidget : public QWidget
     Q_OBJECT
 public:
   explicit QtConnectThreeWidget(
-    const boost::shared_ptr<const ConnectThreeResources> resources,
+    const Resources& resources,
     QWidget *parent = 0,
     const std::bitset<3>& is_player_human = std::bitset<3>(true),
     const int n_cols = 16,
-    const int n_rows = 12);
+    const int n_rows = 12
+  );
 
   void DoComputerTurn();
   Player GetActivePlayer() const noexcept;
@@ -52,7 +53,7 @@ protected:
 
   private:
 
-  boost::scoped_ptr<ConnectThreeWidget> m_widget;
+  std::unique_ptr<ConnectThreeWidget> m_widget;
   const QImage m_player1;
   const QImage m_player2;
   const QImage m_player3;

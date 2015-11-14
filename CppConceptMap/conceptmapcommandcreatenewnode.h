@@ -27,6 +27,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
 #include "conceptmapcommand.h"
 #include "conceptmapnode.h"
+#include "conceptmap.h"
 #pragma GCC diagnostic pop
 
 namespace ribi {
@@ -38,7 +39,7 @@ class CommandCreateNewNode final : public Command
 {
   public:
 
-  CommandCreateNewNode(const boost::shared_ptr<ConceptMap> conceptmap);
+  CommandCreateNewNode(ConceptMap& conceptmap);
   CommandCreateNewNode(const CommandCreateNewNode&) = delete;
   CommandCreateNewNode& operator=(const CommandCreateNewNode&) = delete;
   ~CommandCreateNewNode() noexcept {}
@@ -51,7 +52,7 @@ class CommandCreateNewNode final : public Command
   private:
   ///There can be one or zero Nodes
   std::vector<Node> m_node;
-  const boost::shared_ptr<ConceptMap> m_conceptmap;
+  ConceptMap& m_conceptmap;
 };
 
 } //~namespace cmap

@@ -29,12 +29,11 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
-#include <boost/shared_ptr.hpp>
-#include <boost/checked_delete.hpp>
 #include <boost/tuple/tuple.hpp>
 #include "connectthreefwd.h"
 #include "connectthreeplayer.h"
 #include "connectthreesquare.h"
+#include "connectthreemove.h"
 #include "connectthreewinner.h"
 #pragma GCC diagnostic pop
 
@@ -44,17 +43,20 @@ namespace con3 {
 ///ConnectThree does not know which players are human.
 ///ConnectThree can suggest a move, but for this it needs to know if the
 ///others are human or computer
-struct ConnectThree
+struct Game
 {
-  explicit ConnectThree(
+  explicit Game(
     const int n_cols = 16,
     const int n_rows = 12
   );
 
+  ///Is there at least one valid move?
+//  bool CanDoAnyMove() const noexcept;
+
   bool CanDoMove(const int x, const int y) const noexcept;
   int CanGetSquare(const int x, const int y) const noexcept;
   void DoMove(const int x, const int y);
-  void DoMove(const boost::shared_ptr<Move> p) noexcept;
+  void DoMove(const Move& p) noexcept;
   Player GetActivePlayer() const noexcept { return m_player; }
   int GetCols() const noexcept;
   int GetRows() const noexcept;
@@ -69,31 +71,35 @@ struct ConnectThree
 
   void Restart() noexcept;
 
-  ///SuggestMove suggests a good move. If the game is a draw,
-  ///it returns nullptr
-  boost::shared_ptr<Move> SuggestMove(const std::bitset<3>& is_player_human) const noexcept;
+  ///SuggestMove suggests a good move.
+  ///If the game is a draw, it will throw a logic error
+  Move SuggestMove(const std::bitset<3>& is_player_human) const;
 
 private:
-  ~ConnectThree() noexcept {}
-  friend void boost::checked_delete<>(ConnectThree*);
-  friend void boost::checked_delete<>(const ConnectThree*);
 
   //X-Y-ordered 2D std::vector
   std::vector<std::vector<Square>> m_area;
   Player m_player;
 
-  bool CanDoMove(const boost::shared_ptr<Move> p) const noexcept;
-  boost::shared_ptr<Move> CheckOneOther(const std::bitset<3>& is_player_human) const noexcept;
-  boost::shared_ptr<Move> CheckTwoDiagonally() const noexcept;
-  boost::shared_ptr<Move> CheckTwoHorizontalOwn() const noexcept;
-  boost::shared_ptr<Move> CheckTwoOther(const std::bitset<3>& is_player_human) const noexcept;
-  boost::shared_ptr<Move> CheckTwoVerticalOwn() const noexcept;
-  std::vector<boost::shared_ptr<Move>> GetAllPossibleMoves() const noexcept;
+  bool CanDoMove(const Move& p) const noexcept;
+  Move CheckOneOther(const std::bitset<3>& is_player_human) const;
+  Move CheckTwoDiagonally() const;
+  Move CheckTwoHorizontalOwn() const;
+  Move CheckTwoOther(const std::bitset<3>& is_player_human) const;
+  Move CheckTwoVerticalOwn() const;
+
+  ///Returns all possible moves
+  std::vector<Move> GetAllPossibleMoves() const noexcept;
   Player GetNextPlayer() const noexcept;
-  std::vector<boost::shared_ptr<Move>> GetTwoHorizontalOtherMoves() const noexcept;
-  std::vector<boost::shared_ptr<Move>> GetTwoVerticalOtherMoves() const noexcept;
+  std::vector<Move> GetTwoHorizontalOtherMoves() const noexcept;
+  std::vector<Move> GetTwoVerticalOtherMoves() const noexcept;
+
+  ///Are all the squares occupied?
+  bool IsDraw() const noexcept;
   bool IsPlayerHuman(const Player player, const std::bitset<3>& is_player_human) const noexcept;
-  boost::shared_ptr<Move> MakeRandomMove() const noexcept;
+
+  ///Throws std::logic_error if there is no move left
+  Move MakeRandomMove() const;
   Square PlayerToSquare(const Player player) const noexcept;
   Player SquareToPlayer(const Square square) const noexcept;
   Winner SquareToWinner(const Square square) const noexcept;
@@ -102,7 +108,7 @@ private:
   #endif
 };
 
-std::ostream& operator<<(std::ostream& os, const ConnectThree& c);
+std::ostream& operator<<(std::ostream& os, const Game& c);
 
 } //~namespace con3
 } //~namespace ribi

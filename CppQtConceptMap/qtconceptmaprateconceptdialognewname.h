@@ -30,6 +30,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 
 #include "qtconceptmapfwd.h"
 #include "conceptmapconcept.h"
+#include "conceptmap.h"
 #pragma GCC diagnostic pop
 
 namespace Ui { class QtRateConceptDialogNewName; }
@@ -45,14 +46,14 @@ class QtRateConceptDialogNewName : public ribi::QtHideAndShowDialog
   ///concept is the center node
   ///sub_conceptmap[0] is the same as concept and might be changed
   ///sub_conceptmap is non-const, as GetRatedConcept will produce a new concept
-  explicit QtRateConceptDialogNewName(const boost::shared_ptr<ConceptMap> sub_conceptmap,
+  explicit QtRateConceptDialogNewName(const ConceptMap sub_conceptmap,
     QWidget* parent = 0);
   QtRateConceptDialogNewName(const QtRateConceptDialogNewName&) = delete;
   QtRateConceptDialogNewName& operator=(const QtRateConceptDialogNewName&) = delete;
   ~QtRateConceptDialogNewName() noexcept;
 
   ///Set suggested values for this concept
-  //void MakeSuggestions(const boost::shared_ptr<const ConceptMap> sub_conceptmap);
+  //void MakeSuggestions(const ConceptMap sub_conceptmap);
 
 protected:
   void keyPressEvent(QKeyEvent *);
@@ -81,7 +82,7 @@ private:
   const int m_initial_specificity;
 
   ///Cannot be const, only used in calculating the suggestions
-  const boost::shared_ptr<ConceptMap> m_sub_conceptmap;
+  const ConceptMap m_sub_conceptmap;
 
   const boost::shared_ptr<QtConceptMap> m_widget;
   //const boost::shared_ptr<QtRateConceptMap> m_widget;

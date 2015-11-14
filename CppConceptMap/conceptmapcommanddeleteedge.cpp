@@ -26,14 +26,14 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
 ribi::cmap::CommandDeleteEdge::CommandDeleteEdge(
-  const boost::shared_ptr<ConceptMap> conceptmap,
+  ConceptMap& conceptmap,
   const Edge& edge
 )
   :
     m_conceptmap{conceptmap},
     m_edge{edge}
 {
-  if (!m_conceptmap->HasEdge(m_edge))
+  if (!m_conceptmap.HasEdge(m_edge))
   {
     throw std::logic_error("CommandDeleteEdge cannot delete an Edge that is not present in the ConceptMap");
   }
@@ -43,10 +43,10 @@ ribi::cmap::CommandDeleteEdge::CommandDeleteEdge(
 
 void ribi::cmap::CommandDeleteEdge::redo()
 {
-  m_conceptmap->DeleteEdge(m_edge);
+  m_conceptmap.DeleteEdge(m_edge);
 }
 
 void ribi::cmap::CommandDeleteEdge::undo()
 {
-  m_conceptmap->AddEdge(m_edge);
+  m_conceptmap.AddEdge(m_edge);
 }

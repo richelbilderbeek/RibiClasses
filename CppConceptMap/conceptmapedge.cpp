@@ -315,6 +315,11 @@ bool ribi::cmap::operator!=(const cmap::Edge& lhs, const cmap::Edge& rhs)
   return !(lhs == rhs);
 }
 
+bool ribi::cmap::operator<(const cmap::Edge& lhs, const cmap::Edge& rhs)
+{
+  return lhs.GetNode() < rhs.GetNode();
+}
+
 std::ostream& ribi::cmap::operator<<(std::ostream& os, const Edge& edge) noexcept
 {
   os << edge.GetNode()

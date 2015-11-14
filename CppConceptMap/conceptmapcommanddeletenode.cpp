@@ -29,20 +29,16 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmapconcept.h"
 
 ribi::cmap::CommandDeleteNode::CommandDeleteNode(
-  const boost::shared_ptr<ConceptMap> conceptmap,
+  ConceptMap& conceptmap,
   const Node& node
 ) :
     m_conceptmap{conceptmap},
-    m_deleted_edges{conceptmap ? conceptmap->GetEdgesConnectedTo(node) : Edges()},
+    m_deleted_edges{conceptmap.GetEdgesConnectedTo(node)},
     m_node{node},
-    m_old_selected{conceptmap->GetSelected()},
+    m_old_selected{conceptmap.GetSelected()},
     m_verbose{false}
 {
-  if (!m_conceptmap)
-  {
-    throw std::logic_error("Cannot delete Node from an empty concept map");
-  }
-  if (!m_conceptmap->HasNode(m_node))
+  if (!m_conceptmap.HasNode(m_node))
   {
     throw std::logic_error("Cannot delete Node that is not in ConceptMap");
   }
@@ -67,7 +63,7 @@ void ribi::cmap::CommandDeleteNode::redo()
         << edge.GetNode().GetConcept().GetName() << "'" << std::endl
       ;
     }
-    m_conceptmap->DeleteEdge(edge);
+    m_conceptmap.DeleteEdge(edge);
   }
   if (m_verbose)
   {
@@ -76,7 +72,7 @@ void ribi::cmap::CommandDeleteNode::redo()
       << m_node.GetConcept().GetName() << "'" << std::endl
     ;
   }
-  m_conceptmap->DeleteNode(m_node);
+  m_conceptmap.DeleteNode(m_node);
 }
 
 void ribi::cmap::CommandDeleteNode::undo()
@@ -95,7 +91,7 @@ void ribi::cmap::CommandDeleteNode::undo()
       << m_node.GetConcept().GetName() << "'" << std::endl
     ;
   }
-  m_conceptmap->AddNode(m_node);
+  m_conceptmap.AddNode(m_node);
 
   for (const auto edge: m_deleted_edges)
   {
@@ -106,7 +102,7 @@ void ribi::cmap::CommandDeleteNode::undo()
         << edge.GetNode().GetConcept().GetName() << "'" << std::endl
       ;
     }
-    m_conceptmap->AddEdge(edge);
+    m_conceptmap.AddEdge(edge);
   }
-  m_conceptmap->SetSelected(m_old_selected);
+  m_conceptmap.SetSelected(m_old_selected);
 }

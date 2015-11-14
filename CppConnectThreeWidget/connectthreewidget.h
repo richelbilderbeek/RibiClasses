@@ -29,10 +29,9 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
-#include <boost/shared_ptr.hpp>
 #include <boost/tuple/tuple.hpp>
 
-#include "connectthree.h"
+#include "connectthreegame.h"
 #include "connectthreefwd.h"
 #pragma GCC diagnostic pop
 
@@ -42,7 +41,7 @@ struct TextCanvas;
 
 namespace con3 {
 
-struct ConnectThree;
+struct Game;
 
 ///ConnectThreeWidget embodies the interaction with a user
 ///It keeps track which players are human and whose turn it is
@@ -68,7 +67,7 @@ struct ConnectThreeWidget
   void DoMove() noexcept;
 
 
-  const boost::shared_ptr<const ConnectThree> GetGame() const noexcept { return m_game; }
+  const Game& GetGame() const noexcept { return m_game; }
   const std::bitset<3>& GetIsPlayerHuman() const noexcept { return m_is_player_human; }
   static std::string GetVersion() noexcept;
   static std::vector<std::string> GetVersionHistory() noexcept;
@@ -78,16 +77,14 @@ struct ConnectThreeWidget
   void Restart() noexcept;
   void Select(const int x, const int y) noexcept;
   void SetIsPlayerHuman(const std::bitset<3>& is_player_human) noexcept;
-  const boost::shared_ptr<Move> SuggestMove() const noexcept;
-  //const boost::shared_ptr<TextCanvas> ToTextCanvas() const noexcept;
+
+  ///Will throw std::logic_error when there is no move
+  Move SuggestMove() const;
   void Tick() noexcept;
 
   private:
-  ~ConnectThreeWidget() noexcept {}
-  friend void boost::checked_delete<>(ConnectThreeWidget*);
-  friend void boost::checked_delete<>(const ConnectThreeWidget*);
 
-  boost::shared_ptr<ConnectThree> m_game;
+  Game m_game;
   std::bitset<3> m_is_player_human;
 
   //X coordinat of cursor

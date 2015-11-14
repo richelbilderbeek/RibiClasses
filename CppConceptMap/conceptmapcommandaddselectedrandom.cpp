@@ -8,25 +8,24 @@
 #include "conceptmapnode.h"
 #include "trace.h"
 
-ribi::cmap::CommandAddSelectedRandom::CommandAddSelectedRandom(const boost::shared_ptr<ConceptMap> conceptmap)
+ribi::cmap::CommandAddSelectedRandom::CommandAddSelectedRandom(ConceptMap& conceptmap)
   :
     m_conceptmap{conceptmap},
-    m_new_selected{conceptmap->GetSelected()},
-    m_old_selected{conceptmap->GetSelected()}
+    m_new_selected{conceptmap.GetSelected()},
+    m_old_selected{conceptmap.GetSelected()}
 {
   this->setText("add selected random");
 
-  assert(conceptmap);
-  if (conceptmap->GetNodes().empty())
+  if (conceptmap.GetNodes().empty())
   {
     throw std::logic_error("AddSelected needs nodes to focus on");
   }
-  const auto to_add = m_conceptmap->GetRandomNodes(conceptmap->GetSelectedNodes());
+  const auto to_add = m_conceptmap.GetRandomNodes(conceptmap.GetSelectedNodes());
   if (to_add.empty())
   {
     std::stringstream s;
     s << "AddSelected needs non-focused nodes to focus on,"
-      << "currently has " << conceptmap->GetSelectedNodes().size()
+      << "currently has " << conceptmap.GetSelectedNodes().size()
       << " selected"
     ;
     throw std::logic_error(s.str());
@@ -41,10 +40,10 @@ ribi::cmap::CommandAddSelectedRandom::CommandAddSelectedRandom(const boost::shar
 
 void ribi::cmap::CommandAddSelectedRandom::redo()
 {
-  m_conceptmap->SetSelected(m_new_selected);
+  m_conceptmap.SetSelected(m_new_selected);
 }
 
 void ribi::cmap::CommandAddSelectedRandom::undo()
 {
-  m_conceptmap->SetSelected(m_old_selected);
+  m_conceptmap.SetSelected(m_old_selected);
 }

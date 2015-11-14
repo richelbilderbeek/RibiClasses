@@ -23,6 +23,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "conceptmapcommand.h"
 #include "conceptmapnode.h"
+#include "conceptmap.h"
 
 namespace ribi {
 namespace cmap {
@@ -39,7 +40,7 @@ class CommandAddSelectedRandom final : public Command
   using EdgesAndNodes = std::pair<Edges,Nodes>;
   using ConstEdgesAndNodes = std::pair<ConstEdges,ConstNodes>;
 
-  CommandAddSelectedRandom(const boost::shared_ptr<ConceptMap> conceptmap);
+  CommandAddSelectedRandom(ConceptMap& conceptmap);
   CommandAddSelectedRandom(const CommandAddSelectedRandom&) = delete;
   CommandAddSelectedRandom& operator=(const CommandAddSelectedRandom&) = delete;
   ~CommandAddSelectedRandom() noexcept {}
@@ -48,7 +49,7 @@ class CommandAddSelectedRandom final : public Command
   void redo() override;
 
   private:
-  const boost::shared_ptr<ConceptMap> m_conceptmap;
+  ConceptMap& m_conceptmap;
   EdgesAndNodes m_new_selected; //Selected after redo
   const EdgesAndNodes m_old_selected; //Selected before redo
 };

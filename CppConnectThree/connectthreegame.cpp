@@ -22,7 +22,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
-#include "connectthree.h"
+#include "connectthreegame.h"
 
 #include <algorithm>
 #include <cassert>
@@ -36,7 +36,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "trace.h"
 #pragma GCC diagnostic pop
 
-ribi::con3::ConnectThree::ConnectThree(
+ribi::con3::Game::Game(
   const int n_cols,
   const int n_rows
 ) : m_area(n_cols, std::vector<Square>(n_rows,Square::empty)),
@@ -54,18 +54,26 @@ ribi::con3::ConnectThree::ConnectThree(
   assert(GetRows() == n_rows);
 }
 
-bool ribi::con3::ConnectThree::CanDoMove(const int x, const int y) const noexcept
+
+//bool ribi::con3::Game::CanDoAnyMove() const noexcept {
+//  const bool are_no_moves_possible{
+//    GetAllPossibleMoves().empty()
+//  };
+//  return !are_no_moves_possible;
+//}
+
+bool ribi::con3::Game::CanDoMove(const int x, const int y) const noexcept
 {
   return CanGetSquare(x,y)
     && m_area[x][y] == Square::empty;
 }
 
-bool ribi::con3::ConnectThree::CanDoMove(const boost::shared_ptr<Move> p) const noexcept
+bool ribi::con3::Game::CanDoMove(const Move& p) const noexcept
 {
-  return p && CanDoMove(p->GetX(), p->GetY());
+  return CanDoMove(p.GetX(), p.GetY());
 }
 
-int ribi::con3::ConnectThree::CanGetSquare(const int x, const int y) const noexcept
+int ribi::con3::Game::CanGetSquare(const int x, const int y) const noexcept
 {
   return
        x >= 0
@@ -75,20 +83,20 @@ int ribi::con3::ConnectThree::CanGetSquare(const int x, const int y) const noexc
   ;
 }
 
-void ribi::con3::ConnectThree::DoMove(const int x, const int y)
+void ribi::con3::Game::DoMove(const int x, const int y)
 {
   assert(CanDoMove(x,y));
   m_area[x][y] = PlayerToSquare(m_player);
   m_player = GetNextPlayer();
 }
 
-void ribi::con3::ConnectThree::DoMove(const boost::shared_ptr<Move> p) noexcept
+void ribi::con3::Game::DoMove(const Move& p) noexcept
 {
   assert(CanDoMove(p));
-  DoMove(p->GetX(),p->GetY());
+  DoMove(p.GetX(),p.GetY());
 }
 
-ribi::con3::Square ribi::con3::ConnectThree::GetSquare(const int x, const int y) const noexcept
+ribi::con3::Square ribi::con3::Game::GetSquare(const int x, const int y) const noexcept
 {
   assert(CanGetSquare(x,y));
   assert(!m_area.empty());
@@ -109,12 +117,12 @@ ribi::con3::Square ribi::con3::ConnectThree::GetSquare(const int x, const int y)
   return m_area[x][y];
 }
 
-std::string ribi::con3::ConnectThree::GetVersion() noexcept
+std::string ribi::con3::Game::GetVersion() noexcept
 {
-  return "1.4";
+  return "2.0";
 }
 
-std::vector<std::string> ribi::con3::ConnectThree::GetVersionHistory() noexcept
+std::vector<std::string> ribi::con3::Game::GetVersionHistory() noexcept
 {
   return {
     "2010-12-28: version 0.1: initial seperation of game logic from GUI",
@@ -123,11 +131,12 @@ std::vector<std::string> ribi::con3::ConnectThree::GetVersionHistory() noexcept
     "2011-04-19: version 1.1: added Restart method, removed m_is_player_human",
     "2014-02-13: version 1.2: improved interface",
     "2014-06-30: version 1.3: fixed bug in ribi::con3::ConnectThree::DoMove",
-    "2014-07-21: version 1.4: fixed another bug"
+    "2014-07-21: version 1.4: fixed another bug",
+    "2015-11-14: version 2.0: simplified classes"
   };
 }
 
-ribi::con3::Winner ribi::con3::ConnectThree::GetWinner() const noexcept
+ribi::con3::Winner ribi::con3::Game::GetWinner() const noexcept
 {
   const int n_rows = GetRows();
   for (int y=0; y!=n_rows; ++y)
@@ -152,39 +161,48 @@ ribi::con3::Winner ribi::con3::ConnectThree::GetWinner() const noexcept
       }
     }
   }
-  //Check for draw
-  {
-    if (!MakeRandomMove())
-    {
-      return Winner::draw;
-    }
+  //Check for draw: if all
+  return IsDraw() ? Winner::draw : Winner::no_winner;
+}
+
+ribi::con3::Move ribi::con3::Game::SuggestMove(
+  const std::bitset<3>& is_player_human
+) const
+{
+  try {
+    const auto m = CheckTwoHorizontalOwn();
+    if (CanDoMove(m)) return m;
   }
-  return Winner::no_winner;
-}
+  catch (std::logic_error&) { /* OK */ }
 
-/*
-bool ribi::con3::ConnectThree::IsInvalidMove(const Move& p) noexcept
-{
-  const Move q = CreateInvalidMove();
-  return
-       p.get<0>() == q.get<0>()
-    && p.get<1>() == q.get<1>()
-    && p.get<2>() == q.get<2>();
-}
-*/
+  try {
+    const auto m = CheckTwoVerticalOwn();
+    if (CanDoMove(m)) return m;
+  }
+  catch (std::logic_error&) { /* OK */ }
 
-boost::shared_ptr<ribi::con3::Move> ribi::con3::ConnectThree::SuggestMove(const std::bitset<3>& is_player_human) const noexcept
-{
-  //const std::bitset<3>& is_player_human
-  if (CanDoMove(CheckTwoHorizontalOwn())) return CheckTwoHorizontalOwn();
-  if (CanDoMove(CheckTwoVerticalOwn())) return CheckTwoVerticalOwn();
-  if (CanDoMove(CheckTwoOther(is_player_human))) return CheckTwoOther(is_player_human);
-  if (CanDoMove(CheckTwoDiagonally())) return CheckTwoDiagonally();
-  if (CanDoMove(CheckOneOther(is_player_human))) return CheckOneOther(is_player_human);
+  try {
+    const auto m = CheckTwoOther(is_player_human);
+    if (CanDoMove(m)) return m;
+  }
+  catch (std::logic_error&) { /* OK */ }
+
+  try {
+    const auto m = CheckTwoDiagonally();
+    if (CanDoMove(m)) return m;
+  }
+  catch (std::logic_error&) { /* OK */ }
+
+  try {
+    const auto m = CheckOneOther(is_player_human);
+    if (CanDoMove(m)) return m;
+  }
+  catch (std::logic_error&) { /* OK */ }
+
   return MakeRandomMove();
 }
 
-boost::shared_ptr<ribi::con3::Move> ribi::con3::ConnectThree::CheckTwoHorizontalOwn() const noexcept
+ribi::con3::Move ribi::con3::Game::CheckTwoHorizontalOwn() const
 {
   const int n_rows = GetRows();
   for (int y=0; y!=n_rows; ++y)
@@ -199,14 +217,14 @@ boost::shared_ptr<ribi::con3::Move> ribi::con3::ConnectThree::CheckTwoHorizontal
         {
           if (m_area[x-1][y] == Square::empty)
           {
-            const boost::shared_ptr<Move> p { MoveFactory().Create(x-1,y,m_player) };
+            const Move p{ MoveFactory().Create(x-1,y,m_player) };
             assert(CanDoMove(p));
             return p;
           }
         }
         if (x < n_cols-2 && m_area[x+2][y] == Square::empty)
         {
-          const boost::shared_ptr<Move> p { MoveFactory().Create(x+2,y,m_player) };
+          const Move p { MoveFactory().Create(x+2,y,m_player) };
           assert(CanDoMove(p));
           return p;
         }
@@ -216,17 +234,17 @@ boost::shared_ptr<ribi::con3::Move> ribi::con3::ConnectThree::CheckTwoHorizontal
       {
         if (m_area[x][y] == PlayerToSquare(m_player) && m_area[x+1][y] == Square::empty && m_area[x+2][y] == PlayerToSquare(m_player))
         {
-          const boost::shared_ptr<Move> p { MoveFactory().Create(x+1,y,m_player) };
+          const Move p { MoveFactory().Create(x+1,y,m_player) };
           assert(CanDoMove(p));
           return p;
         }
       }
     }
   }
-  return nullptr;
+  throw std::logic_error("no move");
 }
 
-boost::shared_ptr<ribi::con3::Move> ribi::con3::ConnectThree::CheckTwoVerticalOwn() const noexcept
+ribi::con3::Move ribi::con3::Game::CheckTwoVerticalOwn() const
 {
   const int n_rows = GetRows();
   assert(n_rows > 1);
@@ -243,7 +261,7 @@ boost::shared_ptr<ribi::con3::Move> ribi::con3::ConnectThree::CheckTwoVerticalOw
         {
           if (m_area[x][y-1] == Square::empty)
           {
-            const boost::shared_ptr<Move> p { MoveFactory().Create(x,y-1,m_player) };
+            const Move p { MoveFactory().Create(x,y-1,m_player) };
             assert(CanDoMove(p));
             return p;
           }
@@ -252,7 +270,7 @@ boost::shared_ptr<ribi::con3::Move> ribi::con3::ConnectThree::CheckTwoVerticalOw
         {
           if (m_area[x][y+2] == Square::empty)
           {
-            const boost::shared_ptr<Move> p { MoveFactory().Create(x,y+2,m_player) };
+            const Move p { MoveFactory().Create(x,y+2,m_player) };
             assert(CanDoMove(p));
             return p;
           }
@@ -263,31 +281,34 @@ boost::shared_ptr<ribi::con3::Move> ribi::con3::ConnectThree::CheckTwoVerticalOw
       {
         if (m_area[x][y] == PlayerToSquare(m_player) && m_area[x][y+1] == Square::empty && m_area[x][y+2] == PlayerToSquare(m_player))
         {
-          const boost::shared_ptr<Move> p { MoveFactory().Create(x,y+1,m_player) };
+          const Move p { MoveFactory().Create(x,y+1,m_player) };
           assert(CanDoMove(p));
           return p;
         }
       }
     }
   }
-  return nullptr;
+  throw std::logic_error("no move");
 }
 
-boost::shared_ptr<ribi::con3::Move> ribi::con3::ConnectThree::CheckTwoOther(const std::bitset<3>& is_player_human) const noexcept
+ribi::con3::Move ribi::con3::Game::CheckTwoOther(const std::bitset<3>& is_player_human) const
 {
   const auto moves(GetAllPossibleMoves());
 
   const int nMoves = moves.size();
-  if (nMoves==0) return nullptr;
+  if (nMoves==0)
+  {
+    throw std::logic_error("no move");
+  }
 
   {
     //Get anti-human moves
-    std::vector<boost::shared_ptr<Move>> v;
+    std::vector<Move> v;
     for(const auto m: moves)
     {
       assert(CanDoMove(m));
       //Player is human
-      if (IsPlayerHuman(m->GetPlayer(),is_player_human))
+      if (IsPlayerHuman(m.GetPlayer(),is_player_human))
       {
         v.push_back(m);
       }
@@ -303,11 +324,11 @@ boost::shared_ptr<ribi::con3::Move> ribi::con3::ConnectThree::CheckTwoOther(cons
   {
     //Get moves anti-next-player
     const Player next_player_index = GetNextPlayer();
-    std::vector<boost::shared_ptr<Move>> v;
+    std::vector<Move> v;
     for(const auto& move: moves)
     {
       assert(CanDoMove(move));
-      if (move->GetPlayer() == next_player_index)
+      if (move.GetPlayer() == next_player_index)
         v.push_back(move);
     }
     //If there are anti-next-player moves, choose one at random
@@ -326,28 +347,34 @@ boost::shared_ptr<ribi::con3::Move> ribi::con3::ConnectThree::CheckTwoOther(cons
   }
 }
 
-//const boost::shared_ptr<ribi::con3::Move> ribi::con3::ConnectThree::CreateInvalidMove() noexcept
-//{
-//  return nullptr;
-//}
-
-///GetAllPossibleMoves returns all possible moves.
-//boost::get<0>: x coordinat
-//boost::get<1>: y coordinat
-//boost::get<2>: player that would dislike this move
-std::vector<boost::shared_ptr<ribi::con3::Move>>
-  ribi::con3::ConnectThree::GetAllPossibleMoves() const noexcept
+std::vector<ribi::con3::Move>
+  ribi::con3::Game::GetAllPossibleMoves() const noexcept
 {
-  std::vector<boost::shared_ptr<ribi::con3::Move>> v(GetTwoHorizontalOtherMoves());
-  const std::vector<boost::shared_ptr<ribi::con3::Move>> w(GetTwoVerticalOtherMoves());
+  std::vector<Move> v(GetTwoHorizontalOtherMoves());
+  const std::vector<Move> w(GetTwoVerticalOtherMoves());
   std::copy(w.begin(),w.end(),std::back_inserter(v));
   return v;
+  /*
+  std::vector<Move> m;
+  const int n_cols = GetCols();
+  const int n_rows = GetRows();
+  for (int x=0; x!=n_cols; ++x)
+  {
+    for (int y=0; y!=n_rows; ++y)
+    {
+      if (CanDoMove(x,y)) {
+        m.push_back(Move(x,y))
+      }
+    }
+  }
+  return m;
+  */
 }
 
-std::vector<boost::shared_ptr<ribi::con3::Move>> ribi::con3::ConnectThree::GetTwoHorizontalOtherMoves() const noexcept
+std::vector<ribi::con3::Move> ribi::con3::Game::GetTwoHorizontalOtherMoves() const noexcept
 {
   const int n_rows = GetRows();
-  std::vector<boost::shared_ptr<ribi::con3::Move>> moves;
+  std::vector<Move> moves;
   for (int y=0; y!=n_rows; ++y)
   {
     const int n_cols = GetCols();
@@ -359,7 +386,7 @@ std::vector<boost::shared_ptr<ribi::con3::Move>> ribi::con3::ConnectThree::GetTw
         //Check A X B
         if (x > 0 && m_area[x-1][y] == Square::empty)
         {
-          const boost::shared_ptr<Move> m { MoveFactory().Create(
+          const Move m { MoveFactory().Create(
             x-1,y,SquareToPlayer(m_area[x][y]))
           };
           assert(CanDoMove(m));
@@ -368,7 +395,7 @@ std::vector<boost::shared_ptr<ribi::con3::Move>> ribi::con3::ConnectThree::GetTw
         //Check X B C
         if (x < n_cols-2 && m_area[x+2][y] == Square::empty)
         {
-          const boost::shared_ptr<Move> m { MoveFactory().Create(
+          const Move m { MoveFactory().Create(
             x+2,y,SquareToPlayer(m_area[x][y]))
           };
           assert(CanDoMove(m));
@@ -378,7 +405,7 @@ std::vector<boost::shared_ptr<ribi::con3::Move>> ribi::con3::ConnectThree::GetTw
       //Check gap, also X B C
       if (m_area[x][y] != Square::empty && x + 2 < n_cols && m_area[x+1][y] == Square::empty && m_area[x][y] == m_area[x+2][y])
       {
-        const boost::shared_ptr<Move> m { MoveFactory().Create(
+        const Move m { MoveFactory().Create(
           x+1,y,SquareToPlayer(m_area[x][y]))
         };
         assert(CanDoMove(m));
@@ -391,11 +418,11 @@ std::vector<boost::shared_ptr<ribi::con3::Move>> ribi::con3::ConnectThree::GetTw
 }
 
 //A X B C (x is focus of for loop)
-std::vector<boost::shared_ptr<ribi::con3::Move>>
-  ribi::con3::ConnectThree::GetTwoVerticalOtherMoves() const noexcept
+std::vector<ribi::con3::Move>
+  ribi::con3::Game::GetTwoVerticalOtherMoves() const noexcept
 {
   const int n_rows = GetRows();
-  std::vector<boost::shared_ptr<Move>> v;
+  std::vector<Move> v;
 
   for (int y=0; y!=n_rows-1; ++y) //-1 to prevent out of range
   {
@@ -408,7 +435,7 @@ std::vector<boost::shared_ptr<ribi::con3::Move>>
         //Check A X B
         if (y > 0 && m_area[x][y-1] == Square::empty)
         {
-          const boost::shared_ptr<Move> m { MoveFactory().Create(
+          const Move m { MoveFactory().Create(
             x,y-1,SquareToPlayer(m_area[x][y]))
           };
           assert(CanDoMove(m));
@@ -417,7 +444,7 @@ std::vector<boost::shared_ptr<ribi::con3::Move>>
         //Check X B C
         if (y < n_rows-2 && m_area[x][y+2] == Square::empty)
         {
-          const boost::shared_ptr<Move> m { MoveFactory().Create(
+          const Move m { MoveFactory().Create(
             x,y+2,SquareToPlayer(m_area[x][y]))
           };
           assert(CanDoMove(m));
@@ -427,7 +454,7 @@ std::vector<boost::shared_ptr<ribi::con3::Move>>
       //Check gap, also X B C
       if (m_area[x][y] != Square::empty && y < n_rows && m_area[x][y+1] == Square::empty && m_area[x][y] == m_area[x][y+2])
       {
-        const boost::shared_ptr<Move> m { MoveFactory().Create(
+        const Move m { MoveFactory().Create(
           x,y+1,SquareToPlayer(m_area[x][y]))
         };
         assert(CanDoMove(m));
@@ -438,9 +465,9 @@ std::vector<boost::shared_ptr<ribi::con3::Move>>
   return v;
 }
 
-boost::shared_ptr<ribi::con3::Move> ribi::con3::ConnectThree::CheckTwoDiagonally() const noexcept
+ribi::con3::Move ribi::con3::Game::CheckTwoDiagonally() const
 {
-  std::vector<boost::shared_ptr<Move>> v;
+  std::vector<Move> v;
 
   const int n_rows = GetRows();
   for (int y=0; y!=n_rows-1; ++y) //-1 To prevent out of range
@@ -452,7 +479,7 @@ boost::shared_ptr<ribi::con3::Move> ribi::con3::ConnectThree::CheckTwoDiagonally
       {
         if (m_area[x+1][y] == Square::empty)
         {
-          const boost::shared_ptr<Move> m { MoveFactory().Create(
+          const Move m { MoveFactory().Create(
             x+1,y,SquareToPlayer(m_area[x][y]))
           };
           assert(CanDoMove(m));
@@ -460,7 +487,7 @@ boost::shared_ptr<ribi::con3::Move> ribi::con3::ConnectThree::CheckTwoDiagonally
         }
         if (m_area[x][y+1] == Square::empty)
         {
-          const boost::shared_ptr<Move> m { MoveFactory().Create(
+          const Move m { MoveFactory().Create(
             x,y+1,SquareToPlayer(m_area[x][y]))
           };
           assert(CanDoMove(m));
@@ -469,15 +496,18 @@ boost::shared_ptr<ribi::con3::Move> ribi::con3::ConnectThree::CheckTwoDiagonally
       }
     }
   }
-  if (v.empty()) return nullptr;
+  if (v.empty())
+  {
+    throw std::logic_error("no move");
+  }
   const auto m = v[std::rand() % v.size()];
   assert(CanDoMove(m));
   return m;
 }
 
-boost::shared_ptr<ribi::con3::Move> ribi::con3::ConnectThree::CheckOneOther(const std::bitset<3>& is_player_human) const noexcept
+ribi::con3::Move ribi::con3::Game::CheckOneOther(const std::bitset<3>& is_player_human) const
 {
-  std::vector<boost::shared_ptr<Move>> v;
+  std::vector<Move> v;
 
   const int n_rows = GetRows();
 
@@ -490,7 +520,7 @@ boost::shared_ptr<ribi::con3::Move> ribi::con3::ConnectThree::CheckOneOther(cons
       {
         if (y >= 1 && m_area[x][y-1] == Square::empty)
         {
-          const boost::shared_ptr<Move> m { MoveFactory().Create(
+          const Move m { MoveFactory().Create(
             x,y-1,SquareToPlayer(m_area[x][y]))
           };
           assert(CanDoMove(m));
@@ -500,7 +530,7 @@ boost::shared_ptr<ribi::con3::Move> ribi::con3::ConnectThree::CheckOneOther(cons
         {
           if (m_area[x][y+1] == Square::empty)
           {
-            const boost::shared_ptr<Move> m { MoveFactory().Create(
+            const Move m { MoveFactory().Create(
               x,y+1,SquareToPlayer(m_area[x][y]))
             };
             assert(CanDoMove(m));
@@ -511,7 +541,7 @@ boost::shared_ptr<ribi::con3::Move> ribi::con3::ConnectThree::CheckOneOther(cons
         {
           if (m_area[x-1][y] == Square::empty)
           {
-            const boost::shared_ptr<Move> m { MoveFactory().Create(
+            const Move m { MoveFactory().Create(
               x-1,y,SquareToPlayer(m_area[x][y]))
             };
             assert(CanDoMove(m));
@@ -522,7 +552,7 @@ boost::shared_ptr<ribi::con3::Move> ribi::con3::ConnectThree::CheckOneOther(cons
         {
           if (m_area[x+1][y] == Square::empty)
           {
-            const boost::shared_ptr<Move> m { MoveFactory().Create(
+            const Move m { MoveFactory().Create(
               x+1,y,SquareToPlayer(m_area[x][y]))
             };
             assert(CanDoMove(m));
@@ -532,15 +562,18 @@ boost::shared_ptr<ribi::con3::Move> ribi::con3::ConnectThree::CheckOneOther(cons
       }
     }
   }
-  if (v.empty()) return nullptr;
+  if (v.empty())
+  {
+    throw std::logic_error("no move");
+  }
 
   {
     //Get anti-human moves
-    std::vector<boost::shared_ptr<Move>> w;
+    std::vector<Move> w;
     for(const auto m: v)
     {
       assert(CanDoMove(m));
-      if (IsPlayerHuman(m->GetPlayer(),is_player_human))
+      if (IsPlayerHuman(m.GetPlayer(),is_player_human))
         w.push_back(m);
     }
     //If there are anti-player moves, choose one at random
@@ -555,11 +588,11 @@ boost::shared_ptr<ribi::con3::Move> ribi::con3::ConnectThree::CheckOneOther(cons
   {
     //Get moves anti-next-player
     const Player next_player_index = GetNextPlayer();
-    std::vector<boost::shared_ptr<Move>> w;
+    std::vector<Move> w;
     for(const auto m: v)
     {
       assert(CanDoMove(m));
-      if (m->GetPlayer() == next_player_index)
+      if (m.GetPlayer() == next_player_index)
         w.push_back(m);
     }
     //If there are anti-next-player moves, choose one at random
@@ -572,15 +605,16 @@ boost::shared_ptr<ribi::con3::Move> ribi::con3::ConnectThree::CheckOneOther(cons
   }
   //Choose a move at random
   {
+    assert(v.size() != 0);
     const auto m = v[std::rand() % v.size()];
     assert(CanDoMove(m));
     return m;
   }
 }
 
-boost::shared_ptr<ribi::con3::Move> ribi::con3::ConnectThree::MakeRandomMove() const noexcept
+ribi::con3::Move ribi::con3::Game::MakeRandomMove() const
 {
-  std::vector<boost::shared_ptr<Move>> v;
+  std::vector<Move> v;
   const int n_cols = GetCols();
   const int n_rows = GetRows();
 
@@ -590,7 +624,7 @@ boost::shared_ptr<ribi::con3::Move> ribi::con3::ConnectThree::MakeRandomMove() c
     {
       if (this->GetSquare(x,y) == Square::empty)
       {
-        const boost::shared_ptr<Move> m { MoveFactory().Create(
+        const Move m { MoveFactory().Create(
           x,y,m_player)
         };
         assert(CanDoMove(m));
@@ -600,30 +634,45 @@ boost::shared_ptr<ribi::con3::Move> ribi::con3::ConnectThree::MakeRandomMove() c
   }
   if (v.empty())
   {
-    return nullptr;
+    throw std::logic_error("no move");
   }
   const int index = std::rand() % v.size();
   return v[index];
 }
 
-int ribi::con3::ConnectThree::GetCols() const noexcept
+int ribi::con3::Game::GetCols() const noexcept
 {
   assert(!m_area.empty());
   return m_area.size();
 }
 
-ribi::con3::Player ribi::con3::ConnectThree::GetNextPlayer() const noexcept
+ribi::con3::Player ribi::con3::Game::GetNextPlayer() const noexcept
 {
   return ribi::con3::GetNextPlayer(m_player);
 }
 
-int ribi::con3::ConnectThree::GetRows() const noexcept
+int ribi::con3::Game::GetRows() const noexcept
 {
   assert(!m_area.empty());
   return m_area[0].size();
 }
 
-bool ribi::con3::ConnectThree::IsPlayerHuman(const Player player, const std::bitset<3>& is_player_human) const noexcept
+bool ribi::con3::Game::IsDraw() const noexcept
+{
+  const int n_cols = GetCols();
+  const int n_rows = GetRows();
+  for (int y=0; y!=n_rows; ++y)
+  {
+    for (int x=0; x!=n_cols; ++x)
+    {
+      assert(CanGetSquare(x,y));
+      if (GetSquare(x,y) == Square::empty) { return false; }
+    }
+  }
+  return true;
+}
+
+bool ribi::con3::Game::IsPlayerHuman(const Player player, const std::bitset<3>& is_player_human) const noexcept
 {
   switch (player)
   {
@@ -636,7 +685,7 @@ bool ribi::con3::ConnectThree::IsPlayerHuman(const Player player, const std::bit
   }
 }
 
-ribi::con3::Square ribi::con3::ConnectThree::PlayerToSquare(const Player player) const noexcept
+ribi::con3::Square ribi::con3::Game::PlayerToSquare(const Player player) const noexcept
 {
   switch (player)
   {
@@ -650,14 +699,14 @@ ribi::con3::Square ribi::con3::ConnectThree::PlayerToSquare(const Player player)
 }
 
 
-void ribi::con3::ConnectThree::Restart() noexcept
+void ribi::con3::Game::Restart() noexcept
 {
   m_area = std::vector<std::vector<Square> >(GetCols(),
     std::vector<Square>(GetRows(),Square::empty));
   m_player = Player::player1;
 }
 
-ribi::con3::Player ribi::con3::ConnectThree::SquareToPlayer(const Square square) const noexcept
+ribi::con3::Player ribi::con3::Game::SquareToPlayer(const Square square) const noexcept
 {
   switch (square)
   {
@@ -670,7 +719,7 @@ ribi::con3::Player ribi::con3::ConnectThree::SquareToPlayer(const Square square)
   }
 }
 
-ribi::con3::Winner ribi::con3::ConnectThree::SquareToWinner(const Square square) const noexcept
+ribi::con3::Winner ribi::con3::Game::SquareToWinner(const Square square) const noexcept
 {
   switch (square)
   {
@@ -684,7 +733,7 @@ ribi::con3::Winner ribi::con3::ConnectThree::SquareToWinner(const Square square)
 }
 
 #ifndef NDEBUG
-void ribi::con3::ConnectThree::Test() noexcept
+void ribi::con3::Game::Test() noexcept
 {
   {
     static bool is_tested{false};
@@ -698,7 +747,7 @@ void ribi::con3::ConnectThree::Test() noexcept
   is_player_human[0] = true;
   is_player_human[1] = true;
   is_player_human[2] = true;
-  ConnectThree c(n_cols,n_rows);
+  Game c(n_cols,n_rows);
   assert(c.GetCols() == n_cols);
   assert(c.GetRows() == n_rows);
   assert(c.GetActivePlayer() == Player::player1);
@@ -708,7 +757,7 @@ void ribi::con3::ConnectThree::Test() noexcept
   assert( c.CanDoMove(1,1));
   assert(!c.CanDoMove(0,n_rows));
   assert(!c.CanDoMove(n_rows,0));
-  assert(c.SuggestMove(is_player_human));
+  assert(c.SuggestMove(is_player_human).GetX() >= 0); //It just shouldn't throw
   assert(c.GetWinner() == Winner::no_winner); //No winner yet
   c.DoMove(0,0);
   assert(c.GetActivePlayer() == Player::player2);
@@ -716,7 +765,7 @@ void ribi::con3::ConnectThree::Test() noexcept
   assert( c.CanDoMove(0,1));
   assert( c.CanDoMove(1,0));
   assert( c.CanDoMove(1,1));
-  assert(c.SuggestMove(is_player_human));
+  assert(c.SuggestMove(is_player_human).GetX() >= 0);//It just shouldn't throw
   assert(c.GetWinner() == Winner::no_winner); //No winner yet
   c.DoMove(0,1);
   assert(c.GetActivePlayer() == Player::player3);
@@ -724,7 +773,7 @@ void ribi::con3::ConnectThree::Test() noexcept
   assert(!c.CanDoMove(0,1));
   assert( c.CanDoMove(1,0));
   assert( c.CanDoMove(1,1));
-  assert(c.SuggestMove(is_player_human));
+  assert(c.SuggestMove(is_player_human).GetX() >= 0);//It just shouldn't throw
   assert(c.GetWinner() == Winner::no_winner); //No winner yet
   c.DoMove(1,0);
   assert(c.GetActivePlayer() == Player::player1);
@@ -732,7 +781,7 @@ void ribi::con3::ConnectThree::Test() noexcept
   assert(!c.CanDoMove(0,1));
   assert(!c.CanDoMove(1,0));
   assert( c.CanDoMove(1,1));
-  assert(c.SuggestMove(is_player_human));
+  assert(c.SuggestMove(is_player_human).GetX() >= 0);//It just shouldn't throw
   assert(c.GetWinner() == Winner::no_winner); //No winner yet
   c.DoMove(1,1);
   assert(c.GetActivePlayer() == Player::player2);
@@ -740,12 +789,17 @@ void ribi::con3::ConnectThree::Test() noexcept
   assert(!c.CanDoMove(0,1));
   assert(!c.CanDoMove(1,0));
   assert(!c.CanDoMove(1,1));
-  assert(!c.SuggestMove(is_player_human));
+  try {
+    c.SuggestMove(is_player_human);
+  }
+  catch (std::logic_error& ) {
+    //OK
+  }
   assert(c.GetWinner() == Winner::draw);
 }
 #endif
 
-std::ostream& ribi::con3::operator<<(std::ostream& os, const ribi::con3::ConnectThree& c)
+std::ostream& ribi::con3::operator<<(std::ostream& os, const ribi::con3::Game& c)
 {
   const int n_cols = c.GetCols();
   const int n_rows = c.GetRows();

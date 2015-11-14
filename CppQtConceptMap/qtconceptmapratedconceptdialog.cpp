@@ -40,7 +40,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic pop
 
 ribi::cmap::QtConceptMapRatedConceptDialog::QtConceptMapRatedConceptDialog(
-  const boost::shared_ptr<const ribi::cmap::ConceptMap> conceptmap,
+  const ConceptMap conceptmap,
   const Node& node,
   QWidget *parent)
   : QDialog(parent),
@@ -81,7 +81,7 @@ ribi::cmap::QtConceptMapRatedConceptDialog::QtConceptMapRatedConceptDialog(
   }
 
 
-  for (const Edge& edge: conceptmap->GetEdges())
+  for (const Edge& edge: conceptmap.GetEdges())
   {
     if (*edge.GetFrom() == node || *edge.GetTo() == node)
     {
