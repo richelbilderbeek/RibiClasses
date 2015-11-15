@@ -43,13 +43,13 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmapexamplesfactory.h"
 #include "conceptmapfactory.h"
 #include "conceptmaphelper.h"
-#include "conceptmapcommandfactory.h"
-#include "conceptmapcommandcreatenewnode.h"
-#include "conceptmapcommandcreatenewedge.h"
-#include "conceptmapcommanddeleteedge.h"
-#include "conceptmapcommanddeletenode.h"
-#include "conceptmapcommandunselectrandom.h"
-#include "conceptmapcommandaddselectedrandom.h"
+//#include "conceptmapcommandfactory.h"
+//#include "conceptmapcommandcreatenewnode.h"
+//#include "conceptmapcommandcreatenewedge.h"
+//#include "conceptmapcommanddeleteedge.h"
+//#include "conceptmapcommanddeletenode.h"
+//#include "conceptmapcommandunselectrandom.h"
+//#include "conceptmapcommandaddselectedrandom.h"
 #include "conceptmaphelper.h"
 #include "conceptmapnode.h"
 #include "conceptmapnodefactory.h"
@@ -74,28 +74,62 @@ void ribi::cmap::ConceptMap::Test() noexcept
     ExamplesFactory();
     NodeFactory();
     EdgeFactory();
+    ConceptMapFactory();
     TestHelperFunctions();
   }
   const TestTimer test_timer(__func__,__FILE__,2.0);
-  const bool verbose{false};
+  const bool verbose{true};
   typedef std::vector<Node> Nodes;
 
+  if (verbose) { TRACE("Create from XML"); } //TODO: Remove, this is a duplicate of CMFactory
+  {
+    const auto conceptmap = ConceptMapFactory().FromXml("<concept_map><nodes><node><concept><name>X</name><examples></examples><concept_is_complex>1</concept_is_complex><complexity>-1</complexity><concreteness>-1</concreteness><specificity>-1</specificity></concept><x>0</x><y>0</y><is_center_node>1</is_center_node></node><node><concept><name>C</name><examples></examples><concept_is_complex>1</concept_is_complex><complexity>-1</complexity><concreteness>-1</concreteness><specificity>-1</specificity></concept><x>0</x><y>0</y><is_center_node>0</is_center_node></node><node><concept><name>B</name><examples></examples><concept_is_complex>1</concept_is_complex><complexity>-1</complexity><concreteness>-1</concreteness><specificity>-1</specificity></concept><x>0</x><y>0</y><is_center_node>0</is_center_node></node><node><concept><name>A</name><examples></examples><concept_is_complex>1</concept_is_complex><complexity>-1</complexity><concreteness>-1</concreteness><specificity>-1</specificity></concept><x>0</x><y>0</y><is_center_node>0</is_center_node></node></nodes><edges></edges></concept_map>");
+    assert(conceptmap.IsValid());
+  }
+  if (verbose) { TRACE("Copy contructor of empty concept map"); }
+  {
+    const ConceptMap m{ConceptMapFactory().Create()};
+    assert(m.IsValid());
+    const ConceptMap n(m);
+    assert(m == n);
+  }
+  if (verbose) { TRACE("Copy contructor of simple homomorphous concept maps"); }
+  for (const auto m: ConceptMapFactory().GetSimpleHomomorphousTestConceptMaps())
+  {
+    assert(m.IsValid());
+    const ConceptMap n(m);
+    assert(m == n);
+  }
+  if (verbose) { TRACE("Copy contructor of complex homomorphous concept map [1]"); }
+  {
+    const auto m = ConceptMapFactory().GetComplexHomomorphousTestConceptMap1();
+    assert(m.IsValid());
+    const ConceptMap n(m);
+    assert(m == n);
+  }
+  if (verbose) { TRACE("Copy contructor of complex homomorphous concept maps"); }
+  for (const auto m: ConceptMapFactory().GetComplexHomomorphousTestConceptMaps())
+  {
+    assert(m.IsValid());
+    const ConceptMap n(m);
+    assert(m == n);
+  }
+  if (verbose) { TRACE("Copy contructor of heteromorphous concept maps"); }
+  for (const auto m: ConceptMapFactory().GetHeteromorphousTestConceptMaps())
+  {
+    assert(m.IsValid());
+    const ConceptMap n(m);
+    assert(m == n);
+  }
+
+
+  assert(!"Green");
   if (verbose) { TRACE("Create tests"); }
   {
     //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,0.1);
     const std::vector<ConceptMap> v{ConceptMapFactory().GetAllTests()};
     assert(!v.empty());
   }
-  #ifdef FIX_ISSUE_9
-  if (verbose) { TRACE("DeepCopy must result in two identical concept maps"); }
-  {
-    //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,0.1);
-    const ConceptMap m{ConceptMapFactory().GetHeteromorphousTestConceptMap(19)};
-    assert(m->IsValid());
-    const ConceptMap c{ConceptMapFactory().DeepCopy(m)};
-    assert(*c == *m);
-  }
-  #endif //FIX_ISSUE_9
 
   if (verbose) { TRACE("conceptmap.XML std::string has to be between <concept_map> tags"); }
   {
@@ -694,74 +728,6 @@ void ribi::cmap::ConceptMap::Test() noexcept
       assert(conceptmap.FindCenterNode() && "Assume a CenterNode at the center of ConceptMap");
     }
   }
-
-  //Commands
-  if (verbose) { TRACE("A new command must be put in QUndoStack"); }
-  {
-    ConceptMap conceptmap;
-    CommandCreateNewNode * const command {new CommandCreateNewNode(conceptmap)};
-    assert(conceptmap.GetUndo().count() == 0);
-
-    conceptmap.DoCommand(command);
-
-    assert(conceptmap.GetUndo().count() == 1);
-  }
-  if (verbose) { TRACE("Start a concept map, create a node using a command"); }
-  {
-    ConceptMap conceptmap;
-    assert(conceptmap.GetNodes().empty());
-    const auto command = new CommandCreateNewNode(conceptmap);
-    conceptmap.DoCommand(command);
-    assert(conceptmap.GetNodes().size() == 1);
-    command->undo();
-    assert(conceptmap.GetNodes().size() == 0);
-  }
-  if (verbose) { TRACE("Start a concept map, create two nodes, unselect both, then select both using AddSelected"); }
-  {
-    ConceptMap conceptmap;
-    const int n_nodes = 2;
-    //Create nodes
-    for (int i=0; i!=n_nodes; ++i)
-    {
-      const auto command = new CommandCreateNewNode(conceptmap);
-      conceptmap.DoCommand(command);
-    }
-    assert(static_cast<int>(conceptmap.GetNodes().size()) == n_nodes
-      && "Concept map must have two nodes");
-    assert(static_cast<int>(conceptmap.GetSelectedNodes().size()) == 2
-      && "Freshly created nodes are selected");
-
-    //Unselect both
-    for (int i=0; i!=n_nodes; ++i)
-    {
-      assert(static_cast<int>(conceptmap.GetSelectedNodes().size()) == 2 - i);
-      const auto command = new CommandUnselectRandom(conceptmap);
-      conceptmap.DoCommand(command);
-      assert(static_cast<int>(conceptmap.GetSelectedNodes().size()) == 1 - i);
-    }
-    assert(static_cast<int>(conceptmap.GetSelectedNodes().size()) == 0);
-
-    //Select both again
-    assert(static_cast<int>(conceptmap.GetSelectedNodes().size()) == 0);
-    for (int i=0; i!=n_nodes; ++i)
-    {
-      assert(static_cast<int>(conceptmap.GetSelectedNodes().size()) == i);
-      const auto command = new CommandAddSelectedRandom(conceptmap);
-      conceptmap.DoCommand(command);
-      assert(static_cast<int>(conceptmap.GetSelectedNodes().size()) == i + 1);
-    }
-    assert(static_cast<int>(conceptmap.GetSelectedNodes().size()) == 2);
-
-    //Undo selection
-    for (int i=0; i!=n_nodes; ++i)
-    {
-      assert(static_cast<int>(conceptmap.GetSelectedNodes().size()) == 2 - i);
-      const auto command = new CommandUnselectRandom(conceptmap);
-      conceptmap.DoCommand(command);
-      assert(static_cast<int>(conceptmap.GetSelectedNodes().size()) == 1 - i);
-    }
-    assert(static_cast<int>(conceptmap.GetSelectedNodes().size()) == 0);
-  }
   #ifdef FIX_ISSUE_10
   if (verbose) { TRACE("Delete Node-that-is-head-of-Edge, then Undo"); }
   {
@@ -810,64 +776,7 @@ void ribi::cmap::ConceptMap::Test() noexcept
     assert(conceptmap.GetEdges().size() == 1);
     assert(conceptmap.GetSelectedNodes().size() == 1);
     assert(conceptmap.GetSelectedEdges().size() == 0);
-
   }
   #endif // FIX_ISSUE_10
-
-  //Do all do and undo of a single command
-  {
-    const int n_commands {CommandFactory().GetSize()};
-    for (int i=0; i!=n_commands; ++i)
-    {
-      auto conceptmap = ConceptMapFactory().GetHeteromorphousTestConceptMap(17);
-
-      try
-      {
-
-        const auto cmd = CommandFactory().CreateTestCommand(i,conceptmap);
-        if (cmd)
-        {
-          TRACE(cmd->text().toStdString());
-
-          conceptmap.DoCommand(cmd);
-          conceptmap.Undo();
-        }
-      }
-      catch (std::logic_error& e)
-      {
-        if (verbose) TRACE(e.what());
-        //No problem: cannot do command
-      }
-    }
-  }
-  //Do all combinations of two commands
-  const int n_depth = 1;
-  if (n_depth >= 2)
-  {
-    const int n_commands { static_cast<int>(CommandFactory().GetSize()) };
-    for (int i=0; i!=n_commands; ++i)
-    {
-      for (int j=0; j!=n_commands; ++j)
-      {
-        for (ConceptMap conceptmap: ConceptMapFactory().GetAllTests())
-        {
-          for (const auto cmd:
-            {
-              CommandFactory().CreateTestCommand(i,conceptmap),
-              CommandFactory().CreateTestCommand(j,conceptmap)
-            }
-          )
-          {
-            if (cmd)
-            {
-              conceptmap.DoCommand(cmd);
-              conceptmap.Undo();
-              conceptmap.DoCommand(cmd);
-            }
-          }
-        }
-      }
-    }
-  }
 }
 #endif

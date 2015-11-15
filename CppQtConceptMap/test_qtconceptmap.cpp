@@ -282,6 +282,130 @@ void ribi::cmap::QtConceptMap::Test() noexcept
 
     assert(qtconceptmap.scene()->selectedItems().size() == 1);
   }
+  #ifndef CONCEPTMAP_USE_QUNDOSTACK
+  //Commands
+  if (verbose) { TRACE("A new command must be put in QUndoStack"); }
+  {
+    ConceptMap conceptmap;
+    CommandCreateNewNode * const command {new CommandCreateNewNode(conceptmap)};
+    assert(conceptmap.GetUndo().count() == 0);
+
+    conceptmap.DoCommand(command);
+
+    assert(conceptmap.GetUndo().count() == 1);
+  }
+  if (verbose) { TRACE("Start a concept map, create a node using a command"); }
+  {
+    ConceptMap conceptmap;
+    assert(conceptmap.GetNodes().empty());
+    const auto command = new CommandCreateNewNode(conceptmap);
+    conceptmap.DoCommand(command);
+    assert(conceptmap.GetNodes().size() == 1);
+    command->undo();
+    assert(conceptmap.GetNodes().size() == 0);
+  }
+  if (verbose) { TRACE("Start a concept map, create two nodes, unselect both, then select both using AddSelected"); }
+  {
+    ConceptMap conceptmap;
+    const int n_nodes = 2;
+    //Create nodes
+    for (int i=0; i!=n_nodes; ++i)
+    {
+      const auto command = new CommandCreateNewNode(conceptmap);
+      conceptmap.DoCommand(command);
+    }
+    assert(static_cast<int>(conceptmap.GetNodes().size()) == n_nodes
+      && "Concept map must have two nodes");
+    assert(static_cast<int>(conceptmap.GetSelectedNodes().size()) == 2
+      && "Freshly created nodes are selected");
+
+    //Unselect both
+    for (int i=0; i!=n_nodes; ++i)
+    {
+      assert(static_cast<int>(conceptmap.GetSelectedNodes().size()) == 2 - i);
+      const auto command = new CommandUnselectRandom(conceptmap);
+      conceptmap.DoCommand(command);
+      assert(static_cast<int>(conceptmap.GetSelectedNodes().size()) == 1 - i);
+    }
+    assert(static_cast<int>(conceptmap.GetSelectedNodes().size()) == 0);
+
+    //Select both again
+    assert(static_cast<int>(conceptmap.GetSelectedNodes().size()) == 0);
+    for (int i=0; i!=n_nodes; ++i)
+    {
+      assert(static_cast<int>(conceptmap.GetSelectedNodes().size()) == i);
+      const auto command = new CommandAddSelectedRandom(conceptmap);
+      conceptmap.DoCommand(command);
+      assert(static_cast<int>(conceptmap.GetSelectedNodes().size()) == i + 1);
+    }
+    assert(static_cast<int>(conceptmap.GetSelectedNodes().size()) == 2);
+
+    //Undo selection
+    for (int i=0; i!=n_nodes; ++i)
+    {
+      assert(static_cast<int>(conceptmap.GetSelectedNodes().size()) == 2 - i);
+      const auto command = new CommandUnselectRandom(conceptmap);
+      conceptmap.DoCommand(command);
+      assert(static_cast<int>(conceptmap.GetSelectedNodes().size()) == 1 - i);
+    }
+    assert(static_cast<int>(conceptmap.GetSelectedNodes().size()) == 0);
+  }
+  //Do all do and undo of a single command
+  {
+    const int n_commands {CommandFactory().GetSize()};
+    for (int i=0; i!=n_commands; ++i)
+    {
+      auto conceptmap = ConceptMapFactory().GetHeteromorphousTestConceptMap(17);
+
+      try
+      {
+
+        const auto cmd = CommandFactory().CreateTestCommand(i,conceptmap);
+        if (cmd)
+        {
+          TRACE(cmd->text().toStdString());
+
+          conceptmap.DoCommand(cmd);
+          conceptmap.Undo();
+        }
+      }
+      catch (std::logic_error& e)
+      {
+        if (verbose) TRACE(e.what());
+        //No problem: cannot do command
+      }
+    }
+  }
+  //Do all combinations of two commands
+  const int n_depth = 1;
+  if (n_depth >= 2)
+  {
+    const int n_commands { static_cast<int>(CommandFactory().GetSize()) };
+    for (int i=0; i!=n_commands; ++i)
+    {
+      for (int j=0; j!=n_commands; ++j)
+      {
+        for (ConceptMap conceptmap: ConceptMapFactory().GetAllTests())
+        {
+          for (const auto cmd:
+            {
+              CommandFactory().CreateTestCommand(i,conceptmap),
+              CommandFactory().CreateTestCommand(j,conceptmap)
+            }
+          )
+          {
+            if (cmd)
+            {
+              conceptmap.DoCommand(cmd);
+              conceptmap.Undo();
+              conceptmap.DoCommand(cmd);
+            }
+          }
+        }
+      }
+    }
+  }
+  #endif // CONCEPTMAP_USE_QUNDOSTACK
   #ifdef FIX_ISSUE_10
   if (verbose) { TRACE("DeleteNode: create two Nodes, delete one Node from QtConceptMap"); }
   {

@@ -52,15 +52,6 @@ struct ConceptMapFactory
     const Edges& edges = {}
   ) const noexcept;
 
-  #ifndef NDEBUG
-  /*
-  ///DeepCopy is only used for debugging
-  ConceptMap DeepCopy(
-    const ConceptMap map
-  ) const noexcept;
-  */
-  #endif
-
   ///Obtain the main constituents of a
   ///ConceptMap from an XML std::string
   std::tuple<
@@ -89,9 +80,11 @@ struct ConceptMapFactory
   ///Get the documented simple homomorphous test concept maps
    ConceptMaps GetSimpleHomomorphousTestConceptMaps() const noexcept;
 
+
+  ConceptMap GetComplexHomomorphousTestConceptMap1() const noexcept; //Move to private after bug is fixed
+
   private:
   ConceptMap GetComplexHomomorphousTestConceptMap0() const noexcept;
-  ConceptMap GetComplexHomomorphousTestConceptMap1() const noexcept;
   ConceptMap GetComplexHomomorphousTestConceptMap2() const noexcept;
   ConceptMap GetComplexHomomorphousTestConceptMap3() const noexcept;
   ConceptMap GetComplexHomomorphousTestConceptMap4() const noexcept;

@@ -44,8 +44,6 @@ struct NodeFactory;
 /// - CenterNode
 struct Node
 {
-  ~Node() noexcept {}
-
   ///Get the Concept
   const Concept& GetConcept() const noexcept { return m_concept; }
         Concept& GetConcept()       noexcept { return m_concept; }
@@ -75,9 +73,8 @@ struct Node
   ///Set the y coordinat
   void SetY(const double y) noexcept;
 
-  virtual std::string ToXml() const noexcept;
+  std::string ToXml() const noexcept;
   std::string ToStr() const noexcept;
-
 
   protected:
   friend class NodeFactory;

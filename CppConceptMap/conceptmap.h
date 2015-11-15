@@ -31,7 +31,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <boost/shared_ptr.hpp>
 #include <boost/signals2.hpp>
 #include <QPointF>
-#include <QUndoStack>
+//#include <QUndoStack>
 #include "conceptmapfwd.h"
 #include "conceptmapedge.h"
 #include "conceptmapnode.h"
@@ -50,7 +50,9 @@ class ConceptMap
   public:
 
   ConceptMap(const ConceptMap&);
+  ConceptMap(ConceptMap&&);
   ConceptMap& operator=(const ConceptMap&);
+  ConceptMap& operator=(ConceptMap&&);
   ~ConceptMap() noexcept {}
 
   using ConceptMaps = std::vector<ConceptMap>;
@@ -79,8 +81,10 @@ class ConceptMap
     const Edges& edges
   ) noexcept;
 
+  #ifdef CONCEPTMAP_USE_QUNDOSTACK
   bool CanRedo() const noexcept { return m_undo.canRedo(); }
   bool CanUndo() const noexcept { return m_undo.canUndo(); }
+  #endif //CONCEPTMAP_USE_QUNDOSTACK
 
   ///Prepend the question as a first node, before adding the supplied nodes
   static Nodes CreateNodes(
@@ -98,8 +102,10 @@ class ConceptMap
   ///Delete a node and all the edges connected to it
   void DeleteNode(const Node& node) noexcept;
 
+  #ifdef CONCEPTMAP_USE_QUNDOSTACK
   ///ConceptMap takes over ownership of the Command
   void DoCommand(Command * const command) noexcept;
+  #endif // CONCEPTMAP_USE_QUNDOSTACK
 
   ///Check if the ConceptMap is empty, that is: it has no nodes and (thus) no edges
   bool Empty() const noexcept;
@@ -135,8 +141,8 @@ class ConceptMap
   const Nodes& GetSelectedNodes() const noexcept { return m_selected.second; }
         Nodes& GetSelectedNodes()       noexcept { return m_selected.second; }
 
-  const QUndoStack& GetUndo() const noexcept { return m_undo; }
-        QUndoStack& GetUndo()       noexcept { return m_undo; }
+  //const QUndoStack& GetUndo() const noexcept { return m_undo; }
+  //      QUndoStack& GetUndo()       noexcept { return m_undo; }
 
   bool GetVerbosity() const noexcept { return m_verbose; }
 
@@ -191,9 +197,11 @@ private:
   ///- the CenterNode
   EdgesAndNodes m_selected;
 
+  #ifdef CONCEPTMAP_USE_QUNDOSTACK
   ///The undo stack
   ///The Commands aren't const, because Command::Undo changes their state
-  QUndoStack m_undo;
+  //QUndoStack m_undo;
+  #endif // CONCEPTMAP_USE_QUNDOSTACK
 
   bool m_verbose;
 
@@ -222,7 +230,9 @@ private:
   std::vector<Node> GetRandomNodes(Nodes nodes_to_exclude = {}) noexcept;
   Node GetRandomNode(const Nodes& nodes_to_exclude = {});
 
+  #ifdef CONCEPTMAP_USE_QUNDOSTACK
   void OnUndo() noexcept;
+  #endif // CONCEPTMAP_USE_QUNDOSTACK
 
 
   #ifndef NDEBUG

@@ -28,7 +28,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <boost/lexical_cast.hpp>
 
 #include "conceptmapcenternodefactory.h"
-
+#include "container.h"
 #include "conceptmapconcept.h"
 #include "conceptmapconceptfactory.h"
 #include "conceptmap.h"
@@ -56,6 +56,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::Create(
   const std::vector<Edge>& edges
 ) const noexcept
 {
+  assert(ConceptMap::CanConstruct(nodes,edges));
   ConceptMap p(nodes,edges);
   assert(p.IsValid());
   assert(!p.GetVerbosity());
@@ -227,6 +228,7 @@ ribi::cmap::ConceptMapFactory::FromXmlAsTuple(const std::string &s) const
       edges.push_back(edge); //TODO: emplace_back here
     }
   }
+  assert(ConceptMap::CanConstruct(nodes,edges));
 
   return std::make_tuple(edges,nodes);
   //ConceptMap conceptmap(nodes,edges);
@@ -317,7 +319,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
     };
 
   ConceptMap conceptmap{
-    ConceptMapFactory::Create(nodes,edges)
+    ConceptMapFactory().Create(nodes,edges)
   };
   assert(conceptmap.IsValid());
   return conceptmap;
@@ -340,7 +342,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
     };
 
   ConceptMap conceptmap(
-    ConceptMapFactory::Create(nodes,edges)
+    ConceptMapFactory().Create(nodes,edges)
   );
   return conceptmap;
 }
@@ -362,7 +364,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
 
     };
   const ConceptMap conceptmap(
-    ConceptMapFactory::Create(nodes,edges));
+    ConceptMapFactory().Create(nodes,edges));
   assert(conceptmap.IsValid());
   return conceptmap;
 }
@@ -389,7 +391,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
     };
 
   const ConceptMap conceptmap
-    = ConceptMapFactory::Create(nodes,edges);
+    = ConceptMapFactory().Create(nodes,edges);
 
 
   assert(conceptmap.IsValid());
@@ -418,7 +420,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
     };
 
   const auto conceptmap
-    = ConceptMapFactory::Create(nodes,edges);
+    = ConceptMapFactory().Create(nodes,edges);
 
 
   return conceptmap;
@@ -445,7 +447,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
     };
 
   const ConceptMap conceptmap
-    = ConceptMapFactory::Create(nodes,edges);
+    = ConceptMapFactory().Create(nodes,edges);
 
 
   assert(conceptmap.IsValid());
@@ -472,7 +474,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
     };
 
   const ConceptMap conceptmap
-    = ConceptMapFactory::Create(nodes,edges);
+    = ConceptMapFactory().Create(nodes,edges);
 
 
   assert(conceptmap.IsValid());
@@ -498,7 +500,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
     };
 
   const ConceptMap conceptmap
-    = ConceptMapFactory::Create(nodes,edges);
+    = ConceptMapFactory().Create(nodes,edges);
 
 
   assert(conceptmap.IsValid());
@@ -529,7 +531,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
     };
 
   const ConceptMap conceptmap
-    = ConceptMapFactory::Create(nodes,edges);
+    = ConceptMapFactory().Create(nodes,edges);
 
 
   assert(conceptmap.IsValid());
@@ -559,7 +561,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
     };
 
   const ConceptMap conceptmap
-    = ConceptMapFactory::Create(nodes,edges);
+    = ConceptMapFactory().Create(nodes,edges);
 
 
   assert(conceptmap.IsValid());
@@ -591,7 +593,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
     };
 
   const ConceptMap conceptmap
-    = ConceptMapFactory::Create(nodes,edges);
+    = ConceptMapFactory().Create(nodes,edges);
 
 
   assert(conceptmap.IsValid());
@@ -627,7 +629,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
     };
 
   const ConceptMap conceptmap
-    = ConceptMapFactory::Create(nodes,edges);
+    = ConceptMapFactory().Create(nodes,edges);
 
 
   assert(conceptmap.IsValid());
@@ -663,7 +665,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
     };
 
   const ConceptMap conceptmap(
-    ConceptMapFactory::Create(nodes,edges));
+    ConceptMapFactory().Create(nodes,edges));
 
 
   assert(conceptmap.IsValid());
@@ -699,7 +701,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
     };
 
   const ConceptMap conceptmap(
-    ConceptMapFactory::Create(nodes,edges));
+    ConceptMapFactory().Create(nodes,edges));
 
 
   assert(conceptmap.IsValid());
@@ -734,7 +736,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
     };
 
   const ConceptMap conceptmap(
-    ConceptMapFactory::Create(nodes,edges));
+    ConceptMapFactory().Create(nodes,edges));
 
 
   assert(conceptmap.IsValid());
@@ -783,7 +785,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
     };
 
   const ConceptMap conceptmap(
-    ConceptMapFactory::Create(nodes,edges));
+    ConceptMapFactory().Create(nodes,edges));
 
 
   assert(conceptmap.IsValid());
@@ -833,7 +835,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
     };
 
   const ConceptMap conceptmap(
-    ConceptMapFactory::Create(nodes,edges));
+    ConceptMapFactory().Create(nodes,edges));
 
   assert(conceptmap.IsValid());
   return conceptmap;
@@ -906,7 +908,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
     };
 
   const ConceptMap conceptmap(
-    ConceptMapFactory::Create(nodes,edges));
+    ConceptMapFactory().Create(nodes,edges));
 
   assert(conceptmap.IsValid());
   return conceptmap;
@@ -1021,7 +1023,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
     };
 
   const ConceptMap conceptmap(
-    ConceptMapFactory::Create(nodes,edges));
+    ConceptMapFactory().Create(nodes,edges));
 
   assert(conceptmap.IsValid());
   return conceptmap;
@@ -1082,7 +1084,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
     };
 
   const ConceptMap conceptmap(
-    ConceptMapFactory::Create(nodes,edges)
+    ConceptMapFactory().Create(nodes,edges)
   );
 
   assert(conceptmap.IsValid());
@@ -1167,8 +1169,8 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTest
       EdgeFactory().Create(node_g,nodes.at(3),false,nodes.at(1),true)
     };
 
-  const ConceptMap conceptmap(
-    ConceptMapFactory::Create(nodes,edges)
+  ConceptMap conceptmap(
+    ConceptMapFactory().Create(nodes,edges)
   );
 
   assert(conceptmap.IsValid());
@@ -1202,8 +1204,9 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTest
       EdgeFactory().Create(node_g,nodes.at(2),false,nodes.at(1),true)
     };
 
-  const ConceptMap conceptmap(
-    ConceptMapFactory::Create(nodes,edges));
+  ConceptMap conceptmap(
+    ConceptMapFactory().Create(nodes,edges)
+  );
 
   assert(conceptmap.IsValid());
   return conceptmap;
@@ -1237,7 +1240,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTest
     };
 
   const ConceptMap conceptmap(
-    ConceptMapFactory::Create(nodes,edges));
+    ConceptMapFactory().Create(nodes,edges));
 
   assert(conceptmap.IsValid());
   return conceptmap;
@@ -1271,7 +1274,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTest
     };
 
   const ConceptMap conceptmap(
-    ConceptMapFactory::Create(nodes,edges));
+    ConceptMapFactory().Create(nodes,edges));
 
   assert(conceptmap.IsValid());
   return conceptmap;
@@ -1305,7 +1308,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTest
     };
 
   const ConceptMap conceptmap(
-    ConceptMapFactory::Create(nodes,edges));
+    ConceptMapFactory().Create(nodes,edges));
 
   assert(conceptmap.IsValid());
   return conceptmap;
@@ -1339,7 +1342,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTest
     };
 
   const ConceptMap conceptmap(
-    ConceptMapFactory::Create(nodes,edges));
+    ConceptMapFactory().Create(nodes,edges));
 
   assert(conceptmap.IsValid());
   return conceptmap;
@@ -1373,7 +1376,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTest
     };
 
   const ConceptMap conceptmap(
-    ConceptMapFactory::Create(nodes,edges));
+    ConceptMapFactory().Create(nodes,edges));
 
   assert(conceptmap.IsValid());
   return conceptmap;
@@ -1407,7 +1410,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTest
     };
 
   const ConceptMap conceptmap(
-    ConceptMapFactory::Create(nodes,edges));
+    ConceptMapFactory().Create(nodes,edges));
 
   assert(conceptmap.IsValid());
   return conceptmap;
@@ -1449,7 +1452,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTest
     };
 
   const ConceptMap conceptmap(
-    ConceptMapFactory::Create(nodes,edges));
+    ConceptMapFactory().Create(nodes,edges));
 
   assert(conceptmap.IsValid());
   return conceptmap;
@@ -1491,7 +1494,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTest
     };
 
   const ConceptMap conceptmap(
-    ConceptMapFactory::Create(nodes,edges));
+    ConceptMapFactory().Create(nodes,edges));
 
   assert(conceptmap.IsValid());
   return conceptmap;
@@ -1524,7 +1527,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTest
     };
 
   const ConceptMap conceptmap(
-    ConceptMapFactory::Create(nodes,edges));
+    ConceptMapFactory().Create(nodes,edges));
 
   assert(conceptmap.IsValid());
   return conceptmap;
@@ -1559,7 +1562,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTest
     };
 
   const ConceptMap conceptmap(
-    ConceptMapFactory::Create(nodes,edges));
+    ConceptMapFactory().Create(nodes,edges));
 
   assert(conceptmap.IsValid());
   return conceptmap;
@@ -1592,7 +1595,7 @@ std::vector<ribi::cmap::ConceptMap > ribi::cmap::ConceptMapFactory::GetSimpleHom
       };
 
     const ConceptMap conceptmap(
-      ConceptMapFactory::Create(nodes,edges));
+      ConceptMapFactory().Create(nodes,edges));
 
     assert(conceptmap.IsValid());
     v.push_back(conceptmap);
@@ -1614,7 +1617,7 @@ std::vector<ribi::cmap::ConceptMap > ribi::cmap::ConceptMapFactory::GetSimpleHom
 
       };
     const ConceptMap conceptmap(
-      ConceptMapFactory::Create(nodes,edges));
+      ConceptMapFactory().Create(nodes,edges));
 
     v.push_back(conceptmap);
   }
@@ -1636,7 +1639,7 @@ std::vector<ribi::cmap::ConceptMap > ribi::cmap::ConceptMapFactory::GetSimpleHom
       };
 
     const ConceptMap conceptmap(
-      ConceptMapFactory::Create(nodes,edges));
+      ConceptMapFactory().Create(nodes,edges));
 
     assert(conceptmap.IsValid());
     v.push_back(conceptmap);
@@ -1658,7 +1661,7 @@ std::vector<ribi::cmap::ConceptMap > ribi::cmap::ConceptMapFactory::GetSimpleHom
 
       };
     const ConceptMap conceptmap(
-      ConceptMapFactory::Create(nodes,edges));
+      ConceptMapFactory().Create(nodes,edges));
 
     v.push_back(conceptmap);
   }
@@ -1681,7 +1684,7 @@ std::vector<ribi::cmap::ConceptMap > ribi::cmap::ConceptMapFactory::GetSimpleHom
       };
 
     const ConceptMap conceptmap(
-      ConceptMapFactory::Create(nodes,edges));
+      ConceptMapFactory().Create(nodes,edges));
 
     assert(conceptmap.IsValid());
     v.push_back(conceptmap);
@@ -1705,7 +1708,7 @@ std::vector<ribi::cmap::ConceptMap > ribi::cmap::ConceptMapFactory::GetSimpleHom
       };
 
     const ConceptMap conceptmap(
-      ConceptMapFactory::Create(nodes,edges));
+      ConceptMapFactory().Create(nodes,edges));
 
     assert(conceptmap.IsValid());
     v.push_back(conceptmap);
@@ -1721,13 +1724,16 @@ void ribi::cmap::ConceptMapFactory::Test() noexcept
     if (is_tested) return;
     is_tested = true;
   }
-  //const bool verbose{false};
+  {
+    container();
+    ConceptMapFactory().GetEmptyConceptMap(); //Calls ConceptMap
+  }
+  const bool verbose{true};
   CenterNodeFactory();
   EdgeFactory();
-  ConceptMapFactory().GetHeteromorphousTestConceptMap(0);
   const TestTimer test_timer(__func__,__FILE__,1.0);
+  const ConceptMapFactory f;
   {
-    ConceptMapFactory f;
     if (f.GetNumberOfAllTests() != static_cast<int>(f.GetAllTests().size()))
     {
       TRACE(f.GetNumberOfAllTests());
@@ -1735,30 +1741,43 @@ void ribi::cmap::ConceptMapFactory::Test() noexcept
     }
     assert(f.GetNumberOfAllTests() == static_cast<int>(f.GetAllTests().size()));
   }
-  #ifdef FIX_ISSUE_10
+  if (verbose) { TRACE("Create from XML"); }
+  {
+    const auto conceptmap = f.FromXml("<concept_map><nodes><node><concept><name>X</name><examples></examples><concept_is_complex>1</concept_is_complex><complexity>-1</complexity><concreteness>-1</concreteness><specificity>-1</specificity></concept><x>0</x><y>0</y><is_center_node>1</is_center_node></node><node><concept><name>C</name><examples></examples><concept_is_complex>1</concept_is_complex><complexity>-1</complexity><concreteness>-1</concreteness><specificity>-1</specificity></concept><x>0</x><y>0</y><is_center_node>0</is_center_node></node><node><concept><name>B</name><examples></examples><concept_is_complex>1</concept_is_complex><complexity>-1</complexity><concreteness>-1</concreteness><specificity>-1</specificity></concept><x>0</x><y>0</y><is_center_node>0</is_center_node></node><node><concept><name>A</name><examples></examples><concept_is_complex>1</concept_is_complex><complexity>-1</complexity><concreteness>-1</concreteness><specificity>-1</specificity></concept><x>0</x><y>0</y><is_center_node>0</is_center_node></node></nodes><edges></edges></concept_map>");
+    assert(conceptmap.IsValid());
+  }
+  if (verbose) { TRACE("All the complex homomorphous concept maps to be valid"); }
+  {
+    const int n = f.GetNumberOfComplexHomomorphousTestConceptMaps();
+    for (int i=0; i!=n; ++i) {
+      const auto conceptmap = f.GetComplexHomomorphousTestConceptMap(i);
+      assert(conceptmap.IsValid());
+    }
+  }
+  assert(!"Green");
+  ConceptMapFactory().GetHeteromorphousTestConceptMap(0);
   if (verbose) { TRACE("All testing concept maps must be valid"); }
   {
     for (const auto& conceptmap: ConceptMapFactory().GetAllTests())
     {
-      if (!conceptmap) continue;
-
       assert(conceptmap.IsValid());
       for (const auto& edge: conceptmap.GetEdges())
       {
-        assert(edge);
-        assert(edge->GetTo());
-        assert(edge->GetFrom());
-        assert(std::count(
-          conceptmap.GetNodes().begin(),
-          conceptmap.GetNodes().end(),
-          *edge->GetTo()) == 1);
-        assert(std::count(
-          conceptmap.GetNodes().begin(),
-          conceptmap.GetNodes().end(),
-          *edge->GetFrom()) == 1);
+        assert(edge.GetTo());
+        assert(edge.GetFrom());
+        const auto nodes = conceptmap.GetNodes();
+        assert(
+          std::count(
+            begin(nodes),end(nodes),*edge.GetTo()
+          ) == 1
+        );
+        assert(
+          std::count(
+            begin(nodes),end(nodes),*edge.GetFrom()
+          ) == 1
+        );
       }
     }
   }
-  #endif // FIX_ISSUE_10
 }
 #endif // NDEBUG

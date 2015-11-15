@@ -211,6 +211,12 @@ void ribi::cmap::Edge::Test() noexcept
     const auto edge2 = EdgeFactory().GetTest(0,from,to);
     assert(edge1 == edge2);
   }
+  if (verbose) { TRACE("Operator=="); }
+  {
+    const auto edge1 = EdgeFactory().GetTest(1,from,to);
+    const auto edge2 = EdgeFactory().GetTest(1,from,to);
+    assert(edge1 == edge2);
+  }
   if (verbose) { TRACE("Operator!="); }
   {
     const auto edge1 = EdgeFactory().GetTest(0,from,to);
@@ -255,8 +261,17 @@ std::string ribi::cmap::Edge::ToXml(
   assert(edge.GetTo());
   const auto from_iter = std::find(begin(nodes),end(nodes),*edge.GetFrom());
   const auto to_iter = std::find(begin(nodes),end(nodes),*edge.GetTo());
-  assert(from_iter != nodes.end());
-  assert(to_iter != nodes.end());
+  #ifndef NDEBUG
+  if (from_iter == end(nodes))
+  {
+    TRACE("ERROR");
+    for (const auto& n: nodes) { TRACE(&n); TRACE(n);}
+    TRACE(edge);
+    TRACE("~ERROR");
+  }
+  #endif
+  assert(from_iter != end(nodes));
+  assert(to_iter != end(nodes));
   const int from_index = std::distance(nodes.begin(),from_iter);
   const int to_index = std::distance(nodes.begin(),to_iter);
   assert(from_index >= 0);
