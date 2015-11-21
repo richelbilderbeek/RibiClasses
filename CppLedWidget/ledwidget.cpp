@@ -42,7 +42,8 @@ ribi::LedWidget::LedWidget(
   const unsigned char red,
   const unsigned char green,
   const unsigned char blue)
-  : m_led(intensity,red,green,blue)
+  : Widget(),
+    m_led(intensity,red,green,blue)
 {
   #ifndef NDEBUG
   Test();
@@ -141,8 +142,6 @@ void ribi::LedWidget::Test() noexcept
     const LedWidget b(0,0,32,32,0.0,255,0,255);
     assert(a != b);
   }
-
-  assert(!"Green");
 }
 #endif
 

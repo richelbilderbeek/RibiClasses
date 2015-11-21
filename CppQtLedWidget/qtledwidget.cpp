@@ -43,17 +43,11 @@ ribi::QtLedWidget::QtLedWidget(
   const unsigned char green,
   const unsigned char blue)
   : QWidget(parent),
-    m_widget(new LedWidget(intensity,red,green,blue))
+    m_widget(intensity,red,green,blue)
 {
-  assert(m_widget);
-  m_widget->m_signal_geometry_changed.connect(
-    boost::bind(
-      &ribi::QtLedWidget::OnResize,
-      this));
-
-  GetWidget()->SetGeometry(0,0,100,100);
-  GetWidget()->GetLed()->SetColor(255,124,0);
-  GetWidget()->GetLed()->SetIntensity(0.99);
+  GetWidget().SetGeometry(0,0,100,100);
+  GetWidget().GetLed().SetColor(255,124,0);
+  GetWidget().GetLed().SetIntensity(0.99);
 }
 
 ///Draw a Led from a Led
@@ -61,14 +55,14 @@ void ribi::QtLedWidget::DrawLed(
     QPainter& painter,
     const int left, const int top,
     const int width, const int height,
-    const Led * const led)
+    const Led& led)
 {
   assert(width  > 0);
   assert(height > 0);
-  const int red   = boost::numeric_cast<int>(led->GetRed());
-  const int green = boost::numeric_cast<int>(led->GetGreen());
-  const int blue  = boost::numeric_cast<int>(led->GetBlue());
-  const double intensity = led->GetIntensity();
+  const int red   = boost::numeric_cast<int>(led.GetRed());
+  const int green = boost::numeric_cast<int>(led.GetGreen());
+  const int blue  = boost::numeric_cast<int>(led.GetBlue());
+  const double intensity = led.GetIntensity();
   //Fraction red/green/blue
   const double fR = static_cast<double>(red  ) / 255.0;
   const double fG = static_cast<double>(green) / 255.0;
@@ -160,21 +154,21 @@ void ribi::QtLedWidget::DrawLed(
 
 void ribi::QtLedWidget::DrawLed(
   QPainter& painter,
-  const boost::shared_ptr<const LedWidget> widget)
+  const LedWidget& widget)
 {
   DrawLed(
     painter,
-    widget->GetLeft(),
-    widget->GetTop(),
-    widget->GetWidth(),
-    widget->GetHeight(),
-    widget->GetLed()
+    widget.GetLeft(),
+    widget.GetTop(),
+    widget.GetWidth(),
+    widget.GetHeight(),
+    widget.GetLed()
   );
 }
 
 std::string ribi::QtLedWidget::GetVersion() noexcept
 {
-  return "1.5";
+  return "2.0";
 }
 
 std::vector<std::string> ribi::QtLedWidget::GetVersionHistory() noexcept
@@ -185,17 +179,18 @@ std::vector<std::string> ribi::QtLedWidget::GetVersionHistory() noexcept
     "2011-09-08: Version 1.2: removed redundant signals",
     "2012-07-07: Version 1.3: added resizeEvent",
     "2012-08-26: Version 1.4: fixed bug in resizeEvent",
-    "2014-03-28: Version 1.5: replaced custom Rect class by Boost.Geometry"
+    "2014-03-28: Version 1.5: replaced custom Rect class by Boost.Geometry",
+    "2015-11-21: Version 2.0: made this a regular data type",
   };
 }
 
 void ribi::QtLedWidget::OnResize()
 {
   this->setGeometry(
-    this->GetWidget()->GetLeft(),
-    this->GetWidget()->GetTop(),
-    this->GetWidget()->GetWidth(),
-    this->GetWidget()->GetHeight()
+    this->GetWidget().GetLeft(),
+    this->GetWidget().GetTop(),
+    this->GetWidget().GetWidth(),
+    this->GetWidget().GetHeight()
   );
   this->repaint();
 }
@@ -208,16 +203,12 @@ void ribi::QtLedWidget::paintEvent(QPaintEvent *)
 
 void ribi::QtLedWidget::resizeEvent(QResizeEvent * )
 {
-  m_widget->SetGeometry(
-    x(), //geometry().left(),
-    y(), //geometry().top(),
-    width(), //geometry().width(),
-    height() //geometry().height()
+  m_widget.SetGeometry(
+    x(),
+    y(),
+    width(),
+    height()
   );
-
-  //  0, //x(), //geometry().left(),
-  //  0, //y(), //geometry().top(),
-  //  width(), //geometry().width(),
-  //  height() //geometry().height()
+  this->repaint();
 }
 

@@ -31,6 +31,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <boost/lambda/lambda.hpp>
 
 #include "led.h"
+#include "testtimer.h"
 #include "trace.h"
 #include "ui_qtleddialog.h"
 #pragma GCC diagnostic pop
@@ -40,6 +41,9 @@ ribi::QtLedDialog::QtLedDialog(QWidget *parent)
     ui(new Ui::QtLedDialog),
     m_led{}
 {
+  #ifndef NDEBUG
+  Test();
+  #endif
   ui->setupUi(this);
 }
 
@@ -50,22 +54,26 @@ ribi::QtLedDialog::~QtLedDialog() noexcept
 
 void ribi::QtLedDialog::on_box_intensity_valueChanged(double arg1)
 {
-  m_led->SetIntensity(arg1);
+  m_led.SetIntensity(arg1);
+  emit on_led_changed(m_led);
 }
 
 void ribi::QtLedDialog::on_box_blue_valueChanged(int arg1)
 {
-  m_led->SetBlue(arg1);
+  m_led.SetBlue(arg1);
+  emit on_led_changed(m_led);
 }
 
 void ribi::QtLedDialog::on_box_green_valueChanged(int arg1)
 {
-  m_led->SetGreen(arg1);
+  m_led.SetGreen(arg1);
+  emit on_led_changed(m_led);
 }
 
 void ribi::QtLedDialog::on_box_red_valueChanged(int arg1)
 {
-  m_led->SetRed(arg1);
+  m_led.SetRed(arg1);
+  emit on_led_changed(m_led);
 }
 
 void ribi::QtLedDialog::OnColorChanged(Led * const led) noexcept
@@ -82,11 +90,10 @@ void ribi::QtLedDialog::OnIntensityChanged(Led * const led) noexcept
   ui->box_intensity->setValue(led->GetIntensity());
 }
 
-void ribi::QtLedDialog::SetLed(const boost::shared_ptr<Led>& led) noexcept
+void ribi::QtLedDialog::SetLed(const Led& led) noexcept
 {
   const bool verbose{false};
 
-  assert(led);
   if (m_led == led)
   {
     return;
@@ -94,13 +101,13 @@ void ribi::QtLedDialog::SetLed(const boost::shared_ptr<Led>& led) noexcept
   if (verbose)
   {
     std::stringstream s;
-    s << "Setting led '" << (*led) << "'\n";
+    s << "Setting led '" << led << "'\n";
   }
 
-  const auto blue_after      = led->GetBlue();
-  const auto green_after     = led->GetGreen();
-  const auto intensity_after = led->GetIntensity();
-  const auto red_after       = led->GetRed();
+  const auto blue_after      = led.GetBlue();
+  const auto green_after     = led.GetGreen();
+  const auto intensity_after = led.GetIntensity();
+  const auto red_after       = led.GetRed();
 
 
   bool blue_changed  = true;
@@ -108,12 +115,11 @@ void ribi::QtLedDialog::SetLed(const boost::shared_ptr<Led>& led) noexcept
   bool intensity_changed = true;
   bool red_changed = true;
 
-  if (m_led)
   {
-    const auto blue_before  = m_led->GetBlue();
-    const auto green_before  = m_led->GetGreen();
-    const auto intensity_before = m_led->GetIntensity();
-    const auto red_before = m_led->GetRed();
+    const auto blue_before  = m_led.GetBlue();
+    const auto green_before  = m_led.GetGreen();
+    const auto intensity_before = m_led.GetIntensity();
+    const auto red_before = m_led.GetRed();
 
     blue_changed  = blue_before != blue_after;
     green_changed  = green_before != green_after;
@@ -133,6 +139,7 @@ void ribi::QtLedDialog::SetLed(const boost::shared_ptr<Led>& led) noexcept
           << '\n'
         ;
         TRACE(s.str());
+        ui->box_blue->setValue(blue_after);
       }
       if (green_changed)
       {
@@ -140,6 +147,7 @@ void ribi::QtLedDialog::SetLed(const boost::shared_ptr<Led>& led) noexcept
         s << "Green will change from " << green_before
           << " to " << green_after << '\n';
         TRACE(s.str());
+        ui->box_green->setValue(green_after);
       }
       if (intensity_changed)
       {
@@ -147,6 +155,7 @@ void ribi::QtLedDialog::SetLed(const boost::shared_ptr<Led>& led) noexcept
         s << "Intensity will change from " << intensity_before
           << " to " << intensity_after << '\n';
         TRACE(s.str());
+        ui->box_intensity->setValue(intensity_after);
       }
       if (red_changed)
       {
@@ -154,6 +163,7 @@ void ribi::QtLedDialog::SetLed(const boost::shared_ptr<Led>& led) noexcept
         s << "Red will change from " << red_before
           << " to " << red_after << '\n';
         TRACE(s.str());
+        ui->box_red->setValue(red_after);
       }
     }
 
@@ -162,13 +172,31 @@ void ribi::QtLedDialog::SetLed(const boost::shared_ptr<Led>& led) noexcept
   //Replace m_led by the new one
   m_led = led;
 
-  assert(m_led->GetBlue() == blue_after );
-  assert(m_led->GetGreen()  == green_after );
-  assert(m_led->GetIntensity() == intensity_after);
-  assert(m_led->GetRed() == red_after);
+  assert(m_led.GetBlue() == blue_after );
+  assert(m_led.GetGreen()  == green_after );
+  assert(m_led.GetIntensity() == intensity_after);
+  assert(m_led.GetRed() == red_after);
 
   assert(led == m_led);
 }
 
 
 
+#ifndef NDEBUG
+void ribi::QtLedDialog::Test() noexcept
+{
+  {
+    static bool is_tested{false};
+    if (is_tested) return;
+    is_tested = true;
+  }
+  {
+    Led();
+  }
+  const TestTimer test_timer(__func__,__FILE__,1.0);
+  QtLedDialog d;
+  const Led led;
+  d.SetLed(led);
+  assert(d.GetLed() == led);
+}
+#endif

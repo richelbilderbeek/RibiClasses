@@ -49,8 +49,6 @@ ribi::MysteryMachineWidget::MysteryMachineWidget(
   #ifndef NDEBUG
   Test();
   #endif
-  m_signal_geometry_changed.connect(boost::bind(
-    &ribi::MysteryMachineWidget::OnResize,this));
   SetGeometry(geometry);
 }
 

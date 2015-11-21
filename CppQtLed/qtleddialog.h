@@ -28,7 +28,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic ignored "-Weffc++"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
-#include <boost/shared_ptr.hpp>
+#include "led.h"
 #include "qthideandshowdialog.h"
 #pragma GCC diagnostic pop
 
@@ -51,9 +51,14 @@ public:
   QtLedDialog& operator=(const QtLedDialog&) = delete;
   ~QtLedDialog() noexcept;
 
-  void SetLed(const boost::shared_ptr<Led>& led) noexcept;
-  boost::shared_ptr<Led> GetLed() const noexcept { return m_led; }
+  void SetLed(const Led& led) noexcept;
 
+  const Led& GetLed() const noexcept { return m_led; }
+        Led& GetLed()       noexcept { return m_led; }
+
+
+signals:
+  void on_led_changed(const Led& led);
 
 private slots:
   void on_box_blue_valueChanged(int arg1);
@@ -65,10 +70,14 @@ private:
   Ui::QtLedDialog *ui;
 
   ///The LED to work on
-  boost::shared_ptr<Led> m_led;
+  Led m_led;
 
   void OnColorChanged(Led * const led) noexcept;
   void OnIntensityChanged(Led * const led) noexcept;
+
+  #ifndef NDEBUG
+  static void Test() noexcept;
+  #endif
 };
 
 } //~namespace ribi

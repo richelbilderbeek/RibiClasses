@@ -42,20 +42,6 @@ ribi::TextCanvas::TextCanvas(
   #endif
 }
 
-ribi::TextCanvas::TextCanvas(const TextCanvas& rhs)
-  : m_canvas{rhs.m_canvas},
-    m_coordinat_system{rhs.m_coordinat_system}
-{
-
-}
-
-ribi::TextCanvas& ribi::TextCanvas::operator=(const TextCanvas& rhs)
-{
-  this->m_canvas = rhs.m_canvas;
-  this->m_coordinat_system = rhs.m_coordinat_system;
-  return *this;
-}
-
 void ribi::TextCanvas::Clear() noexcept
 {
   for (auto& row: m_canvas)
@@ -72,7 +58,6 @@ void ribi::TextCanvas::Clear() noexcept
     assert(std::count(row.begin(),row.end(),' ') == static_cast<int>(row.size()));
   }
   #endif
-  m_signal_changed(this);
 }
 
 char ribi::TextCanvas::GetChar(const int x, const int y) const noexcept
@@ -106,16 +91,16 @@ std::vector<std::string> ribi::TextCanvas::GetVersionHistory() noexcept
 
 void ribi::TextCanvas::PutCanvas(
   const int left, const int top,
-  const boost::shared_ptr<const TextCanvas>& canvas
+  const TextCanvas& canvas
 ) noexcept
 {
-  const int height { canvas->GetHeight() };
-  const int width { canvas->GetWidth() };
+  const int height { canvas.GetHeight() };
+  const int width { canvas.GetWidth() };
   for (int y=0; y!=height; ++y)
   {
     for (int x=0; x!=width; ++x)
     {
-      PutChar(left + x, top + y,canvas->GetChar(x,y));
+      PutChar(left + x, top + y,canvas.GetChar(x,y));
     }
   }
 }
@@ -126,7 +111,6 @@ void ribi::TextCanvas::PutChar(const int x, const int y, const char c) noexcept
   if(m_canvas[y][x] != c)
   {
     m_canvas[y][x] = c;
-    m_signal_changed(this);
   }
 }
 
@@ -150,7 +134,6 @@ void ribi::TextCanvas::SetCoordinatSystem(const CanvasCoordinatSystem coordinatS
   if (this->m_coordinat_system != coordinatSystem)
   {
     this->m_coordinat_system = coordinatSystem;
-    this->m_signal_changed(this);
   }
 }
 
@@ -167,17 +150,17 @@ void ribi::TextCanvas::Test() noexcept
   {
     const int maxx = 90;
     const int maxy = 18;
-    const boost::shared_ptr<TextCanvas> canvas(new TextCanvas(maxx,maxy));
+    TextCanvas canvas(maxx,maxy);
     std::stringstream s_before;
-    s_before << (*canvas);
+    s_before << canvas;
     const std::string str_before {s_before.str() };
     assert(static_cast<int>(str_before.size()) - maxy == maxx * maxy); //-maxy, as newlines are added
     assert(std::count(str_before.begin(),str_before.end(),' ') == maxx * maxy); //Only spaces
 
-    canvas->PutText(1,1,"Hello world");
+    canvas.PutText(1,1,"Hello world");
 
     std::stringstream s_after;
-    s_after << (*canvas);
+    s_after << canvas;
     const std::string str_after {s_after.str() };
     assert(std::count(str_after.begin(),str_after.end(),' ') != maxx * maxy); //Line trly drawn
   }
@@ -185,17 +168,17 @@ void ribi::TextCanvas::Test() noexcept
   {
     const int maxx = 3;
     const int maxy = 4;
-    const boost::shared_ptr<TextCanvas> canvas(new TextCanvas(maxx,maxy));
+    TextCanvas canvas(maxx,maxy);
     std::stringstream s_before;
-    s_before << (*canvas);
+    s_before << canvas;
     const std::string str_before {s_before.str() };
     assert(static_cast<int>(str_before.size()) - maxy == maxx * maxy); //-maxy, as newlines are added
     assert(std::count(str_before.begin(),str_before.end(),' ') == maxx * maxy); //Only spaces
 
-    canvas->PutText(-5,1,"Hello world");
+    canvas.PutText(-5,1,"Hello world");
 
     std::stringstream s_after;
-    s_after << (*canvas);
+    s_after << canvas;
     const std::string str_after {s_after.str() };
     assert(std::count(str_after.begin(),str_after.end(),' ') != maxx * maxy); //Line truely drawn
   }

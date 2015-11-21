@@ -40,10 +40,7 @@ ribi::Dial::Dial(
   const unsigned char red,
   const unsigned char green,
   const unsigned char blue)
-  :
-    m_signal_color_changed{},
-    m_signal_position_changed{},
-    m_blue{blue},
+  : m_blue{blue},
     m_green{green},
     m_position{position},
     m_red{red}
@@ -57,7 +54,7 @@ ribi::Dial::Dial(
 
 std::string ribi::Dial::GetVersion() noexcept
 {
-  return "3.3";
+  return "4.0";
 }
 
 std::vector<std::string> ribi::Dial::GetVersionHistory() noexcept
@@ -68,7 +65,8 @@ std::vector<std::string> ribi::Dial::GetVersionHistory() noexcept
     "2011-08-07: Version 3.0: conformized architure for MysteryMachine",
     "2011-08-20: Version 3.1: added operator<<",
     "2011-08-31: Version 3.2: allow changing the dial its color",
-    "2013-04-30: Version 3.3: added testing, fixed bug in GetAngle"
+    "2013-04-30: Version 3.3: added testing, fixed bug in GetAngle",
+    "2015-11-21: Version 4.0: made this class a regular type"
   };
 }
 
@@ -80,7 +78,6 @@ void ribi::Dial::SetBlue(const int b) noexcept
   if (m_blue != boost::numeric_cast<unsigned char>(b))
   {
     m_blue = boost::numeric_cast<unsigned char>(b);
-    m_signal_color_changed();
   }
 }
 
@@ -99,7 +96,6 @@ void ribi::Dial::SetGreen(const int g) noexcept
   if (m_green != boost::numeric_cast<unsigned char>(g))
   {
     m_green = boost::numeric_cast<unsigned char>(g);
-    m_signal_color_changed();
   }
 }
 
@@ -111,7 +107,6 @@ void ribi::Dial::SetRed(const int r) noexcept
   if (m_red != boost::numeric_cast<unsigned char>(r))
   {
     m_red = boost::numeric_cast<unsigned char>(r);
-    m_signal_color_changed();
   }
 }
 
@@ -122,7 +117,6 @@ void ribi::Dial::SetPosition(const double position) noexcept
   if (m_position != position)
   {
     m_position = position;
-    m_signal_position_changed();
   }
 }
 
@@ -135,6 +129,49 @@ void ribi::Dial::Test() noexcept
     is_tested = true;
   }
   const TestTimer test_timer(__func__,__FILE__,1.0);
+  {
+    const Dial a;
+    const Dial b;
+    assert(a == b);
+  }
+  {
+    const Dial a(0.0,255,0,0);
+    const Dial b(0.0,255,0,0);
+    assert(a == b);
+  }
+  {
+    const Dial a(0.0,255,0,0);
+    const Dial b(1.0,255,0,0);
+    assert(a != b);
+  }
+  {
+    const Dial a(0.0,255,0,0);
+    const Dial b(0.0,0,0,0);
+    assert(a != b);
+  }
+  {
+    const Dial a(0.0,255,0,0);
+    const Dial b(0.0,255,255,0);
+    assert(a != b);
+  }
+  {
+    const Dial a(0.0,255,0,0);
+    const Dial b(0.0,255,0,255);
+    assert(a != b);
+  }
+  {
+    const Dial a;
+    const Dial b(a);
+    assert(a == b);
+  }
+  {
+    const Dial a(0.0,255,0,0);
+    Dial b(1.0,255,0,0);
+    assert(a != b);
+    b = a;
+    assert(a == b);
+  }
+  assert(!"Green");
 }
 #endif
 
@@ -156,4 +193,19 @@ std::ostream& ribi::operator<<(std::ostream& os, const Dial& dial)
     << "</red>"
     << "</Dial>";
   return os;
+}
+
+bool ribi::operator==(const Dial& lhs, const Dial& rhs)
+{
+  return
+       lhs.GetPosition() == rhs.GetPosition()
+    && lhs.GetRed()      == rhs.GetRed()
+    && lhs.GetGreen()    == rhs.GetGreen()
+    && lhs.GetBlue()     == rhs.GetBlue()
+  ;
+}
+
+bool ribi::operator!=(const Dial& lhs, const Dial& rhs)
+{
+  return !(lhs == rhs);
 }

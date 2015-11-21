@@ -32,6 +32,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <QPainter>
 
 #include "led.h"
+#include "testtimer.h"
 #include "trace.h"
 
 #pragma GCC diagnostic pop
@@ -44,11 +45,11 @@ ribi::QtLed::QtLed(
   QWidget *parent
 )
   : QWidget(parent),
-    m_led{}
+    m_led{intensity,red,green,blue}
 {
-  const auto led = boost::make_shared<Led>(intensity,red,green,blue);
-  this->SetLed(led);
-  assert(m_led);
+  #ifndef NDEBUG
+  Test();
+  #endif
 }
 
 ///Draw a Led from a Led
@@ -189,15 +190,19 @@ void ribi::QtLed::paintEvent(QPaintEvent *)
     //this->geometry().top(),
     //this->geometry().width(),
     //this->geometry().height(),
-    *m_led
+    m_led
   );
 }
 
-void ribi::QtLed::SetLed(const boost::shared_ptr<Led>& led) noexcept
+void ribi::QtLed::resizeEvent(QResizeEvent *)
+{
+  repaint();
+}
+
+void ribi::QtLed::SetLed(const Led& led) noexcept
 {
   const bool verbose{false};
 
-  assert(led);
   if (m_led == led)
   {
     return;
@@ -205,13 +210,13 @@ void ribi::QtLed::SetLed(const boost::shared_ptr<Led>& led) noexcept
   if (verbose)
   {
     std::stringstream s;
-    s << "Setting led '" << (*led) << "'\n";
+    s << "Setting led '" << led << "'\n";
   }
 
-  const auto blue_after = led->GetBlue();
-  const auto green_after = led->GetGreen();
-  const auto intensity_after = led->GetIntensity();
-  const auto red_after = led->GetRed();
+  const auto blue_after = led.GetBlue();
+  const auto green_after = led.GetGreen();
+  const auto intensity_after = led.GetIntensity();
+  const auto red_after = led.GetRed();
 
 
   bool blue_changed  = true;
@@ -219,12 +224,11 @@ void ribi::QtLed::SetLed(const boost::shared_ptr<Led>& led) noexcept
   bool intensity_changed = true;
   bool red_changed = true;
 
-  if (m_led)
   {
-    const auto blue_before = m_led->GetBlue();
-    const auto green_before = m_led->GetGreen();
-    const auto intensity_before = m_led->GetIntensity();
-    const auto red_before = m_led->GetRed();
+    const auto blue_before = m_led.GetBlue();
+    const auto green_before = m_led.GetGreen();
+    const auto intensity_before = m_led.GetIntensity();
+    const auto red_before = m_led.GetRed();
 
     blue_changed  = blue_before != blue_after;
     green_changed  = green_before != green_after;
@@ -274,10 +278,67 @@ void ribi::QtLed::SetLed(const boost::shared_ptr<Led>& led) noexcept
   //Replace m_led by the new one
   m_led = led;
 
-  assert(m_led->GetBlue() == blue_after);
-  assert(m_led->GetGreen() == green_after);
-  assert(m_led->GetIntensity() == intensity_after);
-  assert(m_led->GetRed() == red_after);
+  assert(m_led.GetBlue() == blue_after);
+  assert(m_led.GetGreen() == green_after);
+  assert(m_led.GetIntensity() == intensity_after);
+  assert(m_led.GetRed() == red_after);
 
   assert(led == m_led);
+}
+
+#ifndef NDEBUG
+void ribi::QtLed::Test() noexcept
+{
+  {
+    static bool is_tested{false};
+    if (is_tested) return;
+    is_tested = true;
+  }
+  {
+    Led();
+  }
+  const TestTimer test_timer(__func__,__FILE__,1.0);
+  {
+    const QtLed a;
+    const QtLed b;
+    assert(a == b);
+  }
+  {
+    const QtLed a(0.0,255,0,0);
+    const QtLed b(0.0,255,0,0);
+    assert(a == b);
+  }
+  {
+    const QtLed a(0.0,255,0,0);
+    const QtLed b(1.0,255,0,0);
+    assert(a != b);
+  }
+  {
+    const QtLed a(0.0,255,0,0);
+    const QtLed b(0.0,0,0,0);
+    assert(a != b);
+  }
+  {
+    const QtLed a(0.0,255,0,0);
+    const QtLed b(0.0,255,255,0);
+    assert(a != b);
+  }
+  {
+    const QtLed a(0.0,255,0,0);
+    const QtLed b(0.0,255,0,255);
+    assert(a != b);
+  }
+}
+#endif
+
+bool ribi::operator==(const QtLed& lhs, const QtLed& rhs) noexcept
+{
+  return
+       lhs.GetLed() == rhs.GetLed()
+  ;
+}
+
+bool ribi::operator!=(const QtLed& lhs, const QtLed& rhs) noexcept
+{
+  return !(lhs == rhs);
 }

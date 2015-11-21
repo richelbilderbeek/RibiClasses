@@ -25,9 +25,10 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic ignored "-Weffc++"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
-#include <boost/shared_ptr.hpp>
 #include <QWidget>
 #pragma GCC diagnostic pop
+
+#include "led.h"
 
 namespace ribi {
 
@@ -47,6 +48,12 @@ public:
     QWidget *parent = 0
   );
 
+  //Due to QWidget
+  QtLed(const QtLed&) = delete;
+
+  //Due to QWidget
+  QtLed& operator=(const QtLed&) = delete;
+
   ///Draw a Led from a Led
   static void DrawLed(
     QPainter& painter,
@@ -55,31 +62,33 @@ public:
     const Led& led
   ) noexcept;
 
+  const Led& GetLed() const noexcept { return m_led; }
+        Led& GetLed()       noexcept { return m_led; }
+  static std::string GetVersion() noexcept;
+  static std::vector<std::string> GetVersionHistory() noexcept;
 
-  boost::shared_ptr<const Led> GetLed() const noexcept { return m_led; }
-  boost::shared_ptr<      Led> GetLed()       noexcept { return m_led; }
-
-  void SetLed(
-    const boost::shared_ptr<Led>& led
-  ) noexcept;
+public slots:
+  void SetLed(const Led& led) noexcept;
 
 protected:
   void paintEvent(QPaintEvent *);
-  //void resizeEvent(QResizeEvent *);
+  void resizeEvent(QResizeEvent *);
 
 private:
-  boost::shared_ptr<Led> m_led;
+  Led m_led;
 
   ///OnResize is called when the geometry of the LedWidget is changed
   //void OnResize();
   void OnColorChanged(Led * const) noexcept;
   void OnIntensityChanged(Led * const) noexcept;
 
-public:
-  static std::string GetVersion() noexcept;
-  static std::vector<std::string> GetVersionHistory() noexcept;
-
+  #ifndef NDEBUG
+  static void Test() noexcept;
+  #endif
 };
+
+bool operator==(const QtLed& lhs, const QtLed& rhs) noexcept;
+bool operator!=(const QtLed& lhs, const QtLed& rhs) noexcept;
 
 } //~namespace ribi
 

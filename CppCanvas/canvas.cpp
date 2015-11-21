@@ -40,14 +40,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "canvascolorsystems.h"
 #include "canvascoordinatsystems.h"
 #include "fileio.h"
+#include "testtimer.h"
 #include "trace.h"
 
 #pragma GCC diagnostic pop
 
 ribi::Canvas::Canvas()
-  : m_signal_changed{}
 {
-
+  #ifndef NDEBUG
+  Test();
+  #endif
 }
 
 std::vector<char> ribi::Canvas::GetAsciiArtGradient() noexcept
@@ -110,3 +112,16 @@ typename Container::value_type::value_type ribi::Canvas::MaxElement(const Contai
   }
   return maxValue;
 }
+
+#ifndef NDEBUG
+void ribi::Canvas::Test() noexcept
+{
+  {
+    static bool is_tested{false};
+    if (is_tested) return;
+    is_tested = true;
+  }
+  const TestTimer test_timer(__func__,__FILE__,1.0);
+  //Hard to test an ABC
+}
+#endif

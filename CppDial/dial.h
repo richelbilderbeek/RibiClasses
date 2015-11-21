@@ -38,10 +38,12 @@ namespace ribi {
 ///Dial is a class for a dial
 struct Dial
 {
-  explicit Dial(const double position = 0.0,
+  explicit Dial(
+    const double position = 0.0,
     const unsigned char red   = 255,
     const unsigned char green = 255,
-    const unsigned char blue  = 255);
+    const unsigned char blue  = 255
+  );
 
   ///Get the blueness of the Dial its color
   unsigned char GetBlue() const noexcept { return m_blue; }
@@ -83,17 +85,7 @@ struct Dial
   ///Set the redness the Dial
   void SetRed(const int r) noexcept;
 
-  ///The signal emitted when the Dial its color is changed
-  mutable boost::signals2::signal<void ()> m_signal_color_changed;
-
-  ///The signal emitted when the Dial position is changed
-  mutable boost::signals2::signal<void ()> m_signal_position_changed;
-
   private:
-  //Dial can only be deleted by Boost smart pointers
-  virtual ~Dial() noexcept {}
-  friend void boost::checked_delete<>(Dial*);
-  friend void boost::checked_delete<>(const Dial*);
 
   unsigned char m_blue;
   unsigned char m_green;
@@ -109,6 +101,8 @@ struct Dial
 };
 
 std::ostream& operator<<(std::ostream& os, const Dial& dial);
+bool operator==(const Dial& lhs, const Dial& rhs);
+bool operator!=(const Dial& lhs, const Dial& rhs);
 
 } //~namespace ribi
 

@@ -146,15 +146,15 @@ void ribi::MysteryMachine::Update() noexcept
   assert(back  < 3);
   assert(top >= -1); //-1 denotes off
   assert(top  < 3);
-  m_led_front_1->GetLed()->SetIntensity(front == 0 ? 1.0 : 0.0);
-  m_led_front_2->GetLed()->SetIntensity(front == 1 ? 1.0 : 0.0);
-  m_led_front_3->GetLed()->SetIntensity(front == 2 ? 1.0 : 0.0);
-  m_led_back_1->GetLed()->SetIntensity(back == 0 ? 1.0 : 0.0);
-  m_led_back_2->GetLed()->SetIntensity(back == 1 ? 1.0 : 0.0);
-  m_led_back_3->GetLed()->SetIntensity(back == 2 ? 1.0 : 0.0);
-  m_led_top_front->GetLed()->SetIntensity( top == 0 ? 1.0 : 0.0);
-  m_led_top_middle->GetLed()->SetIntensity(top == 1 ? 1.0 : 0.0);
-  m_led_top_back->GetLed()->SetIntensity(  top == 2 ? 1.0 : 0.0);
+  m_led_front_1->GetLed().SetIntensity(front == 0 ? 1.0 : 0.0);
+  m_led_front_2->GetLed().SetIntensity(front == 1 ? 1.0 : 0.0);
+  m_led_front_3->GetLed().SetIntensity(front == 2 ? 1.0 : 0.0);
+  m_led_back_1->GetLed().SetIntensity(back == 0 ? 1.0 : 0.0);
+  m_led_back_2->GetLed().SetIntensity(back == 1 ? 1.0 : 0.0);
+  m_led_back_3->GetLed().SetIntensity(back == 2 ? 1.0 : 0.0);
+  m_led_top_front->GetLed().SetIntensity( top == 0 ? 1.0 : 0.0);
+  m_led_top_middle->GetLed().SetIntensity(top == 1 ? 1.0 : 0.0);
+  m_led_top_back->GetLed().SetIntensity(  top == 2 ? 1.0 : 0.0);
 }
 
 std::ostream& ribi::operator<<(std::ostream& os, const MysteryMachine& machine) noexcept

@@ -39,15 +39,29 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 namespace ribi {
 
 ///GUI independent widget class, modeled after the Qt and Wt architure
+///Name should have been 'Geometry'
 struct Widget
 {
-  typedef boost::geometry::model::d2::point_xy<double> Point;
-  typedef boost::geometry::model::box<Point> Rect;
+  using Point = boost::geometry::model::d2::point_xy<double>;
+  using Rect = boost::geometry::model::box<Point>;
 
-  Widget();
+  Widget(
+    const Point& top_left = Point(0.0,0.0),
+    const Point& bottom_right = Point(0.0,0.0)
+  );
   virtual ~Widget() noexcept {}
 
-  static Rect CreateRect(const double left, const double top, const double width, const double height) noexcept;
+  static Rect CreateRect(
+    const double left,
+    const double top,
+    const double width,
+    const double height
+  ) noexcept;
+
+  static Rect CreateRect(
+    const Point& top_left,
+    const Point& bottom_right
+  ) noexcept;
 
   double GetBottom() const noexcept;
   const Rect& GetGeometry() const noexcept { return m_geometry; }
@@ -79,6 +93,9 @@ struct Widget
   static void Test() noexcept;
   #endif
 };
+
+bool operator==(const Widget& lhs, const Widget& rhs) noexcept;
+bool operator!=(const Widget& lhs, const Widget& rhs) noexcept;
 
 } //~namespace ribi
 

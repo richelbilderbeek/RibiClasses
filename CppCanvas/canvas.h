@@ -28,7 +28,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
-#include <boost/signals2.hpp>
 #include "canvascolorsystem.h"
 #include "canvascoordinatsystem.h"
 #pragma GCC diagnostic pop
@@ -67,7 +66,7 @@ struct Canvas
   virtual std::vector<std::string> ToStrings() const noexcept = 0;
 
   ///This signal is emitted when any member variable changes
-  boost::signals2::signal<void(Canvas*)> m_signal_changed;
+  //boost::signals2::signal<void(Canvas*)> m_signal_changed;
 
   private:
   ///From http://www.richelbilderbeek.nl/CppGetRegexMatches.htm

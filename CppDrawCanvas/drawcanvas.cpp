@@ -157,7 +157,6 @@ void ribi::DrawCanvas::Clear() noexcept
     assert(std::accumulate(row.begin(),row.end(),0.0) == 0.0);
   }
   #endif
-  m_signal_changed(this);
 }
 
 void ribi::DrawCanvas::DrawArc(
@@ -186,7 +185,6 @@ void ribi::DrawCanvas::DrawArc(
     DrawDot(x,y);
     angle += dAngle;
   }
-  m_signal_changed(this);
 }
 
 void ribi::DrawCanvas::DrawCircle(const double xMid, const double yMid, const double ray) noexcept
@@ -205,7 +203,6 @@ void ribi::DrawCanvas::DrawCircle(const double xMid, const double yMid, const do
     DrawDot(x,y);
     angle += dAngle;
   }
-  m_signal_changed(this);
 }
 
 void ribi::DrawCanvas::DrawDot(const double x, const double y) noexcept
@@ -226,7 +223,6 @@ void ribi::DrawCanvas::DrawDot(const double x, const double y) noexcept
     m_canvas[indexTop+1][indexLeft  ] += (fracLeft * (1.0-fracTop));
   if (IsInRange(indexLeft+1,indexTop+1))
     m_canvas[indexTop+1][indexLeft+1] += ((1.0-fracLeft) * (1.0-fracTop));
-  m_signal_changed(this);
 }
 
 void ribi::DrawCanvas::DrawEllipse(const double left, const double top, const double right, const double bottom) noexcept
@@ -256,7 +252,6 @@ void ribi::DrawCanvas::DrawEllipse(const double left, const double top, const do
     DrawDot(x,y);
     angle += d_angle;
   }
-  m_signal_changed(this);
 }
 
 void ribi::DrawCanvas::DrawSurface(const std::vector<std::vector<double>>& v)
@@ -264,7 +259,6 @@ void ribi::DrawCanvas::DrawSurface(const std::vector<std::vector<double>>& v)
   if (m_canvas != v)
   {
     m_canvas = v;
-    m_signal_changed(this);
   }
 }
 
@@ -285,7 +279,6 @@ void ribi::DrawCanvas::DrawLine(const double x1, const double y1, const double x
     x+=step_x;
     y+=step_y;
   }
-  m_signal_changed(this);
 }
 
 void ribi::DrawCanvas::DrawLine(
@@ -311,16 +304,14 @@ void ribi::DrawCanvas::DrawPolygon(
 void ribi::DrawCanvas::DrawText(const double top, const double left, const std::string& text) noexcept
 {
   const int spacing = 2;
-  const boost::shared_ptr<const ribi::DotMatrixString> m {
-    new ribi::DotMatrixString(text,spacing)
-  };
-  const int width  = m->GetMatrixWidth();
-  const int height = m->GetMatrixHeight();
+  const DotMatrixString m(text,spacing);
+  const int width  = m.GetMatrixWidth();
+  const int height = m.GetMatrixHeight();
   for (int y=0; y!=height; ++y)
   {
     for (int x=0; x!=width; ++x)
     {
-      if (m->GetMatrix(x,y))
+      if (m.GetMatrix(x,y))
       {
         DrawDot(
           left + static_cast<double>(x) + 0.5,
@@ -333,7 +324,7 @@ void ribi::DrawCanvas::DrawText(const double top, const double left, const std::
 
 std::string ribi::DrawCanvas::GetVersion() noexcept
 {
-  return "3.1";
+  return "4.0";
 }
 
 std::vector<std::string> ribi::DrawCanvas::GetVersionHistory() noexcept
@@ -344,7 +335,8 @@ std::vector<std::string> ribi::DrawCanvas::GetVersionHistory() noexcept
     "2013-08-22: version 2.1: allow two color and coordinat systems"
     "2014-01-07: version 2.2: added the DrawText member function",
     "2014-01-10: version 3.0: renamed to DrawCanvas, inherits from new class called Canvas",
-    "2014-05-10: version 3.1: allow to draw a Boost.Geometry polygon, increase support for Boost.Geometry"
+    "2014-05-10: version 3.1: allow to draw a Boost.Geometry polygon, increase support for Boost.Geometry",
+    "2015-11-21: version 4.0: made this class a regular type",
   };
 }
 
@@ -524,7 +516,6 @@ void ribi::DrawCanvas::SetColorSystem(const CanvasColorSystem colorSystem) noexc
   if (this->m_color_system != colorSystem)
   {
     this->m_color_system = colorSystem;
-    this->m_signal_changed(this);
   }
 }
 
@@ -533,7 +524,6 @@ void ribi::DrawCanvas::SetCoordinatSystem(const CanvasCoordinatSystem coordinatS
   if (this->m_coordinat_system != coordinatSystem)
   {
     this->m_coordinat_system = coordinatSystem;
-    this->m_signal_changed(this);
   }
 }
 
@@ -558,17 +548,17 @@ void ribi::DrawCanvas::Test() noexcept
   {
     const int maxx = 90;
     const int maxy = 18;
-    const boost::shared_ptr<DrawCanvas> canvas(new DrawCanvas(maxx,maxy,CanvasColorSystem::invert));
+    DrawCanvas canvas(maxx,maxy,CanvasColorSystem::invert);
     std::stringstream s_before;
-    s_before << (*canvas);
+    s_before << canvas;
     const std::string str_before {s_before.str() };
     assert(static_cast<int>(str_before.size()) - maxy == maxx * maxy); //-maxy, as newlines are added
     assert(std::count(str_before.begin(),str_before.end(),' ') == maxx * maxy); //Only spaces
 
-    canvas->DrawText(1,1,"Hello world");
+    canvas.DrawText(1,1,"Hello world");
 
     std::stringstream s_after;
-    s_after << (*canvas);
+    s_after << canvas;
     const std::string str_after {s_after.str() };
     assert(std::count(str_after.begin(),str_after.end(),' ') != maxx * maxy); //Line trly drawn
   }
@@ -576,17 +566,17 @@ void ribi::DrawCanvas::Test() noexcept
   {
     const int maxx = 3;
     const int maxy = 4;
-    const boost::shared_ptr<DrawCanvas> canvas(new DrawCanvas(maxx,maxy,CanvasColorSystem::invert));
+    DrawCanvas canvas(maxx,maxy,CanvasColorSystem::invert);
     std::stringstream s_before;
-    s_before << (*canvas);
+    s_before << canvas;
     const std::string str_before {s_before.str() };
     assert(static_cast<int>(str_before.size()) - maxy == maxx * maxy); //-maxy, as newlines are added
     assert(std::count(str_before.begin(),str_before.end(),' ') == maxx * maxy); //Only spaces
 
-    canvas->DrawLine(-maxx,-maxy,maxx*2.0,maxy*2.0);
+    canvas.DrawLine(-maxx,-maxy,maxx*2.0,maxy*2.0);
 
     std::stringstream s_after;
-    s_after << (*canvas);
+    s_after << canvas;
     const std::string str_after {s_after.str() };
     assert(std::count(str_after.begin(),str_after.end(),' ') != maxx * maxy); //Line trly drawn
   }
@@ -612,13 +602,11 @@ void ribi::DrawCanvas::Test() noexcept
     */
     const int maxx = 22;
     const int maxy = 22;
-    const boost::shared_ptr<DrawCanvas> canvas(
-      new DrawCanvas(
-        maxx,
-        maxy,
-        CanvasColorSystem::invert,
-        CanvasCoordinatSystem::graph
-      )
+    DrawCanvas canvas(
+      maxx,
+      maxy,
+      CanvasColorSystem::invert,
+      CanvasCoordinatSystem::graph
     );
     const std::vector<Coordinat> points {
       {  4.0,  4.0}, //A
@@ -628,10 +616,10 @@ void ribi::DrawCanvas::Test() noexcept
     };
     boost::geometry::model::polygon<Coordinat> polygon;
     boost::geometry::append(polygon,points);
-    canvas->DrawPolygon(polygon);
+    canvas.DrawPolygon(polygon);
     {
       std::stringstream s;
-      s << (*canvas);
+      s << canvas;
       assert(!s.str().empty());
     }
   }
@@ -640,12 +628,12 @@ void ribi::DrawCanvas::Test() noexcept
   {
     const int maxx = 79;
     const int maxy = 23;
-    const boost::shared_ptr<DrawCanvas> canvas(new DrawCanvas(maxx,maxy));
-    canvas->SetColorSystem(
+    DrawCanvas canvas(maxx,maxy);
+    canvas.SetColorSystem(
       i % 2
       ? CanvasColorSystem::normal
       : CanvasColorSystem::invert);
-    canvas->SetCoordinatSystem(
+    canvas.SetCoordinatSystem(
       i / 2
       ? CanvasCoordinatSystem::screen
       : CanvasCoordinatSystem::graph);
@@ -668,26 +656,26 @@ void ribi::DrawCanvas::Test() noexcept
     const double mouthMidY   = 0.50 * maxyD + (0.7 * headRay) ;
     const double mouthRightY = 0.50 * maxyD + (0.2 * headRay) ;
     //Draw the image on DrawCanvas
-    canvas->DrawCircle(midX, midY, headRay);
-    canvas->DrawCircle(eyeLeftX, eyeLeftY, eyeRay);
-    canvas->DrawDot(eyeLeftX, eyeLeftY);
-    canvas->DrawCircle(eyeRightX, eyeRightY, eyeRay);
-    canvas->DrawDot(eyeRightX, eyeRightY);
-    canvas->DrawLine(mouthLeftX, mouthLeftY, mouthMidX, mouthMidY);
-    canvas->DrawLine(mouthMidX, mouthMidY, mouthRightX, mouthRightY);
-    canvas->DrawLine(mouthRightX, mouthRightY, mouthLeftX, mouthLeftY);
+    canvas.DrawCircle(midX, midY, headRay);
+    canvas.DrawCircle(eyeLeftX, eyeLeftY, eyeRay);
+    canvas.DrawDot(eyeLeftX, eyeLeftY);
+    canvas.DrawCircle(eyeRightX, eyeRightY, eyeRay);
+    canvas.DrawDot(eyeRightX, eyeRightY);
+    canvas.DrawLine(mouthLeftX, mouthLeftY, mouthMidX, mouthMidY);
+    canvas.DrawLine(mouthMidX, mouthMidY, mouthRightX, mouthRightY);
+    canvas.DrawLine(mouthRightX, mouthRightY, mouthLeftX, mouthLeftY);
     {
       std::stringstream s;
-      s << (*canvas);
+      s << canvas;
       assert(!s.str().empty());
     }
-    canvas->Clear();
+    canvas.Clear();
     {
-      canvas->SetColorSystem(CanvasColorSystem::invert); //Background = Black
+      canvas.SetColorSystem(CanvasColorSystem::invert); //Background = Black
       std::stringstream s;
-      s << (*canvas);
+      s << canvas;
       const std::string t { s.str() };
-      assert(std::count(t.begin(),t.end(),' ') == canvas->GetWidth() * canvas->GetHeight());
+      assert(std::count(t.begin(),t.end(),' ') == canvas.GetWidth() * canvas.GetHeight());
 
     }
   }
@@ -695,26 +683,25 @@ void ribi::DrawCanvas::Test() noexcept
   {
     const int maxx = 2;
     const int maxy = 3;
-    const boost::shared_ptr<DrawCanvas> canvas(new DrawCanvas(maxx,maxy,CanvasColorSystem::invert));
-    canvas->DrawLine(-maxx,-maxy,maxx*2.0,maxy*2.0);
+    DrawCanvas canvas(maxx,maxy,CanvasColorSystem::invert);
+    canvas.DrawLine(-maxx,-maxy,maxx*2.0,maxy*2.0);
 
-    const boost::shared_ptr<const DrawCanvas> old_canvas {
-      new DrawCanvas(canvas->GetGreynesses(),canvas->GetColorSystem(),canvas->GetCoordinatSystem())
-    };
-    assert( old_canvas !=  canvas);
-    assert(*old_canvas == *canvas);
+    const DrawCanvas old_canvas(
+      canvas.GetGreynesses(),
+      canvas.GetColorSystem(),
+      canvas.GetCoordinatSystem()
+    );
+    assert(old_canvas == canvas);
 
     const std::string temp_filename { fileio::FileIo().GetTempFileName() };
-    canvas->Save(temp_filename);
-    canvas->Clear();
+    canvas.Save(temp_filename);
+    canvas.Clear();
 
-    assert(*old_canvas != *canvas);
+    assert(old_canvas != canvas);
 
-    const boost::shared_ptr<const DrawCanvas> new_canvas {
-      new DrawCanvas(temp_filename)
-    };
+    const DrawCanvas new_canvas(temp_filename);
 
-    assert(*old_canvas == *new_canvas);
+    assert(old_canvas == new_canvas);
 
   }
 }

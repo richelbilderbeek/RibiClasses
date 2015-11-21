@@ -8,7 +8,6 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
-#include <boost/signals2.hpp>
 #include "canvas.h"
 #pragma GCC diagnostic pop
 
@@ -30,9 +29,6 @@ struct TextCanvas : public Canvas
     const int height = 1,
     const CanvasCoordinatSystem coordinatSystem = CanvasCoordinatSystem::screen
   );
-  TextCanvas(const TextCanvas& rhs);
-  TextCanvas& operator=(const TextCanvas& rhs);
-
   TextCanvas(
     const std::vector<std::string>& canvas,
     const CanvasCoordinatSystem coordinatSystem
@@ -70,7 +66,7 @@ struct TextCanvas : public Canvas
   ///Put a canvas on the canvas
   void PutCanvas(
     const int left, const int top,
-    const boost::shared_ptr<const TextCanvas>& canvas
+    const TextCanvas& canvas
   ) noexcept;
 
   ///Put a character on the Canvas

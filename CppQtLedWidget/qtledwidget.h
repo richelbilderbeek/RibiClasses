@@ -46,20 +46,21 @@ public:
     const unsigned char green =   0,
     const unsigned char blue  =   0
   );
-  const LedWidget * GetWidget() const { return m_widget.get(); }
-  LedWidget * GetWidget() { return m_widget.get(); }
+  const LedWidget& GetWidget() const noexcept { return m_widget; }
+        LedWidget& GetWidget()       noexcept { return m_widget; }
 
   ///Draw a Led from a Led
   static void DrawLed(
     QPainter& painter,
     const int left, const int top,
     const int width, const int height,
-    const Led * const led);
+    const Led& led);
 
   ///Draw a Led from a LedWidget
   static void DrawLed(
     QPainter& painter,
-    const boost::shared_ptr<const LedWidget> widget);
+    const LedWidget& widget
+  );
 
 
 protected:
@@ -67,7 +68,7 @@ protected:
   void resizeEvent(QResizeEvent *);
 
 private:
-  boost::shared_ptr<LedWidget> m_widget;
+  LedWidget m_widget;
 
   ///OnResize is called when the geometry of the LedWidget is changed
   void OnResize();
