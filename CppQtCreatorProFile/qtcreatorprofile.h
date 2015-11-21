@@ -41,8 +41,6 @@ struct QtCreatorProFile
   ///Parse a .pro file, throws a std::logic_error if
   ///filename is not a regular file
   explicit QtCreatorProFile(const std::string& filename);
-  QtCreatorProFile(const QtCreatorProFile&) = delete;
-  QtCreatorProFile& operator=(const QtCreatorProFile&) = delete;
 
   ///Obtain this class its About information
   static ribi::About GetAbout() noexcept;
@@ -144,9 +142,6 @@ struct QtCreatorProFile
   void SetTemplate(const std::set<std::string>& s) { m_template = s; }
 
   private:
-  ///Be sure the class is correctly deleted
-  ~QtCreatorProFile() noexcept {}
-  friend void boost::checked_delete<>(QtCreatorProFile* x);
 
   ///The items at CONFIG
   std::set<std::string> m_config;
