@@ -29,6 +29,13 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #pragma GCC diagnostic pop
 
+ribi::Widget::Widget()
+{
+  #ifndef NDEBUG
+  Test();
+  #endif
+}
+
 ribi::Widget::Rect ribi::Widget::CreateRect(
   const double left, const double top, const double width, const double height) noexcept
 {
@@ -62,7 +69,7 @@ double ribi::Widget::GetTop() const noexcept
 
 std::string ribi::Widget::GetVersion() noexcept
 {
-  return "2.0";
+  return "3.0";
 }
 
 std::vector<std::string> ribi::Widget::GetVersionHistory() noexcept
@@ -70,7 +77,8 @@ std::vector<std::string> ribi::Widget::GetVersionHistory() noexcept
   return {
     "2011-07-03: version 1.0: initial version",
     "2011-08-07: version 1.1: added signal that is emitted when geometry changes",
-    "2014-03-28: version 2.0: replace Rect by Boost.Geometry its box class"
+    "2014-03-28: version 2.0: replace Rect by Boost.Geometry its box class",
+    "2015-11-21: version 3.0: made Widget a regular data type"
   };
 }
 
@@ -94,7 +102,6 @@ void ribi::Widget::SetGeometry(const Rect& geometry) noexcept
   if (!boost::geometry::equals(m_geometry,geometry))
   {
     m_geometry = geometry;
-    m_signal_geometry_changed();
   }
 }
 

@@ -282,7 +282,6 @@ void ribi::cmap::QtConceptMap::Test() noexcept
 
     assert(qtconceptmap.scene()->selectedItems().size() == 1);
   }
-  #ifndef CONCEPTMAP_USE_QUNDOSTACK
   //Commands
   if (verbose) { TRACE("A new command must be put in QUndoStack"); }
   {
@@ -405,7 +404,6 @@ void ribi::cmap::QtConceptMap::Test() noexcept
       }
     }
   }
-  #endif // CONCEPTMAP_USE_QUNDOSTACK
   #ifdef FIX_ISSUE_10
   if (verbose) { TRACE("DeleteNode: create two Nodes, delete one Node from QtConceptMap"); }
   {

@@ -529,7 +529,19 @@ void ribi::cmap::QtConceptMap::DeleteQtNode(const QtNode * const qtnode)
 
 void ribi::cmap::QtConceptMap::DoCommand(Command * const command) noexcept
 {
-  this->GetConceptMap().DoCommand(command);
+  #ifndef NDEBUG
+  const int before{m_undo.count()};
+  #endif //NDEBUG
+
+  assert(command);
+
+  //Push and, by this, do the command
+  m_undo.push(command);
+
+  #ifndef NDEBUG
+  const int after{m_undo.count()};
+  assert(after == before + 1);
+  #endif // NDEBUG
 }
 
 const ribi::cmap::QtNode * ribi::cmap::QtConceptMap::GetCenterNode() const noexcept

@@ -40,9 +40,7 @@ ribi::Led::Led(
   const int red,
   const int green,
   const int blue)
-  : m_signal_color_changed{},
-    m_signal_intensity_changed{},
-    m_blue(blue),
+  : m_blue(blue),
     m_green(green),
     m_intensity(intensity),
     m_red(red)
@@ -66,7 +64,7 @@ ribi::Led::Led(
 
 std::string ribi::Led::GetVersion() noexcept
 {
-  return "1.3";
+  return "2.0";
 }
 
 std::vector<std::string> ribi::Led::GetVersionHistory() noexcept
@@ -75,7 +73,8 @@ std::vector<std::string> ribi::Led::GetVersionHistory() noexcept
     "2011-04-10: Version 1.0: initial version",
     "2011-08-17: Version 1.1: emit a signal when the color is changed",
     "2011-08-20: Version 1.2: added operator<<",
-    "2014-06-20: Version 1.3: changed color data types from unsigned char to int"
+    "2014-06-20: Version 1.3: changed color data types from unsigned char to int",
+    "2015-11-21: Version 2.0: made LED a regular data type",
   };
 }
 
@@ -97,7 +96,6 @@ void ribi::Led::SetBlue(const int blue) noexcept
   if (m_blue != blue)
   {
     m_blue = blue;
-    m_signal_color_changed(this);
   }
 }
 
@@ -108,7 +106,6 @@ void ribi::Led::SetGreen(const int green) noexcept
   if (m_green != green)
   {
     m_green = green;
-    m_signal_color_changed(this);
   }
 }
 
@@ -121,8 +118,6 @@ void ribi::Led::SetIntensity(const double intensity) noexcept
   if (intensity != m_intensity)
   {
     m_intensity = intensity;
-    //Emit signal
-    m_signal_intensity_changed(this);
   }
 }
 
@@ -133,7 +128,6 @@ void ribi::Led::SetRed(const int red) noexcept
   if (m_red != red)
   {
     m_red = red;
-    m_signal_color_changed(this);
   }
 }
 
@@ -146,6 +140,48 @@ void ribi::Led::Test() noexcept
     is_tested = true;
   }
   const TestTimer test_timer(__func__,__FILE__,1.0);
+  {
+    const Led a;
+    const Led b;
+    assert(a == b);
+  }
+  {
+    const Led a(0.0,255,0,0);
+    const Led b(0.0,255,0,0);
+    assert(a == b);
+  }
+  {
+    const Led a(0.0,255,0,0);
+    const Led b(1.0,255,0,0);
+    assert(a != b);
+  }
+  {
+    const Led a(0.0,255,0,0);
+    const Led b(0.0,0,0,0);
+    assert(a != b);
+  }
+  {
+    const Led a(0.0,255,0,0);
+    const Led b(0.0,255,255,0);
+    assert(a != b);
+  }
+  {
+    const Led a(0.0,255,0,0);
+    const Led b(0.0,255,0,255);
+    assert(a != b);
+  }
+  {
+    const Led a;
+    const Led b(a);
+    assert(a == b);
+  }
+  {
+    const Led a(0.0,255,0,0);
+    Led b(1.0,255,0,0);
+    assert(a != b);
+    b = a;
+    assert(a == b);
+  }
 }
 #endif
 
@@ -197,6 +233,11 @@ bool ribi::operator==(const Led& lhs, const Led& rhs) noexcept
     && lhs.GetIntensity() == rhs.GetIntensity()
     && lhs.GetRed()       == rhs.GetRed()
   ;
+}
+
+bool ribi::operator!=(const Led& lhs, const Led& rhs) noexcept
+{
+  return !(lhs == rhs);
 }
 
 

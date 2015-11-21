@@ -37,7 +37,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 
 #include <QFile>
 
-#ifndef _WIN32
+#ifdef BILDERBIKKEL_WT_INCLUDED
 #include <Wt/WConfig.h>
 #endif
 
@@ -301,7 +301,7 @@ std::string ribi::c2h::Version::GetWineVersion() noexcept
 
 std::string ribi::c2h::Version::GetWtVersion() noexcept
 {
-  #ifndef _WIN32
+  #ifdef BILDERBIKKEL_WT_INCLUDED
   return WT_VERSION_STR;
   #else
   return "?.?.?";

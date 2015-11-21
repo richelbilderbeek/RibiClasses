@@ -75,17 +75,6 @@ class ConceptMap
   void AddSelected(const Nodes& nodes) noexcept;
   void AddSelected(const Edges& edges,const Nodes& nodes) noexcept;
 
-  ///Test if this ConceptMap can be constructed successfully
-  static bool CanConstruct(
-    const Nodes& nodes,
-    const Edges& edges
-  ) noexcept;
-
-  #ifdef CONCEPTMAP_USE_QUNDOSTACK
-  bool CanRedo() const noexcept { return m_undo.canRedo(); }
-  bool CanUndo() const noexcept { return m_undo.canUndo(); }
-  #endif //CONCEPTMAP_USE_QUNDOSTACK
-
   ///Prepend the question as a first node, before adding the supplied nodes
   static Nodes CreateNodes(
     const std::string& question,
@@ -101,11 +90,6 @@ class ConceptMap
 
   ///Delete a node and all the edges connected to it
   void DeleteNode(const Node& node) noexcept;
-
-  #ifdef CONCEPTMAP_USE_QUNDOSTACK
-  ///ConceptMap takes over ownership of the Command
-  void DoCommand(Command * const command) noexcept;
-  #endif // CONCEPTMAP_USE_QUNDOSTACK
 
   ///Check if the ConceptMap is empty, that is: it has no nodes and (thus) no edges
   bool Empty() const noexcept;
@@ -197,12 +181,6 @@ private:
   ///- the CenterNode
   EdgesAndNodes m_selected;
 
-  #ifdef CONCEPTMAP_USE_QUNDOSTACK
-  ///The undo stack
-  ///The Commands aren't const, because Command::Undo changes their state
-  //QUndoStack m_undo;
-  #endif // CONCEPTMAP_USE_QUNDOSTACK
-
   bool m_verbose;
 
   static ConceptMap CreateEmptyConceptMap() noexcept;
@@ -229,11 +207,6 @@ private:
   ///left (as all are excluded) or the concept map does not have any nodes
   std::vector<Node> GetRandomNodes(Nodes nodes_to_exclude = {}) noexcept;
   Node GetRandomNode(const Nodes& nodes_to_exclude = {});
-
-  #ifdef CONCEPTMAP_USE_QUNDOSTACK
-  void OnUndo() noexcept;
-  #endif // CONCEPTMAP_USE_QUNDOSTACK
-
 
   #ifndef NDEBUG
   static void Test() noexcept;
@@ -280,6 +253,14 @@ private:
   friend bool operator==(const ConceptMap& lhs, const ConceptMap& rhs) noexcept;
 
 };
+
+///Test if a ConceptMap can successfully be constructed
+///from the nodes and edges
+bool CanConstruct(
+  const std::vector<Node>& nodes,
+  const std::vector<Edge>& edges,
+  const bool verbose = false
+) noexcept;
 
 ///Count the number of CenterNodes
 ///- regular concept map: 1, the focus

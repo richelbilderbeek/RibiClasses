@@ -44,7 +44,8 @@ public:
     const double intensity    = 0.0,
     const unsigned char red   = 255,
     const unsigned char green =   0,
-    const unsigned char blue  =   0);
+    const unsigned char blue  =   0
+  );
   const LedWidget * GetWidget() const { return m_widget.get(); }
   LedWidget * GetWidget() { return m_widget.get(); }
 

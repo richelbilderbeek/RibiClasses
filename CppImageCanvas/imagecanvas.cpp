@@ -43,7 +43,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic pop
 
 ribi::ImageCanvas::ImageCanvas() noexcept
-  : m_canvas{},
+  : Canvas{},
+    m_canvas{},
     m_color_system{},
     m_coordinat_system{},
     m_n_cols{0}

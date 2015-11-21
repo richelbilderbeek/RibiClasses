@@ -8,6 +8,7 @@
 
 #include <boost/numeric/conversion/cast.hpp>
 
+#include "ribi_random.h"
 #include "matrix.h"
 #include "trace.h"
 #include "testtimer.h"
@@ -120,6 +121,9 @@ void ribi::kalman::GapsFilledWhiteNoiseSystem::Test() noexcept
     static bool is_tested{false};
     if (is_tested) return;
     is_tested = true;
+  }
+  {
+    ribi::Random();
   }
   const TestTimer test_timer(__func__,__FILE__,1.0);
   //Check if measurements are indeed lagged:

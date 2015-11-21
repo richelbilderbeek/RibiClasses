@@ -178,15 +178,15 @@ boost::shared_ptr<ribi::Program> ribi::Program::CreateProgram(const ProgramType 
   #ifndef NDEBUG
   if (!p)
   {
-    TRACE(ProgramTypes::ProgramTypeToEnumName(type));
+    TRACE(ProgramTypes().ProgramTypeToEnumName(type));
   }
   assert(p);
   if (p->GetType() != type)
   {
     TRACE("ERROR");
     TRACE(p->GetName());
-    TRACE(ProgramTypes::ProgramTypeToEnumName(type));
-    TRACE(ProgramTypes::ProgramTypeToEnumName(p->GetType()));
+    TRACE(ProgramTypes().ProgramTypeToEnumName(type));
+    TRACE(ProgramTypes().ProgramTypeToEnumName(p->GetType()));
   }
   #endif
   assert(p->GetType() == type
@@ -197,17 +197,17 @@ boost::shared_ptr<ribi::Program> ribi::Program::CreateProgram(const ProgramType 
 
 std::string ribi::Program::GetName() const noexcept
 {
-  return ribi::ProgramTypes::ProgramTypeToEnumName(this->GetType());
+  return ribi::ProgramTypes().ProgramTypeToEnumName(this->GetType());
 }
 
 std::string ribi::Program::GetScreenName() const noexcept
 {
-  return ribi::ProgramTypes::ProgramTypeToScreenName(this->GetType());
+  return ribi::ProgramTypes().ProgramTypeToScreenName(this->GetType());
 }
 
 std::vector<boost::shared_ptr<ribi::Program>> ribi::Program::GetAllPrograms() noexcept
 {
-  const std::vector<ProgramType> types = ProgramTypes::GetAll();
+  const std::vector<ProgramType> types = ProgramTypes().GetAll();
   std::vector<boost::shared_ptr<Program>> v;
 
   for (const ProgramType type: types)
@@ -235,7 +235,7 @@ std::string ribi::Program::GetFilenameBase() const noexcept
 
 std::string ribi::Program::GetTypeName() const noexcept
 {
-  return ProgramTypes::ProgramTypeToEnumName(this->GetType());
+  return ProgramTypes().ProgramTypeToEnumName(this->GetType());
 }
 
 std::string ribi::Program::GetVersion() noexcept

@@ -28,6 +28,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <boost/lambda/lambda.hpp>
 
 #include "counter.h"
+#include "conceptmap.h"
 #include "conceptmapconcept.h"
 #include "conceptmapedgefactory.h"
 #include "conceptmapnode.h"
@@ -259,17 +260,9 @@ std::string ribi::cmap::Edge::ToXml(
 
   assert(edge.GetFrom());
   assert(edge.GetTo());
+  assert(CanConstruct(nodes, { edge} ));
   const auto from_iter = std::find(begin(nodes),end(nodes),*edge.GetFrom());
   const auto to_iter = std::find(begin(nodes),end(nodes),*edge.GetTo());
-  #ifndef NDEBUG
-  if (from_iter == end(nodes))
-  {
-    TRACE("ERROR");
-    for (const auto& n: nodes) { TRACE(&n); TRACE(n);}
-    TRACE(edge);
-    TRACE("~ERROR");
-  }
-  #endif
   assert(from_iter != end(nodes));
   assert(to_iter != end(nodes));
   const int from_index = std::distance(nodes.begin(),from_iter);

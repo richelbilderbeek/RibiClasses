@@ -25,6 +25,8 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic ignored "-Weffc++"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
+#include <QUndoStack>
+
 #include "qtkeyboardfriendlygraphicsview.h"
 #include "qtconceptmapfwd.h"
 #include "qtconceptmapqtedge.h"
@@ -178,6 +180,8 @@ private:
 
   ///The item showing the tools
   QtTool * m_tools;
+
+  QUndoStack m_undo;
 
   ///Adds an Edge, returns the freshly created QtEdge
   QtEdge * AddEdge(const Edge& edge);

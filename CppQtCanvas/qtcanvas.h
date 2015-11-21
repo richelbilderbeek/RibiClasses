@@ -8,6 +8,7 @@
 #include <boost/scoped_ptr.hpp>
 #include <boost/signals2.hpp>
 #include "imagecanvas.h"
+#include "textcanvas.h"
 #include <QPlainTextEdit>
 #include "canvas.h"
 #pragma GCC diagnostic pop

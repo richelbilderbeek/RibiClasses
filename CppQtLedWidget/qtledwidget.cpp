@@ -46,16 +46,6 @@ ribi::QtLedWidget::QtLedWidget(
     m_widget(new LedWidget(intensity,red,green,blue))
 {
   assert(m_widget);
-  m_widget->GetLed()->m_signal_color_changed.connect(
-    boost::bind(
-      &ribi::QtLedWidget::repaint,
-      this));
-
-  m_widget->GetLed()->m_signal_intensity_changed.connect(
-    boost::bind(
-      &ribi::QtLedWidget::repaint,
-      this));
-
   m_widget->m_signal_geometry_changed.connect(
     boost::bind(
       &ribi::QtLedWidget::OnResize,

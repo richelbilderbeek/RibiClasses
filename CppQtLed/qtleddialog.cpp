@@ -157,13 +157,6 @@ void ribi::QtLedDialog::SetLed(const boost::shared_ptr<Led>& led) noexcept
       }
     }
 
-    //Disconnect m_led
-    m_led->m_signal_color_changed.disconnect(
-      boost::bind(&ribi::QtLedDialog::OnColorChanged,this,boost::lambda::_1)
-    );
-    m_led->m_signal_intensity_changed.disconnect(
-      boost::bind(&ribi::QtLedDialog::OnIntensityChanged,this,boost::lambda::_1)
-    );
   }
 
   //Replace m_led by the new one
@@ -174,24 +167,7 @@ void ribi::QtLedDialog::SetLed(const boost::shared_ptr<Led>& led) noexcept
   assert(m_led->GetIntensity() == intensity_after);
   assert(m_led->GetRed() == red_after);
 
-  m_led->m_signal_color_changed.connect(
-    boost::bind(&ribi::QtLedDialog::OnColorChanged,this,boost::lambda::_1)
-  );
-  m_led->m_signal_intensity_changed.connect(
-    boost::bind(&ribi::QtLedDialog::OnIntensityChanged,this,boost::lambda::_1)
-  );
-
-  //Emit everything that has changed
-  if (blue_changed || green_changed || red_changed)
-  {
-    m_led->m_signal_color_changed(m_led.get());
-  }
-  if (intensity_changed)
-  {
-    m_led->m_signal_intensity_changed(m_led.get());
-  }
-  assert( led ==  m_led);
-  assert(*led == *m_led);
+  assert(led == m_led);
 }
 
 

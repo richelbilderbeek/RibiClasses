@@ -38,11 +38,14 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 namespace ribi {
 
-///GUI indepedent widget class, modeled after the Qt and Wt architure
+///GUI independent widget class, modeled after the Qt and Wt architure
 struct Widget
 {
   typedef boost::geometry::model::d2::point_xy<double> Point;
   typedef boost::geometry::model::box<Point> Rect;
+
+  Widget();
+  virtual ~Widget() noexcept {}
 
   static Rect CreateRect(const double left, const double top, const double width, const double height) noexcept;
 
@@ -65,17 +68,16 @@ struct Widget
   void SetGeometry(const double left, const double top, const double width, const double height) noexcept;
 
   ///Respond to a change in size
-  mutable boost::signals2::signal<void ()> m_signal_geometry_changed;
+  //mutable boost::signals2::signal<void ()> m_signal_geometry_changed;
 
   protected:
-  virtual ~Widget() noexcept {}
-  friend void boost::checked_delete<>(      Widget*);
-  friend void boost::checked_delete<>(const Widget*);
-  friend class boost::detail::sp_ms_deleter<      Widget>;
-  friend class boost::detail::sp_ms_deleter<const Widget>;
 
   private:
   Rect m_geometry;
+
+  #ifndef NDEBUG
+  static void Test() noexcept;
+  #endif
 };
 
 } //~namespace ribi

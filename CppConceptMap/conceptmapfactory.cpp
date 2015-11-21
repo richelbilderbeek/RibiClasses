@@ -56,7 +56,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::Create(
   const std::vector<Edge>& edges
 ) const noexcept
 {
-  assert(ConceptMap::CanConstruct(nodes,edges));
+  assert(CanConstruct(nodes,edges));
   ConceptMap p(nodes,edges);
   assert(p.IsValid());
   assert(!p.GetVerbosity());
@@ -228,12 +228,9 @@ ribi::cmap::ConceptMapFactory::FromXmlAsTuple(const std::string &s) const
       edges.push_back(edge); //TODO: emplace_back here
     }
   }
-  assert(ConceptMap::CanConstruct(nodes,edges));
+  assert(CanConstruct(nodes,edges));
 
   return std::make_tuple(edges,nodes);
-  //ConceptMap conceptmap(nodes,edges);
-  //assert(conceptmap.IsValid());
-  //return conceptmap;
 }
 
 ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::FromXml(const std::string &s) const

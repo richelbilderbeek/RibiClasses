@@ -42,12 +42,8 @@ struct Led
     const double intensity    = 0.0,
     const int red   = 255,
     const int green =   0,
-    const int blue  =   0);
-  Led(const Led&) = delete;
-  Led& operator=(const Led&) = delete;
-
-  mutable boost::signals2::signal<void (Led*)> m_signal_color_changed;
-  mutable boost::signals2::signal<void (Led*)> m_signal_intensity_changed;
+    const int blue  =   0
+  );
 
   ///Set the Led its color
   void SetColor(
@@ -57,7 +53,7 @@ struct Led
   ) noexcept;
 
   ///Get the Led its blueness
-  int GetBlue()  const noexcept { return m_blue;  }
+  int GetBlue() const noexcept { return m_blue;  }
 
   ///Get the Led its greenness
   int GetGreen() const noexcept { return m_green; }
@@ -66,7 +62,7 @@ struct Led
   double GetIntensity() const noexcept { return m_intensity; }
 
   ///Get the Led its redness
-  int GetRed() const noexcept { return m_red;   }
+  int GetRed() const noexcept { return m_red; }
 
   ///Obtain this class its version
   static std::string GetVersion() noexcept;
@@ -90,13 +86,6 @@ struct Led
   std::string ToXml() const noexcept;
 
   private:
-  virtual ~Led() noexcept {}
-  friend void boost::checked_delete<>(Led*);
-  friend void boost::checked_delete<>(const Led*);
-  friend struct std::default_delete<      Led>;
-  friend struct std::default_delete<const Led>;
-  friend class boost::detail::sp_ms_deleter<      Led>;
-  friend class boost::detail::sp_ms_deleter<const Led>;
 
   ///The Led its blueness, range [0.0,255]
   int m_blue;
@@ -120,6 +109,7 @@ struct Led
 
 std::ostream& operator<<(std::ostream& os, const Led& led) noexcept;
 bool operator==(const Led& lhs, const Led& rhs) noexcept;
+bool operator!=(const Led& lhs, const Led& rhs) noexcept;
 
 } //~namespace ribi
 

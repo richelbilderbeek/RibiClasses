@@ -13,19 +13,21 @@ namespace ribi {
 
 struct ProgramTypes
 {
+  ProgramTypes();
+
   ///Convert a type to its enum name
   ///For example, ProgramType 'x' becomes std::string "x"
-  static std::string ProgramTypeToEnumName(const ProgramType t) noexcept;
+  std::string ProgramTypeToEnumName(const ProgramType t) const noexcept;
 
   ///Convert a type to its screen name
   ///For example, ProgramType 'abcDef' might become std::string "Abc Def"
-  static std::string ProgramTypeToScreenName(const ProgramType t) noexcept;
+  std::string ProgramTypeToScreenName(const ProgramType t) const noexcept;
 
-  static ProgramType EnumNameToProgramType(const std::string& s);
+  ProgramType EnumNameToProgramType(const std::string& s) const;
 
-  static std::vector<std::string> GetAllEnumNames() noexcept;
-  static std::vector<std::string> GetAllScreenNames() noexcept;
-  static std::vector<ProgramType> GetAll() noexcept;
+  std::vector<std::string> GetAllEnumNames() const noexcept;
+  std::vector<std::string> GetAllScreenNames() const noexcept;
+  std::vector<ProgramType> GetAll() const noexcept;
 
   private:
   ///Created by lazy initialization

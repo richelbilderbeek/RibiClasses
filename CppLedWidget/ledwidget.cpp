@@ -26,8 +26,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <iostream>
 
 #include <boost/math/constants/constants.hpp>
+#include <boost/geometry/algorithms/equals.hpp>
 
-#include "led.h"
 #include "testtimer.h"
 #include "textcanvas.h"
 #include "trace.h"
@@ -42,7 +42,7 @@ ribi::LedWidget::LedWidget(
   const unsigned char red,
   const unsigned char green,
   const unsigned char blue)
-  : m_led(new Led(intensity,red,green,blue))
+  : m_led(intensity,red,green,blue)
 {
   #ifndef NDEBUG
   Test();
@@ -50,14 +50,9 @@ ribi::LedWidget::LedWidget(
   this->SetGeometry(x,y,width,height);
 }
 
-ribi::LedWidget::~LedWidget() noexcept
-{
-  //OK
-}
-
 std::string ribi::LedWidget::GetVersion() noexcept
 {
-  return "1.4";
+  return "2.0";
 }
 
 std::vector<std::string> ribi::LedWidget::GetVersionHistory() noexcept
@@ -67,7 +62,8 @@ std::vector<std::string> ribi::LedWidget::GetVersionHistory() noexcept
     "2011-08-17: Version 1.1: emit a signal when the color is changed",
     "2011-08-20: Version 1.2: added operator<<",
     "2011-09-08: Version 1.3: removed redundant signals",
-    "2014-03-28: Version 1.4: replaced custom Rect class by Boost.Geometry"
+    "2014-03-28: Version 1.4: replaced custom Rect class by Boost.Geometry",
+    "2015-11-21: Version 2.0: made LedWidget a regular data type"
   };
 }
 
@@ -80,6 +76,73 @@ void ribi::LedWidget::Test() noexcept
     is_tested = true;
   }
   const TestTimer test_timer(__func__,__FILE__,1.0);
+  {
+    const LedWidget a;
+    const LedWidget b;
+    assert(a == b);
+  }
+  {
+    const LedWidget a(0,0,32,32,0.0,255,0,0);
+    const LedWidget b(0,0,32,32,0.0,255,0,0);
+    assert(a == b);
+  }
+  //operator=
+  {
+    const LedWidget a(0,0,32,32,0.0,255,0,0);
+    LedWidget b(a);
+    assert(a == b);
+  }
+  //operator=
+  {
+    const LedWidget a(0,0,32,32,0.0,255,0,0);
+    LedWidget b(0,0,32,32,0.0,255,0,255);
+    assert(a != b);
+    b = a;
+    assert(a == b);
+  }
+  //operator!= for each constructor element
+  {
+    const LedWidget a(0,0,32,32,0.0,255,0,0);
+    const LedWidget b(1,0,32,32,0.0,255,0,0);
+    assert(a != b);
+  }
+  {
+    const LedWidget a(0,0,32,32,0.0,255,0,0);
+    const LedWidget b(0,1,32,32,0.0,255,0,0);
+    assert(a != b);
+  }
+  {
+    const LedWidget a(0,0,32,32,0.0,255,0,0);
+    const LedWidget b(0,0,16,32,0.0,255,0,0);
+    assert(a != b);
+  }
+  {
+    const LedWidget a(0,0,32,32,0.0,255,0,0);
+    const LedWidget b(0,0,32,16,0.0,255,0,0);
+    assert(a != b);
+  }
+  {
+    const LedWidget a(0,0,32,32,0.0,255,0,0);
+    const LedWidget b(0,0,32,32,1.0,255,0,0);
+    assert(a != b);
+  }
+  {
+    const LedWidget a(0,0,32,32,0.0,255,0,0);
+    const LedWidget b(0,0,32,32,0.0,  0,0,0);
+    assert(a != b);
+  }
+  {
+    const LedWidget a(0,0,32,32,0.0,255,  0,0);
+    const LedWidget b(0,0,32,32,0.0,255,255,0);
+    assert(a != b);
+  }
+  {
+    const LedWidget a(0,0,32,32,0.0,255,0,  0);
+    const LedWidget b(0,0,32,32,0.0,255,0,255);
+    assert(a != b);
+  }
+
+  assert(!"Green");
 }
 #endif
 
@@ -96,11 +159,11 @@ const boost::shared_ptr<ribi::TextCanvas> ribi::LedWidget::ToCanvas(const int ra
   //Inside circle
   {
     const std::vector<char> gradient { Canvas::GetAsciiArtGradient() };
-    const double f_b { static_cast<double>(GetLed()->GetBlue() ) / 255.0 };
-    const double f_g { static_cast<double>(GetLed()->GetGreen()) / 255.0 };
-    const double f_r { static_cast<double>(GetLed()->GetRed()  ) / 255.0 };
+    const double f_b { static_cast<double>(GetLed().GetBlue() ) / 255.0 };
+    const double f_g { static_cast<double>(GetLed().GetGreen()) / 255.0 };
+    const double f_r { static_cast<double>(GetLed().GetRed()  ) / 255.0 };
     const double f_c { (f_r + f_g + f_b) / 3.0 }; //Fraction of color
-    const double f_i { GetLed()->GetIntensity() };
+    const double f_i { GetLed().GetIntensity() };
     const double f { f_c * f_i };
     const int gradient_index {
       static_cast<int>(
@@ -151,9 +214,20 @@ std::ostream& ribi::operator<<(std::ostream& os, const LedWidget& widget) noexce
 {
   os
     << "<LedWidget>"
-    //<< widget.GetGeometry()
-    << *widget.m_led
+    << widget.m_led
     << "</LedWidget>";
   return os;
 }
 
+bool ribi::operator==(const LedWidget& lhs, const LedWidget& rhs) noexcept
+{
+  using boost::geometry::equals;
+  return lhs.GetLed() == rhs.GetLed()
+    && equals(lhs.GetGeometry(),rhs.GetGeometry())
+  ;
+}
+
+bool ribi::operator!=(const LedWidget& lhs, const LedWidget& rhs) noexcept
+{
+  return !(lhs == rhs);
+}

@@ -63,7 +63,7 @@ ribi::cmap::ConceptMap::ConceptMap(const std::string& question) noexcept
 {
   #ifndef NDEBUG
   Test();
-  assert(ConceptMap::CanConstruct(m_nodes,m_edges));
+  assert(CanConstruct(m_nodes,m_edges));
   assert(FindCenterNode()
     && "Assume a CenterNode at the center of ConceptMap");
   assert(IsCenterNode(*FindCenterNode())
@@ -85,7 +85,7 @@ ribi::cmap::ConceptMap::ConceptMap(
 {
   #ifndef NDEBUG
   Test();
-  if (!ConceptMap::CanConstruct(nodes,edges))
+  if (!CanConstruct(nodes,edges))
   {
     TRACE("ERROR");
     const std::size_t n_nodes = nodes.size();
@@ -108,7 +108,7 @@ ribi::cmap::ConceptMap::ConceptMap(
         << '\n';
     }
   }
-  assert(ConceptMap::CanConstruct(nodes,edges));
+  assert(CanConstruct(nodes,edges));
   assert(IsValid());
   #endif
 }
@@ -243,13 +243,12 @@ void ribi::cmap::ConceptMap::AddNode(const Node& node) noexcept
 }
 
 
-bool ribi::cmap::ConceptMap::CanConstruct(
-  const Nodes& nodes,
-  const Edges& edges
+bool ribi::cmap::CanConstruct(
+  const std::vector<Node>& nodes,
+  const std::vector<Edge>& edges,
+  const bool verbose
 ) noexcept
 {
-  const bool verbose{true};
-
   //Test if there are 'two-way' edges, that is, one edge going from A to B
   //and another edge going from B to A
   {
@@ -378,7 +377,7 @@ ribi::cmap::ConceptMap::SubConceptMaps ribi::cmap::ConceptMap::CreateSubs() cons
     //const auto iter = container().FindIf(nodes,[](const auto& node) { return IsCenterNode(node); } );
     const auto iter = std::find_if(std::begin(nodes),std::end(nodes),[](const Node& node) { return IsCenterNode(node); } );
     if (iter != nodes.end()) { std::swap(nodes.front(),*iter); }
-    assert(ConceptMap::CanConstruct(nodes,edges) && "Only construct valid concept maps");
+    assert(CanConstruct(nodes,edges) && "Only construct valid concept maps");
     const ConceptMap conceptmap(nodes,edges);
     assert(conceptmap.IsValid());
     v.push_back(conceptmap);
@@ -798,13 +797,6 @@ bool ribi::cmap::operator==(const ConceptMap& lhs, const ConceptMap& rhs) noexce
     if (verbose) { TRACE("Selectedness differs"); }
     return false;
   }
-  #ifdef CONCEPTMAP_USE_QUNDOSTACK
-  if (lhs.m_undo.count() != rhs.m_undo.count())
-  {
-    if (verbose) { TRACE("Undo stack differs"); }
-    return false; //Proxy
-  }
-  #endif // CONCEPTMAP_USE_QUNDOSTACK
   return true;
 
 }
@@ -895,25 +887,6 @@ ribi::cmap::Node ribi::cmap::ConceptMap::CreateNewNode() noexcept
 
   return node;
 }
-
-#ifdef CONCEPTMAP_USE_QUNDOSTACK
-void ribi::cmap::ConceptMap::DoCommand(Command * const command) noexcept
-{
-  #ifndef NDEBUG
-  const int before{m_undo.count()};
-  #endif //NDEBUG
-
-  assert(command);
-
-  //Push and, by this, do the command
-  m_undo.push(command);
-
-  #ifndef NDEBUG
-  const int after{m_undo.count()};
-  assert(after == before + 1);
-  #endif // NDEBUG
-}
-#endif // CONCEPTMAP_USE_QUNDOSTACK
 
 std::vector<ribi::cmap::Edge> ribi::cmap::ConceptMap::GetRandomEdges(
   std::vector<Edge> edges_to_exclude
@@ -1030,22 +1003,6 @@ bool ribi::cmap::ConceptMap::IsSelected(const Node& node) const noexcept
   return false;
 }
 
-#ifdef CONCEPTMAP_USE_QUNDOSTACK
-void ribi::cmap::ConceptMap::OnUndo() noexcept
-{
-  assert(m_undo.canUndo());
-  m_undo.undo();
-}
-#endif // CONCEPTMAP_USE_QUNDOSTACK
-
-#ifdef CONCEPTMAP_USE_QUNDOSTACK
-void ribi::cmap::ConceptMap::Redo() noexcept
-{
-  assert(m_undo.canRedo());
-  m_undo.redo();
-}
-#endif // CONCEPTMAP_USE_QUNDOSTACK
-
 void ribi::cmap::ConceptMap::RemoveSelected(const std::vector<Edge>& edges) noexcept
 {
   if (GetVerbosity())
@@ -1156,18 +1113,26 @@ void ribi::cmap::ConceptMap::SetSelected(const EdgesAndNodes& nodes_and_edges) n
 
 std::string ribi::cmap::ToXml(const ConceptMap& map) noexcept
 {
+  assert(CanConstruct(map.GetNodes(),map.GetEdges()));
   std::stringstream s;
   s << "<concept_map>";
   s << "<nodes>";
-  const auto& nodes = map.GetNodes();
+  const std::vector<Node>& nodes = map.GetNodes();
+  ass
+  assert(CanConstruct(nodes,map.GetEdges()));
+  assert(CanConstruct(nodes, {} ));
   for (const auto& node: nodes)
   {
     s << node.ToXml();
   }
   s << "</nodes>";
   s << "<edges>";
-  for (const auto& edge: map.GetEdges())
+  const std::vector<Edge>& edges = map.GetEdges();
+  assert(CanConstruct(nodes,map.GetEdges(),true));
+  assert(CanConstruct(nodes,edges,true));
+  for (const auto& edge: edges)
   {
+    assert(CanConstruct(nodes, { edge } ));
     s << Edge::ToXml(edge,nodes);
   }
   s << "</edges>";
@@ -1176,14 +1141,6 @@ std::string ribi::cmap::ToXml(const ConceptMap& map) noexcept
   const std::string r = s.str();
   return r;
 }
-
-#ifdef CONCEPTMAP_USE_QUNDOSTACK
-void ribi::cmap::ConceptMap::Undo() noexcept
-{
-  assert(m_undo.canUndo());
-  m_undo.undo();
-}
-#endif // CONCEPTMAP_USE_QUNDOSTACK
 
 void ribi::cmap::ConceptMap::Unselect(
   const EdgesAndNodes& edges_and_nodes

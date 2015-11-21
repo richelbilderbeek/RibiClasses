@@ -25,7 +25,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #include <boost/scoped_ptr.hpp>
 #include <boost/signals2.hpp>
-
+#include "led.h"
 #include "widget.h"
 #pragma GCC diagnostic pop
 
@@ -48,15 +48,11 @@ struct LedWidget : public Widget
     const unsigned char green =   0,
     const unsigned char blue  =   0
   );
-  LedWidget(const LedWidget&) = delete;
-  LedWidget& operator=(const LedWidget&) = delete;
-  ~LedWidget() noexcept;
+  ~LedWidget() noexcept {}
 
-  ///Obtain a read-only pointer to Led
-  const Led * GetLed() const noexcept { return m_led.get(); }
-
-  ///Obtain a read-and-write pointer to Led
-  Led * GetLed() noexcept { return m_led.get(); }
+  ///Obtain the LED
+  const Led& GetLed() const noexcept { return m_led; }
+        Led& GetLed()       noexcept { return m_led; }
 
   ///Obtain the version of this class
   static std::string GetVersion() noexcept;
@@ -72,12 +68,14 @@ struct LedWidget : public Widget
 
   private:
   ///The LED
-  boost::scoped_ptr<Led> m_led;
+  Led m_led;
 
   friend std::ostream& operator<<(std::ostream& os, const LedWidget& widget) noexcept;
 };
 
 std::ostream& operator<<(std::ostream& os, const LedWidget& widget) noexcept;
+bool operator==(const LedWidget& lhs, const LedWidget& rhs) noexcept;
+bool operator!=(const LedWidget& lhs, const LedWidget& rhs) noexcept;
 
 } //~namespace ribi
 
