@@ -28,8 +28,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
-#include <boost/checked_delete.hpp>
-#include <boost/signals2.hpp>
+#include "dial.h"
+#include "drawcanvas.h"
 #include "widget.h"
 #pragma GCC diagnostic pop
 
@@ -50,16 +50,14 @@ struct DialWidget : public Widget
     const int height = 100,
     const unsigned char red = 255,
     const unsigned char green = 255,
-    const unsigned char blue = 255);
+    const unsigned char blue = 255
+  );
 
   ///Click on the Dial
   void Click(const int x, const int y) noexcept;
 
-  ///Obtain a read-and-write pointert to the Dial
-  Dial * GetDial() noexcept { return m_dial.get(); }
-
-  ///Obtain a read-only pointert to the Dial
-  const Dial * GetDial() const noexcept { return m_dial.get(); }
+  const Dial& GetDial() const noexcept { return m_dial; }
+        Dial& GetDial()       noexcept { return m_dial; }
 
   ///Obtain this class its version
   static std::string GetVersion() noexcept;
@@ -71,22 +69,17 @@ struct DialWidget : public Widget
   bool IsClicked(const int x, const int y) const noexcept;
 
   ///Convert to a DrawCanvas
-  const boost::shared_ptr<DrawCanvas> ToDrawCanvas(const int radius) const noexcept;
+  DrawCanvas ToDrawCanvas(const int radius) const noexcept;
 
   ///Convert to a TextCanvas
-  const boost::shared_ptr<TextCanvas> ToTextCanvas(const int radius) const noexcept;
+  TextCanvas ToTextCanvas(const int radius) const noexcept;
 
   private:
 
   ///Test this class
   static void Test() noexcept;
 
-  //DialWidget can only be deleted by Boost smart pointers
-  virtual ~DialWidget() noexcept {}
-  friend void boost::checked_delete<>(DialWidget*);
-  friend void boost::checked_delete<>(const DialWidget*);
-
-  boost::scoped_ptr<Dial> m_dial;
+  Dial m_dial;
 
   friend std::ostream& operator<<(std::ostream& os, const DialWidget& widget) noexcept;
 };

@@ -41,12 +41,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmapexamplesfactory.h"
 #include "conceptmaphelper.h"
 #include "conceptmapnodefactory.h"
-//#include "conceptmapcommand.h"
-//#include "conceptmapcommandaddselectedrandom.h"
-//#include "conceptmapcommandcreatenewnode.h"
-//#include "conceptmapcommandcreatenewedge.h"
-//#include "conceptmapcommandfactory.h"
-//#include "conceptmapcommandunselectrandom.h"
 #include "conceptmapfactory.h"
 #include "conceptmapnode.h"
 #include "container.h"
@@ -91,7 +85,7 @@ ribi::cmap::ConceptMap::ConceptMap(
     const std::size_t n_nodes = nodes.size();
     for (std::size_t i=0; i!=n_nodes; ++i)
     {
-      std::cout << i << ": " << nodes[i].ToXml() << '\n';
+      std::cout << i << ": " << ToXml(nodes[i]) << '\n';
     }
 
     const std::size_t n_edges = edges.size();
@@ -119,9 +113,11 @@ ribi::cmap::ConceptMap::ConceptMap(const ConceptMap& rhs)
     m_selected{},
     m_verbose{false}
 {
+  using EdgesAndNodes = std::tuple<std::vector<Edge>,std::vector<Node>>;
   assert(rhs.IsValid());
-  const auto xml = ToXml(rhs);
-  const auto t = ConceptMapFactory().FromXmlAsTuple(xml);
+  assert(CanConstruct(rhs.GetNodes(),rhs.GetEdges()));
+  const std::string xml{ToXml(rhs)};
+  const EdgesAndNodes t{ConceptMapFactory().FromXmlAsTuple(xml)};
   assert(CanConstruct(std::get<1>(t),std::get<0>(t)));
   m_edges = std::get<0>(t);
   m_nodes = std::get<1>(t);
@@ -252,10 +248,10 @@ bool ribi::cmap::CanConstruct(
   //Test if there are 'two-way' edges, that is, one edge going from A to B
   //and another edge going from B to A
   {
-    const int n_edges = edges.size();
-    for (int i=0; i!=n_edges; ++i)
+    const int n_edges{static_cast<int>(edges.size())};
+    for (int i{0}; i!=n_edges; ++i)
     {
-      const auto& edge_a = edges[i];
+      const Edge& edge_a{edges[i]};
       if (!edge_a.GetFrom())
       {
         if (verbose) { TRACE("edge_a.GetFrom() is nullptr"); }
@@ -266,13 +262,13 @@ bool ribi::cmap::CanConstruct(
         if (verbose) { TRACE("edge_a.GetTo() is nullptr"); }
         return false;
       }
-      const auto a_from = edge_a.GetFrom();
-      const auto a_to   = edge_a.GetTo();
-      for (int j=i+1; j!=n_edges; ++j)
+      const Node *a_from{edge_a.GetFrom()};
+      const Node *a_to  {edge_a.GetTo()  };
+      for (int j{i+1}; j!=n_edges; ++j)
       {
         assert(i != j);
         assert(j < n_edges);
-        const auto& edge_b = edges[j];
+        const Edge& edge_b{edges[j]};
         if (!edge_b.GetFrom())
         {
           if (verbose) { TRACE("edge_b.GetFrom() is nullptr"); }
@@ -283,8 +279,8 @@ bool ribi::cmap::CanConstruct(
           if (verbose) { TRACE("edge_b.GetTo() is nullptr"); }
           return false;
         }
-        const auto b_from = edge_b.GetFrom();
-        const auto b_to   = edge_b.GetTo();
+        const Node *b_from{edge_b.GetFrom()};
+        const Node *b_to  {edge_b.GetTo()};
         if (a_from == b_from && a_to == b_to)
         {
           if (verbose) { TRACE("Cannot have two edges from the same node to the same node"); }
@@ -1113,24 +1109,49 @@ void ribi::cmap::ConceptMap::SetSelected(const EdgesAndNodes& nodes_and_edges) n
 
 std::string ribi::cmap::ToXml(const ConceptMap& map) noexcept
 {
+  assert(map.IsValid());
   assert(CanConstruct(map.GetNodes(),map.GetEdges()));
   std::stringstream s;
   s << "<concept_map>";
   s << "<nodes>";
-  const std::vector<Node>& nodes = map.GetNodes();
-  ass
-  assert(CanConstruct(nodes,map.GetEdges()));
+  const std::vector<Node>& nodes{map.GetNodes()};
+  assert(CanConstruct(nodes,map.GetEdges(),true));
   assert(CanConstruct(nodes, {} ));
-  for (const auto& node: nodes)
+  assert(CanConstruct(nodes,map.GetEdges(),true));
+  const int n_nodes{static_cast<int>(nodes.size())};
+  for (int i=0; i!=n_nodes; ++i)
   {
-    s << node.ToXml();
+    assert(CanConstruct(nodes,map.GetEdges(),true));
+    s << ToXml(nodes[i]); //ToXml is a noexcept free function
+    assert(CanConstruct(nodes,map.GetEdges(),true)); //Crashes here
   }
+
+//  std::for_each(
+//    std::begin(nodes),std::end(nodes),
+//    [&s,&nodes,&map](const Node& node)
+//    {
+//      assert(CanConstruct(nodes,map.GetEdges(),true));
+//      s << node.ToXml();
+//      assert(CanConstruct(nodes,map.GetEdges(),true));
+//    }
+//  );
+//  for (const Node& node: nodes)
+//  {
+//    assert(CanConstruct(nodes,map.GetEdges(),true));
+//    s << node.ToXml();
+//    assert(CanConstruct(nodes,map.GetEdges(),true));
+//  }
   s << "</nodes>";
   s << "<edges>";
-  const std::vector<Edge>& edges = map.GetEdges();
   assert(CanConstruct(nodes,map.GetEdges(),true));
+  const std::vector<Edge>& edges{map.GetEdges()};
+  assert(edges.empty() || &edges[0] == &map.GetEdges()[0]);
+  assert(nodes.empty() || &nodes[0] == &map.GetNodes()[0]);
+  assert(&edges == &map.GetEdges());
+  assert(&nodes == &map.GetNodes());
+  assert(CanConstruct(nodes,map.GetEdges(),true)); //Crashes here
   assert(CanConstruct(nodes,edges,true));
-  for (const auto& edge: edges)
+  for (const Edge& edge: edges)
   {
     assert(CanConstruct(nodes, { edge } ));
     s << Edge::ToXml(edge,nodes);

@@ -73,7 +73,6 @@ struct Node
   ///Set the y coordinat
   void SetY(const double y) noexcept;
 
-  std::string ToXml() const noexcept;
   std::string ToStr() const noexcept;
 
   protected:
@@ -131,6 +130,8 @@ bool IsCenterNode(const Node& node) noexcept;
 
 ///To uniquely identify all Nodes
 bool HaveSameIds(const Node& lhs, const Node& rhs) noexcept;
+
+std::string ToXml(const Node& node) noexcept;
 
 bool operator==(const Node& lhs, const Node& rhs) noexcept;
 bool operator!=(const Node& lhs, const Node& rhs) noexcept;

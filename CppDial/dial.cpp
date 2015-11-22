@@ -128,6 +128,9 @@ void ribi::Dial::Test() noexcept
     if (is_tested) return;
     is_tested = true;
   }
+  {
+    Geometry();
+  }
   const TestTimer test_timer(__func__,__FILE__,1.0);
   {
     const Dial a;
@@ -171,7 +174,6 @@ void ribi::Dial::Test() noexcept
     b = a;
     assert(a == b);
   }
-  assert(!"Green");
 }
 #endif
 

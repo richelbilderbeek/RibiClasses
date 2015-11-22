@@ -196,8 +196,8 @@ void ribi::cmap::NodeFactory::Test() noexcept
   {
     for (const auto node: NodeFactory().GetTests())
     {
-      const auto str = node.ToXml();
-      const auto node_again = NodeFactory().FromXml(str);
+      const std::string str{ToXml(node)};
+      const Node node_again{NodeFactory().FromXml(str)};
       assert(node == node_again);
     }
   }

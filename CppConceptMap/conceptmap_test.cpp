@@ -102,9 +102,11 @@ void ribi::cmap::ConceptMap::Test() noexcept
   }
   if (verbose) { TRACE("Copy contructor of complex homomorphous concept map [1]"); }
   {
-    const auto m = ConceptMapFactory().GetComplexHomomorphousTestConceptMap1();
+    const ConceptMap m{
+      ConceptMapFactory().GetComplexHomomorphousTestConceptMap1()
+    };
     assert(m.IsValid());
-    const ConceptMap n(m);
+    const ConceptMap n{m};
     assert(m == n);
   }
   if (verbose) { TRACE("Copy contructor of complex homomorphous concept maps"); }

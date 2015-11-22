@@ -65,15 +65,7 @@ struct Canvas
   ///Convert the Canvas to std::strings
   virtual std::vector<std::string> ToStrings() const noexcept = 0;
 
-  ///This signal is emitted when any member variable changes
-  //boost::signals2::signal<void(Canvas*)> m_signal_changed;
-
   private:
-  ///From http://www.richelbilderbeek.nl/CppGetRegexMatches.htm
-  //static std::vector<std::string> GetRegexMatches(
-  //  const std::string& s,
-  //  const QRegExp& r
-  //) noexcept;
 
   ///Check if a coordinat is in the range of the Canvas
   bool IsInRange(const int x, const int y) const;

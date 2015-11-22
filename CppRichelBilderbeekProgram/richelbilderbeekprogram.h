@@ -1482,21 +1482,6 @@ struct ProgramTestMultiVector : public ProgramClass
   std::string GetUrl() const noexcept override final { return "ToolTestMultiVector.htm"; }
 };
 
-struct ProgramTestPlane : public ProgramClass
-{
-  std::string GetFilenameConsole() const noexcept override final { return ""; }
-  std::string GetFilenameDesktop() const noexcept override final { return "ToolTestPlane_1_1.png"; }
-  std::string GetFilenameDesktopWindowsOnly() const noexcept override final { return ""; }
-  std::string GetFilenameWeb() const noexcept override final { return ""; }
-  std::string GetScreenName() const noexcept override final { return "TestPlane"; }
-  ProgramStatus GetStatusConsole() const noexcept override final { return ProgramStatus::yes; }
-  ProgramStatus GetStatusDesktopWindowsOnly() const noexcept override final { return ProgramStatus::nvr; }
-  ProgramStatus GetStatusDesktop() const noexcept override final { return ProgramStatus::yes; }
-  ProgramStatus GetStatusWebApplication() const noexcept override final { return ProgramStatus::no; }
-  ProgramType GetType() const noexcept override final { return ProgramType::testPlane; }
-  std::string GetUrl() const noexcept override final { return "ToolTestPlane.htm"; }
-};
-
 struct ProgramTestNdsmake : public ProgramClass
 {
   std::string GetFilenameConsole() const noexcept override final { return ""; }

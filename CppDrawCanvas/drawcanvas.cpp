@@ -431,10 +431,10 @@ void ribi::DrawCanvas::PlotSurface(
 template <class Container>
 const typename Container::value_type::value_type ribi::DrawCanvas::MinElement(const Container& v)
 {
-  assert(v.empty() == false && "Container must have a size");
+  assert(!v.empty() && "Container must have a size");
   //Obtain an initial lowest value
   typename Container::value_type::value_type minValue
-    = *(std::min_element(v[0].begin(),v[0].end()));
+    = *(std::min_element(std::begin(v[0]),std::end(v[0])));
 
   //Set the iterators
   const typename Container::const_iterator rowEnd = v.end();
@@ -721,7 +721,8 @@ std::ostream& ribi::operator<<(std::ostream& os, const DrawCanvas& canvas)
     os,
     canvas.m_canvas,
     canvas.m_color_system == ribi::CanvasColorSystem::normal,
-    canvas.m_coordinat_system == ribi::CanvasCoordinatSystem::screen);
+    canvas.m_coordinat_system == ribi::CanvasCoordinatSystem::screen
+  );
   return os;
 }
 

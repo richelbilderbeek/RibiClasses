@@ -49,7 +49,7 @@ ribi::DialWidget::DialWidget(
   const unsigned char red,
   const unsigned char green,
   const unsigned char blue)
-  : m_dial(new Dial(position,red,green,blue))
+  : m_dial{position,red,green,blue}
 {
   #ifndef NDEBUG
   Test();
@@ -71,12 +71,12 @@ void ribi::DialWidget::Click(const int x,const int y) noexcept
   const double position = angle / (2.0 * pi);
   assert(position >= 0.0);
   assert(position <= 1.0);
-  m_dial->SetPosition(position);
+  m_dial.SetPosition(position);
 }
 
 std::string ribi::DialWidget::GetVersion() noexcept
 {
-  return "2.5";
+  return "3.0";
 }
 
 std::vector<std::string> ribi::DialWidget::GetVersionHistory() noexcept
@@ -89,6 +89,7 @@ std::vector<std::string> ribi::DialWidget::GetVersionHistory() noexcept
     "2011-09-08: Version 2.3: check for clicking on the dial, instead of its rectangle",
     "2013-04-30: Version 2.4: added testing, fixed bug in GetAngle",
     "2014-03-28: Version 2.5: replaced custom Rect class by Boost.Geometry",
+    "2015-11-22: Version 3.0: made this class a regular data type",
   };
 }
 
@@ -119,31 +120,34 @@ void ribi::DialWidget::Test() noexcept
     DrawCanvas();
     TextCanvas();
     Geometry();
+    Dial();
   }
   const TestTimer test_timer(__func__,__FILE__,1.0);
   {
-    const boost::shared_ptr<DialWidget> w(new DialWidget);
-    assert(w->GetDial());
+    DialWidget a;
+    DialWidget b;
+    assert(a == b);
+  }
+  {
+    DialWidget w;
     for (double position = 0.0; position < 1.0; position += 0.0625)
     {
-      w->GetDial()->SetPosition(position);
+      w.GetDial().SetPosition(position);
       std::stringstream s;
-      s << '\n' << (*w->ToTextCanvas(4));
+      s << '\n' << w.ToTextCanvas(4);
       assert(!s.str().empty());
 
-      s << '\n' << (*w->ToDrawCanvas(4));
+      s << '\n' << w.ToDrawCanvas(4);
       assert(!s.str().empty());
       //TRACE(s.str());
     }
   }
 }
 
-const boost::shared_ptr<ribi::DrawCanvas> ribi::DialWidget::ToDrawCanvas(const int radius) const noexcept
+ribi::DrawCanvas ribi::DialWidget::ToDrawCanvas(const int radius) const noexcept
 {
   assert(radius > 1);
-  boost::shared_ptr<ribi::DrawCanvas> canvas(
-    new DrawCanvas(1+(radius*2),1+(radius*2))
-  );
+  DrawCanvas canvas(1+(radius*2),1+(radius*2));
   const double pi = boost::math::constants::pi<double>();
 
   //Circle
@@ -151,27 +155,25 @@ const boost::shared_ptr<ribi::DrawCanvas> ribi::DialWidget::ToDrawCanvas(const i
     const double midx = static_cast<double>(radius);
     const double midy = static_cast<double>(radius);
     const double ray = static_cast<double>(radius);
-    canvas->DrawCircle(midx,midy,ray);
+    canvas.DrawCircle(midx,midy,ray);
   }
   //Pointer
   {
     const double midx = static_cast<double>(radius);
     const double midy = static_cast<double>(radius);
-    const double angle = GetDial()->GetPosition() * 2.0 * pi;
+    const double angle = GetDial().GetPosition() * 2.0 * pi;
     const double ray = static_cast<double>(radius);
     const double x = midx + (std::sin(angle) * ray);
     const double y = midy - (std::cos(angle) * ray);
-    canvas->DrawLine(midx,midy,x,y);
+    canvas.DrawLine(midx,midy,x,y);
   }
   return canvas;
 }
 
-const boost::shared_ptr<ribi::TextCanvas> ribi::DialWidget::ToTextCanvas(const int radius) const noexcept
+ribi::TextCanvas ribi::DialWidget::ToTextCanvas(const int radius) const noexcept
 {
   assert(radius > 1);
-  boost::shared_ptr<ribi::TextCanvas> canvas(
-    new TextCanvas(1+(radius*2),1+(radius*2))
-  );
+  TextCanvas canvas{1+(radius*2),1+(radius*2)};
   const double pi = boost::math::constants::pi<double>();
 
   //Circle
@@ -186,14 +188,14 @@ const boost::shared_ptr<ribi::TextCanvas> ribi::DialWidget::ToTextCanvas(const i
       const double ray = static_cast<double>(radius);
       const int x = static_cast<int>(std::round(midx + (std::sin(angle) * ray)));
       const int y = static_cast<int>(std::round(midy - (std::cos(angle) * ray)));
-      canvas->PutChar(x,y,'*');
+      canvas.PutChar(x,y,'*');
     }
   }
   //Pointer
   {
     char c = ' ';
     // modulo 8 as module 16 would result in a switch statement with case 0+x == case 8+x
-    const int quadrant = (static_cast<int>(GetDial()->GetPosition() * 16.0) % 16) % 8;
+    const int quadrant = (static_cast<int>(GetDial().GetPosition() * 16.0) % 16) % 8;
 
     switch (quadrant)
     {
@@ -211,7 +213,7 @@ const boost::shared_ptr<ribi::TextCanvas> ribi::DialWidget::ToTextCanvas(const i
     const int n_steps = radius;
     for (int i=0; i!=n_steps; ++i)
     {
-      const double angle = GetDial()->GetPosition() * 2.0 * pi;
+      const double angle = GetDial().GetPosition() * 2.0 * pi;
       assert(angle >= 0.0 * pi);
       assert(angle <= 2.0 * pi);
       const double midx = static_cast<double>(radius);
@@ -219,7 +221,7 @@ const boost::shared_ptr<ribi::TextCanvas> ribi::DialWidget::ToTextCanvas(const i
       const double ray = static_cast<double>(i);
       const int x = static_cast<int>(std::round(midx + (std::sin(angle) * ray)));
       const int y = static_cast<int>(std::round(midy - (std::cos(angle) * ray)));
-      canvas->PutChar(x,y,c);
+      canvas.PutChar(x,y,c);
     }
 
   }
@@ -230,7 +232,7 @@ std::ostream& ribi::operator<<(std::ostream& os, const DialWidget& widget) noexc
 {
   os
     << "<DialWidget>"
-    << *widget.m_dial
+    << widget.m_dial
     //<< widget.GetGeometry()
     << "</DialWidget>"
   ;

@@ -281,7 +281,7 @@ void ribi::cmap::Node::Test() noexcept
         //Test copy constructor
         const Node c(node);
         assert(node == c);
-        const std::string s = c.ToXml();
+        const std::string s{ToXml(c)};
         const Node d = NodeFactory().FromXml(s);
         assert(c == d);
       }
@@ -394,14 +394,14 @@ std::string ribi::cmap::Node::ToStr() const noexcept
   return s.str();
 }
 
-std::string ribi::cmap::Node::ToXml() const noexcept
+std::string ribi::cmap::ToXml(const Node& node) noexcept
 {
   std::stringstream s;
   s << "<node>";
-  s << GetConcept().ToXml();
-  s << "<x>" << GetX() << "</x>";
-  s << "<y>" << GetY() << "</y>";
-  s << "<is_center_node>" << IsCenterNode() << "</is_center_node>";
+  s << node.GetConcept().ToXml();
+  s << "<x>" << node.GetX() << "</x>";
+  s << "<y>" << node.GetY() << "</y>";
+  s << "<is_center_node>" << node.IsCenterNode() << "</is_center_node>";
   s << "</node>";
   const std::string r = s.str();
   assert(r.size() >= 13);
