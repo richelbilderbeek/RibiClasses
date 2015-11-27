@@ -78,6 +78,8 @@ public:
   std::vector<const QtEdge *> GetSelectedQtEdges() const noexcept;
   std::vector<const QtNode *> GetSelectedQtNodes() const noexcept;
 
+  const QUndoStack& GetUndo() const noexcept { return m_undo; }
+
   static std::string GetVersion() noexcept;
   static std::vector<std::string> GetVersionHistory() noexcept;
 
@@ -93,6 +95,8 @@ public:
   ///Test this class with a derived class instance
   static void Test() noexcept;
   #endif
+
+  void Undo() noexcept;
 
   ///Signal emitted when a concept map item requests to be edited
   boost::signals2::signal<void(QtRoundedEditRectItem*)> m_signal_conceptmapitem_requests_edit;

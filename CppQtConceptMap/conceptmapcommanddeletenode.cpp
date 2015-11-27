@@ -32,7 +32,7 @@ ribi::cmap::CommandDeleteNode::CommandDeleteNode(
   ConceptMap& conceptmap,
   const Node& node
 ) :
-    m_conceptmap{conceptmap},
+    m_conceptmap(conceptmap),
     m_deleted_edges{conceptmap.GetEdgesConnectedTo(node)},
     m_node{node},
     m_old_selected{conceptmap.GetSelected()},

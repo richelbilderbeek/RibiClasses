@@ -30,7 +30,7 @@ ribi::cmap::CommandCreateNewNode::CommandCreateNewNode(
   ConceptMap& conceptmap
 )
   : m_node{},
-    m_conceptmap{conceptmap}
+    m_conceptmap(conceptmap)
 {
   this->setText("create new node");
 }

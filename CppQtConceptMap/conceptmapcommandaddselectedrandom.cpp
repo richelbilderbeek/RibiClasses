@@ -10,7 +10,7 @@
 
 ribi::cmap::CommandAddSelectedRandom::CommandAddSelectedRandom(ConceptMap& conceptmap)
   :
-    m_conceptmap{conceptmap},
+    m_conceptmap(conceptmap),
     m_new_selected{conceptmap.GetSelected()},
     m_old_selected{conceptmap.GetSelected()}
 {

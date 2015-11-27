@@ -30,7 +30,7 @@ ribi::cmap::CommandDeleteEdge::CommandDeleteEdge(
   const Edge& edge
 )
   :
-    m_conceptmap{conceptmap},
+    m_conceptmap(conceptmap),
     m_edge{edge}
 {
   if (!m_conceptmap.HasEdge(m_edge))

@@ -83,7 +83,7 @@ struct Container
   }
 #else
   template <class T, class U>
-  typename T::const_iterator FindIf(const T& t, const U& p) const noexcept
+  typename T::const_iterator Find(const T& t, const U& p) const noexcept
   {
     return std::find(std::begin(t),std::end(t),p);
   }

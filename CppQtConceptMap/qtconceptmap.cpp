@@ -871,12 +871,14 @@ void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event) noexcept
         if (event->modifiers() & Qt::ShiftModifier)
         {
           TRACE("Try REDO");
-          if (GetConceptMap().CanRedo()) { GetConceptMap().Redo(); }
+          this->m_undo.redo();
+          //if (GetConceptMap().CanRedo()) { GetConceptMap().Redo(); }
         }
         else
         {
           TRACE("Try UNDO");
-          if (GetConceptMap().CanUndo()) { GetConceptMap().Undo(); }
+          this->m_undo.undo();
+          //if (GetConceptMap().CanUndo()) { GetConceptMap().Undo(); }
         }
       }
       return;

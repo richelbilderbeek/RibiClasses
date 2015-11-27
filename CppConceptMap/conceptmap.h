@@ -165,8 +165,6 @@ class ConceptMap
 
   void SetVerbosity(const bool verbose) noexcept { m_verbose = verbose; }
 
-  void Undo() noexcept;
-
 private:
 
   ///The edges

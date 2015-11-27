@@ -303,18 +303,18 @@ bool ribi::cmap::operator==(const ribi::cmap::Edge& lhs, const ribi::cmap::Edge&
   const bool verbose{false};
   if (verbose)
   {
-    if ( lhs.GetNode()      !=  rhs.GetNode()) TRACE("Node differs");
-    if (*lhs.GetFrom()      != *rhs.GetFrom()) TRACE("From node differs");
-    if (*lhs.GetTo()        != *rhs.GetTo()) TRACE("To node differs");
-    if ( lhs.HasHeadArrow() != rhs.HasHeadArrow()) TRACE("Has head arrow differs");
-    if ( lhs.HasTailArrow() != rhs.HasTailArrow()) TRACE("Has tail arrow differs");
+    if (lhs.GetNode()      != rhs.GetNode()) TRACE("Node differs");
+    if (lhs.GetFrom()      != rhs.GetFrom()) TRACE("From node differs");
+    if (lhs.GetTo()        != rhs.GetTo()) TRACE("To node differs");
+    if (lhs.HasHeadArrow() != rhs.HasHeadArrow()) TRACE("Has head arrow differs");
+    if (lhs.HasTailArrow() != rhs.HasTailArrow()) TRACE("Has tail arrow differs");
   }
   return
-        lhs.GetNode()      ==  rhs.GetNode()
-    && *lhs.GetFrom()      == *rhs.GetFrom()
-    && *lhs.GetTo()        == *rhs.GetTo()
-    &&  lhs.HasHeadArrow() == rhs.HasHeadArrow()
-    &&  lhs.HasTailArrow() == rhs.HasTailArrow()
+       lhs.GetNode()      == rhs.GetNode()
+    && lhs.GetFrom()      == rhs.GetFrom()
+    && lhs.GetTo()        == rhs.GetTo()
+    && lhs.HasHeadArrow() == rhs.HasHeadArrow()
+    && lhs.HasTailArrow() == rhs.HasTailArrow()
   ;
 }
 

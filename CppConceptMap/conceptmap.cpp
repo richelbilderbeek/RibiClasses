@@ -1114,7 +1114,7 @@ std::string ribi::cmap::ToXml(const ConceptMap& map) noexcept
   std::stringstream s;
   s << "<concept_map>";
   s << "<nodes>";
-  const std::vector<Node>& nodes{map.GetNodes()};
+  const std::vector<Node>& nodes = map.GetNodes();
   assert(CanConstruct(nodes,map.GetEdges(),true));
   assert(CanConstruct(nodes, {} ));
   assert(CanConstruct(nodes,map.GetEdges(),true));
@@ -1144,15 +1144,16 @@ std::string ribi::cmap::ToXml(const ConceptMap& map) noexcept
   s << "</nodes>";
   s << "<edges>";
   assert(CanConstruct(nodes,map.GetEdges(),true));
-  const std::vector<Edge>& edges{map.GetEdges()};
-  assert(edges.empty() || &edges[0] == &map.GetEdges()[0]);
-  assert(nodes.empty() || &nodes[0] == &map.GetNodes()[0]);
+  const std::vector<Edge>& edges = map.GetEdges();
   assert(&edges == &map.GetEdges());
   assert(&nodes == &map.GetNodes());
-  assert(CanConstruct(nodes,map.GetEdges(),true)); //Crashes here
+  assert(edges.empty() || &edges[0] == &map.GetEdges()[0]);
+  assert(nodes.empty() || &nodes[0] == &map.GetNodes()[0]);
+  assert(CanConstruct(nodes,map.GetEdges(),true)); //Crashed here, due to {} initialization of reference
   assert(CanConstruct(nodes,edges,true));
   for (const Edge& edge: edges)
   {
+    assert(container().Count(edges,edge) == 1);
     assert(CanConstruct(nodes, { edge } ));
     s << Edge::ToXml(edge,nodes);
   }

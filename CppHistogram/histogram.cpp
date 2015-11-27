@@ -28,8 +28,10 @@ Histogram::Histogram(
     const double min{lowest + (static_cast<double>(i + 0) * category_width)};
     const double max{lowest + (static_cast<double>(i + 1) * category_width)};
     const int n_values{
-      std::count_if(std::begin(v),std::end(v),
-        [min,max](const double x) { return x >= min && x < max; }
+      static_cast<int>(
+        std::count_if(std::begin(v),std::end(v),
+          [min,max](const double x) { return x >= min && x < max; }
+        )
       )
     };
     m_v.push_back(HistogramCategory(min,max,n_values));

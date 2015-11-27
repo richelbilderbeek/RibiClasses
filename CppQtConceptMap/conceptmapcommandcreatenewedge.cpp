@@ -35,7 +35,7 @@ ribi::cmap::CommandCreateNewEdge::CommandCreateNewEdge(
  : m_edge{},
    m_selected_nodes{conceptmap.GetSelectedNodes()},
    m_prev_selected{},
-   m_conceptmap{conceptmap},
+   m_conceptmap(conceptmap),
    m_verbose{false}
 {
   this->setText("create new edge");

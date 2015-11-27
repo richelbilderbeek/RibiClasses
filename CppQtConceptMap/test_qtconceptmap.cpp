@@ -32,8 +32,11 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "counter.h"
 #include "qtconceptmapcollect.h"
 #include "conceptmapfactory.h"
+#include "conceptmapcommandfactory.h"
+#include "conceptmapcommandaddselectedrandom.h"
 #include "conceptmapcommandcreatenewnode.h"
 #include "conceptmapcommanddeletenode.h"
+#include "conceptmapcommandunselectrandom.h"
 #include "conceptmap.h"
 #include "conceptmapedge.h"
 #include "conceptmapedgefactory.h"
@@ -285,73 +288,75 @@ void ribi::cmap::QtConceptMap::Test() noexcept
   //Commands
   if (verbose) { TRACE("A new command must be put in QUndoStack"); }
   {
-    ConceptMap conceptmap;
-    CommandCreateNewNode * const command {new CommandCreateNewNode(conceptmap)};
-    assert(conceptmap.GetUndo().count() == 0);
+    QtConceptMap qtconceptmap;
 
-    conceptmap.DoCommand(command);
+    CommandCreateNewNode * const command {new CommandCreateNewNode(qtconceptmap.GetConceptMap())};
+    assert(qtconceptmap.GetUndo().count() == 0);
 
-    assert(conceptmap.GetUndo().count() == 1);
+    qtconceptmap.DoCommand(command);
+
+    assert(qtconceptmap.GetUndo().count() == 1);
   }
   if (verbose) { TRACE("Start a concept map, create a node using a command"); }
   {
-    ConceptMap conceptmap;
-    assert(conceptmap.GetNodes().empty());
-    const auto command = new CommandCreateNewNode(conceptmap);
-    conceptmap.DoCommand(command);
-    assert(conceptmap.GetNodes().size() == 1);
+    QtConceptMap qtconceptmap;
+    assert(qtconceptmap.GetConceptMap().GetNodes().empty());
+    const auto command = new CommandCreateNewNode(qtconceptmap.GetConceptMap());
+    qtconceptmap.DoCommand(command);
+    assert(qtconceptmap.GetConceptMap().GetNodes().size() == 1);
     command->undo();
-    assert(conceptmap.GetNodes().size() == 0);
+    assert(qtconceptmap.GetConceptMap().GetNodes().size() == 0);
   }
   if (verbose) { TRACE("Start a concept map, create two nodes, unselect both, then select both using AddSelected"); }
   {
-    ConceptMap conceptmap;
+    QtConceptMap qtconceptmap;
     const int n_nodes = 2;
     //Create nodes
     for (int i=0; i!=n_nodes; ++i)
     {
-      const auto command = new CommandCreateNewNode(conceptmap);
-      conceptmap.DoCommand(command);
+      const auto command = new CommandCreateNewNode(qtconceptmap.GetConceptMap());
+      qtconceptmap.DoCommand(command);
     }
-    assert(static_cast<int>(conceptmap.GetNodes().size()) == n_nodes
+    assert(static_cast<int>(qtconceptmap.GetConceptMap().GetNodes().size()) == n_nodes
       && "Concept map must have two nodes");
-    assert(static_cast<int>(conceptmap.GetSelectedNodes().size()) == 2
+    assert(static_cast<int>(qtconceptmap.GetConceptMap().GetSelectedNodes().size()) == 2
       && "Freshly created nodes are selected");
 
     //Unselect both
     for (int i=0; i!=n_nodes; ++i)
     {
-      assert(static_cast<int>(conceptmap.GetSelectedNodes().size()) == 2 - i);
-      const auto command = new CommandUnselectRandom(conceptmap);
-      conceptmap.DoCommand(command);
-      assert(static_cast<int>(conceptmap.GetSelectedNodes().size()) == 1 - i);
+      assert(static_cast<int>(qtconceptmap.GetConceptMap().GetSelectedNodes().size()) == 2 - i);
+      const auto command = new CommandUnselectRandom(qtconceptmap.GetConceptMap());
+      qtconceptmap.DoCommand(command);
+      assert(static_cast<int>(qtconceptmap.GetConceptMap().GetSelectedNodes().size()) == 1 - i);
     }
-    assert(static_cast<int>(conceptmap.GetSelectedNodes().size()) == 0);
+    assert(static_cast<int>(qtconceptmap.GetConceptMap().GetSelectedNodes().size()) == 0);
 
     //Select both again
-    assert(static_cast<int>(conceptmap.GetSelectedNodes().size()) == 0);
+    assert(static_cast<int>(qtconceptmap.GetConceptMap().GetSelectedNodes().size()) == 0);
     for (int i=0; i!=n_nodes; ++i)
     {
-      assert(static_cast<int>(conceptmap.GetSelectedNodes().size()) == i);
-      const auto command = new CommandAddSelectedRandom(conceptmap);
-      conceptmap.DoCommand(command);
-      assert(static_cast<int>(conceptmap.GetSelectedNodes().size()) == i + 1);
+      assert(static_cast<int>(qtconceptmap.GetConceptMap().GetSelectedNodes().size()) == i);
+      const auto command = new CommandAddSelectedRandom(qtconceptmap.GetConceptMap());
+      qtconceptmap.DoCommand(command);
+      assert(static_cast<int>(qtconceptmap.GetConceptMap().GetSelectedNodes().size()) == i + 1);
     }
-    assert(static_cast<int>(conceptmap.GetSelectedNodes().size()) == 2);
+    assert(static_cast<int>(qtconceptmap.GetConceptMap().GetSelectedNodes().size()) == 2);
 
     //Undo selection
     for (int i=0; i!=n_nodes; ++i)
     {
-      assert(static_cast<int>(conceptmap.GetSelectedNodes().size()) == 2 - i);
-      const auto command = new CommandUnselectRandom(conceptmap);
-      conceptmap.DoCommand(command);
-      assert(static_cast<int>(conceptmap.GetSelectedNodes().size()) == 1 - i);
+      assert(static_cast<int>(qtconceptmap.GetConceptMap().GetSelectedNodes().size()) == 2 - i);
+      const auto command = new CommandUnselectRandom(qtconceptmap.GetConceptMap());
+      qtconceptmap.DoCommand(command);
+      assert(static_cast<int>(qtconceptmap.GetConceptMap().GetSelectedNodes().size()) == 1 - i);
     }
-    assert(static_cast<int>(conceptmap.GetSelectedNodes().size()) == 0);
+    assert(static_cast<int>(qtconceptmap.GetConceptMap().GetSelectedNodes().size()) == 0);
   }
   //Do all do and undo of a single command
   {
-    const int n_commands {CommandFactory().GetSize()};
+    QtConceptMap qtconceptmap;
+    const int n_commands{CommandFactory().GetSize()};
     for (int i=0; i!=n_commands; ++i)
     {
       auto conceptmap = ConceptMapFactory().GetHeteromorphousTestConceptMap(17);
@@ -363,9 +368,8 @@ void ribi::cmap::QtConceptMap::Test() noexcept
         if (cmd)
         {
           TRACE(cmd->text().toStdString());
-
-          conceptmap.DoCommand(cmd);
-          conceptmap.Undo();
+          qtconceptmap.DoCommand(cmd);
+          qtconceptmap.Undo();
         }
       }
       catch (std::logic_error& e)
@@ -379,6 +383,7 @@ void ribi::cmap::QtConceptMap::Test() noexcept
   const int n_depth = 1;
   if (n_depth >= 2)
   {
+    QtConceptMap qtconceptmap;
     const int n_commands { static_cast<int>(CommandFactory().GetSize()) };
     for (int i=0; i!=n_commands; ++i)
     {
@@ -395,9 +400,9 @@ void ribi::cmap::QtConceptMap::Test() noexcept
           {
             if (cmd)
             {
-              conceptmap.DoCommand(cmd);
-              conceptmap.Undo();
-              conceptmap.DoCommand(cmd);
+              qtconceptmap.DoCommand(cmd);
+              qtconceptmap.Undo();
+              qtconceptmap.DoCommand(cmd);
             }
           }
         }
