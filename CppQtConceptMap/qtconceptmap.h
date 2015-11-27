@@ -79,6 +79,7 @@ public:
   std::vector<const QtNode *> GetSelectedQtNodes() const noexcept;
 
   const QUndoStack& GetUndo() const noexcept { return m_undo; }
+        QUndoStack& GetUndo()       noexcept { return m_undo; }
 
   static std::string GetVersion() noexcept;
   static std::vector<std::string> GetVersionHistory() noexcept;
