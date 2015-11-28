@@ -106,6 +106,7 @@ void ribi::cmap::ConceptMap::Test() noexcept
       ConceptMapFactory().GetComplexHomomorphousTestConceptMap1()
     };
     assert(m.IsValid());
+    TRACE(m);
     const ConceptMap n{m};
     assert(m == n);
   }
@@ -180,39 +181,34 @@ void ribi::cmap::ConceptMap::Test() noexcept
       const Node node_a(CenterNodeFactory().CreateFromStrings("FOCAL QUESTION"));
       const Node node_b(NodeFactory().GetTests().at(1));
       const Node node_c(NodeFactory().GetTests().at(2));
+      Nodes nodes_a{
+        CenterNodeFactory().CreateFromStrings("FOCAL QUESTION"),
+        NodeFactory().GetTests().at(1),
+        NodeFactory().GetTests().at(2)
+      };
+      Edges edges_a;
       const ConceptMap map_a(
-        ConceptMapFactory().Create(
-          {
-            CenterNodeFactory().CreateFromStrings("FOCAL QUESTION"),
-            NodeFactory().GetTests().at(1),
-            NodeFactory().GetTests().at(2)
-          }
-        )
+        ConceptMapFactory().Create(nodes_a,edges_a)
       );
 
       assert(map_a.GetNodes().size() == 3);
-      const ConceptMap map_b(
-        ConceptMapFactory().Create(
-          {
-            CenterNodeFactory().CreateFromStrings("FOCAL QUESTION"),
-            NodeFactory().GetTests().at(1),
-            NodeFactory().GetTests().at(2)
-          }
-        )
-      );
+      Nodes nodes_b{
+        CenterNodeFactory().CreateFromStrings("FOCAL QUESTION"),
+        NodeFactory().GetTests().at(1),
+        NodeFactory().GetTests().at(2)
+      };
+      Edges edges_b;
+      const ConceptMap map_b(ConceptMapFactory().Create(nodes_b,edges_b));
       assert(map_b.GetNodes().size() == 3);
       assert(cmap::HasSameContent(map_a,map_b));
-
-      const ConceptMap map_c(
-        ConceptMapFactory().Create(
-          {
-            CenterNodeFactory().CreateFromStrings("FOCAL QUESTION"),
-            NodeFactory().GetTests().at(1),
-            NodeFactory().GetTests().at(2),
-            NodeFactory().GetTests().at(2)
-          }
-        )
-      );
+      Nodes nodes_c{
+        CenterNodeFactory().CreateFromStrings("FOCAL QUESTION"),
+        NodeFactory().GetTests().at(1),
+        NodeFactory().GetTests().at(2),
+        NodeFactory().GetTests().at(2)
+      };
+      Edges edges_c;
+      const ConceptMap map_c(ConceptMapFactory().Create(nodes_c,edges_c));
       assert(!HasSameContent(map_a,map_c));
       assert(!HasSameContent(map_b,map_c));
 

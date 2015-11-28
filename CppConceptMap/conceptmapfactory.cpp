@@ -51,9 +51,10 @@ ribi::cmap::ConceptMapFactory::ConceptMapFactory() noexcept
   #endif
 }
 
+
 ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::Create(
-  const std::vector<Node>& nodes,
-  const std::vector<Edge>& edges
+  std::vector<Node>& nodes,
+  std::vector<Edge>& edges
 ) const noexcept
 {
   assert(CanConstruct(nodes,edges));
@@ -235,7 +236,7 @@ ribi::cmap::ConceptMapFactory::FromXmlAsTuple(const std::string &s) const
 
 ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::FromXml(const std::string &s) const
 {
-  const auto t = FromXmlAsTuple(s);
+  auto t = FromXmlAsTuple(s);
   ConceptMap conceptmap(
     std::get<1>(t),
     std::get<0>(t)
@@ -303,13 +304,13 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
 ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConceptMap0() const noexcept
 {
   //[0]: empty concept map
-  const Nodes nodes
+  Nodes nodes
     =
     {
 
     };
 
-  const Edges edges
+  Edges edges
     =
     {
 
@@ -325,14 +326,14 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
 ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConceptMap1() const noexcept
 {
   //[1]
-  const Nodes nodes
+  Nodes nodes
     =
     {
       CenterNodeFactory().CreateFromStrings("X"),
       NodeFactory().CreateFromStrings("A")
     };
 
-  const Edges edges
+  Edges edges
     =
     {
 
@@ -347,7 +348,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
 ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConceptMap2() const noexcept
 {
   //[2]
-  const Nodes nodes
+  Nodes nodes
     =
     {
       CenterNodeFactory().CreateFromStrings("X"),
@@ -355,7 +356,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
       NodeFactory().CreateFromStrings("B")
     };
 
-  const Edges edges
+  Edges edges
     =
     {
 
@@ -369,7 +370,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
 ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConceptMap3() const noexcept
 {
   //[3]
-  const Nodes nodes
+  Nodes nodes
     =
     {
       CenterNodeFactory().CreateFromStrings("X"),
@@ -380,7 +381,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
   const auto concept_d(ConceptFactory().Create("edge_a concept"));
   const auto node_d(NodeFactory().Create(concept_d,1.2,3.4));
 
-  const Edges edges
+  Edges edges
     =
     {
       //cmap::EdgeFactory().Create(concept_d,1.2,3.4,nodes.at(1),false,nodes.at(2),true)
@@ -398,7 +399,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
 ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConceptMap4() const noexcept
 {
   //[4]
-  const Nodes nodes
+  Nodes nodes
     =
     {
       CenterNodeFactory().CreateFromStrings("X"),
@@ -409,7 +410,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
   const auto concept_d(ConceptFactory().Create("edge_a concept"));
   const auto node_d(NodeFactory().Create(concept_d,1.2,3.4));
 
-  const Edges edges
+  Edges edges
     =
     {
       //cmap::EdgeFactory().Create(concept_d,1.2,3.4,nodes.at(2),false,nodes.at(1),true)
@@ -426,7 +427,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
 ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConceptMap5() const noexcept
 {
   //[5]
-  const Nodes nodes
+  Nodes nodes
     =
     {
       CenterNodeFactory().CreateFromStrings("X"),
@@ -437,7 +438,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
   const auto concept_d(ConceptFactory().Create("1"));
   const auto node_d(NodeFactory().Create(concept_d,1.2,3.4));
 
-  const Edges edges
+  Edges edges
     =
     {
       EdgeFactory().Create(node_d,nodes.at(1),false,nodes.at(2),true)
@@ -454,7 +455,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
 ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConceptMap6() const noexcept
 {
   //[6]
-  const Nodes nodes
+  Nodes nodes
     =
     {
       CenterNodeFactory().CreateFromStrings("X"),
@@ -464,7 +465,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
   const auto concept_d(ConceptFactory().Create("1"));
   const auto node_d(NodeFactory().Create(concept_d,1.2,3.4));
 
-  const Edges edges
+  Edges edges
     =
     {
       EdgeFactory().Create(node_d,nodes.at(2),false,nodes.at(1),true)
@@ -481,7 +482,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
 ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConceptMap7() const noexcept
 {
   //[7]
-  const Nodes nodes
+  Nodes nodes
     =
     {
       CenterNodeFactory().CreateFromStrings("X"),
@@ -490,7 +491,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
       NodeFactory().CreateFromStrings("C")
     };
 
-  const Edges edges
+  Edges edges
     =
     {
 
@@ -507,7 +508,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
 ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConceptMap8() const noexcept
 {
   //[8]
-  const Nodes nodes
+  Nodes nodes
     =
     {
       CenterNodeFactory().CreateFromStrings("X"),
@@ -521,7 +522,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
   const auto edge_a(EdgeFactory().Create(node_e,nodes.at(1),false,nodes.at(2),true));
 
 
-  const Edges edges
+  Edges edges
     =
     {
       edge_a
@@ -538,7 +539,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
 ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConceptMap9() const noexcept
 {
   //[9]
-  const Nodes nodes
+  Nodes nodes
     =
     {
       CenterNodeFactory().CreateFromStrings("X"),
@@ -551,7 +552,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
   const auto node_e(NodeFactory().Create(concept_e,1.2,3.4));
   const Edge edge_a(EdgeFactory().Create(node_e,nodes.at(2),false,nodes.at(3),true));
 
-  const Edges edges
+  Edges edges
     =
     {
       edge_a
@@ -568,7 +569,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
 ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConceptMap10() const noexcept
 {
   //[10]
-  const Nodes nodes
+  Nodes nodes
     =
     {
       CenterNodeFactory().CreateFromStrings("X"),
@@ -582,7 +583,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
   const auto node_e(NodeFactory().Create(concept_e,1.2,3.4));
   const auto node_f(NodeFactory().Create(concept_f,1.2,3.4));
 
-  const Edges edges
+  Edges edges
     =
     {
       EdgeFactory().Create(node_e,nodes.at(1),false,nodes.at(2),true),
@@ -600,7 +601,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
 ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConceptMap11() const noexcept
 {
   //[11]
-  const Nodes nodes
+  Nodes nodes
     =
     {
       CenterNodeFactory().CreateFromStrings("X"),
@@ -617,7 +618,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
   const auto node_f(NodeFactory().Create(concept_f,2.3,4.5));
   const auto node_g(NodeFactory().Create(concept_g,3.4,5.6));
 
-  const Edges edges
+  Edges edges
     =
     {
       EdgeFactory().Create(node_e,nodes.at(1),false,nodes.at(2),true),
@@ -636,7 +637,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
 ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConceptMap12() const noexcept
 {
   //[12]
-  const Nodes nodes
+  Nodes nodes
     =
     {
       CenterNodeFactory().CreateFromStrings("X"),
@@ -653,7 +654,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
   const auto node_f(NodeFactory().Create(concept_f,2.3,4.5));
   const auto node_g(NodeFactory().Create(concept_g,3.4,5.6));
 
-  const Edges edges
+  Edges edges
     =
     {
       EdgeFactory().Create(node_e,nodes.at(2),false,nodes.at(1),true),
@@ -672,7 +673,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
 ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConceptMap13() const noexcept
 {
   //[13]
-  const Nodes nodes
+  Nodes nodes
     =
     {
       CenterNodeFactory().CreateFromStrings("X"),
@@ -689,7 +690,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
   const auto node_f(NodeFactory().Create(concept_f,2.3,4.5));
   const auto node_g(NodeFactory().Create(concept_g,3.4,5.6));
 
-  const Edges edges
+  Edges edges
     =
     {
       EdgeFactory().Create(node_e,nodes.at(1),false,nodes.at(2),true),
@@ -708,7 +709,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
 ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConceptMap14() const noexcept
 {
   //[14]
-  const Nodes nodes
+  Nodes nodes
     =
     {
       CenterNodeFactory().CreateFromStrings("X"),
@@ -724,7 +725,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
   const auto node_f(NodeFactory().Create(concept_f,2.3,4.5));
   const auto node_g(NodeFactory().Create(concept_g,3.4,5.6));
 
-  const Edges edges
+  Edges edges
     =
     {
       EdgeFactory().Create(node_e,nodes.at(2),false,nodes.at(1),true),
@@ -750,7 +751,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
   const Node node_d(NodeFactory().Create(concept_d));
   const Node node_e(NodeFactory().Create(concept_e));
 
-  const Nodes nodes
+  Nodes nodes
     =
     {
       CenterNodeFactory().CreateFromStrings("X"),
@@ -771,7 +772,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
   const auto node_i(NodeFactory().Create(concept_i,4.5,6.7));
   const auto node_j(NodeFactory().Create(concept_j,5.6,7.8));
 
-  const Edges edges
+  Edges edges
     =
     {
       EdgeFactory().Create(node_f,nodes.at(2),false,nodes.at(1),true),
@@ -799,7 +800,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
   const Node node_d(NodeFactory().Create(concept_d));
   const Node node_e(NodeFactory().Create(concept_e));
 
-  const Nodes nodes
+  Nodes nodes
     =
     {
       CenterNodeFactory().CreateFromStrings("X"),
@@ -821,7 +822,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
   const auto node_j(NodeFactory().Create(concept_j,5.6,7.8));
 
 
-  const Edges edges
+  Edges edges
     =
     {
       EdgeFactory().Create(node_f,nodes.at(2),false,nodes.at(1),true),
@@ -862,7 +863,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
   const Node node_d(NodeFactory().Create(concept_d));
   const Node node_e(NodeFactory().Create(concept_e));
 
-  const Nodes nodes
+  Nodes nodes
     =
     {
       CenterNodeFactory().CreateFromStrings("X"),
@@ -894,7 +895,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
   const auto node_i(NodeFactory().Create(concept_i,4.5,6.7));
   const auto node_j(NodeFactory().Create(concept_j,5.6,7.8));
 
-  const Edges edges
+  Edges edges
     =
     {
       EdgeFactory().Create(node_f,nodes.at(2),false,nodes.at(1),true),
@@ -946,7 +947,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
   const Node node_d(NodeFactory().Create(concept_d));
   const Node node_e(NodeFactory().Create(concept_e));
 
-  const Nodes nodes
+  Nodes nodes
     =
     {
       CenterNodeFactory().CreateFromStrings("X: This is the center node concept that can have no examples, oterwise each of its example name would be multiple lines"),
@@ -1009,7 +1010,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
   const auto node_i(NodeFactory().Create(concept_i,4.5,6.7));
   const auto node_j(NodeFactory().Create(concept_j,5.6,7.8));
 
-  const Edges edges
+  Edges edges
     =
     {
       EdgeFactory().Create(node_f,nodes.at(2),false,nodes.at(1),true),
@@ -1036,7 +1037,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
   const Node node_d(NodeFactory().Create(concept_d));
   const Node node_e(NodeFactory().Create(concept_e));
 
-  const Nodes nodes
+  Nodes nodes
     =
     {
       CenterNodeFactory().CreateFromStrings("X"),
@@ -1067,7 +1068,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConce
   const auto node_l(NodeFactory().Create(concept_l,7.8,9.0));
   const auto node_m(NodeFactory().Create(concept_m,8.9,0.1));
 
-  const Edges edges
+  Edges edges
     =
     {
       EdgeFactory().Create(node_f,nodes.at(2),false,nodes.at(1),true ),
@@ -1141,7 +1142,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTest
 ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTestConceptMap0() const noexcept
 {
   //[0] (note: same as heteromorphous[11])
-  const Nodes nodes
+  Nodes nodes
     =
     {
       CenterNodeFactory().CreateFromStrings("X"),
@@ -1158,7 +1159,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTest
   const auto node_f(NodeFactory().Create(concept_f,1.2,3.4));
   const auto node_g(NodeFactory().Create(concept_g,2.3,4.5));
 
-  const Edges edges
+  Edges edges
     =
     {
       EdgeFactory().Create(node_e,nodes.at(1),false,nodes.at(2),true),
@@ -1177,7 +1178,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTest
 ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTestConceptMap1() const noexcept
 {
   //[1]
-  const Nodes nodes
+  Nodes nodes
     =
     {
       CenterNodeFactory().CreateFromStrings("X"),
@@ -1193,7 +1194,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTest
   const auto node_f(NodeFactory().Create(concept_f,2.3,4.5));
   const auto node_g(NodeFactory().Create(concept_g,3.4,5.6));
 
-  const Edges edges
+  Edges edges
     =
     {
       EdgeFactory().Create(node_e,nodes.at(1),false,nodes.at(3),true),
@@ -1201,18 +1202,21 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTest
       EdgeFactory().Create(node_g,nodes.at(2),false,nodes.at(1),true)
     };
 
+  assert(CanConstruct(nodes,edges));
   ConceptMap conceptmap(
     ConceptMapFactory().Create(nodes,edges)
   );
 
+  assert(CanConstruct(conceptmap.GetNodes(),conceptmap.GetEdges()));
   assert(conceptmap.IsValid());
+  TRACE(conceptmap);
   return conceptmap;
 }
 
 ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTestConceptMap2() const noexcept
 {
   //[2]
-  const Nodes nodes
+  Nodes nodes
     =
     {
       CenterNodeFactory().CreateFromStrings("X"),
@@ -1228,7 +1232,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTest
   const auto node_f(NodeFactory().Create(concept_f,2.3,4.5));
   const auto node_g(NodeFactory().Create(concept_g,3.4,5.6));
 
-  const Edges edges
+  Edges edges
     =
     {
       EdgeFactory().Create(node_e,nodes.at(2),false,nodes.at(1),true),
@@ -1246,7 +1250,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTest
 ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTestConceptMap3() const noexcept
 {
   //[3]
-  const Nodes nodes
+  Nodes nodes
     =
     {
       CenterNodeFactory().CreateFromStrings("X"),
@@ -1262,7 +1266,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTest
   const auto node_f(NodeFactory().Create(concept_f,2.3,4.5));
   const auto node_g(NodeFactory().Create(concept_g,3.4,5.6));
 
-  const Edges edges
+  Edges edges
     =
     {
       EdgeFactory().Create(node_e,nodes.at(3),false,nodes.at(1),true),
@@ -1280,7 +1284,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTest
 ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTestConceptMap4() const noexcept
 {
   //[4]
-  const Nodes nodes
+  Nodes nodes
     =
     {
       CenterNodeFactory().CreateFromStrings("X"),
@@ -1296,7 +1300,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTest
   const auto node_f(NodeFactory().Create(concept_f,2.3,4.5));
   const auto node_g(NodeFactory().Create(concept_g,3.4,5.6));
 
-  const Edges edges
+  Edges edges
     =
     {
       EdgeFactory().Create(node_e,nodes.at(2),false,nodes.at(3),true),
@@ -1314,7 +1318,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTest
 ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTestConceptMap5() const noexcept
 {
   //[5]
-  const Nodes nodes
+  Nodes nodes
     =
     {
       CenterNodeFactory().CreateFromStrings("X"),
@@ -1330,7 +1334,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTest
   const auto node_f(NodeFactory().Create(concept_f,2.3,4.5));
   const auto node_g(NodeFactory().Create(concept_g,3.4,5.6));
 
-  const Edges edges
+  Edges edges
     =
     {
       EdgeFactory().Create(node_e,nodes.at(3),false,nodes.at(2),true),
@@ -1348,7 +1352,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTest
 ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTestConceptMap6() const noexcept
 {
   //[6] (note: same as heteromorphous[11], yet arrows reversed
-  const Nodes nodes
+  Nodes nodes
     =
     {
       CenterNodeFactory().CreateFromStrings("X"),
@@ -1364,7 +1368,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTest
   const auto node_f(NodeFactory().Create(concept_f,2.3,4.5));
   const auto node_g(NodeFactory().Create(concept_g,3.4,5.6));
 
-  const Edges edges
+  Edges edges
     =
     {
       EdgeFactory().Create(node_e,nodes.at(2),true,nodes.at(1),false),
@@ -1382,7 +1386,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTest
 ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTestConceptMap7() const noexcept
 {
   //[7]
-  const Nodes nodes
+  Nodes nodes
     =
     {
       CenterNodeFactory().CreateFromStrings("X"),
@@ -1398,7 +1402,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTest
   const auto node_f(NodeFactory().Create(concept_f,2.3,4.5));
   const auto node_g(NodeFactory().Create(concept_g,3.4,5.6));
 
-  const Edges edges
+  Edges edges
     =
     {
       EdgeFactory().Create(node_e,nodes.at(3),true,nodes.at(1),false),
@@ -1416,7 +1420,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTest
 ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTestConceptMap8() const noexcept
 {
   //[8]
-  const Nodes nodes
+  Nodes nodes
     =
     {
       CenterNodeFactory().CreateFromStrings("X"),
@@ -1440,7 +1444,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTest
   const auto node_f(NodeFactory().Create(concept_f,2.3,4.5));
   const auto node_g(NodeFactory().Create(concept_g,3.4,5.6));
 
-  const Edges edges
+  Edges edges
     =
     {
       EdgeFactory().Create(node_e,nodes.at(1),true,nodes.at(2),false),
@@ -1458,7 +1462,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTest
 ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTestConceptMap9() const noexcept
 {
   //[9]
-  const Nodes nodes
+  Nodes nodes
     =
     {
       CenterNodeFactory().CreateFromStrings("X"),
@@ -1482,7 +1486,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTest
   const auto node_f(NodeFactory().Create(concept_f,2.3,4.5));
   const auto node_g(NodeFactory().Create(concept_g,3.4,5.6));
 
-  const Edges edges
+  Edges edges
     =
     {
       EdgeFactory().Create(node_e,nodes.at(1),true,nodes.at(3),false),
@@ -1500,7 +1504,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTest
 ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTestConceptMap10() const noexcept
 {
   //[10]
-  const Nodes nodes
+  Nodes nodes
     =
     {
       CenterNodeFactory().CreateFromStrings("X"),
@@ -1515,7 +1519,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTest
   const auto node_f(NodeFactory().Create(concept_f,2.3,4.5));
   const auto node_g(NodeFactory().Create(concept_g,3.4,5.6));
 
-  const Edges edges
+  Edges edges
     =
     {
       EdgeFactory().Create(node_e,nodes.at(3),true,nodes.at(2),false),
@@ -1534,7 +1538,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTest
 ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTestConceptMap11() const noexcept
 {
   //[11]
-  const Nodes nodes
+  Nodes nodes
     =
     {
       CenterNodeFactory().CreateFromStrings("X"),
@@ -1550,7 +1554,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTest
   const auto node_f(NodeFactory().Create(concept_f,2.3,4.5));
   const auto node_g(NodeFactory().Create(concept_g,3.4,5.6));
 
-  const Edges edges
+  Edges edges
     =
     {
       EdgeFactory().Create(node_e,nodes.at(2),true,nodes.at(3),false),
@@ -1577,7 +1581,7 @@ std::vector<ribi::cmap::ConceptMap > ribi::cmap::ConceptMapFactory::GetSimpleHom
   std::vector<ConceptMap> v;
   //[0]
   {
-    const Nodes nodes
+    Nodes nodes
       =
       {
         CenterNodeFactory().CreateFromStrings("X"),
@@ -1585,7 +1589,7 @@ std::vector<ribi::cmap::ConceptMap > ribi::cmap::ConceptMapFactory::GetSimpleHom
         NodeFactory().CreateFromStrings("B"),
         NodeFactory().CreateFromStrings("C")
       };
-    const Edges edges
+    Edges edges
       =
       {
 
@@ -1600,7 +1604,7 @@ std::vector<ribi::cmap::ConceptMap > ribi::cmap::ConceptMapFactory::GetSimpleHom
 
   //[1]
   {
-    const Nodes nodes
+    Nodes nodes
       =
       {
         CenterNodeFactory().CreateFromStrings("X"),
@@ -1608,7 +1612,7 @@ std::vector<ribi::cmap::ConceptMap > ribi::cmap::ConceptMapFactory::GetSimpleHom
         NodeFactory().CreateFromStrings("C"),
         NodeFactory().CreateFromStrings("B")
       };
-    const Edges edges
+    Edges edges
       =
       {
 
@@ -1620,7 +1624,7 @@ std::vector<ribi::cmap::ConceptMap > ribi::cmap::ConceptMapFactory::GetSimpleHom
   }
   //[2]
   {
-    const Nodes nodes
+    Nodes nodes
       =
       {
         CenterNodeFactory().CreateFromStrings("X"),
@@ -1629,7 +1633,7 @@ std::vector<ribi::cmap::ConceptMap > ribi::cmap::ConceptMapFactory::GetSimpleHom
         NodeFactory().CreateFromStrings("C")
       };
 
-    const Edges edges
+    Edges edges
       =
       {
 
@@ -1643,7 +1647,7 @@ std::vector<ribi::cmap::ConceptMap > ribi::cmap::ConceptMapFactory::GetSimpleHom
   }
   //[3]
   {
-    const Nodes nodes
+    Nodes nodes
       =
       {
         CenterNodeFactory().CreateFromStrings("X"),
@@ -1652,7 +1656,7 @@ std::vector<ribi::cmap::ConceptMap > ribi::cmap::ConceptMapFactory::GetSimpleHom
         NodeFactory().CreateFromStrings("A")
       };
 
-    const Edges edges
+    Edges edges
       =
       {
 
@@ -1665,7 +1669,7 @@ std::vector<ribi::cmap::ConceptMap > ribi::cmap::ConceptMapFactory::GetSimpleHom
 
   //[4]
   {
-    const Nodes nodes
+    Nodes nodes
       =
       {
         CenterNodeFactory().CreateFromStrings("X"),
@@ -1674,7 +1678,7 @@ std::vector<ribi::cmap::ConceptMap > ribi::cmap::ConceptMapFactory::GetSimpleHom
         NodeFactory().CreateFromStrings("B")
       };
 
-    const Edges edges
+    Edges edges
       =
       {
 
@@ -1689,7 +1693,7 @@ std::vector<ribi::cmap::ConceptMap > ribi::cmap::ConceptMapFactory::GetSimpleHom
 
   //[5]
   {
-    const Nodes nodes
+    Nodes nodes
       =
       {
         CenterNodeFactory().CreateFromStrings("X"),
@@ -1698,7 +1702,7 @@ std::vector<ribi::cmap::ConceptMap > ribi::cmap::ConceptMapFactory::GetSimpleHom
         NodeFactory().CreateFromStrings("A")
       };
 
-    const Edges edges
+    Edges edges
       =
       {
 

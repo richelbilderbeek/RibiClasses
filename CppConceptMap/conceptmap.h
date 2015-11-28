@@ -216,13 +216,16 @@ private:
   void Unselect(const Edges& edges) noexcept;
   void Unselect(const Nodes& nodes) noexcept;
 
-  ///Block constructor, except for the friend ConceptMapFactory
-  ConceptMap(const std::string& question) noexcept;
+  explicit ConceptMap() noexcept;
 
-  //Nodes[0] must be the focal question
+  ///Block constructor, except for the friend ConceptMapFactory
+  explicit ConceptMap(const std::string& question) noexcept;
+
+  ///ConceptMap will take the edges and nodes, and swap these with empty vectors
+  ///Nodes[0] must be the focal question
   explicit ConceptMap(
-    const Nodes& nodes = {},
-    const Edges& edges = {}
+    Nodes& nodes,
+    Edges& edges
   ) noexcept;
   ///Create a concept map from a cluster
   #ifdef TO_ADD_TO_PROJECTBRAINWEAVER
@@ -249,6 +252,7 @@ private:
   friend class CommandSetSelectedWithCoordinat;
   friend class CommandUnselectRandom;
   friend bool operator==(const ConceptMap& lhs, const ConceptMap& rhs) noexcept;
+  friend std::ostream& operator<<(std::ostream& os, const ConceptMap& m) noexcept;
 
 };
 
@@ -277,6 +281,7 @@ std::string ToXml(const ConceptMap& c) noexcept;
 
 bool operator==(const ConceptMap& lhs, const ConceptMap& rhs) noexcept;
 bool operator!=(const ConceptMap& lhs, const ConceptMap& rhs) noexcept;
+std::ostream& operator<<(std::ostream& os, const ConceptMap& m) noexcept;
 
 } //~namespace cmap
 } //~namespace ribi

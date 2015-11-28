@@ -47,9 +47,11 @@ struct ConceptMapFactory
 
   ConceptMapFactory() noexcept;
 
+  ConceptMap Create();
+
   ConceptMap Create(
-    const Nodes& nodes = {},
-    const Edges& edges = {}
+    Nodes& nodes,
+    Edges& edges
   ) const noexcept;
 
   ///Obtain the main constituents of a

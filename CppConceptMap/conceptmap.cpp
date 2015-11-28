@@ -68,17 +68,18 @@ ribi::cmap::ConceptMap::ConceptMap(const std::string& question) noexcept
 }
 
 ribi::cmap::ConceptMap::ConceptMap(
-    const Nodes& nodes,
-    const Edges& edges
+  Nodes& nodes,
+  Edges& edges
 )  noexcept
-  : m_edges(edges),
-    m_nodes(nodes),
+  : m_edges{},
+    m_nodes{},
     m_selected{},
-    //m_undo{},
     m_verbose{false}
 {
   #ifndef NDEBUG
   Test();
+  std::swap(nodes,m_nodes);
+  std::swap(edges,m_edges);
   if (!CanConstruct(nodes,edges))
   {
     TRACE("ERROR");
@@ -252,6 +253,7 @@ bool ribi::cmap::CanConstruct(
     for (int i{0}; i!=n_edges; ++i)
     {
       const Edge& edge_a{edges[i]};
+      assert(&edge_a == &edges[i]);
       if (!edge_a.GetFrom())
       {
         if (verbose) { TRACE("edge_a.GetFrom() is nullptr"); }
@@ -264,11 +266,15 @@ bool ribi::cmap::CanConstruct(
       }
       const Node *a_from{edge_a.GetFrom()};
       const Node *a_to  {edge_a.GetTo()  };
+      assert(a_from == edge_a.GetFrom());
+      assert(a_to   == edge_a.GetTo());
+
       for (int j{i+1}; j!=n_edges; ++j)
       {
         assert(i != j);
         assert(j < n_edges);
         const Edge& edge_b{edges[j]};
+        assert(&edge_b == &edges[j]);
         if (!edge_b.GetFrom())
         {
           if (verbose) { TRACE("edge_b.GetFrom() is nullptr"); }
@@ -281,6 +287,8 @@ bool ribi::cmap::CanConstruct(
         }
         const Node *b_from{edge_b.GetFrom()};
         const Node *b_to  {edge_b.GetTo()};
+        assert(b_from == edge_b.GetFrom());
+        assert(b_to   == edge_b.GetTo());
         if (a_from == b_from && a_to == b_to)
         {
           if (verbose) { TRACE("Cannot have two edges from the same node to the same node"); }
@@ -294,23 +302,32 @@ bool ribi::cmap::CanConstruct(
       }
     }
   }
-  for (const Edge& edge: edges)
+  const int n_edges{static_cast<int>(edges.size())};
+  for (int i{0}; i!=n_edges; ++i)
   {
-    if (container().Count(nodes,*edge.GetTo()) == 0)
+    bool from_found{false};
+    bool to_found{false};
+    const int n_nodes{static_cast<int>(nodes.size())};
+    //Read all addresses of the nodes
+    for (int j{0}; j!=n_nodes; ++j) {
+      if (edges[i].GetTo()   == &nodes[j]) { to_found = true; }
+      if (edges[i].GetFrom() == &nodes[j]) { from_found = true; }
+    }
+    if (!from_found)
     {
       if (verbose) { TRACE("edge.GetTo() points to node not in the concept map"); }
       TRACE("ERROR");
       for (const auto& n: nodes) { TRACE(&n); TRACE(n);}
-      TRACE(edge);
+      TRACE(edges[i]);
       TRACE("~ERROR");
       return false;
     }
-    if(container().Count(nodes,*edge.GetFrom()) == 0)
+    if (!to_found)
     {
       if (verbose) { TRACE("edge.GetFrom() points to node not in the concept map"); }
       TRACE("ERROR");
       for (const auto& n: nodes) { TRACE(&n); TRACE(n);}
-      TRACE(edge);
+      TRACE(edges[i]);
       TRACE("~ERROR");
       return false;
     }
@@ -1114,7 +1131,8 @@ std::string ribi::cmap::ToXml(const ConceptMap& map) noexcept
   std::stringstream s;
   s << "<concept_map>";
   s << "<nodes>";
-  const std::vector<Node>& nodes = map.GetNodes();
+  const std::vector<Node>& nodes{map.GetNodes()};
+  assert(&nodes == &map.GetNodes());
   assert(CanConstruct(nodes,map.GetEdges(),true));
   assert(CanConstruct(nodes, {} ));
   assert(CanConstruct(nodes,map.GetEdges(),true));
@@ -1122,7 +1140,12 @@ std::string ribi::cmap::ToXml(const ConceptMap& map) noexcept
   for (int i=0; i!=n_nodes; ++i)
   {
     assert(CanConstruct(nodes,map.GetEdges(),true));
+    assert(&nodes[i] == &map.GetNodes()[i]);
+    assert(i >= 0);
+    assert(i < static_cast<int>(nodes.size()));
     s << ToXml(nodes[i]); //ToXml is a noexcept free function
+    assert(&nodes[i] == &map.GetNodes()[i]);
+    TRACE(map);
     assert(CanConstruct(nodes,map.GetEdges(),true)); //Crashes here
   }
 
@@ -1204,4 +1227,22 @@ void ribi::cmap::ConceptMap::Unselect(
       std::end(m_selected.second)
     );
   }
+}
+
+std::ostream& ribi::cmap::operator<<(std::ostream& os, const ConceptMap& m) noexcept
+{
+  const int n_nodes{static_cast<int>(m.m_nodes.size())};
+  for (int i=0; i!=n_nodes; ++i) {
+    os << "node [" << i << "] is at address " << &m.m_nodes[i] << '\n';
+  }
+  const int n_edges{static_cast<int>(m.m_edges.size())};
+  for (int i=0; i!=n_edges; ++i) {
+    os << "edge [" << i << "] goes from "
+      << &(*m.m_edges[i].GetFrom())
+      << " to "
+      << &(*m.m_edges[i].GetTo())
+      << '\n'
+    ;
+  }
+  return os;
 }
