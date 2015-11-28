@@ -88,6 +88,7 @@ struct Edge
 
   private:
   ///The Node this edge originates from
+  ///Must use pointer to keep an Edge default-copyable
   const Node * m_from;
 
   ///Is there an arrowhead at the 'to' node?
@@ -100,6 +101,7 @@ struct Edge
   bool m_tail_arrow;
 
   ///The Node this edge goes to
+  ///Must use pointer to keep an Edge default-copyable
   const Node * m_to;
 
   #ifndef NDEBUG

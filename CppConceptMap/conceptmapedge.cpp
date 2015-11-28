@@ -28,6 +28,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <boost/lambda/lambda.hpp>
 
 #include "counter.h"
+#include "container.h"
 #include "conceptmap.h"
 #include "conceptmapconcept.h"
 #include "conceptmapedgefactory.h"
@@ -46,11 +47,11 @@ ribi::cmap::Edge::Edge(
   const bool tail_arrow,
   const Node& to,
   const bool head_arrow)
-  : m_from(&from),
-    m_head_arrow(head_arrow),
-    m_node(node),
-    m_tail_arrow(tail_arrow),
-    m_to(&to)
+  : m_from{&from},
+    m_head_arrow{head_arrow},
+    m_node{node},
+    m_tail_arrow{tail_arrow},
+    m_to{&to}
 {
   #ifndef NDEBUG
   Test();
@@ -58,6 +59,8 @@ ribi::cmap::Edge::Edge(
   assert(m_from);
   assert(m_to);
   assert(m_from !=  m_to);
+  assert(m_from == &from);
+  assert(m_to   == &to);
   assert(m_from != &m_node);
   assert(m_to   != &m_node);
 
@@ -189,9 +192,9 @@ void ribi::cmap::Edge::Test() noexcept
   }
   const TestTimer test_timer(__func__,__FILE__,1.0);
   const bool verbose{false};
-  Node from{NodeFactory().GetTest(0)};
-  Node to{NodeFactory().GetTest(1)};
-  const std::vector<Node> nodes = {from,to};
+  const std::vector<Node> nodes{NodeFactory().GetTest(0),NodeFactory().GetTest(1)};
+  const Node& from{nodes[0]};
+  const Node& to{nodes[1]};
   if (verbose) { TRACE("Copy constructor"); }
   {
     const auto edge1 = EdgeFactory().GetTest(0,from,to);
@@ -226,9 +229,17 @@ void ribi::cmap::Edge::Test() noexcept
   }
   if (verbose) { TRACE("Edge->XML->Edge must result in the same edge"); }
   {
-    const auto edge_before = EdgeFactory().GetTest(0,from,to);
+    const Edge edge_before{EdgeFactory().GetTest(0,from,to)};
+    assert(CanConstruct(nodes,{edge_before}));
+    assert(container().Count(nodes,*edge_before.GetFrom()) == 1);
+    assert(container().Count(nodes,*edge_before.GetTo()) == 1);
     const std::string s{ToXml(edge_before,nodes)};
-    const auto edge_after = EdgeFactory().FromXml(s,nodes);
+    const Edge edge_after{EdgeFactory().FromXml(s,nodes)};
+    assert(ToXml(edge_before,nodes) == ToXml(edge_after,nodes));
+    assert(container().Count(nodes,*edge_after.GetFrom()) == 1);
+    assert(container().Count(nodes,*edge_after.GetTo()) == 1);
+    assert(edge_before.GetFrom() == edge_after.GetFrom());
+    assert(edge_before.GetTo() == edge_after.GetTo());
     assert(edge_before == edge_after);
   }
   //From
