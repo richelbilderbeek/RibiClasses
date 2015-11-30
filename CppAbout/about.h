@@ -31,13 +31,13 @@ namespace ribi {
 struct About
 {
   explicit About(
-    const std::string author,
-    const std::string file_title,
-    const std::string file_description,
-    const std::string programmed_on,
-    const std::string years,
-    const std::string url,
-    const std::string version,
+    const std::string& author,
+    const std::string& file_title,
+    const std::string& file_description,
+    const std::string& programmed_on,
+    const std::string& years,
+    const std::string& url,
+    const std::string& version,
     const std::vector<std::string>& version_history
   ) noexcept;
 

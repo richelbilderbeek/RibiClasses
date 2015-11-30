@@ -36,13 +36,13 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic pop
 
 ribi::About::About(
-    const std::string author,
-    const std::string file_title,
-    const std::string file_description,
-    const std::string programmed_on,
-    const std::string years,
-    const std::string url,
-    const std::string version,
+    const std::string& author,
+    const std::string& file_title,
+    const std::string& file_description,
+    const std::string& programmed_on,
+    const std::string& years,
+    const std::string& url,
+    const std::string& version,
     const std::vector<std::string>& version_history) noexcept
   : m_author{author},
     m_file_title{file_title},
@@ -136,7 +136,7 @@ std::vector<std::string> ribi::About::CreateVersionHistory() const noexcept
 
 std::string ribi::About::GetAboutVersion() noexcept
 {
-  return "1.7";
+  return "1.8";
 }
 
 std::vector<std::string> ribi::About::GetAboutVersionHistory() noexcept
@@ -147,9 +147,10 @@ std::vector<std::string> ribi::About::GetAboutVersionHistory() noexcept
     "2011-09-12: version 1.2: added operator<<",
     "2012-01-08: version 1.3: fixed grammatical error",
     "2012-01-26: version 1.4: removed BOOST_FOREACH",
-    "2013-04-29: version 1.5: added #ifdefs for GCC 4.4.0"
-    "2013-09-05: version 1.6: transition to namespace ribi"
-    "2013-09-16: version 1.7: noexcept added"
+    "2013-04-29: version 1.5: added #ifdefs for GCC 4.4.0",
+    "2013-09-05: version 1.6: transition to namespace ribi",
+    "2013-09-16: version 1.7: noexcept added",
+    "2015-11-30: version 1.8: pass std::string by const-reference"
   };
 }
 

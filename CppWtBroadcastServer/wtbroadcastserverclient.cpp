@@ -19,12 +19,12 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //From http://www.richelbilderbeek.nl/CppWtBroadcastServerClient.htm
 //---------------------------------------------------------------------------
 #include <boost/bind.hpp>
-//---------------------------------------------------------------------------
+
 #include <Wt/WApplication>
-//---------------------------------------------------------------------------
+
 #include "wtbroadcastserver.h"
 #include "wtbroadcastserverclient.h"
-//---------------------------------------------------------------------------
+
 WtBroadcastServerClient::WtBroadcastServerClient()
 {
   Wt::WApplication::instance()->enableUpdates(true);
@@ -35,28 +35,29 @@ WtBroadcastServerClient::WtBroadcastServerClient()
   //Scott Meyers, Effective C++, item 9
   //OnServer();
 }
-//---------------------------------------------------------------------------
+
 WtBroadcastServerClient::~WtBroadcastServerClient()
 {
   Wt::WApplication::instance()->enableUpdates(false);
   WtBroadcastServer::GetInstance()->Disconnect(this);
 }
-//---------------------------------------------------------------------------
-const std::string WtBroadcastServerClient::GetVersion()
+
+std::string WtBroadcastServerClient::GetVersion() noexcept
 {
-  return "1.0";
+  return "1.1";
 }
-//---------------------------------------------------------------------------
-const std::vector<std::string> WtBroadcastServerClient::GetVersionHistory()
+
+std::vector<std::string> WtBroadcastServerClient::GetVersionHistory() noexcept
 {
   std::vector<std::string> v;
   v.push_back("2011-07-27: version 1.0: initial version");
+  v.push_back("2015-11-31: version 1.1: minor changes");
   return v;
 }
-//---------------------------------------------------------------------------
+
 void WtBroadcastServerClient::OnServer()
 {
   UpdatePage();
   Wt::WApplication::instance()->triggerUpdate();
 }
-//---------------------------------------------------------------------------
+

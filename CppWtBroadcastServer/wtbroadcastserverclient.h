@@ -1,10 +1,9 @@
-//---------------------------------------------------------------------------
 #ifndef WTBROADCASTSERVERCLIENT_H
 #define WTBROADCASTSERVERCLIENT_H
-//---------------------------------------------------------------------------
+
 #include <string>
 #include <vector>
-//---------------------------------------------------------------------------
+
 ///WtBroadcastServerClient is a client responding to WtBroadcastServer
 ///and to be used as a base class
 struct WtBroadcastServerClient
@@ -12,10 +11,10 @@ struct WtBroadcastServerClient
   virtual ~WtBroadcastServerClient();
 
   ///Get the version of this class
-  static const std::string GetVersion();
+  static std::string GetVersion() noexcept;
 
   ///Get the version history of this class
-  static const std::vector<std::string> GetVersionHistory();
+  static std::vector<std::string> GetVersionHistory() noexcept;
 
   ///UpdatePage is called when the WtBroadcastServer triggers an update by timer
   virtual void UpdatePage() = 0;
@@ -29,5 +28,5 @@ struct WtBroadcastServerClient
   ///Respond to the server
   void OnServer();
 };
-//---------------------------------------------------------------------------
+
 #endif // WTBROADCASTSERVERCLIENT_H
