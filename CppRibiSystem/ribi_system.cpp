@@ -41,6 +41,14 @@ ribi::System::System()
   #endif
 }
 
+std::string ribi::System::GetHome() const noexcept {
+  return std::getenv("HOME");
+}
+
+std::string ribi::System::GetPath() const noexcept {
+  return std::getenv("PATH");
+}
+
 std::string ribi::System::GetWhoami() const noexcept
 {
   const auto tempfilename = ribi::FileIo().GetTempFileName();
@@ -71,8 +79,14 @@ void ribi::System::Test() noexcept
     FileIo();
   }
   const TestTimer test_timer(__func__,__FILE__,1.0);
-  {
-    assert(!System().GetWhoami().empty());
-  }
+  System s;
+  const bool verbose{false};
+  std::stringstream text;
+  text
+    << "home: '" << s.GetHome() << "'\n"
+    << "path: '" << s.GetPath() << "'\n"
+    << "whoami: '" << s.GetWhoami() << "'"
+  ;
+  if (verbose) TRACE(text.str());
 }
 #endif

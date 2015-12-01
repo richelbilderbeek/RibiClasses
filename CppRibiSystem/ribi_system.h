@@ -32,6 +32,8 @@ struct System
 {
   System();
 
+  std::string GetHome() const noexcept;
+  std::string GetPath() const noexcept;
   std::string GetWhoami() const noexcept;
 
   private:
