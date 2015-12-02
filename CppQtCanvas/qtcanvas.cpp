@@ -42,16 +42,19 @@ ribi::QtCanvas::QtCanvas(const boost::shared_ptr<ribi::Canvas> canvas)
 
 ribi::QtCanvas::~QtCanvas() noexcept
 {
-  if (m_active_canvas)
-  {
-    m_active_canvas->m_signal_changed.disconnect(
-      boost::bind(
-        &ribi::QtCanvas::ShowCanvas,this,
-        boost::lambda::_1
-      )
-    );
-  }
   m_signal_on_destroy();
+}
+
+std::string ribi::QtCanvas::GetVersion() noexcept
+{
+  return "2.0";
+}
+
+std::vector<std::string> ribi::QtCanvas::GetVersionHistory() noexcept
+{
+  return {
+    "2015-12-02: version 2.0: start versioning"
+  };
 }
 
 void ribi::QtCanvas::keyPressEvent(QKeyEvent* event)
@@ -94,26 +97,8 @@ void ribi::QtCanvas::SetCanvas(const boost::shared_ptr<Canvas> canvas)
 
   if (canvas == m_smart_canvas) { return; }
 
-  //Disconnect current Canvas
-  if (m_active_canvas)
-  {
-    m_active_canvas->m_signal_changed.disconnect(
-      boost::bind(
-        &ribi::QtCanvas::ShowCanvas,this,
-        boost::lambda::_1
-      )
-    );
-  }
-
   //Use new Canvas
   m_smart_canvas = canvas;
-
-  //Connect new Canvas
-  m_active_canvas->m_signal_changed.connect(
-    boost::bind(
-      &ribi::QtCanvas::ShowCanvas,this,
-      boost::lambda::_1)
-    );
 
   //Set minimum size
   {
@@ -134,28 +119,9 @@ void ribi::QtCanvas::SetImageCanvas(const ImageCanvas& canvas)
 {
   if (canvas == m_image_canvas) { return; }
 
-  //Disconnect current Canvas
-  if (m_active_canvas)
-  {
-    m_active_canvas->m_signal_changed.disconnect(
-      boost::bind(
-        &ribi::QtCanvas::ShowCanvas,this,
-        boost::lambda::_1
-      )
-    );
-  }
-
   //Use new Canvas
   m_image_canvas = canvas;
   m_active_canvas = &m_image_canvas;
-
-  //Connect new Canvas
-  m_active_canvas->m_signal_changed.connect(
-    boost::bind(
-      &ribi::QtCanvas::ShowCanvas,this,
-      boost::lambda::_1
-    )
-  );
 
   //Set minimum size
   {
@@ -176,28 +142,9 @@ void ribi::QtCanvas::SetTextCanvas(const TextCanvas& canvas)
 {
   if (canvas == m_text_canvas) { return; }
 
-  //Disconnect current Canvas
-  if (m_active_canvas)
-  {
-    m_active_canvas->m_signal_changed.disconnect(
-      boost::bind(
-        &ribi::QtCanvas::ShowCanvas,this,
-        boost::lambda::_1
-      )
-    );
-  }
-
   //Use new Canvas
   m_text_canvas = canvas;
   m_active_canvas = &m_text_canvas;
-
-  //Connect new Canvas
-  m_active_canvas->m_signal_changed.connect(
-    boost::bind(
-      &ribi::QtCanvas::ShowCanvas,this,
-      boost::lambda::_1
-    )
-  );
 
   //Set minimum size
   {

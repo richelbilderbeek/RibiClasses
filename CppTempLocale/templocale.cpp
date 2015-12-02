@@ -50,7 +50,12 @@ struct ribi::TempLocale::TempLocaleImpl
 
 ribi::TempLocale::TempLocale(
     const std::string& temp_locale_name
-) : m_impl(std::make_unique<TempLocaleImpl>(temp_locale_name))
+)
+#if __cplusplus >= 201402L //C++17
+  : m_impl(std::make_unique<TempLocaleImpl>(temp_locale_name))
+#else
+  : m_impl{new TempLocaleImpl(temp_locale_name)}
+#endif
 {
 
 }

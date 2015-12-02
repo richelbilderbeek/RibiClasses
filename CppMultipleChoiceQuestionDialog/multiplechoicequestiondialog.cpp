@@ -134,10 +134,13 @@ void ribi::MultipleChoiceQuestionDialog::Test() noexcept
       new MultipleChoiceQuestion(s)
     };
     assert(q);
+    #if __cplusplus >= 201402L //C++17
     const auto d = std::make_unique<MultipleChoiceQuestionDialog>(q);
-    //const boost::scoped_ptr<MultipleChoiceQuestionDialog> d {
-    //  new MultipleChoiceQuestionDialog(q)
-    //};
+    #else
+    const boost::scoped_ptr<MultipleChoiceQuestionDialog> d {
+      new MultipleChoiceQuestionDialog(q)
+    };
+    #endif
     assert(d);
     assert(!d->HasSubmitted() );
   }

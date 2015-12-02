@@ -333,7 +333,7 @@ int ribi::ImageCanvas::GetHeight() const noexcept
 
 std::string ribi::ImageCanvas::GetVersion() noexcept
 {
-  return "4.0";
+  return "4.1";
 }
 
 std::vector<std::string> ribi::ImageCanvas::GetVersionHistory() noexcept
@@ -342,7 +342,8 @@ std::vector<std::string> ribi::ImageCanvas::GetVersionHistory() noexcept
     "2011-03-23: Version 1.0: initial version, then called AsciiArter",
     "2014-01-07: Version 2.0: add conversion to Canvas"
     "2014-01-07: version 3.0: reworked interface, renamed to ImageCanvas",
-    "2015-07-20: version 4.0: characters are not square"
+    "2015-07-20: version 4.0: characters are not square",
+    "2015-12-02: version 4.1: removed use of previously inherited signals"
   };
 }
 
@@ -351,7 +352,6 @@ void ribi::ImageCanvas::SetColorSystem(const CanvasColorSystem colorSystem) noex
   if (this->m_color_system != colorSystem)
   {
     this->m_color_system = colorSystem;
-    this->m_signal_changed(this);
   }
 }
 
@@ -360,7 +360,6 @@ void ribi::ImageCanvas::SetCoordinatSystem(const CanvasCoordinatSystem coordinat
   if (this->m_coordinat_system != coordinatSystem)
   {
     this->m_coordinat_system = coordinatSystem;
-    this->m_signal_changed(this);
   }
 }
 

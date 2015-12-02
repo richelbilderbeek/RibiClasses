@@ -36,6 +36,9 @@ public:
   const Canvas * GetCanvas() const noexcept { return m_active_canvas; }
         Canvas * GetCanvas()       noexcept { return m_active_canvas; }
 
+  static std::string GetVersion() noexcept;
+  static std::vector<std::string> GetVersionHistory() noexcept;
+
   void SetCanvas(const boost::shared_ptr<Canvas> canvas);
   void SetImageCanvas(const ImageCanvas& canvas);
   void SetTextCanvas(const TextCanvas& canvas);

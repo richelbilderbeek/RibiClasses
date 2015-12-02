@@ -93,7 +93,7 @@ ribi::TestTimer::TestTimer(
   const double max_time_sec
 ) noexcept
 
-#if __cplusplus >= 201402L
+#if __cplusplus >= 201402L //C++17
   : m_impl(std::make_unique<TestTimerImpl>(function_name,file_name,max_time_sec))
 #endif
 #if __cplusplus < 201402L
