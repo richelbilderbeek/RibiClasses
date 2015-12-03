@@ -795,10 +795,10 @@ void ribi::NewickVector::Test() noexcept
       * ( (2.0 * ribi::NewickVector::CalculateProbability("(2,1,1)",theta) )
         + (2.0 * ribi::NewickVector::CalculateProbability("(2,(1,1))",theta) ) );
     assert(ribi::fuzzy_equal_to()(p1,p2));
-    assert(ribi::fuzzy_equal_to()(p1,p3));
-    assert(ribi::fuzzy_equal_to()(p1,p4));
-    assert(ribi::fuzzy_equal_to()(p1,p5));
-    assert(ribi::fuzzy_equal_to()(p1,p6));
+    assert(ribi::fuzzy_equal_to(0.000000000000001)(p1,p3));
+    assert(ribi::fuzzy_equal_to(0.000000000000001)(p1,p4));
+    assert(ribi::fuzzy_equal_to(0.000000000000001)(p1,p5));
+    assert(ribi::fuzzy_equal_to(0.000000000000001)(p1,p6));
   }
   //Calculate N2
   {

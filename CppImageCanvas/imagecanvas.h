@@ -106,11 +106,11 @@ struct ImageCanvas : public Canvas
   ///
   /// a three pixel gradient line -> {0.0, 0.5, 1.0 }
   ///
-  static std::vector<std::vector<double> >
+  static std::vector<std::vector<double>>
     ConvertToGreyYx(const QImage * const i) noexcept;
 
   ///Returns a Y-X-ordered std::vector of greynesses, with the same size as the original image
-  static std::vector<std::vector<double> >
+  static std::vector<std::vector<double>>
     ConvertToGreyYx(const std::string& filename) noexcept;
 
   ///Converts a Y-X-ordered std::vector of greynesses
@@ -124,13 +124,13 @@ struct ImageCanvas : public Canvas
   ///1.0 denotes white.
   ///From http://www.richelbilderbeek.nl/CppImageToAscii.htm
   static std::vector<std::string>
-    ConvertGreynessesToAscii(const std::vector<std::vector<double> >& greynesses,
+    ConvertGreynessesToAscii(const std::vector<std::vector<double>>& greynesses,
     const int n_cols) noexcept;
 
 
   ///Generalizes a pixel, line or rectangle to one average greyness
   static double GetFractionGrey(
-    const std::vector<std::vector<double> >& image,
+    const std::vector<std::vector<double>>& image,
     const int x1,
     const int y1,
     const int x2,
@@ -138,19 +138,19 @@ struct ImageCanvas : public Canvas
 
   ///
   static double GetGreyness(
-    const std::vector<std::vector<double> >& image,
+    const std::vector<std::vector<double>>& image,
     const int x,
     const int y) noexcept;
 
   static double GetGreyness(
-    const std::vector<std::vector<double> >& image,
+    const std::vector<std::vector<double>>& image,
     const int x1,
     const int x2,
     const int y) noexcept;
 
   //Get a square of pixels' average greyness
   static double GetGreyness(
-    const std::vector<std::vector<double> >& image,
+    const std::vector<std::vector<double>>& image,
     const int x1,
     const int y1,
     const int x2,
