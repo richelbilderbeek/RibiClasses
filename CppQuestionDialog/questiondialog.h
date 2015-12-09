@@ -83,8 +83,6 @@ struct QuestionDialog
 
   protected:
   virtual ~QuestionDialog() noexcept;
-  friend void boost::checked_delete<>(QuestionDialog*);
-  friend void boost::checked_delete<>(const QuestionDialog*);
 
   ///Set whether the user has answered the client correct
   ///and emit m_signal_submitted

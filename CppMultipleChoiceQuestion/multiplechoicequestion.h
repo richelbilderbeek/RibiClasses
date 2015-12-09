@@ -39,7 +39,8 @@ struct MultipleChoiceQuestion : public Question
     const std::string& filename,
     const std::string& question,
     const std::string& answer,
-    const std::vector<std::string>& wrong_answers);
+    const std::vector<std::string>& wrong_answers
+  );
 
   ///Create a copy of the Question, depending on the derived class its type
   Question * Clone() const noexcept;

@@ -46,6 +46,11 @@ ribi::QuestionDialog::QuestionDialog()
   assert(!HasSubmitted());
 }
 
+ribi::QuestionDialog::~QuestionDialog() noexcept
+{
+
+}
+
 std::string ribi::QuestionDialog::AskUserForInput() const noexcept
 {
   std::string t;
