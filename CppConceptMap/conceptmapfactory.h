@@ -47,7 +47,7 @@ struct ConceptMapFactory
 
   ConceptMapFactory() noexcept;
 
-  ConceptMap Create();
+  ConceptMap Create() const noexcept;
 
   ConceptMap Create(
     Nodes& nodes,

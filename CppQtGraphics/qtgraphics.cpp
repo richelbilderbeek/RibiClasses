@@ -60,9 +60,13 @@ void ribi::QtGraphics::DrawImage(
 ) const noexcept
 {
   #if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
+  #ifdef FIX_MAZIAK_ISSUE_2
+  const auto s = source.format();
+  TRACE(s);
   assert(source.format() == QImage::Format::Format_RGB32
       || source.format() == QImage::Format::Format_ARGB32
   );
+  #endif // FIX_MAZIAK_ISSUE_2
   const int n_channels{4};
   assert(n_channels == 3 || n_channels == 4);
   #else

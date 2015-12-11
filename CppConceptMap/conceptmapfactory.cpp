@@ -51,6 +51,17 @@ ribi::cmap::ConceptMapFactory::ConceptMapFactory() noexcept
   #endif
 }
 
+ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::Create() const noexcept
+{
+  std::vector<Node> nodes;
+  std::vector<Edge> edges;
+  assert(CanConstruct(nodes,edges));
+  ConceptMap p(nodes,edges);
+  assert(p.IsValid());
+  assert(!p.GetVerbosity());
+  return p;
+}
+
 
 ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::Create(
   std::vector<Node>& nodes,

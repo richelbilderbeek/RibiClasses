@@ -7,6 +7,7 @@
 
 #include "beast.h"
 #include "beastparameterfile.h"
+#include "beasttreeprior.h"
 #include "dnasequence.h"
 #include "fileio.h"
 #include "ui_qtbeastdisplay.h"
@@ -42,8 +43,8 @@ void QtBeastDisplay::AnalyzeBirthDeath(
 ) noexcept
 {
   using ribi::fileio::FileIo;
-  const BeastParameterFile::TreePrior tree_prior{
-    BeastParameterFile::TreePrior::birth_death
+  const ribi::TreePrior tree_prior{
+    ribi::TreePrior::birth_death
   };
   const std::string alignment_base_filename{
     "birthdeath_birthdeath"
@@ -53,7 +54,7 @@ void QtBeastDisplay::AnalyzeBirthDeath(
   const std::string beast_output_trees_filename{alignment_base_filename + ".trees"};
   const std::string output_png_filename{alignment_base_filename + ".png"};
 
-  const BeastParameterFile beast_parameter_file(
+  const ribi::BeastParameterFile beast_parameter_file(
     sequences,
     alignment_base_filename,
     mcmc_chainlength,
@@ -96,7 +97,7 @@ void QtBeastDisplay::AnalyzeCoalescent(
 ) noexcept
 {
   using ribi::fileio::FileIo;
-  const BeastParameterFile::TreePrior tree_prior{
+  const ribi::BeastParameterFile::TreePrior tree_prior{
     BeastParameterFile::TreePrior::coalescent_constant_population
   };
   const std::string alignment_base_filename{
@@ -108,7 +109,7 @@ void QtBeastDisplay::AnalyzeCoalescent(
   const std::string output_png_coalescent_constant_filename{alignment_base_filename + "_coalescent_constant.png"};
   const std::string output_png_popsize_filename{alignment_base_filename + "_popsize.png"};
 
-  const BeastParameterFile beast_parameter_file(
+  const ribi::BeastParameterFile beast_parameter_file(
     sequences,
     alignment_base_filename,
     mcmc_chainlength,

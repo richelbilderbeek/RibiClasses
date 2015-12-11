@@ -252,7 +252,7 @@ bool ribi::cmap::CanConstruct(
     const int n_edges{static_cast<int>(edges.size())};
     for (int i{0}; i!=n_edges; ++i)
     {
-      const Edge& edge_a{edges[i]};
+      const Edge& edge_a = edges[i];
       assert(&edge_a == &edges[i]);
       if (!edge_a.GetFrom())
       {

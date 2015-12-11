@@ -216,17 +216,14 @@ private:
   void Unselect(const Edges& edges) noexcept;
   void Unselect(const Nodes& nodes) noexcept;
 
-  explicit ConceptMap() noexcept;
+  explicit ConceptMap() noexcept : ConceptMap(std::string()) {}
 
   ///Block constructor, except for the friend ConceptMapFactory
   explicit ConceptMap(const std::string& question) noexcept;
 
   ///ConceptMap will take the edges and nodes, and swap these with empty vectors
   ///Nodes[0] must be the focal question
-  explicit ConceptMap(
-    Nodes& nodes,
-    Edges& edges
-  ) noexcept;
+  explicit ConceptMap(Nodes& nodes, Edges& edges) noexcept;
   ///Create a concept map from a cluster
   #ifdef TO_ADD_TO_PROJECTBRAINWEAVER
   ConceptMap(

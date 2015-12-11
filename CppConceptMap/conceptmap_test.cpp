@@ -219,34 +219,38 @@ void ribi::cmap::ConceptMap::Test() noexcept
       const Concept concept_b(ConceptFactory().Create("1", { {"2",Competency::misc},{"3",Competency::misc} } ));
       const Concept concept_f(ConceptFactory().Create("1", { {"2",Competency::misc},{"3",Competency::misc} } ));
       const Node node_b(NodeFactory().Create(concept_b,321,432));
-      const ConceptMap map_a(
-        ConceptMapFactory().Create(
-          {
-            CenterNodeFactory().CreateFromStrings("FOCAL QUESTION"),
-            NodeFactory().GetTests().at(1),
-            NodeFactory().CreateFromStrings("4", { {"5",Competency::misc},{"6",Competency::misc} },345,456)
-          }
-        )
-      );
-      const ConceptMap map_b(
-        ConceptMapFactory().Create(
-          {
-            CenterNodeFactory().CreateFromStrings("FOCAL QUESTION"),
-            NodeFactory().GetTests().at(1),
-            NodeFactory().CreateFromStrings("4", { {"5",Competency::misc},{"6",Competency::misc} },901,012)
-          }
-        )
-      );
+      Nodes nodes_a{
+        CenterNodeFactory().CreateFromStrings("FOCAL QUESTION"),
+        NodeFactory().GetTests().at(1),
+        NodeFactory().CreateFromStrings("4", { {"5",Competency::misc},{"6",Competency::misc} },345,456)
+      };
+      Edges edges_a;
+      const ConceptMap map_a{
+        ConceptMapFactory().Create(nodes_a,edges_a)
+      };
+
+      Nodes nodes_b{
+        CenterNodeFactory().CreateFromStrings("FOCAL QUESTION"),
+        NodeFactory().GetTests().at(1),
+        NodeFactory().CreateFromStrings("4", { {"5",Competency::misc},{"6",Competency::misc} },901,012)
+      };
+      Edges edges_b;
+
+      const ConceptMap map_b{
+        ConceptMapFactory().Create(nodes_b,edges_b)
+      };
       assert(HasSameContent(map_a,map_b));
 
       const Node node_g = NodeFactory().Create(concept_f,901,012);
-      const ConceptMap map_c(
-        ConceptMapFactory().Create(
-          {
-            CenterNodeFactory().CreateFromStrings("FOCAL QUESTION"), node_b, node_g
-          }
-        )
-      );
+      Nodes nodes_c{
+        CenterNodeFactory().CreateFromStrings("FOCAL QUESTION"),
+        node_b,
+        node_g
+      };
+      Edges edges_c;
+      const ConceptMap map_c{
+        ConceptMapFactory().Create(nodes_c, edges_c)
+      };
       assert(!HasSameContent(map_a,map_c));
       assert(!HasSameContent(map_b,map_c));
     }
@@ -265,10 +269,22 @@ void ribi::cmap::ConceptMap::Test() noexcept
       const Node node_d(CenterNodeFactory().Create(concept_d,567,678));
       const Node node_e(NodeFactory().Create(concept_e,789,890));
       const Node node_f(NodeFactory().Create(concept_f,901,012));
-      const ConceptMap map_a(ConceptMapFactory().Create( { node_a, node_b, node_c } ));
-      const ConceptMap map_b(ConceptMapFactory().Create( { node_d, node_f, node_e } )); //Swap e and f
+      Nodes nodes_a{
+        node_a, node_b, node_c
+      };
+      Edges edges_a{};
+      Nodes nodes_b{
+        node_d, node_f, node_e //Swap e and f
+      };
+      Edges edges_b{};
+      Nodes nodes_c{
+        node_d, node_c, node_e
+      };
+      Edges edges_c{};
+      const ConceptMap map_a(ConceptMapFactory().Create(nodes_a, edges_a));
+      const ConceptMap map_b(ConceptMapFactory().Create(nodes_b, edges_b));
       assert(HasSameContent(map_a,map_b));
-      const ConceptMap map_c(ConceptMapFactory().Create( { node_d, node_c, node_e } ));
+      const ConceptMap map_c(ConceptMapFactory().Create(nodes_c, edges_c));
       assert(!HasSameContent(map_a,map_c));
       assert(!HasSameContent(map_b,map_c));
     }
@@ -306,22 +322,37 @@ void ribi::cmap::ConceptMap::Test() noexcept
       const Edge edge_21(EdgeFactory().Create(NodeFactory().Create(concept_e21,4.5,6.7),nodes_2.at(0),false,nodes_2.at(1),true));
       const Edge edge_22(EdgeFactory().Create(NodeFactory().Create(concept_e22,5.6,7.8),nodes_2.at(0),false,nodes_2.at(2),true));
       const Edge edge_23(EdgeFactory().Create(NodeFactory().Create(concept_e23,6.7,8.9),nodes_2.at(1),false,nodes_2.at(2),true));
+      Nodes nodes_a{
+        node_11, node_12, node_13
+      };
+      Edges edges_a{
+        edge_11, edge_12, edge_13
+      };
+      Nodes nodes_b{
+        node_21, node_22, node_23
+      };
+      Edges edges_b{
+        edge_21, edge_22, edge_23
+      };
+      Nodes nodes_c{
+        node_21, node_22, node_23
+      };
+      Edges edges_c{
+        edge_21, edge_22
+      };
 
       const ConceptMap map_a(ConceptMapFactory().Create(
-        { node_11, node_12, node_13 },
-        { edge_11, edge_12, edge_13 }
+        nodes_a, edges_a
         )
       );
       const ConceptMap map_b(ConceptMapFactory().Create(
-        { node_21, node_22, node_23 },
-        { edge_21, edge_22, edge_23 }
+        nodes_b, edges_b
         )
       );
       assert(HasSameContent(map_a,map_b));
 
       const ConceptMap map_c(ConceptMapFactory().Create(
-        { node_21, node_22, node_23 },
-        { edge_21, edge_22 }
+        nodes_c, edges_c
         )
       );
       assert(!HasSameContent(map_a,map_c));
@@ -364,15 +395,24 @@ void ribi::cmap::ConceptMap::Test() noexcept
       const Edge edge_11(EdgeFactory().Create(NodeFactory().Create(concept_e11,1.2,3.4),nodes_1.at(0),false,nodes_1.at(1),true));
       const Edge edge_12(EdgeFactory().Create(NodeFactory().Create(concept_e12,2.3,4.5),nodes_1.at(0),false,nodes_1.at(2),true));
       const Edge edge_13(EdgeFactory().Create(NodeFactory().Create(concept_e13,3.4,5.6),nodes_1.at(1),false,nodes_1.at(2),true));
-
+      Nodes nodes_a{
+        node_11, node_12, node_13
+      };
+      Edges edges_a{
+        edge_11, edge_12, edge_13
+      };
+      Nodes nodes_b{
+        node_21, node_22, node_23
+      };
+      Edges edges_b{
+        edge_21, edge_22, edge_23
+      };
       const ConceptMap map_a(ConceptMapFactory().Create(
-        { node_11, node_12, node_13 },
-        { edge_11, edge_12, edge_13 }
+        nodes_a, edges_a
         )
       );
       const ConceptMap map_b(ConceptMapFactory().Create(
-        { node_21, node_22, node_23 },
-        { edge_21, edge_22, edge_23 }
+        nodes_b, edges_b
         )
       );
       assert(HasSameContent(map_a,map_b));
@@ -537,8 +577,9 @@ void ribi::cmap::ConceptMap::Test() noexcept
   if (verbose) { TRACE("IsValid"); }
   {
     Node node_a = CenterNodeFactory().CreateFromStrings("...");
-    ConceptMap conceptmap = ConceptMapFactory().Create(
-      { node_a } );
+    Nodes nodes_a{node_a};
+    Edges edges_a;
+    ConceptMap conceptmap = ConceptMapFactory().Create(nodes_a, edges_a);
 
     assert(conceptmap.IsValid());
     const Node node = NodeFactory().CreateFromStrings("...");
