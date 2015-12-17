@@ -55,7 +55,7 @@ struct Filename
 void CopyFile(
   const Filename& fileNameFrom,
   const Filename& fileNameTo,
-  const ribi::fileio::CopyMode copy_mode = CopyMode::prevent_overwrite);
+  const copy_file_mode copy_mode = CopyMode::prevent_overwrite);
 void DeleteFile(const Filename& filename);
 bool FilesAreIdentical(const Filename& filename_a,const Filename& filename_b);
 std::vector<std::string> FileToVector(const Filename& filename);
