@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cassert>
 #include <stdexcept>
+#include <iterator>
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"

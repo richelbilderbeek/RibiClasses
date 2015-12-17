@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include <stdexcept>
+#include <iostream>
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
