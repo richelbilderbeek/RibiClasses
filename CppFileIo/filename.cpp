@@ -24,7 +24,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <cassert>
 #include <stdexcept>
 
-#include "fileio.h"
+#include "helper.h"
 
 std::string::Filename(
   const std::string& filename,
