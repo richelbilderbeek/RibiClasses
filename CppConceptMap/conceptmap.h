@@ -72,6 +72,8 @@ class ConceptMap
       >
     >
   >;
+  using VertexDescriptor = boost::graph_traits<Graph>::vertex_descriptor;
+  using EdgeDescriptor = boost::graph_traits<Graph>::edge_descriptor;
 
   //ConceptMap(const ConceptMap&);
   //ConceptMap(ConceptMap&&);
@@ -99,15 +101,22 @@ class ConceptMap
   void AddSelected(const Nodes& nodes) noexcept;
   void AddSelected(const Edges& edges,const Nodes& nodes) noexcept;
 
+  void CheckAllNodeIdsAreUnique() const noexcept;
+
+  void ClearAllSelectednesses() noexcept;
+
   ///Prepend the question as a first node, before adding the supplied nodes
   static Nodes CreateNodes(
     const std::string& question,
     const Nodes& nodes
   ) noexcept;
 
+  ConceptMap CreateSub(const VertexDescriptor& vd) const noexcept;
+
   ///Create all sub-conceptmaps
   ///Note that CreateSubs()[0] is the concept map around the focal question
   SubConceptMaps CreateSubs() const noexcept;
+
 
   ///Delete an edge
   void DeleteEdge(const Edge& edge) noexcept;
@@ -136,6 +145,8 @@ class ConceptMap
   const Node* GetFocalNode() const noexcept;
         Node* GetFocalNode()       noexcept;
 
+
+  VertexDescriptor GetNodeWithIndex(const int index);
   //const Nodes& GetNodes() const noexcept { return m_nodes; }
   //      Nodes& GetNodes()       noexcept { return m_nodes; }
 
@@ -162,6 +173,7 @@ class ConceptMap
 
   bool HasEdge(const Edge& edge) const noexcept;
   bool HasNode(const Node& node) const noexcept;
+  bool HasNodeWithIndex(const int index) const noexcept;
 
   bool IsSelected(const Edge& node) const noexcept;
   bool IsSelected(const Node& node) const noexcept;
@@ -279,11 +291,13 @@ private:
 
 ///Test if a ConceptMap can successfully be constructed
 ///from the nodes and edges
+/*
 bool CanConstruct(
   const std::vector<Node>& nodes,
   const std::vector<Edge>& edges,
   const bool verbose = false
 ) noexcept;
+*/
 
 ///Count the number of CenterNodes
 ///- regular concept map: 1, the focus

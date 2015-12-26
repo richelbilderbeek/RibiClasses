@@ -195,7 +195,7 @@ ribi::cmap::Edge ribi::cmap::EdgeFactory::FromXml(
     node,nodes[from],tail_arrow,nodes[to],head_arrow
   );
   assert(container().Count(nodes,*edge.GetFrom()) == 1);
-  assert(container().Count(nodes,*edge.GetTo()) == 1);
+  assert(container().Count(nodes,*edge.GetToIndex()) == 1);
   return edge;
 }
 

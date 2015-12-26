@@ -47,22 +47,22 @@ ribi::cmap::Edge::Edge(
   const bool tail_arrow,
   const Node& to,
   const bool head_arrow)
-  : m_from{&from},
+  : m_from_index{&from},
     m_head_arrow{head_arrow},
     m_node{node},
     m_tail_arrow{tail_arrow},
-    m_to{&to}
+    m_to_index{&to}
 {
   #ifndef NDEBUG
   Test();
   #endif
-  assert(m_from);
-  assert(m_to);
-  assert(m_from !=  m_to);
-  assert(m_from == &from);
-  assert(m_to   == &to);
-  assert(m_from != &m_node);
-  assert(m_to   != &m_node);
+  assert(m_from_index);
+  assert(m_to_index);
+  assert(m_from_index !=  m_to_index);
+  assert(m_from_index == &from);
+  assert(m_to_index   == &to);
+  assert(m_from_index != &m_node);
+  assert(m_to_index   != &m_node);
 
   //Subscribe to all Concept signals to re-emit m_signal_edge_changed
   //this->m_node->m_signal_concept_changed.connect(
@@ -133,39 +133,6 @@ std::vector<std::string> ribi::cmap::Edge::GetVersionHistory() noexcept
   };
 }
 
-
-void ribi::cmap::Edge::OnConceptChanged(Node * const
-#ifndef NDEBUG
-  node
-#endif
-) noexcept
-{
-  assert(*node == GetNode());
-}
-
-void ribi::cmap::Edge::OnFromChanged(Node * const
-#ifndef NDEBUG
-  node
-#endif
-) noexcept
-{
-  const bool verbose{false};
-  if (verbose) { TRACE("Slot ribi::cmap::Edge::OnFromChanged"); }
-  assert(node == this->GetFrom());
-}
-
-void ribi::cmap::Edge::OnToChanged(Node * const
-#ifndef NDEBUG
-  node
-#endif
-) noexcept
-{
-  const bool verbose{false};
-  if (verbose) { TRACE("Slot ribi::cmap::Edge::OnFromChanged"); }
-
-  assert(node == this->GetTo());
-}
-
 void ribi::cmap::Edge::SetNode(const Node& node) noexcept
 {
   m_node = node;
@@ -232,14 +199,14 @@ void ribi::cmap::Edge::Test() noexcept
     const Edge edge_before{EdgeFactory().GetTest(0,from,to)};
     assert(CanConstruct(nodes,{edge_before}));
     assert(container().Count(nodes,*edge_before.GetFrom()) == 1);
-    assert(container().Count(nodes,*edge_before.GetTo()) == 1);
+    assert(container().Count(nodes,*edge_before.GetToIndex()) == 1);
     const std::string s{ToXml(edge_before,nodes)};
     const Edge edge_after{EdgeFactory().FromXml(s,nodes)};
     assert(ToXml(edge_before,nodes) == ToXml(edge_after,nodes));
     assert(container().Count(nodes,*edge_after.GetFrom()) == 1);
-    assert(container().Count(nodes,*edge_after.GetTo()) == 1);
+    assert(container().Count(nodes,*edge_after.GetToIndex()) == 1);
     assert(edge_before.GetFrom() == edge_after.GetFrom());
-    assert(edge_before.GetTo() == edge_after.GetTo());
+    assert(edge_before.GetToIndex() == edge_after.GetToIndex());
     assert(edge_before == edge_after);
   }
   //From
@@ -247,7 +214,7 @@ void ribi::cmap::Edge::Test() noexcept
   {
     const Edge edge{EdgeFactory().GetTest(0,from,to)};
     assert(*edge.GetFrom() == from);
-    assert(*edge.GetTo() == to);
+    assert(*edge.GetToIndex() == to);
   }
 }
 #endif
@@ -270,10 +237,10 @@ std::string ribi::cmap::Edge::ToXml(
   s << edge.GetNode().GetConcept().ToXml();
 
   assert(edge.GetFrom());
-  assert(edge.GetTo());
+  assert(edge.GetToIndex());
   assert(CanConstruct(nodes, { edge} ));
   const auto from_iter = std::find(begin(nodes),end(nodes),*edge.GetFrom());
-  const auto to_iter = std::find(begin(nodes),end(nodes),*edge.GetTo());
+  const auto to_iter = std::find(begin(nodes),end(nodes),*edge.GetToIndex());
   assert(from_iter != end(nodes));
   assert(to_iter != end(nodes));
   const int from_index = std::distance(nodes.begin(),from_iter);
@@ -302,9 +269,9 @@ std::string ribi::cmap::Edge::ToXml(
 
 bool ribi::cmap::IsConnectedToCenterNode(const Edge& edge) noexcept
 {
-  assert(!(IsCenterNode(*edge.GetFrom()) && IsCenterNode(*edge.GetTo()))
+  assert(!(IsCenterNode(*edge.GetFrom()) && IsCenterNode(*edge.GetToIndex()))
     && "An Edge cannot be connected to two CenterNodes");
-  return IsCenterNode(*edge.GetFrom()) || IsCenterNode(*edge.GetTo());
+  return IsCenterNode(*edge.GetFrom()) || IsCenterNode(*edge.GetToIndex());
 
 }
 
@@ -316,14 +283,14 @@ bool ribi::cmap::operator==(const ribi::cmap::Edge& lhs, const ribi::cmap::Edge&
   {
     if (lhs.GetNode()      != rhs.GetNode()) TRACE("Node differs");
     if (lhs.GetFrom()      != rhs.GetFrom()) TRACE("From node differs");
-    if (lhs.GetTo()        != rhs.GetTo()) TRACE("To node differs");
+    if (lhs.GetToIndex()        != rhs.GetToIndex()) TRACE("To node differs");
     if (lhs.HasHeadArrow() != rhs.HasHeadArrow()) TRACE("Has head arrow differs");
     if (lhs.HasTailArrow() != rhs.HasTailArrow()) TRACE("Has tail arrow differs");
   }
   return
        lhs.GetNode()      == rhs.GetNode()
     && lhs.GetFrom()      == rhs.GetFrom()
-    && lhs.GetTo()        == rhs.GetTo()
+    && lhs.GetToIndex()        == rhs.GetToIndex()
     && lhs.HasHeadArrow() == rhs.HasHeadArrow()
     && lhs.HasTailArrow() == rhs.HasTailArrow()
   ;
@@ -344,7 +311,7 @@ std::ostream& ribi::cmap::operator<<(std::ostream& os, const Edge& edge) noexcep
   os << edge.GetNode()
     << ", from: " << edge.GetFrom()
     << "(arrowhead: " << edge.HasHeadArrow()
-    << "), to: " << edge.GetTo()
+    << "), to: " << edge.GetToIndex()
     << "(arrowhead: " << edge.HasTailArrow()
     << ")"
   ;

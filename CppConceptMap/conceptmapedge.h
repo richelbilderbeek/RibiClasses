@@ -47,10 +47,10 @@ struct Edge
         Node& GetNode()       noexcept { return m_node; }
 
   ///Get the Node this edge originates from
-  const Node * GetFrom() const noexcept { return m_from; }
+  int GetFromIndex() const noexcept { return m_from_index; }
 
   ///Get the Node index this edge goes to
-  const Node * GetTo() const noexcept { return m_to; }
+  int GetToIndex() const noexcept { return m_to_index; }
 
   static std::string GetVersion() noexcept;
   static std::vector<std::string> GetVersionHistory() noexcept;
@@ -89,7 +89,7 @@ struct Edge
   private:
   ///The Node this edge originates from
   ///Must use pointer to keep an Edge default-copyable
-  const Node * m_from;
+  const int m_from_index;
 
   ///Is there an arrowhead at the 'to' node?
   bool m_head_arrow;
@@ -102,7 +102,7 @@ struct Edge
 
   ///The Node this edge goes to
   ///Must use pointer to keep an Edge default-copyable
-  const Node * m_to;
+  const int m_to_index;
 
   #ifndef NDEBUG
   static void Test() noexcept;
@@ -117,11 +117,6 @@ struct Edge
     const Node& to,
     const bool head_arrow
   );
-
-  ///Bundles Node its signals into emitting a signal that the node has changed
-  void OnConceptChanged(Node * const node) noexcept;
-  void OnFromChanged(Node * const node) noexcept;
-  void OnToChanged(Node * const node) noexcept;
 };
 
 bool IsConnectedToCenterNode(const Edge& edge) noexcept;

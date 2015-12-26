@@ -46,6 +46,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "container.h"
 #include "testtimer.h"
 #include "trace.h"
+
 #pragma GCC diagnostic pop
 
 /*
@@ -167,53 +168,50 @@ ribi::cmap::ConceptMap::ConceptMap(
 
 void ribi::cmap::ConceptMap::AddEdge(const Edge& edge) noexcept
 {
-  if (std::find(std::begin(m_edges),std::end(m_edges),edge) != std::end(m_edges))
+  if (HasEdge(edge))
   {
     if (m_verbose) { TRACE("Warning: edge already added"); }
     return;
   }
 
-  assert(edge.GetFrom());
-  assert(edge.GetTo());
+  assert(HasNodeWithIndex(edge.GetFromIndex()));
+  assert(HasNodeWithIndex(edge.GetToIndex()));
+  const auto vd_from = GetNodeWithIndex(edge.GetFromIndex());
+  const auto vd_to = GetNodeWithIndex(edge.GetToIndex());
+  const auto aer = boost::add_edge(vd_from, vd_to, edge, m_graph);
+  assert(aer.second);
 
-  //Add Nodes if they are not present yet
-  //if (!HasNode(edge.GetFrom())) { AddNode(edge.GetFrom()); }
-  //if (!HasNode(edge.GetTo())  ) { AddNode(edge.GetTo()  ); }
+  ClearAllSelectednesses();
 
-
-  assert(HasNode(*edge.GetFrom()));
-  assert(HasNode(*edge.GetTo()));
-
-  assert(std::count(std::begin(m_nodes),std::end(m_nodes),*edge.GetFrom()) == 1
-    && "First enter the node this edge originates from");
-  assert(std::count(std::begin(m_nodes),std::end(m_nodes),*edge.GetTo()) == 1
-    && "First enter the node this edge targets to");
-  m_edges.push_back(edge);
-
-  this->SetSelected( Edges( { edge } ) );
+  const auto is_selected_map = get(
+    boost::vertex_is_selected, m_graph
+  );
+  put( //not boost::get
+    is_selected_map,
+    aer.second,
+    true
+  );
 }
 
 void ribi::cmap::ConceptMap::AddNode(const Node& node) noexcept
 {
-  if (std::find(std::begin(m_nodes),std::end(m_nodes),node) != std::end(m_nodes))
+  if (HasNode(node))
   {
     if (m_verbose) { TRACE("Warning: node already added"); }
     return;
   }
 
-  this->AddSelected( { node } );
+  const auto vd = boost::add_vertex(node, m_graph);
+  auto is_selected_map = get(
+    boost::vertex_is_selected, m_graph
+  );
+  is_selected_map[vd] = true;
 
-  m_nodes.push_back(node);
-  //m_signal_add_node(node);
-
-  assert(std::count(begin(m_nodes),end(m_nodes),node) == 1
-    && "Every node must be unique");
-  //Do not let concept map signal that a new node has been added:
-  //keep it as stupid as possible. Let ConceptMapWidget
-  //have this behavior
+  CheckAllNodeIdsAreUnique();
 }
 
 
+/*
 bool ribi::cmap::CanConstruct(
   const std::vector<Node>& nodes,
   const std::vector<Edge>& edges,
@@ -233,15 +231,15 @@ bool ribi::cmap::CanConstruct(
         if (verbose) { TRACE("edge_a.GetFrom() is nullptr"); }
         return false;
       }
-      if (!edge_a.GetTo())
+      if (!edge_a.GetToIndex())
       {
         if (verbose) { TRACE("edge_a.GetTo() is nullptr"); }
         return false;
       }
       const Node *a_from{edge_a.GetFrom()};
-      const Node *a_to  {edge_a.GetTo()  };
+      const Node *a_to  {edge_a.GetToIndex()  };
       assert(a_from == edge_a.GetFrom());
-      assert(a_to   == edge_a.GetTo());
+      assert(a_to   == edge_a.GetToIndex());
 
       for (int j{i+1}; j!=n_edges; ++j)
       {
@@ -254,15 +252,15 @@ bool ribi::cmap::CanConstruct(
           if (verbose) { TRACE("edge_b.GetFrom() is nullptr"); }
           return false;
         }
-        if (!edge_b.GetTo())
+        if (!edge_b.GetToIndex())
         {
           if (verbose) { TRACE("edge_b.GetTo() is nullptr"); }
           return false;
         }
         const Node *b_from{edge_b.GetFrom()};
-        const Node *b_to  {edge_b.GetTo()};
+        const Node *b_to  {edge_b.GetToIndex()};
         assert(b_from == edge_b.GetFrom());
-        assert(b_to   == edge_b.GetTo());
+        assert(b_to   == edge_b.GetToIndex());
         if (a_from == b_from && a_to == b_to)
         {
           if (verbose) { TRACE("Cannot have two edges from the same node to the same node"); }
@@ -308,6 +306,28 @@ bool ribi::cmap::CanConstruct(
   }
   return true;
 }
+*/
+
+void ribi::cmap::ConceptMap::ClearAllSelectednesses() noexcept
+{
+  {
+    const auto is_selected_map = get(boost::vertex_is_selected, m_graph);
+    const auto vip = vertices(m_graph);
+    const auto j = vip.second;
+    for (auto i = vip.first; i!=j; ++i) {
+      put(is_selected_map,*i,false);
+    }
+  }
+  {
+    const auto is_selected_map = get(boost::edge_is_selected, m_graph);
+    const auto vip = edges(m_graph);
+    const auto j = vip.second;
+    for (auto i = vip.first; i!=j; ++i) {
+      put(is_selected_map,*i,false);
+    }
+  }
+}
+
 
 ribi::cmap::ConceptMap::Nodes ribi::cmap::ConceptMap::CreateNodes(
   const std::string& question,
@@ -333,8 +353,72 @@ ribi::cmap::ConceptMap::Nodes ribi::cmap::ConceptMap::CreateNodes(
   return v;
 }
 
+ribi::cmap::ConceptMap ribi::cmap::ConceptMap::CreateSub(const VertexDescriptor& vd) const noexcept
+{
+  const auto g = m_graph;
+  Graph h;
+
+  std::map<VertexDescriptor,VertexDescriptor> m; //old - new
+  {
+    const auto vd_h = boost::add_vertex(h);
+    m.insert(std::make_pair(vd,vd_h));
+  }
+  //Copy vertices
+  {
+    const auto vdsi = boost::adjacent_vertices(vd, g);
+    const auto j = vdsi.second;
+    for (auto i = vdsi.first; i!=j; ++i)
+    {
+      const auto vd_h = boost::add_vertex(h);
+      m.insert(std::make_pair(*i,vd_h));
+    }
+  }
+  //Copy vertex customness and selectedness
+  for (const auto p: m)
+  {
+    const auto old_custom_vertexes_map = get(boost::vertex_custom_type,g);
+    auto new_custom_vertexes_map = get(boost::vertex_custom_type,h);
+    const auto vd_old = p.first;
+    const auto vd_new = p.second;
+
+    new_custom_vertexes_map[vd_new] = old_custom_vertexes_map[vd_old];
+
+    const auto old_vertex_is_selected_map = get(boost::vertex_is_selected,g);
+    auto new_vertex_is_selected_map = get(boost::vertex_is_selected,h);
+    new_vertex_is_selected_map[vd_new] = old_vertex_is_selected_map[vd_old];
+  }
+  std::map<EdgeDescriptor,EdgeDescriptor> m; //old - new
+  //Copy edges
+  {
+    const auto eip = edges(g);
+    const auto j = eip.second;
+    for (auto i = eip.first; i!=j; ++i)
+    {
+      const auto vd_from = source(*i, g);
+      const auto vd_to = target(*i, g);
+      if (m.find(vd_from) == std::end(m)) continue;
+      if (m.find(vd_to) == std::end(m)) continue;
+      boost::edge_
+      const auto aer = boost::add_edge(m[vd_from],m[vd_to], h);
+      assert(aer.second);
+    }
+  }
+  return h;
+}
 ribi::cmap::ConceptMap::SubConceptMaps ribi::cmap::ConceptMap::CreateSubs() const noexcept
 {
+  std::vector<Graph> v;
+  const auto vip = vertices(g);
+  const auto j = vip.second;
+  for (auto i = vip.first; i!=j; ++i) {
+    v.emplace_back(
+      CreateSub(
+        *i, g
+      )
+    );
+  }
+  return v;
+  /*
   SubConceptMaps v;
   for (const auto& focal_node: m_nodes)
   {
@@ -349,10 +433,10 @@ ribi::cmap::ConceptMap::SubConceptMaps ribi::cmap::ConceptMap::CreateSubs() cons
      if (focal_edge.GetFrom() == &focal_node)
       {
         edges.push_back(focal_edge);
-        assert(focal_edge.GetTo() != &focal_node);
-        nodes.push_back(*focal_edge.GetTo());
+        assert(focal_edge.GetToIndex() != &focal_node);
+        nodes.push_back(*focal_edge.GetToIndex());
       }
-      else if (focal_edge.GetTo() == &focal_node)
+      else if (focal_edge.GetToIndex() == &focal_node)
       {
         edges.push_back(focal_edge);
         assert(focal_edge.GetFrom() != &focal_node);
@@ -370,6 +454,7 @@ ribi::cmap::ConceptMap::SubConceptMaps ribi::cmap::ConceptMap::CreateSubs() cons
     v.push_back(conceptmap);
   }
   return v;
+  */
 }
 
 void ribi::cmap::ConceptMap::DeleteEdge(const Edge& edge) noexcept
@@ -847,7 +932,7 @@ ribi::cmap::Edge ribi::cmap::ConceptMap::CreateNewEdge() noexcept
   //Keep track of what is selected
   this->AddSelected( { edge } );
   this->Unselect( { *(edge.GetFrom()) } );
-  this->Unselect( { *(edge.GetTo()) } );
+  this->Unselect( { *(edge.GetToIndex()) } );
 
   return edge;
 }
