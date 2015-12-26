@@ -28,6 +28,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic ignored "-Weffc++"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
+#include <boost/graph/adjacency_list.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/signals2.hpp>
 #include <QPointF>
@@ -36,6 +37,11 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmapedge.h"
 #include "conceptmapnode.h"
 #pragma GCC diagnostic pop
+
+#include "conceptmapvertexcustomtype.h"
+#include "conceptmapvertexisselected.h"
+#include "conceptmapedgecustomtype.h"
+#include "conceptmapedgeisselected.h"
 
 namespace ribi {
 namespace cmap {
@@ -48,11 +54,29 @@ struct ConceptMapFactory;
 class ConceptMap
 {
   public:
+  using Graph = boost::adjacency_list
+  <
+    boost::vecS,
+    boost::vecS,
+    boost::directedS,
+    boost::property<
+      boost::vertex_custom_type_t, Node,
+      boost::property<
+        boost::vertex_is_selected_t, bool
+      >
+    >,
+    boost::property<
+      boost::edge_custom_type_t, Edge,
+      boost::property<
+        boost::edge_is_selected_t, bool
+      >
+    >
+  >;
 
-  ConceptMap(const ConceptMap&);
-  ConceptMap(ConceptMap&&);
-  ConceptMap& operator=(const ConceptMap&);
-  ConceptMap& operator=(ConceptMap&&);
+  //ConceptMap(const ConceptMap&);
+  //ConceptMap(ConceptMap&&);
+  //ConceptMap& operator=(const ConceptMap&);
+  //ConceptMap& operator=(ConceptMap&&);
   ~ConceptMap() noexcept {}
 
   using ConceptMaps = std::vector<ConceptMap>;
@@ -102,8 +126,8 @@ class ConceptMap
   ///Returns nullptr if not present
   const Edge * GetEdgeHaving(const Node& node) const noexcept;
 
-  const Edges& GetEdges() const noexcept { return m_edges; }
-        Edges& GetEdges()       noexcept { return m_edges; }
+  //const Edges& GetEdges() const noexcept { return m_edges; }
+  //      Edges& GetEdges()       noexcept { return m_edges; }
 
   ///Find the Edges that start or end at the node
   Edges GetEdgesConnectedTo(const Node& node) const noexcept;
@@ -112,18 +136,18 @@ class ConceptMap
   const Node* GetFocalNode() const noexcept;
         Node* GetFocalNode()       noexcept;
 
-  const Nodes& GetNodes() const noexcept { return m_nodes; }
-        Nodes& GetNodes()       noexcept { return m_nodes; }
+  //const Nodes& GetNodes() const noexcept { return m_nodes; }
+  //      Nodes& GetNodes()       noexcept { return m_nodes; }
 
   ///There can be multiple items selected
-  const EdgesAndNodes& GetSelected() const noexcept { return m_selected; }
-        EdgesAndNodes& GetSelected()       noexcept { return m_selected; }
+  //const EdgesAndNodes& GetSelected() const noexcept { return m_selected; }
+  //      EdgesAndNodes& GetSelected()       noexcept { return m_selected; }
 
-  const Edges& GetSelectedEdges() const noexcept { return m_selected.first; }
-        Edges& GetSelectedEdges()       noexcept { return m_selected.first; }
+  //const Edges& GetSelectedEdges() const noexcept { return m_selected.first; }
+  //      Edges& GetSelectedEdges()       noexcept { return m_selected.first; }
 
-  const Nodes& GetSelectedNodes() const noexcept { return m_selected.second; }
-        Nodes& GetSelectedNodes()       noexcept { return m_selected.second; }
+  //const Nodes& GetSelectedNodes() const noexcept { return m_selected.second; }
+  //      Nodes& GetSelectedNodes()       noexcept { return m_selected.second; }
 
   //const QUndoStack& GetUndo() const noexcept { return m_undo; }
   //      QUndoStack& GetUndo()       noexcept { return m_undo; }
@@ -168,16 +192,17 @@ class ConceptMap
 private:
 
   ///The edges
-  Edges m_edges;
+  //Edges m_edges;
 
   ///The nodes
-  Nodes m_nodes;
+  //Nodes m_nodes;
 
   ///The elements selected
   ///- a true Node
   ///- the label in the middle of an edge
   ///- the CenterNode
-  EdgesAndNodes m_selected;
+  //EdgesAndNodes m_selected;
+  Graph m_graph;
 
   bool m_verbose;
 
@@ -216,14 +241,13 @@ private:
   void Unselect(const Edges& edges) noexcept;
   void Unselect(const Nodes& nodes) noexcept;
 
-  explicit ConceptMap() noexcept : ConceptMap(std::string()) {}
+  //explicit ConceptMap() noexcept : ConceptMap(std::string()) {}
 
   ///Block constructor, except for the friend ConceptMapFactory
-  explicit ConceptMap(const std::string& question) noexcept;
+  //explicit ConceptMap(const std::string& question) noexcept;
 
-  ///ConceptMap will take the edges and nodes, and swap these with empty vectors
-  ///Nodes[0] must be the focal question
-  explicit ConceptMap(Nodes& nodes, Edges& edges) noexcept;
+  explicit ConceptMap(const Graph& graph) noexcept;
+
   ///Create a concept map from a cluster
   #ifdef TO_ADD_TO_PROJECTBRAINWEAVER
   ConceptMap(

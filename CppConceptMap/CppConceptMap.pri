@@ -24,7 +24,11 @@ HEADERS += \
     ../RibiClasses/CppConceptMap/conceptmaphelper.h \
     ../RibiClasses/CppConceptMap/conceptmapnodefactory.h \
     ../RibiClasses/CppConceptMap/conceptmapnode.h \
-    ../RibiClasses/CppConceptMap/conceptmapregex.h
+    ../RibiClasses/CppConceptMap/conceptmapregex.h \
+    ../RibiClasses/CppConceptMap/conceptmapvertexcustomtype.h \
+    ../RibiClasses/CppConceptMap/conceptmapedgecustomtype.h \
+    ../RibiClasses/CppConceptMap/conceptmapvertexisselected.h \
+    ../RibiClasses/CppConceptMap/conceptmapedgeisselected.h
 
 SOURCES += \
     ../RibiClasses/CppConceptMap/conceptmapcenternodefactory.cpp \
@@ -46,4 +50,8 @@ SOURCES += \
     ../RibiClasses/CppConceptMap/conceptmapnode.cpp \
     ../RibiClasses/CppConceptMap/conceptmapnodefactory.cpp \
     ../RibiClasses/CppConceptMap/conceptmapregex.cpp \
-    ../RibiClasses/CppConceptMap/conceptmap_test.cpp
+    ../RibiClasses/CppConceptMap/conceptmap_test.cpp \
+    ../RibiClasses/CppConceptMap/conceptmapvertexcustomtype.cpp \
+    ../RibiClasses/CppConceptMap/conceptmapedgecustomtype.cpp \
+    ../RibiClasses/CppConceptMap/conceptmapvertexisselected.cpp \
+    ../RibiClasses/CppConceptMap/conceptmapedgeisselected.cpp

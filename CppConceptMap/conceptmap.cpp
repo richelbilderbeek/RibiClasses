@@ -48,6 +48,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "trace.h"
 #pragma GCC diagnostic pop
 
+/*
 ribi::cmap::ConceptMap::ConceptMap(const std::string& question) noexcept
   : m_edges( {} ),
     m_nodes(CreateNodes(question, {} )),
@@ -66,48 +67,20 @@ ribi::cmap::ConceptMap::ConceptMap(const std::string& question) noexcept
     && "The CenterNode must display the focus");
   #endif
 }
+*/
 
 ribi::cmap::ConceptMap::ConceptMap(
-  Nodes& nodes,
-  Edges& edges
+  const Graph& graph
 )  noexcept
-  : m_edges{},
-    m_nodes{},
-    m_selected{},
+  : m_graph{graph},
     m_verbose{false}
 {
   #ifndef NDEBUG
   Test();
-  std::swap(nodes,m_nodes);
-  std::swap(edges,m_edges);
-  if (!CanConstruct(nodes,edges))
-  {
-    TRACE("ERROR");
-    const std::size_t n_nodes = nodes.size();
-    for (std::size_t i=0; i!=n_nodes; ++i)
-    {
-      std::cout << i << ": " << ToXml(nodes[i]) << '\n';
-    }
-
-    const std::size_t n_edges = edges.size();
-    for (std::size_t i=0; i!=n_edges; ++i)
-    {
-      const auto edge = edges[i];
-      const auto from_iter = std::find(std::begin(nodes),std::end(nodes),*edge.GetFrom());
-      const auto to_iter = std::find(std::begin(nodes),std::end(nodes),*edge.GetTo());
-      assert(from_iter != nodes.end());
-      assert(to_iter != nodes.end());
-      std::cout
-        << i << ": "
-        << Edge::ToXml(edge,nodes)
-        << '\n';
-    }
-  }
-  assert(CanConstruct(nodes,edges));
-  assert(IsValid());
   #endif
 }
 
+/*
 ribi::cmap::ConceptMap::ConceptMap(const ConceptMap& rhs)
   : m_edges{},
     m_nodes{},
@@ -164,6 +137,7 @@ ribi::cmap::ConceptMap& ribi::cmap::ConceptMap::operator=(ConceptMap&& rhs)
   assert(IsValid());
   return *this;
 }
+*/
 
 #ifdef TO_ADD_TO_PROJECTBRAINWEAVER
 ribi::cmap::ConceptMap::ConceptMap(
