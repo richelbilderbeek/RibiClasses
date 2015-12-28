@@ -31,10 +31,10 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmap.h"
 #include "conceptmapnode.h"
 #include "conceptmapfwd.h"
+#include "conceptmapgraphtypes.h"
 #pragma GCC diagnostic pop
 
 namespace ribi {
-
 namespace cmap {
 
 ///Factory class to create ConceptMaps
@@ -47,19 +47,11 @@ struct ConceptMapFactory
 
   ConceptMapFactory() noexcept;
 
-  ConceptMap Create() const noexcept;
-
-  ConceptMap Create(
-    Nodes& nodes,
-    Edges& edges
-  ) const noexcept;
+  ConceptMap Create(const Graph& graph = Graph()) const noexcept;
 
   ///Obtain the main constituents of a
   ///ConceptMap from an XML std::string
-  std::tuple<
-    std::vector<Edge>,
-    std::vector<Node>
-  > FromXmlAsTuple(const std::string& s) const;
+  Graph FromXmlAsTuple(const std::string& s) const;
 
   ///Obtain a ConceptMap from an XML std::string
   ConceptMap FromXml(const std::string& s) const;
@@ -68,7 +60,7 @@ struct ConceptMapFactory
   ConceptMaps GetAllTests() const noexcept;
   int GetNumberOfAllTests() const noexcept { return 39; }
 
-  ConceptMap GetEmptyConceptMap() const noexcept { return GetHeteromorphousTestConceptMap0(); }
+  ConceptMap GetEmptyConceptMap() const noexcept { return GetHeteromorphousTestConceptMap(0); }
 
   ///Get the documented heteromorphous test concept maps
   ConceptMaps GetHeteromorphousTestConceptMaps() const noexcept;
@@ -80,45 +72,9 @@ struct ConceptMapFactory
   int GetNumberOfComplexHomomorphousTestConceptMaps() const noexcept { return 12; }
 
   ///Get the documented simple homomorphous test concept maps
-   ConceptMaps GetSimpleHomomorphousTestConceptMaps() const noexcept;
-
-
-  ConceptMap GetComplexHomomorphousTestConceptMap1() const noexcept; //Move to private after bug is fixed
+  ConceptMaps GetSimpleHomomorphousTestConceptMaps() const noexcept;
 
   private:
-  ConceptMap GetComplexHomomorphousTestConceptMap0() const noexcept;
-  ConceptMap GetComplexHomomorphousTestConceptMap2() const noexcept;
-  ConceptMap GetComplexHomomorphousTestConceptMap3() const noexcept;
-  ConceptMap GetComplexHomomorphousTestConceptMap4() const noexcept;
-  ConceptMap GetComplexHomomorphousTestConceptMap5() const noexcept;
-  ConceptMap GetComplexHomomorphousTestConceptMap6() const noexcept;
-  ConceptMap GetComplexHomomorphousTestConceptMap7() const noexcept;
-  ConceptMap GetComplexHomomorphousTestConceptMap8() const noexcept;
-  ConceptMap GetComplexHomomorphousTestConceptMap9() const noexcept;
-  ConceptMap GetComplexHomomorphousTestConceptMap10() const noexcept;
-  ConceptMap GetComplexHomomorphousTestConceptMap11() const noexcept;
-
-  ConceptMap GetHeteromorphousTestConceptMap0() const noexcept;
-  ConceptMap GetHeteromorphousTestConceptMap1() const noexcept;
-  ConceptMap GetHeteromorphousTestConceptMap2() const noexcept;
-  ConceptMap GetHeteromorphousTestConceptMap3() const noexcept;
-  ConceptMap GetHeteromorphousTestConceptMap4() const noexcept;
-  ConceptMap GetHeteromorphousTestConceptMap5() const noexcept;
-  ConceptMap GetHeteromorphousTestConceptMap6() const noexcept;
-  ConceptMap GetHeteromorphousTestConceptMap7() const noexcept;
-  ConceptMap GetHeteromorphousTestConceptMap8() const noexcept;
-  ConceptMap GetHeteromorphousTestConceptMap9() const noexcept;
-  ConceptMap GetHeteromorphousTestConceptMap10() const noexcept;
-  ConceptMap GetHeteromorphousTestConceptMap11() const noexcept;
-  ConceptMap GetHeteromorphousTestConceptMap12() const noexcept;
-  ConceptMap GetHeteromorphousTestConceptMap13() const noexcept;
-  ConceptMap GetHeteromorphousTestConceptMap14() const noexcept;
-  ConceptMap GetHeteromorphousTestConceptMap15() const noexcept;
-  ConceptMap GetHeteromorphousTestConceptMap16() const noexcept;
-  ConceptMap GetHeteromorphousTestConceptMap17() const noexcept;
-  ConceptMap GetHeteromorphousTestConceptMap18() const noexcept;
-  ConceptMap GetHeteromorphousTestConceptMap19() const noexcept;
-  ConceptMap GetHeteromorphousTestConceptMap20() const noexcept;
 
   #ifndef NDEBUG
   static void Test() noexcept;

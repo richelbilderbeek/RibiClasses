@@ -44,12 +44,22 @@ struct NodeFactory;
 /// - CenterNode
 struct Node
 {
+  ///Use NodeFactory as an unused argument to enforce using it
+  explicit Node(
+    const Concept& concept = Concept(),
+    const bool is_center_node = false,
+    const double x = 0.0,
+    const double y = 0.0
+  ) noexcept;
+
   ///Get the Concept
   const Concept& GetConcept() const noexcept { return m_concept; }
         Concept& GetConcept()       noexcept { return m_concept; }
 
   ///Get some test nodes
   static std::vector<Node> GetTests() noexcept;
+
+  int GetId() const noexcept { return m_id; }
 
   ///Get the x coordinat
   double GetX() const noexcept { return m_x; }
@@ -79,13 +89,6 @@ struct Node
   friend class NodeFactory;
   friend class CenterNodeFactory;
 
-  ///Use NodeFactory as an unused argument to enforce using it
-  explicit Node(
-    const Concept& concept,
-    const bool is_center_node,
-    const double x,
-    const double y
-  ) noexcept;
 
   private:
 
@@ -137,6 +140,7 @@ bool operator==(const Node& lhs, const Node& rhs) noexcept;
 bool operator!=(const Node& lhs, const Node& rhs) noexcept;
 bool operator<(const Node& lhs, const Node& rhs) noexcept;
 std::ostream& operator<<(std::ostream& os, const Node& node) noexcept;
+std::istream& operator>>(std::istream& is, Node& node) noexcept;
 
 } //~namespace cmap
 } //~namespace ribi

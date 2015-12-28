@@ -28,20 +28,16 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic ignored "-Weffc++"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
-#include <boost/graph/adjacency_list.hpp>
-#include <boost/shared_ptr.hpp>
-#include <boost/signals2.hpp>
-#include <QPointF>
+//#include <boost/shared_ptr.hpp>
+//#include <boost/signals2.hpp>
+//#include <QPointF>
 //#include <QUndoStack>
 #include "conceptmapfwd.h"
 #include "conceptmapedge.h"
 #include "conceptmapnode.h"
+#include "conceptmapgraphtypes.h"
 #pragma GCC diagnostic pop
 
-#include "conceptmapvertexcustomtype.h"
-#include "conceptmapvertexisselected.h"
-#include "conceptmapedgecustomtype.h"
-#include "conceptmapedgeisselected.h"
 
 namespace ribi {
 namespace cmap {
@@ -53,45 +49,22 @@ struct ConceptMapFactory;
 ///Use ConceptMapWidget to work with commands
 class ConceptMap
 {
-  public:
-  using Graph = boost::adjacency_list
-  <
-    boost::vecS,
-    boost::vecS,
-    boost::directedS,
-    boost::property<
-      boost::vertex_custom_type_t, Node,
-      boost::property<
-        boost::vertex_is_selected_t, bool
-      >
-    >,
-    boost::property<
-      boost::edge_custom_type_t, Edge,
-      boost::property<
-        boost::edge_is_selected_t, bool
-      >
-    >
-  >;
-  using VertexDescriptor = boost::graph_traits<Graph>::vertex_descriptor;
-  using EdgeDescriptor = boost::graph_traits<Graph>::edge_descriptor;
-
-  //ConceptMap(const ConceptMap&);
-  //ConceptMap(ConceptMap&&);
-  //ConceptMap& operator=(const ConceptMap&);
-  //ConceptMap& operator=(ConceptMap&&);
+public:
+  explicit ConceptMap(const Graph& graph = Graph()) noexcept;
   ~ConceptMap() noexcept {}
 
   using ConceptMaps = std::vector<ConceptMap>;
-  using EdgePtr = Edge*;
   using Edges = std::vector<Edge>;
   using Nodes = std::vector<Node>;
-  using NodePtr = Node*;
   using EdgesAndNodes = std::pair<Edges,Nodes>;
-  using ReadOnlyCenterNodePtr = Node*;
   using SubConceptMaps = ConceptMaps; //Just to let the code speak more for itself
 
   //Add an Edge, assumes that the nodes it points to are in the concept map
-  void AddEdge(const Edge& edge) noexcept;
+  void AddEdge(
+    const VertexDescriptor& vd_from,
+    const VertexDescriptor& vd_to,
+    const Edge& edge
+  ) noexcept;
 
   //Add a node, always works
   void AddNode(const Node& node) noexcept;
@@ -101,7 +74,10 @@ class ConceptMap
   void AddSelected(const Nodes& nodes) noexcept;
   void AddSelected(const Edges& edges,const Nodes& nodes) noexcept;
 
-  void CheckAllNodeIdsAreUnique() const noexcept;
+  bool AreAllEdgeIdsUnique() const noexcept;
+  bool AreAllNodeIdsUnique() const noexcept;
+
+  int CountSelectedNodes() const noexcept;
 
   void ClearAllSelectednesses() noexcept;
 
@@ -127,28 +103,30 @@ class ConceptMap
   ///Check if the ConceptMap is empty, that is: it has no nodes and (thus) no edges
   bool Empty() const noexcept;
 
-  ///Find the CenterNode, if any
-  const Node* FindCenterNode() const noexcept;
-        Node* FindCenterNode()       noexcept;
+  EdgeDescriptor FindEdge(const Edge& edge) const noexcept;
+  EdgeDescriptor FindEdgeHaving(const Node& node) const noexcept;
+  VertexDescriptor FindNode(const Node& node) const noexcept;
+
+  VertexDescriptor FindCenterNode() const noexcept;
+  VertexDescriptor FindCenterNode()       noexcept;
 
   ///Find the Edge that has the node as its center Node
   ///Returns nullptr if not present
-  const Edge * GetEdgeHaving(const Node& node) const noexcept;
+  EdgeDescriptor GetEdgeHaving(const Node& node) const noexcept;
 
-  //const Edges& GetEdges() const noexcept { return m_edges; }
-  //      Edges& GetEdges()       noexcept { return m_edges; }
+  Edges GetEdges() const noexcept;
 
   ///Find the Edges that start or end at the node
   Edges GetEdgesConnectedTo(const Node& node) const noexcept;
 
   ///Get the focal node (always at index zero), if any
-  const Node* GetFocalNode() const noexcept;
-        Node* GetFocalNode()       noexcept;
+  VertexDescriptor GetFocalNode() const noexcept;
+  VertexDescriptor GetFocalNode()       noexcept;
 
+  Graph GetGraph() const noexcept { return m_graph; }
 
-  VertexDescriptor GetNodeWithIndex(const int index);
-  //const Nodes& GetNodes() const noexcept { return m_nodes; }
-  //      Nodes& GetNodes()       noexcept { return m_nodes; }
+  Nodes GetNodes() const noexcept;
+  VertexDescriptor GetNodeWithIndex(const int index) noexcept;
 
   ///There can be multiple items selected
   //const EdgesAndNodes& GetSelected() const noexcept { return m_selected; }
@@ -157,11 +135,13 @@ class ConceptMap
   //const Edges& GetSelectedEdges() const noexcept { return m_selected.first; }
   //      Edges& GetSelectedEdges()       noexcept { return m_selected.first; }
 
-  //const Nodes& GetSelectedNodes() const noexcept { return m_selected.second; }
-  //      Nodes& GetSelectedNodes()       noexcept { return m_selected.second; }
+  Nodes GetSelectedNodes() const noexcept;
 
   //const QUndoStack& GetUndo() const noexcept { return m_undo; }
   //      QUndoStack& GetUndo()       noexcept { return m_undo; }
+
+  int GetNumberOfEdges() const noexcept;
+  int GetNumberOfNodes() const noexcept;
 
   bool GetVerbosity() const noexcept { return m_verbose; }
 
@@ -171,27 +151,25 @@ class ConceptMap
   ///Obtain the version history
   static std::vector<std::string> GetVersionHistory() noexcept;
 
+  bool HasCenterNode() const noexcept;
   bool HasEdge(const Edge& edge) const noexcept;
+  bool HasEdgeHaving(const Node& node) const noexcept;
   bool HasNode(const Node& node) const noexcept;
   bool HasNodeWithIndex(const int index) const noexcept;
+  bool HasSelectedNodes() const noexcept;
 
+  bool IsConnectedToCenterNode(const Edge& edge) const noexcept;
   bool IsSelected(const Edge& node) const noexcept;
   bool IsSelected(const Node& node) const noexcept;
 
-  #ifndef NDEBUG
-  ///Check if there are no nulls in the edges and nodes
-  bool IsValid() const noexcept;
-  #endif
-
-
-  void MouseMoveEvent(const QPointF& mouse_pos) noexcept;
+  //void MouseMoveEvent(const double mouse_x) noexcept;
 
   void Redo() noexcept;
 
   ///Add the nodes to the current (can be zero) selected nodes
-  void RemoveSelected(const Edges& edges) noexcept;
-  void RemoveSelected(const Nodes& nodes) noexcept;
-  void RemoveSelected(const Edges& edges,const Nodes& nodes) noexcept;
+  void RemoveSelectedness(const Edges& edges) noexcept;
+  void RemoveSelectedness(const Nodes& nodes) noexcept;
+  void RemoveSelectedness(const Edges& edges,const Nodes& nodes) noexcept;
 
   ///Set the nodes to the only nodes selected
   void SetSelected(const Nodes& nodes) noexcept;
@@ -203,17 +181,6 @@ class ConceptMap
 
 private:
 
-  ///The edges
-  //Edges m_edges;
-
-  ///The nodes
-  //Nodes m_nodes;
-
-  ///The elements selected
-  ///- a true Node
-  ///- the label in the middle of an edge
-  ///- the CenterNode
-  //EdgesAndNodes m_selected;
   Graph m_graph;
 
   bool m_verbose;
@@ -253,13 +220,6 @@ private:
   void Unselect(const Edges& edges) noexcept;
   void Unselect(const Nodes& nodes) noexcept;
 
-  //explicit ConceptMap() noexcept : ConceptMap(std::string()) {}
-
-  ///Block constructor, except for the friend ConceptMapFactory
-  //explicit ConceptMap(const std::string& question) noexcept;
-
-  explicit ConceptMap(const Graph& graph) noexcept;
-
   ///Create a concept map from a cluster
   #ifdef TO_ADD_TO_PROJECTBRAINWEAVER
   ConceptMap(
@@ -268,9 +228,12 @@ private:
   #endif
 
   ///To make the compiler use the const version
-  const Node* FindCenterNodeConst() const noexcept { return FindCenterNode(); }
+  VertexDescriptor FindCenterNodeConst() const noexcept { return FindCenterNode(); }
   ///To make the compiler use the const version
   //ReadOnlyNodePtr GetFocalNodeConst() const noexcept { return GetFocalNode(); }
+
+  void UnselectAllEdges() noexcept;
+  void UnselectAllNodes() noexcept;
 
   friend class ConceptMapFactory;
 

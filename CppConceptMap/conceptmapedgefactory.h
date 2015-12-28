@@ -43,18 +43,12 @@ struct EdgeFactory
   ) const noexcept;
 
   Edge Create(
-    const Node& node,
-    const Node& from,
-    const bool tail_arrow,
-    const Node& to,
-    const bool head_arrow
+    const Node& node
   ) const noexcept;
 
   ///Obtain an Edge from an XML std::string
-  ///You need the real nodes to connect the edge to
   Edge FromXml(
-    const std::string& s,
-    const std::vector<Node>& nodes
+    const std::string& s
   ) const noexcept;
 
 

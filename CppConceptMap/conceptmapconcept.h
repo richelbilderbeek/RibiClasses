@@ -49,8 +49,15 @@ struct ConceptFactory;
 /// - (as part of QtEdge)
 struct Concept
 {
-  Concept(const Concept&) = default;
-  Concept& operator=(const Concept&) = default;
+  ///Let only ConceptFactory construct Concepts
+  explicit Concept(
+    const std::string& name = "",
+    const Examples& examples = Examples(),
+    const bool is_complex = false,
+    const int rating_complexity = -1,
+    const int rating_concreteness = -1,
+    const int rating_specificity = -1
+  );
 
   ///Get the examples of the concept, e.g. 'Plato', 'Aristotle'
   const Examples& GetExamples() const noexcept { return m_examples; }
@@ -136,17 +143,6 @@ struct Concept
   #ifndef NDEBUG
   static void Test() noexcept;
   #endif
-
-  ///Let only ConceptFactory construct Concepts
-  explicit Concept(
-    const std::string& name,
-    const Examples& examples,
-    const bool is_complex,
-    const int rating_complexity,
-    const int rating_concreteness,
-    const int rating_specificity
-  );
-  friend class ConceptFactory;
 };
 
 std::ostream& operator<<(std::ostream& os, const Concept& concept) noexcept;

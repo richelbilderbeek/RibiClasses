@@ -39,8 +39,7 @@ namespace cmap {
 /// - QtExamplesDialog: a QDialog
 struct Examples
 {
-  explicit Examples();
-  explicit Examples(const std::vector<Example>& v);
+  explicit Examples(const std::vector<Example>& v = {});
 
   const std::vector<Example>& Get() const noexcept { return m_v; }
         std::vector<Example>& Get()       noexcept { return m_v; }

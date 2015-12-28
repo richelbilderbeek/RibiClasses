@@ -41,37 +41,39 @@ struct EdgeFactory;
 /// at the center of the Edge is a Node
 struct Edge
 {
+  explicit Edge(const Node& node = Node());
+
   ~Edge() noexcept;
 
   const Node& GetNode() const noexcept { return m_node; }
         Node& GetNode()       noexcept { return m_node; }
 
   ///Get the Node this edge originates from
-  int GetFromIndex() const noexcept { return m_from_index; }
+  //int GetFromIndex() const noexcept { return m_from_index; }
 
   ///Get the Node index this edge goes to
-  int GetToIndex() const noexcept { return m_to_index; }
+  //int GetToIndex() const noexcept { return m_to_index; }
 
   static std::string GetVersion() noexcept;
   static std::vector<std::string> GetVersionHistory() noexcept;
 
   ///Does the edge have an arrow at the head?
-  bool HasHeadArrow() const noexcept { return m_head_arrow; }
+  //bool HasHeadArrow() const noexcept { return m_head_arrow; }
 
   ///Does the edge have an arrow at the tail?
-  bool HasTailArrow() const noexcept { return m_tail_arrow; }
+  //bool HasTailArrow() const noexcept { return m_tail_arrow; }
 
   ///Set the Node index this edge originates from
   //void SetFrom(const NodePtr& from) noexcept;
 
   ///Set if the head has an arrow
-  void SetHeadArrow(const bool has_head_arrow) noexcept;
+  //void SetHeadArrow(const bool has_head_arrow) noexcept;
 
   ///Set the center Node
   void SetNode(const Node& node) noexcept;
 
   ///Set if the tail has an arrow
-  void SetTailArrow(const bool has_tail_arrow) noexcept;
+  //void SetTailArrow(const bool has_tail_arrow) noexcept;
 
   ///Set the Node index this edge goes to
   //void SetTo(const NodePtr& to) noexcept;
@@ -81,47 +83,35 @@ struct Edge
   ///Convert an Edge from an XML std::string
   ///The container of nodes is needed to convert the 'to' and 'from'
   ///field to indices
-  static std::string ToXml(
-    const Edge& c,
-    const std::vector<Node>& nodes
-  ) noexcept;
+  static std::string ToXml(const Edge& edge) noexcept;
 
   private:
   ///The Node this edge originates from
-  ///Must use pointer to keep an Edge default-copyable
-  const int m_from_index;
+  ///Must use non-const int to keep an Edge default-copyable
+  //int m_from_index;
 
   ///Is there an arrowhead at the 'to' node?
-  bool m_head_arrow;
+  //bool m_head_arrow;
 
   ///The Node on the Edge
   Node m_node;
 
   ///Is there an arrowhead at the 'from' node?
-  bool m_tail_arrow;
+  //bool m_tail_arrow;
 
   ///The Node this edge goes to
-  ///Must use pointer to keep an Edge default-copyable
-  const int m_to_index;
+  ///Must use non-const int to keep an Edge default-copyable
+  //int m_to_index;
 
   #ifndef NDEBUG
   static void Test() noexcept;
   #endif
-
-  ///Block constructor, except for EdgeFactory
-  friend class EdgeFactory;
-  explicit Edge(
-    const Node& node,
-    const Node& from,
-    const bool tail_arrow,
-    const Node& to,
-    const bool head_arrow
-  );
 };
 
-bool IsConnectedToCenterNode(const Edge& edge) noexcept;
+
 
 std::ostream& operator<<(std::ostream& os, const Edge& edge) noexcept;
+std::istream& operator>>(std::istream& is, Edge& edge);
 
 bool operator==(const Edge& lhs, const Edge& rhs);
 bool operator!=(const Edge& lhs, const Edge& rhs);

@@ -643,7 +643,7 @@ void ribi::cmap::ConceptMap::Test() noexcept
     conceptmap.AddNode(node_a);
     conceptmap.AddNode(node_b);
     assert(conceptmap.GetSelectedNodes().size() == 2);
-    conceptmap.RemoveSelected( Nodes( { node_a } ) );
+    conceptmap.RemoveSelectedness( Nodes( { node_a } ) );
     assert(conceptmap.GetSelectedNodes().size() == 1);
   }
   if (verbose) { TRACE("Add two nodes, unselect node_b"); }
@@ -655,7 +655,7 @@ void ribi::cmap::ConceptMap::Test() noexcept
     conceptmap.AddNode(node_a);
     conceptmap.AddNode(node_b);
     assert(conceptmap.GetSelectedNodes().size() == 2);
-    conceptmap.RemoveSelected( Nodes( { node_b } ) );
+    conceptmap.RemoveSelectedness( Nodes( { node_b } ) );
     assert(conceptmap.GetSelectedNodes().size() == 1);
   }
   #ifdef FIX_ISSUE_10

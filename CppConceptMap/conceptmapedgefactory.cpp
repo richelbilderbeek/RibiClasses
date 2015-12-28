@@ -58,35 +58,19 @@ ribi::cmap::Edge ribi::cmap::EdgeFactory::Create(
 
   const double x{(from.GetX() + to.GetX()) / 2.0};
   const double y{(from.GetY() + to.GetY()) / 2.0};
-  const bool tail_arrow{false};
-  const bool head_arrow{true};
   const auto concept = ConceptFactory().Create();
   const auto node = NodeFactory().Create(concept,x,y);
   Edge p(
-    node,
-    from,
-    tail_arrow,
-    to,
-    head_arrow
+    node
   );
   return p;
 }
 
 ribi::cmap::Edge ribi::cmap::EdgeFactory::Create(
-  const Node& node,
-  const Node& from,
-  const bool tail_arrow,
-  const Node& to,
-  const bool head_arrow
+  const Node& node
 ) const noexcept
 {
-  //Nodes may be similar, but not the same
-  assert(&from != &to);
-  assert(&from != &node);
-  assert(&to != &node);
-
-  assert(from != node);
-  Edge p(node,from,tail_arrow,to,head_arrow);
+  Edge p(node);
   return p;
 }
 
@@ -120,8 +104,7 @@ ribi::cmap::Edge ribi::cmap::EdgeFactory::DeepCopy(
 */
 
 ribi::cmap::Edge ribi::cmap::EdgeFactory::FromXml(
-  const std::string& s,
-  const std::vector<Node>& nodes
+  const std::string& s
 ) const noexcept
 {
   using ribi::xml::StripXmlTag;
@@ -135,38 +118,6 @@ ribi::cmap::Edge ribi::cmap::EdgeFactory::FromXml(
       = Regex().GetRegexMatches(s,Regex().GetRegexConcept());
     assert(v.size() == 1);
     concept = ConceptFactory().FromXml(v[0]);
-  }
-  //m_from
-  int from = -1;
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexFrom());
-    assert(v.size() == 1);
-    from = boost::lexical_cast<int>(StripXmlTag(v[0]));
-  }
-  //m_head_arrow
-  bool head_arrow = false;
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexHeadArrow());
-    assert(v.size() == 1);
-    head_arrow = boost::lexical_cast<bool>(StripXmlTag(v[0]));
-  }
-  //m_tail_arrow
-  bool tail_arrow = false;
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexTailArrow());
-    assert(v.size() == 1);
-    tail_arrow = boost::lexical_cast<bool>(StripXmlTag(v[0]));
-  }
-  //m_to
-  int to = -1;
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexTo());
-    assert(v.size() == 1);
-    to = boost::lexical_cast<int>(StripXmlTag(v[0]));
   }
   //m_x
   double x = 0.0;
@@ -184,18 +135,10 @@ ribi::cmap::Edge ribi::cmap::EdgeFactory::FromXml(
     assert(v.size() == 1);
     y = boost::lexical_cast<double>(StripXmlTag(v[0]));
   }
-  assert(from != to);
-  assert(from >= 0);
-  assert(to >= 0);
-  assert(from < boost::numeric_cast<int>(nodes.size()));
-  assert(to < boost::numeric_cast<int>(nodes.size()));
   const auto node = NodeFactory().Create(concept,x,y);
-  TRACE(&nodes[from])
   Edge edge(
-    node,nodes[from],tail_arrow,nodes[to],head_arrow
+    node
   );
-  assert(container().Count(nodes,*edge.GetFrom()) == 1);
-  assert(container().Count(nodes,*edge.GetToIndex()) == 1);
   return edge;
 }
 
@@ -232,8 +175,8 @@ std::vector<ribi::cmap::Edge> ribi::cmap::EdgeFactory::GetTests(
   {
     {
       const auto node = NodeFactory().GetTest(i);
-      Edge edge(node,from,false,to,true);
-      result.push_back(edge); //TODO: use emplace_back
+      Edge edge(node);
+      result.emplace_back(edge); //TODO: use emplace_back
     }
     /*
     {

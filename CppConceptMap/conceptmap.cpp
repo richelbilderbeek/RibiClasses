@@ -21,16 +21,28 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
+#include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/graphviz.hpp>
+//#include <QPointF>
+#include "conceptmapvertexcustomtype.h"
+#include "conceptmapvertexisselected.h"
+#include "conceptmapedgecustomtype.h"
+#include "conceptmapedgeisselected.h"
+#include "conceptmapfwd.h"
+#include "conceptmapedge.h"
+#include "conceptmapnode.h"
 #include "conceptmap.h"
+//#include <boost/graph/properties.hpp>
 
 #include <iostream>
 #include <set>
 #include <sstream>
 #include <functional>
 
-#include <boost/bind.hpp>
-#include <boost/lambda/lambda.hpp>
-#include <boost/lexical_cast.hpp>
+
+//#include <boost/bind.hpp>
+//#include <boost/lambda/lambda.hpp>
+//#include <boost/lexical_cast.hpp>
 
 #include "conceptmapcenternodefactory.h"
 
@@ -46,8 +58,59 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "container.h"
 #include "testtimer.h"
 #include "trace.h"
-
 #pragma GCC diagnostic pop
+
+template <
+  typename my_custom_edge_or_vertex_map,
+  typename is_selected_map
+>
+class custom_and_selectable_edges_or_vertices_writer {
+public:
+  custom_and_selectable_edges_or_vertices_writer(
+    my_custom_edge_or_vertex_map any_my_custom_edge_or_vertex_map,
+    is_selected_map any_is_selected_map
+  ) : m_my_custom_edge_or_vertex_map{any_my_custom_edge_or_vertex_map},
+      m_is_selected_map{any_is_selected_map}
+  {
+
+  }
+  template <class vertex_descriptor>
+  void operator()(
+    std::ostream& out,
+    const vertex_descriptor& vd
+  ) const noexcept {
+    out << "[label=\"" << m_my_custom_edge_or_vertex_map[vd]
+      << "\", regular=\"" << m_is_selected_map[vd]
+      << "\"]"
+    ;
+  }
+private:
+  my_custom_edge_or_vertex_map m_my_custom_edge_or_vertex_map;
+  is_selected_map m_is_selected_map;
+};
+
+template <
+  typename my_custom_edge_or_vertex_map,
+  typename is_selected_map
+>
+inline custom_and_selectable_edges_or_vertices_writer<
+  my_custom_edge_or_vertex_map,
+  is_selected_map
+>
+make_custom_and_selectable_edges_or_vertices_writer(
+  const my_custom_edge_or_vertex_map& any_my_custom_edge_or_vertex_map,
+  const is_selected_map& any_is_selected_map
+)
+{
+  return custom_and_selectable_edges_or_vertices_writer<
+    my_custom_edge_or_vertex_map,
+    is_selected_map
+  >(
+    any_my_custom_edge_or_vertex_map,
+    any_is_selected_map
+  );
+}
+
 
 /*
 ribi::cmap::ConceptMap::ConceptMap(const std::string& question) noexcept
@@ -166,7 +229,11 @@ ribi::cmap::ConceptMap::ConceptMap(
 }
 #endif //TO_ADD_TO_PROJECTBRAINWEAVER
 
-void ribi::cmap::ConceptMap::AddEdge(const Edge& edge) noexcept
+void ribi::cmap::ConceptMap::AddEdge(
+  const VertexDescriptor& vd_from,
+  const VertexDescriptor& vd_to,
+  const Edge& edge
+) noexcept
 {
   if (HasEdge(edge))
   {
@@ -174,10 +241,10 @@ void ribi::cmap::ConceptMap::AddEdge(const Edge& edge) noexcept
     return;
   }
 
-  assert(HasNodeWithIndex(edge.GetFromIndex()));
-  assert(HasNodeWithIndex(edge.GetToIndex()));
-  const auto vd_from = GetNodeWithIndex(edge.GetFromIndex());
-  const auto vd_to = GetNodeWithIndex(edge.GetToIndex());
+  //assert(HasNodeWithIndex(edge.GetFromIndex()));
+  //assert(HasNodeWithIndex(edge.GetToIndex()));
+  //const auto vd_from = GetNodeWithIndex(edge.GetFromIndex());
+  //const auto vd_to = GetNodeWithIndex(edge.GetToIndex());
   const auto aer = boost::add_edge(vd_from, vd_to, edge, m_graph);
   assert(aer.second);
 
@@ -191,6 +258,7 @@ void ribi::cmap::ConceptMap::AddEdge(const Edge& edge) noexcept
     aer.second,
     true
   );
+  assert(AreAllEdgeIdsUnique());
 }
 
 void ribi::cmap::ConceptMap::AddNode(const Node& node) noexcept
@@ -207,7 +275,7 @@ void ribi::cmap::ConceptMap::AddNode(const Node& node) noexcept
   );
   is_selected_map[vd] = true;
 
-  CheckAllNodeIdsAreUnique();
+  assert(AreAllNodeIdsUnique());
 }
 
 
@@ -357,63 +425,84 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMap::CreateSub(const VertexDescriptor&
 {
   const auto g = m_graph;
   Graph h;
-
   std::map<VertexDescriptor,VertexDescriptor> m; //old - new
   {
-    const auto vd_h = boost::add_vertex(h);
-    m.insert(std::make_pair(vd,vd_h));
-  }
-  //Copy vertices
-  {
-    const auto vdsi = boost::adjacent_vertices(vd, g);
-    const auto j = vdsi.second;
-    for (auto i = vdsi.first; i!=j; ++i)
     {
       const auto vd_h = boost::add_vertex(h);
-      m.insert(std::make_pair(*i,vd_h));
+      m.insert(std::make_pair(vd,vd_h));
     }
-  }
-  //Copy vertex customness and selectedness
-  for (const auto p: m)
-  {
-    const auto old_custom_vertexes_map = get(boost::vertex_custom_type,g);
-    auto new_custom_vertexes_map = get(boost::vertex_custom_type,h);
-    const auto vd_old = p.first;
-    const auto vd_new = p.second;
-
-    new_custom_vertexes_map[vd_new] = old_custom_vertexes_map[vd_old];
-
-    const auto old_vertex_is_selected_map = get(boost::vertex_is_selected,g);
-    auto new_vertex_is_selected_map = get(boost::vertex_is_selected,h);
-    new_vertex_is_selected_map[vd_new] = old_vertex_is_selected_map[vd_old];
-  }
-  std::map<EdgeDescriptor,EdgeDescriptor> m; //old - new
-  //Copy edges
-  {
-    const auto eip = edges(g);
-    const auto j = eip.second;
-    for (auto i = eip.first; i!=j; ++i)
+    //Copy vertices
     {
-      const auto vd_from = source(*i, g);
-      const auto vd_to = target(*i, g);
-      if (m.find(vd_from) == std::end(m)) continue;
-      if (m.find(vd_to) == std::end(m)) continue;
-      boost::edge_
-      const auto aer = boost::add_edge(m[vd_from],m[vd_to], h);
-      assert(aer.second);
+      const auto vdsi = boost::adjacent_vertices(vd, g);
+      const auto j = vdsi.second;
+      for (auto i = vdsi.first; i!=j; ++i)
+      {
+        const auto vd_h = boost::add_vertex(h);
+        m.insert(std::make_pair(*i,vd_h));
+      }
+    }
+    //Copy vertex customness and selectedness
+    for (const auto p: m)
+    {
+      const auto old_custom_vertexes_map = get(boost::vertex_custom_type,g);
+      auto new_custom_vertexes_map = get(boost::vertex_custom_type,h);
+      const auto vd_old = p.first;
+      const auto vd_new = p.second;
+
+      new_custom_vertexes_map[vd_new] = old_custom_vertexes_map[vd_old];
+
+      const auto old_vertex_is_selected_map = get(boost::vertex_is_selected,g);
+      auto new_vertex_is_selected_map = get(boost::vertex_is_selected,h);
+      new_vertex_is_selected_map[vd_new] = old_vertex_is_selected_map[vd_old];
     }
   }
-  return h;
+  {
+    std::map<EdgeDescriptor,EdgeDescriptor> n; //old - new
+    //Collect and add edges
+    {
+      const auto eip = edges(g);
+      const auto j = eip.second;
+      for (auto i = eip.first; i!=j; ++i)
+      {
+        const auto vd_from = source(*i, g);
+        const auto vd_to = target(*i, g);
+        if (m.find(vd_from) == std::end(m)) continue;
+        if (m.find(vd_to) == std::end(m)) continue;
+        const auto ed = edge(vd_from, vd_to, g).first;
+        const auto aer = boost::add_edge(m[vd_from],m[vd_to], h);
+        assert(aer.second);
+        n.insert(std::make_pair(ed, aer.first));
+      }
+      //Copy edge customness and selectedness
+      for (const auto p: n)
+      {
+        const auto old_custom_edges_map = get(boost::edge_custom_type,g);
+        auto new_custom_edges_map = get(boost::edge_custom_type,h);
+        const auto ed_old = p.first;
+        const auto ed_new = p.second;
+
+        new_custom_edges_map[ed_new] = old_custom_edges_map[ed_old];
+
+        const auto old_edge_is_selected_map = get(boost::edge_is_selected,g);
+        auto new_edge_is_selected_map = get(boost::edge_is_selected,h);
+        new_edge_is_selected_map[ed_new] = old_edge_is_selected_map[ed_old];
+      }
+    }
+  }
+  ConceptMap concept_map(h);
+  return concept_map;
 }
-ribi::cmap::ConceptMap::SubConceptMaps ribi::cmap::ConceptMap::CreateSubs() const noexcept
+
+ribi::cmap::ConceptMap::SubConceptMaps
+  ribi::cmap::ConceptMap::CreateSubs() const noexcept
 {
-  std::vector<Graph> v;
-  const auto vip = vertices(g);
+  std::vector<ConceptMap> v;
+  const auto vip = vertices(m_graph);
   const auto j = vip.second;
   for (auto i = vip.first; i!=j; ++i) {
     v.emplace_back(
       CreateSub(
-        *i, g
+        *i
       )
     );
   }
@@ -459,43 +548,19 @@ ribi::cmap::ConceptMap::SubConceptMaps ribi::cmap::ConceptMap::CreateSubs() cons
 
 void ribi::cmap::ConceptMap::DeleteEdge(const Edge& edge) noexcept
 {
-  #ifndef NDEBUG
-  //One cannot be sure if the edges are already deleted or not
-  if(std::count(begin(m_edges),end(m_edges),edge) == 0) return;
-  assert(std::count(begin(m_edges),end(m_edges),edge) != 0
-    && "The edge must exist");
-  assert(std::count(begin(m_edges),end(m_edges),edge) == 1
-    && "Every edge is unique");
-  const std::size_t n_edges_before = m_edges.size();
-  #endif
-
-
-
-  ///Edge might already be deleted by something else
-  if (GetEdges().empty()) return;
-  {
-    const auto& edges = GetEdges();
-    if (std::find(begin(edges),end(edges),edge) == edges.end()) return;
-  }
-
-  m_edges.erase(std::remove(begin(m_edges),end(m_edges),edge),m_edges.end());
-
-  #ifndef NDEBUG
-  const std::size_t n_edges_after = m_edges.size();
-  assert(n_edges_before - 1 == n_edges_after);
-  #endif
+  if(!HasEdge(edge)) return;
+  boost::remove_edge(FindEdge(edge),m_graph);
+  assert(!HasEdge(edge));
 }
 
 void ribi::cmap::ConceptMap::DeleteNode(const Node& node) noexcept
 {
-  if (std::count(std::begin(m_nodes),std::end(m_nodes),node) == 0)
-  {
-    //There are multiple ways to delete a node:
-    // - QtConceptMap: delete the QtNode, which deletes the Node
-    // - ConceptMapWidget: deletes the Node, which signals its observers of this event
-    //Because the sequence
-    return;
-  }
+  if(!HasNode(node)) return;
+
+  const auto vd = FindNode(node);
+  boost::clear_vertex(vd, m_graph);
+  boost::remove_vertex(vd, m_graph);
+  /*
 
   const auto to_be_deleted = GetEdgesConnectedTo(node);
 
@@ -513,53 +578,65 @@ void ribi::cmap::ConceptMap::DeleteNode(const Node& node) noexcept
     ),
     std::end(m_nodes)
   );
-
   //Unselect the node
   this->Unselect( { node } );
+  */
 
   //If there is no node selected anymore, give focus to a possible first node
-  if (GetSelectedNodes().empty() && !GetNodes().empty())
+  if (HasSelectedNodes() && boost::num_vertices(m_graph) > 0)
   {
-    this->SetSelected(Nodes( { GetNodes().front() } ) );
+    auto is_selected_map = get(boost::vertex_is_selected, m_graph);
+    const auto first_vd = *(vertices(m_graph).first);
+    is_selected_map[first_vd] = true;
   }
 }
 
 bool ribi::cmap::ConceptMap::Empty() const noexcept
 {
-  assert(!(m_nodes.empty() && !m_edges.empty())
-    && "If there are no nodes, there cannot be edges");
-  return m_nodes.empty(); // && m_edges.empty();
+  return boost::num_vertices(m_graph) == 0;
 }
 
-const ribi::cmap::Node* ribi::cmap::ConceptMap::FindCenterNode() const noexcept
+ribi::cmap::VertexDescriptor ribi::cmap::ConceptMap::FindCenterNode() const noexcept
 {
-  const auto iter = ribi::cmap::FindCenterNode(m_nodes);
-  return iter == std::end(m_nodes) ? nullptr : &(*iter);
+  assert(HasCenterNode());
+
+  const auto node_map = get(boost::vertex_custom_type, m_graph);
+  const auto vip = vertices(m_graph);
+  const auto j = vip.second;
+  for (auto i = vip.first; i!=j; ++i)
+  {
+    const auto vd = *i;
+    if (node_map[vd].IsCenterNode()) { return vd; }
+  }
+  assert(!"Should not get here");
+  throw; //Will always crash the program
 }
 
-ribi::cmap::Node* ribi::cmap::ConceptMap::FindCenterNode() noexcept
+ribi::cmap::VertexDescriptor ribi::cmap::ConceptMap::FindCenterNode() noexcept
 {
   //Calls the const version of this member function
   //To avoid duplication in const and non-const member functions [1]
   //[1] Scott Meyers. Effective C++ (3rd edition). ISBN: 0-321-33487-6.
   //    Item 3, paragraph 'Avoid duplication in const and non-const member functions'
-  const Node* center_node {
-    const_cast<const ConceptMap*>(this)->FindCenterNode() //Add const because compiler cannt find the right version
-    //?used to be dynamic_cast?
-  };
-  return const_cast<Node*>(center_node);
+  return const_cast<const ConceptMap&>(*this).FindCenterNode();
 }
 
-const ribi::cmap::Edge * ribi::cmap::ConceptMap::GetEdgeHaving(const Node& node) const noexcept
+ribi::cmap::EdgeDescriptor ribi::cmap::ConceptMap::GetEdgeHaving(const Node& node) const noexcept
 {
-  auto iter = Container().FindIf(
-    m_edges,
-    [node](const Edge& edge) { return edge.GetNode() == node; }
-  );
-  if (iter == std::end(m_edges)) return nullptr;
-  return &(*iter);
+  assert(HasEdgeHaving(node));
+  const auto edge_map = get(boost::edge_custom_type, m_graph);
+  const auto eip = edges(m_graph);
+  const auto j = eip.second;
+  for (auto i = eip.first; i!=j; ++i)
+  {
+    const auto ed = *i;
+    if (edge_map[ed].GetNode().GetId() == node.GetId()) { return ed; }
+  }
+  assert(!"Should not get here");
+  throw; //Will always crash the program
 }
 
+/*
 ribi::cmap::ConceptMap::Edges ribi::cmap::ConceptMap::GetEdgesConnectedTo(const Node& node) const noexcept
 {
   Edges edges;
@@ -574,29 +651,26 @@ ribi::cmap::ConceptMap::Edges ribi::cmap::ConceptMap::GetEdgesConnectedTo(const 
   );
   return edges;
 }
+*/
 
-
-const ribi::cmap::Node* ribi::cmap::ConceptMap::GetFocalNode() const noexcept
+ribi::cmap::VertexDescriptor ribi::cmap::ConceptMap::GetFocalNode() const noexcept
 {
-  if (m_nodes.empty()) return nullptr;
-  return &m_nodes[0];
+  assert(boost::num_vertices(m_graph) > 0);
+  return *(vertices(m_graph).first);
 }
 
-ribi::cmap::Node* ribi::cmap::ConceptMap::GetFocalNode() noexcept
+ribi::cmap::VertexDescriptor ribi::cmap::ConceptMap::GetFocalNode() noexcept
 {
   //Calls the const version of this member function
   //To avoid duplication in const and non-const member functions [1]
   //[1] Scott Meyers. Effective C++ (3rd edition). ISBN: 0-321-33487-6.
   //    Item 3, paragraph 'Avoid duplication in const and non-const member functions'
-  const Node* focal_node {
-    dynamic_cast<const ConceptMap*>(this)->GetFocalNode() //Compiler cannot distinguish member functions by type
-  };
-  return const_cast<Node*>(focal_node);
+  return const_cast<const ConceptMap&>(*this).GetFocalNode();
 }
 
 std::string ribi::cmap::ConceptMap::GetVersion() noexcept
 {
-  return "2.2";
+  return "3.0";
 }
 
 std::vector<std::string> ribi::cmap::ConceptMap::GetVersionHistory() noexcept
@@ -604,22 +678,39 @@ std::vector<std::string> ribi::cmap::ConceptMap::GetVersionHistory() noexcept
   return {
     "2013-12-xx: Version 1.0: initial version",
     "2013-12-23: Version 1.1: started versioning",
-    "2014-02-08: Version 1.2: support an empty concept map"
-    "2014-03-24: Version 1.3: distinguished correctly between focus and selected"
+    "2014-02-08: Version 1.2: support an empty concept map",
+    "2014-03-24: Version 1.3: distinguished correctly between focus and selected",
     "2015-08-13: Version 2.0: merge of ConceptMap and ConceptMapWidget",
     "2015-08-28: Version 2.1: removed many useless member variables",
-    "2015-11-01: Version 2.2: made Node a regular type"
+    "2015-11-01: Version 2.2: made Node a regular type",
+    "2015-12-28: Version 3.0: use of Boost.Graph"
   };
 }
 
 bool ribi::cmap::ConceptMap::HasEdge(const Edge& edge) const noexcept
 {
-  return container().Count(m_edges,edge);
+  const auto edge_map = get(boost::edge_custom_type, m_graph);
+  const auto eip = edges(m_graph);
+  const auto j = eip.second;
+  for (auto i = eip.first; i!=j; ++i)
+  {
+    const auto ed = *i;
+    if (edge_map[ed] == edge) { return true; }
+  }
+  return false;
 }
 
 bool ribi::cmap::ConceptMap::HasNode(const Node& node) const noexcept
 {
-  return container().Count(m_nodes,node);
+  const auto node_map = get(boost::vertex_custom_type, m_graph);
+  const auto vip = vertices(m_graph);
+  const auto j = vip.second;
+  for (auto i = vip.first; i!=j; ++i)
+  {
+    const auto vd = *i;
+    if (node_map[vd] == node) { return true; }
+  }
+  return false;
 }
 
 bool ribi::cmap::HasSameContent(
@@ -629,22 +720,20 @@ bool ribi::cmap::HasSameContent(
 {
   const bool trace_verbose{false};
 
-  if (lhs.GetEdges().size() != rhs.GetEdges().size())
+  if (lhs.GetNumberOfEdges() != rhs.GetNumberOfEdges())
   {
     if (trace_verbose) { TRACE("Number of edges differ"); }
     return false;
   }
-  if (lhs.GetNodes().size() != rhs.GetNodes().size())
+  if (lhs.GetNumberOfNodes() != rhs.GetNumberOfNodes())
   {
     if (trace_verbose)
     {
       TRACE("Number of nodes differ");
-      TRACE(lhs.GetNodes().size());
-      TRACE(rhs.GetNodes().size());
     }
     return false;
   }
-  //Same Concepts
+  //Same Nodes
   {
     const auto nodes_lhs = lhs.GetNodes();
     std::multiset<Concept> concepts_lhs;
@@ -698,6 +787,38 @@ bool ribi::cmap::HasSameContent(
       return false;
     }
   }
+  //Check if the out degrees match
+  {
+    std::multiset<int> lhs_out_degrees;
+    {
+      const auto g = lhs.GetGraph();
+      const auto vis = vertices(g);
+      const auto j = vis.second;
+      for (auto i = vis.first; i!=j; ++i) {
+        lhs_out_degrees.insert(
+          out_degree(*i,g)
+        );
+      }
+    }
+    std::multiset<int> rhs_out_degrees;
+    {
+      const auto g = rhs.GetGraph();
+      const auto vis = vertices(g);
+      const auto j = vis.second;
+      for (auto i = vis.first; i!=j; ++i) {
+        rhs_out_degrees.insert(
+          out_degree(*i,g)
+        );
+      }
+    }
+    if (lhs_out_degrees != rhs_out_degrees)
+    {
+      if (trace_verbose) { TRACE("Out degrees differ"); }
+      return false;
+    }
+  }
+
+  #ifdef DO_NOT_USE_PROXY
   //Check if for each edge a same 'from' and 'to' concept can be found
   {
     typedef std::tuple<std::string,std::string,std::string> FakeEdge;
@@ -711,7 +832,7 @@ bool ribi::cmap::HasSameContent(
     {
       assert(i >= 0);
       assert(i < static_cast<int>(lhs.GetEdges().size()));
-      const auto from_node = lhs.GetEdges()[i].GetFrom();
+      const auto from_node = lhs.GetEdges()[i].GetFromIndex();
       assert(from_node);
       const std::string str_from = from_node->GetConcept().GetName();
       const std::string str_mid = lhs.GetEdges()[i].GetNode().GetConcept().GetName();
@@ -774,15 +895,9 @@ bool ribi::cmap::HasSameContent(
     std::sort(std::begin(w),std::end(w));
     if (v != w) { return false; }
   }
+  #endif
   return true;
 }
-
-#ifndef NDEBUG
-bool ribi::cmap::ConceptMap::IsValid() const noexcept
-{
-  return CanConstruct(m_nodes,m_edges);
-}
-#endif
 
 int ribi::cmap::CountCenterNodes(const ConceptMap& conceptmap) noexcept
 {
@@ -802,9 +917,9 @@ int ribi::cmap::CountCenterNodeEdges(
   const int cnt{
     static_cast<int>(
       container().CountIf(v, //std::count_if(v.begin(),v.end(),
-        [](const Edge& edge)
+        [conceptmap](const Edge& edge)
         {
-          return IsConnectedToCenterNode(edge);
+          return conceptmap.IsConnectedToCenterNode(edge);
         }
       )
     )
@@ -864,7 +979,7 @@ bool ribi::cmap::operator==(const ConceptMap& lhs, const ConceptMap& rhs) noexce
   }
 
 
-  if (lhs.GetSelected() != rhs.GetSelected())
+  if (lhs.CountSelectedNodes() != rhs.CountSelectedNodes())
   {
     if (verbose) { TRACE("Selectedness differs"); }
     return false;
@@ -878,27 +993,22 @@ bool ribi::cmap::operator!=(const ribi::cmap::ConceptMap& lhs, const ribi::cmap:
   return !(lhs == rhs);
 }
 
-
-
-
 void ribi::cmap::ConceptMap::AddSelected(const std::vector<Edge>& edges) noexcept
 {
-  std::copy(edges.begin(),edges.end(),std::back_inserter(m_selected.first));
-
-  //Remove duplicates
-  std::sort(std::begin(m_selected.first),std::end(m_selected.first));
-  const auto new_end = std::unique(std::begin(m_selected.first),std::end(m_selected.first));
-  m_selected.first.erase(new_end,std::end(m_selected.first));
+  for (const auto edge: edges) {
+    const auto ed = FindEdge(edge);
+    auto selectde_edges_map = get(boost::edge_is_selected,m_graph);
+    selectde_edges_map[ed] = true;
+  }
 }
 
 void ribi::cmap::ConceptMap::AddSelected(const Nodes& nodes) noexcept
 {
-  std::copy(std::begin(nodes),std::end(nodes),std::back_inserter(m_selected.second));
-
-  //Remove duplicates
-  std::sort(std::begin(m_selected.second),std::end(m_selected.second));
-  const auto new_end = std::unique(std::begin(m_selected.second),std::end(m_selected.second));
-  m_selected.second.erase(new_end,std::end(m_selected.second));
+  for (const auto node: nodes) {
+    const auto vd = FindNode(node);
+    auto selected_vertices_map = get(boost::vertex_is_selected,m_graph);
+    selected_vertices_map[vd] = true;
+  }
 }
 
 void ribi::cmap::ConceptMap::AddSelected(
@@ -910,6 +1020,7 @@ void ribi::cmap::ConceptMap::AddSelected(
   AddSelected(nodes);
 }
 
+/*
 ribi::cmap::ConceptMap ribi::cmap::ConceptMap::CreateEmptyConceptMap() noexcept
 {
   const ConceptMap conceptmap {
@@ -917,6 +1028,7 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMap::CreateEmptyConceptMap() noexcept
   };
   return conceptmap;
 }
+*/
 
 ribi::cmap::Edge ribi::cmap::ConceptMap::CreateNewEdge() noexcept
 {
@@ -927,12 +1039,22 @@ ribi::cmap::Edge ribi::cmap::ConceptMap::CreateNewEdge() noexcept
   const Edge edge(EdgeFactory().Create(from,to));
 
   //Add the Edge
-  AddEdge(edge);
+  AddEdge(
+    FindNode(from),
+    FindNode(to),
+    edge
+  );
 
   //Keep track of what is selected
   this->AddSelected( { edge } );
-  this->Unselect( { *(edge.GetFrom()) } );
-  this->Unselect( { *(edge.GetToIndex()) } );
+
+  {
+    const auto vd_from = FindNode(from);
+    const auto vd_to = FindNode(to);
+    auto selected_vertices_map = get(boost::vertex_is_selected,m_graph);
+    selected_vertices_map[vd_from] = false;
+    selected_vertices_map[vd_to] = false;
+  }
 
   return edge;
 }
@@ -1050,62 +1172,61 @@ ribi::cmap::Node ribi::cmap::ConceptMap::GetRandomNode(
 
 bool ribi::cmap::ConceptMap::IsSelected(const Edge& edge) const noexcept
 {
-  const auto iter = std::find(
-    std::begin(m_selected.first),
-    std::end(m_selected.first),
-    edge
-  );
-  if (iter != std::end(m_selected.first)) return true;
-  return false;
+  assert(HasEdge(edge));
+  const auto ed = FindEdge(edge);
+  const auto edge_is_selected_map = get(boost::edge_is_selected, m_graph);
+  return edge_is_selected_map[ed];
 }
 
 bool ribi::cmap::ConceptMap::IsSelected(const Node& node) const noexcept
 {
-  const int n_found_in_nodes = Container().Count(
-    m_selected.second,
-    node
-  );
-  if (n_found_in_nodes) return true;
+  assert(HasNode(node) || HasEdgeHaving(node));
 
-  const int n_found_in_edge = Container().CountIf(
-    m_selected.first,
-    [node](const Edge& edge) { return edge.GetNode() == node; }
-  );
-  if (n_found_in_edge) return true;
-  return false;
+  if (HasNode(node))
+  {
+    const auto vd = FindNode(node);
+    const auto vertex_is_selected_map = get(boost::vertex_is_selected, m_graph);
+    return vertex_is_selected_map[vd];
+  }
+  else
+  {
+    const auto ed = FindEdgeHaving(node);
+    const auto edge_is_selected_map = get(boost::edge_is_selected, m_graph);
+    return edge_is_selected_map[ed];
+  }
 }
 
-void ribi::cmap::ConceptMap::RemoveSelected(const std::vector<Edge>& edges) noexcept
+void ribi::cmap::ConceptMap::RemoveSelectedness(const std::vector<Edge>& edges) noexcept
 {
   if (GetVerbosity())
   {
-    std::clog << "ribi::cmap::ConceptMap::RemoveSelected of "
+    std::clog << __func__ << ": of "
       << edges.size() << " edges"
     ;
   }
 
   for (const auto edge: edges)
   {
-    const auto new_end = std::remove(
-      std::begin(m_selected.first),
-      std::end(m_selected.first),
-      edge
-    );
-    if (new_end == std::end(m_selected.first) && m_verbose)
+    if (!HasEdge(edge))
     {
       std::clog << "Warning: edge to be removed not found" << std::endl;
     }
-    m_selected.first.erase(new_end,std::end(m_selected.first));
+    else
+    {
+      const auto edge_is_selected_map = get(boost::edge_is_selected, m_graph);
+      const auto ed = FindEdge(edge);
+      edge_is_selected_map[ed] = false;
+    }
   }
 }
 
-void ribi::cmap::ConceptMap::RemoveSelected(
+void ribi::cmap::ConceptMap::RemoveSelectedness(
   const Nodes& nodes
 ) noexcept
 {
   if (GetVerbosity())
   {
-    std::clog << "ribi::cmap::ConceptMap::RemoveSelected of "
+    std::clog << __func__ << ": of "
       << nodes.size() << " nodes"
     ;
   }
@@ -1113,42 +1234,32 @@ void ribi::cmap::ConceptMap::RemoveSelected(
   //Take care: it may be node at the center of an edge
   for (const auto node: nodes)
   {
-    const auto new_end = std::remove(
-      std::begin(m_selected.second),
-      std::end(m_selected.second),
-      node
-    );
-    if (new_end == std::end(m_selected.second))
+    if (HasNode(node))
     {
-      const Edge* const edge = this->GetEdgeHaving(node);
-      if (edge == nullptr)
-      {
-        if (m_verbose) { std::clog << "Warning: cannot find node to unselect" << std::endl; }
-      }
-      else
-      {
-        if (m_verbose) { std::clog << "Removing selectedness of edge containing node" << std::endl; }
-        this->RemoveSelected( Edges( { *edge } ) );
-      }
+      const auto node_is_selected_map = get(boost::vertex_is_selected, m_graph);
+      const auto vd = FindNode(node);
+      node_is_selected_map[vd] = false;
+    }
+    else if (HasEdgeHaving(node))
+    {
+      const auto edge_is_selected_map = get(boost::edge_is_selected, m_graph);
+      const auto ed = FindEdgeHaving(node);
+      edge_is_selected_map[ed] = false;
     }
     else
     {
-      if (m_verbose)
-      {
-        std::clog << "Removing selectedness of node" << std::endl;
-      }
-      m_selected.second.erase(new_end,std::end(m_selected.second));
+      if (m_verbose) { std::clog << "Warning: cannot find node to unselect" << std::endl; }
     }
   }
 }
 
-void ribi::cmap::ConceptMap::RemoveSelected(
+void ribi::cmap::ConceptMap::RemoveSelectedness(
   const std::vector<Edge>& edges,
   const Nodes& nodes
 ) noexcept
 {
-  RemoveSelected(edges);
-  RemoveSelected(nodes);
+  RemoveSelectedness(edges);
+  RemoveSelectedness(nodes);
 }
 
 void ribi::cmap::ConceptMap::SetSelected(
@@ -1156,16 +1267,22 @@ void ribi::cmap::ConceptMap::SetSelected(
   const Nodes& nodes
 ) noexcept
 {
-  if (GetVerbosity())
+  UnselectAllNodes();
+  UnselectAllEdges();
+
+  for (const auto node: nodes)
   {
-    std::clog << "ribi::cmap::ConceptMap::SetSelected of "
-      << edges.size() << " edges and "
-      << nodes.size() << " nodes"
-      << '\n'
-    ;
+    const auto node_is_selected_map = get(boost::vertex_is_selected, m_graph);
+    const auto vd = FindNode(node);
+    node_is_selected_map[vd] = true;
   }
-  m_selected.first = edges;
-  m_selected.second = nodes;
+
+  for (const auto edge: edges)
+  {
+    const auto edge_is_selected_map = get(boost::edge_is_selected, m_graph);
+    const auto ed = FindEdge(edge);
+    edge_is_selected_map[ed] = true;
+  }
 }
 
 void ribi::cmap::ConceptMap::SetSelected(const Edges& edges) noexcept
@@ -1183,73 +1300,19 @@ void ribi::cmap::ConceptMap::SetSelected(const EdgesAndNodes& nodes_and_edges) n
   SetSelected(nodes_and_edges.first, nodes_and_edges.second);
 }
 
+
 std::string ribi::cmap::ToXml(const ConceptMap& map) noexcept
 {
-  assert(map.IsValid());
-  assert(CanConstruct(map.GetNodes(),map.GetEdges()));
   std::stringstream s;
-  s << "<concept_map>";
-  s << "<nodes>";
-  const std::vector<Node>& nodes{map.GetNodes()};
-  assert(&nodes == &map.GetNodes());
-  assert(CanConstruct(nodes,map.GetEdges(),true));
-  assert(CanConstruct(nodes, {} ));
-  assert(CanConstruct(nodes,map.GetEdges(),true));
-  const int n_nodes{static_cast<int>(nodes.size())};
-  for (int i=0; i!=n_nodes; ++i)
-  {
-    assert(CanConstruct(nodes,map.GetEdges(),true));
-    assert(&nodes[i] == &map.GetNodes()[i]);
-    assert(i >= 0);
-    assert(i < static_cast<int>(nodes.size()));
-    s << ToXml(nodes[i]); //ToXml is a noexcept free function
-    assert(&nodes[i] == &map.GetNodes()[i]);
-    TRACE(map);
-    assert(CanConstruct(nodes,map.GetEdges(),true)); //Crashes here
-  }
-
-//  std::for_each(
-//    std::begin(nodes),std::end(nodes),
-//    [&s,&nodes,&map](const Node& node)
-//    {
-//      assert(CanConstruct(nodes,map.GetEdges(),true));
-//      s << node.ToXml();
-//      assert(CanConstruct(nodes,map.GetEdges(),true));
-//    }
-//  );
-//  for (const Node& node: nodes)
-//  {
-//    assert(CanConstruct(nodes,map.GetEdges(),true));
-//    s << node.ToXml();
-//    assert(CanConstruct(nodes,map.GetEdges(),true));
-//  }
-  s << "</nodes>";
-  s << "<edges>";
-  assert(CanConstruct(nodes,map.GetEdges(),true));
-  const std::vector<Edge>& edges = map.GetEdges();
-  assert(&edges == &map.GetEdges());
-  assert(&nodes == &map.GetNodes());
-  assert(edges.empty() || &edges[0] == &map.GetEdges()[0]);
-  assert(nodes.empty() || &nodes[0] == &map.GetNodes()[0]);
-  assert(CanConstruct(nodes,map.GetEdges(),true)); //Crashed here, due to {} initialization of reference
-  assert(CanConstruct(nodes,edges,true));
-  for (const Edge& edge: edges)
-  {
-    assert(container().Count(edges,edge) == 1);
-    assert(CanConstruct(nodes, { edge } ));
-    s << Edge::ToXml(edge,nodes);
-  }
-  s << "</edges>";
-  s << "</concept_map>";
-
-  const std::string r = s.str();
-  return r;
+  s << "<concept_map>" << map << "</concept_map>";
+  return s.str();
 }
 
 void ribi::cmap::ConceptMap::Unselect(
   const EdgesAndNodes& edges_and_nodes
 ) noexcept
 {
+
   Unselect(edges_and_nodes.first);
   Unselect(edges_and_nodes.second);
 }
@@ -1260,15 +1323,11 @@ void ribi::cmap::ConceptMap::Unselect(
 {
   for (const auto edge: edges)
   {
-    m_selected.first.erase(
-      std::remove(
-        std::begin(m_selected.first),
-        std::end(m_selected.first),
-        edge
-      ),
-      std::end(m_selected.first)
-    );
+    const auto edge_is_selected_map = get(boost::edge_is_selected, m_graph);
+    const auto ed = FindEdge(edge);
+    edge_is_selected_map[ed] = false;
   }
+
 }
 
 void ribi::cmap::ConceptMap::Unselect(
@@ -1277,31 +1336,27 @@ void ribi::cmap::ConceptMap::Unselect(
 {
   for (const auto node: nodes)
   {
-    m_selected.second.erase(
-      std::remove(
-        std::begin(m_selected.second),
-        std::end(m_selected.second),
-        node
-      ),
-      std::end(m_selected.second)
-    );
+    const auto node_is_selected_map = get(boost::vertex_is_selected, m_graph);
+    const auto vd = FindNode(node);
+    node_is_selected_map[vd] = false;
   }
 }
 
 std::ostream& ribi::cmap::operator<<(std::ostream& os, const ConceptMap& m) noexcept
 {
-  const int n_nodes{static_cast<int>(m.m_nodes.size())};
-  for (int i=0; i!=n_nodes; ++i) {
-    os << "node [" << i << "] is at address " << &m.m_nodes[i] << '\n';
-  }
-  const int n_edges{static_cast<int>(m.m_edges.size())};
-  for (int i=0; i!=n_edges; ++i) {
-    os << "edge [" << i << "] goes from "
-      << &(*m.m_edges[i].GetFrom())
-      << " to "
-      << &(*m.m_edges[i].GetTo())
-      << '\n'
-    ;
-  }
+  const auto g = m.GetGraph();
+
+  ::boost::write_graphviz(
+    os,
+    g,
+    make_custom_and_selectable_edges_or_vertices_writer(
+      get(boost::vertex_custom_type,g),
+      get(boost::vertex_is_selected,g)
+    ),
+    make_custom_and_selectable_edges_or_vertices_writer(
+      get(boost::edge_custom_type,g),
+      get(boost::edge_is_selected,g)
+    )
+  );
   return os;
 }

@@ -51,7 +51,6 @@ ribi::cmap::Node ribi::cmap::NodeFactory::Create(
 
 ribi::cmap::Node ribi::cmap::NodeFactory::Create(
   const Concept& concept,
-  bool is_center_node,
   const double x,
   const double y
 ) const noexcept
