@@ -261,12 +261,12 @@ void ribi::cmap::ConceptMap::AddEdge(
   assert(AreAllEdgeIdsUnique());
 }
 
-void ribi::cmap::ConceptMap::AddNode(const Node& node) noexcept
+ribi::cmap::VertexDescriptor ribi::cmap::ConceptMap::AddNode(const Node& node) noexcept
 {
   if (HasNode(node))
   {
     if (m_verbose) { TRACE("Warning: node already added"); }
-    return;
+    return FindNode(node);
   }
 
   const auto vd = boost::add_vertex(node, m_graph);
@@ -276,6 +276,8 @@ void ribi::cmap::ConceptMap::AddNode(const Node& node) noexcept
   is_selected_map[vd] = true;
 
   assert(AreAllNodeIdsUnique());
+
+  return vd;
 }
 
 

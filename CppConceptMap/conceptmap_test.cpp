@@ -94,7 +94,7 @@ void ribi::cmap::ConceptMap::Test() noexcept
     assert(m == n);
   }
   if (verbose) { TRACE("Copy contructor of simple homomorphous concept maps"); }
-  for (const auto m: ConceptMapFactory().GetSimpleHomomorphousTestConceptMaps())
+  for (const auto m: ConceptMapFactory().GetTests())
   {
     assert(!m.GetVerbosity());
     const ConceptMap n(m);
@@ -103,21 +103,21 @@ void ribi::cmap::ConceptMap::Test() noexcept
   if (verbose) { TRACE("Copy contructor of complex homomorphous concept map [1]"); }
   {
     const ConceptMap m{
-      ConceptMapFactory().GetComplexHomomorphousTestConceptMap(1)
+      ConceptMapFactory().GetTest(1)
     };
     assert(!m.GetVerbosity());
     const ConceptMap n{m};
     assert(m == n);
   }
   if (verbose) { TRACE("Copy contructor of complex homomorphous concept maps"); }
-  for (const auto m: ConceptMapFactory().GetComplexHomomorphousTestConceptMaps())
+  for (const auto m: ConceptMapFactory().GetTests())
   {
     assert(!m.GetVerbosity());
     const ConceptMap n(m);
     assert(m == n);
   }
   if (verbose) { TRACE("Copy contructor of heteromorphous concept maps"); }
-  for (const auto m: ConceptMapFactory().GetHeteromorphousTestConceptMaps())
+  for (const auto m: ConceptMapFactory().GetTests())
   {
     assert(!m.GetVerbosity());
     const ConceptMap n(m);
@@ -129,7 +129,7 @@ void ribi::cmap::ConceptMap::Test() noexcept
   if (verbose) { TRACE("Create tests"); }
   {
     //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,0.1);
-    const std::vector<ConceptMap> v{ConceptMapFactory().GetAllTests()};
+    const std::vector<ConceptMap> v{ConceptMapFactory().GetTests()};
     assert(!v.empty());
   }
 
@@ -178,7 +178,7 @@ void ribi::cmap::ConceptMap::Test() noexcept
     //Count the number of expected sub concept maps
     {
       const std::vector<ConceptMap> maps
-        = ConceptMapFactory().GetHeteromorphousTestConceptMaps();
+        = ConceptMapFactory().GetTests();
       const int n_heteromorphous_conceptmaps = 20;
       assert(n_heteromorphous_conceptmaps == static_cast<int>(maps.size())
         && "To warn you if you change the number of testing concept maps");
@@ -340,17 +340,17 @@ void ribi::cmap::ConceptMap::Test() noexcept
     const auto node_a = NodeFactory().GetTests().at(0);
     const auto node_b = NodeFactory().GetTests().at(1);
     const auto edge = EdgeFactory().Create(node_a,node_b);
-    conceptmap.AddNode(node_a);
-    conceptmap.AddNode(node_b);
-    conceptmap.AddEdge(edge);
+    const auto vd_a = conceptmap.AddNode(node_a);
+    const auto vd_b = conceptmap.AddNode(node_b);
+    conceptmap.AddEdge(vd_a, vd_b, edge);
     assert(conceptmap.GetEdges().size() == 1);
     assert(conceptmap.GetNodes().size() == 2);
-    assert(conceptmap.GetSelectedEdges().size() == 1);
-    assert(conceptmap.GetSelectedNodes().size() == 0);
+    assert(conceptmap.CountSelectedEdges() == 1);
+    assert(conceptmap.CountSelectedNodes() == 0);
   }
   if (verbose) { TRACE("DeleteNode: delete all two nodes of a concept map"); }
   {
-    ConceptMap conceptmap = ConceptMapFactory().GetHeteromorphousTestConceptMap(1);
+    ConceptMap conceptmap = ConceptMapFactory().GetTest(1);
 
     assert(conceptmap.GetNodes().size() == 2);
     {
@@ -366,7 +366,7 @@ void ribi::cmap::ConceptMap::Test() noexcept
   }
   if (verbose) { TRACE("DeleteNode: delete node of a concept map twice"); }
   {
-    ConceptMap conceptmap = ConceptMapFactory().GetHeteromorphousTestConceptMap(1);
+    ConceptMap conceptmap = ConceptMapFactory().GetTest(1);
 
     assert(conceptmap.GetNodes().size() == 2);
     const auto node = conceptmap.GetNodes().back();
@@ -412,7 +412,7 @@ void ribi::cmap::ConceptMap::Test() noexcept
   if (verbose) { TRACE("Is GetNode()[0] a CenterNode?"); }
   {
     ////const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,0.1);
-    const auto conceptmaps = ConceptMapFactory().GetHeteromorphousTestConceptMaps();
+    const auto conceptmaps = ConceptMapFactory().GetTests();
     for (const auto& conceptmap: conceptmaps)
     {
       if (conceptmap.GetNodes().empty()) continue;

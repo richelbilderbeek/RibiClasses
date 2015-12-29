@@ -251,123 +251,15 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::FromXml(const std::string 
 
 }
 
-std::vector<ribi::cmap::ConceptMap > ribi::cmap::ConceptMapFactory::GetAllTests() const noexcept
+ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetTest(const int i) const noexcept
 {
-  ConceptMaps v;
-  {
-    {
-      const auto w = ConceptMapFactory::GetSimpleHomomorphousTestConceptMaps();
-      std::copy(w.begin(),w.end(),std::back_inserter(v));
-    }
-    {
-      const std::vector<ConceptMap> w = ConceptMapFactory::GetComplexHomomorphousTestConceptMaps();
-      std::copy(w.begin(),w.end(),std::back_inserter(v));
-    }
-    {
-      const auto w = ConceptMapFactory::GetHeteromorphousTestConceptMaps();
-      std::copy(w.begin(),w.end(),std::back_inserter(v));
-    }
-  }
-  //Add empty concept map
-  {
-    ConceptMap p;
-    v.push_back(p);
-  }
-  return v;
+  return ConceptMap(GraphFactory().GetTest(i));
 }
 
-ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConceptMap(const int i) const noexcept
-{
-  switch (i)
-  {
-    case  0: return ConceptMap(GraphFactory().GetHeteromorphousTestGraph0());
-    case  1: return ConceptMap(GraphFactory().GetHeteromorphousTestGraph1());
-    case  2: return ConceptMap(GraphFactory().GetHeteromorphousTestGraph2());
-    case  3: return ConceptMap(GraphFactory().GetHeteromorphousTestGraph3());
-    case  4: return ConceptMap(GraphFactory().GetHeteromorphousTestGraph4());
-    case  5: return ConceptMap(GraphFactory().GetHeteromorphousTestGraph5());
-    case  6: return ConceptMap(GraphFactory().GetHeteromorphousTestGraph6());
-    case  7: return ConceptMap(GraphFactory().GetHeteromorphousTestGraph7());
-    case  8: return ConceptMap(GraphFactory().GetHeteromorphousTestGraph8());
-    case  9: return ConceptMap(GraphFactory().GetHeteromorphousTestGraph9());
-    case 10: return ConceptMap(GraphFactory().GetHeteromorphousTestGraph10());
-    case 11: return ConceptMap(GraphFactory().GetHeteromorphousTestGraph11());
-    case 12: return ConceptMap(GraphFactory().GetHeteromorphousTestGraph12());
-    case 13: return ConceptMap(GraphFactory().GetHeteromorphousTestGraph13());
-    case 14: return ConceptMap(GraphFactory().GetHeteromorphousTestGraph14());
-    case 15: return ConceptMap(GraphFactory().GetHeteromorphousTestGraph15());
-    case 16: return ConceptMap(GraphFactory().GetHeteromorphousTestGraph16());
-    case 17: return ConceptMap(GraphFactory().GetHeteromorphousTestGraph17());
-    case 18: return ConceptMap(GraphFactory().GetHeteromorphousTestGraph18());
-    case 19: return ConceptMap(GraphFactory().GetHeteromorphousTestGraph19());
-    default: assert(!"Should not get here");
-  }
-  assert(!"Should not get here");
-  return ConceptMap();
-}
-
-std::vector<ribi::cmap::ConceptMap > ribi::cmap::ConceptMapFactory::GetHeteromorphousTestConceptMaps() const noexcept
-{
-  std::vector<ConceptMap> v{
-    GetHeteromorphousTestConceptMap(0),
-    GetHeteromorphousTestConceptMap(1),
-    GetHeteromorphousTestConceptMap(2),
-    GetHeteromorphousTestConceptMap(3),
-    GetHeteromorphousTestConceptMap(4),
-    GetHeteromorphousTestConceptMap(5),
-    GetHeteromorphousTestConceptMap(6),
-    GetHeteromorphousTestConceptMap(7),
-    GetHeteromorphousTestConceptMap(8),
-    GetHeteromorphousTestConceptMap(9),
-    GetHeteromorphousTestConceptMap(10),
-    GetHeteromorphousTestConceptMap(11),
-    GetHeteromorphousTestConceptMap(12),
-    GetHeteromorphousTestConceptMap(13),
-    GetHeteromorphousTestConceptMap(14),
-    GetHeteromorphousTestConceptMap(15),
-    GetHeteromorphousTestConceptMap(16),
-    GetHeteromorphousTestConceptMap(17),
-    GetHeteromorphousTestConceptMap(18),
-    GetHeteromorphousTestConceptMap(19)
-  };
-  return v;
-}
-
-
-ribi::cmap::ConceptMap ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTestConceptMap(const int i) const noexcept
-{
-  switch (i)
-  {
-    case  0: return ConceptMap(GraphFactory().GetComplexHomomorphousTestGraph0());
-    case  1: return ConceptMap(GraphFactory().GetComplexHomomorphousTestGraph1());
-    case  2: return ConceptMap(GraphFactory().GetComplexHomomorphousTestGraph2());
-    case  3: return ConceptMap(GraphFactory().GetComplexHomomorphousTestGraph3());
-    case  4: return ConceptMap(GraphFactory().GetComplexHomomorphousTestGraph4());
-    case  5: return ConceptMap(GraphFactory().GetComplexHomomorphousTestGraph5());
-    case  6: return ConceptMap(GraphFactory().GetComplexHomomorphousTestGraph6());
-    case  7: return ConceptMap(GraphFactory().GetComplexHomomorphousTestGraph7());
-    case  8: return ConceptMap(GraphFactory().GetComplexHomomorphousTestGraph8());
-    case  9: return ConceptMap(GraphFactory().GetComplexHomomorphousTestGraph9());
-    case 10: return ConceptMap(GraphFactory().GetComplexHomomorphousTestGraph10());
-    case 11: return ConceptMap(GraphFactory().GetComplexHomomorphousTestGraph11());
-    default: assert(!"Should not get here");
-  }
-  assert(!"Should not get here");
-  return ConceptMap();
-}
-
-std::vector<ribi::cmap::ConceptMap> ribi::cmap::ConceptMapFactory::GetComplexHomomorphousTestConceptMaps() const noexcept
+std::vector<ribi::cmap::ConceptMap> ribi::cmap::ConceptMapFactory::GetTests() const noexcept
 {
   std::vector<ConceptMap> v;
-  for (int i=0; i!=12; ++i) { v.push_back(GetComplexHomomorphousTestConceptMap(i)); }
-  return v;
-}
-
-std::vector<ribi::cmap::ConceptMap> ribi::cmap::ConceptMapFactory::GetSimpleHomomorphousTestConceptMaps() const noexcept
-{
-  const auto gs = GraphFactory().GetSimpleHomomorphousTestGraphs();
-  std::vector<ConceptMap> v;
-  for (const auto g: gs) { v.emplace_back(ConceptMap(g)); }
+  for (int i=0; i!=20; ++i) { v.push_back(GetTest(i)); }
   return v;
 }
 
@@ -382,38 +274,23 @@ void ribi::cmap::ConceptMapFactory::Test() noexcept
   {
     container();
     ConceptMapFactory().GetEmptyConceptMap(); //Calls ConceptMap
+    CenterNodeFactory();
+    EdgeFactory();
   }
   const bool verbose{true};
-  CenterNodeFactory();
-  EdgeFactory();
   const TestTimer test_timer(__func__,__FILE__,1.0);
   const ConceptMapFactory f;
   {
-    if (f.GetNumberOfAllTests() != static_cast<int>(f.GetAllTests().size()))
+    if (f.GetNumberOfTests() != static_cast<int>(f.GetTests().size()))
     {
-      TRACE(f.GetNumberOfAllTests());
-      TRACE(f.GetAllTests().size());
+      TRACE(f.GetNumberOfTests());
+      TRACE(f.GetTests().size());
     }
-    assert(f.GetNumberOfAllTests() == static_cast<int>(f.GetAllTests().size()));
+    assert(f.GetNumberOfTests() == static_cast<int>(f.GetTests().size()));
   }
-  if (verbose) { TRACE("Create from XML"); }
-  {
-    const auto conceptmap = f.FromXml("<concept_map><nodes><node><concept><name>X</name><examples></examples><concept_is_complex>1</concept_is_complex><complexity>-1</complexity><concreteness>-1</concreteness><specificity>-1</specificity></concept><x>0</x><y>0</y><is_center_node>1</is_center_node></node><node><concept><name>C</name><examples></examples><concept_is_complex>1</concept_is_complex><complexity>-1</complexity><concreteness>-1</concreteness><specificity>-1</specificity></concept><x>0</x><y>0</y><is_center_node>0</is_center_node></node><node><concept><name>B</name><examples></examples><concept_is_complex>1</concept_is_complex><complexity>-1</complexity><concreteness>-1</concreteness><specificity>-1</specificity></concept><x>0</x><y>0</y><is_center_node>0</is_center_node></node><node><concept><name>A</name><examples></examples><concept_is_complex>1</concept_is_complex><complexity>-1</complexity><concreteness>-1</concreteness><specificity>-1</specificity></concept><x>0</x><y>0</y><is_center_node>0</is_center_node></node></nodes><edges></edges></concept_map>");
-  }
-  if (verbose) { TRACE("All the complex homomorphous concept maps to be valid"); }
-  {
-    const int n = f.GetNumberOfComplexHomomorphousTestConceptMaps();
-    for (int i=0; i!=n; ++i)
-    {
-      const auto conceptmap = f.GetComplexHomomorphousTestConceptMap(i);
-      assert(!conceptmap.GetVerbosity());
-    }
-  }
-  assert(!"Green");
-  ConceptMapFactory().GetHeteromorphousTestConceptMap(0);
   if (verbose) { TRACE("All testing concept maps must be valid"); }
   {
-    for (const auto& conceptmap: ConceptMapFactory().GetAllTests())
+    for (const auto& conceptmap: ConceptMapFactory().GetTests())
     {
       assert(!conceptmap.GetVerbosity());
     }

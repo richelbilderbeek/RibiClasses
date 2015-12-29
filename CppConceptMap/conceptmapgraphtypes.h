@@ -7,6 +7,8 @@
 #include "conceptmapvertexisselected.h"
 #include "conceptmapedgecustomtype.h"
 #include "conceptmapedgeisselected.h"
+#include "conceptmapnode.h"
+#include "conceptmapedge.h"
 
 namespace ribi {
 namespace cmap {

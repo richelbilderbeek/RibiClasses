@@ -67,7 +67,7 @@ public:
   ) noexcept;
 
   //Add a node, always works
-  void AddNode(const Node& node) noexcept;
+  VertexDescriptor AddNode(const Node& node) noexcept;
 
   ///Add the nodes to the current (can be zero) selected nodes
   void AddSelected(const Edges& edges) noexcept;
@@ -77,6 +77,7 @@ public:
   bool AreAllEdgeIdsUnique() const noexcept;
   bool AreAllNodeIdsUnique() const noexcept;
 
+  int CountSelectedEdges() const noexcept;
   int CountSelectedNodes() const noexcept;
 
   void ClearAllSelectednesses() noexcept;

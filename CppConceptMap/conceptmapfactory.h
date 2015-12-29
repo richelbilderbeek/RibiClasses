@@ -41,8 +41,6 @@ namespace cmap {
 ///ConceptMapFactory is the only class using the ConceptMap constructor
 struct ConceptMapFactory
 {
-  using Nodes = std::vector<Node>;
-  using Edges = std::vector<Edge>;
   using ConceptMaps = std::vector<ConceptMap>;
 
   ConceptMapFactory() noexcept;
@@ -57,22 +55,10 @@ struct ConceptMapFactory
   ConceptMap FromXml(const std::string& s) const;
 
   ///Get all the other tests as one vector
-  ConceptMaps GetAllTests() const noexcept;
-  int GetNumberOfAllTests() const noexcept { return 39; }
-
-  ConceptMap GetEmptyConceptMap() const noexcept { return GetHeteromorphousTestConceptMap(0); }
-
-  ///Get the documented heteromorphous test concept maps
-  ConceptMaps GetHeteromorphousTestConceptMaps() const noexcept;
-  ConceptMap GetHeteromorphousTestConceptMap(const int index) const noexcept;
-
-  ///Get the documented complex homomorphous test concept maps
-  ConceptMaps GetComplexHomomorphousTestConceptMaps() const noexcept;
-  ConceptMap GetComplexHomomorphousTestConceptMap(const int index) const noexcept;
-  int GetNumberOfComplexHomomorphousTestConceptMaps() const noexcept { return 12; }
-
-  ///Get the documented simple homomorphous test concept maps
-  ConceptMaps GetSimpleHomomorphousTestConceptMaps() const noexcept;
+  ConceptMaps GetTests() const noexcept;
+  ConceptMap GetTest(const int index) const noexcept;
+  int GetNumberOfTests() const noexcept { return 12; }
+  ConceptMap GetEmptyConceptMap() const noexcept { return GetTest(0); }
 
   private:
 
