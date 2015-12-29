@@ -84,43 +84,42 @@ void ribi::cmap::ConceptMap::Test() noexcept
   if (verbose) { TRACE("Create from XML"); } //TODO: Remove, this is a duplicate of CMFactory
   {
     const auto conceptmap = ConceptMapFactory().FromXml("<concept_map><nodes><node><concept><name>X</name><examples></examples><concept_is_complex>1</concept_is_complex><complexity>-1</complexity><concreteness>-1</concreteness><specificity>-1</specificity></concept><x>0</x><y>0</y><is_center_node>1</is_center_node></node><node><concept><name>C</name><examples></examples><concept_is_complex>1</concept_is_complex><complexity>-1</complexity><concreteness>-1</concreteness><specificity>-1</specificity></concept><x>0</x><y>0</y><is_center_node>0</is_center_node></node><node><concept><name>B</name><examples></examples><concept_is_complex>1</concept_is_complex><complexity>-1</complexity><concreteness>-1</concreteness><specificity>-1</specificity></concept><x>0</x><y>0</y><is_center_node>0</is_center_node></node><node><concept><name>A</name><examples></examples><concept_is_complex>1</concept_is_complex><complexity>-1</complexity><concreteness>-1</concreteness><specificity>-1</specificity></concept><x>0</x><y>0</y><is_center_node>0</is_center_node></node></nodes><edges></edges></concept_map>");
-    assert(conceptmap.IsValid());
+    assert(!conceptmap.GetVerbosity());
   }
   if (verbose) { TRACE("Copy contructor of empty concept map"); }
   {
     const ConceptMap m{ConceptMapFactory().Create()};
-    assert(m.IsValid());
+    assert(!m.GetVerbosity());
     const ConceptMap n(m);
     assert(m == n);
   }
   if (verbose) { TRACE("Copy contructor of simple homomorphous concept maps"); }
   for (const auto m: ConceptMapFactory().GetSimpleHomomorphousTestConceptMaps())
   {
-    assert(m.IsValid());
+    assert(!m.GetVerbosity());
     const ConceptMap n(m);
     assert(m == n);
   }
   if (verbose) { TRACE("Copy contructor of complex homomorphous concept map [1]"); }
   {
     const ConceptMap m{
-      ConceptMapFactory().GetComplexHomomorphousTestConceptMap1()
+      ConceptMapFactory().GetComplexHomomorphousTestConceptMap(1)
     };
-    assert(m.IsValid());
-    TRACE(m);
+    assert(!m.GetVerbosity());
     const ConceptMap n{m};
     assert(m == n);
   }
   if (verbose) { TRACE("Copy contructor of complex homomorphous concept maps"); }
   for (const auto m: ConceptMapFactory().GetComplexHomomorphousTestConceptMaps())
   {
-    assert(m.IsValid());
+    assert(!m.GetVerbosity());
     const ConceptMap n(m);
     assert(m == n);
   }
   if (verbose) { TRACE("Copy contructor of heteromorphous concept maps"); }
   for (const auto m: ConceptMapFactory().GetHeteromorphousTestConceptMaps())
   {
-    assert(m.IsValid());
+    assert(!m.GetVerbosity());
     const ConceptMap n(m);
     assert(m == n);
   }
@@ -153,341 +152,6 @@ void ribi::cmap::ConceptMap::Test() noexcept
     assert(*m == *d);
   }
   #endif // FIX_ISSUE_10
-  if (verbose) { TRACE("CanConstruct"); }
-  {
-    //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,0.1);
-    assert(CanConstruct( {}, {} ) && "Assume empty concept map can be constructed");
-  }
-  {
-    //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,0.1);
-    const Concept concept(ConceptFactory().Create("FOCAL QUESTION"));
-    const Node node = NodeFactory().Create(concept,123,234);
-    assert(CanConstruct( { node }, {} ) && "Assume focal question without examples can be constructed");
-  }
-  {
-    //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,0.1);
-    const Concept concept(ConceptFactory().Create("FOCAL QUESTION", { {"No",Competency::misc},{"examples",Competency::misc},{"allowed",Competency::misc} } ));
-    const Node node = NodeFactory().Create(concept,123,234);
-    assert(CanConstruct( { node }, {} )
-      && "Assume focal question with examples can be constructed"
-      && "for example, when creating a sub-concept map");
-  }
-  if (verbose) { TRACE("HasSameContent"); }
-  {
-    if (verbose) { TRACE("HasSameContent 1"); }
-    {
-      //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,0.1);
-      assert(NodeFactory().GetNumberOfTests() >= 3);
-      const Node node_a(CenterNodeFactory().CreateFromStrings("FOCAL QUESTION"));
-      const Node node_b(NodeFactory().GetTests().at(1));
-      const Node node_c(NodeFactory().GetTests().at(2));
-      Nodes nodes_a{
-        CenterNodeFactory().CreateFromStrings("FOCAL QUESTION"),
-        NodeFactory().GetTests().at(1),
-        NodeFactory().GetTests().at(2)
-      };
-      Edges edges_a;
-      const ConceptMap map_a(
-        ConceptMapFactory().Create(nodes_a,edges_a)
-      );
-
-      assert(map_a.GetNodes().size() == 3);
-      Nodes nodes_b{
-        CenterNodeFactory().CreateFromStrings("FOCAL QUESTION"),
-        NodeFactory().GetTests().at(1),
-        NodeFactory().GetTests().at(2)
-      };
-      Edges edges_b;
-      const ConceptMap map_b(ConceptMapFactory().Create(nodes_b,edges_b));
-      assert(map_b.GetNodes().size() == 3);
-      assert(cmap::HasSameContent(map_a,map_b));
-      Nodes nodes_c{
-        CenterNodeFactory().CreateFromStrings("FOCAL QUESTION"),
-        NodeFactory().GetTests().at(1),
-        NodeFactory().GetTests().at(2),
-        NodeFactory().GetTests().at(2)
-      };
-      Edges edges_c;
-      const ConceptMap map_c(ConceptMapFactory().Create(nodes_c,edges_c));
-      assert(!HasSameContent(map_a,map_c));
-      assert(!HasSameContent(map_b,map_c));
-
-    }
-    if (verbose) { TRACE("HasSameContent 2"); }
-    {
-      //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,0.1);
-      const Concept concept_b(ConceptFactory().Create("1", { {"2",Competency::misc},{"3",Competency::misc} } ));
-      const Concept concept_f(ConceptFactory().Create("1", { {"2",Competency::misc},{"3",Competency::misc} } ));
-      const Node node_b(NodeFactory().Create(concept_b,321,432));
-      Nodes nodes_a{
-        CenterNodeFactory().CreateFromStrings("FOCAL QUESTION"),
-        NodeFactory().GetTests().at(1),
-        NodeFactory().CreateFromStrings("4", { {"5",Competency::misc},{"6",Competency::misc} },345,456)
-      };
-      Edges edges_a;
-      const ConceptMap map_a{
-        ConceptMapFactory().Create(nodes_a,edges_a)
-      };
-
-      Nodes nodes_b{
-        CenterNodeFactory().CreateFromStrings("FOCAL QUESTION"),
-        NodeFactory().GetTests().at(1),
-        NodeFactory().CreateFromStrings("4", { {"5",Competency::misc},{"6",Competency::misc} },901,012)
-      };
-      Edges edges_b;
-
-      const ConceptMap map_b{
-        ConceptMapFactory().Create(nodes_b,edges_b)
-      };
-      assert(HasSameContent(map_a,map_b));
-
-      const Node node_g = NodeFactory().Create(concept_f,901,012);
-      Nodes nodes_c{
-        CenterNodeFactory().CreateFromStrings("FOCAL QUESTION"),
-        node_b,
-        node_g
-      };
-      Edges edges_c;
-      const ConceptMap map_c{
-        ConceptMapFactory().Create(nodes_c, edges_c)
-      };
-      assert(!HasSameContent(map_a,map_c));
-      assert(!HasSameContent(map_b,map_c));
-    }
-    if (verbose) { TRACE("HasSameContent 3"); }
-    {
-      //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,0.1);
-      const Concept concept_a(ConceptFactory().Create("FOCAL QUESTION"));
-      const Concept concept_b(ConceptFactory().Create("1",{{"2",Competency::misc},{"3",Competency::misc}}));
-      const Concept concept_c(ConceptFactory().Create("4",{{"5",Competency::misc},{"6",Competency::misc}}));
-      const Concept concept_d(ConceptFactory().Create("FOCAL QUESTION"));
-      const Concept concept_e(ConceptFactory().Create("4",{{"5",Competency::misc},{"6",Competency::misc} } ));
-      const Concept concept_f(ConceptFactory().Create("1",{{"2",Competency::misc},{"3",Competency::misc} } ));
-      const Node node_a(CenterNodeFactory().Create(concept_a,123,234));
-      const Node node_b(NodeFactory().Create(concept_b,123,234));
-      const Node node_c(NodeFactory().Create(concept_c,345,456));
-      const Node node_d(CenterNodeFactory().Create(concept_d,567,678));
-      const Node node_e(NodeFactory().Create(concept_e,789,890));
-      const Node node_f(NodeFactory().Create(concept_f,901,012));
-      Nodes nodes_a{
-        node_a, node_b, node_c
-      };
-      Edges edges_a{};
-      Nodes nodes_b{
-        node_d, node_f, node_e //Swap e and f
-      };
-      Edges edges_b{};
-      Nodes nodes_c{
-        node_d, node_c, node_e
-      };
-      Edges edges_c{};
-      const ConceptMap map_a(ConceptMapFactory().Create(nodes_a, edges_a));
-      const ConceptMap map_b(ConceptMapFactory().Create(nodes_b, edges_b));
-      assert(HasSameContent(map_a,map_b));
-      const ConceptMap map_c(ConceptMapFactory().Create(nodes_c, edges_c));
-      assert(!HasSameContent(map_a,map_c));
-      assert(!HasSameContent(map_b,map_c));
-    }
-    if (verbose) { TRACE("HasSameContent 4"); }
-    {
-      //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,0.1);
-      const Concept concept_n11(ConceptFactory().Create("1"));
-      const Concept concept_n12(ConceptFactory().Create("2"));
-      const Concept concept_n13(ConceptFactory().Create("3"));
-      const Concept concept_n21(ConceptFactory().Create("1"));
-      const Concept concept_n22(ConceptFactory().Create("2"));
-      const Concept concept_n23(ConceptFactory().Create("3"));
-
-      const Node node_11(CenterNodeFactory().Create(concept_n11,123,234));
-      const Node node_12(NodeFactory().Create(concept_n12,321,432));
-      const Node node_13(NodeFactory().Create(concept_n13,345,456));
-      const Node node_21(CenterNodeFactory().Create(concept_n21,567,678));
-      const Node node_22(NodeFactory().Create(concept_n22,789,890));
-      const Node node_23(NodeFactory().Create(concept_n23,901,012));
-
-      const Concept concept_e11(ConceptFactory().Create("9"));
-      const Concept concept_e12(ConceptFactory().Create("8"));
-      const Concept concept_e13(ConceptFactory().Create("7"));
-      const Concept concept_e21(ConceptFactory().Create("9"));
-      const Concept concept_e22(ConceptFactory().Create("8"));
-      const Concept concept_e23(ConceptFactory().Create("7"));
-
-      const Nodes nodes_1 = { node_11, node_12, node_13 };
-      const Nodes nodes_2 = { node_21, node_22, node_23 };
-
-      const Edge edge_11(EdgeFactory().Create(NodeFactory().Create(concept_e11,1.2,3.4),nodes_1.at(0),false,nodes_1.at(1),true));
-      const Edge edge_12(EdgeFactory().Create(NodeFactory().Create(concept_e12,2.3,4.5),nodes_1.at(0),false,nodes_1.at(2),true));
-      const Edge edge_13(EdgeFactory().Create(NodeFactory().Create(concept_e13,3.4,5.6),nodes_1.at(1),false,nodes_1.at(2),true));
-
-      const Edge edge_21(EdgeFactory().Create(NodeFactory().Create(concept_e21,4.5,6.7),nodes_2.at(0),false,nodes_2.at(1),true));
-      const Edge edge_22(EdgeFactory().Create(NodeFactory().Create(concept_e22,5.6,7.8),nodes_2.at(0),false,nodes_2.at(2),true));
-      const Edge edge_23(EdgeFactory().Create(NodeFactory().Create(concept_e23,6.7,8.9),nodes_2.at(1),false,nodes_2.at(2),true));
-      Nodes nodes_a{
-        node_11, node_12, node_13
-      };
-      Edges edges_a{
-        edge_11, edge_12, edge_13
-      };
-      Nodes nodes_b{
-        node_21, node_22, node_23
-      };
-      Edges edges_b{
-        edge_21, edge_22, edge_23
-      };
-      Nodes nodes_c{
-        node_21, node_22, node_23
-      };
-      Edges edges_c{
-        edge_21, edge_22
-      };
-
-      const ConceptMap map_a(ConceptMapFactory().Create(
-        nodes_a, edges_a
-        )
-      );
-      const ConceptMap map_b(ConceptMapFactory().Create(
-        nodes_b, edges_b
-        )
-      );
-      assert(HasSameContent(map_a,map_b));
-
-      const ConceptMap map_c(ConceptMapFactory().Create(
-        nodes_c, edges_c
-        )
-      );
-      assert(!HasSameContent(map_a,map_c));
-      assert(!HasSameContent(map_b,map_c));
-    }
-    if (verbose) { TRACE("HasSameContent 5"); }
-    {
-      //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,0.1);
-      const Concept concept_n11(ConceptFactory().Create("1"));
-      const Concept concept_n12(ConceptFactory().Create("2"));
-      const Concept concept_n13(ConceptFactory().Create("3"));
-
-      const Node node_11(CenterNodeFactory().Create(concept_n11,123,234));
-      const Node node_12(NodeFactory().Create(concept_n12,321,432));
-      const Node node_13(NodeFactory().Create(concept_n13,345,456));
-
-      const Concept concept_e11(ConceptFactory().Create("1->2"));
-      const Concept concept_e12(ConceptFactory().Create("1->3"));
-      const Concept concept_e13(ConceptFactory().Create("2->3"));
-
-      const Concept concept_n21(ConceptFactory().Create("1"));
-      const Concept concept_n22(ConceptFactory().Create("3"));
-      const Concept concept_n23(ConceptFactory().Create("2"));
-
-      const Node node_21(CenterNodeFactory().Create(concept_n21,123,234));
-      const Node node_22(NodeFactory().Create(concept_n22,321,432));
-      const Node node_23(NodeFactory().Create(concept_n23,345,456));
-
-      const Concept concept_e21(ConceptFactory().Create("2->3"));
-      const Concept concept_e22(ConceptFactory().Create("1->2"));
-      const Concept concept_e23(ConceptFactory().Create("1->3"));
-
-      const Nodes nodes_1 = { node_11, node_12, node_13 };
-      const Nodes nodes_2 = { node_21, node_22, node_23 };
-
-      const Edge edge_21(EdgeFactory().Create(NodeFactory().Create(concept_e21,1.2,3.4),nodes_2.at(2),false,nodes_2.at(1),true));
-      const Edge edge_22(EdgeFactory().Create(NodeFactory().Create(concept_e22,2.3,4.5),nodes_2.at(0),false,nodes_2.at(2),true));
-      const Edge edge_23(EdgeFactory().Create(NodeFactory().Create(concept_e23,3.4,4.5),nodes_2.at(0),false,nodes_2.at(1),true));
-
-      const Edge edge_11(EdgeFactory().Create(NodeFactory().Create(concept_e11,1.2,3.4),nodes_1.at(0),false,nodes_1.at(1),true));
-      const Edge edge_12(EdgeFactory().Create(NodeFactory().Create(concept_e12,2.3,4.5),nodes_1.at(0),false,nodes_1.at(2),true));
-      const Edge edge_13(EdgeFactory().Create(NodeFactory().Create(concept_e13,3.4,5.6),nodes_1.at(1),false,nodes_1.at(2),true));
-      Nodes nodes_a{
-        node_11, node_12, node_13
-      };
-      Edges edges_a{
-        edge_11, edge_12, edge_13
-      };
-      Nodes nodes_b{
-        node_21, node_22, node_23
-      };
-      Edges edges_b{
-        edge_21, edge_22, edge_23
-      };
-      const ConceptMap map_a(ConceptMapFactory().Create(
-        nodes_a, edges_a
-        )
-      );
-      const ConceptMap map_b(ConceptMapFactory().Create(
-        nodes_b, edges_b
-        )
-      );
-      assert(HasSameContent(map_a,map_b));
-    }
-    #ifdef FIX_ISSUE_10
-    if (verbose) { TRACE("HasSameContent 6"); }
-    {
-      //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,0.1);
-      const ConceptMap a{ConceptMapFactory().GetHeteromorphousTestConceptMap(19)};
-      const ConceptMap b{ConceptMapFactory().GetHeteromorphousTestConceptMap(19)};
-      assert(cmap::HasSameContent(*a,*b));
-    }
-    if (verbose) { TRACE("HasSameContent 7"); }
-    {
-      //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,0.1);
-      const ConceptMap a{ConceptMapFactory().GetHeteromorphousTestConceptMap(18)};
-      const ConceptMap b{ConceptMapFactory().GetHeteromorphousTestConceptMap(19)};
-      assert(!cmap::HasSameContent(*a,*b));
-    }
-    if (verbose) { TRACE("Test simple homomorphous maps"); }
-    {
-      //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,0.1);
-      const auto v = AddConst(ConceptMapFactory().GetSimpleHomomorphousTestConceptMaps());
-      const int sz = v.size();
-      for (int i = 0; i!=sz; ++i)
-      {
-        for (int j = i; j!=sz; ++j)
-        {
-          const ConceptMap a(ConceptMapFactory().DeepCopy(v[i]));
-          assert(a);
-          assert( a !=  v[i]);
-          assert(*a == *v[i]);
-          const ConceptMap b(ConceptMapFactory().DeepCopy(v[j]));
-          assert(b);
-          assert( b !=  v[j]);
-          assert(*b == *v[j]);
-          assert(a != b);
-          if (i == j)
-          {
-            assert(cmap::HasSameContent(*a,*b));
-          }
-          else
-          {
-            if (!cmap::HasSameContent(*a,*b))
-            {
-              std::stringstream s;
-              s << "Testing simple concept maps #" << i << " and #" << j << " must be homomorphous";
-            }
-            assert(cmap::HasSameContent(*a,*b));
-          }
-        }
-      }
-      //TRACE("ConceptMap::Test: simple homomorphous testing concept maps are successfully identified as being different, yet homomorphous");
-    }
-    if (verbose) { TRACE("Test complex homomorphous maps"); }
-    {
-      //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,0.1);
-      const int sz = ConceptMapFactory().GetNumberOfComplexHomomorphousTestConceptMaps();
-      for (int i = 1; i!=sz; ++i)
-      {
-        const int j = i - 1;
-        const ConceptMap a{ConceptMapFactory().GetComplexHomomorphousTestConceptMap(i)};
-        const ConceptMap b{ConceptMapFactory().GetComplexHomomorphousTestConceptMap(j)};
-        assert(cmap::HasSameContent(*a,*b));
-      }
-      //TRACE("ConceptMap::Test: complex homomorphous testing concept maps are successfully identified as being different, yet homomorphous");
-    }
-    #endif //FIX_ISSUE_10
-
-
-    //OLD NOTE: There is no perfect check for shuffled, yet homomorphous concept maps
-    //LATER NOTE: Yet, I cannot think of an example that wouldn't get caught
-    //  so perhaps the check _is_ perfect?
-  }
-
   #ifdef TO_ADD_TO_PROJECTBRAINWEAVER
   //Conversion from Cluster
   {
@@ -574,18 +238,6 @@ void ribi::cmap::ConceptMap::Test() noexcept
     }
   }
   #endif // FIX_ISSUE_10
-  if (verbose) { TRACE("IsValid"); }
-  {
-    Node node_a = CenterNodeFactory().CreateFromStrings("...");
-    Nodes nodes_a{node_a};
-    Edges edges_a;
-    ConceptMap conceptmap = ConceptMapFactory().Create(nodes_a, edges_a);
-
-    assert(conceptmap.IsValid());
-    const Node node = NodeFactory().CreateFromStrings("...");
-    conceptmap.AddNode(node);
-    assert(conceptmap.IsValid());
-  }
   if (verbose) { TRACE("Add two nodes, check selected"); }
   {
     auto conceptmap = ConceptMapFactory().GetEmptyConceptMap();

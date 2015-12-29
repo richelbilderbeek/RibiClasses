@@ -55,6 +55,7 @@ ribi::cmap::Node ribi::cmap::NodeFactory::Create(
   const double y
 ) const noexcept
 {
+  const bool is_center_node{false};
   Node node(concept,is_center_node,x,y);
   assert(concept == node.GetConcept());
   assert(node.GetX() == x);
@@ -65,11 +66,11 @@ ribi::cmap::Node ribi::cmap::NodeFactory::Create(
 ribi::cmap::Node ribi::cmap::NodeFactory::CreateFromStrings(
   const std::string& name,
   const std::vector<std::pair<std::string,Competency> >& examples,
-  bool is_center_node,
   const double x,
   const double y
 ) const noexcept
 {
+  const bool is_center_node{false};
   Node node(
     ConceptFactory().Create(name,examples),
     is_center_node,
@@ -137,8 +138,14 @@ ribi::cmap::Node ribi::cmap::NodeFactory::FromXml(const std::string& s) const
     assert(v.size() == 1);
     y = boost::lexical_cast<double>(ribi::xml::StripXmlTag(v[0]));
   }
-  Node node(NodeFactory().Create(concept,is_center_node,x,y));
-  return node;
+  if (is_center_node)
+  {
+    return CenterNodeFactory().Create(concept,x,y);
+  }
+  else
+  {
+    return NodeFactory().Create(concept,x,y);
+  }
 }
 
 int ribi::cmap::NodeFactory::GetNumberOfTests() const noexcept
