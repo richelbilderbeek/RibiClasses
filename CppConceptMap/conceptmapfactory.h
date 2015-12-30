@@ -21,22 +21,25 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #ifndef CONCEPTMAPCONCEPTMAPFACTORY_H
 #define CONCEPTMAPCONCEPTMAPFACTORY_H
 
-#include <array>
-#include <vector>
+//#include <array>
+//#include <vector>
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
-#include <boost/shared_ptr.hpp>
-#include "conceptmap.h"
-#include "conceptmapnode.h"
-#include "conceptmapfwd.h"
-#include "conceptmapgraphtypes.h"
+//#include "conceptmap.h"
+//#include "conceptmapnode.h"
+//#include "conceptmapfwd.h"
+//#include "conceptmapgraphtypes.h"
+#include "conceptmapgraphfactory.h"
 #pragma GCC diagnostic pop
 
 namespace ribi {
 namespace cmap {
 
+#ifndef DO_NOT_USE_BOOST_GRAPH
+using ConceptMapFactory = GraphFactory;
+#else
 ///Factory class to create ConceptMaps
 ///ConceptMapFactory is the only class using the ConceptMap constructor
 struct ConceptMapFactory
@@ -67,6 +70,7 @@ struct ConceptMapFactory
   #endif
 
 };
+#endif
 
 } //~namespace cmap
 

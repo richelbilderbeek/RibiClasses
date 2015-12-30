@@ -21,6 +21,8 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #ifndef QTCONCEPTMAPRATECONCEPTTALLYDIALOG_H
 #define QTCONCEPTMAPRATECONCEPTTALLYDIALOG_H
 
+#ifdef NOT_NOW_20151230
+
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
@@ -98,5 +100,7 @@ private:
 
 } //~namespace cmap
 } //~namespace ribi
+
+#endif // NOT_NOW_20151230
 
 #endif // QTCONCEPTMAPRATECONCEPTTALLYDIALOG_H

@@ -32,6 +32,31 @@ ribi::cmap::GraphFactory::GraphFactory() noexcept
   #endif
 }
 
+ribi::cmap::VertexDescriptor ribi::cmap::GraphFactory::AddVertex(
+  const Node& node, Graph& g
+) const noexcept
+{
+  const auto vd = boost::add_vertex(g);
+  const auto pmap = get(boost::vertex_custom_type, g);
+  put(pmap, vd, node);
+  return vd;
+}
+
+void ribi::cmap::GraphFactory::AddEdge(
+  const Edge& edge,
+  const VertexDescriptor& vd_from,
+  const VertexDescriptor& vd_to,
+  Graph& g
+) const noexcept
+{
+  const auto ed = boost::add_edge(vd_from, vd_to, g);
+  assert(ed.second);
+  const auto pmap = get(boost::edge_custom_type, g);
+  put(pmap, ed.first, edge);
+  //return ed.first;
+
+}
+
 ribi::cmap::Graph ribi::cmap::GraphFactory::FromXml(const std::string &s) const
 {
   assert(s.size() < 13 || s.substr(0,13) != "<concept_map>");

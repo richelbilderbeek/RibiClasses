@@ -18,6 +18,8 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppQtConceptMap.htm
 //---------------------------------------------------------------------------
+#ifdef NOT_NOW_20151230
+
 #include "qtconceptmapratedconceptdialog.h"
 
 #include <cassert>
@@ -180,3 +182,5 @@ void ribi::cmap::QtConceptMapRatedConceptDialog::DoResizeLists()
   //ui->list_concept_examples->setMaximumHeight(
   //  ui->list_concept_examples->count() * font_in_list_height);
 }
+
+#endif // NOT_NOW_20151230

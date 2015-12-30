@@ -29,52 +29,59 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmapnode.h"
 #include "trace.h"
 
-ribi::cmap::CommandCreateNewEdge::CommandCreateNewEdge(
+#include <boost/graph/isomorphism.hpp>
+
+ribi::cmap::CommandCreateNewEdgeBetweenTwoSelectedNodes::CommandCreateNewEdgeBetweenTwoSelectedNodes(
   ConceptMap& conceptmap
 )
- : m_edge{},
-   m_selected_nodes{conceptmap.GetSelectedNodes()},
-   m_prev_selected{},
-   m_conceptmap(conceptmap),
-   m_verbose{false}
+ :
+    m_conceptmap(conceptmap),
+    m_before{conceptmap},
+    m_after{CreateNewEdgeFromTwoSelectedNodes(conceptmap)}
 {
-  this->setText("create new edge");
-
-  if (m_selected_nodes.size() != 2)
-  {
-    std::stringstream msg;
-    msg << "Number of selected nodes (" << m_conceptmap.GetSelectedNodes().size() << " is not equal to two";
-    throw std::logic_error(msg.str());
-  }
-  if (!m_conceptmap.HasNode(m_selected_nodes[0]))
-  {
-    throw std::logic_error("From node is member of an edge");
-  }
-  if (!m_conceptmap.HasNode(m_selected_nodes[1]))
-  {
-    throw std::logic_error("'To' node is member of an edge");
-  }
+  assert(!boost::isomorphism(m_before,m_after));
 }
 
-void ribi::cmap::CommandCreateNewEdge::redo()
+void ribi::cmap::CommandCreateNewEdgeBetweenTwoSelectedNodes::redo()
 {
-  m_conceptmap.SetSelected(m_selected_nodes);
-  if (m_edge.empty())
-  {
-    m_edge.push_back(m_conceptmap.CreateNewEdge());
-  }
-  else
-  {
-    assert(!m_edge.empty());
-    assert(m_edge.size() == 1);
-    m_conceptmap.AddEdge(m_edge.front());
-  }
+  m_conceptmap = m_after;
 }
 
-void ribi::cmap::CommandCreateNewEdge::undo()
+void ribi::cmap::CommandCreateNewEdgeBetweenTwoSelectedNodes::undo()
 {
-  assert(!m_edge.empty());
-  assert(m_edge.size() == 1);
-  m_conceptmap.DeleteEdge(m_edge.front());
-  m_conceptmap.SetSelected(m_prev_selected);
+  m_conceptmap = m_before;
 }
+
+ribi::cmap::ConceptMap ribi::cmap::CreateNewEdgeFromTwoSelectedNodes(ConceptMap g)
+{
+  std::vector<VertexDescriptor> v;
+  const auto vip = vertices(g);
+
+  std::copy_if(
+    vip.first,
+    vip.second,
+    std::back_inserter(v),
+    [g](const VertexDescriptor& vd)
+    {
+      const auto is_selected_map
+        = get(boost::vertex_is_selected, g);
+      return get(is_selected_map, vd);
+    }
+  );
+  if (v.size() == 2)
+  {
+    std::stringstream s;
+    s << __func__ << ": need two selected nodes to create an edge between";
+    throw std::logic_error(s.str());
+  }
+
+  const auto aer = boost::add_edge(v[0],v[1],g);
+  if (!aer.second)
+  {
+    std::stringstream s;
+    s << __func__ << ": edge insertion failed";
+    throw std::logic_error(s.str());
+  }
+  return g;
+}
+

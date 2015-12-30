@@ -26,7 +26,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmapcommandcreatenewedge.h"
 #include "conceptmapcommandcreatenewnode.h"
 #include "conceptmapcommand.h"
-#include "conceptmapcommandsetselectedwithcoordinat.h"
 
 
 ribi::cmap::Command* ribi::cmap::CommandFactory::CreateTestCommand(
@@ -49,7 +48,7 @@ ribi::cmap::Command* ribi::cmap::CommandFactory::CreateTestCommand(
       case 1:
       {
         Command * const p {
-          new CommandCreateNewEdge(conceptmap)
+          new CommandCreateNewEdgeBetweenTwoSelectedNodes(conceptmap)
         };
         assert(p);
         return p;
@@ -57,7 +56,7 @@ ribi::cmap::Command* ribi::cmap::CommandFactory::CreateTestCommand(
       case 2:
       {
         Command * const p {
-          new CommandCreateNewNode(conceptmap)
+          new CommandCreateNewNode(conceptmap, 0.0, 0.0)
         };
         assert(p);
         return p;

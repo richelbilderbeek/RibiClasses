@@ -56,6 +56,8 @@ private:
   #endif
 };
 
+std::ostream& operator<<(std::ostream& os, const Examples& concept) noexcept;
+std::istream& operator>>(std::istream& is, Examples& concept) noexcept;
 
 bool operator==(const Examples& lhs, const Examples& rhs);
 bool operator!=(const Examples& lhs, const Examples& rhs);

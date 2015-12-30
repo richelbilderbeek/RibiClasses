@@ -76,7 +76,7 @@ void ribi::cmap::QtExamplesItem::OnItemUpdated()
 void ribi::cmap::QtExamplesItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) noexcept
 {
   //this->SetExamples(this->m_item->GetNode().GetConcept().GetExamples());
-  const auto qtnode = m_qtedge ? m_qtedge->GetQtNode().get() : m_qtnode;
+  const auto qtnode = m_qtedge ? m_qtedge->GetQtNode() : m_qtnode;
 
   const QPointF p = qtnode->GetCenterPos();
   const auto w = qtnode->GetOuterWidth();

@@ -13,7 +13,6 @@ SOURCES += \
     ../RibiClasses/CppQtConceptMap/conceptmapcommanddeleteedge.cpp \
     ../RibiClasses/CppQtConceptMap/conceptmapcommanddeletenode.cpp \
     ../RibiClasses/CppQtConceptMap/conceptmapcommandfactory.cpp \
-    ../RibiClasses/CppQtConceptMap/conceptmapcommandsetselectedwithcoordinat.cpp \
     ../RibiClasses/CppQtConceptMap/conceptmapcommandunselectrandom.cpp \
     ../RibiClasses/CppQtConceptMap/qtconceptmapbrating.cpp \
     ../RibiClasses/CppQtConceptMap/qtconceptmapbrushfactory.cpp \
@@ -54,7 +53,6 @@ HEADERS += \
     ../RibiClasses/CppQtConceptMap/conceptmapcommanddeletenode.h \
     ../RibiClasses/CppQtConceptMap/conceptmapcommandfactory.h \
     ../RibiClasses/CppQtConceptMap/conceptmapcommand.h \
-    ../RibiClasses/CppQtConceptMap/conceptmapcommandsetselectedwithcoordinat.h \
     ../RibiClasses/CppQtConceptMap/conceptmapcommandunselectrandom.h \
     ../RibiClasses/CppQtConceptMap/qtconceptmapbrushfactory.h \
 #    ../RibiClasses/CppQtConceptMap/qtconceptmapcenternode.h \

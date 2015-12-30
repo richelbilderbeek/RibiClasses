@@ -18,6 +18,11 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppConceptMap.htm
 //---------------------------------------------------------------------------
+#include "conceptmap.h"
+#include <boost/graph/adjacency_list.hpp>
+
+#ifdef DO_NOT_USE_BOOST_GRAPH
+
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
@@ -398,6 +403,19 @@ void ribi::cmap::ConceptMap::ClearAllSelectednesses() noexcept
   }
 }
 
+int ribi::cmap::ConceptMap::CountSelectedNodes() const noexcept
+{
+  const auto vip = vertices(m_graph);
+  const auto cnt = std::count_if(vip.first, vip.second,
+    [this](const VertexDescriptor& vd)
+    {
+      const auto is_selected_map = get(boost::vertex_is_selected, m_graph);
+      return get(is_selected_map,vd);
+    }
+  );
+  return static_cast<int>(cnt);
+}
+
 
 ribi::cmap::ConceptMap::Nodes ribi::cmap::ConceptMap::CreateNodes(
   const std::string& question,
@@ -608,11 +626,39 @@ ribi::cmap::VertexDescriptor ribi::cmap::ConceptMap::FindCenterNode() const noex
   for (auto i = vip.first; i!=j; ++i)
   {
     const auto vd = *i;
-    if (node_map[vd].IsCenterNode()) { return vd; }
+    if (get(node_map, vd).IsCenterNode()) { return vd; }
   }
   assert(!"Should not get here");
   throw; //Will always crash the program
 }
+
+ribi::cmap::EdgeDescriptor ribi::cmap::ConceptMap::FindEdge(const Edge& edge) const noexcept
+{
+  const auto eip = edges(m_graph);
+  const auto i = std::find_if(eip.first,eip.second,
+    [this, edge](const EdgeDescriptor& vd) {
+      const auto edge_map = get(boost::edge_custom_type, m_graph);
+      return get(edge_map,vd) == edge;
+    }
+  );
+  assert(i != eip.second);
+  return *i;
+}
+
+ribi::cmap::VertexDescriptor ribi::cmap::ConceptMap::FindNode(const Node& node) const noexcept
+{
+  const auto vip = vertices(m_graph);
+  const auto i = std::find_if(vip.first,vip.second,
+    [this, node](const VertexDescriptor& vd) {
+      const auto node_map = get(boost::vertex_custom_type, m_graph);
+      return get(node_map,vd) == node;
+    }
+  );
+  assert(i != vip.second);
+  return *i;
+}
+
+
 
 ribi::cmap::VertexDescriptor ribi::cmap::ConceptMap::FindCenterNode() noexcept
 {
@@ -715,6 +761,7 @@ bool ribi::cmap::ConceptMap::HasNode(const Node& node) const noexcept
   return false;
 }
 
+/*
 bool ribi::cmap::HasSameContent(
   const ConceptMap& lhs,
   const ConceptMap& rhs
@@ -900,6 +947,12 @@ bool ribi::cmap::HasSameContent(
   #endif
   return true;
 }
+*/
+
+bool ribi::cmap::ConceptMap::HasSelectedNodes() const noexcept
+{
+  return CountSelectedNodes();
+}
 
 int ribi::cmap::CountCenterNodes(const ConceptMap& conceptmap) noexcept
 {
@@ -1031,6 +1084,37 @@ ribi::cmap::ConceptMap ribi::cmap::ConceptMap::CreateEmptyConceptMap() noexcept
   return conceptmap;
 }
 */
+
+bool ribi::cmap::ConceptMap::AreAllEdgeIdsUnique() const noexcept
+{
+  const auto eip = edges(m_graph);
+  std::set<int> ids;
+  std::transform(eip.first,eip.second,
+    std::inserter(ids,ids.begin()),
+    [this](const EdgeDescriptor& ed)
+    {
+      const auto pmap = get(boost::edge_custom_type,m_graph);
+      return get(pmap,ed).GetId();
+    }
+  );
+  return ids.size() == boost::num_edges(m_graph);
+}
+
+bool ribi::cmap::ConceptMap::AreAllNodeIdsUnique() const noexcept
+{
+  const auto vip = vertices(m_graph);
+  std::set<int> ids;
+  std::transform(vip.first,vip.second,
+    std::inserter(ids,ids.begin()),
+    [this](const VertexDescriptor& vd)
+    {
+      const auto pmap = get(boost::vertex_custom_type,m_graph);
+      return get(pmap,vd).GetId();
+    }
+  );
+  return ids.size() == boost::num_vertices(m_graph);
+}
+
 
 ribi::cmap::Edge ribi::cmap::ConceptMap::CreateNewEdge() noexcept
 {
@@ -1362,3 +1446,4 @@ std::ostream& ribi::cmap::operator<<(std::ostream& os, const ConceptMap& m) noex
   );
   return os;
 }
+#endif // DO_NOT_USE_BOOST_GRAPH

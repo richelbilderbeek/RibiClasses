@@ -142,6 +142,15 @@ void ribi::cmap::Concept::Test() noexcept
       assert(b < c); assert(b < d);
     }
   }
+  //Stream operators
+  {
+    const auto c = ConceptFactory().GetTest(1);
+    std::stringstream s;
+    s << c;
+    Concept d;
+    s >> d;
+    assert(c == d);
+  }
   {
     const std::string xml = "<concept><name>TEST</name><examples></examples><concept_is_complex>1</concept_is_complex><complexity>-1</complexity><concreteness>-1</concreteness><specificity>-1</specificity></concept>";
     const auto concept = ConceptFactory().FromXml(xml);

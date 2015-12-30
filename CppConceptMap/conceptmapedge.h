@@ -48,6 +48,8 @@ struct Edge
   const Node& GetNode() const noexcept { return m_node; }
         Node& GetNode()       noexcept { return m_node; }
 
+  int GetId() const noexcept { return m_id; }
+
   ///Get the Node this edge originates from
   //int GetFromIndex() const noexcept { return m_from_index; }
 
@@ -92,9 +94,12 @@ struct Edge
 
   ///Is there an arrowhead at the 'to' node?
   //bool m_head_arrow;
+  int m_id; //Unique ID, until the Node is copied
 
   ///The Node on the Edge
   Node m_node;
+
+  static int sm_ids; //ID to assign
 
   ///Is there an arrowhead at the 'from' node?
   //bool m_tail_arrow;

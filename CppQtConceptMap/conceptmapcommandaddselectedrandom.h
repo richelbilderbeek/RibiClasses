@@ -28,17 +28,11 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 namespace ribi {
 namespace cmap {
 
-///Add another item to the selected pool
+///Add another vertex to being selected
+///If one out of four nodes is selected, select a random second
 class CommandAddSelectedRandom final : public Command
 {
-  public:
-
-  using ConstEdges = std::vector<Edge>;
-  using ConstNodes = std::vector<Node>;
-  using Edges = std::vector<Edge>;
-  using Nodes = std::vector<Node>;
-  using EdgesAndNodes = std::pair<Edges,Nodes>;
-  using ConstEdgesAndNodes = std::pair<ConstEdges,ConstNodes>;
+public:
 
   CommandAddSelectedRandom(ConceptMap& conceptmap);
   CommandAddSelectedRandom(const CommandAddSelectedRandom&) = delete;
@@ -50,9 +44,12 @@ class CommandAddSelectedRandom final : public Command
 
   private:
   ConceptMap& m_conceptmap;
-  EdgesAndNodes m_new_selected; //Selected after redo
-  const EdgesAndNodes m_old_selected; //Selected before redo
+  const ConceptMap m_before;
+  const ConceptMap m_after;
 };
+
+//Throws if there are no nodes that can be selected additionally
+ConceptMap RandomlyAddSelectedNode(ConceptMap g);
 
 } //~namespace cmap
 } //~namespace ribi

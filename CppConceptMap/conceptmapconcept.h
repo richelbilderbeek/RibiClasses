@@ -146,6 +146,7 @@ struct Concept
 };
 
 std::ostream& operator<<(std::ostream& os, const Concept& concept) noexcept;
+std::istream& operator>>(std::istream& is, Concept& concept) noexcept;
 
 bool operator==(const Concept& lhs, const Concept& rhs);
 bool operator!=(const Concept& lhs, const Concept& rhs);

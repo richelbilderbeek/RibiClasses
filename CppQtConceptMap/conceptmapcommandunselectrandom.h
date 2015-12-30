@@ -28,20 +28,12 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 namespace ribi {
 namespace cmap {
 
-///Add another item to the selected pool
+///Remove the selectedness of a all selected nodes
+///If there are two nodes selected, unselect one of the two
 class CommandUnselectRandom final : public Command
 {
   public:
-
-  using ConstEdges = std::vector<Edge>;
-  using ConstNodes = std::vector<Node>;
-  using Edges = std::vector<Edge>;
-  using Nodes = std::vector<Node>;
-  using EdgesAndNodes = std::pair<Edges,Nodes>;
-  using ConstEdgesAndNodes = std::pair<ConstEdges,ConstNodes>;
-
   CommandUnselectRandom(ConceptMap& conceptmap);
-
   CommandUnselectRandom(const CommandUnselectRandom&) = delete;
   CommandUnselectRandom& operator=(const CommandUnselectRandom&) = delete;
   ~CommandUnselectRandom() noexcept {}
@@ -51,8 +43,11 @@ class CommandUnselectRandom final : public Command
 
   private:
   ConceptMap& m_conceptmap;
-  EdgesAndNodes m_new_selected;
-  const EdgesAndNodes m_old_selected;
+  const ConceptMap m_before;
+  const ConceptMap m_after;
+
+  //EdgesAndNodes m_new_selected;
+  //const EdgesAndNodes m_old_selected;
 };
 
 } //~namespace cmap

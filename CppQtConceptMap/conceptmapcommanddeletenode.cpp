@@ -28,25 +28,26 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmapnode.h"
 #include "conceptmapconcept.h"
 
-ribi::cmap::CommandDeleteNode::CommandDeleteNode(
-  ConceptMap& conceptmap,
-  const Node& node
-) :
-    m_conceptmap(conceptmap),
-    m_deleted_edges{conceptmap.GetEdgesConnectedTo(node)},
-    m_node{node},
-    m_old_selected{conceptmap.GetSelected()},
-    m_verbose{false}
+ribi::cmap::CommandDeleteSelected::CommandDeleteSelected(
+  ConceptMap& conceptmap
+)
+  : m_conceptmap(conceptmap),
+    m_before{conceptmap},
+    m_after{conceptmap}
 {
+  /*
   if (!m_conceptmap.HasNode(m_node))
   {
     throw std::logic_error("Cannot delete Node that is not in ConceptMap");
   }
   setText("delete node");
+  */
 }
 
-void ribi::cmap::CommandDeleteNode::redo()
+void ribi::cmap::CommandDeleteSelected::redo()
 {
+  m_conceptmap = m_after;
+  /*
   if (m_verbose)
   {
     std::clog
@@ -73,10 +74,14 @@ void ribi::cmap::CommandDeleteNode::redo()
     ;
   }
   m_conceptmap.DeleteNode(m_node);
+  */
 }
 
-void ribi::cmap::CommandDeleteNode::undo()
+void ribi::cmap::CommandDeleteSelected::undo()
 {
+  m_conceptmap = m_before;
+  /*
+
   if (m_verbose)
   {
     std::clog
@@ -105,4 +110,5 @@ void ribi::cmap::CommandDeleteNode::undo()
     m_conceptmap.AddEdge(edge);
   }
   m_conceptmap.SetSelected(m_old_selected);
+  */
 }

@@ -41,9 +41,13 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "trace.h"
 #pragma GCC diagnostic pop
 
+int ribi::cmap::Edge::sm_ids = 0; //ID to assign
+
 ribi::cmap::Edge::Edge(
   const Node& node
-) : m_node{node}
+) :
+    m_id{sm_ids++},
+    m_node{node}
 {
   #ifndef NDEBUG
   Test();
@@ -132,6 +136,15 @@ void ribi::cmap::Edge::Test() noexcept
     const auto edge2 = EdgeFactory().GetTest(1,from,to);
     assert(edge1 != edge2);
   }
+  if (verbose) { TRACE("Stream operators"); }
+  {
+    const auto edge1 = EdgeFactory().GetTest(0,from,to);
+    std::stringstream s;
+    s << edge1;
+    Edge edge2;
+    s >> edge2;
+    assert(edge1 == edge2);
+  }
   if (verbose) { TRACE("Edge->XML->Edge must result in the same edge"); }
   {
     const Edge edge_before{EdgeFactory().GetTest(0,from,to)};
@@ -197,4 +210,12 @@ std::ostream& ribi::cmap::operator<<(std::ostream& os, const Edge& edge) noexcep
 {
   os << edge.GetNode();
   return os;
+}
+
+std::istream& ribi::cmap::operator>>(std::istream& is, Edge& edge)
+{
+  Node node;
+  is >> node;
+  edge.SetNode(node);
+  return is;
 }

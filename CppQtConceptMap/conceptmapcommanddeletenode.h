@@ -33,34 +33,22 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 namespace ribi {
 namespace cmap {
 
-///Delete an existing node
-class CommandDeleteNode final : public Command
+///Delete all selecteded edges and node
+class CommandDeleteSelected final : public Command
 {
   public:
-
-  using EdgePtr = Edge;
-  using Edges = std::vector<EdgePtr>;
-  using Nodes = std::vector<Node>;
-  using EdgesAndNodes = std::pair<Edges,Nodes>;
-
-  CommandDeleteNode(
-    ConceptMap& conceptmap,
-    const Node& node
-  );
-  CommandDeleteNode(const CommandDeleteNode&) = delete;
-  CommandDeleteNode& operator=(const CommandDeleteNode&) = delete;
-  ~CommandDeleteNode() noexcept {}
+  CommandDeleteSelected(ConceptMap& conceptmap);
+  CommandDeleteSelected(const CommandDeleteSelected&) = delete;
+  CommandDeleteSelected& operator=(const CommandDeleteSelected&) = delete;
+  ~CommandDeleteSelected() noexcept {}
 
   void undo() override;
   void redo() override;
-  void SetVerbosity(const bool verbose) noexcept { m_verbose = verbose; }
 
   private:
   ConceptMap& m_conceptmap;
-  const Edges m_deleted_edges;
-  const Node m_node;
-  const EdgesAndNodes m_old_selected; //Selected before command
-  bool m_verbose;
+  const ConceptMap m_before;
+  const ConceptMap m_after;
 };
 
 } //~namespace cmap

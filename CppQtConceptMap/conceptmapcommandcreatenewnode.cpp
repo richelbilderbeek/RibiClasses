@@ -21,34 +21,32 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmapcommandcreatenewnode.h"
 
 #include <cassert>
-
+#include <boost/graph/isomorphism.hpp>
 
 #include "conceptmap.h"
 #include "conceptmapnode.h"
 
 ribi::cmap::CommandCreateNewNode::CommandCreateNewNode(
-  ConceptMap& conceptmap
+  ConceptMap& conceptmap,
+  const double x,
+  const double y
 )
-  : m_node{},
-    m_conceptmap(conceptmap)
+  : m_conceptmap(conceptmap),
+    m_x{x},
+    m_y{y},
+    m_before{conceptmap},
+    m_after{conceptmap}
 {
-  this->setText("create new node");
+  m_added = boost::add_vertex(m_after);
+  assert(!boost::isomorphism(m_before,m_after));
 }
 
 void ribi::cmap::CommandCreateNewNode::redo()
 {
-  if (m_node.empty())
-  {
-    m_node.push_back(m_conceptmap.CreateNewNode()); //CreateNewNode adds it to the selected nodes
-  }
-  else
-  {
-    m_conceptmap.AddNode(m_node.front());
-  }
+  m_conceptmap = m_after;
 }
 
 void ribi::cmap::CommandCreateNewNode::undo()
 {
-  assert(!m_node.empty());
-  m_conceptmap.DeleteNode(m_node.front());
+  m_conceptmap = m_before;
 }

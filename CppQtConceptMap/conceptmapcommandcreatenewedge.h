@@ -21,6 +21,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #ifndef CONCEPTMAPCOMMANDCREATENEWEDGE_H
 #define CONCEPTMAPCOMMANDCREATENEWEDGE_H
 
+#include "conceptmap.h"
 #include "conceptmapcommand.h"
 #include "conceptmapnode.h"
 #include "conceptmapedge.h"
@@ -30,31 +31,27 @@ namespace cmap {
 
 ///Start a new node
 ///-Can be used only when there is an existing concept map
-class CommandCreateNewEdge final : public Command
+class CommandCreateNewEdgeBetweenTwoSelectedNodes final : public Command
 {
   public:
 
-  CommandCreateNewEdge(ConceptMap& conceptmap);
-  CommandCreateNewEdge(const CommandCreateNewEdge&) = delete;
-  CommandCreateNewEdge& operator=(const CommandCreateNewEdge&) = delete;
-  ~CommandCreateNewEdge() noexcept {}
+  CommandCreateNewEdgeBetweenTwoSelectedNodes(ConceptMap& conceptmap);
+  CommandCreateNewEdgeBetweenTwoSelectedNodes(const CommandCreateNewEdgeBetweenTwoSelectedNodes&) = delete;
+  CommandCreateNewEdgeBetweenTwoSelectedNodes& operator=(const CommandCreateNewEdgeBetweenTwoSelectedNodes&) = delete;
+  ~CommandCreateNewEdgeBetweenTwoSelectedNodes() noexcept {}
 
   void redo() override;
   void undo() override;
 
-  void SetVerbosity(const bool verbose) noexcept { m_verbose = verbose; }
-
-
   private:
-  std::vector<Edge> m_edge;
-  std::vector<Node> m_selected_nodes;
-  std::vector<Node> m_prev_selected; //Selected before Edge was added
-
   ConceptMap& m_conceptmap;
-
-  bool m_verbose;
+  const ConceptMap m_before;
+  const ConceptMap m_after;
 
 };
+
+//Throws if there are no two nodes selected
+ConceptMap CreateNewEdgeFromTwoSelectedNodes(ConceptMap g);
 
 } //~namespace cmap
 } //~namespace ribi

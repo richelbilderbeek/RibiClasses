@@ -127,11 +127,11 @@ void ribi::cmap::QtQtEdgeDialog::OnEdgeChanged(const QtEdge * const
 {
   assert( qtedge ==  m_qtedge.get());
   assert(*qtedge == *m_qtedge);
-  const boost::shared_ptr<QtRoundedEditRectItem> item{
-    boost::dynamic_pointer_cast<QtRoundedEditRectItem>(m_qtedge->GetQtNode())
-  };
-  assert(item);
-  m_qtroundededitrectitem_dialog->SetItem(item);
+  //const boost::shared_ptr<QtRoundedEditRectItem> item{
+  //  boost::dynamic_pointer_cast<QtRoundedEditRectItem>(m_qtedge->GetQtNode())
+  //};
+  //assert(item);
+  //m_qtroundededitrectitem_dialog->SetItem(item);
 
 }
 
@@ -303,54 +303,6 @@ void ribi::cmap::QtQtEdgeDialog::Test() noexcept
     const double new_y{dialog.GetUiY() + 10.0};
     dialog.SetUiY(new_y);
     assert(std::abs(dialog.GetUiY() - new_y) < 2.0);
-  }
-  //HasHeadArrow
-  if (verbose) { TRACE("HasHeadArrow of QtQtEdgeDialog and QtEdge its Edge and QtEdge its Arrow must match at creation"); }
-  {
-    assert(dialog.GetUiHasHeadArrow() == qtedge->GetEdge().HasHeadArrow());
-    assert(dialog.GetUiHasHeadArrow() == qtedge->GetArrow()->HasHead());
-  }
-  if (verbose) { TRACE("If HasHeadArrow is set via QtQtEdgeDialog, QtEdge its Edge and QtEdge its Arrow must sync"); }
-  {
-    dialog.SetUiHasHeadArrow(!dialog.GetUiHasHeadArrow());
-    assert(dialog.GetUiHasHeadArrow() == qtedge->GetEdge().HasHeadArrow());
-    assert(dialog.GetUiHasHeadArrow() == qtedge->GetArrow()->HasHead());
-  }
-  if (verbose) { TRACE("If HasHeadArrow is set via QtEdge its Edge, QtEdge its Arrow and QtQtEdgeDialog must sync"); }
-  {
-    qtedge->GetEdge().SetHeadArrow(!qtedge->GetEdge().HasHeadArrow());
-    assert(dialog.GetUiHasHeadArrow() == qtedge->GetEdge().HasHeadArrow());
-    assert(dialog.GetUiHasHeadArrow() == qtedge->GetArrow()->HasHead());
-  }
-  if (verbose) { TRACE("If HasHeadArrow is set via QtEdge its Arrow, QtEdge its Edge and QtQtEdgeDialog must sync"); }
-  {
-    qtedge->GetArrow()->SetHasHead(!qtedge->GetArrow()->HasHead());
-    assert(dialog.GetUiHasHeadArrow() == qtedge->GetEdge().HasHeadArrow());
-    assert(dialog.GetUiHasHeadArrow() == qtedge->GetArrow()->HasHead());
-  }
-  //HasTailArrow
-  if (verbose) { TRACE("HasTailArrow of QtQtEdgeDialog and QtEdge its Edge and QtEdge its Arrow must match at creation"); }
-  {
-    assert(dialog.GetUiHasTailArrow() == qtedge->GetEdge().HasTailArrow());
-    assert(dialog.GetUiHasTailArrow() == qtedge->GetArrow()->HasTail());
-  }
-  if (verbose) { TRACE("If HasTailArrow is set via QtQtEdgeDialog, QtEdge its Edge and QtEdge its Arrow must sync"); }
-  {
-    dialog.SetUiHasTailArrow(!dialog.GetUiHasTailArrow());
-    assert(dialog.GetUiHasTailArrow() == qtedge->GetEdge().HasTailArrow());
-    assert(dialog.GetUiHasTailArrow() == qtedge->GetArrow()->HasTail());
-  }
-  if (verbose) { TRACE("If HasTailArrow is set via QtEdge its Edge, QtEdge its Arrow and QtQtEdgeDialog must sync"); }
-  {
-    qtedge->GetEdge().SetTailArrow(!qtedge->GetEdge().HasTailArrow());
-    assert(dialog.GetUiHasTailArrow() == qtedge->GetEdge().HasTailArrow());
-    assert(dialog.GetUiHasTailArrow() == qtedge->GetArrow()->HasTail());
-  }
-  if (verbose) { TRACE("If HasTailArrow is set via QtEdge its Arrow, QtEdge its Edge and QtQtEdgeDialog must sync"); }
-  {
-    qtedge->GetArrow()->SetHasTail(!qtedge->GetArrow()->HasTail());
-    assert(dialog.GetUiHasTailArrow() == qtedge->GetEdge().HasTailArrow());
-    assert(dialog.GetUiHasTailArrow() == qtedge->GetArrow()->HasTail());
   }
   dialog.SetQtEdge(nullptr);
   //dialog = QtQtEdgeDialog();

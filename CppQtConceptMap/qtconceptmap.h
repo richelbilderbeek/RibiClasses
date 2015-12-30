@@ -90,9 +90,6 @@ public:
   void SetConceptMap(const ConceptMap& conceptmap);
 
   #ifndef NDEBUG
-  ///Shuffle the concepts (used in debugging)
-  void Shuffle() noexcept;
-
   ///Test this class with a derived class instance
   static void Test() noexcept;
   #endif
@@ -152,10 +149,6 @@ protected:
   ///Check if this item is the center node
   static bool IsQtCenterNode(const QGraphicsItem* const item);
 
-  ///Have the nodes in the concept map be positioned once already, or must
-  ///these be (re)positioned. '(re)', because the nodes are initially positioned at the origin
-  bool MustReposition(const std::vector<Node>& nodes) const;
-
   ///All items from a ConceptMap are put in at the center and need to be repositioned
   void RepositionItems();
 
@@ -192,7 +185,7 @@ private:
   QtEdge * AddEdge(const Edge& edge);
 
   ///Adds a Node, returns the freshly created QtNode
-  QtNode * AddNode(const Node& node);
+  QtNode * AddNode(const Node& node, bool is_center_node = false);
 
   ///Remove all Qt and non-Qt items
   void CleanMe();

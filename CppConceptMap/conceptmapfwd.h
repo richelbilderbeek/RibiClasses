@@ -35,8 +35,6 @@ struct CommandDeleteFocusNode;
 struct CommandUnselectRandom;
 struct Concept;
 struct ConceptFactory;
-struct ConceptMap;
-struct ConceptMapFactory;
 struct Edge;
 struct EdgeFactory;
 struct Element;
@@ -45,7 +43,6 @@ struct Examples;
 //struct File;
 //struct Node;
 //using CenterNode = Node;
-struct ConceptMap;
 
 } //~namespace cmap
 } //~namespace ribi

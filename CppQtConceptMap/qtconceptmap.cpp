@@ -28,6 +28,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include <set>
 
 #include <boost/bind.hpp>
+#include <boost/graph/isomorphism.hpp>
 #include <boost/lambda/lambda.hpp>
 #include <boost/math/constants/constants.hpp>
 #include <boost/numeric/conversion/cast.hpp>
@@ -68,11 +69,12 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "qtscopeddisable.h"
 #include "trace.h"
 #include "xml.h"
+
 #pragma GCC diagnostic pop
 
 ///Returns a sorted vector
 template <class T>
-const std::vector<T> Sort(const std::vector<T>& v)
+std::vector<T> Sort(const std::vector<T>& v)
 {
   std::vector<T> w(v);
   std::sort(w.begin(),w.end());
@@ -80,7 +82,7 @@ const std::vector<T> Sort(const std::vector<T>& v)
 }
 
 template <>
-const std::vector<ribi::cmap::QtNode*>
+std::vector<ribi::cmap::QtNode*>
   Sort(
     const std::vector<ribi::cmap::QtNode*>& v)
 {
@@ -106,7 +108,7 @@ ribi::cmap::QtConceptMap::QtConceptMap(QWidget* parent)
     m_signal_conceptmapitem_requests_edit{},
     m_signal_request_rate_concept{},
     m_arrow(nullptr),
-    m_conceptmap{ConceptMapFactory().Create()},
+    m_conceptmap{},
     m_examples_item(new QtExamplesItem),
     m_highlighter{new QtItemHighlighter},
     m_tools{new QtTool}
@@ -116,14 +118,6 @@ ribi::cmap::QtConceptMap::QtConceptMap(QWidget* parent)
   #endif
 
   this->setScene(new QGraphicsScene(this));
-
-  this->m_signal_update.connect(
-    boost::bind(
-      &QtConceptMap::OnItemSelectedChanged,
-      this,
-      boost::lambda::_1
-    )
-  );
 
   assert(!m_examples_item->scene());
   scene()->addItem(m_examples_item); //Add the examples so it has a parent
@@ -174,6 +168,8 @@ ribi::cmap::QtEdge * ribi::cmap::QtConceptMap::AddEdge(
   if (GetVerbosity()) { TRACE("Start of 'QtConceptMap::AddEdge(const Edge edge)'"); }
 
   //Add Node to ConceptMap if this has not been done yet
+  /*
+  if (!HasEdge(edge, m_conceptmap))
   {
     const auto edges = GetConceptMap().GetEdges();
     const int cnt{static_cast<int>(std::count(std::begin(edges),std::end(edges),edge))};
@@ -184,6 +180,7 @@ ribi::cmap::QtEdge * ribi::cmap::QtConceptMap::AddEdge(
       GetConceptMap().AddEdge(edge);
     }
   }
+  */
 
   //Already added
   if (GetQtEdge(edge))
@@ -193,6 +190,7 @@ ribi::cmap::QtEdge * ribi::cmap::QtConceptMap::AddEdge(
   }
 
   //Be helpful here
+  /*
   if (!GetQtNode(*edge.GetFrom()))
   {
     if (GetVerbosity()) { TRACE("Adding 'from' Node to QtConceptMap (as it was not yet in there)"); }
@@ -205,6 +203,7 @@ ribi::cmap::QtEdge * ribi::cmap::QtConceptMap::AddEdge(
     //Note: this cases ConceptMap::GetSelectedEdges() to be empty again, this has to be fixed later on
     AddNode(*edge.GetTo());
   }
+  */
 
   QtNode * const qtfrom = GetQtNode(*edge.GetFrom());
   assert(qtfrom);
@@ -342,6 +341,7 @@ ribi::cmap::QtNode * ribi::cmap::QtConceptMap::AddNode(const Node& node)
   qtnode->setFocus();
   return qtnode;
 }
+#endif // NOT_NOW_20151230
 
 void ribi::cmap::QtConceptMap::CleanMe()
 {
@@ -396,6 +396,7 @@ void ribi::cmap::QtConceptMap::CleanMe()
   }
 }
 
+#ifdef NOT_NOW_20151230
 
 void ribi::cmap::QtConceptMap::DeleteEdge(const Edge& edge)
 {
@@ -526,6 +527,7 @@ void ribi::cmap::QtConceptMap::DeleteQtNode(const QtNode * const qtnode)
     this->scene()->removeItem(const_cast<QtNode*>(qtnode));
   }
 }
+#endif // NOT_NOW_20151230
 
 void ribi::cmap::QtConceptMap::DoCommand(Command * const command) noexcept
 {
@@ -732,6 +734,8 @@ const ribi::cmap::QtNode * ribi::cmap::QtConceptMap::GetQtNode(
 
 std::vector<const ribi::cmap::QtNode *> ribi::cmap::QtConceptMap::GetQtNodes() const
 {
+  return Collect<const QtNode>(this->scene());
+  /*
   const auto qtnodes_all = Collect<const QtNode>(this->scene());
   std::vector<const ribi::cmap::QtNode *> qtnodes;
   std::copy_if(
@@ -741,6 +745,7 @@ std::vector<const ribi::cmap::QtNode *> ribi::cmap::QtConceptMap::GetQtNodes() c
     [this](const QtNode* const qtnode) { return this->GetConceptMap().HasNode(qtnode->GetNode()); }
   );
   return qtnodes;
+  */
 }
 
 std::vector<ribi::cmap::QtNode *> ribi::cmap::QtConceptMap::GetQtNodes()
@@ -808,23 +813,13 @@ void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event) noexcept
     case Qt::Key_Delete:
     {
       if (GetVerbosity()) { TRACE("Pressing delete"); }
-      const auto nodes = GetConceptMap().GetSelectedNodes();
-      for (const auto node: nodes)
+      try
       {
-        try
-        {
-          DoCommand(new CommandDeleteNode(this->GetConceptMap(),node));
-        }
-        catch (std::logic_error& ) {}
+        DoCommand(new CommandDeleteSelected(this->GetConceptMap()));
       }
-      const auto edges = GetConceptMap().GetSelectedEdges();
-      for (const auto edge: edges)
+      catch (std::logic_error& e)
       {
-        try
-        {
-          DoCommand(new CommandDeleteEdge(this->GetConceptMap(),edge));
-        }
-        catch (std::logic_error& ) {}
+        if (GetVerbosity()) { TRACE(e.what()); }
       }
     }
     return;
@@ -853,7 +848,7 @@ void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event) noexcept
       if (event->modifiers() & Qt::ControlModifier)
       {
         if (GetVerbosity()) { TRACE("Pressing CTRL-E"); }
-        try { this->DoCommand(new CommandCreateNewEdge(GetConceptMap())); }
+        try { this->DoCommand(new CommandCreateNewEdgeBetweenTwoSelectedNodes(GetConceptMap())); }
         catch (std::logic_error& ) {}
       }
       return;
@@ -861,7 +856,7 @@ void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event) noexcept
       if (event->modifiers() & Qt::ControlModifier)
       {
         if (GetVerbosity()) { TRACE("Pressing CTRL-N"); }
-        try { this->DoCommand(new CommandCreateNewNode(GetConceptMap())); }
+        try { this->DoCommand(new CommandCreateNewNode(GetConceptMap(),0.0, 0.0)); }
         catch (std::logic_error& ) {}
       }
       return;
@@ -893,19 +888,6 @@ void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event) noexcept
   UpdateSelection();
 }
 
-bool ribi::cmap::QtConceptMap::MustReposition(const std::vector<Node>& nodes) const
-{
-  //If all are at the origin, the nodes must be (re)positioned
-
-  return Container().CountIf(nodes,
-    [](const Node& node)
-    {
-      return node.GetX() == 0.0 && node.GetY() == 0.0;
-    }
-  ) == static_cast<int>(nodes.size());
-}
-
-
 void ribi::cmap::QtConceptMap::OnItemRequestsUpdate(const QGraphicsItem* const item)
 {
   m_tools->SetBuddyItem(dynamic_cast<const QtNode*>(item));
@@ -913,6 +895,7 @@ void ribi::cmap::QtConceptMap::OnItemRequestsUpdate(const QGraphicsItem* const i
   scene()->update();
 }
 
+#ifdef NOT_NOW_20151230
 void ribi::cmap::QtConceptMap::OnItemSelectedChanged(QGraphicsItem* const item)
 {
   if (GetVerbosity()) { std::clog << "A QGraphicsItem has its selectedness changed" << std::endl; }
@@ -979,6 +962,7 @@ void ribi::cmap::QtConceptMap::OnItemSelectedChanged(QGraphicsItem* const item)
     }
   }
 }
+#endif
 
 void ribi::cmap::QtConceptMap::OnRequestSceneUpdate()
 {
@@ -1119,7 +1103,6 @@ void ribi::cmap::QtConceptMap::SetConceptMap(const ConceptMap& conceptmap)
   CleanMe();
   m_conceptmap = conceptmap;
 
-  assert(m_conceptmap.IsValid());
   assert(this->scene());
 
   //This std::vector keeps the QtNodes in the same order as the nodes in the concept map
@@ -1129,78 +1112,28 @@ void ribi::cmap::QtConceptMap::SetConceptMap(const ConceptMap& conceptmap)
   assert(Collect<QtNode>(scene()).empty());
 
   //Add the nodes to the scene, if there are any
-  if (!m_conceptmap.GetNodes().empty())
+  const auto vip = vertices(m_conceptmap);
+  for(auto i=vip.first; i!=vip.second; ++i)
   {
-    //Add the main question as the first node
-    const Node * const node = m_conceptmap.GetFocalNode();
-
-    QtNode * qtnode = nullptr;
-    if (IsCenterNode(*node))
-    {
-      qtnode = new QtCenterNode(*node);
-    }
-    else
-    {
-      qtnode = new QtNode(*node);
-    }
-    assert(qtnode);
-    //Let the center node respond to mouse clicks
-    //signal #1
-    //qtnode->m_signal_request_scene_update.connect(
-    //  boost::bind(&ribi::cmap::QtConceptMap::OnRequestSceneUpdate,this)
-    //);
-    //signal #2
-    //qtnode->m_signal_item_has_updated.connect(
-    //  boost::bind(&ribi::cmap::QtConceptMap::OnItemRequestsUpdate,this,boost::lambda::_1)
-    //);
-    //Add the center node to scene
-    assert(!qtnode->scene());
-    this->scene()->addItem(qtnode);
-    qtnodes.push_back(qtnode);
-    assert(Collect<QtNode>(scene()).size() == 1);
-
-    //Add the regular nodes to the scene
-    const std::vector<Node> nodes = m_conceptmap.GetNodes();
-    const std::size_t n_nodes = nodes.size();
-    assert(n_nodes >= 1);
-    for (std::size_t i=1; i!=n_nodes; ++i) //+1 to skip focal node
-    {
-      assert(Collect<QtNode>(scene()).size() == i && "Node not yet added to scene");
-      assert(i < nodes.size());
-      Node node = nodes[i];
-      assert( (IsCenterNode(node) || !IsCenterNode(node))
-        && "focal node != center node");
-      QtNode * const qtnode = AddNode(node);
-      qtnodes.push_back(qtnode);
-      assert(Collect<QtNode>(scene()).size() == i + 1 && "Node is added to scene");
-    }
+    const auto pmap = get(boost::vertex_custom_type, m_conceptmap);
+    const Node node = get(pmap, *i);
+    const bool is_focal_node{i == vip.first};
+    AddNode(node,is_focal_node);
   }
-  //Add the Concepts on the Edges
+  //Add the Edges
+  const auto eip = edges(m_conceptmap);
+  for(auto i=eip.first; i!=eip.second; ++i)
   {
-    const std::vector<Edge> edges = m_conceptmap.GetEdges();
-    std::for_each(edges.begin(),edges.end(),
-      [this,qtnodes](const Edge& edge)
-      {
-        assert(edge.GetFrom());
-        assert(edge.GetTo());
-        assert(edge.GetFrom() != edge.GetTo());
-        this->AddEdge(edge);
-      }
-    );
-  }
-
-  //Put the nodes around the focal question in an initial position
-  if (MustReposition(m_conceptmap.GetNodes()))
-  {
-    RepositionItems();
+    const auto pmap = get(boost::edge_custom_type, m_conceptmap);
+    const Edge edge = get(pmap, *i);
+    this->AddEdge(edge);
   }
 
   #ifndef NDEBUG
-  TestMe(m_conceptmap);
+  //TestMe(m_conceptmap);
   #endif
 
-  assert(GetConceptMap() == conceptmap);
-  assert(conceptmap.IsValid());
+  assert(boost::isomorphism(GetConceptMap(), conceptmap));
 }
 
 void ribi::cmap::QtConceptMap::SetExamplesItem(QtExamplesItem * const item)
@@ -1209,35 +1142,7 @@ void ribi::cmap::QtConceptMap::SetExamplesItem(QtExamplesItem * const item)
   m_examples_item = item;
 }
 
-#ifndef NDEBUG
-void ribi::cmap::QtConceptMap::Shuffle() noexcept
-{
-  const std::vector<QtNode*> nodes = Collect<QtNode>(scene());
-  std::for_each(nodes.begin(),nodes.end(),
-    [this](QtNode* qtnode)
-    {
-      if (!IsQtCenterNode(qtnode))
-      {
-        double x = qtnode->GetCenterX();
-        double y = qtnode->GetCenterY();
-        const int i = (std::rand() >> 4) % 4;
-        switch(i)
-        {
-          case 0: x+= 1.0; break;
-          case 1: y+= 1.0; break;
-          case 2: x+=-1.0; break;
-          case 3: y+=-1.0; break;
-          default: assert(!"Should not get here");
-        }
-        assert(QPointF(x,y) != qtnode->GetCenterPos());
-        qtnode->GetNode().SetPos(x,y);
-      }
-    }
-  );
-  scene()->update();
-}
-#endif
-
+#ifdef NOT_NOW_20151230
 #ifndef NDEBUG
 void ribi::cmap::QtConceptMap::TestMe(const ConceptMap map) const
 {
@@ -1303,9 +1208,26 @@ void ribi::cmap::QtConceptMap::TestMe(const ConceptMap map) const
 
 }
 #endif
+#endif // NOT_NOW_20151230
 
 void ribi::cmap::QtConceptMap::mouseDoubleClickEvent(QMouseEvent *event)
 {
+  if (GetVerbosity()) { TRACE("Doubeclick"); }
+  try
+  {
+    this->DoCommand(
+      new CommandCreateNewNode(
+        GetConceptMap(),
+        mapToScene(event->pos()).x(),
+        mapToScene(event->pos()).y()
+      )
+    );
+  }
+  catch (std::logic_error& )
+  {
+
+  }
+  /*
   const Concept concept(
     ribi::cmap::ConceptFactory().Create("..."));
   const Node node(NodeFactory().Create(concept));
@@ -1316,6 +1238,7 @@ void ribi::cmap::QtConceptMap::mouseDoubleClickEvent(QMouseEvent *event)
   assert(qtnode);
   const QPointF new_point = mapToScene(event->pos());
   qtnode->GetNode().SetPos(new_point.x(),new_point.y());
+  */
 }
 
 void ribi::cmap::QtConceptMap::mouseMoveEvent(QMouseEvent * event)
@@ -1351,7 +1274,7 @@ void ribi::cmap::QtConceptMap::mousePressEvent(QMouseEvent *event)
       //AddEdge( m_arrow->GetFrom(),m_highlighter->GetItem());
       try
       {
-        const auto command = new CommandCreateNewEdge(GetConceptMap());
+        const auto command = new CommandCreateNewEdgeBetweenTwoSelectedNodes(GetConceptMap());
         DoCommand(command);
         UpdateSelection();
       }

@@ -1,5 +1,4 @@
-INCLUDEPATH += \
-    ../RibiClasses/CppRibiTime
+INCLUDEPATH += $$PWD
 
 SOURCES += \
     ../RibiClasses/CppRibiTime/ribi_time.cpp

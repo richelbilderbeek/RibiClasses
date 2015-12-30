@@ -18,16 +18,19 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppConceptMap.htm
 //---------------------------------------------------------------------------
+#ifdef DO_NOT_USE_BOOST_GRAPH
+
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
+#include <boost/property_map/dynamic_property_map.hpp>
+#include <boost/graph/graphviz.hpp>
+
 #include "conceptmapfactory.h"
 
 #include <cassert>
 
 #include <boost/lexical_cast.hpp>
-#include <boost/property_map/dynamic_property_map.hpp>
-#include <boost/graph/graphviz.hpp>
 
 #include "conceptmapcenternodefactory.h"
 #include "container.h"
@@ -297,3 +300,5 @@ void ribi::cmap::ConceptMapFactory::Test() noexcept
   }
 }
 #endif // NDEBUG
+
+#endif

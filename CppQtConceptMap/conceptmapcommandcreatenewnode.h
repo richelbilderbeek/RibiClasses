@@ -39,20 +39,27 @@ class CommandCreateNewNode final : public Command
 {
   public:
 
-  CommandCreateNewNode(ConceptMap& conceptmap);
+  CommandCreateNewNode(
+    ConceptMap& conceptmap,
+    const double x,
+    const double y
+  );
   CommandCreateNewNode(const CommandCreateNewNode&) = delete;
   CommandCreateNewNode& operator=(const CommandCreateNewNode&) = delete;
   ~CommandCreateNewNode() noexcept {}
 
-  const auto& GetAddedQtNode() const noexcept { return m_node; }
+  const VertexDescriptor& GetAddedQtNode() const noexcept { return m_added; }
 
   void redo() override;
   void undo() override;
 
   private:
-  ///There can be one or zero Nodes
-  std::vector<Node> m_node;
   ConceptMap& m_conceptmap;
+  const double m_x;
+  const double m_y;
+  const ConceptMap m_before;
+  ConceptMap m_after;
+  VertexDescriptor m_added;
 };
 
 } //~namespace cmap

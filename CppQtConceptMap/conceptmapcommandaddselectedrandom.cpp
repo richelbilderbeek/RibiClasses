@@ -11,39 +11,51 @@
 ribi::cmap::CommandAddSelectedRandom::CommandAddSelectedRandom(ConceptMap& conceptmap)
   :
     m_conceptmap(conceptmap),
-    m_new_selected{conceptmap.GetSelected()},
-    m_old_selected{conceptmap.GetSelected()}
+    m_before{conceptmap},
+    m_after{RandomlyAddSelectedNode(conceptmap)}
 {
-  this->setText("add selected random");
-
-  if (conceptmap.GetNodes().empty())
-  {
-    throw std::logic_error("AddSelected needs nodes to focus on");
-  }
-  const auto to_add = m_conceptmap.GetRandomNodes(conceptmap.GetSelectedNodes());
-  if (to_add.empty())
-  {
-    std::stringstream s;
-    s << "AddSelected needs non-focused nodes to focus on,"
-      << "currently has " << conceptmap.GetSelectedNodes().size()
-      << " selected"
-    ;
-    throw std::logic_error(s.str());
-  }
-  std::copy(
-    std::begin(to_add),
-    std::end(to_add),
-    std::back_inserter(m_new_selected.second)
-  );
-  assert(m_new_selected.second.size() > m_old_selected.second.size());
 }
 
 void ribi::cmap::CommandAddSelectedRandom::redo()
 {
-  m_conceptmap.SetSelected(m_new_selected);
+  m_conceptmap = m_after;
 }
 
 void ribi::cmap::CommandAddSelectedRandom::undo()
 {
-  m_conceptmap.SetSelected(m_old_selected);
+  m_conceptmap = m_before;
+}
+
+ribi::cmap::ConceptMap ribi::cmap::RandomlyAddSelectedNode(ConceptMap g)
+{
+  std::vector<VertexDescriptor> v;
+  const auto vip = vertices(g);
+
+  std::copy_if(
+    vip.first,
+    vip.second,
+    std::back_inserter(v),
+    [g](const VertexDescriptor& vd)
+    {
+      const auto is_selected_map
+        = get(boost::vertex_is_selected, g);
+      return get(is_selected_map, vd);
+    }
+  );
+  if (v.empty())
+  {
+    std::stringstream s;
+    s << __func__ << ": need non-selected node to selected";
+    throw std::logic_error(s.str());
+  }
+
+
+  const auto is_selected_map
+    = get(boost::vertex_is_selected, g);
+  put(
+    is_selected_map,
+    v[ std::rand() % v.size() ],
+    true
+  );
+  return g;
 }

@@ -274,6 +274,14 @@ void ribi::cmap::Node::Test() noexcept
     assert(c == b);
   }
   {
+    Node a{NodeFactory().GetTest(1)};
+    std::stringstream s;
+    s << a;
+    Node b;
+    s >> b;
+    assert(a == b);
+  }
+  {
     const std::vector<Node> v = Node::GetTests();
     std::for_each(v.begin(),v.end(),
       [](const Node& node)
@@ -459,4 +467,13 @@ std::ostream& ribi::cmap::operator<<(std::ostream& os, const Node& node) noexcep
   return os;
 }
 
+std::istream& ribi::cmap::operator>>(std::istream& is, Node& node) noexcept
+{
+  Concept c;
+  double x = 0.0;
+  double y = 0.0;
+  is >> c >> x >> y;
+  node.SetConcept(c);
+  return is;
+}
 

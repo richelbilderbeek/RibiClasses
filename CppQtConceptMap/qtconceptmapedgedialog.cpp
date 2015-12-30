@@ -87,14 +87,9 @@ ribi::cmap::QtEdgeDialog::~QtEdgeDialog()
   delete ui;
 }
 
-int ribi::cmap::QtEdgeDialog::GetMinimumHeight(const Edge& edge) noexcept
+int ribi::cmap::QtEdgeDialog::GetMinimumHeight(const Edge& ) noexcept
 {
-  return
-      QtNodeDialog::GetMinimumHeight(*edge.GetFrom())
-    + QtNodeDialog::GetMinimumHeight(edge.GetNode())
-    + QtNodeDialog::GetMinimumHeight(*edge.GetTo())
-    + 200
-  ;
+  return 400;
 }
 
 
@@ -132,59 +127,19 @@ void ribi::cmap::QtEdgeDialog::SetEdge(const Edge& edge)
     std::stringstream s;
     s << "Setting edge '" << edge.ToStr() << "'\n";
   }
-  const auto from_after = edge.GetFrom();
-  const auto head_arrow_after = edge.HasHeadArrow();
   const auto node_after = edge.GetNode();
-  const auto tail_arrow_after = edge.HasTailArrow();
-  const auto to_after = edge.GetTo();
 
-  bool from_changed  = true;
-  bool head_arrow_changed  = true;
   bool node_changed  = true;
-  bool tail_arrow_changed  = true;
-  bool to_changed  = true;
 
   {
-    const auto from_before = m_edge.GetFrom();
-    const auto head_arrow_before = m_edge.HasHeadArrow();
     const auto node_before = m_edge.GetNode();
-    const auto tail_arrow_before = m_edge.HasTailArrow();
-    const auto to_before = m_edge.GetTo();
 
 
-    from_changed = from_before != from_after;
-    head_arrow_changed = head_arrow_before != head_arrow_after;
     node_changed = node_before != node_after;
-    tail_arrow_changed = tail_arrow_before != tail_arrow_after;
-    to_changed = to_before != to_after;
 
 
     if (verbose)
     {
-      if (from_changed)
-      {
-        std::stringstream s;
-        s
-          << "From will change from "
-          << from_before->ToStr()
-          << " to "
-          << from_after->ToStr()
-          << '\n'
-        ;
-        TRACE(s.str());
-      }
-      if (head_arrow_changed)
-      {
-        std::stringstream s;
-        s
-          << "Head arrow will change from "
-          << head_arrow_before
-          << " to "
-          << head_arrow_after
-          << '\n'
-        ;
-        TRACE(s.str());
-      }
       if (node_changed)
       {
         std::stringstream s;
@@ -197,41 +152,13 @@ void ribi::cmap::QtEdgeDialog::SetEdge(const Edge& edge)
         ;
         TRACE(s.str());
       }
-      if (tail_arrow_changed)
-      {
-        std::stringstream s;
-        s
-          << "Tail arrow will change from "
-          << tail_arrow_before
-          << " to "
-          << tail_arrow_after
-          << '\n'
-        ;
-        TRACE(s.str());
-      }
-      if (to_changed)
-      {
-        std::stringstream s;
-        s
-          << "To will change from "
-          << to_before->ToStr()
-          << " to "
-          << to_after->ToStr()
-          << '\n'
-        ;
-        TRACE(s.str());
-      }
     }
   }
 
   //Replace m_example by the new one
   m_edge = edge;
 
-  assert(m_edge.GetFrom() == from_after );
-  assert(m_edge.HasHeadArrow() == head_arrow_after );
   assert(m_edge.GetNode() == node_after );
-  assert(m_edge.HasTailArrow() == tail_arrow_after );
-  assert(m_edge.GetTo() == to_after );
 
   setMinimumHeight(GetMinimumHeight(m_edge));
 
@@ -438,10 +365,10 @@ void ribi::cmap::QtEdgeDialog::Test() noexcept
 
 void ribi::cmap::QtEdgeDialog::on_box_head_arrow_stateChanged(int)
 {
-  m_edge.SetHeadArrow(ui->box_head_arrow->isChecked());
+
 }
 
 void ribi::cmap::QtEdgeDialog::on_box_tail_arrow_stateChanged(int)
 {
-  m_edge.SetTailArrow(ui->box_tail_arrow->isChecked());
+
 }

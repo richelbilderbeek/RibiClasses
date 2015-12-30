@@ -18,6 +18,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppConceptMap.htm
 //---------------------------------------------------------------------------
+#ifdef DO_NOT_USE_BOOST_GRAPH
+
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
@@ -471,3 +473,5 @@ void ribi::cmap::ConceptMap::Test() noexcept
   #endif // FIX_ISSUE_10
 }
 #endif
+
+#endif //DO_NOT_USE_BOOST_GRAPH

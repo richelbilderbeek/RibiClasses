@@ -21,6 +21,44 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #ifndef CONCEPTMAPCONCEPTMAP_H
 #define CONCEPTMAPCONCEPTMAP_H
 
+#ifndef DO_NOT_USE_BOOST_GRAPH
+#include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/graph_traits.hpp>
+#include "conceptmapvertexcustomtype.h"
+#include "conceptmapvertexisselected.h"
+#include "conceptmapedgecustomtype.h"
+#include "conceptmapedgeisselected.h"
+#include "conceptmapnode.h"
+#include "conceptmapedge.h"
+//#include "conceptmapgraphtypes.h"
+
+namespace ribi {
+namespace cmap {
+
+using ConceptMap = boost::adjacency_list
+<
+  boost::vecS,
+  boost::vecS,
+  boost::directedS,
+  boost::property<
+    boost::vertex_custom_type_t, Node,
+    boost::property<
+      boost::vertex_is_selected_t, bool
+    >
+  >,
+  boost::property<
+    boost::edge_custom_type_t, Edge,
+    boost::property<
+      boost::edge_is_selected_t, bool
+    >
+  >
+>;
+using VertexDescriptor = boost::graph_traits<ConceptMap>::vertex_descriptor;
+using EdgeDescriptor = boost::graph_traits<ConceptMap>::edge_descriptor;
+
+} //~namespace cmap
+} //~namespace ribi
+#else
 #include <string>
 #include <vector>
 
@@ -284,5 +322,7 @@ std::ostream& operator<<(std::ostream& os, const ConceptMap& m) noexcept;
 
 } //~namespace cmap
 } //~namespace ribi
+
+#endif // DO_NOT_USE_BOOST_GRAPH
 
 #endif // CONCEPTMAPCONCEPTMAP_H

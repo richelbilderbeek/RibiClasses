@@ -18,6 +18,8 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppQtConceptMap.htm
 //---------------------------------------------------------------------------
+#ifdef NOT_NOW_20151230
+
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #include "qtconceptmaprateconcepttallydialognewname.h"
@@ -560,3 +562,5 @@ void ribi::cmap::QtRateConceptTallyDialogNewName::Test() noexcept
 
 }
 #endif
+
+#endif // NOT_NOW_20151230

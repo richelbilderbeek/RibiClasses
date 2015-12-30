@@ -150,6 +150,26 @@ std::ostream& ribi::cmap::operator<<(std::ostream& os, const Concept& concept) n
   return os;
 }
 
+std::istream& ribi::cmap::operator>>(std::istream& is, Concept& concept) noexcept
+{
+  std::string name;
+  is >> name;
+  Examples examples;
+  is >> examples;
+  bool is_complex;
+  is >> is_complex;
+  int rating_complexity;
+  is >> rating_complexity;
+  int rating_concreteness;
+  is >> rating_concreteness;
+  int rating_specificity;
+  is >> rating_specificity;
+  concept = Concept(name, examples, is_complex,
+    rating_complexity, rating_concreteness, rating_specificity
+  );
+  return is;
+}
+
 bool ribi::cmap::operator==(const ribi::cmap::Concept& lhs, const ribi::cmap::Concept& rhs)
 {
   const bool verbose{false};

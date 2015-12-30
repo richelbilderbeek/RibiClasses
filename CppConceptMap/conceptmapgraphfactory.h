@@ -37,6 +37,7 @@ public:
   private:
 
   VertexDescriptor AddVertex(const Node& node, Graph& g) const noexcept;
+
   void AddEdge(
     const Edge& edge,
     const VertexDescriptor& vd_from,

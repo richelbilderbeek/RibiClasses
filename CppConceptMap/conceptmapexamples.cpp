@@ -30,6 +30,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <boost/lambda/lambda.hpp>
 #include <QRegExp>
 #include "counter.h"
+#include "conceptmapregex.h"
 #include "conceptmaphelper.h"
 #include "conceptmapexample.h"
 #include "conceptmapexamplefactory.h"
@@ -194,6 +195,56 @@ std::string ribi::cmap::Examples::ToXml() const noexcept
   assert(r.substr(0,10) == "<examples>");
   assert(r.substr(r.size() - 11,11) == "</examples>");
   return r;
+}
+
+std::ostream& ribi::cmap::operator<<(std::ostream& os, const Examples& concept) noexcept
+{
+  os << concept.ToXml();
+  return os;
+}
+
+std::istream& ribi::cmap::operator>>(std::istream& is, Examples& concept) noexcept
+{
+  std::string s;
+  is >> s;
+
+  if (s.size() < 20)
+  {
+    std::stringstream msg;
+    msg << __func__ << ": XML string '" << s << "' is only " << s.size() << " characters long, need at least 20";
+    throw std::logic_error(msg.str());
+  }
+  if (s.substr(0,10) != "<examples>")
+  {
+    std::stringstream msg;
+    msg << __func__ << ": XML string '" << s << "' does not begin with <examples>";
+    throw std::logic_error(msg.str());
+  }
+  if (s.substr(s.size() - 11,11) != "</examples>")
+  {
+    std::stringstream msg;
+    msg << __func__ << ": XML string '" << s << "' does not end with </examples>";
+    throw std::logic_error(msg.str());
+  }
+
+  assert(Regex().GetRegexMatches(s,"(<examples>)").size()
+      == Regex().GetRegexMatches(s,"(</examples>)").size());
+
+  std::vector<Example> examples;
+  {
+
+    assert(Regex().GetRegexMatches(s,"(<example>)").size()
+        == Regex().GetRegexMatches(s,"(</example>)").size());
+    const auto v = Regex().GetRegexMatches(s,Regex().GetRegexExample());
+    std::transform(v.begin(),v.end(),std::back_inserter(examples),
+      [](const std::string& s)
+      {
+        return ExampleFactory().FromXml(s);
+      }
+    );
+  }
+  concept = ExamplesFactory().Create(examples);
+  return is;
 }
 
 bool ribi::cmap::operator==(const Examples& lhs, const Examples& rhs)

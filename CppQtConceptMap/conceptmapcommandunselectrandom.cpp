@@ -11,11 +11,15 @@
 
 ribi::cmap::CommandUnselectRandom::CommandUnselectRandom(
   ConceptMap& conceptmap
-) :
-    m_conceptmap(conceptmap),
-    m_new_selected{conceptmap.GetSelected()},
-    m_old_selected{conceptmap.GetSelected()}
+)
+  : m_conceptmap(conceptmap),
+    m_before{conceptmap},
+    m_after{conceptmap}
+//    m_conceptmap(conceptmap),
+//    m_new_selected{conceptmap.GetSelected()},
+//    m_old_selected{conceptmap.GetSelected()}
 {
+  /*
   if (conceptmap.GetSelectedEdges().empty() && conceptmap.GetSelectedNodes().empty())
   {
     throw std::logic_error("Unselect needs nodes to unselect on");
@@ -39,15 +43,18 @@ ribi::cmap::CommandUnselectRandom::CommandUnselectRandom(
     std::swap(m_new_selected.second[i - n_edges],m_new_selected.second.back());
     m_new_selected.second.pop_back();
   }
+  */
 }
 
 
 void ribi::cmap::CommandUnselectRandom::redo()
 {
-  m_conceptmap.SetSelected(m_new_selected);
+  m_conceptmap = m_after;
+  //m_conceptmap.SetSelected(m_new_selected);
 }
 
 void ribi::cmap::CommandUnselectRandom::undo()
 {
-  m_conceptmap.SetSelected(m_old_selected);
+  m_conceptmap = m_before;
+  //m_conceptmap.SetSelected(m_old_selected);
 }

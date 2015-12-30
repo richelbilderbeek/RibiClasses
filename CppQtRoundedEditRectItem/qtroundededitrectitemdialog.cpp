@@ -158,7 +158,9 @@ void ribi::QtRoundedEditRectItemDialog::OnTextPenChanged(QtRoundedEditRectItem *
   ui->label_text_pen->setText(s.str().c_str());
 }
 
-void ribi::QtRoundedEditRectItemDialog::SetItem(const boost::shared_ptr<QtRoundedEditRectItem>& item) noexcept
+void ribi::QtRoundedEditRectItemDialog::SetItem(
+  const boost::shared_ptr<QtRoundedEditRectItem>& item
+) noexcept
 {
   const bool verbose{false};
 
