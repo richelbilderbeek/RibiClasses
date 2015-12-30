@@ -161,26 +161,14 @@ ribi::cmap::QtConceptMap::~QtConceptMap()
 
 }
 
+
 ribi::cmap::QtEdge * ribi::cmap::QtConceptMap::AddEdge(
-  const Edge& edge
+  const Edge& /* edge */
 )
 {
-  if (GetVerbosity()) { TRACE("Start of 'QtConceptMap::AddEdge(const Edge edge)'"); }
+  #ifdef NOT_NOW_20151230
 
-  //Add Node to ConceptMap if this has not been done yet
-  /*
-  if (!HasEdge(edge, m_conceptmap))
-  {
-    const auto edges = GetConceptMap().GetEdges();
-    const int cnt{static_cast<int>(std::count(std::begin(edges),std::end(edges),edge))};
-    assert(cnt == 0 || cnt == 1);
-    if (cnt == 0)
-    {
-      if (GetVerbosity()) { TRACE("Adding Edge to ConceptMap (as it was not yet in there)"); }
-      GetConceptMap().AddEdge(edge);
-    }
-  }
-  */
+  if (GetVerbosity()) { TRACE("Start of 'QtConceptMap::AddEdge(const Edge edge)'"); }
 
   //Already added
   if (GetQtEdge(edge))
@@ -188,22 +176,6 @@ ribi::cmap::QtEdge * ribi::cmap::QtConceptMap::AddEdge(
     if (GetVerbosity()) { TRACE("QtEdge already present"); }
     return GetQtEdge(edge);
   }
-
-  //Be helpful here
-  /*
-  if (!GetQtNode(*edge.GetFrom()))
-  {
-    if (GetVerbosity()) { TRACE("Adding 'from' Node to QtConceptMap (as it was not yet in there)"); }
-    //Note: this cases ConceptMap::GetSelectedEdges() to be empty again, this has to be fixed later on
-    AddNode(*edge.GetFrom());
-  }
-  if (!GetQtNode(*edge.GetTo()))
-  {
-    if (GetVerbosity()) { TRACE("Adding 'to' Node to QtConceptMap (as it was not yet in there)"); }
-    //Note: this cases ConceptMap::GetSelectedEdges() to be empty again, this has to be fixed later on
-    AddNode(*edge.GetTo());
-  }
-  */
 
   QtNode * const qtfrom = GetQtNode(*edge.GetFrom());
   assert(qtfrom);
@@ -223,57 +195,14 @@ ribi::cmap::QtEdge * ribi::cmap::QtConceptMap::AddEdge(
     //qtconcept->setVisible(false);
   }
 
-  //General: inform an Observer that this item has changed
-  //Signal #6
-  qtedge->m_signal_edge_changed.connect(
-    boost::bind(
-      &QtConceptMap::OnItemRequestsUpdate,
-      this,
-      boost::lambda::_1
-    )
-  );
-
-  qtedge->m_signal_selected_changed.connect(
-    boost::bind(
-      &QtConceptMap::OnItemSelectedChanged,
-      this,
-      boost::lambda::_1
-    )
-  );
-
-  //Signal #7
-  //General: inform an Observer that a QGraphicsScene needs to be updated
-  //qtedge->m_signal_request_scene_update.connect(
-  //  boost::bind(&QtConceptMap::OnRequestSceneUpdate,this));
-
-  //Signal #8
-  //Specific for Edit widget: inform an Observer of a request for a text edit
-  qtedge->m_signal_key_down_pressed.connect(
-    boost::bind(
-      &ribi::cmap::QtConceptMap::OnEdgeKeyDownPressed,
-      this,
-      boost::lambda::_1, //Do not forget the placeholder!
-      boost::lambda::_2  //Do not forget the placeholder!
-    )
-  );
-
-
-
   if (GetVerbosity()) { TRACE("Adding QtEdge (and its QtQuadBezierArrow and QtNode) to QtConceptMap's QScene"); }
   assert(!qtedge->scene());
   this->scene()->addItem(qtedge); //QtEdge adds the QtQuadBezierArrow and QtNode to the QScene when QtEdge::paint is called
 
-  //Edge may have lost its selectedness at AddNode, fix it here
-  if (GetConceptMap().GetSelectedEdges().size() != 1 || GetConceptMap().GetSelectedEdges()[0] != edge)
-  {
-    GetConceptMap().SetSelected( ConceptMap::Edges( {edge} ) );
-  }
-
-  if (GetVerbosity()) { TRACE("Setting selection and focus correct"); }
-
   qtfrom->SetSelected(false);
   qtto->SetSelected(false);
   qtedge->GetQtNode()->SetSelected(true);
+
   if (GetScene()->focusItem() && GetScene()->focusItem() != qtedge->GetQtNode().get())
   {
     GetScene()->focusItem()->clearFocus();
@@ -283,10 +212,17 @@ ribi::cmap::QtEdge * ribi::cmap::QtConceptMap::AddEdge(
   //this->GetConceptMap().SetSelected( ConceptMap::Edges( { qtedge->GetEdge() } ) );
   //assert(qtedge->GetQtNode()->isSelected());
   return qtedge;
+  #endif // NOT_NOW_20151230
+  return nullptr;
 }
 
-ribi::cmap::QtNode * ribi::cmap::QtConceptMap::AddNode(const Node& node)
+
+ribi::cmap::QtNode * ribi::cmap::QtConceptMap::AddNode(
+  const Node& /* node */,
+  const bool /* is_center_node */
+)
 {
+  #ifdef NOT_NOW_20151230
   //Add Node to ConceptMap if this has not been done yet
   {
     const auto nodes = GetConceptMap().GetNodes();
@@ -308,40 +244,15 @@ ribi::cmap::QtNode * ribi::cmap::QtConceptMap::AddNode(const Node& node)
   assert(IsCenterNode(qtnode->GetNode()) == IsQtCenterNode(qtnode)
     && "Should be equivalent");
 
-  //Signal #1
-  //General: inform an Observer that this item has changed
-  qtnode->m_signal_node_changed.connect(
-    boost::bind(&QtConceptMap::OnItemRequestsUpdate,this,boost::lambda::_1))
-  ;
-  //Signal #2
-  //General: inform an Observer that a QGraphicsScene needs to be updated
-
-  qtnode->m_signal_selected_changed.connect(
-    boost::bind(&QtConceptMap::OnItemSelectedChanged,this,boost::lambda::_1)
-  );
-
-  qtnode->m_signal_focus_pen_changed.connect(
-    boost::bind(&QtConceptMap::OnRequestSceneUpdate,this)
-  );
-  //qtnode->m_signal_request_scene_update.connect(
-  //  boost::bind(&QtConceptMap::OnRequestSceneUpdate,this));
-
-  //Signal #3
-  //Specific for Edit widget: inform an Observer of a request for a text edit
-  qtnode->m_signal_key_down_pressed.connect(
-    boost::bind(
-      &ribi::cmap::QtConceptMap::OnNodeKeyDownPressed,
-      this, boost::lambda::_1, boost::lambda::_2)
-  ); //Do not forget these placeholders!
-
   assert(!qtnode->scene());
   this->scene()->addItem(qtnode); //Adding qtnode to scene() twice gives a warning
   assert(qtnode->scene() == GetScene());
   qtnode->SetSelected(true);
   qtnode->setFocus();
   return qtnode;
-}
 #endif // NOT_NOW_20151230
+  return nullptr;
+}
 
 void ribi::cmap::QtConceptMap::CleanMe()
 {
@@ -895,9 +806,11 @@ void ribi::cmap::QtConceptMap::OnItemRequestsUpdate(const QGraphicsItem* const i
   scene()->update();
 }
 
-#ifdef NOT_NOW_20151230
-void ribi::cmap::QtConceptMap::OnItemSelectedChanged(QGraphicsItem* const item)
+void ribi::cmap::QtConceptMap::OnItemSelectedChanged(
+  QGraphicsItem* const /* item */
+)
 {
+#ifdef NOT_NOW_20151230
   if (GetVerbosity()) { std::clog << "A QGraphicsItem has its selectedness changed" << std::endl; }
   //What changes its selection
   if (QtNode * const qtnode = dynamic_cast<QtNode*>(item))
@@ -961,8 +874,8 @@ void ribi::cmap::QtConceptMap::OnItemSelectedChanged(QGraphicsItem* const item)
       std::clog << "Warning: something unknown changed its selectionness" << std::endl;
     }
   }
-}
 #endif
+}
 
 void ribi::cmap::QtConceptMap::OnRequestSceneUpdate()
 {

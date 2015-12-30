@@ -185,7 +185,7 @@ private:
   QtEdge * AddEdge(const Edge& edge);
 
   ///Adds a Node, returns the freshly created QtNode
-  QtNode * AddNode(const Node& node, bool is_center_node = false);
+  QtNode * AddNode(const Node& node, const bool is_center_node = false);
 
   ///Remove all Qt and non-Qt items
   void CleanMe();
