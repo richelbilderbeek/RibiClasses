@@ -50,7 +50,7 @@ struct ExampleFactory
 
   ///Create examples for strings
   ///Note that all cmap::Competency values are set to uninitialized
-  //static const std::vector<boost::shared_ptr<cmap::Example> > CreateExamples(const std::vector<std::string>& v);
+  //static const std::vector<Example> CreateExamples(const std::vector<std::string>& v);
 
   ///Create an example from XML
   Example FromXml(const std::string& s) const noexcept;

@@ -59,9 +59,6 @@ struct MenuDialog
   ///Obtain the help information of this class
   virtual Help GetHelp() const noexcept = 0;
 
-  ///Obtain information about the program
-  //virtual boost::shared_ptr<const Program> GetProgram() const noexcept = 0;
-
   ///Obtain the version of this class
   virtual std::string GetVersion() const noexcept = 0;
 

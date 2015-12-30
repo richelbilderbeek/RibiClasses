@@ -263,7 +263,7 @@ private:
   #ifdef TO_ADD_TO_PROJECTBRAINWEAVER
   ConceptMap(
     const std::string& question,
-    const boost::shared_ptr<cmap::Cluster>& cluster);
+    const Cluster& cluster);
   #endif
 
   ///To make the compiler use the const version

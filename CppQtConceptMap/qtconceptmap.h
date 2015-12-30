@@ -114,7 +114,6 @@ protected:
   void DeleteQtEdge(const QtEdge * const edge);
 
   ///Delete a Node
-  //void DeleteNode(const boost::shared_ptr<QtNode>& node);
   void DeleteQtNode(const QtNode * const node);
 
   ///Get all the edges connected to the concept
