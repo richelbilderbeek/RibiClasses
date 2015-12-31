@@ -28,6 +28,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmapcommand.h"
 #include "conceptmapnode.h"
 #include "conceptmap.h"
+#include "qtconceptmapqtnode.h"
+#include <QGraphicsScene>
 #pragma GCC diagnostic pop
 
 namespace ribi {
@@ -41,6 +43,7 @@ class CommandCreateNewNode final : public Command
 
   CommandCreateNewNode(
     ConceptMap& conceptmap,
+    QGraphicsScene * const scene,
     const double x,
     const double y
   );
@@ -48,18 +51,17 @@ class CommandCreateNewNode final : public Command
   CommandCreateNewNode& operator=(const CommandCreateNewNode&) = delete;
   ~CommandCreateNewNode() noexcept {}
 
-  const VertexDescriptor& GetAddedQtNode() const noexcept { return m_added; }
-
   void redo() override;
   void undo() override;
 
   private:
   ConceptMap& m_conceptmap;
+  ConceptMap m_conceptmap_after;
+  const ConceptMap m_conceptmap_before;
+  QtNode * m_qtnode;
+  QGraphicsScene * const m_scene;
   const double m_x;
   const double m_y;
-  const ConceptMap m_before;
-  ConceptMap m_after;
-  VertexDescriptor m_added;
 };
 
 } //~namespace cmap

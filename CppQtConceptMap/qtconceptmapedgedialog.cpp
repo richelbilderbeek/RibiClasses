@@ -321,7 +321,7 @@ void ribi::cmap::QtEdgeDialog::Test() noexcept
   const bool verbose{false};
   const Node from = NodeFactory().GetTest(0);
   const Node to = NodeFactory().GetTest(0);
-  Edge edge = EdgeFactory().GetTest(0,from,to);
+  Edge edge = EdgeFactory().GetTest(0);
   QtEdgeDialog dialog(edge);
   if (verbose) { TRACE("X of QtNode and QtNodeDialog must match at start"); }
   {

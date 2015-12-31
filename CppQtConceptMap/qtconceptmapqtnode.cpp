@@ -129,18 +129,6 @@ void ribi::cmap::QtNode::keyPressEvent(QKeyEvent *event) noexcept
   m_signal_key_down_pressed(this,event->key());
   Base::keyPressEvent(event);
 }
-/*
-void ribi::cmap::QtNode::OnItemHasUpdated()
-{
-  //this->setRect(m_display_strategy->boundingRect());
-
-  //Cannot check here, as setRect triggers this member function
-  //assert(m_concept_item->boundingRect() == QtConceptMapItem::boundingRect()
-  //  && "Bounding rects must by synced");
-  this->update();
-  //this->m_signal_item_has_updated(this);
-}
-*/
 
 
 void ribi::cmap::QtNode::OnConceptChanged(Node * const node) noexcept
@@ -262,115 +250,8 @@ void ribi::cmap::QtNode::paint(
 
 void ribi::cmap::QtNode::SetNode(const Node& node) noexcept
 {
-  const bool verbose{false};
-
-  if (m_node == node)
-  {
-    return;
-  }
-
-  if (verbose)
-  {
-    std::stringstream s;
-    s << "Setting node '" << node.ToStr() << "'\n";
-  }
-  const auto concept_after = node.GetConcept();
-  const auto x_after = node.GetX();
-  const auto y_after = node.GetY();
-
-  bool concept_changed{true};
-  bool x_changed{true};
-  bool y_changed{true};
-
-  //if (m_node)
-  {
-    const auto concept_before = m_node.GetConcept();
-    const auto x_before = m_node.GetX();
-    const auto y_before = m_node.GetY();
-
-    concept_changed = concept_before != concept_after;
-    x_changed = x_before != x_after;
-    y_changed = y_before != y_after;
-
-
-    if (verbose)
-    {
-      if (concept_changed)
-      {
-        std::stringstream s;
-        s
-          << "Concept will change from "
-          << concept_before.ToStr()
-          << " to "
-          << concept_after.ToStr()
-          << '\n'
-        ;
-        TRACE(s.str());
-      }
-      if (x_changed)
-      {
-        std::stringstream s;
-        s << "X will change from " << x_before
-          << " to " << x_after << '\n';
-        TRACE(s.str());
-      }
-      if (y_changed)
-      {
-        std::stringstream s;
-        s << "Y will change from " << y_before
-          << " to " << y_after << '\n';
-        TRACE(s.str());
-      }
-    }
-    //Disconnect m_concept
-//    m_node.m_signal_concept_changed.disconnect(
-//      boost::bind(&ribi::cmap::QtNode::OnConceptChanged,this,boost::lambda::_1)
-//    );
-//    m_node.m_signal_x_changed.disconnect(
-//      boost::bind(&ribi::cmap::QtNode::OnXchanged,this,boost::lambda::_1)
-//    );
-//    m_node.m_signal_y_changed.disconnect(
-//      boost::bind(&ribi::cmap::QtNode::OnYchanged,this,boost::lambda::_1)
-//    );
-  }
-
-  //Replace m_example by the new one
   m_node = node;
-
-
-  assert(m_node.GetConcept() == concept_after );
-  assert(m_node.GetX() == x_after );
-  assert(m_node.GetY() == y_after);
-
-  //SetPos(m_node.GetX(),m_node.GetY());
-  //assert(GetPos().x() == m_node.GetX());
-  //assert(GetPos().y() == m_node.GetY());
-
-//  m_node.m_signal_concept_changed.connect(
-//    boost::bind(&ribi::cmap::QtNode::OnConceptChanged,this,boost::lambda::_1)
-//  );
-//  m_node.m_signal_x_changed.connect(
-//    boost::bind(&ribi::cmap::QtNode::OnXchanged,this,boost::lambda::_1)
-//  );
-//  m_node.m_signal_y_changed.connect(
-//    boost::bind(&ribi::cmap::QtNode::OnYchanged,this,boost::lambda::_1)
-//  );
-
-//  //Emit everything that has changed
-//  if (concept_changed)
-//  {
-//    m_node.m_signal_concept_changed(m_node.get());
-//  }
-//  if (x_changed)
-//  {
-//    m_node.m_signal_x_changed(m_node.get());
-//  }
-//  if (y_changed)
-//  {
-//    m_node.m_signal_y_changed(m_node.get());
-//  }
-
-  assert(node == m_node);
+  this->SetCenterPos(m_node.GetX(), m_node.GetY());
 }
 
 #ifndef NDEBUG

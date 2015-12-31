@@ -53,6 +53,7 @@ ribi::cmap::Command* ribi::cmap::CommandFactory::CreateTestCommand(
         assert(p);
         return p;
       }
+      /*
       case 2:
       {
         Command * const p {
@@ -61,6 +62,7 @@ ribi::cmap::Command* ribi::cmap::CommandFactory::CreateTestCommand(
         assert(p);
         return p;
       }
+      */
       default:
         assert(index >= GetSize());
     }

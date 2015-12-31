@@ -60,7 +60,7 @@ void ribi::cmap::QtEdge::Test() noexcept
     const Node node_to{NodeFactory().GetTest(0)};
     const boost::shared_ptr<QtNode> qtnode_from{new QtNode(node_from)};
     const boost::shared_ptr<QtNode> qtnode_to{new QtNode(node_to)};
-    const Edge edge{EdgeFactory().GetTest(0,node_from,node_to)};
+    const Edge edge{EdgeFactory().GetTest(0)};
     //const boost::shared_ptr<QtEdge> qtedge{QtEdgeFactory().Create(edge,qtnode_from,qtnode_to)};
     const boost::shared_ptr<QtEdge> qtedge{QtEdgeFactory().Create(edge,qtnode_from.get(),qtnode_to.get())};
   }
@@ -73,7 +73,7 @@ void ribi::cmap::QtEdge::Test() noexcept
   const Node node_to{NodeFactory().GetTest(node_test_index)};
   const boost::shared_ptr<QtNode> qtnode_from{new QtNode(node_from)};
   const boost::shared_ptr<QtNode> qtnode_to{new QtNode(node_to)};
-  const Edge edge{EdgeFactory().GetTest(edge_test_index,node_from,node_to)};
+  const Edge edge{EdgeFactory().GetTest(edge_test_index)};
   const boost::shared_ptr<QtEdge> qtedge{new QtEdge(edge,qtnode_from.get(),qtnode_to.get())};
   //const boost::shared_ptr<QtEdge> qtedge{new QtEdge(edge,qtnode_from,qtnode_to)};
   QtRoundedEditRectItem * qtitem{dynamic_cast<QtRoundedEditRectItem*>(qtedge->GetQtNode())};

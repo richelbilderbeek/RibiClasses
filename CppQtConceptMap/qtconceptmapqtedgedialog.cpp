@@ -275,7 +275,7 @@ void ribi::cmap::QtQtEdgeDialog::Test() noexcept
     const auto to = NodeFactory().GetTest(1);
     const auto qtfrom = QtNodeFactory().Create(from);
     const auto qtto = QtNodeFactory().Create(to);
-    const Edge edge = EdgeFactory().GetTest(1,from,to);
+    const Edge edge = EdgeFactory().GetTest(1);
     QtEdgeDialog qtedgedial(edge);
     //QtEdge(edge,qtfrom.get(),qtto.get());
     QtEdge qtedge(edge,qtfrom.get(),qtto.get());
@@ -286,7 +286,7 @@ void ribi::cmap::QtQtEdgeDialog::Test() noexcept
 
   const auto from = NodeFactory().GetTest(1);
   const auto to = NodeFactory().GetTest(1);
-  const auto edge = EdgeFactory().GetTest(1,from,to);
+  const auto edge = EdgeFactory().GetTest(1);
   const auto qtfrom = QtNodeFactory().Create(from);
   const auto qtto = QtNodeFactory().Create(to);
   const boost::shared_ptr<QtEdge> qtedge(new QtEdge(edge,qtfrom.get(),qtto.get()));

@@ -138,8 +138,7 @@ protected:
         QtNode * GetQtNode(const Node& node)       noexcept;
 
   ///Obtain the center node, if there is any
-  const QtNode * GetCenterNode() const noexcept;
-        QtNode * GetCenterNode()       noexcept;
+  QtNode * GetCenterNode()       noexcept;
 
   ///Obtain the first QtNode under the cursor
   ///Returns nullptr if none is present
@@ -182,9 +181,6 @@ private:
 
   ///Adds an Edge, returns the freshly created QtEdge
   QtEdge * AddEdge(const Edge& edge);
-
-  ///Adds a Node, returns the freshly created QtNode
-  QtNode * AddNode(const Node& node, const bool is_center_node = false);
 
   ///Remove all Qt and non-Qt items
   void CleanMe();

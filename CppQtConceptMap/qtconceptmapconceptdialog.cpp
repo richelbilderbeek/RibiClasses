@@ -57,9 +57,10 @@ ribi::cmap::QtConceptDialog::QtConceptDialog(QWidget *parent) :
 
   }
 
-  const auto concept
-    = ConceptFactory().Create("QtConceptDialog initial concept",
-        ExamplesFactory().GetTest(2),true,-1,-1,-1);
+  const Concept concept{
+    "QtConceptDialog initial concept",
+    ExamplesFactory().GetTest(2),true,-1,-1,-1
+  };
   this->SetConcept(concept);
 }
 

@@ -81,12 +81,6 @@ protected:
 
 private:
 
-  ///The Strategy for displaying a Concept
-  //boost::shared_ptr<QtItemDisplayStrategy> m_display_strategy;
-
-  //const QPen m_contour_pen;
-  //const QPen m_focus_pen;
-
   ///The node being edited, or displayed and not changed, or rated
   Node m_node;
 
@@ -98,13 +92,6 @@ private:
   void OnXchanged(Node * const node) noexcept;
   void OnYchanged(Node * const node) noexcept;
   void OnConceptChanged(Node * const node) noexcept;
-
-  ///This QtNode its Node changed
-  //void OnRequestsSceneUpdate();
-
-  ///The item
-  //void OnItemRequestsRateConcept();
-  //void OnItemRequestsRateExamples();
 
   #ifndef NDEBUG
   static void Test() noexcept;
