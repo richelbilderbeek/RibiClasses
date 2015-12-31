@@ -133,6 +133,7 @@ bool IsCenterNode(const Node& node) noexcept;
 bool HaveSameIds(const Node& lhs, const Node& rhs) noexcept;
 
 std::string ToXml(const Node& node) noexcept;
+Node XmlToNode(const std::string& s);
 
 bool operator==(const Node& lhs, const Node& rhs) noexcept;
 bool operator!=(const Node& lhs, const Node& rhs) noexcept;

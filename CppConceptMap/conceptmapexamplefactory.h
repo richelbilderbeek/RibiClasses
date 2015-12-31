@@ -39,25 +39,10 @@ struct ExampleFactory
 {
   ExampleFactory() noexcept;
 
-  ///Create an example from string and enum
-  Example Create(
-    const std::string& text = "",
-    const Competency& competency = Competency::uninitialized,
-    const bool is_complex = true,
-    const bool is_concrete = true,
-    const bool is_specific = true
-  ) const noexcept;
-
-  ///Create examples for strings
-  ///Note that all cmap::Competency values are set to uninitialized
-  //static const std::vector<Example> CreateExamples(const std::vector<std::string>& v);
-
-  ///Create an example from XML
-  Example FromXml(const std::string& s) const noexcept;
-
   int GetNumberOfTests() const noexcept { return static_cast<int>(GetTests().size()); }
   Example GetTest(const int i) const noexcept;
   std::vector<Example> GetTests() const noexcept;
+  std::vector<Example> GetNastyTests() const noexcept;
 
   private:
 

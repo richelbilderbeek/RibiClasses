@@ -42,14 +42,14 @@ struct NodeFactory
 {
   NodeFactory();
 
-  Node Create() const noexcept;
-
+  //Node Create() const noexcept;
+  /*
   Node Create(
     const Concept& concept,
     const double x = 0.0,
     const double y = 0.0
   ) const noexcept;
-
+  */
   Node CreateFromStrings(
     const std::string& name,
     const std::vector<std::pair<std::string,Competency> >& examples = {},
@@ -58,11 +58,12 @@ struct NodeFactory
   ) const noexcept;
 
   ///Obtain a Node or CenterNode from an XML std::string
-  Node FromXml(const std::string& s) const;
+  //Node FromXml(const std::string& s) const;
 
   ///Obtain testing nodes
   int GetNumberOfTests() const noexcept;
   std::vector<Node> GetTests() const noexcept;
+  std::vector<Node> GetNastyTests() const noexcept;
   Node GetTest(const int test) const noexcept;
 
   #ifndef NDEBUG

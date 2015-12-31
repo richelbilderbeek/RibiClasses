@@ -42,6 +42,7 @@ ribi::cmap::NodeFactory::NodeFactory()
   #endif
 }
 
+/*
 ribi::cmap::Node ribi::cmap::NodeFactory::Create(
 ) const noexcept
 {
@@ -62,6 +63,7 @@ ribi::cmap::Node ribi::cmap::NodeFactory::Create(
   assert(node.GetY() == y);
   return node;
 }
+*/
 
 ribi::cmap::Node ribi::cmap::NodeFactory::CreateFromStrings(
   const std::string& name,
@@ -82,6 +84,7 @@ ribi::cmap::Node ribi::cmap::NodeFactory::CreateFromStrings(
   return node;
 }
 
+/*
 ribi::cmap::Node ribi::cmap::NodeFactory::FromXml(const std::string& s) const
 {
   //const bool verbose{false};
@@ -110,7 +113,7 @@ ribi::cmap::Node ribi::cmap::NodeFactory::FromXml(const std::string& s) const
     const std::vector<std::string> v
       = Regex().GetRegexMatches(s,Regex().GetRegexConcept());
     assert(v.size() == 1);
-    concept = ConceptFactory().FromXml(v[0]);
+    concept = XmlToConcept(v[0]);
   }
 
   //m_is_centernode
@@ -147,6 +150,7 @@ ribi::cmap::Node ribi::cmap::NodeFactory::FromXml(const std::string& s) const
     return NodeFactory().Create(concept,x,y);
   }
 }
+*/
 
 int ribi::cmap::NodeFactory::GetNumberOfTests() const noexcept
 {
@@ -161,6 +165,22 @@ ribi::cmap::Node ribi::cmap::NodeFactory::GetTest(const int i) const noexcept
   return tests[i];
 }
 
+std::vector<ribi::cmap::Node> ribi::cmap::NodeFactory::GetNastyTests() const noexcept
+{
+  std::vector<Node> nodes;
+  const auto v = ConceptFactory().GetNastyTests();
+  std::transform(v.begin(),v.end(),std::back_inserter(nodes),
+    [](const Concept& c)
+    {
+      const int x = 0;
+      const int y = 0;
+      const Node p{c,x,y};
+      return p;
+    }
+  );
+  return nodes;
+}
+
 std::vector<ribi::cmap::Node> ribi::cmap::NodeFactory::GetTests() const noexcept
 {
   std::vector<Node> nodes;
@@ -170,7 +190,7 @@ std::vector<ribi::cmap::Node> ribi::cmap::NodeFactory::GetTests() const noexcept
     {
       const int x = 0;
       const int y = 0;
-      const Node p(NodeFactory().Create(c,x,y));
+      const Node p{c,x,y};
       return p;
     }
   );
@@ -203,7 +223,7 @@ void ribi::cmap::NodeFactory::Test() noexcept
     for (const auto node: NodeFactory().GetTests())
     {
       const std::string str{ToXml(node)};
-      const Node node_again{NodeFactory().FromXml(str)};
+      const Node node_again{XmlToNode(str)};
       assert(node == node_again);
     }
   }

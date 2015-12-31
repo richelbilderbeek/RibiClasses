@@ -130,16 +130,14 @@ ribi::cmap::Examples ribi::cmap::QtRateExamplesDialogNewName::GetRatedExamples()
     assert(qtitem);
     const QtConceptMapListWidgetItem* const item = dynamic_cast<const QtConceptMapListWidgetItem*>(qtitem);
     assert(item);
-    const Example example
-      = ExampleFactory().Create(
-        item->text().toStdString(),
-        QtCompetency().IconToCompetency(item->icon())
-      );
+    const Example example{
+      item->text().toStdString(),
+      QtCompetency().IconToCompetency(item->icon())
+    };
     v.push_back(example);
   }
 
-  Examples examples = ExamplesFactory().Create(v);
-  return examples;
+  return Examples(v);
 }
 
 void ribi::cmap::QtRateExamplesDialogNewName::keyPressEvent(QKeyEvent* e)

@@ -47,24 +47,14 @@ struct EdgeFactory
   ) const noexcept;
 
   ///Obtain an Edge from an XML std::string
-  Edge FromXml(
-    const std::string& s
-  ) const noexcept;
-
+  //Edge FromXml(
+  //  const std::string& s
+  //) const noexcept;
 
   int GetNumberOfTests() const noexcept;
-
-  Edge GetTest(
-    const int index,
-    const Node& from,
-    const Node& to
- ) const noexcept;
-
-  ///Get testing edges connecting the two supplied nodes
-  std::vector<Edge> GetTests(
-    const Node& from,
-    const Node& to
-  ) const noexcept;
+  Edge GetTest(const int index) const noexcept;
+  std::vector<Edge> GetTests() const noexcept;
+  std::vector<Edge> GetNastyTests() const noexcept;
 
   private:
 

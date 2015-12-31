@@ -254,10 +254,8 @@ void ribi::cmap::QtConceptMapConceptEditDialog::on_button_ok_clicked()
     const QtConceptMapListWidgetItem * const pvdb_item = dynamic_cast<const QtConceptMapListWidgetItem *>(item);
     const Competency competency = pvdb_item ? pvdb_item->m_competency : Competency::uninitialized;
     Example p(
-      ExampleFactory().Create(
-        item->text().toStdString(),
-        competency
-      )
+      item->text().toStdString(),
+      competency
     );
     v.push_back(p);
   }

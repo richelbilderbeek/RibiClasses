@@ -31,6 +31,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmapexample.h"
 #include "conceptmapexamples.h"
 #include "conceptmapexamplesfactory.h"
+#include "conceptmapregex.h"
 #include "trace.h"
 #include "xml.h"
 #pragma GCC diagnostic pop
@@ -113,26 +114,26 @@ std::string ribi::cmap::Concept::ToStr() const noexcept
   return s.str();
 }
 
-std::string ribi::cmap::Concept::ToXml() const noexcept
+std::string ribi::cmap::ToXml(const Concept& concept) noexcept
 {
   std::stringstream s;
   s
     << "<concept>"
     <<   "<name>"
-    <<     GetName()
+    <<      concept.GetName()
     <<   "</name>"
-    <<   GetExamples().ToXml()
+    <<   ToXml(concept.GetExamples())
     <<   "<concept_is_complex>"
-    <<     GetIsComplex()
+    <<     concept.GetIsComplex()
     <<   "</concept_is_complex>"
     <<   "<complexity>"
-    <<     GetRatingComplexity()
+    <<     concept.GetRatingComplexity()
     <<   "</complexity>"
     <<   "<concreteness>"
-    <<     GetRatingConcreteness()
+    <<     concept.GetRatingConcreteness()
     <<   "</concreteness>"
     <<   "<specificity>"
-    <<     GetRatingSpecificity()
+    <<     concept.GetRatingSpecificity()
     <<   "</specificity>"
     << "</concept>"
   ;
@@ -144,29 +145,106 @@ std::string ribi::cmap::Concept::ToXml() const noexcept
   return r;
 }
 
+ribi::cmap::Concept ribi::cmap::XmlToConcept(const std::string& s) noexcept
+{
+  assert(s.size() >= 19);
+  assert(s.substr(0,9) == "<concept>");
+  assert(s.substr(s.size() - 10,10) == "</concept>");
+
+  std::string name;
+  Examples examples;
+  bool is_complex = false;
+  int rating_complexity    = -2; //Not even unrated (which has -1 as its value)
+  int rating_concreteness  = -2; //Not even unrated (which has -1 as its value)
+  int rating_specificity   = -2; //Not even unrated (which has -1 as its value)
+  //m_name
+  {
+    const std::vector<std::string> v
+      = Regex().GetRegexMatches(s,Regex().GetRegexName());
+    #ifndef NDEBUG
+    if (v.size() != 1)
+    {
+      TRACE("ERROR");
+      TRACE(s);
+      TRACE(Regex().GetRegexName());
+      TRACE(v.size());
+      for (const auto& t: v) { TRACE(t); }
+      TRACE("BREAK");
+    }
+    #endif
+    assert(v.size() == 1);
+    name = ribi::xml::StripXmlTag(v[0]);
+  }
+  //m_examples
+  {
+    const std::vector<std::string> v
+      = Regex().GetRegexMatches(s,Regex().GetRegexExamples());
+    assert(v.size() == 1 && "GetRegexExamples must be present once in a Concept");
+    examples = XmlToExamples(v[0]);
+  }
+
+  //m_is_complex
+  {
+    const std::vector<std::string> v
+      = Regex().GetRegexMatches(s,Regex().GetRegexConceptIsComplex());
+    assert(v.size() == 1 && "GetRegexIsComplex must be present once per Concept");
+    is_complex = boost::lexical_cast<bool>(ribi::xml::StripXmlTag(v[0]));
+  }
+
+
+  //m_rating_complexity
+  {
+    const std::vector<std::string> v
+      = Regex().GetRegexMatches(s,Regex().GetRegexComplexity());
+    assert(v.size() == 1 && "GetRegexComplexity must be present once per Concept");
+    rating_complexity = boost::lexical_cast<int>(ribi::xml::StripXmlTag(v[0]));
+    assert(rating_complexity >= -1);
+    assert(rating_complexity <=  2);
+  }
+  //m_rating_concreteness
+  {
+    const std::vector<std::string> v
+      = Regex().GetRegexMatches(s,Regex().GetRegexConcreteness());
+    assert(v.size() == 1);
+    rating_concreteness = boost::lexical_cast<int>(ribi::xml::StripXmlTag(v[0]));
+  }
+  //m_rating_specificity
+  {
+    const std::vector<std::string> v
+      = Regex().GetRegexMatches(s,Regex().GetRegexSpecificity());
+    assert(v.size() == 1);
+    rating_specificity = boost::lexical_cast<int>(ribi::xml::StripXmlTag(v[0]));
+  }
+  return Concept(
+    name,
+    examples,
+    is_complex,
+    rating_complexity,
+    rating_concreteness,
+    rating_specificity
+  );
+
+}
+
 std::ostream& ribi::cmap::operator<<(std::ostream& os, const Concept& concept) noexcept
 {
-  os << concept.ToStr();
+  os << ToXml(concept);
   return os;
 }
 
 std::istream& ribi::cmap::operator>>(std::istream& is, Concept& concept) noexcept
 {
-  std::string name;
-  is >> name;
-  Examples examples;
-  is >> examples;
-  bool is_complex;
-  is >> is_complex;
-  int rating_complexity;
-  is >> rating_complexity;
-  int rating_concreteness;
-  is >> rating_concreteness;
-  int rating_specificity;
-  is >> rating_specificity;
-  concept = Concept(name, examples, is_complex,
-    rating_complexity, rating_concreteness, rating_specificity
-  );
+  //eat until '</concept>'
+  is >> std::noskipws;
+  std::string s;
+  while (1)
+  {
+    char c;
+    is >> c;
+    s += c;
+    if(s.size() > 10 && s.substr(s.size() - 10,10) == "</concept>") break;
+  }
+  concept = XmlToConcept(s);
   return is;
 }
 

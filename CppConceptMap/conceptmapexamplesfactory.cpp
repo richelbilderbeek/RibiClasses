@@ -40,26 +40,6 @@ ribi::cmap::ExamplesFactory::ExamplesFactory() noexcept
   #endif
 }
 
-ribi::cmap::Examples ribi::cmap::ExamplesFactory::Create() const noexcept
-{
-  Examples examples;
-  return examples;
-}
-
-ribi::cmap::Examples ribi::cmap::ExamplesFactory::Create(
-  const Examples& examples) const noexcept
-{
-  Examples p = Create(examples.Get());
-  return p;
-}
-
-ribi::cmap::Examples ribi::cmap::ExamplesFactory::Create(
-  const std::vector<Example>& v) const noexcept
-{
-  Examples p(v);
-  return p;
-}
-
 ribi::cmap::Examples ribi::cmap::ExamplesFactory::Create(
   const std::vector<std::pair<std::string,Competency> >& v) const noexcept
 {
@@ -68,55 +48,12 @@ ribi::cmap::Examples ribi::cmap::ExamplesFactory::Create(
     [](const std::pair<std::string,Competency>& p)
     {
       const Example q
-        = ExampleFactory().Create(p.first,p.second);
+       (p.first,p.second);
       return q;
     }
   );
-  Examples q = Create(w);
+  Examples q(w);
   return q;
-}
-
-ribi::cmap::Examples ribi::cmap::ExamplesFactory::FromXml(const std::string& s) const
-{
-  if (s.size() < 20)
-  {
-    std::stringstream msg;
-    msg << __func__ << ": XML string '" << s << "' is only " << s.size() << " characters long, need at least 20";
-    throw std::logic_error(msg.str());
-  }
-  if (s.substr(0,10) != "<examples>")
-  {
-    std::stringstream msg;
-    msg << __func__ << ": XML string '" << s << "' does not begin with <examples>";
-    throw std::logic_error(msg.str());
-  }
-  if (s.substr(s.size() - 11,11) != "</examples>")
-  {
-    std::stringstream msg;
-    msg << __func__ << ": XML string '" << s << "' does not end with </examples>";
-    throw std::logic_error(msg.str());
-  }
-
-  assert(Regex().GetRegexMatches(s,"(<examples>)").size()
-      == Regex().GetRegexMatches(s,"(</examples>)").size());
-
-  std::vector<Example> examples;
-  {
-
-    assert(Regex().GetRegexMatches(s,"(<example>)").size()
-        == Regex().GetRegexMatches(s,"(</example>)").size());
-    const auto v = Regex().GetRegexMatches(s,Regex().GetRegexExample());
-    std::transform(v.begin(),v.end(),std::back_inserter(examples),
-      [](const std::string& s)
-      {
-        return ExampleFactory().FromXml(s);
-      }
-    );
-  }
-  Examples result {
-    Create(examples)
-  };
-  return result;
 }
 
 ribi::cmap::Examples ribi::cmap::ExamplesFactory::GetTest(const int i) const noexcept
@@ -124,6 +61,13 @@ ribi::cmap::Examples ribi::cmap::ExamplesFactory::GetTest(const int i) const noe
   assert(i >= 0);
   assert(i < GetNumberOfTests());
   return GetTests()[i];
+}
+
+std::vector<ribi::cmap::Examples> ribi::cmap::ExamplesFactory::GetNastyTests() const noexcept
+{
+  std::vector<Examples> v;
+  v.push_back(Examples(ExampleFactory().GetNastyTests()));
+  return v;
 }
 
 std::vector<ribi::cmap::Examples> ribi::cmap::ExamplesFactory::GetTests() const noexcept
@@ -141,7 +85,7 @@ std::vector<ribi::cmap::Examples> ribi::cmap::ExamplesFactory::GetTests() const 
           return p;
         }
       );
-      const Examples q = Create(w);
+      const Examples q(w);
       return q;
     }
   );
@@ -158,18 +102,19 @@ void ribi::cmap::ExamplesFactory::Test() noexcept
     if (is_tested) return;
     is_tested = true;
   }
-  ExamplesFactory().Create();
+  {
+    Examples();
+  }
   const bool verbose{false};
   const TestTimer test_timer(__func__,__FILE__,1.0);
   ExamplesFactory f;
   if (verbose) { TRACE("Create must return a valid Examples"); }
-  f.Create();
   if (verbose) { TRACE("Examples -> XML -> Examples "); }
   {
     const auto examples = ExamplesFactory().GetTest(2);
-    const auto xml = examples.ToXml();
-    const auto new_examples = ExamplesFactory().FromXml(xml);
-    const auto new_xml = new_examples.ToXml();
+    const auto xml = ToXml(examples);
+    const auto new_examples = XmlToExamples(xml);
+    const auto new_xml = ToXml(new_examples);
     assert(xml == new_xml);
   }
 }

@@ -41,7 +41,11 @@ void ribi::cmap::Concept::Test() noexcept
     if (is_tested) return;
     is_tested = true;
   }
-  TestHelperFunctions();
+  {
+    TestHelperFunctions();
+    Example();
+    Examples();
+  }
   const bool verbose{false};
   const TestTimer test_timer(__func__,__FILE__,1.0);
 
@@ -142,38 +146,48 @@ void ribi::cmap::Concept::Test() noexcept
       assert(b < c); assert(b < d);
     }
   }
-  //Stream operators
-  {
-    const auto c = ConceptFactory().GetTest(1);
-    std::stringstream s;
-    s << c;
-    Concept d;
-    s >> d;
-    assert(c == d);
-  }
   {
     const std::string xml = "<concept><name>TEST</name><examples></examples><concept_is_complex>1</concept_is_complex><complexity>-1</complexity><concreteness>-1</concreteness><specificity>-1</specificity></concept>";
-    const auto concept = ConceptFactory().FromXml(xml);
+    const auto concept = XmlToConcept(xml);
     assert(concept.GetName() == "TEST");
   }
-  if (verbose) { TRACE("Test XML conversion"); }
+  //Single stream
   {
-    const auto v = ConceptFactory().GetTests();
-    std::for_each(v.begin(),v.end(),
-      [](const Concept& original)
-      {
-        //Test copy constructor and operator==
-        Concept c(original);
-        assert(c == original);
-        //Test operator!=
-        c.m_name = c.m_name + " (modified)";
-        assert(c != original);
-        //Test ToXml and FromXml
-        const std::string s = c.ToXml();
-        const Concept d = ConceptFactory().FromXml(s);
-        assert(c == d);
-      }
-    );
+    const Concept e = ConceptFactory().GetTest(1);
+    const Concept f = ConceptFactory().GetTest(2);
+    std::stringstream s;
+    s << e << f;
+    Concept g;
+    Concept h;
+    s >> g >> h;
+    if (e != g) { TRACE(e); TRACE(g); }
+    if (f != h) { TRACE(f); TRACE(h); }
+    assert(e == g);
+    assert(f == h);
+  }
+  //Nasty examples
+  for (const Concept e: ConceptFactory().GetNastyTests())
+  {
+    std::stringstream s;
+    s << e;
+    Concept f;
+    assert(e != f);
+    s >> f;
+    if (e != f) { TRACE(e); TRACE(f); }
+    assert(e == f);
+  }
+  //Nasty examples
+  for (const Concept e: ConceptFactory().GetNastyTests())
+  {
+    std::stringstream s;
+    s << e << e;
+    Concept g;
+    Concept h;
+    s >> g >> h;
+    if (e != g) { TRACE(e); TRACE(g); }
+    if (e != h) { TRACE(e); TRACE(h); }
+    assert(e == g);
+    assert(e == h);
   }
 }
 #endif

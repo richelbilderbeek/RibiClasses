@@ -45,7 +45,6 @@ struct Examples
         std::vector<Example>& Get()       noexcept { return m_v; }
 
   std::string ToStr() const noexcept;
-  std::string ToXml() const noexcept;
 
 private:
 
@@ -55,6 +54,9 @@ private:
   static void Test() noexcept;
   #endif
 };
+
+std::string ToXml(const Examples& node) noexcept;
+Examples XmlToExamples(const std::string& s) noexcept;
 
 std::ostream& operator<<(std::ostream& os, const Examples& concept) noexcept;
 std::istream& operator>>(std::istream& is, Examples& concept) noexcept;

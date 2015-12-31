@@ -44,16 +44,6 @@ struct ConceptFactory
 {
   ConceptFactory() noexcept;
 
-  //Default and complete Create method
-  Concept Create(
-    const std::string& name,
-    const Examples& examples,
-    const bool is_complex,
-    const int rating_complexity,
-    const int rating_concreteness,
-    const int rating_specificity
-  ) const noexcept;
-
   Concept Create(
     const std::string& name = "...",
     const std::vector<std::pair<std::string,Competency> >& examples = {},
@@ -63,11 +53,9 @@ struct ConceptFactory
     const int rating_specificity = -1
   ) const noexcept;
 
-  ///Read concept from a std::string read from file
-  Concept FromXml(const std::string& s) const noexcept;
-
   ///Obtain some testing concepts
   Concept GetTest(const int i) const noexcept;
+  std::vector<Concept> GetNastyTests() const noexcept;
   std::vector<Concept> GetTests() const noexcept;
   int GetNumberOfTests() const noexcept { return static_cast<int>(GetTests().size()); }
 

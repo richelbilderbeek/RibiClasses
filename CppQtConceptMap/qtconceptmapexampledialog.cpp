@@ -40,7 +40,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 ribi::cmap::QtExampleDialog::QtExampleDialog(QWidget *parent) :
   ribi::QtHideAndShowDialog(parent),
   ui(new Ui::QtExampleDialog),
-  m_example{ExampleFactory().Create(" ",Competency::uninitialized,false,false,false)}
+  m_example{" ",Competency::uninitialized,false,false,false}
 {
   ui->setupUi(this);
   #ifndef NDEBUG
@@ -55,8 +55,7 @@ ribi::cmap::QtExampleDialog::QtExampleDialog(QWidget *parent) :
     }
   }
 
-  const auto example
-    = ExampleFactory().Create("QtExampleDialog initial example",Competency::uninitialized,false,false,false);
+  const Example example{"QtExampleDialog initial example",Competency::uninitialized,false,false,false};
   this->SetExample(example);
 }
 

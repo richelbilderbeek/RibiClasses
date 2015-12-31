@@ -82,10 +82,6 @@ struct Edge
 
   std::string ToStr() const noexcept;
 
-  ///Convert an Edge from an XML std::string
-  ///The container of nodes is needed to convert the 'to' and 'from'
-  ///field to indices
-  static std::string ToXml(const Edge& edge) noexcept;
 
   private:
   ///The Node this edge originates from
@@ -113,6 +109,8 @@ struct Edge
   #endif
 };
 
+std::string ToXml(const Edge& edge) noexcept;
+Edge XmlToEdge(const std::string& s);
 
 
 std::ostream& operator<<(std::ostream& os, const Edge& edge) noexcept;

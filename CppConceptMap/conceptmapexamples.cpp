@@ -57,10 +57,13 @@ void ribi::cmap::Examples::Test() noexcept
     if (is_tested) return;
     is_tested = true;
   }
-  Counter();
-  ExampleFactory().GetTest(0);
-  ExamplesFactory();
-  ExamplesFactory().GetTest(0);
+  {
+    Example();
+    Counter();
+    ExampleFactory().GetTest(0);
+    ExamplesFactory();
+    ExamplesFactory().GetTest(0);
+  }
   const TestTimer test_timer(__func__,__FILE__,1.0);
   //Test of operator== and operator!=
   {
@@ -100,7 +103,7 @@ void ribi::cmap::Examples::Test() noexcept
   }
   {
     const std::string xml = "<examples></examples>";
-    const auto examples = ExamplesFactory().FromXml(xml);
+    const auto examples = XmlToExamples(xml);
     assert(examples.Get().empty());
   }
   //Conversion between class and XML, test for equality
@@ -109,8 +112,20 @@ void ribi::cmap::Examples::Test() noexcept
     std::for_each(v.begin(),v.end(),
       [](const Examples& e)
       {
-        const std::string s { e.ToXml() };
-        const Examples f(ExamplesFactory().FromXml(s));
+        const std::string s { ToXml(e) };
+        const Examples f(XmlToExamples(s));
+        assert(e == f);
+      }
+    );
+  }
+  //Conversion between class and XML, test for equality
+  {
+    const std::vector<Examples> v = ExamplesFactory().GetNastyTests();
+    std::for_each(v.begin(),v.end(),
+      [](const Examples& e)
+      {
+        const std::string s { ToXml(e) };
+        const Examples f(XmlToExamples(s));
         assert(e == f);
       }
     );
@@ -121,11 +136,11 @@ void ribi::cmap::Examples::Test() noexcept
     for (int i=0; i!=sz; ++i)
     {
       const Examples& e = v[i];
-      const std::string s { e.ToXml() };
+      const std::string s { ToXml(e) };
       for (int j=0; j!=sz; ++j)
       {
         const Examples& f = v[j];
-        const std::string t { f.ToXml() };
+        const std::string t { ToXml(f) };
         if (i == j)
         {
           assert(e == f);
@@ -141,21 +156,70 @@ void ribi::cmap::Examples::Test() noexcept
   }
   //Test if unrated and rated examples are noticed as different
   {
-    const Example a = ExampleFactory().Create("1",Competency::misc);
-    const Example b = ExampleFactory().Create("1",Competency::misc);
-    const Example c = ExampleFactory().Create("1",Competency::uninitialized);
+    const Example a("1",Competency::misc);
+    const Example b("1",Competency::misc);
+    const Example c("1",Competency::uninitialized);
     assert(a == a); assert(a == b); assert(a != c);
     assert(b == a); assert(b == b); assert(b != c);
     assert(c != a); assert(c != b); assert(c == c);
     std::vector<Example> v; v.push_back(a);
     std::vector<Example> w; w.push_back(b);
     std::vector<Example> x; x.push_back(c);
-    const Examples d = ExamplesFactory().Create(v);
-    const Examples e = ExamplesFactory().Create(w);
-    const Examples f = ExamplesFactory().Create(x);
+    const Examples d(v);
+    const Examples e(w);
+    const Examples f(x);
     assert(d == d); assert(d == e); assert(d != f);
     assert(e == d); assert(e == e); assert(e != f);
     assert(f != d); assert(f != e); assert(f == f);
+  }
+  //Single stream
+  {
+    const Examples e = ExamplesFactory().GetTest(1);
+    std::stringstream s;
+    s << e;
+    Examples f;
+    assert(e != f);
+    s >> f;
+    if (e != f) { TRACE(e); TRACE(f); }
+    assert(e == f);
+  }
+  //Single stream
+  {
+    const Examples e = ExamplesFactory().GetTest(2);
+    const Examples f = ExamplesFactory().GetTest(3);
+    std::stringstream s;
+    s << e << f;
+    Examples g;
+    Examples h;
+    s >> g >> h;
+    if (e != g) { TRACE(e); TRACE(g); }
+    if (f != h) { TRACE(f); TRACE(h); }
+    assert(e == g);
+    assert(f == h);
+  }
+  //Nasty examples
+  for (const Examples e: ExamplesFactory().GetNastyTests())
+  {
+    std::stringstream s;
+    s << e;
+    Examples f;
+    assert(e != f);
+    s >> f;
+    if (e != f) { TRACE(e); TRACE(f); }
+    assert(e == f);
+  }
+  //Nasty examples
+  for (const Examples e: ExamplesFactory().GetNastyTests())
+  {
+    std::stringstream s;
+    s << e << e;
+    Examples g;
+    Examples h;
+    s >> g >> h;
+    if (e != g) { TRACE(e); TRACE(g); }
+    if (e != h) { TRACE(e); TRACE(h); }
+    assert(e == g);
+    assert(e == h);
   }
 }
 #endif // NDEBUG
@@ -174,18 +238,18 @@ std::string ribi::cmap::Examples::ToStr() const noexcept
   return s.str();
 }
 
-std::string ribi::cmap::Examples::ToXml() const noexcept
+std::string ribi::cmap::ToXml(const Examples& any_examples) noexcept
 {
   std::stringstream s;
   s << "<examples>";
 
-  const auto& examples = Get();
+  const auto& examples = any_examples.Get();
   std::for_each(
     std::begin(examples),
     std::end(examples),
     [&s](const Example& t)
     {
-      s << t.ToXml();
+      s << ToXml(t);
     }
   );
   s << "</examples>";
@@ -197,17 +261,8 @@ std::string ribi::cmap::Examples::ToXml() const noexcept
   return r;
 }
 
-std::ostream& ribi::cmap::operator<<(std::ostream& os, const Examples& concept) noexcept
+ribi::cmap::Examples ribi::cmap::XmlToExamples(const std::string& s) noexcept
 {
-  os << concept.ToXml();
-  return os;
-}
-
-std::istream& ribi::cmap::operator>>(std::istream& is, Examples& concept) noexcept
-{
-  std::string s;
-  is >> s;
-
   if (s.size() < 20)
   {
     std::stringstream msg;
@@ -239,11 +294,32 @@ std::istream& ribi::cmap::operator>>(std::istream& is, Examples& concept) noexce
     std::transform(v.begin(),v.end(),std::back_inserter(examples),
       [](const std::string& s)
       {
-        return ExampleFactory().FromXml(s);
+        return XmlToExample(s); //ExampleFactory().FromXml(s);
       }
     );
   }
-  concept = ExamplesFactory().Create(examples);
+  return Examples(examples);
+}
+
+std::ostream& ribi::cmap::operator<<(std::ostream& os, const Examples& examples) noexcept
+{
+  os << ToXml(examples);
+  return os;
+}
+
+std::istream& ribi::cmap::operator>>(std::istream& is, Examples& examples) noexcept
+{
+  //eat until '</example>'
+  is >> std::noskipws;
+  std::string s;
+  while (1)
+  {
+    char c;
+    is >> c;
+    s += c;
+    if(s.size() > 11 && s.substr(s.size() - 11,11) == "</examples>") break;
+  }
+  examples = XmlToExamples(s);
   return is;
 }
 

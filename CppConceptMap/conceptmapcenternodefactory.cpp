@@ -105,7 +105,7 @@ ribi::cmap::Node ribi::cmap::CenterNodeFactory::FromXml(
   const std::string& s
 ) const
 {
-  Node node = NodeFactory().FromXml(s);
+  Node node = XmlToNode(s);
   assert(ToXml(node) == s);
   assert(node.IsCenterNode());
   return node;

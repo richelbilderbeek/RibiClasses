@@ -1,12 +1,7 @@
-INCLUDEPATH += \
-    ../RibiClasses/CppXml
+INCLUDEPATH += $$PWD
 
 SOURCES += \
-    ../RibiClasses/CppXml/xml.cpp
+    $$PWD/xml.cpp
 
 HEADERS  += \
-    ../RibiClasses/CppXml/xml.h
-
-OTHER_FILES += \
-    ../RibiClasses/CppXml/Licence.txt
-
+    $$PWD/xml.h

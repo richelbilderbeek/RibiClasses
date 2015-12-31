@@ -120,7 +120,9 @@ ribi::cmap::Graph ribi::cmap::GraphFactory::Get3() const noexcept
   Graph g;
   const auto vd_1 = AddVertex(CenterNodeFactory().CreateFromStrings("X"), g);
   const auto vd_2 = AddVertex(NodeFactory().CreateFromStrings("A"), g);
-  AddEdge(Edge(NodeFactory().Create(Concept("edge_a concept"),1.2,3.4)),vd_1,vd_2,g);
+  AddEdge(
+    Edge(Node(Concept("edge_a concept"),1.2,3.4)),vd_1,vd_2,g
+  );
   return g;
 }
 
@@ -130,8 +132,8 @@ ribi::cmap::Graph ribi::cmap::GraphFactory::Get4() const noexcept
   const auto vd_1 = AddVertex(CenterNodeFactory().CreateFromStrings("X"), g);
   const auto vd_2 = AddVertex(NodeFactory().CreateFromStrings("A"), g);
   const auto vd_3 = AddVertex(NodeFactory().CreateFromStrings("B"), g);
-  AddEdge(EdgeFactory().Create((NodeFactory().Create(ConceptFactory().Create("edge_a concept"),1.2,3.4))),vd_1,vd_2,g);
-  AddEdge(EdgeFactory().Create((NodeFactory().Create(ConceptFactory().Create("edge_a concept"),1.2,3.4))),vd_2,vd_3,g);
+  AddEdge(EdgeFactory().Create((Node(ConceptFactory().Create("edge_a concept"),1.2,3.4))),vd_1,vd_2,g);
+  AddEdge(EdgeFactory().Create((Node(ConceptFactory().Create("edge_a concept"),1.2,3.4))),vd_2,vd_3,g);
   return g;
 }
 
@@ -141,9 +143,9 @@ ribi::cmap::Graph ribi::cmap::GraphFactory::Get5() const noexcept
   const auto vd_1 = AddVertex(CenterNodeFactory().CreateFromStrings("X"), g);
   const auto vd_2 = AddVertex(NodeFactory().CreateFromStrings("A"), g);
   const auto vd_3 = AddVertex(NodeFactory().CreateFromStrings("B"), g);
-  AddEdge(EdgeFactory().Create((NodeFactory().Create(ConceptFactory().Create("edge_a concept"),1.2,3.4))),vd_1,vd_2,g);
-  AddEdge(EdgeFactory().Create((NodeFactory().Create(ConceptFactory().Create("edge_a concept"),1.2,3.4))),vd_2,vd_3,g);
-  AddEdge(EdgeFactory().Create((NodeFactory().Create(ConceptFactory().Create("edge_a concept"),1.2,3.4))),vd_3,vd_1,g);
+  AddEdge(EdgeFactory().Create((Node(ConceptFactory().Create("edge_a concept"),1.2,3.4))),vd_1,vd_2,g);
+  AddEdge(EdgeFactory().Create((Node(ConceptFactory().Create("edge_a concept"),1.2,3.4))),vd_2,vd_3,g);
+  AddEdge(EdgeFactory().Create((Node(ConceptFactory().Create("edge_a concept"),1.2,3.4))),vd_3,vd_1,g);
   return g;
 }
 
@@ -154,10 +156,10 @@ ribi::cmap::Graph ribi::cmap::GraphFactory::Get6() const noexcept
   const auto vd_2 = AddVertex(NodeFactory().CreateFromStrings("A"), g);
   const auto vd_3 = AddVertex(NodeFactory().CreateFromStrings("B"), g);
   const auto vd_4 = AddVertex(NodeFactory().CreateFromStrings("C"), g);
-  AddEdge(EdgeFactory().Create((NodeFactory().Create(ConceptFactory().Create("edge_a concept"),1.2,3.4))),vd_1,vd_2,g);
-  AddEdge(EdgeFactory().Create((NodeFactory().Create(ConceptFactory().Create("edge_a concept"),1.2,3.4))),vd_2,vd_3,g);
-  AddEdge(EdgeFactory().Create((NodeFactory().Create(ConceptFactory().Create("edge_a concept"),1.2,3.4))),vd_3,vd_1,g);
-  AddEdge(EdgeFactory().Create((NodeFactory().Create(ConceptFactory().Create("edge_a concept"),1.2,3.4))),vd_4,vd_1,g);
+  AddEdge(EdgeFactory().Create((Node(ConceptFactory().Create("edge_a concept"),1.2,3.4))),vd_1,vd_2,g);
+  AddEdge(EdgeFactory().Create((Node(ConceptFactory().Create("edge_a concept"),1.2,3.4))),vd_2,vd_3,g);
+  AddEdge(EdgeFactory().Create((Node(ConceptFactory().Create("edge_a concept"),1.2,3.4))),vd_3,vd_1,g);
+  AddEdge(EdgeFactory().Create((Node(ConceptFactory().Create("edge_a concept"),1.2,3.4))),vd_4,vd_1,g);
   return g;
 }
 

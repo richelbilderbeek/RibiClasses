@@ -34,11 +34,12 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmapedgefactory.h"
 #include "conceptmapnode.h"
 #include "conceptmapnodefactory.h"
-
+#include "conceptmapregex.h"
 #include "conceptmapconceptfactory.h"
 #include "conceptmaphelper.h"
 #include "testtimer.h"
 #include "trace.h"
+#include "xml.h"
 #pragma GCC diagnostic pop
 
 int ribi::cmap::Edge::sm_ids = 0; //ID to assign
@@ -100,58 +101,94 @@ void ribi::cmap::Edge::Test() noexcept
     is_tested = true;
   }
   const TestTimer test_timer(__func__,__FILE__,1.0);
-  const bool verbose{false};
+  const bool verbose{true};
   const std::vector<Node> nodes{NodeFactory().GetTest(0),NodeFactory().GetTest(1)};
-  const Node& from{nodes[0]};
-  const Node& to{nodes[1]};
   if (verbose) { TRACE("Copy constructor"); }
   {
-    const auto edge1 = EdgeFactory().GetTest(0,from,to);
+    const auto edge1 = EdgeFactory().GetTest(0);
     const auto edge2(edge1);
     assert(edge1 == edge2);
   }
   if (verbose) { TRACE("Assignment operator"); }
   {
-    const auto edge1 = EdgeFactory().GetTest(0,from,to);
-    auto edge2 = EdgeFactory().GetTest(1,from,to);
+    const auto edge1 = EdgeFactory().GetTest(0);
+    auto edge2 = EdgeFactory().GetTest(1);
     assert(edge1 != edge2);
     edge2 = edge1;
     assert(edge1 == edge2);
   }
   if (verbose) { TRACE("Operator=="); }
   {
-    const auto edge1 = EdgeFactory().GetTest(0,from,to);
-    const auto edge2 = EdgeFactory().GetTest(0,from,to);
+    const auto edge1 = EdgeFactory().GetTest(0);
+    const auto edge2 = EdgeFactory().GetTest(0);
     assert(edge1 == edge2);
   }
   if (verbose) { TRACE("Operator=="); }
   {
-    const auto edge1 = EdgeFactory().GetTest(1,from,to);
-    const auto edge2 = EdgeFactory().GetTest(1,from,to);
+    const auto edge1 = EdgeFactory().GetTest(1);
+    const auto edge2 = EdgeFactory().GetTest(1);
     assert(edge1 == edge2);
   }
   if (verbose) { TRACE("Operator!="); }
   {
-    const auto edge1 = EdgeFactory().GetTest(0,from,to);
-    const auto edge2 = EdgeFactory().GetTest(1,from,to);
+    const auto edge1 = EdgeFactory().GetTest(0);
+    const auto edge2 = EdgeFactory().GetTest(1);
     assert(edge1 != edge2);
   }
-  if (verbose) { TRACE("Stream operators"); }
+  if (verbose) { TRACE("Edge->XML->Edge must result in the same edge"); }
   {
-    const auto edge1 = EdgeFactory().GetTest(0,from,to);
+    const Edge edge_before{EdgeFactory().GetTest(0)};
+    const std::string s{ToXml(edge_before)};
+    const Edge edge_after{XmlToEdge(s)};
+    assert(ToXml(edge_before) == ToXml(edge_after));
+    assert(edge_before == edge_after);
+  }
+  if (verbose) { TRACE("Stream operator"); }
+  {
+    const auto edge1 = EdgeFactory().GetTest(0);
     std::stringstream s;
     s << edge1;
     Edge edge2;
     s >> edge2;
     assert(edge1 == edge2);
   }
-  if (verbose) { TRACE("Edge->XML->Edge must result in the same edge"); }
+  if (verbose) { TRACE("Stream operators"); }
   {
-    const Edge edge_before{EdgeFactory().GetTest(0,from,to)};
-    const std::string s{ToXml(edge_before)};
-    const Edge edge_after{EdgeFactory().FromXml(s)};
-    assert(ToXml(edge_before) == ToXml(edge_after));
-    assert(edge_before == edge_after);
+    const Edge e = EdgeFactory().GetTest(1);
+    const Edge f = EdgeFactory().GetTest(2);
+    std::stringstream s;
+    s << e << f;
+    Edge g;
+    Edge h;
+    s >> g >> h;
+    if (e != g) { TRACE(e); TRACE(g); }
+    if (f != h) { TRACE(f); TRACE(h); }
+    assert(e == g);
+    assert(f == h);
+  }
+  if (verbose) { TRACE("Stream operator for nasty"); }
+  for (const Edge e: EdgeFactory().GetNastyTests())
+  {
+    std::stringstream s;
+    s << e;
+    Edge f;
+    assert(e != f);
+    s >> f;
+    if (e != f) { TRACE(e); TRACE(f); }
+    assert(e == f);
+  }
+  if (verbose) { TRACE("Stream operators for nasty"); }
+  for (const Edge e: EdgeFactory().GetNastyTests())
+  {
+    std::stringstream s;
+    s << e << e;
+    Edge g;
+    Edge h;
+    s >> g >> h;
+    if (e != g) { TRACE(e); TRACE(g); }
+    if (e != h) { TRACE(e); TRACE(h); }
+    assert(e == g);
+    assert(e == h);
   }
 }
 #endif
@@ -164,14 +201,13 @@ std::string ribi::cmap::Edge::ToStr() const noexcept
   return s.str();
 }
 
-std::string ribi::cmap::Edge::ToXml(
+std::string ribi::cmap::ToXml(
   const Edge& edge
 ) noexcept
 {
   std::stringstream s;
   s << "<edge>";
-  s << edge.GetNode().GetConcept().ToXml();
-
+  s << ToXml(edge.GetNode().GetConcept());
   s << "<x>" << edge.GetNode().GetX() << "</x>";
   s << "<y>" << edge.GetNode().GetY() << "</y>";
   s << "</edge>";
@@ -184,15 +220,54 @@ std::string ribi::cmap::Edge::ToXml(
   return r;
 }
 
+ribi::cmap::Edge ribi::cmap::XmlToEdge(
+  const std::string& s
+)
+{
+  using ribi::xml::StripXmlTag;
+  assert(s.size() >= 13);
+  assert(s.substr(0,6) == "<edge>");
+  assert(s.substr(s.size() - 7,7) == "</edge>");
+  //m_concept
+  Concept concept = ConceptFactory().Create();
+  {
+    const std::vector<std::string> v
+      = Regex().GetRegexMatches(s,Regex().GetRegexConcept());
+    assert(v.size() == 1);
+    concept = XmlToConcept(v[0]);
+  }
+  //m_x
+  double x = 0.0;
+  {
+    const std::vector<std::string> v
+      = Regex().GetRegexMatches(s,Regex().GetRegexX());
+    assert(v.size() == 1);
+    x = boost::lexical_cast<double>(StripXmlTag(v[0]));
+  }
+  //m_y
+  double y = 0.0;
+  {
+    const std::vector<std::string> v
+      = Regex().GetRegexMatches(s,Regex().GetRegexY());
+    assert(v.size() == 1);
+    y = boost::lexical_cast<double>(StripXmlTag(v[0]));
+  }
+  Node node(concept,x,y);
+  Edge edge(
+    node
+  );
+  return edge;
+}
+
 bool ribi::cmap::operator==(const ribi::cmap::Edge& lhs, const ribi::cmap::Edge& rhs)
 {
   const bool verbose{false};
   if (verbose)
   {
-    if (lhs.GetNode()      != rhs.GetNode()) TRACE("Node differs");
+    if (lhs.GetNode() != rhs.GetNode()) TRACE("Node differs");
   }
   return
-       lhs.GetNode()      == rhs.GetNode()
+    lhs.GetNode() == rhs.GetNode()
   ;
 }
 
@@ -208,14 +283,21 @@ bool ribi::cmap::operator<(const cmap::Edge& lhs, const cmap::Edge& rhs)
 
 std::ostream& ribi::cmap::operator<<(std::ostream& os, const Edge& edge) noexcept
 {
-  os << edge.GetNode();
+  os << ToXml(edge);
   return os;
 }
 
 std::istream& ribi::cmap::operator>>(std::istream& is, Edge& edge)
 {
-  Node node;
-  is >> node;
-  edge.SetNode(node);
+  is >> std::noskipws;
+  std::string s;
+  while (1)
+  {
+    char c;
+    is >> c;
+    s += c;
+    if(s.size() > 7 && s.substr(s.size() - 7,7) == "</edge>") break;
+  }
+  edge = XmlToEdge(s);
   return is;
 }

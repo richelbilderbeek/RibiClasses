@@ -26,7 +26,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include <cassert>
 
-
 #include "conceptmapcompetencies.h"
 #include "conceptmaphelper.h"
 #include "counter.h"
@@ -44,118 +43,34 @@ ribi::cmap::ExampleFactory::ExampleFactory() noexcept
   #endif
 }
 
-ribi::cmap::Example ribi::cmap::ExampleFactory::Create(
-  const std::string& text,
-  const cmap::Competency& competency,
-  const bool is_complex,
-  const bool is_concrete,
-  const bool is_specific
-) const noexcept
-{
-  Example example(
-    text,
-    competency,
-    is_complex,
-    is_concrete,
-    is_specific
-  );
-  return example;
-}
-
-ribi::cmap::Example ribi::cmap::ExampleFactory::FromXml(const std::string& s) const noexcept
-{
-  if (s.size() < 17)
-  {
-    std::stringstream msg;
-    msg << __func__ << ": XML string '" << s << "' is only " << s.size() << " characters long, need at least 27";
-    throw std::logic_error(msg.str());
-  }
-  if (s.substr(0,9) != "<example>")
-  {
-    std::stringstream msg;
-    msg << __func__ << ": XML string '" << s << "' does not begin with <example>";
-    throw std::logic_error(msg.str());
-  }
-  if (s.substr(s.size() - 10,10) != "</example>")
-  {
-    std::stringstream msg;
-    msg << __func__ << ": XML string '" << s << "' does not end with </example>";
-    throw std::logic_error(msg.str());
-  }
-
-  assert(s.size() >= 17);
-  assert(s.substr(0,9) == "<example>");
-  assert(s.substr(s.size() - 10,10) == "</example>");
-
-
-  std::string text;
-  cmap::Competency competency = cmap::Competency::uninitialized;
-  bool is_complex = false;
-  bool is_concrete = false;
-  bool is_specific = false;
-
-  //competency
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexCompetency());
-    assert(v.size() == 1);
-    competency = Competencies().ToType(ribi::xml::StripXmlTag(v[0]));
-    //competency = Example::StrToCompetency(ribi::xml::StripXmlTag(v[0]));
-  }
-  //is_complex
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexIsComplex());
-    assert(v.size() == 1);
-    is_complex = boost::lexical_cast<bool>(ribi::xml::StripXmlTag(v[0]));
-  }
-  //is_concrete
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexIsConcrete());
-    assert(v.size() == 1);
-    is_concrete = boost::lexical_cast<bool>(ribi::xml::StripXmlTag(v[0]));
-  }
-  //is_specific
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexIsSpecific());
-    assert(v.size() == 1);
-    is_specific = boost::lexical_cast<bool>(ribi::xml::StripXmlTag(v[0]));
-  }
-  //text
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexText());
-    assert(v.size() == 1 && "GetRegexText must be present once in an Example");
-    text = ribi::xml::StripXmlTag(v[0]);
-  }
-
-  const Example example
-    = Create(text,competency,is_complex,is_concrete,is_specific)
-  ;
-  assert(example.ToXml() == s);
-  return example;
-}
-
 ribi::cmap::Example ribi::cmap::ExampleFactory::GetTest(const int i) const noexcept
 {
   assert(i < GetNumberOfTests());
   return GetTests()[i];
 }
 
+std::vector<ribi::cmap::Example> ribi::cmap::ExampleFactory::GetNastyTests() const noexcept
+{
+  return
+  {
+    Example(" Test example 0",Competency::profession,true,false,false),
+    Example("Test>example 1",Competency::organisations,false,true,false),
+    Example("Test example<2",Competency::social_surroundings,false,false,true)
+  };
+}
+
 std::vector<ribi::cmap::Example> ribi::cmap::ExampleFactory::GetTests() const noexcept
 {
   return
   {
-    Create("Test example 0",Competency::profession,true,false,false),
-    Create("Test example 1",Competency::organisations,false,true,false),
-    Create("Test example 2",Competency::social_surroundings,false,false,true),
-    Create("Test example 3",Competency::target_audience,true,true,false),
-    Create("Test example 4",Competency::ti_knowledge,false,true,true),
-    Create("Test example 5",Competency::prof_growth,true,false,true),
-    Create("Test example 6",Competency::misc,true,true,true),
-    Create("",Competency::uninitialized,true,false,true),
+    Example("Test example 0",Competency::profession,true,false,false),
+    Example("Test example 1",Competency::organisations,false,true,false),
+    Example("Test example 2",Competency::social_surroundings,false,false,true),
+    Example("Test example 3",Competency::target_audience,true,true,false),
+    Example("Test example 4",Competency::ti_knowledge,false,true,true),
+    Example("Test example 5",Competency::prof_growth,true,false,true),
+    Example("Test example 6",Competency::misc,true,true,true),
+    Example("",Competency::uninitialized,true,false,true)
   };
 }
 
@@ -167,9 +82,11 @@ void ribi::cmap::ExampleFactory::Test() noexcept
     if (is_tested) return;
     is_tested = true;
   }
-  Counter();
-  Example("Test example 0",Competency::profession,true,false,false);
-  ExampleFactory().GetTest(0);
+  {
+    Example("Test example 0",Competency::profession,true,false,false);
+    Counter();
+    ExampleFactory().GetTest(0);
+  }
   const TestTimer test_timer(__func__,__FILE__,1.0);
 }
 #endif // NDEBUG

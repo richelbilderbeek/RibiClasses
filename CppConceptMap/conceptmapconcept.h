@@ -28,10 +28,9 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic ignored "-Weffc++"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
-#include <boost/shared_ptr.hpp>
-//#include <boost/signals2.hpp>
-#include <QRegExp>
-#include "conceptmapfwd.h"
+//#include <boost/shared_ptr.hpp>
+//#include <QRegExp>
+//#include "conceptmapfwd.h"
 #include "conceptmapexamples.h"
 #pragma GCC diagnostic pop
 
@@ -111,9 +110,6 @@ struct Concept
   ///Convert Concept to a short std::string
   std::string ToStr() const noexcept;
 
-  ///Convert Concept to a std::string to write to file
-  std::string ToXml() const noexcept;
-
   private:
 
   ///Examples of the concept, e.g. 'Plato', 'Aristotle'
@@ -144,6 +140,9 @@ struct Concept
   static void Test() noexcept;
   #endif
 };
+
+std::string ToXml(const Concept& concept) noexcept;
+Concept XmlToConcept(const std::string& s) noexcept;
 
 std::ostream& operator<<(std::ostream& os, const Concept& concept) noexcept;
 std::istream& operator>>(std::istream& is, Concept& concept) noexcept;

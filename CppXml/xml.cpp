@@ -27,6 +27,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
+#include <boost/algorithm/string/replace.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/make_shared.hpp>
 #include <boost/shared_ptr.hpp>
@@ -53,6 +54,20 @@ bool CanLexicalCast(const SourceType& from)
   return true;
 }
 
+std::string ribi::xml::Decode2(std::string s) noexcept
+{
+  boost::algorithm::replace_all(s,"&lt;","<");
+  boost::algorithm::replace_all(s,"&gt;",">");
+  return s;
+}
+
+std::string ribi::xml::Encode2(std::string s) noexcept
+{
+  boost::algorithm::replace_all(s,"<","&lt;");
+  boost::algorithm::replace_all(s,">","&gt;");
+  return s;
+}
+
 std::string ribi::xml::GetVersion() noexcept
 {
   return "1.1";
@@ -62,7 +77,8 @@ std::vector<std::string> ribi::xml::GetVersionHistory() noexcept
 {
   return {
     "201x-xx-xx: Version 1.0: initial version",
-    "2014-02-27: Version 1.1: started versioning"
+    "2014-02-27: Version 1.1: started versioning",
+    "2015-12-30: Version 1.2: added encode and decode"
   };
 }
 
@@ -145,9 +161,19 @@ void ribi::xml::Test() noexcept
     assert(StripXmlTag("<x>y") == "");
     assert(StripXmlTag("<x></x>") == "");
   }
+  for (const std::string& s: { "A", "A B", "A<B", "A>B" } )
+  {
+    const std::string encoded{Encode2(s)};
+    const std::string t{Decode2(encoded)};
+    if (s != t) { TRACE(s); TRACE(t); }
+    assert(s == t);
+  }
   //StrToXml and XmlToStr
   {
-    const std::vector<std::string> v { "a", "ab", "abc", " ", "" };
+    const std::vector<std::string> v {
+      "a", "ab", "abc", " ", "",
+      //"A<B", "A>B", "A<>B"
+    };
     const std::size_t sz = v.size();
     for (std::size_t i=0; i!=sz; ++i)
     {
@@ -156,6 +182,9 @@ void ribi::xml::Test() noexcept
       {
         const std::string content = v[j];
         const std::string xml = ToXml(tag_name,content);
+        if (FromXml(xml).first  != tag_name) {
+          TRACE(tag_name); TRACE(FromXml(xml).first);
+        }
         assert(FromXml(xml).first  == tag_name);
         assert(FromXml(xml).second == content);
       }
