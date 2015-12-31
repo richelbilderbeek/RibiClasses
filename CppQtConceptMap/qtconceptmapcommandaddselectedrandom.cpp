@@ -1,4 +1,4 @@
-#include "conceptmapcommandaddselectedrandom.h"
+#include "qtconceptmapcommandaddselectedrandom.h"
 
 #include <cassert>
 #include <sstream>

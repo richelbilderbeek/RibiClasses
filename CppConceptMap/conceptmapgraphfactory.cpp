@@ -76,6 +76,14 @@ ribi::cmap::Graph ribi::cmap::GraphFactory::FromXml(const std::string &s) const
   return g;
 }
 
+std::vector<ribi::cmap::Graph> ribi::cmap::GraphFactory::GetNastyTests() const noexcept
+{
+  std::vector<Graph> v{
+    GetNasty0()
+  };
+  return v;
+}
+
 ribi::cmap::Graph ribi::cmap::GraphFactory::GetTest(const int i) const noexcept
 {
   switch (i)
@@ -513,6 +521,20 @@ ribi::cmap::Graph ribi::cmap::GraphFactory::Get19() const noexcept
 }
 
 #endif // REALLY_CARE_20151229
+
+ribi::cmap::Graph ribi::cmap::GraphFactory::GetNasty0() const noexcept
+{
+  Graph g;
+  const auto vd_1 = AddVertex(CenterNodeFactory().CreateFromStrings("X<Y"), g);
+  const auto vd_2 = AddVertex(NodeFactory().CreateFromStrings(" A>B"), g);
+  const auto vd_3 = AddVertex(NodeFactory().CreateFromStrings("BC "), g);
+  const auto vd_4 = AddVertex(NodeFactory().CreateFromStrings(" C "), g);
+  AddEdge(EdgeFactory().Create((Node(ConceptFactory().Create("edge_a concept"),1.2,3.4))),vd_1,vd_2,g);
+  AddEdge(EdgeFactory().Create((Node(ConceptFactory().Create("edge_a concept"),1.2,3.4))),vd_2,vd_3,g);
+  AddEdge(EdgeFactory().Create((Node(ConceptFactory().Create("edge_a concept"),1.2,3.4))),vd_3,vd_1,g);
+  AddEdge(EdgeFactory().Create((Node(ConceptFactory().Create("edge_a concept"),1.2,3.4))),vd_4,vd_1,g);
+  return g;
+}
 
 std::vector<ribi::cmap::Graph > ribi::cmap::GraphFactory::GetAllTests() const noexcept
 {

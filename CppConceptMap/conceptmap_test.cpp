@@ -18,8 +18,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppConceptMap.htm
 //---------------------------------------------------------------------------
-#ifdef DO_NOT_USE_BOOST_GRAPH
-
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
@@ -45,11 +43,11 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmapexamplesfactory.h"
 #include "conceptmapfactory.h"
 #include "conceptmaphelper.h"
-//#include "conceptmapcommandfactory.h"
-//#include "conceptmapcommandcreatenewnode.h"
-//#include "conceptmapcommandcreatenewedge.h"
-//#include "conceptmapcommanddeleteedge.h"
-//#include "conceptmapcommanddeletenode.h"
+//
+//#include "qtconceptmapcommandcreatenewnode.h"
+//#include "qtconceptmapcommandcreatenewedge.h"
+//#include "qtconceptmapcommanddeleteedge.h"
+//#include "qtconceptmapcommanddeletenode.h"
 //#include "conceptmapcommandunselectrandom.h"
 //#include "conceptmapcommandaddselectedrandom.h"
 #include "conceptmaphelper.h"
@@ -62,7 +60,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic pop
 
 #ifndef NDEBUG
-void ribi::cmap::ConceptMap::Test() noexcept
+void ribi::cmap::TestConceptMap() noexcept
 {
   {
     static bool is_tested{false};
@@ -81,8 +79,102 @@ void ribi::cmap::ConceptMap::Test() noexcept
   }
   const TestTimer test_timer(__func__,__FILE__,2.0);
   const bool verbose{true};
-  typedef std::vector<Node> Nodes;
 
+  if (verbose) { TRACE("Copy constructable"); }
+  {
+    const ConceptMap a;
+    const ConceptMap b(a);
+    assert(a == b);
+  }
+  if (verbose) { TRACE("operator=="); }
+  {
+    const ConceptMap a = ConceptMapFactory().GetTest(1);
+    const ConceptMap b = ConceptMapFactory().GetTest(2);
+    assert(a != b);
+    ConceptMap c(a);
+    assert(c == a);
+    assert(c != b);
+    c = b;
+    assert(c != a);
+    assert(c == b);
+  }
+  if (verbose) { TRACE("Streaming: empty graph"); }
+  {
+    ConceptMap a;
+    std::stringstream s;
+    s << a;
+    TRACE(s.str());
+    ConceptMap b;
+    s >> b;
+    assert(a == b);
+  }
+  if (verbose) { TRACE("Streaming: single object"); }
+  {
+    ConceptMap a{ConceptMapFactory().GetTest(1)};
+    std::stringstream s;
+    s << a;
+    ConceptMap b;
+    s >> b;
+    assert(a == b);
+  }
+  if (verbose) { TRACE("Streaming: two objects"); }
+  {
+    const ConceptMap e = ConceptMapFactory().GetTest(1);
+    const ConceptMap f = ConceptMapFactory().GetTest(2);
+    std::stringstream s;
+    s << e << f;
+    ConceptMap g;
+    ConceptMap h;
+    s >> g >> h;
+    if (e != g) { TRACE(e); TRACE(g); }
+    if (f != h) { TRACE(f); TRACE(h); }
+    assert(e == g);
+    assert(f == h);
+  }
+  if (verbose) { TRACE("Nasty examples: one object"); }
+  for (const ConceptMap e: ConceptMapFactory().GetNastyTests())
+  {
+    std::stringstream s;
+    s << e;
+    ConceptMap f;
+    assert(e != f);
+    s >> f;
+    if (e != f) { TRACE(e); TRACE(f); }
+    assert(e == f);
+  }
+  if (verbose) { TRACE("Nasty examples: two objects"); }
+  for (const ConceptMap e: ConceptMapFactory().GetNastyTests())
+  {
+    std::stringstream s;
+    s << e << e;
+    ConceptMap g;
+    ConceptMap h;
+    s >> g >> h;
+    if (e != g) { TRACE(e); TRACE(g); }
+    if (e != h) { TRACE(e); TRACE(h); }
+    assert(e == g);
+    assert(e == h);
+  }
+  if (verbose) { TRACE("Dot conversion"); }
+  {
+    const std::vector<ConceptMap> v = ConceptMapFactory().GetAllTests();
+    std::for_each(v.begin(),v.end(),
+      [](const ConceptMap& node)
+      {
+        //Test copy constructor
+        const ConceptMap c(node);
+        assert(node == c);
+        const std::string s{ToDot(c)};
+        const ConceptMap d = DotToConceptMap(s);
+        assert(c == d);
+      }
+    );
+  }
+
+  assert(!"Green");
+
+  #ifdef NOT_NOT_20151231
+  typedef std::vector<Node> Nodes;
   if (verbose) { TRACE("Create from XML"); } //TODO: Remove, this is a duplicate of CMFactory
   {
     const auto conceptmap = ConceptMapFactory().FromXml("<concept_map><nodes><node><concept><name>X</name><examples></examples><concept_is_complex>1</concept_is_complex><complexity>-1</complexity><concreteness>-1</concreteness><specificity>-1</specificity></concept><x>0</x><y>0</y><is_center_node>1</is_center_node></node><node><concept><name>C</name><examples></examples><concept_is_complex>1</concept_is_complex><complexity>-1</complexity><concreteness>-1</concreteness><specificity>-1</specificity></concept><x>0</x><y>0</y><is_center_node>0</is_center_node></node><node><concept><name>B</name><examples></examples><concept_is_complex>1</concept_is_complex><complexity>-1</complexity><concreteness>-1</concreteness><specificity>-1</specificity></concept><x>0</x><y>0</y><is_center_node>0</is_center_node></node><node><concept><name>A</name><examples></examples><concept_is_complex>1</concept_is_complex><complexity>-1</complexity><concreteness>-1</concreteness><specificity>-1</specificity></concept><x>0</x><y>0</y><is_center_node>0</is_center_node></node></nodes><edges></edges></concept_map>");
@@ -471,7 +563,7 @@ void ribi::cmap::ConceptMap::Test() noexcept
     assert(conceptmap.GetSelectedEdges().size() == 0);
   }
   #endif // FIX_ISSUE_10
+
+  #endif // NOT_NOT_20151231
 }
 #endif
-
-#endif //DO_NOT_USE_BOOST_GRAPH

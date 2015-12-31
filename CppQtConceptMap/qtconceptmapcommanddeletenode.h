@@ -18,26 +18,36 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppConceptMap.htm
 //---------------------------------------------------------------------------
-#ifndef CONCEPTMAPCOMMANDADDSELECTEDRANDOM_H
-#define CONCEPTMAPCOMMANDADDSELECTEDRANDOM_H
+#ifndef CONCEPTMAPCOMMANDDELETENODE_H
+#define CONCEPTMAPCOMMANDDELETENODE_H
 
-#include "conceptmapcommand.h"
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Weffc++"
+#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
+#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
+
 #include "conceptmapnode.h"
 #include "conceptmap.h"
+#include "qtconceptmapcommand.h"
+#include <QGraphicsScene>
+#include "qtconceptmaptoolsitem.h"
+#pragma GCC diagnostic pop
 
 namespace ribi {
 namespace cmap {
 
-///Add another vertex to being selected
-///If one out of four nodes is selected, select a random second
-class CommandAddSelectedRandom final : public Command
+///Delete all selecteded edges and node
+class CommandDeleteSelected final : public Command
 {
-public:
-
-  CommandAddSelectedRandom(ConceptMap& conceptmap);
-  CommandAddSelectedRandom(const CommandAddSelectedRandom&) = delete;
-  CommandAddSelectedRandom& operator=(const CommandAddSelectedRandom&) = delete;
-  ~CommandAddSelectedRandom() noexcept {}
+  public:
+  CommandDeleteSelected(
+    ConceptMap& conceptmap,
+    QGraphicsScene * const scene,
+    QtTool * const tool_item
+  );
+  CommandDeleteSelected(const CommandDeleteSelected&) = delete;
+  CommandDeleteSelected& operator=(const CommandDeleteSelected&) = delete;
+  ~CommandDeleteSelected() noexcept {}
 
   void undo() override;
   void redo() override;
@@ -48,11 +58,7 @@ public:
   const ConceptMap m_after;
 };
 
-//Throws if there are no nodes that can be selected additionally
-ConceptMap RandomlyAddSelectedNode(ConceptMap g);
-
 } //~namespace cmap
 } //~namespace ribi
 
-
-#endif // CONCEPTMAPCOMMANDADDSELECTEDRANDOM_H
+#endif // CONCEPTMAPCOMMANDDELETENODE_H

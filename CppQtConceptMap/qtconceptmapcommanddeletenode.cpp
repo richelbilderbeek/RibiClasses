@@ -18,7 +18,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppConceptMap.htm
 //---------------------------------------------------------------------------
-#include "conceptmapcommanddeletenode.h"
+#include "qtconceptmapcommanddeletenode.h"
 
 #include <cassert>
 #include <iostream>
@@ -35,12 +35,13 @@ ribi::cmap::CommandDeleteSelected::CommandDeleteSelected(
     m_before{conceptmap},
     m_after{conceptmap}
 {
+  setText("delete node");
+
   /*
   if (!m_conceptmap.HasNode(m_node))
   {
     throw std::logic_error("Cannot delete Node that is not in ConceptMap");
   }
-  setText("delete node");
   */
 }
 

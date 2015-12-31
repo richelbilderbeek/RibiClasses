@@ -18,7 +18,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppConceptMap.htm
 //---------------------------------------------------------------------------
-#include "conceptmapcommandcreatenewnode.h"
+#include "qtconceptmapcommandcreatenewnode.h"
 
 #include <cassert>
 #include <boost/graph/isomorphism.hpp>
@@ -30,6 +30,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 ribi::cmap::CommandCreateNewNode::CommandCreateNewNode(
   ConceptMap& conceptmap,
   QGraphicsScene * const scene,
+  QtTool * const tool_item,
   const double x,
   const double y
 )
@@ -38,6 +39,8 @@ ribi::cmap::CommandCreateNewNode::CommandCreateNewNode(
     m_conceptmap_before{conceptmap},
     m_qtnode{nullptr},
     m_scene(scene),
+    m_tool_item{tool_item},
+    m_tool_item_old_buddy{tool_item->GetBuddyItem()},
     m_x{x},
     m_y{y}
 {
@@ -73,13 +76,14 @@ void ribi::cmap::CommandCreateNewNode::redo()
 {
   m_conceptmap = m_conceptmap_after;
   m_scene->addItem(m_qtnode);
-  //Additively select node
-  m_qtnode->SetSelected(true);
+  m_qtnode->SetSelected(true); //Additively select node
   m_qtnode->setFocus();
+  m_tool_item->SetBuddyItem(m_qtnode);
 }
 
 void ribi::cmap::CommandCreateNewNode::undo()
 {
   m_conceptmap = m_conceptmap_before;
   m_scene->removeItem(m_qtnode);
+  m_tool_item->SetBuddyItem(m_tool_item_old_buddy);
 }

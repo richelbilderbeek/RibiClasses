@@ -20,6 +20,152 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 #include "conceptmap.h"
 #include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/isomorphism.hpp>
+#include <boost/graph/graphviz.hpp>
+#include "conceptmapregex.h"
+#include "fileio.h"
+#include "trace.h"
+#include "xml.h"
+
+std::string ribi::cmap::ToXml(const ConceptMap& conceptmap) noexcept
+{
+ std::stringstream s;
+  s << "<conceptmap>";
+  s << ToDot(conceptmap);
+  s << "</conceptmap>";
+  const std::string r = s.str();
+  assert(r.size() >= 13);
+  assert(r.substr(0,12) == "<conceptmap>");
+  assert(r.substr(r.size() - 13,13) == "</conceptmap>");
+  TRACE(r);
+  return r;
+}
+
+ribi::cmap::ConceptMap ribi::cmap::XmlToConceptMap(const std::string& s)
+{
+ if (s.size() < 13)
+  {
+    std::stringstream msg;
+    msg << __func__ << ": string too short";
+    throw std::logic_error(msg.str());
+  }
+  if (s.substr(0,12) != "<conceptmap>")
+  {
+    std::stringstream msg;
+    msg << __func__ << ": incorrect starting tag";
+    throw std::logic_error(msg.str());
+  }
+  if (s.substr(s.size() - 13,13) != "</conceptmap>")
+  {
+    std::stringstream msg;
+    msg << __func__ << ": incorrect ending tag";
+    throw std::logic_error(msg.str());
+  }
+  ConceptMap conceptmap;
+  {
+    const std::vector<std::string> v
+      = Regex().GetRegexMatches(s,Regex().GetRegexConceptMap());
+    assert(v.size() == 1);
+    const std::string dot_str{
+      ribi::xml::StripXmlTag(v[0])
+    };
+    TRACE(dot_str);
+    conceptmap = DotToConceptMap(dot_str);
+  }
+  return conceptmap;
+}
+
+std::string ribi::cmap::ToDot(const ConceptMap& g) noexcept
+{
+  std::stringstream f;
+  boost::write_graphviz(
+    f,
+    g,
+    [g](
+      std::ostream& out, const VertexDescriptor& d) {
+      const auto pmap = get(boost::vertex_custom_type, g);
+      const auto& m = get(pmap, d);
+      out << "[label=" << m << "]";
+    },
+    [g](std::ostream& out, const EdgeDescriptor& d) {
+      const auto pmap = get(boost::edge_custom_type, g);
+      const auto& m = get(pmap, d);
+      out << "[label=" << m << "]";
+    }
+  );
+  return f.str();
+}
+
+ribi::cmap::ConceptMap ribi::cmap::DotToConceptMap(const std::string& s)
+{
+  ConceptMap g;
+
+  try
+  {
+    std::stringstream f;
+    f << s;
+    TRACE(s);
+    boost::dynamic_properties p;
+    p.property("node_id", get(boost::vertex_custom_type, g));
+    p.property("label", get(boost::vertex_custom_type, g));
+    p.property("edge_id", get(boost::edge_custom_type, g));
+    p.property("label", get(boost::edge_custom_type, g));
+    boost::read_graphviz(f,g,p);
+  }
+  catch (std::exception& e)
+  {
+    TRACE(e.what());
+    TRACE(s);
+    assert(!"Should not get here");
+  }
+  return g;
+}
+
+std::ostream& ribi::cmap::operator<<(std::ostream& os, const ConceptMap& conceptmap) noexcept
+{
+  os << ToXml(conceptmap);
+  return os;
+}
+
+std::istream& ribi::cmap::operator>>(std::istream& is, ConceptMap& conceptmap)
+{
+  //eat until '</conceptmap>'
+  is >> std::noskipws;
+  std::string s;
+  for (int i=0; ; ++i)
+  {
+    char c;
+    is >> c;
+    s += c;
+    if(s.size() > 13 && s.substr(s.size() - 13,13) == "</conceptmap>") break;
+    assert(i != 1000);
+  }
+  conceptmap = XmlToConceptMap(s);
+  return is;
+}
+
+bool ribi::cmap::operator==(const ConceptMap& lhs, const ConceptMap& rhs) noexcept
+{
+  //Does not detect different labels and/or edges
+  return boost::isomorphism(lhs,rhs);
+}
+
+bool ribi::cmap::operator!=(const ConceptMap& lhs, const ConceptMap& rhs) noexcept
+{
+  return !(lhs == rhs);
+}
+
+void ribi::cmap::SaveToFile(const ConceptMap& g, const std::string& dot_filename)
+{
+  std::ofstream f(dot_filename);
+  f << ToDot(g);
+}
+
+ribi::cmap::ConceptMap ribi::cmap::LoadFromFile(const std::string& dot_filename)
+{
+  assert(ribi::FileIo().IsRegularFile(dot_filename));
+  return {};
+}
 
 #ifdef DO_NOT_USE_BOOST_GRAPH
 

@@ -49,13 +49,13 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmaphelper.h"
 #include "conceptmapnodefactory.h"
 #include "conceptmapnode.h"
-#include "conceptmapcommanddeleteedge.h"
-#include "conceptmapcommanddeletenode.h"
+#include "qtconceptmapcommanddeleteedge.h"
+#include "qtconceptmapcommanddeletenode.h"
 #include "qtarrowitem.h"
 #include "qtconceptmapdisplaystrategy.h"
 #include "qtconceptmapbrushfactory.h"
-#include "conceptmapcommandcreatenewedge.h"
-#include "conceptmapcommandcreatenewnode.h"
+#include "qtconceptmapcommandcreatenewedge.h"
+#include "qtconceptmapcommandcreatenewnode.h"
 #include "qtconceptmapcenternode.h"
 #include "qtconceptmapconcepteditdialog.h"
 #include "qtconceptmapqtedge.h"
@@ -652,7 +652,7 @@ void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event) noexcept
       if (GetVerbosity()) { TRACE("Pressing delete"); }
       try
       {
-        DoCommand(new CommandDeleteSelected(this->GetConceptMap()));
+        DoCommand(new CommandDeleteSelected(m_conceptmap,scene(),m_tools));
       }
       catch (std::logic_error& e)
       {
@@ -693,7 +693,7 @@ void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event) noexcept
       if (event->modifiers() & Qt::ControlModifier)
       {
         if (GetVerbosity()) { TRACE("Pressing CTRL-N"); }
-        try { this->DoCommand(new CommandCreateNewNode(m_conceptmap,scene(),0.0,0.0)); }
+        try { this->DoCommand(new CommandCreateNewNode(m_conceptmap,scene(),m_tools,0.0,0.0)); }
         catch (std::logic_error& ) {}
       }
       return;
@@ -1059,6 +1059,7 @@ void ribi::cmap::QtConceptMap::mouseDoubleClickEvent(QMouseEvent *event)
       new CommandCreateNewNode(
         m_conceptmap,
         scene(),
+        m_tools,
         mapToScene(event->pos()).x(),
         mapToScene(event->pos()).y()
       )

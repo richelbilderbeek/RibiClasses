@@ -18,27 +18,26 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppConceptMap.htm
 //---------------------------------------------------------------------------
-#ifndef CONCEPTMAPCOMMANDCREATENEWEDGE_H
-#define CONCEPTMAPCOMMANDCREATENEWEDGE_H
+#ifndef CONCEPTMAPCOMMANDUNSELECTRANDOM_H
+#define CONCEPTMAPCOMMANDUNSELECTRANDOM_H
 
-#include "conceptmap.h"
-#include "conceptmapcommand.h"
+
 #include "conceptmapnode.h"
-#include "conceptmapedge.h"
+#include "conceptmap.h"
+#include "qtconceptmapcommand.h"
 
 namespace ribi {
 namespace cmap {
 
-///Start a new node
-///-Can be used only when there is an existing concept map
-class CommandCreateNewEdgeBetweenTwoSelectedNodes final : public Command
+///Remove the selectedness of a all selected nodes
+///If there are two nodes selected, unselect one of the two
+class CommandUnselectRandom final : public Command
 {
   public:
-
-  CommandCreateNewEdgeBetweenTwoSelectedNodes(ConceptMap& conceptmap);
-  CommandCreateNewEdgeBetweenTwoSelectedNodes(const CommandCreateNewEdgeBetweenTwoSelectedNodes&) = delete;
-  CommandCreateNewEdgeBetweenTwoSelectedNodes& operator=(const CommandCreateNewEdgeBetweenTwoSelectedNodes&) = delete;
-  ~CommandCreateNewEdgeBetweenTwoSelectedNodes() noexcept {}
+  CommandUnselectRandom(ConceptMap& conceptmap);
+  CommandUnselectRandom(const CommandUnselectRandom&) = delete;
+  CommandUnselectRandom& operator=(const CommandUnselectRandom&) = delete;
+  ~CommandUnselectRandom() noexcept {}
 
   void redo() override;
   void undo() override;
@@ -48,12 +47,11 @@ class CommandCreateNewEdgeBetweenTwoSelectedNodes final : public Command
   const ConceptMap m_before;
   const ConceptMap m_after;
 
+  //EdgesAndNodes m_new_selected;
+  //const EdgesAndNodes m_old_selected;
 };
-
-//Throws if there are no two nodes selected
-ConceptMap CreateNewEdgeFromTwoSelectedNodes(ConceptMap g);
 
 } //~namespace cmap
 } //~namespace ribi
 
-#endif // CONCEPTMAPCOMMANDCREATENEWEDGE_H
+#endif // CONCEPTMAPCOMMANDUNSELECTRANDOM_H

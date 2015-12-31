@@ -576,6 +576,8 @@ std::istream& ribi::cmap::operator>>(std::istream& is, Node& node) noexcept
     char c;
     is >> c;
     s += c;
+    if(s.size() >= 7 && s.substr(0,6) != "<node>") { TRACE(s); }
+    assert(s.size() < 7 || s.substr(0,6) == "<node>");
     if(s.size() > 7 && s.substr(s.size() - 7,7) == "</node>") break;
   }
   node = XmlToNode(s);

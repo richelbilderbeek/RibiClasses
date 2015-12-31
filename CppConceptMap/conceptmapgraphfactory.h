@@ -22,6 +22,7 @@ public:
   Graphs GetAllTests() const noexcept;
   Graph GetTest(const int index) const noexcept;
   int GetNumberOfAllTests() const noexcept { return 7; }
+  Graphs GetNastyTests() const noexcept;
 
   Graph GetEmptyGraph() const noexcept { return Get0(); }
 
@@ -33,6 +34,7 @@ public:
   Graph Get4() const noexcept;
   Graph Get5() const noexcept;
   Graph Get6() const noexcept;
+  Graph GetNasty0() const noexcept;
 
   private:
 

@@ -18,39 +18,41 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppConceptMap.htm
 //---------------------------------------------------------------------------
-#ifndef CONCEPTMAPCOMMANDUNSELECTRANDOM_H
-#define CONCEPTMAPCOMMANDUNSELECTRANDOM_H
+#ifndef CONCEPTMAPCOMMANDADDSELECTEDRANDOM_H
+#define CONCEPTMAPCOMMANDADDSELECTEDRANDOM_H
 
-#include "conceptmapcommand.h"
 #include "conceptmapnode.h"
 #include "conceptmap.h"
+#include "qtconceptmapcommand.h"
 
 namespace ribi {
 namespace cmap {
 
-///Remove the selectedness of a all selected nodes
-///If there are two nodes selected, unselect one of the two
-class CommandUnselectRandom final : public Command
+///Add another vertex to being selected
+///If one out of four nodes is selected, select a random second
+class CommandAddSelectedRandom final : public Command
 {
-  public:
-  CommandUnselectRandom(ConceptMap& conceptmap);
-  CommandUnselectRandom(const CommandUnselectRandom&) = delete;
-  CommandUnselectRandom& operator=(const CommandUnselectRandom&) = delete;
-  ~CommandUnselectRandom() noexcept {}
+public:
 
-  void redo() override;
+  CommandAddSelectedRandom(ConceptMap& conceptmap);
+  CommandAddSelectedRandom(const CommandAddSelectedRandom&) = delete;
+  CommandAddSelectedRandom& operator=(const CommandAddSelectedRandom&) = delete;
+  ~CommandAddSelectedRandom() noexcept {}
+
   void undo() override;
+  void redo() override;
 
   private:
   ConceptMap& m_conceptmap;
   const ConceptMap m_before;
   const ConceptMap m_after;
-
-  //EdgesAndNodes m_new_selected;
-  //const EdgesAndNodes m_old_selected;
 };
+
+//Throws if there are no nodes that can be selected additionally
+ConceptMap RandomlyAddSelectedNode(ConceptMap g);
 
 } //~namespace cmap
 } //~namespace ribi
 
-#endif // CONCEPTMAPCOMMANDUNSELECTRANDOM_H
+
+#endif // CONCEPTMAPCOMMANDADDSELECTEDRANDOM_H

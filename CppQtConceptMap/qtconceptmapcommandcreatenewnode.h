@@ -18,40 +18,58 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppConceptMap.htm
 //---------------------------------------------------------------------------
-#ifndef CONCEPTMAPCOMMANDDELETENODE_H
-#define CONCEPTMAPCOMMANDDELETENODE_H
+#ifndef CONCEPTMAPCOMMANDCREATENEWNODE_H
+#define CONCEPTMAPCOMMANDCREATENEWNODE_H
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
-#include "conceptmapcommand.h"
+
 #include "conceptmapnode.h"
 #include "conceptmap.h"
+#include "qtconceptmapqtnode.h"
+#include <QGraphicsScene>
+#include "qtconceptmaptoolsitem.h"
+#include "qtconceptmapcommand.h"
 #pragma GCC diagnostic pop
 
 namespace ribi {
 namespace cmap {
 
-///Delete all selecteded edges and node
-class CommandDeleteSelected final : public Command
+///Start a new node
+///-Can be used only when there is an existing concept map
+class CommandCreateNewNode final : public Command
 {
   public:
-  CommandDeleteSelected(ConceptMap& conceptmap);
-  CommandDeleteSelected(const CommandDeleteSelected&) = delete;
-  CommandDeleteSelected& operator=(const CommandDeleteSelected&) = delete;
-  ~CommandDeleteSelected() noexcept {}
 
-  void undo() override;
+  CommandCreateNewNode(
+    ConceptMap& conceptmap,
+    QGraphicsScene * const scene,
+    QtTool * const tool_item,
+    const double x,
+    const double y
+  );
+  CommandCreateNewNode(const CommandCreateNewNode&) = delete;
+  CommandCreateNewNode& operator=(const CommandCreateNewNode&) = delete;
+  ~CommandCreateNewNode() noexcept {}
+
   void redo() override;
+  void undo() override;
 
   private:
   ConceptMap& m_conceptmap;
-  const ConceptMap m_before;
-  const ConceptMap m_after;
+  ConceptMap m_conceptmap_after;
+  const ConceptMap m_conceptmap_before;
+  QtNode * m_qtnode;
+  QGraphicsScene * const m_scene;
+  QtTool * const m_tool_item;
+  QtNode * const m_tool_item_old_buddy;
+  const double m_x;
+  const double m_y;
 };
 
 } //~namespace cmap
 } //~namespace ribi
 
-#endif // CONCEPTMAPCOMMANDDELETENODE_H
+#endif // CONCEPTMAPCOMMANDCREATENEWNODE_H

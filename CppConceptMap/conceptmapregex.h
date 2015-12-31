@@ -22,6 +22,7 @@ struct Regex
   std::string GetRegexCompetency() const noexcept;
   std::string GetRegexComplexity() const noexcept;
   std::string GetRegexConcept() const noexcept;
+  std::string GetRegexConceptMap() const noexcept;
   std::string GetRegexConceptIsComplex() const noexcept;
   std::string GetRegexConcreteness() const noexcept;
   std::string GetRegexEdge() const noexcept;

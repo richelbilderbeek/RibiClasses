@@ -56,6 +56,18 @@ using ConceptMap = boost::adjacency_list
 using VertexDescriptor = boost::graph_traits<ConceptMap>::vertex_descriptor;
 using EdgeDescriptor = boost::graph_traits<ConceptMap>::edge_descriptor;
 
+std::string ToXml(const ConceptMap& conceptmap) noexcept;
+ConceptMap XmlToConceptMap(const std::string& s);
+std::string ToDot(const ConceptMap& conceptmap) noexcept;
+ConceptMap DotToConceptMap(const std::string& s);
+std::ostream& operator<<(std::ostream& os, const ConceptMap& conceptmap) noexcept;
+std::istream& operator>>(std::istream& is, ConceptMap& conceptmap);
+bool operator==(const ConceptMap& lhs, const ConceptMap& rhs) noexcept;
+bool operator!=(const ConceptMap& lhs, const ConceptMap& rhs) noexcept;
+void SaveToFile(const ConceptMap& g, const std::string& dot_filename);
+ConceptMap LoadFromFile(const std::string& dot_filename);
+void TestConceptMap() noexcept;
+
 } //~namespace cmap
 } //~namespace ribi
 #else

@@ -18,40 +18,42 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppConceptMap.htm
 //---------------------------------------------------------------------------
-#ifndef CONCEPTMAPCOMMANDFACTORY_H
-#define CONCEPTMAPCOMMANDFACTORY_H
+#ifndef CONCEPTMAPCOMMANDCREATENEWEDGE_H
+#define CONCEPTMAPCOMMANDCREATENEWEDGE_H
 
-#include <vector>
 #include "conceptmap.h"
+#include "conceptmapnode.h"
+#include "conceptmapedge.h"
+#include "qtconceptmapcommand.h"
 
 namespace ribi {
 namespace cmap {
 
-///CommandFactory creates Commands
-struct CommandFactory
+///Start a new node
+///-Can be used only when there is an existing concept map
+class CommandCreateNewEdgeBetweenTwoSelectedNodes final : public Command
 {
-  CommandFactory() {}
+  public:
 
-  Command* CreateTestCommand(
-    const int index,
-    ConceptMap conceptmap
-  ) const noexcept;
+  CommandCreateNewEdgeBetweenTwoSelectedNodes(ConceptMap& conceptmap);
+  CommandCreateNewEdgeBetweenTwoSelectedNodes(const CommandCreateNewEdgeBetweenTwoSelectedNodes&) = delete;
+  CommandCreateNewEdgeBetweenTwoSelectedNodes& operator=(const CommandCreateNewEdgeBetweenTwoSelectedNodes&) = delete;
+  ~CommandCreateNewEdgeBetweenTwoSelectedNodes() noexcept {}
 
-  ///The number of Commands
-  int GetSize() const noexcept { return 3; }
+  void redo() override;
+  void undo() override;
 
   private:
+  ConceptMap& m_conceptmap;
+  const ConceptMap m_before;
+  const ConceptMap m_after;
 
-  ///Create all Commands that can be done on the ConceptMap
-  ///These are raw pointers! This is because QUndoStack takes up ownership of
-  ///the pointer.
-  std::vector<Command*> CreateTestCommands(
-    ConceptMap conceptmap
-  ) const noexcept;
 };
+
+//Throws if there are no two nodes selected
+ConceptMap CreateNewEdgeFromTwoSelectedNodes(ConceptMap g);
 
 } //~namespace cmap
 } //~namespace ribi
 
-
-#endif // CONCEPTMAPCOMMANDFACTORY_H
+#endif // CONCEPTMAPCOMMANDCREATENEWEDGE_H
