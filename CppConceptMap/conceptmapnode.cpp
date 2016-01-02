@@ -24,6 +24,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
 #include "conceptmapnode.h"
 
+#include <iostream>
 #include <boost/lambda/lambda.hpp>
 
 #include "counter.h"
@@ -31,6 +32,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmapconcept.h"
 #include "conceptmapconceptfactory.h"
 #include "conceptmapnodefactory.h"
+#include "is_graphviz_friendly.h"
 #include "conceptmapcenternodefactory.h"
 #include "conceptmapexamplefactory.h"
 #include "conceptmaphelper.h"
@@ -38,6 +40,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "testtimer.h"
 #include "trace.h"
 #include "xml.h"
+#include "graphviz_decode.h"
+#include "graphviz_encode.h"
 #pragma GCC diagnostic pop
 
 int ribi::cmap::Node::sm_ids = 0; //ID to assign
@@ -399,7 +403,7 @@ void ribi::cmap::Node::Test() noexcept
     const Node e = NodeFactory().GetTest(1);
     const Node f = NodeFactory().GetTest(2);
     std::stringstream s;
-    s << e << f;
+    s << e << " " << f;
     Node g;
     Node h;
     s >> g >> h;
@@ -423,7 +427,7 @@ void ribi::cmap::Node::Test() noexcept
   for (const Node e: NodeFactory().GetNastyTests())
   {
     std::stringstream s;
-    s << e << e;
+    s << e << " " << e;
     Node g;
     Node h;
     s >> g >> h;
@@ -562,25 +566,35 @@ bool ribi::cmap::operator<(const Node& lhs, const Node& rhs) noexcept
 
 std::ostream& ribi::cmap::operator<<(std::ostream& os, const Node& node) noexcept
 {
-  os
-    << ToXml(node);
+  const std::string s{graphviz_encode(ToXml(node))};
+  assert(is_graphviz_friendly(s));
+  os << s;
   return os;
 }
 
 std::istream& ribi::cmap::operator>>(std::istream& is, Node& node) noexcept
 {
+  std::string s;
+  is >> s;
+  /*
   is >> std::noskipws;
   std::string s;
   while (1)
   {
     char c;
     is >> c;
+    assert(c != '\0');
     s += c;
+    if(s.size() >= 6 && s.substr(0,5) != "<node")
+    {
+      TRACE(s);
+    }
     if(s.size() >= 7 && s.substr(0,6) != "<node>") { TRACE(s); }
     assert(s.size() < 7 || s.substr(0,6) == "<node>");
     if(s.size() > 7 && s.substr(s.size() - 7,7) == "</node>") break;
   }
-  node = XmlToNode(s);
+  */
+  node = XmlToNode(graphviz_decode(s));
   return is;
 }
 

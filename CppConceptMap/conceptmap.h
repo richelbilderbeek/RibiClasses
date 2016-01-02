@@ -24,10 +24,10 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #ifndef DO_NOT_USE_BOOST_GRAPH
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/graph_traits.hpp>
-#include "conceptmapvertexcustomtype.h"
-#include "conceptmapvertexisselected.h"
-#include "conceptmapedgecustomtype.h"
-#include "conceptmapedgeisselected.h"
+#include "install_vertex_custom_type.h"
+#include "install_vertex_is_selected.h"
+#include "install_edge_custom_type.h"
+#include "install_edge_is_selected.h"
 #include "conceptmapnode.h"
 #include "conceptmapedge.h"
 //#include "conceptmapgraphtypes.h"

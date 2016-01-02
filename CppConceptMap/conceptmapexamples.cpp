@@ -31,6 +31,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <QRegExp>
 #include "counter.h"
 #include "conceptmapregex.h"
+#include "graphviz_decode.h"
+#include "graphviz_encode.h"
 #include "conceptmaphelper.h"
 #include "conceptmapexample.h"
 #include "conceptmapexamplefactory.h"
@@ -188,7 +190,7 @@ void ribi::cmap::Examples::Test() noexcept
     const Examples e = ExamplesFactory().GetTest(2);
     const Examples f = ExamplesFactory().GetTest(3);
     std::stringstream s;
-    s << e << f;
+    s << e << " " << f;
     Examples g;
     Examples h;
     s >> g >> h;
@@ -212,7 +214,7 @@ void ribi::cmap::Examples::Test() noexcept
   for (const Examples e: ExamplesFactory().GetNastyTests())
   {
     std::stringstream s;
-    s << e << e;
+    s << e << " " << e;
     Examples g;
     Examples h;
     s >> g >> h;
@@ -303,12 +305,15 @@ ribi::cmap::Examples ribi::cmap::XmlToExamples(const std::string& s) noexcept
 
 std::ostream& ribi::cmap::operator<<(std::ostream& os, const Examples& examples) noexcept
 {
-  os << ToXml(examples);
+  os << graphviz_encode(ToXml(examples));
   return os;
 }
 
 std::istream& ribi::cmap::operator>>(std::istream& is, Examples& examples) noexcept
 {
+  std::string s;
+  is >> s;
+  /*
   //eat until '</example>'
   is >> std::noskipws;
   std::string s;
@@ -319,7 +324,15 @@ std::istream& ribi::cmap::operator>>(std::istream& is, Examples& examples) noexc
     s += c;
     if(s.size() > 11 && s.substr(s.size() - 11,11) == "</examples>") break;
   }
-  examples = XmlToExamples(s);
+  */
+  if (s == "0")
+  {
+    examples = Examples();
+  }
+  else
+  {
+    examples = XmlToExamples(graphviz_decode(s));
+  }
   return is;
 }
 

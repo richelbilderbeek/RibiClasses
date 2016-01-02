@@ -37,6 +37,9 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmapregex.h"
 #include "conceptmapconceptfactory.h"
 #include "conceptmaphelper.h"
+#include "graphviz_decode.h"
+#include "graphviz_encode.h"
+#include "is_graphviz_friendly.h"
 #include "testtimer.h"
 #include "trace.h"
 #include "xml.h"
@@ -283,7 +286,9 @@ bool ribi::cmap::operator<(const cmap::Edge& lhs, const cmap::Edge& rhs)
 
 std::ostream& ribi::cmap::operator<<(std::ostream& os, const Edge& edge) noexcept
 {
-  os << ToXml(edge);
+  const std::string s{graphviz_encode(ToXml(edge))};
+  assert(is_graphviz_friendly(s));
+  os << s;
   return os;
 }
 
@@ -298,6 +303,6 @@ std::istream& ribi::cmap::operator>>(std::istream& is, Edge& edge)
     s += c;
     if(s.size() > 7 && s.substr(s.size() - 7,7) == "</edge>") break;
   }
-  edge = XmlToEdge(s);
+  edge = XmlToEdge(graphviz_decode(s));
   return is;
 }

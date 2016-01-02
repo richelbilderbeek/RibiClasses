@@ -32,6 +32,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmapexamples.h"
 #include "conceptmapexamplesfactory.h"
 #include "conceptmapregex.h"
+#include "graphviz_decode.h"
+#include "graphviz_encode.h"
 #include "trace.h"
 #include "xml.h"
 #pragma GCC diagnostic pop
@@ -147,6 +149,7 @@ std::string ribi::cmap::ToXml(const Concept& concept) noexcept
 
 ribi::cmap::Concept ribi::cmap::XmlToConcept(const std::string& s) noexcept
 {
+  TRACE(s);
   assert(s.size() >= 19);
   assert(s.substr(0,9) == "<concept>");
   assert(s.substr(s.size() - 10,10) == "</concept>");
@@ -228,12 +231,16 @@ ribi::cmap::Concept ribi::cmap::XmlToConcept(const std::string& s) noexcept
 
 std::ostream& ribi::cmap::operator<<(std::ostream& os, const Concept& concept) noexcept
 {
-  os << ToXml(concept);
+  os << graphviz_encode(ToXml(concept));
   return os;
 }
 
 std::istream& ribi::cmap::operator>>(std::istream& is, Concept& concept) noexcept
 {
+  std::string s;
+  is >> s;
+  /*
+
   //eat until '</concept>'
   is >> std::noskipws;
   std::string s;
@@ -242,9 +249,11 @@ std::istream& ribi::cmap::operator>>(std::istream& is, Concept& concept) noexcep
     char c;
     is >> c;
     s += c;
+    assert(s != "00000000000000000000000000000000000000000");
     if(s.size() > 10 && s.substr(s.size() - 10,10) == "</concept>") break;
   }
-  concept = XmlToConcept(s);
+  */
+  concept = XmlToConcept(graphviz_decode(s));
   return is;
 }
 

@@ -156,7 +156,7 @@ void ribi::cmap::Concept::Test() noexcept
     const Concept e = ConceptFactory().GetTest(1);
     const Concept f = ConceptFactory().GetTest(2);
     std::stringstream s;
-    s << e << f;
+    s << e << " " << f;
     Concept g;
     Concept h;
     s >> g >> h;
@@ -180,7 +180,7 @@ void ribi::cmap::Concept::Test() noexcept
   for (const Concept e: ConceptFactory().GetNastyTests())
   {
     std::stringstream s;
-    s << e << e;
+    s << e << " " << e;
     Concept g;
     Concept h;
     s >> g >> h;

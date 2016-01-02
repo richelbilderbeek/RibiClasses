@@ -18,46 +18,52 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppConceptMap.htm
 //---------------------------------------------------------------------------
+#include <iterator>
+#include <map>
+#include <set>
+#include <sstream>
+#include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/graph_utility.hpp>
+#include <boost/graph/graphviz.hpp>
+#include <boost/graph/isomorphism.hpp>
+#include <boost/graph/vf2_sub_graph_iso.hpp>
+#include <boost/lexical_cast.hpp>
+
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
-#include "conceptmap.h"
-
-#include <sstream>
-#include <set>
-#include <iterator>
-
-#include <boost/lexical_cast.hpp>
-
 #include <QRegExp>
-
+#pragma GCC diagnostic pop
 
 #include "conceptmapcenternodefactory.h"
 #include "conceptmapcompetency.h"
-#include "conceptmapconcept.h"
 #include "conceptmapconceptfactory.h"
-#include "conceptmapedge.h"
+#include "conceptmapconcept.h"
 #include "conceptmapedgefactory.h"
+#include "conceptmapedge.h"
 #include "conceptmapexamplefactory.h"
 #include "conceptmapexamplesfactory.h"
+#include "conceptmapexamplevertexinvariant.h"
 #include "conceptmapfactory.h"
+#include "conceptmap.h"
 #include "conceptmaphelper.h"
-//
-//#include "qtconceptmapcommandcreatenewnode.h"
-//#include "qtconceptmapcommandcreatenewedge.h"
-//#include "qtconceptmapcommanddeleteedge.h"
-//#include "qtconceptmapcommanddeletenode.h"
-//#include "conceptmapcommandunselectrandom.h"
-//#include "conceptmapcommandaddselectedrandom.h"
 #include "conceptmaphelper.h"
-#include "conceptmapnode.h"
+#include "conceptmapisexampleverticesisomorphic.h"
+#include "conceptmapisexamplesverticesisomorphic.h"
 #include "conceptmapnodefactory.h"
+#include "conceptmapnode.h"
 #include "container.h"
+#include "custom_vertex_invariant.h"
+#include "fileio.h"
+#include "install_vertex_custom_type.h"
+#include "is_custom_vertices_isomorphic.h"
+
+#include "make_custom_and_selectable_vertices_writer.h"
+#include "my_custom_vertex.h"
 #include "testtimer.h"
 #include "trace.h"
 #include "xml.h"
-#pragma GCC diagnostic pop
 
 #ifndef NDEBUG
 void ribi::cmap::TestConceptMap() noexcept
@@ -68,6 +74,7 @@ void ribi::cmap::TestConceptMap() noexcept
     is_tested = true;
   }
   {
+    ribi::FileIo();
     container();
     CenterNodeFactory();
     ConceptFactory();
@@ -98,6 +105,212 @@ void ribi::cmap::TestConceptMap() noexcept
     assert(c != a);
     assert(c == b);
   }
+  //Create Concept map with Example (instead of Node) as vertices
+  {
+    using Graph = boost::adjacency_list
+    <
+      boost::vecS,
+      boost::vecS,
+      boost::directedS,
+      boost::property<
+        boost::vertex_custom_type_t, Example,
+        boost::property<
+          boost::vertex_is_selected_t, bool
+        >
+      >,
+      boost::property<
+        boost::edge_custom_type_t, Edge,
+        boost::property<
+          boost::edge_is_selected_t, bool
+        >
+      >
+    >;
+    Graph g;
+    const auto vd = boost::add_vertex(g);
+    const auto pmap = get(boost::vertex_custom_type, g);
+    Example example("sometext",Competency::organisations,true,false,true);
+    put(pmap, vd, example);
+
+    std::stringstream dot_stream;
+    //std::ofstream f(filename);
+    boost::write_graphviz(dot_stream, g,
+      make_custom_and_selectable_vertices_writer(
+        get(boost::vertex_custom_type,g),
+        get(boost::vertex_is_selected,g)
+      ),
+      make_custom_and_selectable_vertices_writer(
+        get(boost::edge_custom_type,g),
+        get(boost::edge_is_selected,g)
+      )
+    );
+    TRACE(dot_stream.str());
+
+    Graph d;
+    boost::dynamic_properties dp(boost::ignore_other_properties);
+    dp.property("label", get(boost::vertex_custom_type, g));
+    dp.property("regular", get(boost::vertex_is_selected, g));
+    dp.property("edge_id", get(boost::edge_custom_type, g));
+    dp.property("label", get(boost::edge_custom_type, g));
+    dp.property("regular", get(boost::edge_is_selected, g));
+    boost::read_graphviz(dot_stream,d,dp);
+    assert(is_example_vertices_isomorphic(g,d));
+    assert(1==2);
+  }
+  //Create Concept map with Examples (instead of Node) as vertices
+  {
+    using Graph = boost::adjacency_list
+    <
+      boost::vecS,
+      boost::vecS,
+      boost::directedS,
+      boost::property<
+        boost::vertex_custom_type_t, Examples,
+        boost::property<
+          boost::vertex_is_selected_t, bool
+        >
+      >,
+      boost::property<
+        boost::edge_custom_type_t, Edge,
+        boost::property<
+          boost::edge_is_selected_t, bool
+        >
+      >
+    >;
+    Graph g;
+    const auto vd = boost::add_vertex(g);
+    const auto pmap = get(boost::vertex_custom_type, g);
+    Examples examples(
+      {
+        Example("some text",Competency::organisations,true,false,true),
+        Example("more text",Competency::organisations,true,false,true)
+      }
+    );
+    put(pmap, vd, examples);
+
+    std::stringstream dot_stream;
+    //std::ofstream f(filename);
+    boost::write_graphviz(dot_stream, g,
+      make_custom_and_selectable_vertices_writer(
+        get(boost::vertex_custom_type,g),
+        get(boost::vertex_is_selected,g)
+      ),
+      make_custom_and_selectable_vertices_writer(
+        get(boost::edge_custom_type,g),
+        get(boost::edge_is_selected,g)
+      )
+    );
+    TRACE(dot_stream.str());
+
+    Graph d;
+    boost::dynamic_properties dp(boost::ignore_other_properties);
+    dp.property("label", get(boost::vertex_custom_type, g));
+    dp.property("regular", get(boost::vertex_is_selected, g));
+    dp.property("label", get(boost::edge_custom_type, g));
+    dp.property("regular", get(boost::edge_is_selected, g));
+    boost::read_graphviz(dot_stream,d,dp);
+    assert(is_examples_vertices_isomorphic(g,d));
+    assert(1==2);
+  }
+
+  //Create Concept map with Concepts (instead of Node) as vertices
+  {
+    using Graph = boost::adjacency_list
+    <
+      boost::vecS,
+      boost::vecS,
+      boost::directedS,
+      boost::property<
+        boost::vertex_custom_type_t, Concept,
+        boost::property<
+          boost::vertex_is_selected_t, bool
+        >
+      >,
+      boost::property<
+        boost::edge_custom_type_t, Edge,
+        boost::property<
+          boost::edge_is_selected_t, bool
+        >
+      >
+    >;
+    Graph g;
+    const auto vd = boost::add_vertex(g);
+    const auto pmap = get(boost::vertex_custom_type, g);
+    Concept concept;
+    put(pmap, vd, concept);
+
+    std::stringstream dot_stream;
+    //std::ofstream f(filename);
+    boost::write_graphviz(dot_stream, g,
+      make_custom_and_selectable_vertices_writer(
+        get(boost::vertex_custom_type,g),
+        get(boost::vertex_is_selected,g)
+      ),
+      make_custom_and_selectable_vertices_writer(
+        get(boost::edge_custom_type,g),
+        get(boost::edge_is_selected,g)
+      )
+    );
+
+    Graph d;
+    boost::dynamic_properties dp(boost::ignore_other_properties);
+    dp.property("label", get(boost::vertex_custom_type, g));
+    dp.property("regular", get(boost::vertex_is_selected, g));
+    dp.property("label", get(boost::edge_custom_type, g));
+    dp.property("regular", get(boost::edge_is_selected, g));
+    boost::read_graphviz(dot_stream,d,dp);
+    assert(1==2);
+  }
+  //Load Node
+  {
+    const std::string s{
+      "<node><concept><name>A</name><examples></examples><concept_is_complex>1</concept_is_complex><complexity>-1</complexity><concreteness>-1</concreteness><specificity>-1</specificity></concept><x>0</x><y>0</y><is_center_node>0</is_center_node></node>"
+    };
+    std::stringstream t;
+    t << s;
+    Node n;
+    t >> n;
+    assert(n.GetConcept().GetName() == "A");
+    assert(ToXml(n) == s);
+    ConceptMap g;
+    const auto vd = boost::add_vertex(g);
+    const auto pmap = get(boost::vertex_custom_type, g);
+    put(pmap, vd, n);
+    const std::string d{ToDot(g)};
+    const std::string dot{
+      "digraph G {\n"
+      "0[label=\"<node><concept><name>A</name><examples></examples><concept_is_complex>1</concept_is_complex><complexity>-1</complexity><concreteness>-1</concreteness><specificity>-1</specificity></concept><x>0</x><y>0</y><is_center_node>0</is_center_node></node>\", regular=\"0\"];\n"
+      "}\n"
+    };
+    //assert(d == dot);
+    ConceptMap c{DotToConceptMap(dot)};
+    assert(boost::num_edges(c) == 0);
+    assert(boost::num_vertices(c) == 1);
+    assert(1==2);
+  }
+  if (verbose) { TRACE("Dot conversion"); }
+  {
+    for (ConceptMap c: ConceptMapFactory().GetAllTests())
+    {
+      const std::string dot{ToDot(c)};
+      ConceptMap d{DotToConceptMap(dot)};
+      assert(c == d);
+      const std::string dot2{ToDot(d)};
+      assert(dot == dot2);
+    }
+    assert(1==2);
+  }
+  if (verbose) { TRACE("XML conversion"); }
+  {
+    for (ConceptMap c: ConceptMapFactory().GetAllTests())
+    {
+      const std::string xml{ToXml(c)};
+      ConceptMap d{XmlToConceptMap(xml)};
+      assert(c == d);
+      const std::string xml2{ToXml(d)};
+      assert(xml == xml2);
+    }
+    assert(1==2);
+  }
   if (verbose) { TRACE("Streaming: empty graph"); }
   {
     ConceptMap a;
@@ -108,11 +321,26 @@ void ribi::cmap::TestConceptMap() noexcept
     s >> b;
     assert(a == b);
   }
+  {
+    std::string s{
+      "digraph G {\n"
+      "  0[label=\"<node><concept><name>A</name><examples></examples><concept_is_complex>1</concept_is_complex><complexity>-1</complexity><concreteness>-1</concreteness><specificity>-1</specificity></concept><x>0</x><y>0</y><is_center_node>0</is_center_node></node>\", regular=\"0\"];\n"
+      "}"
+    };
+    {
+      std::ofstream f("tmp.dot");
+      f << s;
+    }
+    ConceptMap c = DotToConceptMap(s);
+    assert(s == ToDot(c));
+    assert(1==2);
+  }
   if (verbose) { TRACE("Streaming: single object"); }
   {
     ConceptMap a{ConceptMapFactory().GetTest(1)};
     std::stringstream s;
     s << a;
+    TRACE(s.str());
     ConceptMap b;
     s >> b;
     assert(a == b);

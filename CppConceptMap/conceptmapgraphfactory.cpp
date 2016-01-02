@@ -65,14 +65,13 @@ ribi::cmap::Graph ribi::cmap::GraphFactory::FromXml(const std::string &s) const
   f << s;
 
   Graph g;
-  boost::dynamic_properties p; //_do_ default construct
-  p.property("node_id", get(boost::vertex_custom_type, g));
-  p.property("label", get(boost::vertex_custom_type, g));
-  p.property("regular", get(boost::vertex_is_selected, g));
-  p.property("edge_id", get(boost::edge_custom_type, g));
-  p.property("label", get(boost::edge_custom_type, g));
-  p.property("regular", get(boost::edge_is_selected, g));
-  boost::read_graphviz(f,g,p);
+  boost::dynamic_properties dp(boost::ignore_other_properties);
+  dp.property("label", get(boost::vertex_custom_type, g));
+  dp.property("regular", get(boost::vertex_is_selected, g));
+  dp.property("edge_id", get(boost::edge_custom_type, g));
+  dp.property("label", get(boost::edge_custom_type, g));
+  dp.property("regular", get(boost::edge_is_selected, g));
+  boost::read_graphviz(f,g,dp);
   return g;
 }
 
@@ -109,7 +108,7 @@ ribi::cmap::Graph ribi::cmap::GraphFactory::Get0() const noexcept
 ribi::cmap::Graph ribi::cmap::GraphFactory::Get1() const noexcept
 {
   Graph g;
-  AddVertex(CenterNodeFactory().CreateFromStrings("X"), g);
+  //AddVertex(CenterNodeFactory().CreateFromStrings("X"), g);
   AddVertex(NodeFactory().CreateFromStrings("A"), g);
   return g;
 }

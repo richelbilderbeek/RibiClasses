@@ -19,13 +19,22 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //From http://www.richelbilderbeek.nl/CppConceptMap.htm
 //---------------------------------------------------------------------------
 #include "conceptmap.h"
+#include <iostream>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/isomorphism.hpp>
 #include <boost/graph/graphviz.hpp>
 #include "conceptmapregex.h"
+#include "conceptmapnode.h"
+#include "conceptmapconcept.h"
+#include "conceptmapexamples.h"
+#include "conceptmapexample.h"
 #include "fileio.h"
 #include "trace.h"
 #include "xml.h"
+#include "graphviz_decode.h"
+#include "graphviz_encode.h"
+#include "make_custom_and_selectable_vertices_writer.h"
+#include "custom_and_selectable_vertices_writer.h"
 
 std::string ribi::cmap::ToXml(const ConceptMap& conceptmap) noexcept
 {
@@ -78,39 +87,43 @@ ribi::cmap::ConceptMap ribi::cmap::XmlToConceptMap(const std::string& s)
 std::string ribi::cmap::ToDot(const ConceptMap& g) noexcept
 {
   std::stringstream f;
-  boost::write_graphviz(
-    f,
-    g,
-    [g](
-      std::ostream& out, const VertexDescriptor& d) {
-      const auto pmap = get(boost::vertex_custom_type, g);
-      const auto& m = get(pmap, d);
-      out << "[label=" << m << "]";
-    },
-    [g](std::ostream& out, const EdgeDescriptor& d) {
-      const auto pmap = get(boost::edge_custom_type, g);
-      const auto& m = get(pmap, d);
-      out << "[label=" << m << "]";
-    }
+  //std::ofstream f(filename);
+  boost::write_graphviz(f, g,
+    make_custom_and_selectable_vertices_writer(
+      get(boost::vertex_custom_type,g),
+      get(boost::vertex_is_selected,g)
+    ),
+    make_custom_and_selectable_vertices_writer(
+      get(boost::edge_custom_type,g),
+      get(boost::edge_is_selected,g)
+    )
   );
   return f.str();
 }
 
 ribi::cmap::ConceptMap ribi::cmap::DotToConceptMap(const std::string& s)
 {
+  assert(!s.empty());
+  {
+    std::ofstream f("tmp.dot");
+    f << s;
+    TRACE(s);
+  }
+  assert(ribi::FileIo().IsRegularFile("tmp.dot"));
   ConceptMap g;
 
   try
   {
-    std::stringstream f;
-    f << s;
-    TRACE(s);
-    boost::dynamic_properties p;
-    p.property("node_id", get(boost::vertex_custom_type, g));
-    p.property("label", get(boost::vertex_custom_type, g));
-    p.property("edge_id", get(boost::edge_custom_type, g));
-    p.property("label", get(boost::edge_custom_type, g));
-    boost::read_graphviz(f,g,p);
+    std::ifstream f("tmp.dot");
+    //std::stringstream f;
+    //f << s;
+    //TRACE(s);
+    boost::dynamic_properties dp(boost::ignore_other_properties);
+    dp.property("label", get(boost::vertex_custom_type, g));
+    dp.property("regular", get(boost::vertex_is_selected, g));
+    dp.property("label", get(boost::edge_custom_type, g));
+    dp.property("regular", get(boost::edge_is_selected, g));
+    boost::read_graphviz(f,g,dp);
   }
   catch (std::exception& e)
   {
@@ -123,7 +136,8 @@ ribi::cmap::ConceptMap ribi::cmap::DotToConceptMap(const std::string& s)
 
 std::ostream& ribi::cmap::operator<<(std::ostream& os, const ConceptMap& conceptmap) noexcept
 {
-  os << ToXml(conceptmap);
+  assert(is_graphviz_friendly(ToXml(conceptmap)));
+  os << graphviz_encode(ToXml(conceptmap));
   return os;
 }
 
@@ -140,7 +154,7 @@ std::istream& ribi::cmap::operator>>(std::istream& is, ConceptMap& conceptmap)
     if(s.size() > 13 && s.substr(s.size() - 13,13) == "</conceptmap>") break;
     assert(i != 1000);
   }
-  conceptmap = XmlToConceptMap(s);
+  conceptmap = XmlToConceptMap(graphviz_decode(s));
   return is;
 }
 

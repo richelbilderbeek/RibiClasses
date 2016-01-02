@@ -156,7 +156,6 @@ ribi::cmap::Graph ribi::cmap::ConceptMapFactory::FromXmlAsTuple(const std::strin
 
   Graph g;
   boost::dynamic_properties p; //_do_ default construct
-  p.property("node_id", get(boost::vertex_custom_type, g));
   p.property("label", get(boost::vertex_custom_type, g));
   p.property("regular", get(boost::vertex_is_selected, g));
   p.property("edge_id", get(boost::edge_custom_type, g));
