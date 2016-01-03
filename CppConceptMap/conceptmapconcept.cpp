@@ -253,6 +253,7 @@ std::istream& ribi::cmap::operator>>(std::istream& is, Concept& concept) noexcep
     if(s.size() > 10 && s.substr(s.size() - 10,10) == "</concept>") break;
   }
   */
+  assert(s != "0");
   concept = XmlToConcept(graphviz_decode(s));
   return is;
 }

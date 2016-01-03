@@ -83,18 +83,6 @@ void ribi::cmap::Edge::SetNode(const Node& node) noexcept
   m_node = node;
 }
 
-/*
-void ribi::cmap::Edge::SetHeadArrow(const bool has_head_arrow) noexcept
-{
-  m_head_arrow = has_head_arrow;
-}
-
-void ribi::cmap::Edge::SetTailArrow(const bool has_tail_arrow) noexcept
-{
-  m_tail_arrow = has_tail_arrow;
-}
-*/
-
 #ifndef NDEBUG
 void ribi::cmap::Edge::Test() noexcept
 {
@@ -264,14 +252,7 @@ ribi::cmap::Edge ribi::cmap::XmlToEdge(
 
 bool ribi::cmap::operator==(const ribi::cmap::Edge& lhs, const ribi::cmap::Edge& rhs)
 {
-  const bool verbose{false};
-  if (verbose)
-  {
-    if (lhs.GetNode() != rhs.GetNode()) TRACE("Node differs");
-  }
-  return
-    lhs.GetNode() == rhs.GetNode()
-  ;
+  return lhs.GetNode() == rhs.GetNode();
 }
 
 bool ribi::cmap::operator!=(const cmap::Edge& lhs, const cmap::Edge& rhs)
@@ -301,6 +282,7 @@ std::istream& ribi::cmap::operator>>(std::istream& is, Edge& edge)
     char c;
     is >> c;
     s += c;
+    assert(s != "0");
     if(s.size() > 7 && s.substr(s.size() - 7,7) == "</edge>") break;
   }
   edge = XmlToEdge(graphviz_decode(s));

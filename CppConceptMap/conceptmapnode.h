@@ -105,10 +105,6 @@ struct Node
 
   static int sm_ids; //ID to assign
 
-  ///Called whenever something on Concept changes
-  ///Re-emits m_concept_changed with 'this'
-  void OnConceptChanged(Concept * const this_concept) noexcept;
-
   #ifndef NDEBUG
   static void Test() noexcept;
   #endif

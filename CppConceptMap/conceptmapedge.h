@@ -50,59 +50,22 @@ struct Edge
 
   int GetId() const noexcept { return m_id; }
 
-  ///Get the Node this edge originates from
-  //int GetFromIndex() const noexcept { return m_from_index; }
-
-  ///Get the Node index this edge goes to
-  //int GetToIndex() const noexcept { return m_to_index; }
-
   static std::string GetVersion() noexcept;
   static std::vector<std::string> GetVersionHistory() noexcept;
 
-  ///Does the edge have an arrow at the head?
-  //bool HasHeadArrow() const noexcept { return m_head_arrow; }
-
-  ///Does the edge have an arrow at the tail?
-  //bool HasTailArrow() const noexcept { return m_tail_arrow; }
-
-  ///Set the Node index this edge originates from
-  //void SetFrom(const NodePtr& from) noexcept;
-
-  ///Set if the head has an arrow
-  //void SetHeadArrow(const bool has_head_arrow) noexcept;
-
   ///Set the center Node
   void SetNode(const Node& node) noexcept;
-
-  ///Set if the tail has an arrow
-  //void SetTailArrow(const bool has_tail_arrow) noexcept;
-
-  ///Set the Node index this edge goes to
-  //void SetTo(const NodePtr& to) noexcept;
 
   std::string ToStr() const noexcept;
 
 
   private:
-  ///The Node this edge originates from
-  ///Must use non-const int to keep an Edge default-copyable
-  //int m_from_index;
-
-  ///Is there an arrowhead at the 'to' node?
-  //bool m_head_arrow;
   int m_id; //Unique ID, until the Node is copied
 
   ///The Node on the Edge
   Node m_node;
 
   static int sm_ids; //ID to assign
-
-  ///Is there an arrowhead at the 'from' node?
-  //bool m_tail_arrow;
-
-  ///The Node this edge goes to
-  ///Must use non-const int to keep an Edge default-copyable
-  //int m_to_index;
 
   #ifndef NDEBUG
   static void Test() noexcept;

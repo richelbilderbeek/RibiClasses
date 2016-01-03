@@ -105,6 +105,7 @@ void ribi::cmap::TestConceptMap() noexcept
     assert(c != a);
     assert(c == b);
   }
+  #ifdef NONSENSE_TESTS
   //Create Concept map with Example (instead of Node) as vertices
   {
     using Graph = boost::adjacency_list
@@ -130,6 +131,7 @@ void ribi::cmap::TestConceptMap() noexcept
     const auto pmap = get(boost::vertex_custom_type, g);
     Example example("sometext",Competency::organisations,true,false,true);
     put(pmap, vd, example);
+    assert(boost::num_vertices(g) == 1);
 
     std::stringstream dot_stream;
     //std::ofstream f(filename);
@@ -149,10 +151,10 @@ void ribi::cmap::TestConceptMap() noexcept
     boost::dynamic_properties dp(boost::ignore_other_properties);
     dp.property("label", get(boost::vertex_custom_type, g));
     dp.property("regular", get(boost::vertex_is_selected, g));
-    dp.property("edge_id", get(boost::edge_custom_type, g));
     dp.property("label", get(boost::edge_custom_type, g));
     dp.property("regular", get(boost::edge_is_selected, g));
     boost::read_graphviz(dot_stream,d,dp);
+    assert(boost::num_vertices(d) == 1);
     assert(is_example_vertices_isomorphic(g,d));
     assert(1==2);
   }
@@ -260,6 +262,7 @@ void ribi::cmap::TestConceptMap() noexcept
     boost::read_graphviz(dot_stream,d,dp);
     assert(1==2);
   }
+  #endif
   //Load Node
   {
     const std::string s{
@@ -285,7 +288,6 @@ void ribi::cmap::TestConceptMap() noexcept
     ConceptMap c{DotToConceptMap(dot)};
     assert(boost::num_edges(c) == 0);
     assert(boost::num_vertices(c) == 1);
-    assert(1==2);
   }
   if (verbose) { TRACE("Dot conversion"); }
   {
@@ -295,6 +297,10 @@ void ribi::cmap::TestConceptMap() noexcept
       ConceptMap d{DotToConceptMap(dot)};
       assert(c == d);
       const std::string dot2{ToDot(d)};
+      if (dot != dot2) {
+        TRACE(dot);
+        TRACE(dot2);
+      }
       assert(dot == dot2);
     }
     assert(1==2);

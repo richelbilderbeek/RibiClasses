@@ -325,14 +325,8 @@ std::istream& ribi::cmap::operator>>(std::istream& is, Examples& examples) noexc
     if(s.size() > 11 && s.substr(s.size() - 11,11) == "</examples>") break;
   }
   */
-  if (s == "0")
-  {
-    examples = Examples();
-  }
-  else
-  {
-    examples = XmlToExamples(graphviz_decode(s));
-  }
+  assert(s != "0");
+  examples = XmlToExamples(graphviz_decode(s));
   return is;
 }
 

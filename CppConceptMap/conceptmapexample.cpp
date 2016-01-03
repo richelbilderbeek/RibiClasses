@@ -449,27 +449,8 @@ std::istream& ribi::cmap::operator>>(std::istream& is, Example& example) noexcep
 {
   std::string s;
   is >> s;
-  /*
-  //eat until '</example>'
-  is >> std::noskipws;
-  std::string s;
-  while (1)
-  {
-    char c;
-    is >> c;
-    s += c;
-    if(s.size() > 10 && s.substr(s.size() - 10,10) == "</example>") break;
-  }
-  */
-  if (s == "0")
-  {
-    example = Example();
-  }
-  else
-  {
-    example = XmlToExample(graphviz_decode(s));
-  }
-
+  assert(s != "0");
+  example = XmlToExample(graphviz_decode(s));
   return is;
 }
 

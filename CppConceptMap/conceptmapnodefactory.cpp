@@ -42,29 +42,6 @@ ribi::cmap::NodeFactory::NodeFactory()
   #endif
 }
 
-/*
-ribi::cmap::Node ribi::cmap::NodeFactory::Create(
-) const noexcept
-{
-  Node node(ConceptFactory().Create(),false,0.0,0.0);
-  return node;
-}
-
-ribi::cmap::Node ribi::cmap::NodeFactory::Create(
-  const Concept& concept,
-  const double x,
-  const double y
-) const noexcept
-{
-  const bool is_center_node{false};
-  Node node(concept,is_center_node,x,y);
-  assert(concept == node.GetConcept());
-  assert(node.GetX() == x);
-  assert(node.GetY() == y);
-  return node;
-}
-*/
-
 ribi::cmap::Node ribi::cmap::NodeFactory::CreateFromStrings(
   const std::string& name,
   const std::vector<std::pair<std::string,Competency> >& examples,
@@ -83,74 +60,6 @@ ribi::cmap::Node ribi::cmap::NodeFactory::CreateFromStrings(
   assert(node.GetY() == y);
   return node;
 }
-
-/*
-ribi::cmap::Node ribi::cmap::NodeFactory::FromXml(const std::string& s) const
-{
-  //const bool verbose{false};
-  if (s.size() < 13)
-  {
-    std::stringstream msg;
-    msg << __func__ << ": string too short";
-    throw std::logic_error(msg.str());
-  }
-  if (s.substr(0,6) != "<node>")
-  {
-    std::stringstream msg;
-    msg << __func__ << ": incorrect starting tag";
-    throw std::logic_error(msg.str());
-  }
-  if (s.substr(s.size() - 7,7) != "</node>")
-  {
-    std::stringstream msg;
-    msg << __func__ << ": incorrect ending tag";
-    throw std::logic_error(msg.str());
-  }
-
-  //m_concept
-  Concept concept = ConceptFactory().Create();
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexConcept());
-    assert(v.size() == 1);
-    concept = XmlToConcept(v[0]);
-  }
-
-  //m_is_centernode
-  bool is_center_node = false;
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexIsCenterNode());
-    if (v.size() == 1) {
-      is_center_node = boost::lexical_cast<bool>(ribi::xml::StripXmlTag(v[0]));
-    }
-  }
-  //m_x
-  double x = 0.0;
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexX());
-    assert(v.size() == 1);
-    x = boost::lexical_cast<double>(ribi::xml::StripXmlTag(v[0]));
-  }
-  //m_x
-  double y = 0.0;
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexY());
-    assert(v.size() == 1);
-    y = boost::lexical_cast<double>(ribi::xml::StripXmlTag(v[0]));
-  }
-  if (is_center_node)
-  {
-    return CenterNodeFactory().Create(concept,x,y);
-  }
-  else
-  {
-    return NodeFactory().Create(concept,x,y);
-  }
-}
-*/
 
 int ribi::cmap::NodeFactory::GetNumberOfTests() const noexcept
 {

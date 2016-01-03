@@ -42,14 +42,6 @@ struct NodeFactory
 {
   NodeFactory();
 
-  //Node Create() const noexcept;
-  /*
-  Node Create(
-    const Concept& concept,
-    const double x = 0.0,
-    const double y = 0.0
-  ) const noexcept;
-  */
   Node CreateFromStrings(
     const std::string& name,
     const std::vector<std::pair<std::string,Competency> >& examples = {},

@@ -87,7 +87,6 @@ ribi::cmap::ConceptMap ribi::cmap::XmlToConceptMap(const std::string& s)
 std::string ribi::cmap::ToDot(const ConceptMap& g) noexcept
 {
   std::stringstream f;
-  //std::ofstream f(filename);
   boost::write_graphviz(f, g,
     make_custom_and_selectable_vertices_writer(
       get(boost::vertex_custom_type,g),
@@ -103,34 +102,15 @@ std::string ribi::cmap::ToDot(const ConceptMap& g) noexcept
 
 ribi::cmap::ConceptMap ribi::cmap::DotToConceptMap(const std::string& s)
 {
-  assert(!s.empty());
-  {
-    std::ofstream f("tmp.dot");
-    f << s;
-    TRACE(s);
-  }
-  assert(ribi::FileIo().IsRegularFile("tmp.dot"));
+  std::stringstream f;
+  f << s;
   ConceptMap g;
-
-  try
-  {
-    std::ifstream f("tmp.dot");
-    //std::stringstream f;
-    //f << s;
-    //TRACE(s);
-    boost::dynamic_properties dp(boost::ignore_other_properties);
-    dp.property("label", get(boost::vertex_custom_type, g));
-    dp.property("regular", get(boost::vertex_is_selected, g));
-    dp.property("label", get(boost::edge_custom_type, g));
-    dp.property("regular", get(boost::edge_is_selected, g));
-    boost::read_graphviz(f,g,dp);
-  }
-  catch (std::exception& e)
-  {
-    TRACE(e.what());
-    TRACE(s);
-    assert(!"Should not get here");
-  }
+  boost::dynamic_properties dp(boost::ignore_other_properties);
+  dp.property("label", get(boost::vertex_custom_type, g));
+  dp.property("regular", get(boost::vertex_is_selected, g));
+  dp.property("label", get(boost::edge_custom_type, g));
+  dp.property("regular", get(boost::edge_is_selected, g));
+  boost::read_graphviz(f,g,dp);
   return g;
 }
 
@@ -146,13 +126,13 @@ std::istream& ribi::cmap::operator>>(std::istream& is, ConceptMap& conceptmap)
   //eat until '</conceptmap>'
   is >> std::noskipws;
   std::string s;
-  for (int i=0; ; ++i)
+  while (1)
   {
     char c;
     is >> c;
     s += c;
     if(s.size() > 13 && s.substr(s.size() - 13,13) == "</conceptmap>") break;
-    assert(i != 1000);
+    assert(s != "00000");
   }
   conceptmap = XmlToConceptMap(graphviz_decode(s));
   return is;
@@ -178,7 +158,15 @@ void ribi::cmap::SaveToFile(const ConceptMap& g, const std::string& dot_filename
 ribi::cmap::ConceptMap ribi::cmap::LoadFromFile(const std::string& dot_filename)
 {
   assert(ribi::FileIo().IsRegularFile(dot_filename));
-  return {};
+  std::ifstream f(dot_filename);
+  ConceptMap g;
+  boost::dynamic_properties dp(boost::ignore_other_properties);
+  dp.property("label", get(boost::vertex_custom_type, g));
+  dp.property("regular", get(boost::vertex_is_selected, g));
+  dp.property("label", get(boost::edge_custom_type, g));
+  dp.property("regular", get(boost::edge_is_selected, g));
+  boost::read_graphviz(f,g,dp);
+  return g;
 }
 
 #ifdef DO_NOT_USE_BOOST_GRAPH
