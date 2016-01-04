@@ -9,14 +9,12 @@ namespace cmap {
 
 struct Node;
 
-class GraphFactory
+class ConceptMapFactory
 {
 public:
   using Graphs = std::vector<Graph>;
 
-  GraphFactory() noexcept;
-
-  Graph FromXml(const std::string& s) const;
+  ConceptMapFactory() noexcept;
 
   ///Get all the other tests as one vector
   Graphs GetAllTests() const noexcept;

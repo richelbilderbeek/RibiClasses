@@ -149,7 +149,6 @@ std::string ribi::cmap::ToXml(const Concept& concept) noexcept
 
 ribi::cmap::Concept ribi::cmap::XmlToConcept(const std::string& s) noexcept
 {
-  TRACE(s);
   assert(s.size() >= 19);
   assert(s.substr(0,9) == "<concept>");
   assert(s.substr(s.size() - 10,10) == "</concept>");

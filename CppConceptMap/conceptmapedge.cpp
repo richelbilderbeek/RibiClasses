@@ -96,9 +96,11 @@ void ribi::cmap::Edge::Test() noexcept
   const std::vector<Node> nodes{NodeFactory().GetTest(0),NodeFactory().GetTest(1)};
   if (verbose) { TRACE("Copy constructor"); }
   {
-    const auto edge1 = EdgeFactory().GetTest(0);
+    const auto edge1 = EdgeFactory().GetTest(1);
     const auto edge2(edge1);
     assert(edge1 == edge2);
+    assert(edge1.GetNode().GetX() == edge2.GetNode().GetX());
+    assert(edge1.GetNode().GetX() == edge2.GetNode().GetX());
   }
   if (verbose) { TRACE("Assignment operator"); }
   {
@@ -118,6 +120,7 @@ void ribi::cmap::Edge::Test() noexcept
   {
     const auto edge1 = EdgeFactory().GetTest(1);
     const auto edge2 = EdgeFactory().GetTest(1);
+    assert(edge1.GetNode().GetX() == edge2.GetNode().GetX());
     assert(edge1 == edge2);
   }
   if (verbose) { TRACE("Operator!="); }

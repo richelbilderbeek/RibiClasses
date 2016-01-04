@@ -105,164 +105,6 @@ void ribi::cmap::TestConceptMap() noexcept
     assert(c != a);
     assert(c == b);
   }
-  #ifdef NONSENSE_TESTS
-  //Create Concept map with Example (instead of Node) as vertices
-  {
-    using Graph = boost::adjacency_list
-    <
-      boost::vecS,
-      boost::vecS,
-      boost::directedS,
-      boost::property<
-        boost::vertex_custom_type_t, Example,
-        boost::property<
-          boost::vertex_is_selected_t, bool
-        >
-      >,
-      boost::property<
-        boost::edge_custom_type_t, Edge,
-        boost::property<
-          boost::edge_is_selected_t, bool
-        >
-      >
-    >;
-    Graph g;
-    const auto vd = boost::add_vertex(g);
-    const auto pmap = get(boost::vertex_custom_type, g);
-    Example example("sometext",Competency::organisations,true,false,true);
-    put(pmap, vd, example);
-    assert(boost::num_vertices(g) == 1);
-
-    std::stringstream dot_stream;
-    //std::ofstream f(filename);
-    boost::write_graphviz(dot_stream, g,
-      make_custom_and_selectable_vertices_writer(
-        get(boost::vertex_custom_type,g),
-        get(boost::vertex_is_selected,g)
-      ),
-      make_custom_and_selectable_vertices_writer(
-        get(boost::edge_custom_type,g),
-        get(boost::edge_is_selected,g)
-      )
-    );
-    TRACE(dot_stream.str());
-
-    Graph d;
-    boost::dynamic_properties dp(boost::ignore_other_properties);
-    dp.property("label", get(boost::vertex_custom_type, g));
-    dp.property("regular", get(boost::vertex_is_selected, g));
-    dp.property("label", get(boost::edge_custom_type, g));
-    dp.property("regular", get(boost::edge_is_selected, g));
-    boost::read_graphviz(dot_stream,d,dp);
-    assert(boost::num_vertices(d) == 1);
-    assert(is_example_vertices_isomorphic(g,d));
-    assert(1==2);
-  }
-  //Create Concept map with Examples (instead of Node) as vertices
-  {
-    using Graph = boost::adjacency_list
-    <
-      boost::vecS,
-      boost::vecS,
-      boost::directedS,
-      boost::property<
-        boost::vertex_custom_type_t, Examples,
-        boost::property<
-          boost::vertex_is_selected_t, bool
-        >
-      >,
-      boost::property<
-        boost::edge_custom_type_t, Edge,
-        boost::property<
-          boost::edge_is_selected_t, bool
-        >
-      >
-    >;
-    Graph g;
-    const auto vd = boost::add_vertex(g);
-    const auto pmap = get(boost::vertex_custom_type, g);
-    Examples examples(
-      {
-        Example("some text",Competency::organisations,true,false,true),
-        Example("more text",Competency::organisations,true,false,true)
-      }
-    );
-    put(pmap, vd, examples);
-
-    std::stringstream dot_stream;
-    //std::ofstream f(filename);
-    boost::write_graphviz(dot_stream, g,
-      make_custom_and_selectable_vertices_writer(
-        get(boost::vertex_custom_type,g),
-        get(boost::vertex_is_selected,g)
-      ),
-      make_custom_and_selectable_vertices_writer(
-        get(boost::edge_custom_type,g),
-        get(boost::edge_is_selected,g)
-      )
-    );
-    TRACE(dot_stream.str());
-
-    Graph d;
-    boost::dynamic_properties dp(boost::ignore_other_properties);
-    dp.property("label", get(boost::vertex_custom_type, g));
-    dp.property("regular", get(boost::vertex_is_selected, g));
-    dp.property("label", get(boost::edge_custom_type, g));
-    dp.property("regular", get(boost::edge_is_selected, g));
-    boost::read_graphviz(dot_stream,d,dp);
-    assert(is_examples_vertices_isomorphic(g,d));
-    assert(1==2);
-  }
-
-  //Create Concept map with Concepts (instead of Node) as vertices
-  {
-    using Graph = boost::adjacency_list
-    <
-      boost::vecS,
-      boost::vecS,
-      boost::directedS,
-      boost::property<
-        boost::vertex_custom_type_t, Concept,
-        boost::property<
-          boost::vertex_is_selected_t, bool
-        >
-      >,
-      boost::property<
-        boost::edge_custom_type_t, Edge,
-        boost::property<
-          boost::edge_is_selected_t, bool
-        >
-      >
-    >;
-    Graph g;
-    const auto vd = boost::add_vertex(g);
-    const auto pmap = get(boost::vertex_custom_type, g);
-    Concept concept;
-    put(pmap, vd, concept);
-
-    std::stringstream dot_stream;
-    //std::ofstream f(filename);
-    boost::write_graphviz(dot_stream, g,
-      make_custom_and_selectable_vertices_writer(
-        get(boost::vertex_custom_type,g),
-        get(boost::vertex_is_selected,g)
-      ),
-      make_custom_and_selectable_vertices_writer(
-        get(boost::edge_custom_type,g),
-        get(boost::edge_is_selected,g)
-      )
-    );
-
-    Graph d;
-    boost::dynamic_properties dp(boost::ignore_other_properties);
-    dp.property("label", get(boost::vertex_custom_type, g));
-    dp.property("regular", get(boost::vertex_is_selected, g));
-    dp.property("label", get(boost::edge_custom_type, g));
-    dp.property("regular", get(boost::edge_is_selected, g));
-    boost::read_graphviz(dot_stream,d,dp);
-    assert(1==2);
-  }
-  #endif
   //Load Node
   {
     const std::string s{
@@ -291,8 +133,10 @@ void ribi::cmap::TestConceptMap() noexcept
   }
   if (verbose) { TRACE("Dot conversion"); }
   {
+    int i=0;
     for (ConceptMap c: ConceptMapFactory().GetAllTests())
     {
+      TRACE(i); ++i;
       const std::string dot{ToDot(c)};
       ConceptMap d{DotToConceptMap(dot)};
       assert(c == d);

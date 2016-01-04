@@ -25,14 +25,14 @@
 
 #pragma GCC diagnostic pop
 
-ribi::cmap::GraphFactory::GraphFactory() noexcept
+ribi::cmap::ConceptMapFactory::ConceptMapFactory() noexcept
 {
   #ifndef NDEBUG
   Test();
   #endif
 }
 
-ribi::cmap::VertexDescriptor ribi::cmap::GraphFactory::AddVertex(
+ribi::cmap::VertexDescriptor ribi::cmap::ConceptMapFactory::AddVertex(
   const Node& node, Graph& g
 ) const noexcept
 {
@@ -42,7 +42,7 @@ ribi::cmap::VertexDescriptor ribi::cmap::GraphFactory::AddVertex(
   return vd;
 }
 
-void ribi::cmap::GraphFactory::AddEdge(
+void ribi::cmap::ConceptMapFactory::AddEdge(
   const Edge& edge,
   const VertexDescriptor& vd_from,
   const VertexDescriptor& vd_to,
@@ -57,25 +57,7 @@ void ribi::cmap::GraphFactory::AddEdge(
 
 }
 
-ribi::cmap::Graph ribi::cmap::GraphFactory::FromXml(const std::string &s) const
-{
-  assert(s.size() < 13 || s.substr(0,13) != "<concept_map>");
-
-  std::stringstream f;
-  f << s;
-
-  Graph g;
-  boost::dynamic_properties dp(boost::ignore_other_properties);
-  dp.property("label", get(boost::vertex_custom_type, g));
-  dp.property("regular", get(boost::vertex_is_selected, g));
-  dp.property("edge_id", get(boost::edge_custom_type, g));
-  dp.property("label", get(boost::edge_custom_type, g));
-  dp.property("regular", get(boost::edge_is_selected, g));
-  boost::read_graphviz(f,g,dp);
-  return g;
-}
-
-std::vector<ribi::cmap::Graph> ribi::cmap::GraphFactory::GetNastyTests() const noexcept
+std::vector<ribi::cmap::Graph> ribi::cmap::ConceptMapFactory::GetNastyTests() const noexcept
 {
   std::vector<Graph> v{
     GetNasty0()
@@ -83,7 +65,7 @@ std::vector<ribi::cmap::Graph> ribi::cmap::GraphFactory::GetNastyTests() const n
   return v;
 }
 
-ribi::cmap::Graph ribi::cmap::GraphFactory::GetTest(const int i) const noexcept
+ribi::cmap::Graph ribi::cmap::ConceptMapFactory::GetTest(const int i) const noexcept
 {
   switch (i)
   {
@@ -100,12 +82,12 @@ ribi::cmap::Graph ribi::cmap::GraphFactory::GetTest(const int i) const noexcept
   return Graph();
 }
 
-ribi::cmap::Graph ribi::cmap::GraphFactory::Get0() const noexcept
+ribi::cmap::Graph ribi::cmap::ConceptMapFactory::Get0() const noexcept
 {
   return Graph();
 }
 
-ribi::cmap::Graph ribi::cmap::GraphFactory::Get1() const noexcept
+ribi::cmap::Graph ribi::cmap::ConceptMapFactory::Get1() const noexcept
 {
   Graph g;
   //AddVertex(CenterNodeFactory().CreateFromStrings("X"), g);
@@ -113,7 +95,7 @@ ribi::cmap::Graph ribi::cmap::GraphFactory::Get1() const noexcept
   return g;
 }
 
-ribi::cmap::Graph ribi::cmap::GraphFactory::Get2() const noexcept
+ribi::cmap::Graph ribi::cmap::ConceptMapFactory::Get2() const noexcept
 {
   Graph g;
   AddVertex(CenterNodeFactory().CreateFromStrings("X"), g);
@@ -122,7 +104,7 @@ ribi::cmap::Graph ribi::cmap::GraphFactory::Get2() const noexcept
   return g;
 }
 
-ribi::cmap::Graph ribi::cmap::GraphFactory::Get3() const noexcept
+ribi::cmap::Graph ribi::cmap::ConceptMapFactory::Get3() const noexcept
 {
   Graph g;
   const auto vd_1 = AddVertex(CenterNodeFactory().CreateFromStrings("X"), g);
@@ -130,10 +112,11 @@ ribi::cmap::Graph ribi::cmap::GraphFactory::Get3() const noexcept
   AddEdge(
     Edge(Node(Concept("edge_a concept"),1.2,3.4)),vd_1,vd_2,g
   );
+  //HIERO
   return g;
 }
 
-ribi::cmap::Graph ribi::cmap::GraphFactory::Get4() const noexcept
+ribi::cmap::Graph ribi::cmap::ConceptMapFactory::Get4() const noexcept
 {
   Graph g;
   const auto vd_1 = AddVertex(CenterNodeFactory().CreateFromStrings("X"), g);
@@ -144,7 +127,7 @@ ribi::cmap::Graph ribi::cmap::GraphFactory::Get4() const noexcept
   return g;
 }
 
-ribi::cmap::Graph ribi::cmap::GraphFactory::Get5() const noexcept
+ribi::cmap::Graph ribi::cmap::ConceptMapFactory::Get5() const noexcept
 {
   Graph g;
   const auto vd_1 = AddVertex(CenterNodeFactory().CreateFromStrings("X"), g);
@@ -156,7 +139,7 @@ ribi::cmap::Graph ribi::cmap::GraphFactory::Get5() const noexcept
   return g;
 }
 
-ribi::cmap::Graph ribi::cmap::GraphFactory::Get6() const noexcept
+ribi::cmap::Graph ribi::cmap::ConceptMapFactory::Get6() const noexcept
 {
   Graph g;
   const auto vd_1 = AddVertex(CenterNodeFactory().CreateFromStrings("X"), g);
@@ -521,7 +504,7 @@ ribi::cmap::Graph ribi::cmap::GraphFactory::Get19() const noexcept
 
 #endif // REALLY_CARE_20151229
 
-ribi::cmap::Graph ribi::cmap::GraphFactory::GetNasty0() const noexcept
+ribi::cmap::Graph ribi::cmap::ConceptMapFactory::GetNasty0() const noexcept
 {
   Graph g;
   const auto vd_1 = AddVertex(CenterNodeFactory().CreateFromStrings("X<Y"), g);
@@ -535,7 +518,7 @@ ribi::cmap::Graph ribi::cmap::GraphFactory::GetNasty0() const noexcept
   return g;
 }
 
-std::vector<ribi::cmap::Graph > ribi::cmap::GraphFactory::GetAllTests() const noexcept
+std::vector<ribi::cmap::Graph > ribi::cmap::ConceptMapFactory::GetAllTests() const noexcept
 {
   std::vector<Graph> v{
     Get0(),
@@ -550,7 +533,7 @@ std::vector<ribi::cmap::Graph > ribi::cmap::GraphFactory::GetAllTests() const no
 }
 
 #ifndef NDEBUG
-void ribi::cmap::GraphFactory::Test() noexcept
+void ribi::cmap::ConceptMapFactory::Test() noexcept
 {
   {
     static bool is_tested{false};
@@ -559,13 +542,13 @@ void ribi::cmap::GraphFactory::Test() noexcept
   }
   {
     container();
-    GraphFactory().GetEmptyGraph(); //Calls Graph
+    ConceptMapFactory().GetEmptyGraph(); //Calls Graph
   }
   const bool verbose{true};
   CenterNodeFactory();
   EdgeFactory();
   const TestTimer test_timer(__func__,__FILE__,1.0);
-  const GraphFactory f;
+  const ConceptMapFactory f;
   {
     if (f.GetNumberOfAllTests() != static_cast<int>(f.GetAllTests().size()))
     {

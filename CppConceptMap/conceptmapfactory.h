@@ -38,7 +38,7 @@ namespace ribi {
 namespace cmap {
 
 #ifndef DO_NOT_USE_BOOST_GRAPH
-using ConceptMapFactory = GraphFactory;
+using ConceptMapFactory = ConceptMapFactory;
 #else
 ///Factory class to create ConceptMaps
 ///ConceptMapFactory is the only class using the ConceptMap constructor
