@@ -27,7 +27,6 @@ namespace c2h {
 ///The type of folder content
 enum class FolderType
 {
-  foam, ///an OpenFOAM project
   pro,  ///a Qt Creator project
   txt   ///a collection of text files
 };

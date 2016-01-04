@@ -56,11 +56,6 @@ struct Replacements
   friend struct Replacer;
   Replacements(const std::vector<std::pair<std::string,std::string> >& replacements) noexcept;
 
-  ~Replacements() noexcept {}
-  friend void boost::checked_delete<>(Replacements*);
-  friend void boost::checked_delete<>(const Replacements*);
-
-
   ///The replacements
   const std::vector<std::pair<std::string,std::string>> m_replacements;
 

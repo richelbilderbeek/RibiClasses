@@ -28,7 +28,6 @@ namespace c2h {
 enum class FileType
 {
   cpp,          //.cpp file
-  foam,         //OpenFOAM file, extensionless file
   license_txt,  //license.txt file
   png,          //.png image file
   pri,          //.pri file

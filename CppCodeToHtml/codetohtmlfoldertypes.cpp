@@ -69,23 +69,5 @@ ribi::c2h::FolderType ribi::c2h::FolderTypes::DeduceFolderType(const std::string
     };
     if (n_pro_files + n_cpp_files > 0) return FolderType::pro;
   }
-
-  //Search for foam files
-  {
-    //Copy all filenames matching the regex in the resulting std::vector
-    const int n_foam_files {
-      std::count_if(files.begin(),files.end(),
-        [](const std::string& s)
-        {
-          static const boost::xpressive::sregex foam_file_regex {
-            boost::xpressive::sregex::compile(".*\\.(foam)\\>")
-          };
-          boost::xpressive::smatch what;
-          return boost::xpressive::regex_match(s, what, foam_file_regex);
-        }
-      )
-    };
-    if (n_foam_files > 0) return FolderType::foam;
-  }
   return FolderType::txt;
 }

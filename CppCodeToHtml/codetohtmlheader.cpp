@@ -35,9 +35,6 @@ std::string ribi::c2h::Header::CreateFilename(
     switch (page_type)
     {
       case HeaderType::cpp:   return "Cpp.htm";
-      //case HeaderType::music: return "SongXXX.htm";
-      //case HeaderType::text:  return "CppXXX.htm";
-      case HeaderType::foam:  return "ToolOpenFoam.htm";
     }
     assert(!"Should not get here");
     throw std::logic_error("ribi::c2h::Header::CreateFilename");
@@ -58,7 +55,6 @@ std::string ribi::c2h::Header::CreateTitle(
     switch (page_type)
     {
       case HeaderType::cpp:
-      case HeaderType::foam:
         return filename;
     }
     assert(!"Should not get here");
@@ -99,11 +95,6 @@ std::vector<std::string> ribi::c2h::Header::ToHtml(
       v.push_back("  <meta name=\"description\" content=\"C++ " + m_title + "\"/>");
       v.push_back("  <meta name=\"keywords\" content=\"C++ " + m_title + " \"/>");
     break;
-    case HeaderType::foam:
-      v.push_back("  <title>" + m_title + "</title>");
-      v.push_back("  <meta name=\"description\" content=\"OpenFOAM " + m_title + "\"/>");
-      v.push_back("  <meta name=\"keywords\" content=\"OpenFOAM " + m_title + " \"/>");
-    break;
   }
   v.push_back("  <link rel=\"stylesheet\" href=\"Richelbilderbeek.css\" type=\"text/css\"/>");
   v.push_back("</head>");
@@ -114,9 +105,6 @@ std::vector<std::string> ribi::c2h::Header::ToHtml(
   {
     case HeaderType::cpp:
       v.push_back("<p><a href=\"Cpp.htm\">Go back to Richel Bilderbeek's C++ page</a>.</p>");
-      break;
-    case HeaderType::foam:
-      v.push_back("<p><a href=\"ToolOpenFoam.htm\">Go back to Richel Bilderbeek's OpenFOAM page</a>.</p>");
       break;
   }
   v.push_back("<p>&nbsp;</p>");
@@ -130,9 +118,6 @@ std::vector<std::string> ribi::c2h::Header::ToHtml(
   {
     case HeaderType::cpp:
       v.push_back("<h1>(<a href=\"Cpp.htm\">C++</a>) <a href=\"" + m_filename + "\">" + m_title + "</a></h1>");
-      break;
-    case HeaderType::foam:
-      v.push_back("<h1>(<a href=\"ToolOpenFoam.htm\">OpenFOAM</a>) <a href=\"" + m_filename + "\">" + m_title + "</a></h1>");
       break;
   }
   v.push_back("<p>&nbsp;</p>");
@@ -150,24 +135,10 @@ std::vector<std::string> ribi::c2h::Header::ToMarkdown(
   std::vector<std::string> v;
   switch (header_type)
   {
-    //case HeaderType::text:
     case HeaderType::cpp:
-    case HeaderType::foam:
       v.push_back(m_title);
       v.push_back(std::string(m_title.size(),'='));
     break;
   }
-  /*
-  switch (header_type)
-  {
-    case HeaderType::cpp:
-      v.push_back("<h1>(<a href=\"Cpp.htm\">C++</a>) <a href=\"" + m_filename + "\">" + m_title + "</a></h1>");
-      break;
-    case HeaderType::foam:
-      v.push_back("<h1>(<a href=\"ToolOpenFoam.htm\">OpenFOAM</a>) <a href=\"" + m_filename + "\">" + m_title + "</a></h1>");
-      break;
-  }
-  v.push_back("<p>&nbsp;</p>");
-  */
   return v;
 }

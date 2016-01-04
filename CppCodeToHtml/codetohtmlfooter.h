@@ -36,13 +36,7 @@ namespace c2h {
 ///Defines the header of the resulting HTML page
 struct Footer
 {
-  static std::vector<std::string> ToHtml(const FooterType page_type) noexcept;
-  static std::vector<std::string> ToMarkdown(const FooterType page_type) noexcept;
-
-  //private:
-  //~Footer() noexcept {}
-  //friend void boost::checked_delete<>(Footer*);
-  //friend void boost::checked_delete<>(const Footer*);
+  static std::vector<std::string> ToHtml() noexcept;
 };
 
 } //~namespace c2h

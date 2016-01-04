@@ -105,7 +105,6 @@ std::string ribi::c2h::FileTypes::FileTypeToStr(const FileType t) const noexcept
   switch (t)
   {
     case FileType::cpp: return "cpp";
-    case FileType::foam: return "foam";
     case FileType::license_txt: return "license_txt";
     case FileType::png: return "png";
     case FileType::pri: return "pri";
@@ -125,7 +124,6 @@ std::vector<ribi::c2h::FileType> ribi::c2h::FileTypes::GetAllFileTypes() const n
 {
   const std::vector<FileType> v {
     FileType::cpp,
-    FileType::foam,
     FileType::license_txt,
     FileType::png,
     FileType::pri,
@@ -141,7 +139,6 @@ std::vector<ribi::c2h::FileType> ribi::c2h::FileTypes::GetAllFileTypes() const n
 ribi::c2h::FileType ribi::c2h::FileTypes::StrToFileType(const std::string& s) const noexcept
 {
   if (s == "cpp") return FileType::cpp;
-  if (s == "foam") return FileType::foam;
   if (s == "license_txt") return FileType::license_txt;
   if (s == "png") return FileType::png;
   if (s == "pri") return FileType::pri;
