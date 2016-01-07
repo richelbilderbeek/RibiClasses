@@ -46,21 +46,6 @@ ribi::WtDialWidget::WtDialWidget(
 {
   assert(m_widget);
 
-  m_widget->GetDial()->m_signal_color_changed.connect(
-    boost::bind(
-      &ribi::WtDialWidget::DoRepaint,
-      this));
-
-  m_widget->GetDial()->m_signal_position_changed.connect(
-    boost::bind(
-      &ribi::WtDialWidget::DoRepaint,
-      this));
-
-  m_widget->m_signal_geometry_changed.connect(
-    boost::bind(
-      &ribi::WtDialWidget::OnResize,
-      this));
-
   this->clicked().connect(this,&ribi::WtDialWidget::OnClicked);
 
   m_widget->SetGeometry(0,0,32,32);
@@ -123,13 +108,13 @@ void ribi::WtDialWidget::DrawDial(
     Geometry().GetTop(widget->GetGeometry()),
     Geometry().GetWidth(widget->GetGeometry()),
     Geometry().GetHeight(widget->GetGeometry()),
-    widget->GetDial()
+    &widget->GetDial()
   );
 }
 
 std::string ribi::WtDialWidget::GetVersion()
 {
-  return "3.2";
+  return "4.0";
 }
 
 std::vector<std::string> ribi::WtDialWidget::GetVersionHistory()
@@ -140,7 +125,8 @@ std::vector<std::string> ribi::WtDialWidget::GetVersionHistory()
     "2011-07-03: version 2.0: moved Dial its user interface logic to new class DialWidget",
     "2011-08-07: Version 3.0: conformized architure for MysteryMachine",
     "2011-08-31: Version 3.1: allow changing the dial its color",
-    "2014-04-23: Version 3.2: use of Boost.Geometry its rectangle class"
+    "2014-04-23: Version 3.2: use of Boost.Geometry its rectangle class",
+    "2016-01-07: Version 4.0: moved to own GitHub",
   };
 }
 
