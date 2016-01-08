@@ -49,14 +49,14 @@ struct NodeFactory
     const double y = 0.0
   ) const noexcept;
 
-  ///Obtain a Node or CenterNode from an XML std::string
-  //Node FromXml(const std::string& s) const;
-
   ///Obtain testing nodes
   int GetNumberOfTests() const noexcept;
   std::vector<Node> GetTests() const noexcept;
-  std::vector<Node> GetNastyTests() const noexcept;
   Node GetTest(const int test) const noexcept;
+
+  int GetNumberOfNastyTests() const noexcept;
+  std::vector<Node> GetNastyTests() const noexcept;
+  Node GetNastyTest(const int test) const noexcept;
 
   #ifndef NDEBUG
   static void Test() noexcept;

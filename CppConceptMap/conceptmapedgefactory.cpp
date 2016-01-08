@@ -159,6 +159,16 @@ ribi::cmap::Edge ribi::cmap::EdgeFactory::GetTest(
   return v[index];
 }
 
+ribi::cmap::Edge ribi::cmap::EdgeFactory::GetNastyTest(
+  const int index
+) const noexcept
+{
+  const auto v = GetNastyTests();
+  assert(index >= 0);
+  assert(index < static_cast<int>(v.size()));
+  return v[index];
+}
+
 std::vector<ribi::cmap::Edge> ribi::cmap::EdgeFactory::GetNastyTests() const noexcept
 {
   std::vector<Edge> result;

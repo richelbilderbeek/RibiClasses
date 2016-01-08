@@ -53,9 +53,13 @@ struct CenterNodeFactory
     const double y = 0.0
   ) const noexcept;
 
-  ///Obtain a CenterNode from an XML std::string
-  ///Throws if it is no CenterNode
-  Node FromXml(const std::string& s) const;
+  int GetNumberOfTests() const noexcept;
+  std::vector<Node> GetTests() const noexcept;
+  Node GetTest(const int test_index) const noexcept;
+
+  int GetNumberOfNastyTests() const noexcept;
+  std::vector<Node> GetNastyTests() const noexcept;
+  Node GetNastyTest(const int test_index) const noexcept;
 
   #ifndef NDEBUG
   static void Test() noexcept;

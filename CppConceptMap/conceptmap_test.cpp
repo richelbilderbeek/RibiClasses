@@ -126,28 +126,21 @@ void ribi::cmap::TestConceptMap() noexcept
       "0[label=\"<node><concept><name>A</name><examples></examples><concept_is_complex>1</concept_is_complex><complexity>-1</complexity><concreteness>-1</concreteness><specificity>-1</specificity></concept><x>0</x><y>0</y><is_center_node>0</is_center_node></node>\", regular=\"0\"];\n"
       "}\n"
     };
-    //assert(d == dot);
+    assert(d == dot);
     ConceptMap c{DotToConceptMap(dot)};
     assert(boost::num_edges(c) == 0);
     assert(boost::num_vertices(c) == 1);
   }
   if (verbose) { TRACE("Dot conversion"); }
   {
-    int i=0;
     for (ConceptMap c: ConceptMapFactory().GetAllTests())
     {
-      TRACE(i); ++i;
       const std::string dot{ToDot(c)};
       ConceptMap d{DotToConceptMap(dot)};
       assert(c == d);
       const std::string dot2{ToDot(d)};
-      if (dot != dot2) {
-        TRACE(dot);
-        TRACE(dot2);
-      }
       assert(dot == dot2);
     }
-    assert(1==2);
   }
   if (verbose) { TRACE("XML conversion"); }
   {
@@ -159,14 +152,12 @@ void ribi::cmap::TestConceptMap() noexcept
       const std::string xml2{ToXml(d)};
       assert(xml == xml2);
     }
-    assert(1==2);
   }
   if (verbose) { TRACE("Streaming: empty graph"); }
   {
     ConceptMap a;
     std::stringstream s;
     s << a;
-    TRACE(s.str());
     ConceptMap b;
     s >> b;
     assert(a == b);
@@ -174,8 +165,8 @@ void ribi::cmap::TestConceptMap() noexcept
   {
     std::string s{
       "digraph G {\n"
-      "  0[label=\"<node><concept><name>A</name><examples></examples><concept_is_complex>1</concept_is_complex><complexity>-1</complexity><concreteness>-1</concreteness><specificity>-1</specificity></concept><x>0</x><y>0</y><is_center_node>0</is_center_node></node>\", regular=\"0\"];\n"
-      "}"
+      "0[label=\"<node><concept><name>A</name><examples></examples><concept_is_complex>1</concept_is_complex><complexity>-1</complexity><concreteness>-1</concreteness><specificity>-1</specificity></concept><x>0</x><y>0</y><is_center_node>0</is_center_node></node>\", regular=\"0\"];\n"
+      "}\n"
     };
     {
       std::ofstream f("tmp.dot");
@@ -183,14 +174,12 @@ void ribi::cmap::TestConceptMap() noexcept
     }
     ConceptMap c = DotToConceptMap(s);
     assert(s == ToDot(c));
-    assert(1==2);
   }
   if (verbose) { TRACE("Streaming: single object"); }
   {
     ConceptMap a{ConceptMapFactory().GetTest(1)};
     std::stringstream s;
     s << a;
-    TRACE(s.str());
     ConceptMap b;
     s >> b;
     assert(a == b);
@@ -204,20 +193,27 @@ void ribi::cmap::TestConceptMap() noexcept
     ConceptMap g;
     ConceptMap h;
     s >> g >> h;
-    if (e != g) { TRACE(e); TRACE(g); }
-    if (f != h) { TRACE(f); TRACE(h); }
     assert(e == g);
     assert(f == h);
   }
   if (verbose) { TRACE("Nasty examples: one object"); }
   for (const ConceptMap e: ConceptMapFactory().GetNastyTests())
   {
+    {
+      std::ofstream f("tmp.dot");
+      f << e;
+    }
     std::stringstream s;
     s << e;
     ConceptMap f;
     assert(e != f);
     s >> f;
-    if (e != f) { TRACE(e); TRACE(f); }
+    if (e != f) {
+      for (const Edge& edge: GetEdges(e)) { TRACE(edge); }
+      for (const Edge& edge: GetEdges(f)) { TRACE(edge); }
+      TRACE(e); TRACE(f);
+    }
+    assert(GetSortedEdges(e) == GetSortedEdges(f));
     assert(e == f);
   }
   if (verbose) { TRACE("Nasty examples: two objects"); }

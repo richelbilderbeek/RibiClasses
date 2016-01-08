@@ -90,66 +90,71 @@ ribi::cmap::Graph ribi::cmap::ConceptMapFactory::Get0() const noexcept
 ribi::cmap::Graph ribi::cmap::ConceptMapFactory::Get1() const noexcept
 {
   Graph g;
-  //AddVertex(CenterNodeFactory().CreateFromStrings("X"), g);
-  AddVertex(NodeFactory().CreateFromStrings("A"), g);
+  AddVertex(CenterNodeFactory().GetTest(0),g);
   return g;
 }
 
 ribi::cmap::Graph ribi::cmap::ConceptMapFactory::Get2() const noexcept
 {
   Graph g;
-  AddVertex(CenterNodeFactory().CreateFromStrings("X"), g);
-  AddVertex(NodeFactory().CreateFromStrings("A"), g);
-  AddVertex(NodeFactory().CreateFromStrings("B"), g);
+  AddVertex(CenterNodeFactory().GetTest(1),g);
+  AddVertex(NodeFactory().GetTest(0), g);
+  AddVertex(NodeFactory().GetTest(1), g);
   return g;
 }
 
 ribi::cmap::Graph ribi::cmap::ConceptMapFactory::Get3() const noexcept
 {
   Graph g;
-  const auto vd_1 = AddVertex(CenterNodeFactory().CreateFromStrings("X"), g);
-  const auto vd_2 = AddVertex(NodeFactory().CreateFromStrings("A"), g);
+  const auto vd_1 = AddVertex(CenterNodeFactory().GetTest(2),g);
+  const auto vd_2 = AddVertex(NodeFactory().GetTest(2), g);
+
   AddEdge(
-    Edge(Node(Concept("edge_a concept"),1.2,3.4)),vd_1,vd_2,g
+    EdgeFactory().GetTest(1),vd_1,vd_2,g
   );
-  //HIERO
   return g;
 }
 
 ribi::cmap::Graph ribi::cmap::ConceptMapFactory::Get4() const noexcept
 {
   Graph g;
-  const auto vd_1 = AddVertex(CenterNodeFactory().CreateFromStrings("X"), g);
-  const auto vd_2 = AddVertex(NodeFactory().CreateFromStrings("A"), g);
-  const auto vd_3 = AddVertex(NodeFactory().CreateFromStrings("B"), g);
-  AddEdge(EdgeFactory().Create((Node(ConceptFactory().Create("edge_a concept"),1.2,3.4))),vd_1,vd_2,g);
-  AddEdge(EdgeFactory().Create((Node(ConceptFactory().Create("edge_a concept"),1.2,3.4))),vd_2,vd_3,g);
+  const auto vd_1 = AddVertex(CenterNodeFactory().GetNastyTest(0), g);
+  const auto vd_2 = AddVertex(NodeFactory().GetNastyTest(0), g);
+  const auto vd_3 = AddVertex(NodeFactory().GetNastyTest(1), g);
+  AddEdge(
+    EdgeFactory().GetTest(2),
+    vd_1,vd_2,g
+  );
+  AddEdge(
+    EdgeFactory().GetTest(2),
+    vd_2,vd_3,g
+  );
   return g;
 }
 
 ribi::cmap::Graph ribi::cmap::ConceptMapFactory::Get5() const noexcept
 {
   Graph g;
-  const auto vd_1 = AddVertex(CenterNodeFactory().CreateFromStrings("X"), g);
-  const auto vd_2 = AddVertex(NodeFactory().CreateFromStrings("A"), g);
-  const auto vd_3 = AddVertex(NodeFactory().CreateFromStrings("B"), g);
-  AddEdge(EdgeFactory().Create((Node(ConceptFactory().Create("edge_a concept"),1.2,3.4))),vd_1,vd_2,g);
-  AddEdge(EdgeFactory().Create((Node(ConceptFactory().Create("edge_a concept"),1.2,3.4))),vd_2,vd_3,g);
-  AddEdge(EdgeFactory().Create((Node(ConceptFactory().Create("edge_a concept"),1.2,3.4))),vd_3,vd_1,g);
+  const auto vd_1 = AddVertex(CenterNodeFactory().GetNastyTest(1), g);
+  const auto vd_2 = AddVertex(NodeFactory().GetNastyTest(0), g);
+  const auto vd_3 = AddVertex(NodeFactory().GetNastyTest(2), g);
+  AddEdge(EdgeFactory().GetNastyTest(0),vd_1,vd_2,g);
+  AddEdge(EdgeFactory().GetNastyTest(1),vd_2,vd_3,g);
+  AddEdge(EdgeFactory().GetNastyTest(2),vd_3,vd_1,g);
   return g;
 }
 
 ribi::cmap::Graph ribi::cmap::ConceptMapFactory::Get6() const noexcept
 {
   Graph g;
-  const auto vd_1 = AddVertex(CenterNodeFactory().CreateFromStrings("X"), g);
-  const auto vd_2 = AddVertex(NodeFactory().CreateFromStrings("A"), g);
-  const auto vd_3 = AddVertex(NodeFactory().CreateFromStrings("B"), g);
-  const auto vd_4 = AddVertex(NodeFactory().CreateFromStrings("C"), g);
-  AddEdge(EdgeFactory().Create((Node(ConceptFactory().Create("edge_a concept"),1.2,3.4))),vd_1,vd_2,g);
-  AddEdge(EdgeFactory().Create((Node(ConceptFactory().Create("edge_a concept"),1.2,3.4))),vd_2,vd_3,g);
-  AddEdge(EdgeFactory().Create((Node(ConceptFactory().Create("edge_a concept"),1.2,3.4))),vd_3,vd_1,g);
-  AddEdge(EdgeFactory().Create((Node(ConceptFactory().Create("edge_a concept"),1.2,3.4))),vd_4,vd_1,g);
+  const auto vd_1 = AddVertex(CenterNodeFactory().GetNastyTest(2), g);
+  const auto vd_2 = AddVertex(NodeFactory().GetNastyTest(0), g);
+  const auto vd_3 = AddVertex(NodeFactory().GetNastyTest(1), g);
+  const auto vd_4 = AddVertex(NodeFactory().GetNastyTest(2), g);
+  AddEdge(EdgeFactory().GetTest(2),vd_1,vd_2,g);
+  AddEdge(EdgeFactory().GetNastyTest(0),vd_2,vd_3,g);
+  AddEdge(EdgeFactory().GetNastyTest(1),vd_3,vd_1,g);
+  AddEdge(EdgeFactory().GetNastyTest(2),vd_4,vd_1,g);
   return g;
 }
 
@@ -507,14 +512,14 @@ ribi::cmap::Graph ribi::cmap::GraphFactory::Get19() const noexcept
 ribi::cmap::Graph ribi::cmap::ConceptMapFactory::GetNasty0() const noexcept
 {
   Graph g;
-  const auto vd_1 = AddVertex(CenterNodeFactory().CreateFromStrings("X<Y"), g);
-  const auto vd_2 = AddVertex(NodeFactory().CreateFromStrings(" A>B"), g);
-  const auto vd_3 = AddVertex(NodeFactory().CreateFromStrings("BC "), g);
-  const auto vd_4 = AddVertex(NodeFactory().CreateFromStrings(" C "), g);
-  AddEdge(EdgeFactory().Create((Node(ConceptFactory().Create("edge_a concept"),1.2,3.4))),vd_1,vd_2,g);
-  AddEdge(EdgeFactory().Create((Node(ConceptFactory().Create("edge_a concept"),1.2,3.4))),vd_2,vd_3,g);
-  AddEdge(EdgeFactory().Create((Node(ConceptFactory().Create("edge_a concept"),1.2,3.4))),vd_3,vd_1,g);
-  AddEdge(EdgeFactory().Create((Node(ConceptFactory().Create("edge_a concept"),1.2,3.4))),vd_4,vd_1,g);
+  const auto vd_1 = AddVertex(CenterNodeFactory().GetNastyTest(0), g);
+  const auto vd_2 = AddVertex(NodeFactory().GetNastyTest(0), g);
+  const auto vd_3 = AddVertex(NodeFactory().GetNastyTest(1), g);
+  const auto vd_4 = AddVertex(NodeFactory().GetNastyTest(2), g);
+  AddEdge(EdgeFactory().GetNastyTest(0),vd_1,vd_2,g);
+  AddEdge(EdgeFactory().GetNastyTest(1),vd_2,vd_3,g);
+  AddEdge(EdgeFactory().GetNastyTest(2),vd_3,vd_1,g);
+  AddEdge(EdgeFactory().GetNastyTest(0),vd_4,vd_1,g);
   return g;
 }
 

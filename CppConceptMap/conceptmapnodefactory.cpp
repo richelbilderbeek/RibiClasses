@@ -66,9 +66,22 @@ int ribi::cmap::NodeFactory::GetNumberOfTests() const noexcept
   return static_cast<int>(GetTests().size());
 }
 
+int ribi::cmap::NodeFactory::GetNumberOfNastyTests() const noexcept
+{
+  return static_cast<int>(GetNastyTests().size());
+}
+
 ribi::cmap::Node ribi::cmap::NodeFactory::GetTest(const int i) const noexcept
 {
   const auto tests = GetTests();
+  assert(i >= 0);
+  assert(i < static_cast<int>(tests.size()));
+  return tests[i];
+}
+
+ribi::cmap::Node ribi::cmap::NodeFactory::GetNastyTest(const int i) const noexcept
+{
+  const auto tests = GetNastyTests();
   assert(i >= 0);
   assert(i < static_cast<int>(tests.size()));
   return tests[i];
@@ -81,9 +94,9 @@ std::vector<ribi::cmap::Node> ribi::cmap::NodeFactory::GetNastyTests() const noe
   std::transform(v.begin(),v.end(),std::back_inserter(nodes),
     [](const Concept& c)
     {
-      const int x = 0;
-      const int y = 0;
-      const Node p{c,x,y};
+      const double x{1.2};
+      const double y{3.4};
+      const Node p{c,false,x,y};
       return p;
     }
   );
@@ -97,9 +110,9 @@ std::vector<ribi::cmap::Node> ribi::cmap::NodeFactory::GetTests() const noexcept
   std::transform(v.begin(),v.end(),std::back_inserter(nodes),
     [](const Concept& c)
     {
-      const int x = 0;
-      const int y = 0;
-      const Node p{c,x,y};
+      const double x{1.2};
+      const double y{3.4};
+      const Node p{c,false,x,y};
       return p;
     }
   );
@@ -116,6 +129,15 @@ void ribi::cmap::NodeFactory::Test() noexcept
   }
   NodeFactory().GetTest(0);
   const TestTimer test_timer(__func__,__FILE__,1.0);
+  //Number of tests
+  {
+    assert(NodeFactory().GetNumberOfTests()
+      == static_cast<int>(NodeFactory().GetTests().size())
+    );
+    assert(NodeFactory().GetNumberOfNastyTests()
+      == static_cast<int>(NodeFactory().GetNastyTests().size())
+    );
+  }
   //operator== and operator!=
   {
     assert(NodeFactory().GetTest(0) == NodeFactory().GetTest(0));

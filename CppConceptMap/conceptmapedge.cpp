@@ -134,6 +134,15 @@ void ribi::cmap::Edge::Test() noexcept
     const Edge edge_before{EdgeFactory().GetTest(0)};
     const std::string s{ToXml(edge_before)};
     const Edge edge_after{XmlToEdge(s)};
+    if (ToXml(edge_before) != ToXml(edge_after))
+    {
+      TRACE(ToXml(edge_before));
+      TRACE(ToXml(edge_after ));
+      TRACE(edge_before.GetNode().GetX());
+      TRACE(edge_before.GetNode().GetY());
+      TRACE(edge_after.GetNode().GetX());
+      TRACE(edge_after.GetNode().GetY());
+    }
     assert(ToXml(edge_before) == ToXml(edge_after));
     assert(edge_before == edge_after);
   }
@@ -246,7 +255,12 @@ ribi::cmap::Edge ribi::cmap::XmlToEdge(
     assert(v.size() == 1);
     y = boost::lexical_cast<double>(StripXmlTag(v[0]));
   }
-  Node node(concept,x,y);
+  Node node(
+    concept,
+    false, //is_center_node
+    x,
+    y
+  );
   Edge edge(
     node
   );

@@ -158,12 +158,32 @@ void ribi::cmap::Node::Test() noexcept
     assert(c != a);
     assert(c == b);
   }
+  //SetX and GetX
+  {
+    Node a;
+    a.SetX(1.2);
+    assert(a.GetX() == 1.2);
+    a.SetY(3.4);
+    assert(a.GetX() == 1.2);
+    assert(a.GetY() == 3.4);
+    a.SetX(5.6);
+    assert(a.GetX() == 5.6);
+    assert(a.GetY() == 3.4);
+  }
   {
     Node a{NodeFactory().GetTest(1)};
     std::stringstream s;
     s << a;
+    TRACE(s.str());
     Node b;
     s >> b;
+    TRACE(a.GetX());
+    TRACE(a.GetY());
+    TRACE(b.GetX());
+    TRACE(b.GetY());
+    assert(a.GetX() == b.GetX());
+    assert(a.GetY() == b.GetY());
+    assert(a.GetConcept() == b.GetConcept());
     assert(a == b);
   }
   {
@@ -277,7 +297,7 @@ void ribi::cmap::Node::Test() noexcept
       }
     }
   }
-  //Single stream
+  //Stream two
   {
     const Node e = NodeFactory().GetTest(1);
     const Node f = NodeFactory().GetTest(2);
@@ -397,14 +417,7 @@ ribi::cmap::Node ribi::cmap::XmlToNode(const std::string& s)
     assert(v.size() == 1);
     y = boost::lexical_cast<double>(ribi::xml::StripXmlTag(v[0]));
   }
-  if (is_center_node)
-  {
-    return CenterNodeFactory().Create(concept,x,y);
-  }
-  else
-  {
-    return Node(concept,x,y);
-  }
+  return Node(concept,is_center_node,x,y);
 }
 
 bool ribi::cmap::operator==(const Node& lhs, const Node& rhs) noexcept
@@ -453,27 +466,32 @@ std::ostream& ribi::cmap::operator<<(std::ostream& os, const Node& node) noexcep
 
 std::istream& ribi::cmap::operator>>(std::istream& is, Node& node) noexcept
 {
+  #ifdef NO_EAT
   std::string s;
   is >> s;
-  /*
+  assert(s != "0");
+  #else
   is >> std::noskipws;
   std::string s;
-  while (1)
+  while (1) //Eat whitespace
   {
     char c;
     is >> c;
     assert(c != '\0');
+    if (c == ' ') continue;
     s += c;
-    if(s.size() >= 6 && s.substr(0,5) != "<node")
-    {
-      TRACE(s);
-    }
-    if(s.size() >= 7 && s.substr(0,6) != "<node>") { TRACE(s); }
-    assert(s.size() < 7 || s.substr(0,6) == "<node>");
+    break;
+  }
+
+  while (1)
+  {
+    char c;
+    is >> c;
+    s += c;
+    assert(s.size() < 6 || s.substr(0,6) == "<node>");
     if(s.size() > 7 && s.substr(s.size() - 7,7) == "</node>") break;
   }
-  */
-  assert(s != "0");
+  #endif
   node = XmlToNode(graphviz_decode(s));
   return is;
 }
