@@ -55,9 +55,9 @@ namespace con3 {
 
 ///WtConnectThreeWidget is a Wt widget to display
 ///the area/board of the ConnectThree class.
-struct WtConnectThreeWidget : public Wt::WPaintedWidget
+struct WtWidget : public Wt::WPaintedWidget
 {
-  explicit WtConnectThreeWidget(
+  explicit WtWidget(
     const Resources& resources,
     const std::bitset<3>& is_player_human = std::bitset<3>(true),
     const int n_cols = 16,

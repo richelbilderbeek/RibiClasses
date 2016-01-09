@@ -112,6 +112,18 @@ void ribi::cmap::SaveToFile(const ConceptMap& g, const std::string& dot_filename
   f << ToDot(g);
 }
 
+ribi::cmap::ConceptMap ribi::cmap::SelectRandomNode(ConceptMap g) noexcept
+{
+  assert(boost::num_vertices(g) > 0);
+  const int n{static_cast<int>(boost::num_vertices(g))};
+  const int i{std::rand() % n};
+  auto vdi = vertices(g).first;
+  for (int j=0; j!=i; ++j, ++vdi) {}
+  const auto pmap = get(boost::vertex_is_selected,g);
+  put(pmap,*vdi,true);
+  return g;
+}
+
 std::string ribi::cmap::ToDot(const ConceptMap& g) noexcept
 {
   std::stringstream f;
@@ -139,6 +151,37 @@ std::string ribi::cmap::ToXml(const ConceptMap& conceptmap) noexcept
   assert(r.substr(0,12) == "<conceptmap>");
   assert(r.substr(r.size() - 13,13) == "</conceptmap>");
   return r;
+}
+
+ribi::cmap::ConceptMap ribi::cmap::UnselectEdges(ConceptMap g) noexcept
+{
+  const auto eip = edges(g);
+  std::for_each(eip.first, eip.second,
+    [&g](const EdgeDescriptor ed)
+    {
+      const auto pmap = get(boost::edge_is_selected, g);
+      put(pmap,ed,false);
+    }
+  );
+  return g;
+}
+
+ribi::cmap::ConceptMap ribi::cmap::UnselectEverything(ConceptMap conceptmap) noexcept
+{
+  return UnselectEdges(UnselectNodes(conceptmap));
+}
+
+ribi::cmap::ConceptMap ribi::cmap::UnselectNodes(ConceptMap g) noexcept
+{
+  const auto vip = vertices(g);
+  std::for_each(vip.first, vip.second,
+    [&g](const VertexDescriptor vd)
+    {
+      const auto pmap = get(boost::vertex_is_selected, g);
+      put(pmap,vd,false);
+    }
+  );
+  return g;
 }
 
 ribi::cmap::ConceptMap ribi::cmap::XmlToConceptMap(const std::string& s)

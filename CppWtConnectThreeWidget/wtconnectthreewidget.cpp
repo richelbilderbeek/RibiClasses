@@ -38,7 +38,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 ///Yes, naming the filename twice feels dumb, but
 ///I could not find enough documentation about
 ///how I should use the Wt::WPainter::Image constructor
-ribi::con3::WtConnectThreeWidget::WtConnectThreeWidget(
+ribi::con3::WtWidget::WtWidget(
   const Resources& resources,
   const std::bitset<3>& is_player_human,
   const int n_cols,
@@ -70,7 +70,7 @@ ribi::con3::WtConnectThreeWidget::WtConnectThreeWidget(
   const int sprite_height = m_empty->height();
 
   this->resize(n_cols * sprite_width,n_rows * sprite_height);
-  this->mouseWentDown().connect(this, &ribi::con3::WtConnectThreeWidget::OnClick);
+  this->mouseWentDown().connect(this, &ribi::con3::WtWidget::OnClick);
   this->update();
   m_timer->setInterval(100);
   m_timer->timeout().connect(
@@ -79,7 +79,7 @@ ribi::con3::WtConnectThreeWidget::WtConnectThreeWidget(
       m_widget.get()));
 }
 
-void ribi::con3::WtConnectThreeWidget::DoComputerTurn()
+void ribi::con3::WtWidget::DoComputerTurn()
 {
   assert(IsComputerTurn());
   const auto move = m_widget->SuggestMove();
@@ -90,22 +90,22 @@ void ribi::con3::WtConnectThreeWidget::DoComputerTurn()
   this->update();
 }
 
-ribi::con3::Player ribi::con3::WtConnectThreeWidget::GetActivePlayer() const
+ribi::con3::Player ribi::con3::WtWidget::GetActivePlayer() const
 {
   return m_widget->GetGame().GetActivePlayer();
 }
 
-const std::bitset<3>& ribi::con3::WtConnectThreeWidget::GetIsPlayerHuman() const
+const std::bitset<3>& ribi::con3::WtWidget::GetIsPlayerHuman() const
 {
   return m_widget->GetIsPlayerHuman();
 }
 
-std::string ribi::con3::WtConnectThreeWidget::GetVersion()
+std::string ribi::con3::WtWidget::GetVersion()
 {
   return "3.0";
 }
 
-std::vector<std::string> ribi::con3::WtConnectThreeWidget::GetVersionHistory()
+std::vector<std::string> ribi::con3::WtWidget::GetVersionHistory()
 {
   return {
     "2011-01-08: version 1.0: initial version",
@@ -116,19 +116,19 @@ std::vector<std::string> ribi::con3::WtConnectThreeWidget::GetVersionHistory()
   };
 }
 
-ribi::con3::Winner ribi::con3::WtConnectThreeWidget::GetWinner() const
+ribi::con3::Winner ribi::con3::WtWidget::GetWinner() const
 {
   assert(m_widget);
   return m_widget->GetGame().GetWinner();
 }
 
-bool ribi::con3::WtConnectThreeWidget::IsComputerTurn() const
+bool ribi::con3::WtWidget::IsComputerTurn() const
 {
   assert(m_widget);
   return m_widget->IsComputerTurn();
 }
 
-void ribi::con3::WtConnectThreeWidget::OnClick(const Wt::WMouseEvent& e)
+void ribi::con3::WtWidget::OnClick(const Wt::WMouseEvent& e)
 {
   //Disable clicking if it's the AI's turn
   if (IsComputerTurn()) return;
@@ -150,7 +150,7 @@ void ribi::con3::WtConnectThreeWidget::OnClick(const Wt::WMouseEvent& e)
   }
 }
 
-void ribi::con3::WtConnectThreeWidget::paintEvent(Wt::WPaintDevice *paintDevice)
+void ribi::con3::WtWidget::paintEvent(Wt::WPaintDevice *paintDevice)
 {
   Wt::WPainter painter(paintDevice);
   assert(m_widget);
@@ -170,7 +170,7 @@ void ribi::con3::WtConnectThreeWidget::paintEvent(Wt::WPaintDevice *paintDevice)
   }
 }
 
-const Wt::WPainter::Image& ribi::con3::WtConnectThreeWidget::GetImage(const Square sprite) const
+const Wt::WPainter::Image& ribi::con3::WtWidget::GetImage(const Square sprite) const
 {
   switch (sprite)
   {
@@ -184,14 +184,14 @@ const Wt::WPainter::Image& ribi::con3::WtConnectThreeWidget::GetImage(const Squa
   }
 }
 
-void ribi::con3::WtConnectThreeWidget::Restart()
+void ribi::con3::WtWidget::Restart()
 {
   assert(m_widget);
   m_widget->Restart();
   this->update();
 }
 
-void ribi::con3::WtConnectThreeWidget::SetIsPlayerHuman(const std::bitset<3>& is_player_human)
+void ribi::con3::WtWidget::SetIsPlayerHuman(const std::bitset<3>& is_player_human)
 {
   assert(m_widget);
   m_widget->SetIsPlayerHuman(is_player_human);

@@ -7,8 +7,8 @@ namespace con3 {
 struct Resources;
 struct ConnectThreeWidget;
 struct Move;
-struct WtConnectThreeGameDialog;
-struct WtConnectThreeWidget;
+struct WtGameDialog;
+struct WtWidget;
 struct WtSelectPlayerWidget;
 
 } //~namespace con3

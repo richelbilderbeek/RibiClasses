@@ -43,7 +43,9 @@ SOURCES += \
     ../RibiClasses/CppQtConceptMap/qtconceptmapcommanddeleteedge.cpp \
     ../RibiClasses/CppQtConceptMap/qtconceptmapcommanddeletenode.cpp \
     ../RibiClasses/CppQtConceptMap/qtconceptmapcommandfactory.cpp \
-    ../RibiClasses/CppQtConceptMap/qtconceptmapcommandunselectrandom.cpp
+    ../RibiClasses/CppQtConceptMap/qtconceptmapcommandunselectrandom.cpp \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapcommandselectrandomitem.cpp \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapcommandselectrandomnode.cpp
 
 HEADERS += \
     ../RibiClasses/CppQtConceptMap/qtconceptmapbrushfactory.h \
@@ -84,7 +86,9 @@ HEADERS += \
     ../RibiClasses/CppQtConceptMap/qtconceptmapcommanddeleteedge.h \
     ../RibiClasses/CppQtConceptMap/qtconceptmapcommanddeletenode.h \
     ../RibiClasses/CppQtConceptMap/qtconceptmapcommandfactory.h \
-    ../RibiClasses/CppQtConceptMap/qtconceptmapcommandunselectrandom.h
+    ../RibiClasses/CppQtConceptMap/qtconceptmapcommandunselectrandom.h \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapcommandselectrandomitem.h \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapcommandselectrandomnode.h
 
 FORMS += \
     ../RibiClasses/CppQtConceptMap/qtconceptmapconceptdialog.ui \

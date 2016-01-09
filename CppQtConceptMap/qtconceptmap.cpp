@@ -56,6 +56,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "qtconceptmapbrushfactory.h"
 #include "qtconceptmapcommandcreatenewedge.h"
 #include "qtconceptmapcommandcreatenewnode.h"
+#include "qtconceptmapcommandselectrandomnode.h"
 #include "qtconceptmapcenternode.h"
 #include "qtconceptmapconcepteditdialog.h"
 #include "qtconceptmapqtedge.h"
@@ -392,9 +393,44 @@ void ribi::cmap::QtConceptMap::DeleteQtNode(const QtNode * const qtnode)
 }
 #endif // NOT_NOW_20151230
 
+int ribi::cmap::CountQtEdges(const QGraphicsScene& scene) noexcept
+{
+  int cnt{0};
+  for (auto item: scene.items()) {
+    if (dynamic_cast<QtEdge*>(item)) {
+      ++cnt;
+    }
+  }
+  return cnt;
+}
+
+int ribi::cmap::CountQtNodes(const QGraphicsScene& scene) noexcept
+{
+  int cnt{0};
+  for (auto item: scene.items()) {
+    if (dynamic_cast<QtNode*>(item)) {
+      ++cnt;
+    }
+  }
+  return cnt;
+}
+
 void ribi::cmap::QtConceptMap::DoCommand(Command * const command) noexcept
 {
   m_undo.push(command);
+}
+
+ribi::cmap::QtNode * ribi::cmap::FindQtNode(
+  const Node& node, const QGraphicsScene& scene) noexcept
+{
+  for (auto item: scene.items())
+  {
+    if (QtNode * qtnode = dynamic_cast<QtNode*>(item))
+    {
+      if (qtnode->GetNode() == node) { return qtnode; }
+    }
+  }
+  return nullptr;
 }
 
 ribi::cmap::QtNode * ribi::cmap::QtConceptMap::GetCenterNode() noexcept
@@ -451,7 +487,7 @@ ribi::cmap::QtNode* ribi::cmap::QtConceptMap::GetItemBelowCursor(const QPointF& 
 const ribi::cmap::QtEdge * ribi::cmap::QtConceptMap::GetQtEdge(
   const Edge& edge) const noexcept
 {
-  const auto v(GetQtEdges());
+  const auto v(GetQtEdges(*GetScene()));
   for (const auto e:v)
   {
     if (e->GetEdge() == edge) return e;
@@ -517,11 +553,13 @@ const ribi::cmap::QtEdge * ribi::cmap::QtConceptMap::GetQtEdgeConst(
   return * iter;
 }
 
-std::vector<ribi::cmap::QtEdge*> ribi::cmap::QtConceptMap::GetQtEdges(
-  const QtNode* const from) const noexcept
+std::vector<ribi::cmap::QtEdge*> ribi::cmap::GetQtEdges(
+  const QtNode* const from,
+  const QGraphicsScene& scene
+) noexcept
 {
   assert(from);
-  const std::vector<QtEdge*> v = Collect<QtEdge>(scene());
+  const std::vector<QtEdge*> v = GetQtEdges(scene);
   std::vector<QtEdge*> w;
   std::copy_if(v.begin(),v.end(),std::back_inserter(w),
     [from](const QtEdge* const edge)
@@ -532,62 +570,19 @@ std::vector<ribi::cmap::QtEdge*> ribi::cmap::QtConceptMap::GetQtEdges(
   return w;
 }
 
-std::vector<const ribi::cmap::QtEdge *> ribi::cmap::QtConceptMap::GetQtEdges() const
+
+std::vector<ribi::cmap::QtEdge *> ribi::cmap::GetQtEdges(
+  const QGraphicsScene& scene
+) noexcept
 {
-  return Collect<const QtEdge>(this->scene());
+  return Collect<QtEdge>(&scene);
 }
 
-std::vector<ribi::cmap::QtEdge *> ribi::cmap::QtConceptMap::GetQtEdges()
+std::vector<ribi::cmap::QtNode *> ribi::cmap::GetQtNodes(
+  const QGraphicsScene& scene
+) noexcept
 {
-  return Collect<QtEdge>(this->scene());
-}
-
-
-ribi::cmap::QtNode * ribi::cmap::QtConceptMap::GetQtNode(
-  const Node& node) noexcept
-{
-  //Calls the const version of this member function
-  //To avoid duplication in const and non-const member functions [1]
-  //[1] Scott Meyers. Effective C++ (3rd edition). ISBN: 0-321-33487-6.
-  //    Item 3, paragraph 'Avoid duplication in const and non-const member functions'
-  QtNode * const qtnode(
-    const_cast<QtNode *>(
-      dynamic_cast<const QtConceptMap*>(this)->GetQtNode(node)
-    )
-  );
-  return qtnode;
-}
-
-const ribi::cmap::QtNode * ribi::cmap::QtConceptMap::GetQtNode(
-  const Node& node) const noexcept
-{
-  const std::vector<QtNode *> qtnodes = Collect<QtNode>(scene());
-  for (QtNode * qtnode: qtnodes)
-  {
-    if (qtnode->GetNode() == node) return qtnode;
-  }
-  return nullptr;
-}
-
-std::vector<const ribi::cmap::QtNode *> ribi::cmap::QtConceptMap::GetQtNodes() const
-{
-  return Collect<const QtNode>(this->scene());
-  /*
-  const auto qtnodes_all = Collect<const QtNode>(this->scene());
-  std::vector<const ribi::cmap::QtNode *> qtnodes;
-  std::copy_if(
-    std::begin(qtnodes_all),
-    std::end(qtnodes_all),
-    std::back_inserter(qtnodes),
-    [this](const QtNode* const qtnode) { return this->GetConceptMap().HasNode(qtnode->GetNode()); }
-  );
-  return qtnodes;
-  */
-}
-
-std::vector<ribi::cmap::QtNode *> ribi::cmap::QtConceptMap::GetQtNodes()
-{
-  return RemoveConst(const_cast<const QtConceptMap*>(this)->GetQtNodes());
+  return Collect<QtNode>(&scene);
 }
 
 QGraphicsScene* ribi::cmap::QtConceptMap::GetScene() const noexcept
@@ -598,7 +593,7 @@ QGraphicsScene* ribi::cmap::QtConceptMap::GetScene() const noexcept
 std::vector<const ribi::cmap::QtEdge *> ribi::cmap::QtConceptMap::GetSelectedQtEdges() const noexcept
 {
   std::vector<const ribi::cmap::QtEdge *> selected;
-  const auto qtedges = GetQtEdges();
+  const auto qtedges = GetQtEdges(GetScene());
   std::copy_if(
     std::begin(qtedges),
     std::end(qtedges),
@@ -611,7 +606,7 @@ std::vector<const ribi::cmap::QtEdge *> ribi::cmap::QtConceptMap::GetSelectedQtE
 std::vector<const ribi::cmap::QtNode *> ribi::cmap::QtConceptMap::GetSelectedQtNodes() const noexcept
 {
   std::vector<const ribi::cmap::QtNode *> selected;
-  const auto qtnodes = GetQtNodes();
+  const auto qtnodes = GetQtNodes(GetScene());
   std::copy_if(
     std::begin(qtnodes),
     std::end(qtnodes),
@@ -647,6 +642,19 @@ void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event) noexcept
 {
   switch (event->key())
   {
+    case Qt::Key_Space:
+    {
+      if (GetVerbosity()) { TRACE("Pressing space"); }
+      try
+      {
+        DoCommand(new CommandSelectRandomNode(m_conceptmap,scene(),m_tools));
+      }
+      catch (std::logic_error& e)
+      {
+        if (GetVerbosity()) { TRACE(e.what()); }
+      }
+    }
+    break;
     case Qt::Key_Delete:
     {
       if (GetVerbosity()) { TRACE("Pressing delete"); }
@@ -941,7 +949,7 @@ void ribi::cmap::QtConceptMap::SetConceptMap(const ConceptMap& conceptmap)
 {
   CleanMe();
   m_conceptmap = conceptmap;
-  /*
+
   assert(this->scene());
 
   //This std::vector keeps the QtNodes in the same order as the nodes in the concept map
@@ -957,7 +965,9 @@ void ribi::cmap::QtConceptMap::SetConceptMap(const ConceptMap& conceptmap)
     const auto pmap = get(boost::vertex_custom_type, m_conceptmap);
     const Node node = get(pmap, *i);
     const bool is_focal_node{i == vip.first};
-    AddNode(node,is_focal_node); //See AddNode command
+    QtNode * const qtnode{new QtNode(node)};
+    if (is_focal_node) { qtnode->setFlags(0); }
+    //AddNode(node,is_focal_node); //See AddNode command
   }
   //Add the Edges
   const auto eip = edges(m_conceptmap);
@@ -967,13 +977,7 @@ void ribi::cmap::QtConceptMap::SetConceptMap(const ConceptMap& conceptmap)
     const Edge edge = get(pmap, *i);
     this->AddEdge(edge);
   }
-
-  #ifndef NDEBUG
-  //TestMe(m_conceptmap);
-  #endif
-
-  assert(boost::isomorphism(GetConceptMap(), conceptmap));
-  */
+  assert(GetConceptMap() == conceptmap);
 }
 
 void ribi::cmap::QtConceptMap::SetExamplesItem(QtExamplesItem * const item)

@@ -70,14 +70,13 @@ ribi::cmap::QtEdge::QtEdge(
 
   //const_cast because Arrow constant
   //I just need to have an initialized m_qtnode
-  const_cast<Arrow&>(m_arrow).reset(
-    new QtQuadBezierArrowItem(
+  const_cast<Arrow&>(m_arrow) = new QtQuadBezierArrowItem(
     from,
     false, //edge.HasTailArrow(),
     this->GetQtNode(),
     false, //edge.HasHeadArrow(),
-    to
-    )
+    to,
+    this //parent
   );
 
   //QtEdge is just the glue between a collection of things
@@ -363,7 +362,7 @@ void ribi::cmap::QtEdge::paint(QPainter* painter, const QStyleOptionGraphicsItem
   assert(this->scene());
   if (!this->m_arrow->scene())
   {
-    this->scene()->addItem(m_arrow.get()); //Must remain
+    this->scene()->addItem(m_arrow); //Must remain
 
   }
   if (!this->m_qtnode->scene())

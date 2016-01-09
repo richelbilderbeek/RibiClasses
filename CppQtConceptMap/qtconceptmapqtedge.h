@@ -47,8 +47,8 @@ namespace cmap {
 struct QtEdge : public QGraphicsItem
 {
   using Base = QGraphicsItem;
-  using Arrow = boost::shared_ptr<QtQuadBezierArrowItem>;
-  using ReadOnlyArrow = boost::shared_ptr<const QtQuadBezierArrowItem> ;
+  using Arrow = QtQuadBezierArrowItem *;
+  using ReadOnlyArrow = const QtQuadBezierArrowItem *;
   using ReadOnlyNodePtr = boost::shared_ptr<const Node>;
   using QtNodePtr =  QtNode *;
   using ReadOnlyQtNodePtr = const QtNode *;
@@ -121,7 +121,7 @@ protected:
   QPainterPath shape() const noexcept override final;
 
 private:
-  ///The arrow used for drawing
+  ///The arrow used for drawing, deleted by this class
   Arrow m_arrow;
 
   ///The edge

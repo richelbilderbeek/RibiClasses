@@ -68,7 +68,6 @@ void ribi::cmap::QtConceptMap::Test() noexcept
     if (is_tested) return;
     is_tested = true;
   }
-#ifdef NOT_NOW_20151230
 
   const TestTimer test_timer{__func__,__FILE__,2.0};
   TestTimer::SetMaxCnt(2); //Because the base class (QtKeyboardFriendlyGraphicsView)
@@ -78,25 +77,25 @@ void ribi::cmap::QtConceptMap::Test() noexcept
   if (verbose) { TRACE("SetConceptMap and GetConceptMap return the same"); }
   {
     QtConceptMap m;
+    assert(CountQtNodes(m.GetScene()) == 0);
     const ConceptMap conceptmap{
       ConceptMapFactory().Get2()
     };
     m.SetConceptMap(conceptmap);
     boost::isomorphism(m.GetConceptMap(), conceptmap);
   }
-
+  #ifdef NOT_NOW_20151230
   if (verbose) { TRACE("SetConceptMap, two nodes"); }
   {
     QtConceptMap m;
+    assert(CountQtNodes(m.GetScene()) == 0);
     const ConceptMap conceptmap{
-      ConceptMapFactory().Get2()
+      ConceptMapFactory().GetTest(1)
     };
     m.SetConceptMap(conceptmap);
-    const auto nodes = conceptmap.GetNodes();
-    const auto items = Collect<QtNode>(m.GetScene());
-    const std::size_t n_items = items.size();
-    const std::size_t n_nodes = nodes.size();
-    assert(n_items == n_nodes && "GUI and non-GUI concept map must match");
+    const auto n_nodes = static_cast<int>(boost::num_vertices(conceptmap));
+    const auto n_qtnodes = CountQtNodes(m.GetScene());
+    assert(n_nodes == n_qtnodes && "GUI and non-GUI concept map must match");
   }
   #ifdef FIX_ISSUE_10
   if (verbose) { TRACE("SetConceptMap, 3 nodes, 1 edge"); }
