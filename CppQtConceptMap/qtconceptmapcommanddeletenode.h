@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 /*
 ConceptMap, concept map classes
-Copyright (C) 2013-2015 Richel Bilderbeek
+Copyright (C) 2013-2016 Richel Bilderbeek
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -54,8 +54,14 @@ class CommandDeleteSelected final : public Command
 
   private:
   ConceptMap& m_conceptmap;
-  const ConceptMap m_before;
-  const ConceptMap m_after;
+  ConceptMap m_conceptmap_after;
+  const ConceptMap m_conceptmap_before;
+  QtNode * m_qtnode;
+  QGraphicsScene * const m_scene;
+  QtTool * const m_tool_item;
+  QtNode * const m_tool_item_old_buddy;
+  //const double m_x;
+  //const double m_y;
 };
 
 } //~namespace cmap

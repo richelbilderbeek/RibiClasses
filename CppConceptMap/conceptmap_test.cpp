@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 /*
 ConceptMap, concept map classes
-Copyright (C) 2013-2015 Richel Bilderbeek
+Copyright (C) 2013-2016 Richel Bilderbeek
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -85,7 +85,7 @@ void ribi::cmap::TestConceptMap() noexcept
     TestHelperFunctions();
   }
   const TestTimer test_timer(__func__,__FILE__,2.0);
-  const bool verbose{true};
+  const bool verbose{false};
 
   if (verbose) { TRACE("Copy constructable"); }
   {
@@ -244,102 +244,7 @@ void ribi::cmap::TestConceptMap() noexcept
       }
     );
   }
-
-  assert(!"Green");
-
   #ifdef NOT_NOT_20151231
-  typedef std::vector<Node> Nodes;
-  if (verbose) { TRACE("Create from XML"); } //TODO: Remove, this is a duplicate of CMFactory
-  {
-    const auto conceptmap = ConceptMapFactory().FromXml("<concept_map><nodes><node><concept><name>X</name><examples></examples><concept_is_complex>1</concept_is_complex><complexity>-1</complexity><concreteness>-1</concreteness><specificity>-1</specificity></concept><x>0</x><y>0</y><is_center_node>1</is_center_node></node><node><concept><name>C</name><examples></examples><concept_is_complex>1</concept_is_complex><complexity>-1</complexity><concreteness>-1</concreteness><specificity>-1</specificity></concept><x>0</x><y>0</y><is_center_node>0</is_center_node></node><node><concept><name>B</name><examples></examples><concept_is_complex>1</concept_is_complex><complexity>-1</complexity><concreteness>-1</concreteness><specificity>-1</specificity></concept><x>0</x><y>0</y><is_center_node>0</is_center_node></node><node><concept><name>A</name><examples></examples><concept_is_complex>1</concept_is_complex><complexity>-1</complexity><concreteness>-1</concreteness><specificity>-1</specificity></concept><x>0</x><y>0</y><is_center_node>0</is_center_node></node></nodes><edges></edges></concept_map>");
-    assert(!conceptmap.GetVerbosity());
-  }
-  if (verbose) { TRACE("Copy contructor of empty concept map"); }
-  {
-    const ConceptMap m{ConceptMapFactory().Create()};
-    assert(!m.GetVerbosity());
-    const ConceptMap n(m);
-    assert(m == n);
-  }
-  if (verbose) { TRACE("Copy contructor of simple homomorphous concept maps"); }
-  for (const auto m: ConceptMapFactory().GetTests())
-  {
-    assert(!m.GetVerbosity());
-    const ConceptMap n(m);
-    assert(m == n);
-  }
-  if (verbose) { TRACE("Copy contructor of complex homomorphous concept map [1]"); }
-  {
-    const ConceptMap m{
-      ConceptMapFactory().GetTest(1)
-    };
-    assert(!m.GetVerbosity());
-    const ConceptMap n{m};
-    assert(m == n);
-  }
-  if (verbose) { TRACE("Copy contructor of complex homomorphous concept maps"); }
-  for (const auto m: ConceptMapFactory().GetTests())
-  {
-    assert(!m.GetVerbosity());
-    const ConceptMap n(m);
-    assert(m == n);
-  }
-  if (verbose) { TRACE("Copy contructor of heteromorphous concept maps"); }
-  for (const auto m: ConceptMapFactory().GetTests())
-  {
-    assert(!m.GetVerbosity());
-    const ConceptMap n(m);
-    assert(m == n);
-  }
-
-
-  assert(!"Green");
-  if (verbose) { TRACE("Create tests"); }
-  {
-    //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,0.1);
-    const std::vector<ConceptMap> v{ConceptMapFactory().GetTests()};
-    assert(!v.empty());
-  }
-
-  if (verbose) { TRACE("conceptmap.XML std::string has to be between <concept_map> tags"); }
-  {
-    const auto conceptmap = ConceptMapFactory().GetEmptyConceptMap();
-    const auto s = cmap::ToXml(conceptmap);
-    assert(s.size() >= 27);
-    assert(s.substr(0,13) == "<concept_map>");
-    assert(s.substr(s.size() - 14,14) == "</concept_map>");
-  }
-  #ifdef FIX_ISSUE_10
-  if (verbose) { TRACE("conceptmap.XML->ConceptMap must result in two identical concept maps"); }
-  {
-    //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,0.2);
-    const ConceptMap m{ConceptMapFactory().GetHeteromorphousTestConceptMap(19)};
-    assert(m);
-    const std::string s{cmap::ToXml(*m)};
-    const ConceptMap d = ConceptMapFactory().FromXml(s);
-    assert(*m == *d);
-  }
-  #endif // FIX_ISSUE_10
-  #ifdef TO_ADD_TO_PROJECTBRAINWEAVER
-  //Conversion from Cluster
-  {
-    const std::vector<boost::shared_ptr<Cluster> > clusters = ClusterFactory::GetTests();
-    std::for_each(clusters.begin(),clusters.end(),
-      [](const boost::shared_ptr<Cluster> & cluster)
-      {
-        if (cluster)
-        {
-          const ConceptMap m(ConceptMapFactory().CreateFromCluster("Focal question",cluster));
-          assert(m);
-          const std::string s = ConceptMap::ToXml(m);
-          const ConceptMap n = ConceptMapFactory().FromXml(s);
-          assert(n);
-          assert(IsEqual(*m,*n));
-        }
-      }
-    );
-  }
-  #endif
   if (verbose) { TRACE("CreateSubs"); }
   {
     //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,0.1);

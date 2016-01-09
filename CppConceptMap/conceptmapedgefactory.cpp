@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 /*
 ConceptMap, concept map classes
-Copyright (C) 2013-2015 Richel Bilderbeek
+Copyright (C) 2013-2016 Richel Bilderbeek
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -74,75 +74,6 @@ ribi::cmap::Edge ribi::cmap::EdgeFactory::Create(
   return p;
 }
 
-/*
-#ifndef NDEBUG
-ribi::cmap::Edge ribi::cmap::EdgeFactory::DeepCopy(
-  const Edge& edge,
-  const Node& from,
-  const Node& to
-) const noexcept
-{
-  //Nodes may be similar, but not the same
-  assert(&from != &to);
-  assert(&from != &edge->GetNode());
-  assert(&to   != &edge->GetNode());
-
-  const Node node(edge->GetNode());
-  const Edge p{
-    EdgeFactory::Create(
-      node,
-      from,
-      edge->HasTailArrow(),
-      to,
-      edge->HasHeadArrow()
-    )
-  };
-  assert(edge == p);
-  return p;
-}
-#endif
-*/
-
-/*
-ribi::cmap::Edge ribi::cmap::EdgeFactory::FromXml(
-  const std::string& s
-) const noexcept
-{
-  using ribi::xml::StripXmlTag;
-  assert(s.size() >= 13);
-  assert(s.substr(0,6) == "<edge>");
-  assert(s.substr(s.size() - 7,7) == "</edge>");
-  //m_concept
-  Concept concept = ConceptFactory().Create();
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexConcept());
-    assert(v.size() == 1);
-    concept = XmlToConcept(v[0]);
-  }
-  //m_x
-  double x = 0.0;
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexX());
-    assert(v.size() == 1);
-    x = boost::lexical_cast<double>(StripXmlTag(v[0]));
-  }
-  //m_y
-  double y = 0.0;
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexY());
-    assert(v.size() == 1);
-    y = boost::lexical_cast<double>(StripXmlTag(v[0]));
-  }
-  Node node(concept,x,y);
-  Edge edge(
-    node
-  );
-  return edge;
-}
-*/
 int ribi::cmap::EdgeFactory::GetNumberOfTests() const noexcept
 {
   return ConceptFactory().GetNumberOfTests();
@@ -192,7 +123,7 @@ std::vector<ribi::cmap::Edge> ribi::cmap::EdgeFactory::GetTests() const noexcept
     {
       const auto node = NodeFactory().GetTest(i);
       Edge edge(node);
-      result.emplace_back(edge); //TODO: use emplace_back
+      result.emplace_back(edge);
     }
     /*
     {

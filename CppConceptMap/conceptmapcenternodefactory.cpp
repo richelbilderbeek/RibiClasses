@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 /*
 ConceptMap, concept map classes
-Copyright (C) 2013-2015 Richel Bilderbeek
+Copyright (C) 2013-2016 Richel Bilderbeek
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -100,18 +100,6 @@ ribi::cmap::Node ribi::cmap::CenterNodeFactory::CreateFromStrings(
   assert(node.IsCenterNode());
   return node;
 }
-
-/*
-ribi::cmap::Node ribi::cmap::CenterNodeFactory::FromXml(
-  const std::string& s
-) const
-{
-  Node node = XmlToNode(s);
-  assert(ToXml(node) == s);
-  assert(node.IsCenterNode());
-  return node;
-}
-*/
 
 int ribi::cmap::CenterNodeFactory::GetNumberOfTests() const noexcept
 {

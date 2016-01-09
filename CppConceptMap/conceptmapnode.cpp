@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 /*
 ConceptMap, concept map classes
-Copyright (C) 2013-2015 Richel Bilderbeek
+Copyright (C) 2013-2016 Richel Bilderbeek
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -174,16 +174,8 @@ void ribi::cmap::Node::Test() noexcept
     Node a{NodeFactory().GetTest(1)};
     std::stringstream s;
     s << a;
-    TRACE(s.str());
     Node b;
     s >> b;
-    TRACE(a.GetX());
-    TRACE(a.GetY());
-    TRACE(b.GetX());
-    TRACE(b.GetY());
-    assert(a.GetX() == b.GetX());
-    assert(a.GetY() == b.GetY());
-    assert(a.GetConcept() == b.GetConcept());
     assert(a == b);
   }
   {

@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 /*
 ConceptMap, concept map classes
-Copyright (C) 2013-2015 Richel Bilderbeek
+Copyright (C) 2013-2016 Richel Bilderbeek
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -92,7 +92,7 @@ void ribi::cmap::Edge::Test() noexcept
     is_tested = true;
   }
   const TestTimer test_timer(__func__,__FILE__,1.0);
-  const bool verbose{true};
+  const bool verbose{false};
   const std::vector<Node> nodes{NodeFactory().GetTest(0),NodeFactory().GetTest(1)};
   if (verbose) { TRACE("Copy constructor"); }
   {

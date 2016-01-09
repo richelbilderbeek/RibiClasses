@@ -11,7 +11,6 @@ HEADERS += \
     ../RibiClasses/CppConceptMap/conceptmapcompetency.h \
     ../RibiClasses/CppConceptMap/conceptmapconceptfactory.h \
     ../RibiClasses/CppConceptMap/conceptmapconcept.h \
-    ../RibiClasses/CppConceptMap/conceptmapconceptrating.h \
     ../RibiClasses/CppConceptMap/conceptmapedgefactory.h \
     ../RibiClasses/CppConceptMap/conceptmapedge.h \
     ../RibiClasses/CppConceptMap/conceptmapexamplefactory.h \
@@ -25,12 +24,7 @@ HEADERS += \
     ../RibiClasses/CppConceptMap/conceptmapnodefactory.h \
     ../RibiClasses/CppConceptMap/conceptmapnode.h \
     ../RibiClasses/CppConceptMap/conceptmapregex.h \
-    ../RibiClasses/CppConceptMap/conceptmapvertexcustomtype.h \
-    ../RibiClasses/CppConceptMap/conceptmapedgecustomtype.h \
-    ../RibiClasses/CppConceptMap/conceptmapvertexisselected.h \
-    ../RibiClasses/CppConceptMap/conceptmapedgeisselected.h \
     ../RibiClasses/CppConceptMap/conceptmapgraphtypes.h \
-    ../RibiClasses/CppConceptMap/conceptmapgraphfactory.h \
     ../RibiClasses/CppConceptMap/conceptmapexamplevertexinvariant.h \
     ../RibiClasses/CppConceptMap/conceptmapexamplesvertexinvariant.h \
     ../RibiClasses/CppConceptMap/conceptmapisexampleverticesisomorphic.h \
@@ -42,7 +36,6 @@ SOURCES += \
     ../RibiClasses/CppConceptMap/conceptmapcompetency.cpp \
     ../RibiClasses/CppConceptMap/conceptmapconcept.cpp \
     ../RibiClasses/CppConceptMap/conceptmapconceptfactory.cpp \
-    ../RibiClasses/CppConceptMap/conceptmapconceptrating.cpp \
     ../RibiClasses/CppConceptMap/conceptmapconcept_test.cpp \
     ../RibiClasses/CppConceptMap/conceptmap.cpp \
     ../RibiClasses/CppConceptMap/conceptmapedge.cpp \
@@ -56,13 +49,4 @@ SOURCES += \
     ../RibiClasses/CppConceptMap/conceptmapnode.cpp \
     ../RibiClasses/CppConceptMap/conceptmapnodefactory.cpp \
     ../RibiClasses/CppConceptMap/conceptmapregex.cpp \
-    ../RibiClasses/CppConceptMap/conceptmap_test.cpp \
-    ../RibiClasses/CppConceptMap/conceptmapvertexcustomtype.cpp \
-    ../RibiClasses/CppConceptMap/conceptmapedgecustomtype.cpp \
-    ../RibiClasses/CppConceptMap/conceptmapvertexisselected.cpp \
-    ../RibiClasses/CppConceptMap/conceptmapedgeisselected.cpp \
-    ../RibiClasses/CppConceptMap/conceptmapgraphfactory.cpp \
-    ../RibiClasses/CppConceptMap/conceptmapexamplevertexinvariant.cpp \
-    ../RibiClasses/CppConceptMap/conceptmapexamplesvertexinvariant.cpp \
-    ../RibiClasses/CppConceptMap/conceptmapisexampleverticesisomorphic.cpp \
-    ../RibiClasses/CppConceptMap/conceptmapisexamplesverticesisomorphic.cpp
+    ../RibiClasses/CppConceptMap/conceptmap_test.cpp

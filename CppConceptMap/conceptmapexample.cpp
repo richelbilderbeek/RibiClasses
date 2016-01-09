@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 /*
 ConceptMap, concept map classes
-Copyright (C) 2013-2015 Richel Bilderbeek
+Copyright (C) 2013-2016 Richel Bilderbeek
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -108,7 +108,6 @@ void ribi::cmap::Example::Test() noexcept
     Example();
     ExampleFactory();
     Examples();
-    //ExamplesFactory();
   }
   const TestTimer test_timer(__func__,__FILE__,1.0);
   const bool verbose{false};

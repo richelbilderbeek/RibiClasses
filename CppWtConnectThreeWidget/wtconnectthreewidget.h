@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 /*
 WtConnectThreeWidget, Wt widget for ConnectThree display
-Copyright (C) 2010-2015 Richel Bilderbeek
+Copyright (C) 2010-2016 Richel Bilderbeek
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -38,6 +38,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "connectthreeplayer.h"
 #include "connectthreesquare.h"
 #include "connectthreewinner.h"
+#include "connectthreeresources.h"
 #pragma GCC diagnostic pop
 
 namespace Wt
@@ -50,17 +51,18 @@ namespace ribi {
 namespace con3 {
 
 //struct ConnectThreeWidget;
-//struct ConnectThreeResources;
+//struct Resources;
 
 ///WtConnectThreeWidget is a Wt widget to display
 ///the area/board of the ConnectThree class.
 struct WtConnectThreeWidget : public Wt::WPaintedWidget
 {
   explicit WtConnectThreeWidget(
-    const boost::shared_ptr<const ConnectThreeResources> resources,
+    const Resources& resources,
     const std::bitset<3>& is_player_human = std::bitset<3>(true),
     const int n_cols = 16,
-    const int n_rows = 12);
+    const int n_rows = 12
+  );
 
   void DoComputerTurn();
   Player GetActivePlayer() const;

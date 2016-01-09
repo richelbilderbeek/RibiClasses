@@ -29,7 +29,7 @@ struct example_vertex_invariant {
         { boost::get(boost::vertex_custom_type, m_graph, vd), next_id}
       );
       if (ins.second) {
-        std::cout << "Mapped '" << ins.first->first << "' to " << ins.first->second << "\n";
+        //std::cout << "Mapped '" << ins.first->first << "' to " << ins.first->second << "\n";
       }
     }
   }

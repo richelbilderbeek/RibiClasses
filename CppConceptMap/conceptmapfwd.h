@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 /*
 ConceptMap, concept map classes
-Copyright (C) 2013-2015 Richel Bilderbeek
+Copyright (C) 2013-2016 Richel Bilderbeek
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -21,14 +21,10 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #ifndef CONCEPTMAPFWD_H
 #define CONCEPTMAPFWD_H
 
-//struct QRegExp;
-//struct QTimer;
-
 namespace ribi {
 namespace cmap {
 
 struct CenterNodeFactory;
-//struct Cluster; //Remove for now, must be added at ProjectBrainweaver later
 struct Command;
 struct CommandAddSelectedRandom;
 struct CommandDeleteFocusNode;
@@ -40,9 +36,6 @@ struct EdgeFactory;
 struct Element;
 struct Example;
 struct Examples;
-//struct File;
-//struct Node;
-//using CenterNode = Node;
 
 } //~namespace cmap
 } //~namespace ribi
