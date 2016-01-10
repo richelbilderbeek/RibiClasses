@@ -110,17 +110,6 @@ protected:
   ///Delete a Node
   void DeleteQtNode(const QtNode * const node);
 
-  //Find the Qt edge with the same from and to
-  const QtEdge * GetQtEdge(const Edge& edge) const noexcept;
-        QtEdge * GetQtEdge(const Edge& edge)       noexcept;
-  const QtEdge * GetQtEdge(     const QtEdge* const edge) const noexcept { return GetQtEdgeConst(edge); }
-  const QtEdge * GetQtEdgeConst(const QtEdge* const edge) const noexcept;
-        QtEdge * GetQtEdge(const QtEdge* const edge)       noexcept;
-  const QtEdge * GetQtEdgeConst(
-    const QtNode* const from,
-    const QtNode* const to) const noexcept
-  ;
-
   ///Obtain the center node, if there is any
   QtNode * GetCenterNode()       noexcept;
 
@@ -179,7 +168,14 @@ private:
   ///Called whenever the tools item is clicked
   void OnToolsClicked();
 
-  void UpdateSelection();
+  /// Writes the selecteness of the QtConceptMap
+  /// to the ConceptMap
+  void UpdateConceptMap();
+
+private slots:
+
+  void onFocusItemChanged(QGraphicsItem*,QGraphicsItem*,Qt::FocusReason);
+  void onSelectionChanged();
 
 public slots:
 
@@ -188,22 +184,24 @@ public slots:
   ///Use QGraphicsItem* due to QtKeyboardFriendlyGraphicsView working on QGraphicsItems
   void OnItemRequestsUpdate(const QGraphicsItem* const item);
 
-  ///Called if QtKeyboardFriendlyGraphicsView updates an item.
-  ///Is called, for example, after user input changes the selected item
-  //void OnItemUpdate(const QGraphicsItem* const item);
-
-  ///Called if QtKeyboardFriendlyGraphicsView updates an item.
-  ///Is called, for example, after user input changes the selected item
-  void OnItemSelectedChanged(QGraphicsItem* const item);
-
-
-
   ///Called when an item requests a scene update
   void OnRequestSceneUpdate();
 };
 
 int CountQtNodes(const QGraphicsScene& scene) noexcept;
 int CountQtEdges(const QGraphicsScene& scene) noexcept;
+
+QtEdge * FindQtEdge(
+  const Edge& edge,
+  const QGraphicsScene& scene
+) noexcept;
+
+//Find the Qt edge with the same from and to
+QtEdge * FindQtEdge(
+  const QtNode* const from,
+  const QtNode* const to,
+  const QGraphicsScene& scene
+) noexcept;
 
 
 ///Find the QtNode containing the Node

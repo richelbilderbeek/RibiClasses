@@ -47,7 +47,7 @@ struct Concept
 {
   ///Let only ConceptFactory construct Concepts
   explicit Concept(
-    const std::string& name = "",
+    const std::string& name = "...",
     const Examples& examples = Examples(),
     const bool is_complex = false,
     const int rating_complexity = -1,

@@ -252,6 +252,7 @@ void ribi::cmap::QtNode::SetNode(const Node& node) noexcept
 {
   m_node = node;
   this->SetCenterPos(m_node.GetX(), m_node.GetY());
+  this->SetText( { node.GetConcept().GetName() } );
 }
 
 #ifndef NDEBUG

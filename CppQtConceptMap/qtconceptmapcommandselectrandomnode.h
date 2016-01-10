@@ -1,6 +1,8 @@
 #ifndef QTCONCEPTMAPCOMMANDSELECTRANDOMNODE_H
 #define QTCONCEPTMAPCOMMANDSELECTRANDOMNODE_H
 
+/*
+
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
@@ -49,6 +51,6 @@ class CommandSelectRandomNode final : public Command
 } //~namespace cmap
 } //~namespace ribi
 
-
+*/
 
 #endif // QTCONCEPTMAPCOMMANDSELECTRANDOMNODE_H

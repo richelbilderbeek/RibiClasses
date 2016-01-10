@@ -112,6 +112,28 @@ void ribi::cmap::SaveToFile(const ConceptMap& g, const std::string& dot_filename
   f << ToDot(g);
 }
 
+void ribi::cmap::SaveSummaryToFile(const ConceptMap& g, const std::string& dot_filename)
+{
+  std::ofstream f(dot_filename);
+
+  boost::write_graphviz(f, g,
+    [g](std::ostream& out, const VertexDescriptor& vd) {
+      const auto pmap = get(boost::vertex_custom_type, g);
+      out << "[label=\""
+        << get(pmap, vd).GetConcept().GetName()
+        << "\"]"
+      ;
+    },
+    [g](std::ostream& out, const EdgeDescriptor& vd) {
+      const auto pmap = get(boost::edge_custom_type, g);
+      out << "[label=\""
+        << get(pmap, vd).GetNode().GetConcept().GetName()
+        << "\"]"
+      ;
+    }
+  );
+}
+
 ribi::cmap::ConceptMap ribi::cmap::SelectRandomNode(ConceptMap g) noexcept
 {
   assert(boost::num_vertices(g) > 0);

@@ -1,5 +1,7 @@
 #include "qtconceptmapcommandselectrandomnode.h"
 
+/*
+
 #include <cassert>
 #include <boost/graph/isomorphism.hpp>
 
@@ -73,3 +75,4 @@ void ribi::cmap::CommandSelectRandomNode::undo()
   m_tool_item->SetBuddyItem(m_tool_item_old_buddy);
 }
 
+*/

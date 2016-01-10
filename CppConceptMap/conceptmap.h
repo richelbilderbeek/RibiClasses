@@ -61,6 +61,7 @@ std::vector<Edge> GetSortedEdges(const ConceptMap& c) noexcept;
 std::vector<Node> GetSortedNodes(const ConceptMap& c) noexcept;
 ConceptMap LoadFromFile(const std::string& dot_filename);
 void SaveToFile(const ConceptMap& g, const std::string& dot_filename);
+void SaveSummaryToFile(const ConceptMap& g, const std::string& dot_filename);
 ConceptMap SelectRandomNode(ConceptMap conceptmap) noexcept;
 void TestConceptMap() noexcept;
 std::string ToXml(const ConceptMap& conceptmap) noexcept;
