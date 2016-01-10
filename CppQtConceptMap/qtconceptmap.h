@@ -84,7 +84,6 @@ public:
   void SetConceptMap(const ConceptMap& conceptmap);
 
   #ifndef NDEBUG
-  ///Test this class with a derived class instance
   static void Test() noexcept;
   #endif
 
@@ -108,7 +107,7 @@ protected:
   void DeleteQtEdge(const QtEdge * const edge);
 
   ///Delete a Node
-  void DeleteQtNode(const QtNode * const node);
+  //void DeleteQtNode(const QtNode * const node);
 
   ///Obtain the center node, if there is any
   QtNode * GetCenterNode()       noexcept;
@@ -146,9 +145,6 @@ private:
 
   QUndoStack m_undo;
 
-  ///Adds an Edge, returns the freshly created QtEdge
-  QtEdge * AddEdge(const Edge& edge);
-
   ///Remove all Qt and non-Qt items
   void CleanMe();
 
@@ -156,7 +152,7 @@ private:
   void DeleteEdge(const Edge& edge);
 
   ///Called when a Node gets deleted from the ConceptMap
-  void DeleteNode(const Node& node);
+  //void DeleteNode(const Node& node);
 
 
   ///Called when an item wants to be edited
@@ -182,40 +178,42 @@ public slots:
   ///Called whenever a concept is clicked or moved
   ///If item is nullptr, the last item might be deleted
   ///Use QGraphicsItem* due to QtKeyboardFriendlyGraphicsView working on QGraphicsItems
-  void OnItemRequestsUpdate(const QGraphicsItem* const item);
+  //void OnItemRequestsUpdate(const QGraphicsItem* const item);
 
   ///Called when an item requests a scene update
   void OnRequestSceneUpdate();
 };
 
-int CountQtNodes(const QGraphicsScene& scene) noexcept;
-int CountQtEdges(const QGraphicsScene& scene) noexcept;
+int CountQtNodes(const QGraphicsScene * const scene) noexcept;
+int CountQtEdges(const QGraphicsScene * const scene) noexcept;
 
 QtEdge * FindQtEdge(
   const Edge& edge,
-  const QGraphicsScene& scene
+  const QGraphicsScene * const scene
 ) noexcept;
 
 //Find the Qt edge with the same from and to
 QtEdge * FindQtEdge(
   const QtNode* const from,
   const QtNode* const to,
-  const QGraphicsScene& scene
+  const QGraphicsScene * const scene
 ) noexcept;
 
 
 ///Find the QtNode containing the Node
-QtNode * FindQtNode(const Node& node, const QGraphicsScene& scene) noexcept;
+QtNode * FindQtNode(const Node& node, const QGraphicsScene * const scene) noexcept;
+QtNode * FindQtNode(const int node_id, const QGraphicsScene * const scene) noexcept;
 
-std::vector<QtEdge *> GetQtEdges(const QGraphicsScene& scene) noexcept;
+std::vector<QtEdge *> GetQtEdges(const QGraphicsScene * const scene) noexcept;
 
 ///Get all the edges connected to the concept
 std::vector<QtEdge*> GetQtEdges(
   const QtNode * const from,
-  const QGraphicsScene& scene
+  const QGraphicsScene * const scene
 ) noexcept;
 
-std::vector<QtNode *> GetQtNodes(const QGraphicsScene& scene) noexcept;
+std::vector<QtNode *> GetQtNodes(const QGraphicsScene * const scene) noexcept;
+
 
 } //~namespace cmap
 } //~namespace ribi

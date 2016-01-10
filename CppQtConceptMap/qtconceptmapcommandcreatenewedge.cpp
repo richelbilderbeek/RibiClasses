@@ -27,61 +27,54 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "conceptmapedgefactory.h"
 #include "conceptmapnode.h"
+#include "qtconceptmapqtnode.h"
 #include "trace.h"
-
+#include "count_vertices_with_selectedness.h"
+#include "add_edge_between_two_selected_vertices.h"
 #include <boost/graph/isomorphism.hpp>
+#include <QGraphicsScene>
+#include "qtconceptmap.h"
+#include "qtconceptmaptoolsitem.h"
 
 ribi::cmap::CommandCreateNewEdgeBetweenTwoSelectedNodes::CommandCreateNewEdgeBetweenTwoSelectedNodes(
-  ConceptMap& conceptmap
-)
- :
-    m_conceptmap(conceptmap),
+  ConceptMap& conceptmap,
+  QGraphicsScene * const scene,
+  QtTool * const tool_item
+) : m_conceptmap(conceptmap),
+    m_after{conceptmap},
     m_before{conceptmap},
-    m_after{CreateNewEdgeFromTwoSelectedNodes(conceptmap)}
+    m_scene{scene},
+    m_tool_item{tool_item},
+    m_qtedge{nullptr}
 {
+  //Update concept map
+  assert(count_vertices_with_selectedness(true, m_after) == 2);
+  const auto ed = add_edge_between_two_selected_vertices(m_after);
   assert(!boost::isomorphism(m_before,m_after));
+
+  const VertexDescriptor vd_from = boost::source(ed, m_after);
+  const VertexDescriptor vd_to = boost::target(ed, m_after);
+  assert(vd_from != vd_to);
+  const auto vertex_map = get(boost::vertex_custom_type, m_after);
+  const Node from = get(vertex_map, vd_from);
+  const Node to = get(vertex_map, vd_to);
+  assert(from.GetId() != to.GetId());
+  QtNode * const qtfrom = FindQtNode(from, scene);
+  QtNode * const qtto = FindQtNode(to, scene);
+  const auto edge_map = get(boost::edge_custom_type, m_after);
+  const Edge edge = get(edge_map, ed);
+  m_qtedge = new QtEdge(edge, qtfrom,qtto);
+
 }
 
 void ribi::cmap::CommandCreateNewEdgeBetweenTwoSelectedNodes::redo()
 {
   m_conceptmap = m_after;
+  m_scene->addItem(m_qtedge);
 }
 
 void ribi::cmap::CommandCreateNewEdgeBetweenTwoSelectedNodes::undo()
 {
   m_conceptmap = m_before;
+  m_scene->removeItem(m_qtedge);
 }
-
-ribi::cmap::ConceptMap ribi::cmap::CreateNewEdgeFromTwoSelectedNodes(ConceptMap g)
-{
-  std::vector<VertexDescriptor> v;
-  const auto vip = vertices(g);
-
-  std::copy_if(
-    vip.first,
-    vip.second,
-    std::back_inserter(v),
-    [g](const VertexDescriptor& vd)
-    {
-      const auto is_selected_map
-        = get(boost::vertex_is_selected, g);
-      return get(is_selected_map, vd);
-    }
-  );
-  if (v.size() == 2)
-  {
-    std::stringstream s;
-    s << __func__ << ": need two selected nodes to create an edge between";
-    throw std::logic_error(s.str());
-  }
-
-  const auto aer = boost::add_edge(v[0],v[1],g);
-  if (!aer.second)
-  {
-    std::stringstream s;
-    s << __func__ << ": edge insertion failed";
-    throw std::logic_error(s.str());
-  }
-  return g;
-}
-

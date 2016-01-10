@@ -414,7 +414,7 @@ ribi::cmap::Node ribi::cmap::XmlToNode(const std::string& s)
 
 bool ribi::cmap::operator==(const Node& lhs, const Node& rhs) noexcept
 {
-  const bool verbose{false};
+  const bool verbose{true};
   const double e{0.001};
   if (lhs.GetConcept() != rhs.GetConcept())
   {

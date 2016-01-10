@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 /*
 QtGraphics, Qt graphics code snippets
-Copyright (C) 2015-2015 Richel Bilderbeek
+Copyright (C) 2015-2016 Richel Bilderbeek
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

@@ -26,16 +26,23 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmapedge.h"
 #include "qtconceptmapcommand.h"
 
+struct QGraphicsScene;
+
 namespace ribi {
 namespace cmap {
 
-///Start a new node
-///-Can be used only when there is an existing concept map
+struct QtEdge;
+struct QtTool;
+
 class CommandCreateNewEdgeBetweenTwoSelectedNodes final : public Command
 {
   public:
 
-  CommandCreateNewEdgeBetweenTwoSelectedNodes(ConceptMap& conceptmap);
+  CommandCreateNewEdgeBetweenTwoSelectedNodes(
+    ConceptMap& conceptmap,
+    QGraphicsScene * const scene,
+    QtTool * const tool_item
+  );
   CommandCreateNewEdgeBetweenTwoSelectedNodes(const CommandCreateNewEdgeBetweenTwoSelectedNodes&) = delete;
   CommandCreateNewEdgeBetweenTwoSelectedNodes& operator=(const CommandCreateNewEdgeBetweenTwoSelectedNodes&) = delete;
   ~CommandCreateNewEdgeBetweenTwoSelectedNodes() noexcept {}
@@ -45,13 +52,12 @@ class CommandCreateNewEdgeBetweenTwoSelectedNodes final : public Command
 
   private:
   ConceptMap& m_conceptmap;
+  ConceptMap m_after;
   const ConceptMap m_before;
-  const ConceptMap m_after;
-
+  QGraphicsScene * const m_scene;
+  QtTool * const m_tool_item;
+  QtEdge * m_qtedge; //The QtEdge being added or removed
 };
-
-//Throws if there are no two nodes selected
-ConceptMap CreateNewEdgeFromTwoSelectedNodes(ConceptMap g);
 
 } //~namespace cmap
 } //~namespace ribi
