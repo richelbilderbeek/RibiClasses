@@ -66,7 +66,12 @@ void ribi::QtGraphics::DrawImage(
   const int n_channels{4};
   assert(n_channels == 3 || n_channels == 4);
   #else
-  const auto n_channels = source.pixelFormat().channelCount();
+  //const auto n_channels = source.pixelFormat().channelCount();
+  //assert(source.format() == QImage::Format::Format_RGB32
+  //    || source.format() == QImage::Format::Format_ARGB32
+  //);
+  const int n_channels{4};
+  assert(n_channels == 3 || n_channels == 4);
   #endif
   const int width = source.width();
   const int height = source.height();
@@ -94,7 +99,9 @@ void ribi::QtGraphics::DrawImageSlow(
   const int n_channels{4};
   assert(n_channels == 3 || n_channels == 4);
   #else
-  const auto n_channels = source.pixelFormat().channelCount();
+  //const auto n_channels = source.pixelFormat().channelCount();
+  const int n_channels{4};
+  assert(n_channels == 3 || n_channels == 4);
   #endif
   const int width = source.width();
   const int height = source.height();
