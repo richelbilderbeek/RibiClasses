@@ -27,7 +27,6 @@ namespace c2h {
 enum class HeaderType
 {
   cpp,
-  foam
 };
 
 } //~namespace c2h

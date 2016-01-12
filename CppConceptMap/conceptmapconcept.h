@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 /*
 ConceptMap, concept map classes
-Copyright (C) 2013-2015 Richel Bilderbeek
+Copyright (C) 2013-2016 Richel Bilderbeek
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -28,10 +28,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic ignored "-Weffc++"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
-#include <boost/shared_ptr.hpp>
-//#include <boost/signals2.hpp>
-#include <QRegExp>
-#include "conceptmapfwd.h"
 #include "conceptmapexamples.h"
 #pragma GCC diagnostic pop
 
@@ -49,8 +45,15 @@ struct ConceptFactory;
 /// - (as part of QtEdge)
 struct Concept
 {
-  Concept(const Concept&) = default;
-  Concept& operator=(const Concept&) = default;
+  ///Let only ConceptFactory construct Concepts
+  explicit Concept(
+    const std::string& name = "...",
+    const Examples& examples = Examples(),
+    const bool is_complex = false,
+    const int rating_complexity = -1,
+    const int rating_concreteness = -1,
+    const int rating_specificity = -1
+  );
 
   ///Get the examples of the concept, e.g. 'Plato', 'Aristotle'
   const Examples& GetExamples() const noexcept { return m_examples; }
@@ -104,9 +107,6 @@ struct Concept
   ///Convert Concept to a short std::string
   std::string ToStr() const noexcept;
 
-  ///Convert Concept to a std::string to write to file
-  std::string ToXml() const noexcept;
-
   private:
 
   ///Examples of the concept, e.g. 'Plato', 'Aristotle'
@@ -136,20 +136,13 @@ struct Concept
   #ifndef NDEBUG
   static void Test() noexcept;
   #endif
-
-  ///Let only ConceptFactory construct Concepts
-  explicit Concept(
-    const std::string& name,
-    const Examples& examples,
-    const bool is_complex,
-    const int rating_complexity,
-    const int rating_concreteness,
-    const int rating_specificity
-  );
-  friend class ConceptFactory;
 };
 
+std::string ToXml(const Concept& concept) noexcept;
+Concept XmlToConcept(const std::string& s) noexcept;
+
 std::ostream& operator<<(std::ostream& os, const Concept& concept) noexcept;
+std::istream& operator>>(std::istream& is, Concept& concept) noexcept;
 
 bool operator==(const Concept& lhs, const Concept& rhs);
 bool operator!=(const Concept& lhs, const Concept& rhs);

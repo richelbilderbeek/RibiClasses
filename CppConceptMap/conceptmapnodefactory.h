@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 /*
 ConceptMap, concept map classes
-Copyright (C) 2013-2015 Richel Bilderbeek
+Copyright (C) 2013-2016 Richel Bilderbeek
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -26,9 +26,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic ignored "-Weffc++"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
-#include <boost/shared_ptr.hpp>
 #include "conceptmapcompetency.h"
-
 #include "conceptmapfwd.h"
 #pragma GCC diagnostic pop
 
@@ -42,30 +40,20 @@ struct NodeFactory
 {
   NodeFactory();
 
-  Node Create() const noexcept;
-
-  Node Create(
-    const Concept& concept,
-    bool is_center_node = false,
-    const double x = 0.0,
-    const double y = 0.0
-  ) const noexcept;
-
   Node CreateFromStrings(
     const std::string& name,
     const std::vector<std::pair<std::string,Competency> >& examples = {},
-    bool is_center_node = false,
     const double x = 0.0,
     const double y = 0.0
   ) const noexcept;
 
-  ///Obtain a Node or CenterNode from an XML std::string
-  Node FromXml(const std::string& s) const;
-
-  ///Obtain testing nodes
   int GetNumberOfTests() const noexcept;
   std::vector<Node> GetTests() const noexcept;
   Node GetTest(const int test) const noexcept;
+
+  int GetNumberOfNastyTests() const noexcept;
+  std::vector<Node> GetNastyTests() const noexcept;
+  Node GetNastyTest(const int test) const noexcept;
 
   #ifndef NDEBUG
   static void Test() noexcept;

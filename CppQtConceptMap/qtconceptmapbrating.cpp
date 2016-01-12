@@ -33,7 +33,10 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmapexamples.h"
 #pragma GCC diagnostic pop
 
-int ribi::cmap::Rating::SuggestComplexity(const int n_edges, const int n_examples)
+int ribi::cmap::Rating::SuggestComplexity(
+  const int n_edges,
+  const int n_examples
+) const noexcept
 {
   const int complexity
     = n_edges == 0  || (n_edges == 1 && n_examples == 0)
@@ -44,18 +47,24 @@ int ribi::cmap::Rating::SuggestComplexity(const int n_edges, const int n_example
   return complexity;
 }
 
-int ribi::cmap::Rating::SuggestComplexity(const ConceptMap& sub_conceptmap)
+int ribi::cmap::Rating::SuggestComplexity(
+  const ConceptMap& sub_conceptmap,
+  const VertexDescriptor& vd
+) const noexcept
 {
-  const int n_edges = boost::numeric_cast<int>(sub_conceptmap.GetEdges().size());
-  assert(!sub_conceptmap.GetNodes().empty());
-  const int n_examples
-    = boost::numeric_cast<int>(
-      sub_conceptmap.GetFocalNode()->GetConcept().GetExamples().Get().size()
-    );
+  const int n_edges = boost::num_edges(sub_conceptmap);
+  assert(boost::num_vertices(sub_conceptmap) > 0);
+  const auto pmap = get(boost::vertex_custom_type, sub_conceptmap);
+  const auto node = get(pmap, vd);
+  const int n_examples = node.GetConcept().GetExamples().Get().size();
+  //const int n_examples
+  //  = boost::numeric_cast<int>(
+  //    sub_conceptmap.GetFocalNode()->GetConcept().GetExamples().Get().size()
+  //  );
   return SuggestComplexity(n_edges,n_examples);
 }
 
-int ribi::cmap::Rating::SuggestConcreteness(const int n_examples)
+int ribi::cmap::Rating::SuggestConcreteness(const int n_examples) const noexcept
 {
   const int concreteness
     = n_examples < 2
@@ -66,28 +75,40 @@ int ribi::cmap::Rating::SuggestConcreteness(const int n_examples)
   return concreteness;
 }
 
-int ribi::cmap::Rating::SuggestConcreteness(const ConceptMap& sub_conceptmap)
+int ribi::cmap::Rating::SuggestConcreteness(
+  const ConceptMap& sub_conceptmap,
+  const VertexDescriptor& vd
+) const noexcept
 {
-  assert(!sub_conceptmap.GetNodes().empty());
-  const int n_examples
-    = boost::numeric_cast<int>(
-      sub_conceptmap.GetFocalNode()->GetConcept().GetExamples().Get().size()
-    );
+  assert(boost::num_vertices(sub_conceptmap) > 0);
+  const auto pmap = get(boost::vertex_custom_type, sub_conceptmap);
+  const auto node = get(pmap, vd);
+  const int n_examples = node.GetConcept().GetExamples().Get().size();
+  //const int n_examples
+  //  = boost::numeric_cast<int>(
+  //    sub_conceptmap.GetFocalNode()->GetConcept().GetExamples().Get().size()
+  //  );
   return SuggestConcreteness(n_examples);
 }
 
-int ribi::cmap::Rating::SuggestSpecificity(const int n_examples)
+int ribi::cmap::Rating::SuggestSpecificity(const int n_examples) const noexcept
 {
   const int specificity = SuggestConcreteness(n_examples);
   return specificity;
 }
 
-int ribi::cmap::Rating::SuggestSpecificity(const ConceptMap& sub_conceptmap)
+int ribi::cmap::Rating::SuggestSpecificity(
+  const ConceptMap& sub_conceptmap,
+  const VertexDescriptor& vd
+) const noexcept
 {
-  assert(!sub_conceptmap.GetNodes().empty());
-  const int n_examples
-    = boost::numeric_cast<int>(
-      sub_conceptmap.GetFocalNode()->GetConcept().GetExamples().Get().size()
-    );
+  assert(boost::num_vertices(sub_conceptmap) > 0);
+  const auto pmap = get(boost::vertex_custom_type, sub_conceptmap);
+  const auto node = get(pmap, vd);
+  const int n_examples = node.GetConcept().GetExamples().Get().size();
+  //const int n_examples
+  //  = boost::numeric_cast<int>(
+  //    sub_conceptmap.GetFocalNode()->GetConcept().GetExamples().Get().size()
+  //  );
   return SuggestSpecificity(n_examples);
 }

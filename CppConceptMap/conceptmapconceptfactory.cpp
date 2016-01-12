@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 /*
 ConceptMap, concept map classes
-Copyright (C) 2013-2015 Richel Bilderbeek
+Copyright (C) 2013-2016 Richel Bilderbeek
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -46,29 +46,6 @@ ribi::cmap::ConceptFactory::ConceptFactory() noexcept
 
 ribi::cmap::Concept ribi::cmap::ConceptFactory::Create(
   const std::string& name,
-  const Examples& examples,
-  const bool is_complex,
-  const int rating_complexity,
-  const int rating_concreteness,
-  const int rating_specificity
-) const noexcept
-{
-  assert(rating_complexity >= -1);
-  assert(rating_complexity <=  2);
-
-  Concept concept(
-    name,
-    examples,
-    is_complex,
-    rating_complexity,
-    rating_concreteness,
-    rating_specificity
-  );
-  return concept;
-}
-
-ribi::cmap::Concept ribi::cmap::ConceptFactory::Create(
-  const std::string& name,
   const std::vector<std::pair<std::string,Competency> >& v,
   const bool is_complex,
   const int rating_complexity,
@@ -83,122 +60,74 @@ ribi::cmap::Concept ribi::cmap::ConceptFactory::Create(
   std::transform(v.begin(),v.end(),std::back_inserter(w),
     [](const std::pair<std::string,Competency>& p)
     {
-      const Example q
-        = ExampleFactory().Create(
-          p.first,
-          p.second
+      Example q(
+        p.first,
+        p.second
       );
       return q;
     }
   );
 
-  const Examples examples = ExamplesFactory().Create(w);
+  const Examples examples(w);
 
-  Concept concept
-    = Create(
+  Concept concept{
     name,
     examples,
     is_complex,
     rating_complexity,
     rating_concreteness,
     rating_specificity
-  );
-  return concept;
-}
-
-ribi::cmap::Concept ribi::cmap::ConceptFactory::FromXml(const std::string& s) const noexcept
-{
-  assert(s.size() >= 19);
-  assert(s.substr(0,9) == "<concept>");
-  assert(s.substr(s.size() - 10,10) == "</concept>");
-
-  std::string name;
-  Examples examples;
-  bool is_complex = false;
-  int rating_complexity    = -2; //Not even unrated (which has -1 as its value)
-  int rating_concreteness  = -2; //Not even unrated (which has -1 as its value)
-  int rating_specificity   = -2; //Not even unrated (which has -1 as its value)
-  //m_name
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexName());
-    #ifndef NDEBUG
-    if (v.size() != 1)
-    {
-      TRACE("ERROR");
-      TRACE(s);
-      TRACE(Regex().GetRegexName());
-      TRACE(v.size());
-      for (const auto& t: v) { TRACE(t); }
-      TRACE("BREAK");
-    }
-    #endif
-    assert(v.size() == 1);
-    name = ribi::xml::StripXmlTag(v[0]);
-  }
-  //m_examples
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexExamples());
-    assert(v.size() == 1 && "GetRegexExamples must be present once in a Concept");
-    examples = ExamplesFactory().FromXml(v[0]);
-  }
-
-  //m_is_complex
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexConceptIsComplex());
-    assert(v.size() == 1 && "GetRegexIsComplex must be present once per Concept");
-    is_complex = boost::lexical_cast<bool>(ribi::xml::StripXmlTag(v[0]));
-  }
-
-
-  //m_rating_complexity
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexComplexity());
-    assert(v.size() == 1 && "GetRegexComplexity must be present once per Concept");
-    rating_complexity = boost::lexical_cast<int>(ribi::xml::StripXmlTag(v[0]));
-    assert(rating_complexity >= -1);
-    assert(rating_complexity <=  2);
-  }
-  //m_rating_concreteness
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexConcreteness());
-    assert(v.size() == 1);
-    rating_concreteness = boost::lexical_cast<int>(ribi::xml::StripXmlTag(v[0]));
-  }
-  //m_rating_specificity
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexSpecificity());
-    assert(v.size() == 1);
-    rating_specificity = boost::lexical_cast<int>(ribi::xml::StripXmlTag(v[0]));
-  }
-
-  Concept concept {
-    ConceptFactory().Create(name,examples,is_complex,rating_complexity,rating_concreteness,rating_specificity)
   };
   return concept;
 }
 
-ribi::cmap::Concept ribi::cmap::ConceptFactory::GetTest(
-  const int i) const noexcept
+std::vector<ribi::cmap::Concept> ribi::cmap::ConceptFactory::GetNastyTests() const noexcept
 {
-  assert(i < GetNumberOfTests());
-  const Concept concept {
-    GetTests()[i]
-  };
-  return concept;
+  std::vector<Concept> v;
+  {
+    const Examples examples;
+    const Concept p(" Concept<without >examples", examples, false, 0, 1, 2);
+    assert(p.GetRatingComplexity() >= -1);
+    assert(p.GetRatingComplexity() <=  2);
+    v.push_back(p);
+  }
+  {
+    const Concept p = Create("Concept>with<one example ", { { " Only> example", cmap::Competency::profession } }, 1, 2, 0);
+    assert(p.GetRatingComplexity() >= -1);
+    assert(p.GetRatingComplexity() <=  2);
+    v.push_back(p);
+  }
+  {
+    const Concept p = Create(
+      " Very>long<multi-line concept with four Roman examples that also each span multiple lines, that is, eighty characters",
+      {
+        { "Example I/IV,<<  >spanning multiple lines> (that is, having at least eight characters) and is rated as cmap::Competency::misc ", cmap::Competency::misc },
+        { " Example II/IV,< spanning multiple lines (that is, having at least eight characters) and is rated as cmap::Competency::uninitialized", cmap::Competency::uninitialized },
+        { "Example III/IV,>>  spanning multiple< lines> (that is, having at least eight characters) and is rated as cmap::Competency::profession ", cmap::Competency::profession },
+        { " Example III/IV,>  spanning multiple lines<< (that is, having at least eight characters) and is rated as cmap::Competency::social_surroundings", cmap::Competency::social_surroundings }
+      }, 1, 2, 0
+    );
+    assert(p.GetRatingComplexity() >= -1);
+    assert(p.GetRatingComplexity() <=  2);
+    v.push_back(p);
+  }
+  return v;
+}
+
+ribi::cmap::Concept ribi::cmap::ConceptFactory::GetTest(const int i) const noexcept
+{
+  const auto v = GetTests();
+  assert(i >= 0);
+  assert(i < static_cast<int>(v.size()));
+  return v[i];
 }
 
 std::vector<ribi::cmap::Concept> ribi::cmap::ConceptFactory::GetTests() const noexcept
 {
   std::vector<Concept> v;
   {
-    const Examples examples = ExamplesFactory().Create();
-    const Concept p = Create("Concept without examples", examples, false, 0, 1, 2);
+    const Examples examples;
+    const Concept p("Concept without examples", examples, false, 0, 1, 2);
     assert(p.GetRatingComplexity() >= -1);
     assert(p.GetRatingComplexity() <=  2);
     v.push_back(p);
@@ -265,9 +194,9 @@ void ribi::cmap::ConceptFactory::Test() noexcept
   if (verbose) { TRACE("Concept -> XML -> Concept "); }
   {
     const auto concept = ConceptFactory().GetTest(2);
-    const auto xml = concept.ToXml();
-    const auto new_concept = ConceptFactory().FromXml(xml);
-    const auto new_xml = new_concept.ToXml();
+    const auto xml = ToXml(concept);
+    const auto new_concept = XmlToConcept(xml);
+    const auto new_xml = ToXml(new_concept);
     assert(xml == new_xml);
   }
 }

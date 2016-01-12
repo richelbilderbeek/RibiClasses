@@ -34,6 +34,11 @@ std::string ribi::cmap::Regex::GetRegexConcept() const noexcept
   return "(<concept>.*?</concept>)";
 }
 
+std::string ribi::cmap::Regex::GetRegexConceptMap() const noexcept
+{
+  return "(<conceptmap>.*?</conceptmap>)";
+}
+
 std::string ribi::cmap::Regex::GetRegexConceptIsComplex() const noexcept
 {
   return "(<concept_is_complex>.*?</concept_is_complex>)";

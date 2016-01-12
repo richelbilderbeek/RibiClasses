@@ -195,8 +195,6 @@ std::vector<std::string> ribi::c2h::Dialog::FolderToHtml(
   const FolderType folder_type = FolderTypes::DeduceFolderType(foldername);
   switch(folder_type)
   {
-    case FolderType::foam:
-      return FoamFolderToHtml(foldername);
     case FolderType::pro:
       return ProFolderToHtml(foldername);
     case FolderType::txt:
@@ -204,94 +202,6 @@ std::vector<std::string> ribi::c2h::Dialog::FolderToHtml(
   }
   assert(!"Should not get here");
   throw std::logic_error("ribi::c2h::Dialog::FolderToHtml");
-}
-
-std::vector<std::string> ribi::c2h::Dialog::FoamFolderToHtml(
-  const std::string& foldername) const noexcept
-{
-  assert(fileio::FileIo().IsFolder(foldername));
-  assert(foldername.back() != '\\');
-  assert(foldername.back() != '/');
-
-  std::vector<std::string> v;
-  //Header
-  {
-    HeaderType header_type = HeaderType::foam;
-    const std::vector<std::string> w {
-      Header::ToHtml(header_type,foldername)
-    };
-    std::copy(w.begin(),w.end(),std::back_inserter(v));
-  }
-  //Info
-  {
-    const boost::shared_ptr<const Info> info(new Info);
-    const std::vector<std::string> w {
-      info->ToHtml(ExtractPageName(foldername))
-    };
-
-    std::copy(w.begin(),w.end(),std::back_inserter(v));
-  }
-  //Body
-  {
-    const std::vector<std::string> files_no_path {
-      fileio::FileIo().GetFilesInFolderRecursive(foldername)
-    };
-    std::vector<std::string> files;
-    std::transform(
-      files_no_path.begin(),
-      files_no_path.end(),
-      std::back_inserter(files),
-      [foldername](const std::string& s)
-      {
-        //If the path is already complete, return it
-        if (ribi::fileio::FileIo().IsRegularFile(s))
-        {
-          return s;
-        }
-        //Prepend the folder name
-        const std::string t {
-          foldername
-          + ribi::fileio::FileIo().GetPathSeperator()
-          + s
-        };
-        #ifndef NDEBUG
-        if(!ribi::fileio::FileIo().IsRegularFile(t))
-        {
-          TRACE("ERROR");
-          TRACE(foldername); TRACE(s); TRACE(t);
-        }
-        #endif
-        assert(ribi::fileio::FileIo().IsRegularFile(t));
-        return t;
-      }
-    );
-
-    #ifndef NDEBUG
-    for (const std::string& file: files)
-    {
-      if (!ribi::fileio::FileIo().IsRegularFile(file)) { TRACE(file); }
-      assert(ribi::fileio::FileIo().IsRegularFile(file));
-    }
-    #endif
-
-    std::for_each(files.begin(),files.end(),
-      [&v](const std::string& filename)
-      {
-        assert(ribi::fileio::FileIo().IsRegularFile(filename));
-        const boost::shared_ptr<File> content {
-          new File(filename,FileType::foam)
-        };
-        const std::vector<std::string> w = content->GetHtml();
-        std::copy(w.begin(),w.end(),std::back_inserter(v));
-      }
-    );
-  }
-  //Footer
-  {
-    const std::vector<std::string> w { Footer::ToHtml(FooterType::foam) };
-    std::copy(w.begin(),w.end(),std::back_inserter(v));
-  }
-  return v;
 }
 
 std::vector<std::string> ribi::c2h::Dialog::GetProFilesInFolder(
@@ -532,8 +442,8 @@ void ribi::c2h::Dialog::Test() noexcept
   assert(d.ExtractPageName("/A/B/X/main.cpp/") == "X");
   assert(d.ExtractPageName("/A/B/C/X/main.cpp/") == "X");
 
-  assert(d.ExtractPageName("/home/richel/ProjectRichelBilderbeek/Tools/ToolCodeToHtml")
-    == "ToolCodeToHtml");
+  assert(d.ExtractPageName("/home/richel/ProjectRichelBilderbeek/Tools/CodeToHtml")
+    == "CodeToHtml");
 
   //GetProFiles
   {
@@ -578,7 +488,7 @@ void ribi::c2h::Dialog::Test() noexcept
   assert(IsTidyInstalled() && "While I know I have tidy installed");
   if (IsTidyInstalled())
   {
-    const std::string filename = "../ToolCodeToHtml/qtmain.cpp";
+    const std::string filename = "../CodeToHtml/qtmain.cpp";
     if (ribi::fileio::FileIo().IsRegularFile(filename))
     {
       std::vector<std::string> v;
@@ -603,7 +513,7 @@ void ribi::c2h::Dialog::Test() noexcept
     }
     else
     {
-      TRACE("Warning: ToolCodeToHtml has not tested itself on its own code upon construction");
+      TRACE("Warning: CodeToHtml has not tested itself on its own code upon construction");
     }
   }
   else
@@ -612,7 +522,7 @@ void ribi::c2h::Dialog::Test() noexcept
   }
   if (IsTidyInstalled())
   {
-    const std::string path = "../ToolCodeToHtml";
+    const std::string path = "../CodeToHtml";
     if (ribi::fileio::FileIo().IsFolder(path))
     {
       std::vector<std::string> v;
@@ -637,7 +547,7 @@ void ribi::c2h::Dialog::Test() noexcept
     }
     else
     {
-      TRACE("Warning: ToolCodeToHtml has not tested itself on its own code upon construction");
+      TRACE("Warning: CodeToHtml has not tested itself on its own code upon construction");
     }
   }
   else

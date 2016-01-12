@@ -22,35 +22,14 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 
 #include <cassert>
 
-std::vector<std::string> ribi::c2h::Footer::ToHtml(const FooterType page_type) noexcept
+std::vector<std::string> ribi::c2h::Footer::ToHtml() noexcept
 {
-  #ifndef NDEBUG
-  //Test();
-  #endif
-  std::vector<std::string> v;
-  switch (page_type)
-  {
-    case FooterType::cpp:
-      v.push_back("<p><a href=\"Cpp.htm\">Go back to Richel Bilderbeek's C++ page</a>.</p>");
-      break;
-    case FooterType::foam:
-      v.push_back("<p><a href=\"ToolOpenFoam.htm\">Go back to Richel Bilderbeek's OpenFOAM page</a>.</p>");
-      break;
-  }
+  v.push_back("<p><a href=\"Cpp.htm\">Go back to Richel Bilderbeek's C++ page</a>.</p>");
   v.push_back("<p><a href=\"index.htm\">Go back to Richel Bilderbeek's homepage</a>.</p>");
   v.push_back("<p>&nbsp;</p>");
   v.push_back("<p><a href=\"http://validator.w3.org/check?uri=referer\"><img src=\"valid-xhtml10.png\" alt=\"Valid XHTML 1.0 Strict\" height=\"31\" width=\"88\" /></a></p>");
   v.push_back("<p>This page has been created by the <a href=\"Tools.htm\">tool</a> <a href=\"ToolCodeToHtml.htm\">CodeToHtml</a></p>");
   v.push_back("</body>");
   v.push_back("</html>");
-  return v;
-}
-
-std::vector<std::string> ribi::c2h::Footer::ToMarkdown(const FooterType /*page_type*/) noexcept
-{
-  #ifndef NDEBUG
-  //Test();
-  #endif
-  std::vector<std::string> v;
   return v;
 }

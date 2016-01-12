@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 /*
 ImageCanvas, class to convert an image to ASCII art
-Copyright (C) 2011-2015 Richel Bilderbeek
+Copyright (C) 2011-2016 Richel Bilderbeek
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -59,6 +59,8 @@ void ribi::ImageCanvas::Test() noexcept
 
   }
   const TestTimer test_timer(__func__,__FILE__,1.0);
+  TestTimer::SetMaxCnt( TestTimer::GetMaxCnt() + 1); //Add one, as the base class Canvas must be tested as well
+
   const std::string temp_filename { fileio::FileIo().GetTempFileName() };
   {
     const std::string resource_filename { ":/CppImageCanvas/images/R.png" };
@@ -103,6 +105,7 @@ void ribi::ImageCanvas::Test() noexcept
   }
 
   fileio::FileIo().DeleteFile(temp_filename);
+  TestTimer::SetMaxCnt( TestTimer::GetMaxCnt() - 1); //Done
 }
 #endif
 

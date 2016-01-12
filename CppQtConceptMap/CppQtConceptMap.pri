@@ -6,15 +6,6 @@ OTHER_FILES += \
     ../RibiClasses/CppQtConceptMap/Licence.txt
 
 SOURCES += \
-    ../RibiClasses/CppQtConceptMap/conceptmapcommandaddselectedrandom.cpp \
-    ../RibiClasses/CppQtConceptMap/conceptmapcommand.cpp \
-    ../RibiClasses/CppQtConceptMap/conceptmapcommandcreatenewedge.cpp \
-    ../RibiClasses/CppQtConceptMap/conceptmapcommandcreatenewnode.cpp \
-    ../RibiClasses/CppQtConceptMap/conceptmapcommanddeleteedge.cpp \
-    ../RibiClasses/CppQtConceptMap/conceptmapcommanddeletenode.cpp \
-    ../RibiClasses/CppQtConceptMap/conceptmapcommandfactory.cpp \
-    ../RibiClasses/CppQtConceptMap/conceptmapcommandsetselectedwithcoordinat.cpp \
-    ../RibiClasses/CppQtConceptMap/conceptmapcommandunselectrandom.cpp \
     ../RibiClasses/CppQtConceptMap/qtconceptmapbrating.cpp \
     ../RibiClasses/CppQtConceptMap/qtconceptmapbrushfactory.cpp \
     ../RibiClasses/CppQtConceptMap/qtconceptmapcenternode.cpp \
@@ -44,18 +35,18 @@ SOURCES += \
 #    ../RibiClasses/CppQtConceptMap/qtdisplayconceptmap.cpp \
 #    ../RibiClasses/CppQtConceptMap/qtrateconceptmap.cpp \
 #    ../RibiClasses/CppQtConceptMap/test_qtrateconceptmap.cpp \
-    ../RibiClasses/CppQtConceptMap/test_qtconceptmap.cpp
+    ../RibiClasses/CppQtConceptMap/test_qtconceptmap.cpp \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapcommand.cpp \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapcommandaddselectedrandom.cpp \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapcommandcreatenewedge.cpp \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapcommandcreatenewnode.cpp \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapcommandfactory.cpp \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapcommandunselectrandom.cpp \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapcommandselectrandomitem.cpp \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapcommandselectrandomnode.cpp \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapcommanddeleteselected.cpp
 
 HEADERS += \
-    ../RibiClasses/CppQtConceptMap/conceptmapcommandaddselectedrandom.h \
-    ../RibiClasses/CppQtConceptMap/conceptmapcommandcreatenewedge.h \
-    ../RibiClasses/CppQtConceptMap/conceptmapcommandcreatenewnode.h \
-    ../RibiClasses/CppQtConceptMap/conceptmapcommanddeleteedge.h \
-    ../RibiClasses/CppQtConceptMap/conceptmapcommanddeletenode.h \
-    ../RibiClasses/CppQtConceptMap/conceptmapcommandfactory.h \
-    ../RibiClasses/CppQtConceptMap/conceptmapcommand.h \
-    ../RibiClasses/CppQtConceptMap/conceptmapcommandsetselectedwithcoordinat.h \
-    ../RibiClasses/CppQtConceptMap/conceptmapcommandunselectrandom.h \
     ../RibiClasses/CppQtConceptMap/qtconceptmapbrushfactory.h \
 #    ../RibiClasses/CppQtConceptMap/qtconceptmapcenternode.h \
     ../RibiClasses/CppQtConceptMap/qtconceptmapcollect.h \
@@ -86,7 +77,16 @@ HEADERS += \
 #    ../RibiClasses/CppQtConceptMap/qtdisplayconceptmap.h \
 #   ../RibiClasses/CppQtConceptMap/qtitemdisplaystrategy.h \
 #    ../RibiClasses/CppQtConceptMap/qtrateconceptmap.h \
-    ../RibiClasses/CppQtConceptMap/qtconceptmaptoolsitem.h
+    ../RibiClasses/CppQtConceptMap/qtconceptmaptoolsitem.h \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapcommand.h \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapcommandaddselectedrandom.h \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapcommandcreatenewedge.h \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapcommandcreatenewnode.h \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapcommandfactory.h \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapcommandunselectrandom.h \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapcommandselectrandomitem.h \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapcommandselectrandomnode.h \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapcommanddeleteselected.h
 
 FORMS += \
     ../RibiClasses/CppQtConceptMap/qtconceptmapconceptdialog.ui \

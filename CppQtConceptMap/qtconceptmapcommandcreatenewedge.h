@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 /*
 ConceptMap, concept map classes
-Copyright (C) 2013-2015 Richel Bilderbeek
+Copyright (C) 2013-2016 Richel Bilderbeek
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -18,52 +18,48 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppConceptMap.htm
 //---------------------------------------------------------------------------
-#ifndef CONCEPTMAPCOMMANDDELETENODE_H
-#define CONCEPTMAPCOMMANDDELETENODE_H
+#ifndef CONCEPTMAPCOMMANDCREATENEWEDGE_H
+#define CONCEPTMAPCOMMANDCREATENEWEDGE_H
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
-#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
-#include "conceptmapcommand.h"
-#include "conceptmapnode.h"
 #include "conceptmap.h"
-#pragma GCC diagnostic pop
+#include "conceptmapnode.h"
+#include "conceptmapedge.h"
+#include "qtconceptmapcommand.h"
+
+struct QGraphicsScene;
 
 namespace ribi {
 namespace cmap {
 
-///Delete an existing node
-class CommandDeleteNode final : public Command
+struct QtEdge;
+struct QtTool;
+
+class CommandCreateNewEdgeBetweenTwoSelectedNodes final : public Command
 {
   public:
 
-  using EdgePtr = Edge;
-  using Edges = std::vector<EdgePtr>;
-  using Nodes = std::vector<Node>;
-  using EdgesAndNodes = std::pair<Edges,Nodes>;
-
-  CommandDeleteNode(
+  CommandCreateNewEdgeBetweenTwoSelectedNodes(
     ConceptMap& conceptmap,
-    const Node& node
+    QGraphicsScene * const scene,
+    QtTool * const tool_item
   );
-  CommandDeleteNode(const CommandDeleteNode&) = delete;
-  CommandDeleteNode& operator=(const CommandDeleteNode&) = delete;
-  ~CommandDeleteNode() noexcept {}
+  CommandCreateNewEdgeBetweenTwoSelectedNodes(const CommandCreateNewEdgeBetweenTwoSelectedNodes&) = delete;
+  CommandCreateNewEdgeBetweenTwoSelectedNodes& operator=(const CommandCreateNewEdgeBetweenTwoSelectedNodes&) = delete;
+  ~CommandCreateNewEdgeBetweenTwoSelectedNodes() noexcept {}
 
-  void undo() override;
   void redo() override;
-  void SetVerbosity(const bool verbose) noexcept { m_verbose = verbose; }
+  void undo() override;
 
   private:
   ConceptMap& m_conceptmap;
-  const Edges m_deleted_edges;
-  const Node m_node;
-  const EdgesAndNodes m_old_selected; //Selected before command
-  bool m_verbose;
+  ConceptMap m_after;
+  const ConceptMap m_before;
+  QGraphicsScene * const m_scene;
+  QtTool * const m_tool_item;
+  QtEdge * m_qtedge; //The QtEdge being added or removed
 };
 
 } //~namespace cmap
 } //~namespace ribi
 
-#endif // CONCEPTMAPCOMMANDDELETENODE_H
+#endif // CONCEPTMAPCOMMANDCREATENEWEDGE_H

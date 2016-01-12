@@ -165,6 +165,7 @@ std::vector<int> ribi::VigenereCipher::StrToKey(const std::string& s) noexcept
   std::vector<int> v;
   for (const auto& c: s)
   {
+    //Uppercase only
     assert(c >= 'a');
     assert(c <= 'z');
     const int i = static_cast<int>(c - 'a');
@@ -184,15 +185,15 @@ void ribi::VigenereCipher::Test() noexcept
   const TestTimer test_timer(__func__,__FILE__,1.0);
   {
     const VigenereCipher e("a");
-    const std::string s = "abcdefghij";
+    const std::string s = "abcdefghijk";
     assert(s == e.Encrypt(s));
     assert(s == e.Deencrypt(s));
   }
   {
     const std::vector<std::string> v {
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXY",
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWX"
+      "abcdefghijklmnopqrstuvwxyz",
+      "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz",
+      "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz"
     };
     for (const std::string& s: v)
     {
@@ -211,7 +212,7 @@ void ribi::VigenereCipher::Test() noexcept
   }
   {
     const std::string key = "key";
-    const std::string secret = "TSZNQHUWYJHRSCRPMIMMRYEMULIEHYTBKJQSOQKIRQXMIYHKLIRPDQAMVJQ";
+    const std::string secret = "oweifjowergsergrthtrhtrhrhergergef";
     const VigenereCipher e(key);
     const std::string clean_text = VigenereCipher::Clean(secret);
   }

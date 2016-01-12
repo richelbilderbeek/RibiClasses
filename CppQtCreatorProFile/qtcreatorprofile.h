@@ -195,10 +195,12 @@ struct QtCreatorProFile
 
   void RemoveComments(std::vector<std::string>& v);
 
+public:
   #ifndef NDEBUG
   static void Test() noexcept;
   #endif
 
+private:
   friend std::ostream& operator<<(std::ostream& os, const QtCreatorProFile& p);
   friend bool operator==(const QtCreatorProFile& lhs, const QtCreatorProFile& rhs);
 

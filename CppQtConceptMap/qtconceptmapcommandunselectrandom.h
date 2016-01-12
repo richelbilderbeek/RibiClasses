@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 /*
 ConceptMap, concept map classes
-Copyright (C) 2013-2015 Richel Bilderbeek
+Copyright (C) 2013-2016 Richel Bilderbeek
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -18,45 +18,40 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppConceptMap.htm
 //---------------------------------------------------------------------------
-#ifndef CONCEPTMAPCOMMANDCREATENEWEDGE_H
-#define CONCEPTMAPCOMMANDCREATENEWEDGE_H
+#ifndef CONCEPTMAPCOMMANDUNSELECTRANDOM_H
+#define CONCEPTMAPCOMMANDUNSELECTRANDOM_H
 
-#include "conceptmapcommand.h"
+
 #include "conceptmapnode.h"
-#include "conceptmapedge.h"
+#include "conceptmap.h"
+#include "qtconceptmapcommand.h"
 
 namespace ribi {
 namespace cmap {
 
-///Start a new node
-///-Can be used only when there is an existing concept map
-class CommandCreateNewEdge final : public Command
+///Remove the selectedness of a all selected nodes
+///If there are two nodes selected, unselect one of the two
+class CommandUnselectRandom final : public Command
 {
   public:
-
-  CommandCreateNewEdge(ConceptMap& conceptmap);
-  CommandCreateNewEdge(const CommandCreateNewEdge&) = delete;
-  CommandCreateNewEdge& operator=(const CommandCreateNewEdge&) = delete;
-  ~CommandCreateNewEdge() noexcept {}
+  CommandUnselectRandom(ConceptMap& conceptmap);
+  CommandUnselectRandom(const CommandUnselectRandom&) = delete;
+  CommandUnselectRandom& operator=(const CommandUnselectRandom&) = delete;
+  ~CommandUnselectRandom() noexcept {}
 
   void redo() override;
   void undo() override;
 
-  void SetVerbosity(const bool verbose) noexcept { m_verbose = verbose; }
-
-
   private:
-  std::vector<Edge> m_edge;
-  std::vector<Node> m_selected_nodes;
-  std::vector<Node> m_prev_selected; //Selected before Edge was added
-
   ConceptMap& m_conceptmap;
+  const ConceptMap m_before;
+  const ConceptMap m_after;
 
-  bool m_verbose;
-
+  //EdgesAndNodes m_new_selected;
+  //const EdgesAndNodes m_old_selected;
 };
 
 } //~namespace cmap
 } //~namespace ribi
 
-#endif // CONCEPTMAPCOMMANDCREATENEWEDGE_H
+#endif // CONCEPTMAPCOMMANDUNSELECTRANDOM_H

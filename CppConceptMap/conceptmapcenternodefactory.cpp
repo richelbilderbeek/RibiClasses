@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 /*
 ConceptMap, concept map classes
-Copyright (C) 2013-2015 Richel Bilderbeek
+Copyright (C) 2013-2016 Richel Bilderbeek
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -101,13 +101,41 @@ ribi::cmap::Node ribi::cmap::CenterNodeFactory::CreateFromStrings(
   return node;
 }
 
-ribi::cmap::Node ribi::cmap::CenterNodeFactory::FromXml(
-  const std::string& s
-) const
+int ribi::cmap::CenterNodeFactory::GetNumberOfTests() const noexcept
 {
-  Node node = NodeFactory().FromXml(s);
-  assert(ToXml(node) == s);
-  assert(node.IsCenterNode());
+  return NodeFactory().GetNumberOfTests();
+}
+
+int ribi::cmap::CenterNodeFactory::GetNumberOfNastyTests() const noexcept
+{
+  return NodeFactory().GetNumberOfNastyTests();
+}
+
+std::vector<ribi::cmap::Node> ribi::cmap::CenterNodeFactory::GetTests() const noexcept
+{
+  auto v = NodeFactory().GetTests();
+  for (auto& node: v) { node.SetIsCenterNode(true); }
+  return v;
+}
+
+std::vector<ribi::cmap::Node> ribi::cmap::CenterNodeFactory::GetNastyTests() const noexcept
+{
+  auto v = NodeFactory().GetNastyTests();
+  for (auto& node: v) { node.SetIsCenterNode(true); }
+  return v;
+}
+
+ribi::cmap::Node ribi::cmap::CenterNodeFactory::GetTest(const int test_index) const noexcept
+{
+  auto node = NodeFactory().GetTest(test_index);
+  node.SetIsCenterNode(true);
+  return node;
+}
+
+ribi::cmap::Node ribi::cmap::CenterNodeFactory::GetNastyTest(const int test_index) const noexcept
+{
+  auto node = NodeFactory().GetNastyTest(test_index);
+  node.SetIsCenterNode(true);
   return node;
 }
 
@@ -143,7 +171,7 @@ void ribi::cmap::CenterNodeFactory::Test() noexcept
   }
   {
     const std::string xml = "<node><concept><name>Concept without examples</name><examples></examples><concept_is_complex>0</concept_is_complex><complexity>0</complexity><concreteness>1</concreteness><specificity>2</specificity></concept><x>0.1</x><y>2.3</y><is_center_node>1</is_center_node></node>";
-    const auto node = CenterNodeFactory().FromXml(xml);
+    const auto node = XmlToNode(xml);
     assert(node.IsCenterNode());
   }
 }

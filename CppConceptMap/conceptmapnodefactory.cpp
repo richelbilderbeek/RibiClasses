@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 /*
 ConceptMap, concept map classes
-Copyright (C) 2013-2015 Richel Bilderbeek
+Copyright (C) 2013-2016 Richel Bilderbeek
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -42,35 +42,14 @@ ribi::cmap::NodeFactory::NodeFactory()
   #endif
 }
 
-ribi::cmap::Node ribi::cmap::NodeFactory::Create(
-) const noexcept
-{
-  Node node(ConceptFactory().Create(),false,0.0,0.0);
-  return node;
-}
-
-ribi::cmap::Node ribi::cmap::NodeFactory::Create(
-  const Concept& concept,
-  bool is_center_node,
-  const double x,
-  const double y
-) const noexcept
-{
-  Node node(concept,is_center_node,x,y);
-  assert(concept == node.GetConcept());
-  assert(node.GetX() == x);
-  assert(node.GetY() == y);
-  return node;
-}
-
 ribi::cmap::Node ribi::cmap::NodeFactory::CreateFromStrings(
   const std::string& name,
   const std::vector<std::pair<std::string,Competency> >& examples,
-  bool is_center_node,
   const double x,
   const double y
 ) const noexcept
 {
+  const bool is_center_node{false};
   Node node(
     ConceptFactory().Create(name,examples),
     is_center_node,
@@ -82,69 +61,14 @@ ribi::cmap::Node ribi::cmap::NodeFactory::CreateFromStrings(
   return node;
 }
 
-ribi::cmap::Node ribi::cmap::NodeFactory::FromXml(const std::string& s) const
-{
-  //const bool verbose{false};
-  if (s.size() < 13)
-  {
-    std::stringstream msg;
-    msg << __func__ << ": string too short";
-    throw std::logic_error(msg.str());
-  }
-  if (s.substr(0,6) != "<node>")
-  {
-    std::stringstream msg;
-    msg << __func__ << ": incorrect starting tag";
-    throw std::logic_error(msg.str());
-  }
-  if (s.substr(s.size() - 7,7) != "</node>")
-  {
-    std::stringstream msg;
-    msg << __func__ << ": incorrect ending tag";
-    throw std::logic_error(msg.str());
-  }
-
-  //m_concept
-  Concept concept = ConceptFactory().Create();
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexConcept());
-    assert(v.size() == 1);
-    concept = ConceptFactory().FromXml(v[0]);
-  }
-
-  //m_is_centernode
-  bool is_center_node = false;
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexIsCenterNode());
-    if (v.size() == 1) {
-      is_center_node = boost::lexical_cast<bool>(ribi::xml::StripXmlTag(v[0]));
-    }
-  }
-  //m_x
-  double x = 0.0;
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexX());
-    assert(v.size() == 1);
-    x = boost::lexical_cast<double>(ribi::xml::StripXmlTag(v[0]));
-  }
-  //m_x
-  double y = 0.0;
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexY());
-    assert(v.size() == 1);
-    y = boost::lexical_cast<double>(ribi::xml::StripXmlTag(v[0]));
-  }
-  Node node(NodeFactory().Create(concept,is_center_node,x,y));
-  return node;
-}
-
 int ribi::cmap::NodeFactory::GetNumberOfTests() const noexcept
 {
   return static_cast<int>(GetTests().size());
+}
+
+int ribi::cmap::NodeFactory::GetNumberOfNastyTests() const noexcept
+{
+  return static_cast<int>(GetNastyTests().size());
 }
 
 ribi::cmap::Node ribi::cmap::NodeFactory::GetTest(const int i) const noexcept
@@ -155,6 +79,30 @@ ribi::cmap::Node ribi::cmap::NodeFactory::GetTest(const int i) const noexcept
   return tests[i];
 }
 
+ribi::cmap::Node ribi::cmap::NodeFactory::GetNastyTest(const int i) const noexcept
+{
+  const auto tests = GetNastyTests();
+  assert(i >= 0);
+  assert(i < static_cast<int>(tests.size()));
+  return tests[i];
+}
+
+std::vector<ribi::cmap::Node> ribi::cmap::NodeFactory::GetNastyTests() const noexcept
+{
+  std::vector<Node> nodes;
+  const auto v = ConceptFactory().GetNastyTests();
+  std::transform(v.begin(),v.end(),std::back_inserter(nodes),
+    [](const Concept& c)
+    {
+      const double x{1.2};
+      const double y{3.4};
+      const Node p{c,false,x,y};
+      return p;
+    }
+  );
+  return nodes;
+}
+
 std::vector<ribi::cmap::Node> ribi::cmap::NodeFactory::GetTests() const noexcept
 {
   std::vector<Node> nodes;
@@ -162,9 +110,9 @@ std::vector<ribi::cmap::Node> ribi::cmap::NodeFactory::GetTests() const noexcept
   std::transform(v.begin(),v.end(),std::back_inserter(nodes),
     [](const Concept& c)
     {
-      const int x = 0;
-      const int y = 0;
-      const Node p(NodeFactory().Create(c,x,y));
+      const double x{1.2};
+      const double y{3.4};
+      const Node p{c,false,x,y};
       return p;
     }
   );
@@ -181,6 +129,15 @@ void ribi::cmap::NodeFactory::Test() noexcept
   }
   NodeFactory().GetTest(0);
   const TestTimer test_timer(__func__,__FILE__,1.0);
+  //Number of tests
+  {
+    assert(NodeFactory().GetNumberOfTests()
+      == static_cast<int>(NodeFactory().GetTests().size())
+    );
+    assert(NodeFactory().GetNumberOfNastyTests()
+      == static_cast<int>(NodeFactory().GetNastyTests().size())
+    );
+  }
   //operator== and operator!=
   {
     assert(NodeFactory().GetTest(0) == NodeFactory().GetTest(0));
@@ -197,7 +154,7 @@ void ribi::cmap::NodeFactory::Test() noexcept
     for (const auto node: NodeFactory().GetTests())
     {
       const std::string str{ToXml(node)};
-      const Node node_again{NodeFactory().FromXml(str)};
+      const Node node_again{XmlToNode(str)};
       assert(node == node_again);
     }
   }

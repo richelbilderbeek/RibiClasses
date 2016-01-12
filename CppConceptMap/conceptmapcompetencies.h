@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 /*
 ConceptMap, concept map classes
-Copyright (C) 2013-2015 Richel Bilderbeek
+Copyright (C) 2013-2016 Richel Bilderbeek
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -57,9 +57,6 @@ struct Competencies
   static void Test() noexcept;
   #endif
 };
-
-///Convert a std::string to a cmap::Competency
-//static Competency StrToCompetency(const std::string& s);
 
 } //~namespace cmap
 } //~namespace ribi

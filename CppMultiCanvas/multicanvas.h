@@ -23,7 +23,7 @@ namespace ribi {
 struct MultiCanvas : public Canvas
 {
   MultiCanvas(
-    const std::vector<boost::shared_ptr<Canvas>>& canvases
+    const std::vector<boost::shared_ptr<Canvas>>& canvases = {}
   ) noexcept;
 
   ///Obtain the height of the canvas is characters

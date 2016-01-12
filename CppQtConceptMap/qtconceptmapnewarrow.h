@@ -42,7 +42,8 @@ struct QtNewArrow : public QtArrowItem
 {
   QtNewArrow(
     QtNode * const from,
-    const QPointF& current_to);
+    const QPointF& current_to
+  );
   QtNewArrow(const QtNewArrow&) = delete;
   QtNewArrow& operator=(const QtNewArrow&) = delete;
   ///Obtain the source node

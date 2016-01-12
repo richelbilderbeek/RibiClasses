@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 /*
 ConceptMap, concept map classes
-Copyright (C) 2013-2015 Richel Bilderbeek
+Copyright (C) 2013-2016 Richel Bilderbeek
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -25,8 +25,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic ignored "-Weffc++"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
-#include <boost/signals2.hpp>
-#include <boost/shared_ptr.hpp>
 #include "conceptmapfwd.h"
 #include "conceptmapconcept.h"
 #pragma GCC diagnostic pop
@@ -44,12 +42,22 @@ struct NodeFactory;
 /// - CenterNode
 struct Node
 {
+  ///Use NodeFactory as an unused argument to enforce using it
+  explicit Node(
+    const Concept& concept = Concept(),
+    const bool is_center_node = false,
+    const double x = 0.0,
+    const double y = 0.0
+  ) noexcept;
+
   ///Get the Concept
   const Concept& GetConcept() const noexcept { return m_concept; }
         Concept& GetConcept()       noexcept { return m_concept; }
 
   ///Get some test nodes
   static std::vector<Node> GetTests() noexcept;
+
+  int GetId() const noexcept { return m_id; }
 
   ///Get the x coordinat
   double GetX() const noexcept { return m_x; }
@@ -79,13 +87,6 @@ struct Node
   friend class NodeFactory;
   friend class CenterNodeFactory;
 
-  ///Use NodeFactory as an unused argument to enforce using it
-  explicit Node(
-    const Concept& concept,
-    const bool is_center_node,
-    const double x,
-    const double y
-  ) noexcept;
 
   private:
 
@@ -103,10 +104,6 @@ struct Node
   double m_y;
 
   static int sm_ids; //ID to assign
-
-  ///Called whenever something on Concept changes
-  ///Re-emits m_concept_changed with 'this'
-  void OnConceptChanged(Concept * const this_concept) noexcept;
 
   #ifndef NDEBUG
   static void Test() noexcept;
@@ -132,11 +129,13 @@ bool IsCenterNode(const Node& node) noexcept;
 bool HaveSameIds(const Node& lhs, const Node& rhs) noexcept;
 
 std::string ToXml(const Node& node) noexcept;
+Node XmlToNode(const std::string& s);
 
 bool operator==(const Node& lhs, const Node& rhs) noexcept;
 bool operator!=(const Node& lhs, const Node& rhs) noexcept;
 bool operator<(const Node& lhs, const Node& rhs) noexcept;
 std::ostream& operator<<(std::ostream& os, const Node& node) noexcept;
+std::istream& operator>>(std::istream& is, Node& node) noexcept;
 
 } //~namespace cmap
 } //~namespace ribi

@@ -62,12 +62,6 @@ public:
   const QtExamplesItem * GetQtExamplesItem() const noexcept { return m_examples_item; }
   QtExamplesItem * GetQtExamplesItem() noexcept { return m_examples_item; }
 
-  std::vector<const QtEdge *> GetQtEdges() const;
-  std::vector<      QtEdge *> GetQtEdges();
-
-  std::vector<const QtNode *> GetQtNodes() const;
-  std::vector<      QtNode *> GetQtNodes();
-
   ///The arrow that must be clicked to add a new edge
   const QtTool * GetQtToolItem() const noexcept { return m_tools; }
   QtTool * GetQtToolItem() noexcept { return m_tools; }
@@ -90,10 +84,6 @@ public:
   void SetConceptMap(const ConceptMap& conceptmap);
 
   #ifndef NDEBUG
-  ///Shuffle the concepts (used in debugging)
-  void Shuffle() noexcept;
-
-  ///Test this class with a derived class instance
   static void Test() noexcept;
   #endif
 
@@ -117,33 +107,10 @@ protected:
   void DeleteQtEdge(const QtEdge * const edge);
 
   ///Delete a Node
-  //void DeleteNode(const boost::shared_ptr<QtNode>& node);
-  void DeleteQtNode(const QtNode * const node);
-
-  ///Get all the edges connected to the concept
-  std::vector<QtEdge*> GetQtEdges(const QtNode * const from) const noexcept;
-
-  //Find the Qt edge with the same from and to
-  const QtEdge * GetQtEdge(const Edge& edge) const noexcept;
-        QtEdge * GetQtEdge(const Edge& edge)       noexcept;
-  const QtEdge * GetQtEdge(     const QtEdge* const edge) const noexcept { return GetQtEdgeConst(edge); }
-  const QtEdge * GetQtEdgeConst(const QtEdge* const edge) const noexcept;
-        QtEdge * GetQtEdge(const QtEdge* const edge)       noexcept;
-  const QtEdge * GetQtEdgeConst(
-    const QtNode* const from,
-    const QtNode* const to) const noexcept
-  ;
-
-  ///Find the QtNode containing the Node
-  //QtNode * FindQtNode(Node node) const { return FindQtNode(node.get()); }
-  //const QtNode * GetQtNodeConst(const Node& node) const noexcept;
-  //const QtNode * FindQtNode     (const Node * const node) const noexcept { return FindQtNodeConst(node); }
-  const QtNode * GetQtNode(const Node& node) const noexcept;
-        QtNode * GetQtNode(const Node& node)       noexcept;
+  //void DeleteQtNode(const QtNode * const node);
 
   ///Obtain the center node, if there is any
-  const QtNode * GetCenterNode() const noexcept;
-        QtNode * GetCenterNode()       noexcept;
+  QtNode * GetCenterNode()       noexcept;
 
   ///Obtain the first QtNode under the cursor
   ///Returns nullptr if none is present
@@ -152,21 +119,11 @@ protected:
   ///Check if this item is the center node
   static bool IsQtCenterNode(const QGraphicsItem* const item);
 
-  ///Have the nodes in the concept map be positioned once already, or must
-  ///these be (re)positioned. '(re)', because the nodes are initially positioned at the origin
-  bool MustReposition(const std::vector<Node>& nodes) const;
-
   ///All items from a ConceptMap are put in at the center and need to be repositioned
   void RepositionItems();
 
   ///Set the rectangle with text showing the examples
   void SetExamplesItem(QtExamplesItem * const item);
-
-  #ifndef NDEBUG
-  ///Test the internals of this class:
-  ///Does the current content really reflect the map
-  void TestMe(const ConceptMap map) const;
-  #endif
 
 private:
 
@@ -188,12 +145,6 @@ private:
 
   QUndoStack m_undo;
 
-  ///Adds an Edge, returns the freshly created QtEdge
-  QtEdge * AddEdge(const Edge& edge);
-
-  ///Adds a Node, returns the freshly created QtNode
-  QtNode * AddNode(const Node& node);
-
   ///Remove all Qt and non-Qt items
   void CleanMe();
 
@@ -201,7 +152,7 @@ private:
   void DeleteEdge(const Edge& edge);
 
   ///Called when a Node gets deleted from the ConceptMap
-  void DeleteNode(const Node& node);
+  //void DeleteNode(const Node& node);
 
 
   ///Called when an item wants to be edited
@@ -213,28 +164,51 @@ private:
   ///Called whenever the tools item is clicked
   void OnToolsClicked();
 
-  void UpdateSelection();
+  /// Writes the selecteness of the QtConceptMap
+  /// to the ConceptMap
+  void UpdateConceptMap();
+
+private slots:
+
+  void onFocusItemChanged(QGraphicsItem*,QGraphicsItem*,Qt::FocusReason);
+  void onSelectionChanged();
 
 public slots:
 
   ///Called whenever a concept is clicked or moved
   ///If item is nullptr, the last item might be deleted
   ///Use QGraphicsItem* due to QtKeyboardFriendlyGraphicsView working on QGraphicsItems
-  void OnItemRequestsUpdate(const QGraphicsItem* const item);
-
-  ///Called if QtKeyboardFriendlyGraphicsView updates an item.
-  ///Is called, for example, after user input changes the selected item
-  //void OnItemUpdate(const QGraphicsItem* const item);
-
-  ///Called if QtKeyboardFriendlyGraphicsView updates an item.
-  ///Is called, for example, after user input changes the selected item
-  void OnItemSelectedChanged(QGraphicsItem* const item);
-
-
+  //void OnItemRequestsUpdate(const QGraphicsItem* const item);
 
   ///Called when an item requests a scene update
   void OnRequestSceneUpdate();
 };
+
+int CountQtNodes(const QGraphicsScene * const scene) noexcept;
+int CountQtEdges(const QGraphicsScene * const scene) noexcept;
+
+QtEdge * FindQtEdge(const int edge_id, const QGraphicsScene * const scene) noexcept;
+
+//Find the Qt edge with the same from and to
+QtEdge * FindQtEdge(
+  const QtNode* const from,
+  const QtNode* const to,
+  const QGraphicsScene * const scene
+) noexcept;
+
+
+QtNode * FindQtNode(const int node_id, const QGraphicsScene * const scene) noexcept;
+
+std::vector<QtEdge *> GetQtEdges(const QGraphicsScene * const scene) noexcept;
+
+///Get all the edges connected to the concept
+std::vector<QtEdge*> GetQtEdges(
+  const QtNode * const from,
+  const QGraphicsScene * const scene
+) noexcept;
+
+std::vector<QtNode *> GetQtNodes(const QGraphicsScene * const scene) noexcept;
+
 
 } //~namespace cmap
 } //~namespace ribi

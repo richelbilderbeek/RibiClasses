@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 /*
 ConceptMap, concept map classes
-Copyright (C) 2013-2015 Richel Bilderbeek
+Copyright (C) 2013-2016 Richel Bilderbeek
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -18,29 +18,41 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppConceptMap.htm
 //---------------------------------------------------------------------------
-#ifndef CONCEPTMAPCONCEPTRATING_H
-#define CONCEPTMAPCONCEPTRATING_H
+#ifndef CONCEPTMAPCOMMANDADDSELECTEDRANDOM_H
+#define CONCEPTMAPCOMMANDADDSELECTEDRANDOM_H
+
+#include "conceptmapnode.h"
+#include "conceptmap.h"
+#include "qtconceptmapcommand.h"
 
 namespace ribi {
 namespace cmap {
 
-///The rating of a Concept for complexity/concreteness/specificity
-///-1: not rated, 0: lowest, 2: highest
-struct ConceptRating
+///Add another vertex to being selected
+///If one out of four nodes is selected, select a random second
+class CommandAddSelectedRandom final : public Command
 {
-  ConceptRating(const int rating = -1);
+public:
 
-  void SetRating(const int rating);
+  CommandAddSelectedRandom(ConceptMap& conceptmap);
+  CommandAddSelectedRandom(const CommandAddSelectedRandom&) = delete;
+  CommandAddSelectedRandom& operator=(const CommandAddSelectedRandom&) = delete;
+  ~CommandAddSelectedRandom() noexcept {}
+
+  void undo() override;
+  void redo() override;
 
   private:
-  int m_rating;
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
+  ConceptMap& m_conceptmap;
+  const ConceptMap m_before;
+  const ConceptMap m_after;
 };
+
+//Throws if there are no nodes that can be selected additionally
+ConceptMap RandomlyAddSelectedNode(ConceptMap g);
 
 } //~namespace cmap
 } //~namespace ribi
 
-#endif // CONCEPTMAPCONCEPTRATING_H
+
+#endif // CONCEPTMAPCOMMANDADDSELECTEDRANDOM_H

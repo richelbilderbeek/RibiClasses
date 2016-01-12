@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 /*
 ConceptMap, concept map classes
-Copyright (C) 2013-2015 Richel Bilderbeek
+Copyright (C) 2013-2016 Richel Bilderbeek
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -18,37 +18,4 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppConceptMap.htm
 //---------------------------------------------------------------------------
-#include "conceptmapcommandcreatenewnode.h"
-
-#include <cassert>
-
-
-#include "conceptmap.h"
-#include "conceptmapnode.h"
-
-ribi::cmap::CommandCreateNewNode::CommandCreateNewNode(
-  ConceptMap& conceptmap
-)
-  : m_node{},
-    m_conceptmap(conceptmap)
-{
-  this->setText("create new node");
-}
-
-void ribi::cmap::CommandCreateNewNode::redo()
-{
-  if (m_node.empty())
-  {
-    m_node.push_back(m_conceptmap.CreateNewNode()); //CreateNewNode adds it to the selected nodes
-  }
-  else
-  {
-    m_conceptmap.AddNode(m_node.front());
-  }
-}
-
-void ribi::cmap::CommandCreateNewNode::undo()
-{
-  assert(!m_node.empty());
-  m_conceptmap.DeleteNode(m_node.front());
-}
+#include "qtconceptmapcommand.h"

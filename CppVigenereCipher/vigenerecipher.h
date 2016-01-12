@@ -27,6 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 namespace ribi {
 
 ///Vigenere cipher class
+///Use lowercase only
 struct VigenereCipher
 {
   VigenereCipher(const std::string& s);
@@ -47,7 +48,8 @@ struct VigenereCipher
   static bool IsClean(const std::string& s) noexcept;
 
   private:
-  const std::vector<int> m_key;
+  //Non-const to allow default copying
+  std::vector<int> m_key;
 
   char Encrypt(const char c, const int d) const noexcept;
   char Deencrypt(const char c, const int d) const noexcept;

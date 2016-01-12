@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 /*
 ConceptMap, concept map classes
-Copyright (C) 2013-2015 Richel Bilderbeek
+Copyright (C) 2013-2016 Richel Bilderbeek
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -26,7 +26,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic ignored "-Weffc++"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
-#include <boost/shared_ptr.hpp>
 #include "conceptmapcompetency.h"
 
 #include "conceptmapfwd.h"
@@ -40,22 +39,12 @@ struct ExamplesFactory
 {
   ExamplesFactory() noexcept;
 
-  ///Constructor like
-  Examples Create() const noexcept;
-
-  ///Copy-constructor like
-  Examples Create(const Examples& examples) const noexcept;
-
-  Examples Create(const std::vector<Example>& v) const noexcept;
-
   Examples Create(
     const std::vector<std::pair<std::string,Competency> >& v) const noexcept;
 
-  ///Create an Examples from XML
-  Examples FromXml(const std::string& s) const;
-
   int GetNumberOfTests() const noexcept { return static_cast<int>(GetTests().size()); }
   Examples GetTest(const int i) const noexcept;
+  std::vector<Examples> GetNastyTests() const noexcept;
   std::vector<Examples> GetTests() const noexcept;
 
   private:

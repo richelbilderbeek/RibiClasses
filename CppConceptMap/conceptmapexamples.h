@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 /*
 ConceptMap, concept map classes
-Copyright (C) 2013-2015 Richel Bilderbeek
+Copyright (C) 2013-2016 Richel Bilderbeek
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -39,14 +39,12 @@ namespace cmap {
 /// - QtExamplesDialog: a QDialog
 struct Examples
 {
-  explicit Examples();
-  explicit Examples(const std::vector<Example>& v);
+  explicit Examples(const std::vector<Example>& v = {});
 
   const std::vector<Example>& Get() const noexcept { return m_v; }
         std::vector<Example>& Get()       noexcept { return m_v; }
 
   std::string ToStr() const noexcept;
-  std::string ToXml() const noexcept;
 
 private:
 
@@ -57,6 +55,11 @@ private:
   #endif
 };
 
+std::string ToXml(const Examples& node) noexcept;
+Examples XmlToExamples(const std::string& s) noexcept;
+
+std::ostream& operator<<(std::ostream& os, const Examples& concept) noexcept;
+std::istream& operator>>(std::istream& is, Examples& concept) noexcept;
 
 bool operator==(const Examples& lhs, const Examples& rhs);
 bool operator!=(const Examples& lhs, const Examples& rhs);

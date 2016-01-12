@@ -30,6 +30,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include <QGraphicsItem>
 #include "qtconceptmapfwd.h"
 #include "conceptmapnode.h"
+#include "qtconceptmapqtnode.h"
 #include "conceptmapedge.h"
 
 #pragma GCC diagnostic pop
@@ -43,12 +44,11 @@ namespace cmap {
 ///The QtEdge is a QtConceptMapElement that
 ///draws a curve underneath itself, between head and tail arrowhead
 ///concept_item is the Strategy for displaying the ConceptItem
-//struct QtEdge : public QtConceptMapElement
 struct QtEdge : public QGraphicsItem
 {
   using Base = QGraphicsItem;
-  using Arrow = boost::shared_ptr<QtQuadBezierArrowItem>;
-  using ReadOnlyArrow = boost::shared_ptr<const QtQuadBezierArrowItem> ;
+  using Arrow = QtQuadBezierArrowItem *;
+  using ReadOnlyArrow = const QtQuadBezierArrowItem *;
   using ReadOnlyNodePtr = boost::shared_ptr<const Node>;
   using QtNodePtr =  QtNode *;
   using ReadOnlyQtNodePtr = const QtNode *;
@@ -60,8 +60,8 @@ struct QtEdge : public QGraphicsItem
 
   QtEdge(
     const Edge& edge,
-    const From& from,
-    const To& to
+    QtNode * const from,
+    QtNode * const to
   );
   QtEdge(const QtEdge&) = delete;
   QtEdge& operator=(const QtEdge&) = delete;
@@ -86,8 +86,8 @@ struct QtEdge : public QGraphicsItem
   ReadOnlyTo GetTo() const noexcept { return m_to; }
   To GetTo() noexcept { return m_to; }
 
-  boost::shared_ptr<      QtNode> GetQtNode()       noexcept { return m_qtnode; }
-  boost::shared_ptr<const QtNode> GetQtNode() const noexcept { return m_qtnode; }
+        QtNode * GetQtNode()       noexcept { return m_qtnode; }
+  const QtNode * GetQtNode() const noexcept { return m_qtnode; }
 
   static std::string GetVersion() noexcept;
   static std::vector<std::string> GetVersionHistory() noexcept;
@@ -96,7 +96,6 @@ struct QtEdge : public QGraphicsItem
 
   void SetEdge(const Edge& edge) noexcept;
 
-  void SetFrom(const From& from) noexcept;
 
   void SetHasHeadArrow(const bool has_head_arrow) noexcept;
   void SetHasTailArrow(const bool has_tail_arrow) noexcept;
@@ -105,7 +104,6 @@ struct QtEdge : public QGraphicsItem
 
   void SetShowBoundingRect(const bool show_bounding_rect) const noexcept { m_show_bounding_rect = show_bounding_rect; }
 
-  void SetTo(const To& to) noexcept;
 
   std::string ToStr() const noexcept;
 
@@ -123,37 +121,30 @@ protected:
   QPainterPath shape() const noexcept override final;
 
 private:
-  ///The arrow used for drawing
+  ///The arrow used for drawing, deleted by this class
   Arrow m_arrow;
 
   ///The edge
   Edge m_edge;
 
   ///The node item the arrow originates from
-  From m_from;
+  QtNode * const m_from;
 
   ///The QtNode around Edge its Node
-  const boost::shared_ptr<QtNode> m_qtnode;
+  QtNode * const m_qtnode;
 
   ///Show the bounding rectangle
   mutable bool m_show_bounding_rect;
 
   ///The node item the arrow targets
-  To m_to;
+  QtNode * const m_to;
 
   ///Called whenever the edge changes
   void OnEdgeChanged(Edge * const edge) noexcept;
   void OnConceptChanged(Node * const node) noexcept;
-  void OnFromChanged(Edge * const edge) noexcept;
-  void OnHeadArrowChanged(Edge * const edge) noexcept;
   void OnNodeChanged(Edge * const edge) noexcept;
   void OnNodePosChanged(QtRoundedRectItem * const node) noexcept;
-  void OnTailArrowChanged(Edge * const edge) noexcept;
   void OnTextChanged(QtRoundedEditRectItem* item) noexcept;
-  void OnToChanged(Edge * const edge) noexcept;
-
-  ///Called whenever the arrow updates
-  void OnArrowChanged(const QtQuadBezierArrowItem* const item);
 
   void OnMustUpdateScene();
   void OnRequestSceneUpdate();

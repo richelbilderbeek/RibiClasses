@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 /*
 ConceptMap, concept map classes
-Copyright (C) 2013-2015 Richel Bilderbeek
+Copyright (C) 2013-2016 Richel Bilderbeek
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
 #include "conceptmapnode.h"
 
+#include <iostream>
 #include <boost/lambda/lambda.hpp>
 
 #include "counter.h"
@@ -31,11 +32,16 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmapconcept.h"
 #include "conceptmapconceptfactory.h"
 #include "conceptmapnodefactory.h"
+#include "is_graphviz_friendly.h"
+#include "conceptmapcenternodefactory.h"
 #include "conceptmapexamplefactory.h"
 #include "conceptmaphelper.h"
+#include "conceptmapregex.h"
 #include "testtimer.h"
 #include "trace.h"
 #include "xml.h"
+#include "graphviz_decode.h"
+#include "graphviz_encode.h"
 #pragma GCC diagnostic pop
 
 int ribi::cmap::Node::sm_ids = 0; //ID to assign
@@ -88,7 +94,7 @@ std::vector<ribi::cmap::Node> ribi::cmap::Node::GetTests() noexcept
     {
       const int x = (std::rand() % 256) - 128;
       const int y = (std::rand() % 256) - 128;
-      const auto node = NodeFactory().Create(concept,x,y);
+      Node node(concept,x,y);
       result.push_back(node);
     }
   );
@@ -110,140 +116,19 @@ bool ribi::cmap::IsCenterNode(const Node& node) noexcept
   return node.IsCenterNode();
 }
 
-void ribi::cmap::Node::OnConceptChanged(Concept * const) noexcept
-{
-  //m_signal_concept_changed(this);
-}
-
 void ribi::cmap::Node::SetConcept(const Concept& concept) noexcept
 {
-  const bool verbose{false};
-
-  if (m_concept == concept)
-  {
-    return;
-  }
-
-  if (verbose)
-  {
-    std::stringstream s;
-    s << "Setting concept '" << concept.ToStr() << "'\n";
-  }
-
-  const auto examples_after = concept.GetExamples();
-  const auto is_complex_after = concept.GetIsComplex();
-  const auto name_after = concept.GetName();
-  const auto rating_complexity_after = concept.GetRatingComplexity();
-  const auto rating_concreteness_after = concept.GetRatingConcreteness();
-  const auto rating_specificity_after = concept.GetRatingSpecificity();
-
-  bool examples_changed{true};
-  bool is_complex_changed{true};
-  bool name_changed{true};
-  bool rating_complexity_changed{true};
-  bool rating_concreteness_changed{true};
-  bool rating_specificity_changed{true};
-
-  //if (m_concept)
-  {
-    const auto examples_before = m_concept.GetExamples();
-    const auto is_complex_before = m_concept.GetIsComplex();
-    const auto name_before = m_concept.GetName();
-    const auto rating_complexity_before = m_concept.GetRatingComplexity();
-    const auto rating_concreteness_before = m_concept.GetRatingConcreteness();
-    const auto rating_specificity_before = m_concept.GetRatingSpecificity();
-
-    examples_changed = examples_before != examples_after;
-    is_complex_changed = is_complex_before != is_complex_after;
-    name_changed = name_before != name_after;
-    rating_complexity_changed = rating_complexity_before != rating_complexity_after;
-    rating_concreteness_changed = rating_concreteness_before != rating_concreteness_after;
-    rating_specificity_changed = rating_specificity_before != rating_specificity_after;
-
-    if (verbose)
-    {
-      if (examples_changed)
-      {
-        std::stringstream s;
-        s
-          << "Examples will change from "
-          << examples_before.ToStr()
-          << " to "
-          << examples_after.ToStr()
-          << '\n'
-        ;
-        TRACE(s.str());
-      }
-      if (is_complex_changed)
-      {
-        std::stringstream s;
-        s << "Is complex will change from " << is_complex_before
-          << " to " << is_complex_after << '\n';
-        TRACE(s.str());
-      }
-      if (name_changed)
-      {
-        std::stringstream s;
-        s << "Name will change from " << name_before
-          << " to " << name_after << '\n';
-        TRACE(s.str());
-      }
-      if (rating_complexity_changed)
-      {
-        std::stringstream s;
-        s << "Rating_complexicity will change from " << rating_complexity_before
-          << " to " << rating_complexity_after << '\n';
-        TRACE(s.str());
-      }
-      if (rating_concreteness_changed)
-      {
-        std::stringstream s;
-        s << "Rating_concreteness will change from " << rating_concreteness_before
-          << " to " << rating_concreteness_after << '\n';
-        TRACE(s.str());
-      }
-      if (rating_specificity_changed)
-      {
-        std::stringstream s;
-        s << "Rating_specificity will change from " << rating_specificity_before
-          << " to " << rating_specificity_after << '\n';
-        TRACE(s.str());
-      }
-
-    }
-  }
-
-  //Replace m_example by the new one
   m_concept = concept;
-
-
-  assert(m_concept.GetExamples() == examples_after );
-  assert(m_concept.GetIsComplex() == is_complex_after );
-  assert(m_concept.GetName() == name_after);
-  assert(m_concept.GetRatingComplexity() == rating_complexity_after);
-  assert(m_concept.GetRatingConcreteness() == rating_concreteness_after);
-  assert(m_concept.GetRatingSpecificity() == rating_specificity_after);
-  assert( concept ==  m_concept);
 }
 
 void ribi::cmap::Node::SetX(const double x) noexcept
 {
-  //const bool verbose{false};
-  if (m_x != x)
-  {
-    m_x = x;
-    //if (verbose) { TRACE("Emitting m_signal_x_changed"); }
-    //m_signal_x_changed(this);
-  }
+  m_x = x;
 }
 
 void ribi::cmap::Node::SetY(const double y) noexcept
 {
-  if (m_y != y)
-  {
-    m_y = y;
-    //m_signal_y_changed(this);
-  }
+  m_y = y;
 }
 
 #ifndef NDEBUG
@@ -258,7 +143,7 @@ void ribi::cmap::Node::Test() noexcept
   //const bool verbose{false};
   //Copy constructable
   {
-    const Node a = NodeFactory().Create();
+    const Node a;
     const Node b(a);
     assert(a == b);
   }
@@ -273,6 +158,26 @@ void ribi::cmap::Node::Test() noexcept
     assert(c != a);
     assert(c == b);
   }
+  //SetX and GetX
+  {
+    Node a;
+    a.SetX(1.2);
+    assert(a.GetX() == 1.2);
+    a.SetY(3.4);
+    assert(a.GetX() == 1.2);
+    assert(a.GetY() == 3.4);
+    a.SetX(5.6);
+    assert(a.GetX() == 5.6);
+    assert(a.GetY() == 3.4);
+  }
+  {
+    Node a{NodeFactory().GetTest(1)};
+    std::stringstream s;
+    s << a;
+    Node b;
+    s >> b;
+    assert(a == b);
+  }
   {
     const std::vector<Node> v = Node::GetTests();
     std::for_each(v.begin(),v.end(),
@@ -282,7 +187,7 @@ void ribi::cmap::Node::Test() noexcept
         const Node c(node);
         assert(node == c);
         const std::string s{ToXml(c)};
-        const Node d = NodeFactory().FromXml(s);
+        const Node d = XmlToNode(s);
         assert(c == d);
       }
     );
@@ -293,8 +198,8 @@ void ribi::cmap::Node::Test() noexcept
       const Concept c(ConceptFactory().Create("1"));
       const Concept d(ConceptFactory().Create("1"));
       assert(c == d);
-      const Node a(NodeFactory().Create(c));
-      const Node b(NodeFactory().Create(d));
+      const Node a{c};
+      const Node b{d};
       assert(HasSameContent(a,b));
       assert(a == b);
     }
@@ -304,8 +209,8 @@ void ribi::cmap::Node::Test() noexcept
       const Concept c = ConceptFactory().Create("1", { {"2", cmap::Competency::uninitialized} } );
       const Concept d = ConceptFactory().Create("1", { {"2", cmap::Competency::uninitialized} } );
       assert(c == d);
-      const Node a(NodeFactory().Create(c));
-      const Node b(NodeFactory().Create(d));
+      const Node a{c};
+      const Node b{d};
       assert(HasSameContent(a,b));
     }
 
@@ -314,8 +219,8 @@ void ribi::cmap::Node::Test() noexcept
       const Concept c = ConceptFactory().Create("1", { {"2", cmap::Competency::uninitialized},{"3", cmap::Competency::uninitialized} } );
       const Concept d = ConceptFactory().Create("1", { {"2", cmap::Competency::uninitialized},{"3", cmap::Competency::uninitialized} } );
       assert(c == d);
-      const Node a(NodeFactory().Create(c));
-      const Node b(NodeFactory().Create(d));
+      const Node a{c};
+      const Node b{d};
       assert(HasSameContent(a,b));
       assert(a == b);
     }
@@ -324,8 +229,8 @@ void ribi::cmap::Node::Test() noexcept
       const Concept c = ConceptFactory().Create("1", { {"2", cmap::Competency::uninitialized},{"3", cmap::Competency::uninitialized} } );
       const Concept d = ConceptFactory().Create("1", { {"3", cmap::Competency::uninitialized},{"2", cmap::Competency::uninitialized} } );
       assert(c != d);
-      const Node a(NodeFactory().Create(c));
-      const Node b(NodeFactory().Create(d));
+      const Node a{c};
+      const Node b{d};
       assert(!HasSameContent(a,b) && "Order in examples is important and cannot be shuffled");
       assert(a != b);
     }
@@ -334,8 +239,8 @@ void ribi::cmap::Node::Test() noexcept
       const Concept c = ConceptFactory().Create("1", { {"2", cmap::Competency::uninitialized},{"3", cmap::Competency::uninitialized} } );
       const Concept d = ConceptFactory().Create("1", { {"2", cmap::Competency::uninitialized} } );
       assert(c != d);
-      const Node a(NodeFactory().Create(c));
-      const Node b(NodeFactory().Create(d));
+      const Node a{c};
+      const Node b{d};
       assert(a != b);
       assert(!HasSameContent(a,b));
     }
@@ -349,8 +254,8 @@ void ribi::cmap::Node::Test() noexcept
       const Concept c = ConceptFactory().GetTests()[i];
       const Concept d = ConceptFactory().GetTests()[i];
       assert(c == d);
-      const Node a(NodeFactory().Create(c));
-      const Node b(NodeFactory().Create(d));
+      const Node a{c};
+      const Node b{d};
       assert(HasSameContent(a,b));
       assert(a == b);
     }
@@ -368,21 +273,59 @@ void ribi::cmap::Node::Test() noexcept
         if (i!=j)
         {
           assert(c != d);
-          const Node a(NodeFactory().Create(c));
-          const Node b(NodeFactory().Create(d));
+          const Node a{c};
+          const Node b{d};
           assert(!HasSameContent(a,b));
           assert(a != b);
         }
         else
         {
           assert(c == d);
-          const Node a(NodeFactory().Create(c));
-          const Node b(NodeFactory().Create(d));
+          const Node a{c};
+          const Node b{d};
           assert(HasSameContent(a,b));
           assert(a == b);
         }
       }
     }
+  }
+  //Stream two
+  {
+    const Node e = NodeFactory().GetTest(1);
+    const Node f = NodeFactory().GetTest(2);
+    std::stringstream s;
+    s << e << " " << f;
+    Node g;
+    Node h;
+    s >> g >> h;
+    if (e != g) { TRACE(e); TRACE(g); }
+    if (f != h) { TRACE(f); TRACE(h); }
+    assert(e == g);
+    assert(f == h);
+  }
+  //Nasty examples
+  for (const Node e: NodeFactory().GetNastyTests())
+  {
+    std::stringstream s;
+    s << e;
+    Node f;
+    assert(e != f);
+    s >> f;
+    if (e != f) { TRACE(e); TRACE(f); }
+    assert(e == f);
+  }
+  //Nasty examples
+  for (const Node e: NodeFactory().GetNastyTests())
+  {
+    std::stringstream s;
+    s << e << " " << e;
+    Node g;
+    Node h;
+    s >> g >> h;
+    if (e != g) { TRACE(e); TRACE(g); }
+    if (e != h) { TRACE(e); TRACE(h); }
+    assert(e == g);
+    assert(e == h);
   }
 }
 #endif
@@ -398,7 +341,7 @@ std::string ribi::cmap::ToXml(const Node& node) noexcept
 {
   std::stringstream s;
   s << "<node>";
-  s << node.GetConcept().ToXml();
+  s << ToXml(node.GetConcept());
   s << "<x>" << node.GetX() << "</x>";
   s << "<y>" << node.GetY() << "</y>";
   s << "<is_center_node>" << node.IsCenterNode() << "</is_center_node>";
@@ -411,12 +354,68 @@ std::string ribi::cmap::ToXml(const Node& node) noexcept
   return r;
 }
 
+ribi::cmap::Node ribi::cmap::XmlToNode(const std::string& s)
+{
+  if (s.size() < 13)
+  {
+    std::stringstream msg;
+    msg << __func__ << ": string too short";
+    throw std::logic_error(msg.str());
+  }
+  if (s.substr(0,6) != "<node>")
+  {
+    std::stringstream msg;
+    msg << __func__ << ": incorrect starting tag";
+    throw std::logic_error(msg.str());
+  }
+  if (s.substr(s.size() - 7,7) != "</node>")
+  {
+    std::stringstream msg;
+    msg << __func__ << ": incorrect ending tag";
+    throw std::logic_error(msg.str());
+  }
 
+  //m_concept
+  Concept concept = ConceptFactory().Create();
+  {
+    const std::vector<std::string> v
+      = Regex().GetRegexMatches(s,Regex().GetRegexConcept());
+    assert(v.size() == 1);
+    concept = XmlToConcept(v[0]);
+  }
+
+  //m_is_centernode
+  bool is_center_node = false;
+  {
+    const std::vector<std::string> v
+      = Regex().GetRegexMatches(s,Regex().GetRegexIsCenterNode());
+    if (v.size() == 1) {
+      is_center_node = boost::lexical_cast<bool>(ribi::xml::StripXmlTag(v[0]));
+    }
+  }
+  //m_x
+  double x = 0.0;
+  {
+    const std::vector<std::string> v
+      = Regex().GetRegexMatches(s,Regex().GetRegexX());
+    assert(v.size() == 1);
+    x = boost::lexical_cast<double>(ribi::xml::StripXmlTag(v[0]));
+  }
+  //m_y
+  double y = 0.0;
+  {
+    const std::vector<std::string> v
+      = Regex().GetRegexMatches(s,Regex().GetRegexY());
+    assert(v.size() == 1);
+    y = boost::lexical_cast<double>(ribi::xml::StripXmlTag(v[0]));
+  }
+  return Node(concept,is_center_node,x,y);
+}
 
 bool ribi::cmap::operator==(const Node& lhs, const Node& rhs) noexcept
 {
-  const bool verbose{false};
-  const double e{0.1};
+  const bool verbose{true};
+  const double e{0.001};
   if (lhs.GetConcept() != rhs.GetConcept())
   {
     if (verbose) { TRACE("Concepts differ"); }
@@ -451,12 +450,41 @@ bool ribi::cmap::operator<(const Node& lhs, const Node& rhs) noexcept
 
 std::ostream& ribi::cmap::operator<<(std::ostream& os, const Node& node) noexcept
 {
-  os
-    << node.GetConcept() << " "
-    << node.GetX() << " "
-    << node.GetY()
-  ;
+  const std::string s{graphviz_encode(ToXml(node))};
+  assert(is_graphviz_friendly(s));
+  os << s;
   return os;
 }
 
+std::istream& ribi::cmap::operator>>(std::istream& is, Node& node) noexcept
+{
+  #ifdef NO_EAT
+  std::string s;
+  is >> s;
+  assert(s != "0");
+  #else
+  is >> std::noskipws;
+  std::string s;
+  while (1) //Eat whitespace
+  {
+    char c;
+    is >> c;
+    assert(c != '\0');
+    if (c == ' ') continue;
+    s += c;
+    break;
+  }
+
+  while (1)
+  {
+    char c;
+    is >> c;
+    s += c;
+    assert(s.size() < 6 || s.substr(0,6) == "<node>");
+    if(s.size() > 7 && s.substr(s.size() - 7,7) == "</node>") break;
+  }
+  #endif
+  node = XmlToNode(graphviz_decode(s));
+  return is;
+}
 

@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 /*
 ConceptMap, concept map classes
-Copyright (C) 2013-2015 Richel Bilderbeek
+Copyright (C) 2013-2016 Richel Bilderbeek
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -25,12 +25,15 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmapexample.h"
 
 #include <cassert>
+#include <iostream>
 #include <stdexcept>
 #include <sstream>
 
 #include <boost/lexical_cast.hpp>
 #include <QRegExp>
 
+#include "graphviz_decode.h"
+#include "graphviz_encode.h"
 #include "counter.h"
 #include "conceptmapregex.h"
 #include "conceptmapcompetencies.h"
@@ -98,9 +101,14 @@ void ribi::cmap::Example::Test() noexcept
     if (is_tested) return;
     is_tested = true;
   }
-  ribi::Regex();
-  ribi::cmap::Regex();
-  Counter();
+  {
+    ribi::Regex();
+    ribi::cmap::Regex();
+    Counter();
+    Example();
+    ExampleFactory();
+    Examples();
+  }
   const TestTimer test_timer(__func__,__FILE__,1.0);
   const bool verbose{false};
 
@@ -118,7 +126,7 @@ void ribi::cmap::Example::Test() noexcept
     const std::string text_before = "before";
     const std::string text_after  = "after";
 
-    auto example  = ExampleFactory().Create(
+    Example example(
       text_before,
       competency_before,
       is_complex_before,
@@ -191,19 +199,18 @@ void ribi::cmap::Example::Test() noexcept
   }
   if (verbose) { TRACE("Unrated and rated examples must be noticed as different"); }
   {
-    const Example a = ExampleFactory().Create("1",Competency::misc);
-    const Example b = ExampleFactory().Create("1",Competency::misc);
-    const Example c = ExampleFactory().Create("1",Competency::uninitialized);
+    const Example a("1",Competency::misc);
+    const Example b("1",Competency::misc);
+    const Example c("1",Competency::uninitialized);
     assert(a == a); assert(a == b); assert(a != c);
     assert(b == a); assert(b == b); assert(b != c);
     assert(c != a); assert(c != b); assert(c == c);
   }
   //Conversion between std::string and competency
   //Checked by Competencies
-
   {
     const std::string xml = "<example><text>TEST</text><competency>uninitialized</competency><is_complex>1</is_complex><is_concrete>1</is_concrete><is_specific>1</is_specific></example>";
-    const auto example = ExampleFactory().FromXml(xml);
+    const auto example = XmlToExample(xml);
     assert(example.GetText() == "TEST");
   }
 
@@ -213,8 +220,20 @@ void ribi::cmap::Example::Test() noexcept
     std::for_each(v.begin(),v.end(),
       [](const Example& e)
       {
-        const std::string s { e.ToXml() };
-        const Example f = ExampleFactory().FromXml(s);
+        const std::string s { ToXml(e) };
+        const Example f = XmlToExample(s);
+        assert(e == f);
+      }
+    );
+  }
+  if (verbose) { TRACE("Conversion from class->XML->class must result in something equal to the class"); }
+  {
+    const std::vector<Example> v = ExampleFactory().GetNastyTests();
+    std::for_each(v.begin(),v.end(),
+      [](const Example& e)
+      {
+        const std::string s { ToXml(e) };
+        const Example f = XmlToExample(s);
         assert(e == f);
       }
     );
@@ -226,11 +245,11 @@ void ribi::cmap::Example::Test() noexcept
     for (int i=0; i!=sz; ++i)
     {
       const Example& e = v[i];
-      const std::string s { e.ToXml() };
+      const std::string s {ToXml(e) };
       for (int j=0; j!=sz; ++j)
       {
         const Example& f = v[j];
-        const std::string t = f.ToXml();
+        const std::string t = ToXml(f);
         if (i == j)
         {
           assert(e == f);
@@ -244,6 +263,56 @@ void ribi::cmap::Example::Test() noexcept
       }
     }
   }
+  //Single stream
+  {
+    const Example e = ExampleFactory().GetTest(1);
+    std::stringstream s;
+    s << e;
+    Example f;
+    assert(e != f);
+    s >> f;
+    if (e != f) { TRACE(e); TRACE(f); }
+    assert(e == f);
+  }
+  //Single stream
+  {
+    const Example e = ExampleFactory().GetTest(2);
+    const Example f = ExampleFactory().GetTest(3);
+    std::stringstream s;
+    s << e << " " << f;
+    Example g;
+    Example h;
+    s >> g >> h;
+    if (e != g) { TRACE(e); TRACE(g); }
+    if (f != h) { TRACE(f); TRACE(h); }
+    assert(e == g);
+    assert(f == h);
+  }
+  //Nasty examples
+  for (const Example e: ExampleFactory().GetNastyTests())
+  {
+    std::stringstream s;
+    s << e;
+    Example f;
+    assert(e != f);
+    s >> f;
+    if (e != f) { TRACE(e); TRACE(f); }
+    assert(e == f);
+  }
+  //Nasty examples
+  for (const Example e: ExampleFactory().GetNastyTests())
+  {
+    std::stringstream s;
+    s << e << " " << e;
+    Example g;
+    Example h;
+    s >> g >> h;
+    if (e != g) { TRACE(e); TRACE(g); }
+    if (e != h) { TRACE(e); TRACE(h); }
+    assert(e == g);
+    assert(e == h);
+  }
+
 }
 #endif
 
@@ -261,24 +330,24 @@ std::string ribi::cmap::Example::ToStr() const noexcept
 
 }
 
-std::string ribi::cmap::Example::ToXml() const noexcept
+std::string ribi::cmap::ToXml(const Example& example) noexcept
 {
   std::stringstream s;
   s << "<example>";
   s <<   "<text>";
-  s <<     GetText();
+  s <<     example.GetText();
   s <<   "</text>";
   s <<   "<competency>";
-  s << Competencies().ToStr(GetCompetency());
+  s << Competencies().ToStr(example.GetCompetency());
   s <<   "</competency>";
   s <<   "<is_complex>";
-  s <<     GetIsComplex();
+  s <<     example.GetIsComplex();
   s <<   "</is_complex>";
   s <<   "<is_concrete>";
-  s <<     GetIsConcrete();
+  s <<     example.GetIsConcrete();
   s <<   "</is_concrete>";
   s <<   "<is_specific>";
-  s <<     GetIsSpecific();
+  s <<     example.GetIsSpecific();
   s <<   "</is_specific>";
   s << "</example>";
 
@@ -289,26 +358,121 @@ std::string ribi::cmap::Example::ToXml() const noexcept
   return r;
 }
 
-bool ribi::cmap::operator==(const cmap::Example& lhs, const cmap::Example& rhs) noexcept
+ribi::cmap::Example ribi::cmap::XmlToExample(const std::string& s) noexcept
+{
+  if (s.size() < 17)
+  {
+    std::stringstream msg;
+    msg << __func__ << ": XML string '" << s << "' is only " << s.size() << " characters long, need at least 27";
+    throw std::logic_error(msg.str());
+  }
+  if (s.substr(0,9) != "<example>")
+  {
+    std::stringstream msg;
+    msg << __func__ << ": XML string '" << s << "' does not begin with <example>";
+    throw std::logic_error(msg.str());
+  }
+  if (s.substr(s.size() - 10,10) != "</example>")
+  {
+    std::stringstream msg;
+    msg << __func__ << ": XML string '" << s << "' does not end with </example>";
+    throw std::logic_error(msg.str());
+  }
+
+  assert(s.size() >= 17);
+  assert(s.substr(0,9) == "<example>");
+  assert(s.substr(s.size() - 10,10) == "</example>");
+
+
+  std::string text;
+  cmap::Competency competency = cmap::Competency::uninitialized;
+  bool is_complex = false;
+  bool is_concrete = false;
+  bool is_specific = false;
+
+  //competency
+  {
+    const std::vector<std::string> v
+      = Regex().GetRegexMatches(s,Regex().GetRegexCompetency());
+    assert(v.size() == 1);
+    competency = Competencies().ToType(ribi::xml::StripXmlTag(v[0]));
+    //competency = Example::StrToCompetency(ribi::xml::StripXmlTag(v[0]));
+  }
+  //is_complex
+  {
+    const std::vector<std::string> v
+      = Regex().GetRegexMatches(s,Regex().GetRegexIsComplex());
+    assert(v.size() == 1);
+    is_complex = boost::lexical_cast<bool>(ribi::xml::StripXmlTag(v[0]));
+  }
+  //is_concrete
+  {
+    const std::vector<std::string> v
+      = Regex().GetRegexMatches(s,Regex().GetRegexIsConcrete());
+    assert(v.size() == 1);
+    is_concrete = boost::lexical_cast<bool>(ribi::xml::StripXmlTag(v[0]));
+  }
+  //is_specific
+  {
+    const std::vector<std::string> v
+      = Regex().GetRegexMatches(s,Regex().GetRegexIsSpecific());
+    assert(v.size() == 1);
+    is_specific = boost::lexical_cast<bool>(ribi::xml::StripXmlTag(v[0]));
+  }
+  //text
+  {
+    const std::vector<std::string> v
+      = Regex().GetRegexMatches(s,Regex().GetRegexText());
+    assert(v.size() == 1 && "GetRegexText must be present once in an Example");
+    text = ribi::xml::StripXmlTag(v[0]);
+  }
+
+  Example example(
+    text,
+    competency,
+    is_complex,
+    is_concrete,
+    is_specific
+  );
+  assert(ToXml(example) == s);
+  return example;
+}
+
+std::ostream& ribi::cmap::operator<<(std::ostream& os, const Example& example) noexcept
+{
+  os << graphviz_encode(ToXml(example));
+  return os;
+}
+
+std::istream& ribi::cmap::operator>>(std::istream& is, Example& example) noexcept
+{
+  std::string s;
+  is >> s;
+  assert(s != "0");
+  example = XmlToExample(graphviz_decode(s));
+  return is;
+}
+
+bool ribi::cmap::operator==(const Example& lhs, const Example& rhs) noexcept
 {
   return
        lhs.GetText() == rhs.GetText()
     && lhs.GetCompetency() == rhs.GetCompetency();
 }
 
-bool ribi::cmap::operator!=(const cmap::Example& lhs, const cmap::Example& rhs) noexcept
+bool ribi::cmap::operator!=(const Example& lhs, const Example& rhs) noexcept
 {
   return !(lhs == rhs);
 }
 
-bool ribi::cmap::operator<(const cmap::Example& lhs,const cmap::Example& rhs) noexcept
+bool ribi::cmap::operator<(const Example& lhs,const Example& rhs) noexcept
 {
   if (lhs.GetText() < rhs.GetText()) return true;
   if (lhs.GetText() > rhs.GetText()) return false;
   return lhs.GetCompetency() < rhs.GetCompetency();
 }
 
-bool ribi::cmap::operator>(const cmap::Example& lhs,const cmap::Example& rhs) noexcept
+bool ribi::cmap::operator>(const Example& lhs,const Example& rhs) noexcept
 {
   if (lhs.GetText() > rhs.GetText()) return true;
   if (lhs.GetText() < rhs.GetText()) return false;

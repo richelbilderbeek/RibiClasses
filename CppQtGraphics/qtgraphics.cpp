@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 /*
 QtGraphics, Qt graphics code snippets
-Copyright (C) 2015-2015 Richel Bilderbeek
+Copyright (C) 2015-2016 Richel Bilderbeek
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -60,9 +60,13 @@ void ribi::QtGraphics::DrawImage(
 ) const noexcept
 {
   #if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
+  #ifdef FIX_MAZIAK_ISSUE_2
+  const auto s = source.format();
+  TRACE(s);
   assert(source.format() == QImage::Format::Format_RGB32
       || source.format() == QImage::Format::Format_ARGB32
   );
+  #endif // FIX_MAZIAK_ISSUE_2
   const int n_channels{4};
   assert(n_channels == 3 || n_channels == 4);
   #else

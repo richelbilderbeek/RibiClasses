@@ -27,7 +27,6 @@ namespace c2h {
 enum class FooterType
 {
   cpp, //C++
-  foam //OpenFOAM
 };
 
 } //~namespace c2h

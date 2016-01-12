@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 /*
 QtRoundedEditRectItem, editable rectangular-shaped QGraphicsItem
-Copyright (C) 2012-2015 Richel Bilderbeek
+Copyright (C) 2012-2016 Richel Bilderbeek
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -158,7 +158,9 @@ void ribi::QtRoundedEditRectItemDialog::OnTextPenChanged(QtRoundedEditRectItem *
   ui->label_text_pen->setText(s.str().c_str());
 }
 
-void ribi::QtRoundedEditRectItemDialog::SetItem(const boost::shared_ptr<QtRoundedEditRectItem>& item) noexcept
+void ribi::QtRoundedEditRectItemDialog::SetItem(
+  const boost::shared_ptr<QtRoundedEditRectItem>& item
+) noexcept
 {
   const bool verbose{false};
 

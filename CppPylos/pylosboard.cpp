@@ -268,12 +268,22 @@ int ribi::pylos::Board::Count(const PositionState state) const
 
 std::unique_ptr<ribi::pylos::Board> ribi::pylos::Board::CreateAdvancedBoard() noexcept
 {
+  #if __cplusplus >= 201402L //C++14
   return std::make_unique<BoardAdvanced>();
+  #else
+  std::unique_ptr<Board> b{new BoardAdvanced};
+  return b;
+  #endif
 }
 
 std::unique_ptr<ribi::pylos::Board> ribi::pylos::Board::CreateBasicBoard() noexcept
 {
+  #if __cplusplus >= 201402L //C++14
   return std::make_unique<BoardBasic>();
+  #else
+  std::unique_ptr<Board> b{new BoardBasic};
+  return b;
+  #endif
 }
 
 std::vector<ribi::pylos::Board::Layer> ribi::pylos::Board::CreateEmptyBoard() const noexcept
@@ -1082,7 +1092,12 @@ ribi::pylos::BoardAdvanced::~BoardAdvanced()
 
 std::unique_ptr<ribi::pylos::Board> ribi::pylos::BoardAdvanced::Clone() const noexcept
 {
+  #if __cplusplus >= 201402L //C++14
   return std::make_unique<BoardAdvanced>(*this);
+  #else
+  std::unique_ptr<Board> b{new BoardAdvanced(*this)};
+  return b;
+  #endif
 }
 
 void ribi::pylos::BoardAdvanced::Set(
@@ -1158,7 +1173,12 @@ ribi::pylos::BoardBasic::~BoardBasic()
 
 std::unique_ptr<ribi::pylos::Board> ribi::pylos::BoardBasic::Clone() const noexcept
 {
+  #if __cplusplus >= 201402L //C++14
   return std::make_unique<BoardBasic>(*this);
+  #else
+  std::unique_ptr<Board> b{new BoardBasic(*this)};
+  return b;
+  #endif
 }
 
 void ribi::pylos::BoardBasic::Set(

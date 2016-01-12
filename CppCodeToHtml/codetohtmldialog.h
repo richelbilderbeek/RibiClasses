@@ -64,17 +64,10 @@ struct Dialog
   ) const noexcept;
 
   private:
-  friend void boost::checked_delete<>(Dialog*);
-  friend void boost::checked_delete<>(const Dialog*);
-
   ///Extract the page name, from, for example
   /// '/home/richel/ProjectRichelBilderbeek/Tools/ToolCodeToHtml'
   /// to 'ToolCodeToHtml'
   std::string ExtractPageName(const std::string& s) const noexcept;
-
-  std::vector<std::string> FoamFolderToHtml(
-    const std::string& folder_name
-    ) const noexcept;
 
   std::vector<std::string> GetProFilesInFolder(
     const std::string& folder) const noexcept;

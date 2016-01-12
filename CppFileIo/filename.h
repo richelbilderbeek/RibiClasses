@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 /*
 FileIo, class with file I/O functions
-Copyright (C) 2013-2015 Richel Bilderbeek
+Copyright (C) 2013-2016 Richel Bilderbeek
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -55,7 +55,7 @@ struct Filename
 void CopyFile(
   const Filename& fileNameFrom,
   const Filename& fileNameTo,
-  const ribi::fileio::CopyMode copy_mode = CopyMode::prevent_overwrite);
+  const copy_file_mode copy_mode = CopyMode::prevent_overwrite);
 void DeleteFile(const Filename& filename);
 bool FilesAreIdentical(const Filename& filename_a,const Filename& filename_b);
 std::vector<std::string> FileToVector(const Filename& filename);

@@ -81,7 +81,6 @@ std::vector<std::string> ribi::c2h::File::CreateHtml(
         "<h2><a href=\"CppQtProjectFile.htm\">Qt project file</a>: "
         + filename + "</h2>");
     break;
-    case FileType::foam:
     case FileType::pri:
     case FileType::py:
     case FileType::sh:
@@ -113,20 +112,6 @@ std::vector<std::string> ribi::c2h::File::CreateHtml(
     {
       assert(fileio::FileIo().IsRegularFile(filename));
       auto lines_text = fileio::FileIo().FileToVector(filename);
-      if (file_type == FileType::foam)
-      {
-        //Keep lines 0-100 and last-50,last
-        const int n_lines_begin = 100;
-        const int n_lines_end = 50;
-        if (static_cast<int>(lines_text.size() > n_lines_begin + n_lines_end))
-        {
-          std::vector<std::string> lines_shorter;
-          std::copy(lines_text.begin(),lines_text.begin() + n_lines_begin,std::back_inserter(lines_shorter));
-          lines_shorter.push_back("[...]");
-          std::copy(lines_text.end() - n_lines_end,lines_text.end(),std::back_inserter(lines_shorter));
-          std::swap(lines_shorter,lines_text);
-        }
-      }
       const auto lines_html = Replacer().ToHtml(lines_text,file_type);
       std::transform(lines_html.begin(),lines_html.end(),std::back_inserter(v),
         [](const std::string& s)

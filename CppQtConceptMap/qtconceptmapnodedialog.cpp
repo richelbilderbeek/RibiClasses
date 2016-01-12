@@ -45,7 +45,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 ribi::cmap::QtNodeDialog::QtNodeDialog(QWidget *parent)
   : ribi::QtHideAndShowDialog(parent),
     ui(new Ui::QtNodeDialog),
-    m_node{NodeFactory().Create()},
+    m_node{},
     m_qtconceptdialog{new QtConceptDialog}
 {
   ui->setupUi(this);

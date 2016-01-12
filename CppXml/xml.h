@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 /*
 XML functions
-Copyright (C) 2014-2015 Richel Bilderbeek
+Copyright (C) 2014-2016 Richel Bilderbeek
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -37,6 +37,13 @@ namespace xml {
 std::string GetVersion() noexcept;
 std::vector<std::string> GetVersionHistory() noexcept;
 
+///Get back the original XML encoded with Encode
+std::string Decode2(std::string s) noexcept;
+
+///Make a content std::string XML friendly, decode with Decode
+std::string Encode2(std::string s) noexcept;
+
+
 ///Convert a std::string to single-line XML
 ///For example, a std::string with tag name "cat_name" and content "Kitty" becomes
 /// <cat_name>Kitty</cat_name>
@@ -47,7 +54,14 @@ std::string ToXml(
   const U& content)
 {
   std::stringstream s;
-  s << "<"  << tag_name << ">" << content << "</" << tag_name << ">";
+  s << "<"
+    << tag_name
+    << ">"
+    << content
+    << "</"
+    << tag_name
+    << ">"
+  ;
   //No test here, as ToXml is used in testing FromXml
   return s.str();
 }
@@ -66,9 +80,14 @@ std::string ToXml(
 {
   std::stringstream s;
   s
-    << "<"  << tag_to_str_function(tag_name) << ">"
+    << "<"
+    << tag_to_str_function(tag_name)
+    << ">"
     << content_to_str_function(content)
-    << "</" << tag_to_str_function(tag_name) << ">";
+    << "</"
+    << tag_to_str_function(tag_name)
+    << ">"
+  ;
   //No test here, as ToXml is used in testing FromXml
   return s.str();
 }
@@ -125,7 +144,7 @@ std::pair<T,U> FromXml(const std::string& xml)
     boost::lexical_cast<T>(tag_name),
     boost::lexical_cast<U>(content)
   };
-  assert(ToXml(p.first,p.second) == xml);
+  //assert(ToXml(p.first,p.second) == xml); //Will be detected by tests
   return p;
 }
 

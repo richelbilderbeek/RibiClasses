@@ -58,7 +58,7 @@ std::vector<boost::shared_ptr<ribi::cmap::QtEdge>> ribi::cmap::QtEdgeFactory::Ge
 ) const noexcept
 {
   std::vector<boost::shared_ptr<QtEdge>> qtedges;
-  const auto v = EdgeFactory().GetTests(from->GetNode(),to->GetNode());
+  const auto v = EdgeFactory().GetTests();
   std::transform(v.begin(),v.end(),std::back_inserter(qtedges),
     [from,to](const Edge& c)
     {

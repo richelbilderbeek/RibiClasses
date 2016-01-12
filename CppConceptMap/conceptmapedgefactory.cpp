@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 /*
 ConceptMap, concept map classes
-Copyright (C) 2013-2015 Richel Bilderbeek
+Copyright (C) 2013-2016 Richel Bilderbeek
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -58,145 +58,20 @@ ribi::cmap::Edge ribi::cmap::EdgeFactory::Create(
 
   const double x{(from.GetX() + to.GetX()) / 2.0};
   const double y{(from.GetY() + to.GetY()) / 2.0};
-  const bool tail_arrow{false};
-  const bool head_arrow{true};
   const auto concept = ConceptFactory().Create();
-  const auto node = NodeFactory().Create(concept,x,y);
+  const Node node(concept,x,y);
   Edge p(
-    node,
-    from,
-    tail_arrow,
-    to,
-    head_arrow
+    node
   );
   return p;
 }
 
 ribi::cmap::Edge ribi::cmap::EdgeFactory::Create(
-  const Node& node,
-  const Node& from,
-  const bool tail_arrow,
-  const Node& to,
-  const bool head_arrow
+  const Node& node
 ) const noexcept
 {
-  //Nodes may be similar, but not the same
-  assert(&from != &to);
-  assert(&from != &node);
-  assert(&to != &node);
-
-  assert(from != node);
-  Edge p(node,from,tail_arrow,to,head_arrow);
+  Edge p(node);
   return p;
-}
-
-/*
-#ifndef NDEBUG
-ribi::cmap::Edge ribi::cmap::EdgeFactory::DeepCopy(
-  const Edge& edge,
-  const Node& from,
-  const Node& to
-) const noexcept
-{
-  //Nodes may be similar, but not the same
-  assert(&from != &to);
-  assert(&from != &edge->GetNode());
-  assert(&to   != &edge->GetNode());
-
-  const Node node(edge->GetNode());
-  const Edge p{
-    EdgeFactory::Create(
-      node,
-      from,
-      edge->HasTailArrow(),
-      to,
-      edge->HasHeadArrow()
-    )
-  };
-  assert(edge == p);
-  return p;
-}
-#endif
-*/
-
-ribi::cmap::Edge ribi::cmap::EdgeFactory::FromXml(
-  const std::string& s,
-  const std::vector<Node>& nodes
-) const noexcept
-{
-  using ribi::xml::StripXmlTag;
-  assert(s.size() >= 13);
-  assert(s.substr(0,6) == "<edge>");
-  assert(s.substr(s.size() - 7,7) == "</edge>");
-  //m_concept
-  Concept concept = ConceptFactory().Create();
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexConcept());
-    assert(v.size() == 1);
-    concept = ConceptFactory().FromXml(v[0]);
-  }
-  //m_from
-  int from = -1;
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexFrom());
-    assert(v.size() == 1);
-    from = boost::lexical_cast<int>(StripXmlTag(v[0]));
-  }
-  //m_head_arrow
-  bool head_arrow = false;
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexHeadArrow());
-    assert(v.size() == 1);
-    head_arrow = boost::lexical_cast<bool>(StripXmlTag(v[0]));
-  }
-  //m_tail_arrow
-  bool tail_arrow = false;
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexTailArrow());
-    assert(v.size() == 1);
-    tail_arrow = boost::lexical_cast<bool>(StripXmlTag(v[0]));
-  }
-  //m_to
-  int to = -1;
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexTo());
-    assert(v.size() == 1);
-    to = boost::lexical_cast<int>(StripXmlTag(v[0]));
-  }
-  //m_x
-  double x = 0.0;
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexX());
-    assert(v.size() == 1);
-    x = boost::lexical_cast<double>(StripXmlTag(v[0]));
-  }
-  //m_y
-  double y = 0.0;
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexY());
-    assert(v.size() == 1);
-    y = boost::lexical_cast<double>(StripXmlTag(v[0]));
-  }
-  assert(from != to);
-  assert(from >= 0);
-  assert(to >= 0);
-  assert(from < boost::numeric_cast<int>(nodes.size()));
-  assert(to < boost::numeric_cast<int>(nodes.size()));
-  const auto node = NodeFactory().Create(concept,x,y);
-  TRACE(&nodes[from])
-  Edge edge(
-    node,nodes[from],tail_arrow,nodes[to],head_arrow
-  );
-  assert(container().Count(nodes,*edge.GetFrom()) == 1);
-  assert(container().Count(nodes,*edge.GetTo()) == 1);
-  return edge;
 }
 
 int ribi::cmap::EdgeFactory::GetNumberOfTests() const noexcept
@@ -205,26 +80,41 @@ int ribi::cmap::EdgeFactory::GetNumberOfTests() const noexcept
 }
 
 ribi::cmap::Edge ribi::cmap::EdgeFactory::GetTest(
-  const int index,
-  const Node& from,
-  const Node& to
+  const int index
 ) const noexcept
 {
   //Nodes may be similar, but not the same
-  assert(&from != &to);
+  const auto v = GetTests();
   assert(index >= 0);
-  assert(index < GetNumberOfTests());
-  return GetTests(from,to)[index];
+  assert(index < static_cast<int>(v.size()));
+  return v[index];
 }
 
-std::vector<ribi::cmap::Edge> ribi::cmap::EdgeFactory::GetTests(
-  const Node& from,
-  const Node& to
+ribi::cmap::Edge ribi::cmap::EdgeFactory::GetNastyTest(
+  const int index
 ) const noexcept
 {
-  //Nodes may be similar, but not the same
-  assert(&from != &to);
+  const auto v = GetNastyTests();
+  assert(index >= 0);
+  assert(index < static_cast<int>(v.size()));
+  return v[index];
+}
 
+std::vector<ribi::cmap::Edge> ribi::cmap::EdgeFactory::GetNastyTests() const noexcept
+{
+  std::vector<Edge> result;
+
+  for (const auto node: NodeFactory().GetNastyTests())
+  {
+    Edge edge(node);
+    result.emplace_back(edge);
+  }
+  return result;
+}
+
+
+std::vector<ribi::cmap::Edge> ribi::cmap::EdgeFactory::GetTests() const noexcept
+{
   const int n{NodeFactory().GetNumberOfTests()};
   std::vector<Edge> result;
 
@@ -232,8 +122,8 @@ std::vector<ribi::cmap::Edge> ribi::cmap::EdgeFactory::GetTests(
   {
     {
       const auto node = NodeFactory().GetTest(i);
-      Edge edge(node,from,false,to,true);
-      result.push_back(edge); //TODO: use emplace_back
+      Edge edge(node);
+      result.emplace_back(edge);
     }
     /*
     {
@@ -258,13 +148,6 @@ std::vector<ribi::cmap::Edge> ribi::cmap::EdgeFactory::GetTests(
     }
     */
   }
-  if (GetNumberOfTests() != static_cast<int>(result.size()))
-  {
-    TRACE("ERROR");
-    std::stringstream s;
-    s << "GetNumberOfTests should return " << result.size();
-    TRACE(s.str());
-  }
   assert(GetNumberOfTests() == static_cast<int>(result.size()));
   return result;
 }
@@ -278,11 +161,7 @@ void ribi::cmap::EdgeFactory::Test() noexcept
     if (is_tested) return;
     is_tested = true;
   }
-  EdgeFactory().GetTest(
-     0,
-     NodeFactory().GetTest(0),
-     NodeFactory().GetTest(0)
-  );
+  EdgeFactory().GetTest(0);
   const TestTimer test_timer(__func__,__FILE__,1.0);
 }
 #endif // NDEBUG

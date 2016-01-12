@@ -26,7 +26,6 @@ namespace c2h {
 
 ///The different page types
 ///-cpp: C++
-///-foam: OpenFOAM
 ///-text: plain text
 ///-music: music
 ///(-tool: tool)
@@ -34,7 +33,6 @@ enum class SnippetType
 {
   cpp,
   text,
-
   n_snippets //Used for debugging
 };
 

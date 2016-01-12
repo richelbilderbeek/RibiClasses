@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 /*
 ConceptMap, concept map classes
-Copyright (C) 2013-2015 Richel Bilderbeek
+Copyright (C) 2013-2016 Richel Bilderbeek
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -27,13 +27,19 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 namespace ribi {
 namespace cmap {
 
-struct ExampleFactory;
-
 ///A concept (on a node or an edge) can have examples
 ///Example is displayed by:
 /// - QtExampleDialog
 struct Example
 {
+  explicit Example(
+    const std::string& text = "",
+    const cmap::Competency competency = Competency::uninitialized,
+    const bool is_complex = true,
+    const bool is_concrete = true,
+    const bool is_specific = true
+  );
+
   ///Get the competency, as might be judged by an assessor
   Competency GetCompetency() const noexcept { return m_competency; }
 
@@ -72,9 +78,6 @@ struct Example
   ///Convert Example to a short std::string
   std::string ToStr() const noexcept;
 
-  ///Convert Example to an XML std::string
-  std::string ToXml() const noexcept;
-
 private:
 
   ///The competency, as might be judged by an assessor
@@ -95,17 +98,14 @@ private:
 
   ///Set the competency with a string
   void SetCompetencyAsStr(const std::string& s) const;
-
-  ///Only let ExampleFactory create Example instances
-  explicit Example(
-    const std::string& text,
-    const cmap::Competency competency = cmap::Competency::uninitialized,
-    const bool is_complex = true,
-    const bool is_concrete = true,
-    const bool is_specific = true
-  );
-  friend class ExampleFactory;
 };
+
+
+std::string ToXml(const Example& example) noexcept;
+Example XmlToExample(const std::string& s) noexcept;
+
+std::ostream& operator<<(std::ostream& os, const Example& example) noexcept;
+std::istream& operator>>(std::istream& is, Example& example) noexcept;
 
 bool operator==(const Example& lhs, const Example& rhs) noexcept;
 bool operator!=(const Example& lhs, const Example& rhs) noexcept;

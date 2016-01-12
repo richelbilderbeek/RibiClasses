@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 /*
 ConceptMap, concept map classes
-Copyright (C) 2013-2015 Richel Bilderbeek
+Copyright (C) 2013-2016 Richel Bilderbeek
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -25,7 +25,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic ignored "-Weffc++"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
-#include <boost/shared_ptr.hpp>
 #include "conceptmapfwd.h"
 #include "conceptmapnode.h"
 #pragma GCC diagnostic pop
@@ -43,34 +42,16 @@ struct EdgeFactory
   ) const noexcept;
 
   Edge Create(
-    const Node& node,
-    const Node& from,
-    const bool tail_arrow,
-    const Node& to,
-    const bool head_arrow
+    const Node& node
   ) const noexcept;
-
-  ///Obtain an Edge from an XML std::string
-  ///You need the real nodes to connect the edge to
-  Edge FromXml(
-    const std::string& s,
-    const std::vector<Node>& nodes
-  ) const noexcept;
-
 
   int GetNumberOfTests() const noexcept;
+  Edge GetTest(const int index) const noexcept;
+  std::vector<Edge> GetTests() const noexcept;
 
-  Edge GetTest(
-    const int index,
-    const Node& from,
-    const Node& to
- ) const noexcept;
-
-  ///Get testing edges connecting the two supplied nodes
-  std::vector<Edge> GetTests(
-    const Node& from,
-    const Node& to
-  ) const noexcept;
+  int GetNumberOfNastyTests() const noexcept;
+  Edge GetNastyTest(const int index) const noexcept;
+  std::vector<Edge> GetNastyTests() const noexcept;
 
   private:
 

@@ -45,6 +45,8 @@ ribi::cmap::QtTool::QtTool()
     | QGraphicsItem::ItemIsSelectable
   );
 
+  //this->setFlags(0);
+
   //Allow mouse tracking
   this->setAcceptHoverEvents(true);
 
@@ -65,7 +67,6 @@ ribi::cmap::QtNode * ribi::cmap::QtTool::GetBuddyItem()
 
 const ribi::cmap::QtNode * ribi::cmap::QtTool::GetBuddyItem() const
 {
-  assert(m_item);
   return m_item;
 }
 

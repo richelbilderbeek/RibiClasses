@@ -64,7 +64,6 @@ struct QtNode : public QtRoundedEditRectItem
   ///The QtNode is selected or unselected
   mutable boost::signals2::signal<void (QtNode *,const int key)> m_signal_key_down_pressed;
   mutable boost::signals2::signal<void (QtNode *)> m_signal_node_changed;
-  ///No other signals, these are present in the ConceptItems
 
   virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem *, QWidget *) noexcept final;
 
@@ -75,42 +74,22 @@ protected:
   void keyPressEvent(QKeyEvent *event) noexcept final;
   void hoverMoveEvent(QGraphicsSceneHoverEvent *event) noexcept final;
 
-  //const boost::shared_ptr<QtConceptMapItem>& GetConceptItem() { return m_concept_item; }
-
-
-
 private:
-
-  ///The Strategy for displaying a Concept
-  //boost::shared_ptr<QtItemDisplayStrategy> m_display_strategy;
-
-  //const QPen m_contour_pen;
-  //const QPen m_focus_pen;
 
   ///The node being edited, or displayed and not changed, or rated
   Node m_node;
 
   bool m_show_bounding_rect;
 
-  //void OnItemHasUpdated();
   void OnPosChanged(const QtRoundedRectItem * const item) noexcept;
   void OnTextChanged(const QtRoundedRectItem * const item) noexcept;
   void OnXchanged(Node * const node) noexcept;
   void OnYchanged(Node * const node) noexcept;
   void OnConceptChanged(Node * const node) noexcept;
 
-  ///This QtNode its Node changed
-  //void OnRequestsSceneUpdate();
-
-  ///The item
-  //void OnItemRequestsRateConcept();
-  //void OnItemRequestsRateExamples();
-
   #ifndef NDEBUG
   static void Test() noexcept;
   #endif
-
-  //friend std::ostream& operator<<(std::ostream& os, const QtNode& qtnode) noexcept;
 };
 
 std::ostream& operator<<(std::ostream& os, const QtNode& qtnode) noexcept;

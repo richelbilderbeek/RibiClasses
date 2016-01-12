@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 /*
 MenuDialog, menu dialog class
-Copyright (C) 2013-2015 Richel Bilderbeek
+Copyright (C) 2013-2016 Richel Bilderbeek
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -58,9 +58,6 @@ struct MenuDialog
 
   ///Obtain the help information of this class
   virtual Help GetHelp() const noexcept = 0;
-
-  ///Obtain information about the program
-  //virtual boost::shared_ptr<const Program> GetProgram() const noexcept = 0;
 
   ///Obtain the version of this class
   virtual std::string GetVersion() const noexcept = 0;

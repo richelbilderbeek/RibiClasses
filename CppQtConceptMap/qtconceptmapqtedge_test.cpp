@@ -60,7 +60,7 @@ void ribi::cmap::QtEdge::Test() noexcept
     const Node node_to{NodeFactory().GetTest(0)};
     const boost::shared_ptr<QtNode> qtnode_from{new QtNode(node_from)};
     const boost::shared_ptr<QtNode> qtnode_to{new QtNode(node_to)};
-    const Edge edge{EdgeFactory().GetTest(0,node_from,node_to)};
+    const Edge edge{EdgeFactory().GetTest(0)};
     //const boost::shared_ptr<QtEdge> qtedge{QtEdgeFactory().Create(edge,qtnode_from,qtnode_to)};
     const boost::shared_ptr<QtEdge> qtedge{QtEdgeFactory().Create(edge,qtnode_from.get(),qtnode_to.get())};
   }
@@ -73,12 +73,10 @@ void ribi::cmap::QtEdge::Test() noexcept
   const Node node_to{NodeFactory().GetTest(node_test_index)};
   const boost::shared_ptr<QtNode> qtnode_from{new QtNode(node_from)};
   const boost::shared_ptr<QtNode> qtnode_to{new QtNode(node_to)};
-  const Edge edge{EdgeFactory().GetTest(edge_test_index,node_from,node_to)};
+  const Edge edge{EdgeFactory().GetTest(edge_test_index)};
   const boost::shared_ptr<QtEdge> qtedge{new QtEdge(edge,qtnode_from.get(),qtnode_to.get())};
   //const boost::shared_ptr<QtEdge> qtedge{new QtEdge(edge,qtnode_from,qtnode_to)};
-  const boost::shared_ptr<QtRoundedEditRectItem> qtitem{boost::dynamic_pointer_cast<QtRoundedEditRectItem>(qtedge->GetQtNode())};
-  assert(qtitem);
-
+  QtRoundedEditRectItem * qtitem{dynamic_cast<QtRoundedEditRectItem*>(qtedge->GetQtNode())};
   if (verbose) { TRACE("QtEdge must accept hover events"); } //NOT SURE
   {
     //assert(qtedge->acceptHoverEvents()); //Must remove the 's' in Qt5?
@@ -86,54 +84,6 @@ void ribi::cmap::QtEdge::Test() noexcept
   if (verbose) { TRACE("QtEdge its arrow must accept hover events"); }
   {
     assert(qtedge->GetArrow()->acceptHoverEvents()); //Must remove the 's' in Qt5?
-  }
-  //Head arrow
-  if (verbose) { TRACE("An Edge's head arrow and it QtQuadBezierArrowItem must match at creation"); }
-  {
-    const bool edge_has_head{qtedge->GetEdge().HasHeadArrow()};
-    const bool arrow_has_head{qtedge->GetArrow()->HasHead()};
-    assert(edge_has_head == arrow_has_head);
-  }
-  if (verbose) { TRACE("If a QtEdge its Edge's head arrow is changed, a signal must be emitted by QtEdge"); }
-  {
-    Counter c{0}; //For receiving the signal
-    qtedge->m_signal_edge_changed.connect(
-      boost::bind(&ribi::Counter::Inc,&c) //Do not forget the &
-    );
-    qtedge->GetEdge().SetHeadArrow(false);
-    qtedge->GetEdge().SetHeadArrow(true);
-    assert(c.Get() > 0);
-  }
-  if (verbose) { TRACE("If a QtEdge its Edge's head arrow is changed, it QtQuadBezier must match"); }
-  {
-    qtedge->GetEdge().SetHeadArrow(false);
-    assert(!qtedge->GetArrow()->HasHead());
-    qtedge->GetEdge().SetHeadArrow(true);
-    assert(qtedge->GetArrow()->HasHead());
-  }
-  //Tail arrow
-  if (verbose) { TRACE("An Edge's tail arrow and it QtQuadBezierArrowItem must match at creation"); }
-  {
-    const bool edge_has_tail{qtedge->GetEdge().HasTailArrow()};
-    const bool arrow_has_tail{qtedge->GetArrow()->HasTail()};
-    assert(edge_has_tail == arrow_has_tail);
-  }
-  if (verbose) { TRACE("If a QtEdge its Edge's tail arrow is changed, a signal must be emitted by QtEdge"); }
-  {
-    Counter c{0}; //For receiving the signal
-    qtedge->m_signal_edge_changed.connect(
-      boost::bind(&ribi::Counter::Inc,&c) //Do not forget the &
-    );
-    qtedge->GetEdge().SetTailArrow(false);
-    qtedge->GetEdge().SetTailArrow(true);
-    assert(c.Get() > 0);
-  }
-  if (verbose) { TRACE("If a QtEdge its Edge's tail arrow is changed, it QtQuadBezier must match"); }
-  {
-    qtedge->GetEdge().SetTailArrow(false);
-    assert(!qtedge->GetArrow()->HasTail());
-    qtedge->GetEdge().SetTailArrow(true);
-    assert(qtedge->GetArrow()->HasTail());
   }
   //Text
   if (verbose) { TRACE("Text of QtEdge must be one line"); }
@@ -199,7 +149,6 @@ void ribi::cmap::QtEdge::Test() noexcept
     qtedge->GetQtNode()->SetCenterY(new_y);
     assert(qtedge->GetQtNode()->GetCenterY() == new_y);
   }
-  assert(qtedge->GetArrow()->GetMidItem() == qtedge->GetQtNode().get());
   if (verbose) { TRACE("If a QtEdge its Edge's tail arrow is changed, a signal must be emitted by Edge"); }
   {
     Counter c{0}; //For receiving the signal

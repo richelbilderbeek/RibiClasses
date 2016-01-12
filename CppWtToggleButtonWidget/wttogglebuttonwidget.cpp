@@ -57,11 +57,6 @@ ribi::WtToggleButtonWidget::WtToggleButtonWidget(
       &ribi::WtToggleButtonWidget::DoRepaint,
       this));
 
-  m_widget->m_signal_geometry_changed.connect(
-    boost::bind(
-      &ribi::WtToggleButtonWidget::OnResize,
-      this));
-
   this->clicked().connect(this,&ribi::WtToggleButtonWidget::OnClicked);
 }
 

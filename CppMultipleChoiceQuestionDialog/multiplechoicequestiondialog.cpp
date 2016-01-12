@@ -35,7 +35,8 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 
 ribi::MultipleChoiceQuestionDialog::MultipleChoiceQuestionDialog(
   const boost::shared_ptr<const MultipleChoiceQuestion> question)
-  : m_signal_mc_question_changed{},
+  : QuestionDialog{},
+    m_signal_mc_question_changed{},
     m_answer_in_progress{-1},
     m_question(question)
 {
@@ -47,7 +48,8 @@ ribi::MultipleChoiceQuestionDialog::MultipleChoiceQuestionDialog(
 }
 
 ribi::MultipleChoiceQuestionDialog::MultipleChoiceQuestionDialog(const std::string& question)
-  : m_signal_mc_question_changed{},
+  : QuestionDialog{},
+    m_signal_mc_question_changed{},
     m_answer_in_progress{-1},
     m_question(new MultipleChoiceQuestion(question))
 {
@@ -69,6 +71,11 @@ boost::shared_ptr<ribi::MultipleChoiceQuestion>
       {"1","2","4","5"}
     )
   );
+}
+
+ribi::MultipleChoiceQuestionDialog::~MultipleChoiceQuestionDialog() noexcept
+{
+
 }
 
 boost::shared_ptr<const ribi::Question> ribi::MultipleChoiceQuestionDialog::GetQuestion() const noexcept

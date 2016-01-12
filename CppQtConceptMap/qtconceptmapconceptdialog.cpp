@@ -44,7 +44,7 @@ ribi::cmap::QtConceptDialog::QtConceptDialog(QWidget *parent) :
   ribi::QtHideAndShowDialog(parent),
   ui(new Ui::QtConceptDialog),
   m_concept{ConceptFactory().Create()},
-  m_qtexamplesdialog{new QtExamplesDialog}
+  m_qtexamplesdialog{new QtExamplesDialog(this)}
 {
   ui->setupUi(this);
   #ifndef NDEBUG
@@ -53,13 +53,14 @@ ribi::cmap::QtConceptDialog::QtConceptDialog(QWidget *parent) :
 
   {
     assert(layout());
-    layout()->addWidget(m_qtexamplesdialog.get());
+    layout()->addWidget(m_qtexamplesdialog);
 
   }
 
-  const auto concept
-    = ConceptFactory().Create("QtConceptDialog initial concept",
-        ExamplesFactory().GetTest(2),true,-1,-1,-1);
+  const Concept concept{
+    "QtConceptDialog initial concept",
+    ExamplesFactory().GetTest(2),true,-1,-1,-1
+  };
   this->SetConcept(concept);
 }
 
