@@ -47,6 +47,8 @@ ribi::cmap::CommandCreateNewEdgeBetweenTwoSelectedNodes::CommandCreateNewEdgeBet
     m_tool_item{tool_item},
     m_qtedge{nullptr}
 {
+  this->setText("Create new edge");
+
   //Update concept map
   assert(count_vertices_with_selectedness(true, m_after) == 2);
   const auto ed = add_edge_between_two_selected_vertices(m_after);
@@ -59,8 +61,8 @@ ribi::cmap::CommandCreateNewEdgeBetweenTwoSelectedNodes::CommandCreateNewEdgeBet
   const Node from = get(vertex_map, vd_from);
   const Node to = get(vertex_map, vd_to);
   assert(from.GetId() != to.GetId());
-  QtNode * const qtfrom = FindQtNode(from, scene);
-  QtNode * const qtto = FindQtNode(to, scene);
+  QtNode * const qtfrom = FindQtNode(from.GetId(), scene);
+  QtNode * const qtto = FindQtNode(to.GetId(), scene);
   const auto edge_map = get(boost::edge_custom_type, m_after);
   const Edge edge = get(edge_map, ed);
   m_qtedge = new QtEdge(edge, qtfrom,qtto);

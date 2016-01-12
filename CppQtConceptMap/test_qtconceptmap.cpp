@@ -36,7 +36,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 
 #include "qtconceptmapcommandaddselectedrandom.h"
 #include "qtconceptmapcommandcreatenewnode.h"
-#include "qtconceptmapcommanddeletenode.h"
+#include "qtconceptmapcommanddeleteselected.h"
 #include "qtconceptmapcommandunselectrandom.h"
 #include "conceptmap.h"
 #include "conceptmapedge.h"

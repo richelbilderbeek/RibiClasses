@@ -50,7 +50,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmapnodefactory.h"
 #include "conceptmapnode.h"
 #include "qtconceptmapcommanddeleteedge.h"
-#include "qtconceptmapcommanddeletenode.h"
+#include "qtconceptmapcommanddeleteselected.h"
 #include "qtarrowitem.h"
 #include "qtconceptmapdisplaystrategy.h"
 #include "qtconceptmapbrushfactory.h"
@@ -249,28 +249,6 @@ void ribi::cmap::QtConceptMap::DeleteEdge(const Edge& edge)
   }
 }
 
-void ribi::cmap::QtConceptMap::DeleteNode(const Node& node)
-{
-  //Already deleted
-  if (!GetQtNode(node)) { return; }
-
-  assert(GetQtNode(node)->scene() == this->GetScene());
-
-  //Delete the QtNode
-  DeleteQtNode(GetQtNode(node));
-
-  for (const auto new_selected_nodes: this->GetConceptMap().GetSelectedNodes())
-  {
-    assert(GetQtNode(new_selected_nodes));
-    GetQtNode(new_selected_nodes)->SetSelected(true);
-  }
-
-  if (this->GetQtNodes().empty())
-  {
-    this->m_tools->hide();
-  }
-}
-
 void ribi::cmap::QtConceptMap::DeleteQtEdge(const QtEdge * const qtedge)
 {
   assert(qtedge);
@@ -371,14 +349,16 @@ void ribi::cmap::QtConceptMap::DoCommand(Command * const command) noexcept
 }
 
 ribi::cmap::QtEdge * ribi::cmap::FindQtEdge(
-  const Edge& edge,
+  const int edge_id,
   const QGraphicsScene * const scene
 ) noexcept
 {
-  const auto v(GetQtEdges(scene));
-  for (const auto e:v)
+  for (auto item: scene->items())
   {
-    if (e->GetEdge() == edge) return e;
+    if (QtEdge * qtedge = dynamic_cast<QtEdge*>(item))
+    {
+      if (qtedge->GetEdge().GetId() == edge_id) { return qtedge; }
+    }
   }
   return nullptr;
 }
@@ -404,19 +384,6 @@ ribi::cmap::QtEdge * ribi::cmap::FindQtEdge(
   );
   if (iter == edge_concepts.end()) return nullptr;
   return * iter;
-}
-
-ribi::cmap::QtNode * ribi::cmap::FindQtNode(
-  const Node& node, const QGraphicsScene * const scene) noexcept
-{
-  for (auto item: scene->items())
-  {
-    if (QtNode * qtnode = dynamic_cast<QtNode*>(item))
-    {
-      if (qtnode->GetNode() == node) { return qtnode; }
-    }
-  }
-  return nullptr;
 }
 
 ribi::cmap::QtNode * ribi::cmap::FindQtNode(
@@ -571,6 +538,8 @@ bool ribi::cmap::QtConceptMap::IsQtCenterNode(const QGraphicsItem* const item)
 
 void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event) noexcept
 {
+  UpdateConceptMap();
+
   switch (event->key())
   {
     case Qt::Key_Delete:
@@ -579,6 +548,7 @@ void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event) noexcept
       if (GetVerbosity()) { TRACE("Pressing delete"); }
       try
       {
+
         DoCommand(new CommandDeleteSelected(m_conceptmap,scene(),m_tools));
       }
       catch (std::logic_error& e)
@@ -651,6 +621,7 @@ void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event) noexcept
 void ribi::cmap::QtConceptMap::mouseDoubleClickEvent(QMouseEvent *event)
 {
   if (GetVerbosity()) { TRACE_FUNC(); }
+  UpdateConceptMap();
   try
   {
     this->DoCommand(
@@ -695,6 +666,7 @@ void ribi::cmap::QtConceptMap::mouseMoveEvent(QMouseEvent * event)
 void ribi::cmap::QtConceptMap::mousePressEvent(QMouseEvent *event)
 {
   if (GetVerbosity()) { TRACE_FUNC(); }
+  UpdateConceptMap();
   assert(m_highlighter);
   if (m_arrow) //&& m_highlighter->GetItem())
   {
@@ -800,26 +772,22 @@ void ribi::cmap::QtConceptMap::onSelectionChanged()
     [this, &g](const VertexDescriptor vd) {
       const auto vertex_map = get(boost::vertex_custom_type,g);
       const auto is_selected_map = get(boost::vertex_is_selected,g);
-      assert(FindQtNode(get(vertex_map,vd),GetScene()));
-      put(is_selected_map,vd,
-        FindQtNode(get(vertex_map,vd),GetScene())->isSelected()
-      );
+      const auto qtnode = FindQtNode(get(vertex_map,vd).GetId(),GetScene());
+      //qtnode can be nullptr when onSelectionChanged is called while building up the QtConceptMap
+      if (qtnode) { put(is_selected_map,vd,qtnode->isSelected()); }
     }
   );
 
-  //Selectness of vertices
+  //Selectness of edges
   const auto eip = edges(g);
   std::for_each(eip.first,eip.second,
     [this, &g](const EdgeDescriptor ed) {
       const auto edge_map = get(boost::edge_custom_type,g);
       const auto is_selected_map = get(boost::edge_is_selected,g);
-      assert(FindQtEdge(get(edge_map,ed),GetScene()));
-      put(is_selected_map,ed,
-        FindQtEdge(get(edge_map,ed),GetScene())->isSelected()
-      );
+      const auto qtedge = FindQtEdge(get(edge_map,ed).GetId(),GetScene());
+      if (qtedge) { put(is_selected_map,ed,qtedge->isSelected()); }
     }
   );
-
   scene()->update();
 }
 

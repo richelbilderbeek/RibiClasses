@@ -187,10 +187,7 @@ public slots:
 int CountQtNodes(const QGraphicsScene * const scene) noexcept;
 int CountQtEdges(const QGraphicsScene * const scene) noexcept;
 
-QtEdge * FindQtEdge(
-  const Edge& edge,
-  const QGraphicsScene * const scene
-) noexcept;
+QtEdge * FindQtEdge(const int edge_id, const QGraphicsScene * const scene) noexcept;
 
 //Find the Qt edge with the same from and to
 QtEdge * FindQtEdge(
@@ -200,8 +197,6 @@ QtEdge * FindQtEdge(
 ) noexcept;
 
 
-///Find the QtNode containing the Node
-QtNode * FindQtNode(const Node& node, const QGraphicsScene * const scene) noexcept;
 QtNode * FindQtNode(const int node_id, const QGraphicsScene * const scene) noexcept;
 
 std::vector<QtEdge *> GetQtEdges(const QGraphicsScene * const scene) noexcept;

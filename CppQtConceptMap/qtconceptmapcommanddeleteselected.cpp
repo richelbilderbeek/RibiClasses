@@ -18,7 +18,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppConceptMap.htm
 //---------------------------------------------------------------------------
-#include "qtconceptmapcommanddeletenode.h"
+#include "qtconceptmapcommanddeleteselected.h"
 
 #include <cassert>
 #include <iostream>
@@ -38,16 +38,15 @@ ribi::cmap::CommandDeleteSelected::CommandDeleteSelected(
   QtTool * const tool_item
 )
   : m_conceptmap(conceptmap),
-    m_conceptmap_after{conceptmap},
-    m_conceptmap_before{conceptmap},
+    m_conceptmap_after(conceptmap),
+    m_conceptmap_before(conceptmap),
     m_qtedges_removed{},
     m_qtnodes_removed{},
     m_scene(scene),
     m_tool_item{tool_item},
     m_tool_item_old_buddy{tool_item->GetBuddyItem()}
 {
-  setText("delete selected nodes (and edges)");
-
+  setText("delete selected nodes and edges");
 
   //Count the number of vertices and edges selected
   {
@@ -161,11 +160,9 @@ ribi::cmap::CommandDeleteSelected::CommandDeleteSelected(
 void ribi::cmap::CommandDeleteSelected::redo()
 {
   m_conceptmap = m_conceptmap_after;
-  //Remove edges
   for (const auto qtedge: m_qtedges_removed) {
     m_scene->removeItem(qtedge);
   }
-  //Remove nodes
   for (const auto qtnode: m_qtnodes_removed) {
     m_scene->removeItem(qtnode);
   }
@@ -175,14 +172,11 @@ void ribi::cmap::CommandDeleteSelected::redo()
 void ribi::cmap::CommandDeleteSelected::undo()
 {
   m_conceptmap = m_conceptmap_before;
-
-  //Remove edges
-  for (const auto qtedge: m_qtedges_removed) {
-    m_scene->addItem(qtedge);
-  }
-  //Remove nodes
   for (const auto qtnode: m_qtnodes_removed) {
     m_scene->addItem(qtnode);
+  }
+  for (const auto qtedge: m_qtedges_removed) {
+    m_scene->addItem(qtedge);
   }
 
 
