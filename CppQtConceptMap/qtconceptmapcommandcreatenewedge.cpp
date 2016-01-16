@@ -72,11 +72,17 @@ ribi::cmap::CommandCreateNewEdgeBetweenTwoSelectedNodes::CommandCreateNewEdgeBet
 void ribi::cmap::CommandCreateNewEdgeBetweenTwoSelectedNodes::redo()
 {
   m_conceptmap = m_after;
+  m_qtedge->SetSelected(true);
+  m_qtedge->GetFrom()->SetSelected(false);
+  m_qtedge->GetTo()->SetSelected(false);
   m_scene->addItem(m_qtedge);
 }
 
 void ribi::cmap::CommandCreateNewEdgeBetweenTwoSelectedNodes::undo()
 {
   m_conceptmap = m_before;
+  m_qtedge->SetSelected(false);
+  m_qtedge->GetFrom()->SetSelected(true);
+  m_qtedge->GetTo()->SetSelected(true);
   m_scene->removeItem(m_qtedge);
 }

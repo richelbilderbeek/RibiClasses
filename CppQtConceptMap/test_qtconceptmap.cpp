@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 /*
 QtConceptMap, Qt classes for display and interaction with ConceptMap
-Copyright (C) 2013-2015 The Brainweaver Team
+Copyright (C) 2013-2016 Richel Bilderbeek
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -35,6 +35,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmapfactory.h"
 
 #include "qtconceptmapcommandaddselectedrandom.h"
+#include "qtconceptmapcommandcreatenewedge.h"
 #include "qtconceptmapcommandcreatenewnode.h"
 #include "qtconceptmapcommanddeleteselected.h"
 #include "qtconceptmapcommandunselectrandom.h"
@@ -74,363 +75,172 @@ void ribi::cmap::QtConceptMap::Test() noexcept
                            //has to be tested as well
   bool verbose{false};
 
-  if (verbose) { TRACE("SetConceptMap and GetConceptMap return the same"); }
+  if (verbose) { TRACE("SetConceptMap, all tests"); }
+  for (const auto conceptmap: ConceptMapFactory().GetAllTests())
   {
     QtConceptMap m;
     assert(CountQtNodes(m.GetScene()) == 0);
-    const ConceptMap conceptmap{
-      ConceptMapFactory().Get2()
-    };
-    m.SetConceptMap(conceptmap);
-    boost::isomorphism(m.GetConceptMap(), conceptmap);
-  }
-  #ifdef NOT_NOW_20151230
-  if (verbose) { TRACE("SetConceptMap, two nodes"); }
-  {
-    QtConceptMap m;
-    assert(CountQtNodes(m.GetScene()) == 0);
-    const ConceptMap conceptmap{
-      ConceptMapFactory().GetTest(1)
-    };
     m.SetConceptMap(conceptmap);
     const auto n_nodes = static_cast<int>(boost::num_vertices(conceptmap));
+    const auto n_edges = static_cast<int>(boost::num_edges(conceptmap));
     const auto n_qtnodes = CountQtNodes(m.GetScene());
-    assert(n_nodes == n_qtnodes && "GUI and non-GUI concept map must match");
+    const auto n_qtedges = CountQtEdges(m.GetScene());
+    assert(n_nodes == n_qtnodes);
+    assert(n_edges == n_qtedges);
   }
-  #ifdef FIX_ISSUE_10
-  if (verbose) { TRACE("SetConceptMap, 3 nodes, 1 edge"); }
-  {
-    QtConceptMap m;
-    const ConceptMap conceptmap{
-      ConceptMapFactory().GetHeteromorphousTestConceptMap(3)
-    };
-    m.SetConceptMap(conceptmap);
-    const auto nodes_in_conceptmap = conceptmap.GetNodes();
-    const auto edges_in_conceptmap = conceptmap.GetEdges();
-    const auto nodes_in_scene = Collect<QtNode>(m.GetScene());
-    const auto edges_in_scene = Collect<QtEdge>(m.GetScene());
-    const std::size_t n_nodes_in_scene = nodes_in_scene.size();
-    const std::size_t n_edges_in_scene = edges_in_scene.size();
-    const std::size_t n_nodes_in_conceptmap = nodes_in_conceptmap.size();
-    const std::size_t n_edges_in_conceptmap = edges_in_conceptmap.size();
-    assert(n_nodes_in_scene == n_nodes_in_conceptmap && "GUI and non-GUI concept map must match");
-    assert(n_edges_in_scene == n_edges_in_conceptmap && "GUI and non-GUI concept map must match");
-  }
-  if (verbose) { TRACE("Test base class (after having tested cloning of derived class)"); }
-  {
-    const ConceptMap conceptmap
-      = ribi::cmap::ConceptMapFactory().GetHeteromorphousTestConceptMap(15);
-    
-    assert(conceptmap.IsValid());
-
-    boost::shared_ptr<QtConceptMap> widget(new QtConceptMap);
-    widget->SetConceptMap(conceptmap);
-    assert(widget);
-  }
-  #endif // FIX_ISSUE_10
-  if (verbose) { TRACE("AddNode: a Node added end up in both ConceptMap and QtConceptMap, by adding in both places"); }
-  {
-    ConceptMap conceptmap = ribi::cmap::ConceptMapFactory().GetEmptyConceptMap();
-    QtConceptMap qtconceptmap;
-    qtconceptmap.SetConceptMap(conceptmap);
-
-    assert(conceptmap.GetNodes().size() == qtconceptmap.GetQtNodes().size());
-    const int n_nodes_before{static_cast<int>(qtconceptmap.GetQtNodes().size())};
-
-    const auto node = NodeFactory().GetTest(0);
-    conceptmap.AddNode(node);
-    qtconceptmap.AddNode(node);
-
-    assert(conceptmap.GetNodes().size() == qtconceptmap.GetQtNodes().size());
-    const int n_nodes_after{static_cast<int>(qtconceptmap.GetQtNodes().size())};
-    assert(n_nodes_after == n_nodes_before + 1);
-  }
-  if (verbose) { TRACE("AddNode: a Node added end up in both ConceptMap and QtConceptMap, by adding in both places"); }
-  {
-    ConceptMap conceptmap = ribi::cmap::ConceptMapFactory().GetEmptyConceptMap();
-    QtConceptMap qtconceptmap;
-    qtconceptmap.SetConceptMap(conceptmap);
-
-    assert(conceptmap.GetNodes().size() == 0);
-    assert(conceptmap.GetNodes().size() == qtconceptmap.GetQtNodes().size());
-
-    const auto node = NodeFactory().GetTest(0);
-    qtconceptmap.AddNode(node); //First Qt
-    //conceptmap.AddNode(node); //Allowed, results in a warning
-
-    assert(conceptmap.GetNodes().size() == 1);
-    assert(conceptmap.GetNodes().size() == qtconceptmap.GetQtNodes().size());
-  }
-  if (verbose) { TRACE("AddNode: a Node added end up in both ConceptMap and QtConceptMap, by adding it to QtConceptMap"); }
-  {
-    ConceptMap conceptmap = ribi::cmap::ConceptMapFactory().GetEmptyConceptMap();
-    QtConceptMap qtconceptmap;
-    qtconceptmap.SetConceptMap(conceptmap);
-
-    assert(conceptmap.GetNodes().size() == 0);
-    assert(conceptmap.GetNodes().size() == qtconceptmap.GetQtNodes().size());
-
-    const auto node = NodeFactory().GetTest(0);
-    qtconceptmap.AddNode(node);
-
-    assert(conceptmap.GetNodes().size() == 1);
-    assert(conceptmap.GetNodes().size() == qtconceptmap.GetQtNodes().size());
-  }
-  #ifdef FIX_ISSUE_10
-  if (verbose) { TRACE("AddNode: a Node added end up in both ConceptMap and QtConceptMap, by adding it to ConceptMap"); }
-  {
-    ConceptMap conceptmap = ribi::cmap::ConceptMapFactory().GetEmptyConceptMap();
-    QtConceptMap qtconceptmap;
-    qtconceptmap.SetConceptMap(conceptmap);
-
-    assert(conceptmap.GetNodes().size() == 0);
-    assert(conceptmap.GetNodes().size() == qtconceptmap.GetQtNodes().size());
-
-    const auto node = NodeFactory().GetTest(0);
-    conceptmap.AddNode(node);
-
-    assert(conceptmap.GetNodes().size() == 1);
-    assert(conceptmap.GetNodes().size() == qtconceptmap.GetQtNodes().size());
-  }
-  #endif // FIX_ISSUE_10
-  if (verbose) { TRACE("If item changes its selection, m_signal_selected_changed must be emitted"); }
-  {
-    ConceptMap conceptmap = ribi::cmap::ConceptMapFactory().GetEmptyConceptMap();
-    QtConceptMap qtconceptmap;
-    qtconceptmap.SetConceptMap(conceptmap);
-    const auto node = NodeFactory().GetTest(0);
-    const auto qtnode = qtconceptmap.AddNode(node);
-
-    Counter c{0}; //For receiving the signal
-    qtnode->m_signal_selected_changed.connect(
-      boost::bind(&ribi::Counter::Inc,&c) //Do not forget the &
-    );
-    qtnode->SetSelected(true);
-    qtnode->SetSelected(false);
-    assert(c.Get() > 0);
-  }
-  if (verbose) { TRACE("AddNode: the QtNode added must sync with the Node"); }
-  {
-    ConceptMap conceptmap = ribi::cmap::ConceptMapFactory().GetEmptyConceptMap();
-    QtConceptMap qtconceptmap;
-    qtconceptmap.SetConceptMap(conceptmap);
-    const auto node = NodeFactory().GetTest(0);
-    const auto qtnode = qtconceptmap.AddNode(node);
-
-    assert(qtnode->isSelected());
-    assert(conceptmap.GetSelectedNodes().size() == 1);
-
-    qtnode->SetSelected(false);
-
-    assert(!qtnode->isSelected());
-    assert(conceptmap.GetSelectedNodes().size() == 0);
-    qtnode->SetSelected(true);
-
-    assert(qtnode->isSelected());
-    assert(conceptmap.GetSelectedNodes().size() == 1);
-  }
-  if (verbose) { TRACE("AddNode: a Node added end up in both ConceptMap and QtConceptMap, by adding it to ConceptMap"); }
-  {
-    ConceptMap conceptmap = ribi::cmap::ConceptMapFactory().GetEmptyConceptMap();
-    QtConceptMap qtconceptmap;
-    qtconceptmap.SetConceptMap(conceptmap);
-
-    assert(conceptmap.GetNodes().size() == 0);
-    assert(conceptmap.GetNodes().size() == qtconceptmap.GetQtNodes().size());
-
-    const auto command = new CommandCreateNewNode(conceptmap);
-    qtconceptmap.DoCommand(command);
-
-    assert(conceptmap.GetNodes().size() == 1);
-    assert(conceptmap.GetNodes().size() == qtconceptmap.GetQtNodes().size());
-  }
-  if (verbose) { TRACE("AddNode: a Node added gets a QtNode to be found in QtConceptMap"); }
-  {
-    ConceptMap conceptmap = ribi::cmap::ConceptMapFactory().GetEmptyConceptMap();
-    QtConceptMap qtconceptmap;
-    qtconceptmap.SetConceptMap(conceptmap);
-    const auto node = NodeFactory().GetTest(0);
-    qtconceptmap.AddNode(node);
-    assert(qtconceptmap.GetQtNode(node));
-  }
-  if (verbose) { TRACE("AddNode: added QtNode must get selected"); }
-  {
-    ConceptMap conceptmap = ribi::cmap::ConceptMapFactory().GetEmptyConceptMap();
-    QtConceptMap qtconceptmap;
-    qtconceptmap.SetConceptMap(conceptmap);
-
-    assert(conceptmap.GetSelectedNodes().size() == 0);
-    assert(conceptmap.GetSelectedNodes().size() == qtconceptmap.GetSelectedQtNodes().size());
-
-    const auto node = NodeFactory().GetTest(0);
-    const auto qtnode = qtconceptmap.AddNode(node);
-
-    assert(qtnode->isSelected());
-    assert(conceptmap.GetSelectedNodes().size() == 1);
-    assert(conceptmap.GetSelectedNodes().size() == qtconceptmap.GetSelectedQtNodes().size());
-  }
-  if (verbose) { TRACE("AddNode: selected QtNode must be visible in QScene::selectedItems"); }
-  {
-    ConceptMap conceptmap = ribi::cmap::ConceptMapFactory().GetEmptyConceptMap();
-    QtConceptMap qtconceptmap;
-    qtconceptmap.SetConceptMap(conceptmap);
-    const auto node = NodeFactory().GetTest(0);
-    const auto qtnode = qtconceptmap.AddNode(node);
-
-    assert(qtnode->isSelected());
-    assert(qtconceptmap.scene()->selectedItems().size() == 1);
-
-    qtnode->SetSelected(false);
-
-    assert(qtconceptmap.scene()->selectedItems().size() == 0);
-
-    qtnode->SetSelected(true);
-
-    assert(qtconceptmap.scene()->selectedItems().size() == 1);
-  }
-  //Commands
   if (verbose) { TRACE("A new command must be put in QUndoStack"); }
   {
     QtConceptMap qtconceptmap;
 
-    CommandCreateNewNode * const command {new CommandCreateNewNode(qtconceptmap.GetConceptMap())};
+    CommandCreateNewNode * const command {
+      new CommandCreateNewNode(
+        qtconceptmap.GetConceptMap(),
+        qtconceptmap.GetScene(),
+        qtconceptmap.GetQtToolItem(),
+        0.0,
+        0.0
+      )
+    };
     assert(qtconceptmap.GetUndo().count() == 0);
 
     qtconceptmap.DoCommand(command);
 
     assert(qtconceptmap.GetUndo().count() == 1);
   }
-  if (verbose) { TRACE("Start a concept map, create a node using a command"); }
+  if (verbose) { TRACE("Create one node"); }
   {
     QtConceptMap qtconceptmap;
-    assert(qtconceptmap.GetConceptMap().GetNodes().empty());
-    const auto command = new CommandCreateNewNode(qtconceptmap.GetConceptMap());
-    qtconceptmap.DoCommand(command);
-    assert(qtconceptmap.GetConceptMap().GetNodes().size() == 1);
-    command->undo();
-    assert(qtconceptmap.GetConceptMap().GetNodes().size() == 0);
+    assert(DoubleCheckEdgesAndNodes(qtconceptmap,0,0));
+    assert(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,0));
+    qtconceptmap.DoCommand(
+      new CommandCreateNewNode(
+        qtconceptmap.GetConceptMap(),
+        qtconceptmap.GetScene(),
+        qtconceptmap.GetQtToolItem(),
+        0.0,
+        0.0
+      )
+    );
+    assert(DoubleCheckEdgesAndNodes(qtconceptmap,0,1));
+      assert(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,1));
+
+    qtconceptmap.Undo();
+    assert(DoubleCheckEdgesAndNodes(qtconceptmap,0,0));
+      assert(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,0));
   }
-  if (verbose) { TRACE("Start a concept map, create two nodes, unselect both, then select both using AddSelected"); }
+  if (verbose) { TRACE("Create nodes"); }
   {
     QtConceptMap qtconceptmap;
-    const int n_nodes = 2;
-    //Create nodes
-    for (int i=0; i!=n_nodes; ++i)
-    {
-      const auto command = new CommandCreateNewNode(qtconceptmap.GetConceptMap());
-      qtconceptmap.DoCommand(command);
-    }
-    assert(static_cast<int>(qtconceptmap.GetConceptMap().GetNodes().size()) == n_nodes
-      && "Concept map must have two nodes");
-    assert(static_cast<int>(qtconceptmap.GetConceptMap().GetSelectedNodes().size()) == 2
-      && "Freshly created nodes are selected");
+    assert(DoubleCheckEdgesAndNodes(qtconceptmap,0,0));
 
-    //Unselect both
-    for (int i=0; i!=n_nodes; ++i)
-    {
-      assert(static_cast<int>(qtconceptmap.GetConceptMap().GetSelectedNodes().size()) == 2 - i);
-      const auto command = new CommandUnselectRandom(qtconceptmap.GetConceptMap());
-      qtconceptmap.DoCommand(command);
-      assert(static_cast<int>(qtconceptmap.GetConceptMap().GetSelectedNodes().size()) == 1 - i);
+    const int n{10};
+    for (int i=0; i!=n; ++i) {
+      qtconceptmap.DoCommand(
+        new CommandCreateNewNode(
+          qtconceptmap.GetConceptMap(),
+          qtconceptmap.GetScene(),
+          qtconceptmap.GetQtToolItem(),
+          0.0,
+          0.0
+        )
+      );
+      assert(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,i + 1));
     }
-    assert(static_cast<int>(qtconceptmap.GetConceptMap().GetSelectedNodes().size()) == 0);
-
-    //Select both again
-    assert(static_cast<int>(qtconceptmap.GetConceptMap().GetSelectedNodes().size()) == 0);
-    for (int i=0; i!=n_nodes; ++i)
-    {
-      assert(static_cast<int>(qtconceptmap.GetConceptMap().GetSelectedNodes().size()) == i);
-      const auto command = new CommandAddSelectedRandom(qtconceptmap.GetConceptMap());
-      qtconceptmap.DoCommand(command);
-      assert(static_cast<int>(qtconceptmap.GetConceptMap().GetSelectedNodes().size()) == i + 1);
-    }
-    assert(static_cast<int>(qtconceptmap.GetConceptMap().GetSelectedNodes().size()) == 2);
-
-    //Undo selection
-    for (int i=0; i!=n_nodes; ++i)
-    {
-      assert(static_cast<int>(qtconceptmap.GetConceptMap().GetSelectedNodes().size()) == 2 - i);
-      const auto command = new CommandUnselectRandom(qtconceptmap.GetConceptMap());
-      qtconceptmap.DoCommand(command);
-      assert(static_cast<int>(qtconceptmap.GetConceptMap().GetSelectedNodes().size()) == 1 - i);
-    }
-    assert(static_cast<int>(qtconceptmap.GetConceptMap().GetSelectedNodes().size()) == 0);
+    assert(DoubleCheckEdgesAndNodes(qtconceptmap,0,n));
+    for (int i=0; i!=n; ++i) { qtconceptmap.Undo(); }
+    assert(DoubleCheckEdgesAndNodes(qtconceptmap,0,0));
   }
-  //Do all do and undo of a single command
+  if (verbose) { TRACE("Create edge"); }
   {
     QtConceptMap qtconceptmap;
-    const int n_commands{CommandFactory().GetSize()};
-    for (int i=0; i!=n_commands; ++i)
-    {
-      auto conceptmap = ConceptMapFactory().GetHeteromorphousTestConceptMap(17);
-
-      try
-      {
-
-        const auto cmd = CommandFactory().CreateTestCommand(i,conceptmap);
-        if (cmd)
-        {
-          TRACE(cmd->text().toStdString());
-          qtconceptmap.DoCommand(cmd);
-          qtconceptmap.Undo();
-        }
-      }
-      catch (std::logic_error& e)
-      {
-        if (verbose) TRACE(e.what());
-        //No problem: cannot do command
-      }
+    const int n{2};
+    for (int i=0; i!=n; ++i) {
+      qtconceptmap.DoCommand(
+        new CommandCreateNewNode(
+          qtconceptmap.GetConceptMap(),
+          qtconceptmap.GetScene(),
+          qtconceptmap.GetQtToolItem(),
+          0.0,
+          0.0
+        )
+      );
     }
+    qtconceptmap.DoCommand(
+      new CommandCreateNewEdgeBetweenTwoSelectedNodes(
+        qtconceptmap.GetConceptMap(),
+        qtconceptmap.GetScene(),
+        qtconceptmap.GetQtToolItem()
+      )
+    );
+    assert(DoubleCheckEdgesAndNodes(qtconceptmap,1,2));
   }
-  //Do all combinations of two commands
-  const int n_depth = 1;
-  if (n_depth >= 2)
+  if (verbose) { TRACE("Delete nodes: create two Nodes, delete one Node from QtConceptMap"); }
   {
     QtConceptMap qtconceptmap;
-    const int n_commands { static_cast<int>(CommandFactory().GetSize()) };
-    for (int i=0; i!=n_commands; ++i)
-    {
-      for (int j=0; j!=n_commands; ++j)
-      {
-        for (ConceptMap conceptmap: ConceptMapFactory().GetAllTests())
-        {
-          for (const auto cmd:
-            {
-              CommandFactory().CreateTestCommand(i,conceptmap),
-              CommandFactory().CreateTestCommand(j,conceptmap)
-            }
-          )
-          {
-            if (cmd)
-            {
-              qtconceptmap.DoCommand(cmd);
-              qtconceptmap.Undo();
-              qtconceptmap.DoCommand(cmd);
-            }
-          }
-        }
-      }
+    assert(DoubleCheckEdgesAndNodes(qtconceptmap,0,0));
+
+    const int n{10};
+    for (int i=0; i!=n; ++i) {
+      qtconceptmap.DoCommand(
+        new CommandCreateNewNode(
+          qtconceptmap.GetConceptMap(),
+          qtconceptmap.GetScene(),
+          qtconceptmap.GetQtToolItem(),
+          0.0,
+          0.0
+        )
+      );
+      assert(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,i + 1));
     }
+    assert(DoubleCheckEdgesAndNodes(qtconceptmap,0,n));
+    qtconceptmap.DoCommand(
+      new CommandDeleteSelected(
+        qtconceptmap.GetConceptMap(),
+        qtconceptmap.GetScene(),
+        qtconceptmap.GetQtToolItem()
+      )
+    );
+    assert(DoubleCheckEdgesAndNodes(qtconceptmap,0,0));
+    qtconceptmap.Undo();
+    assert(DoubleCheckEdgesAndNodes(qtconceptmap,0,n));
   }
+  if (verbose) { TRACE("Delete Edge"); }
+  {
+    QtConceptMap qtconceptmap;
+    assert(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,0));
+    const int n{2};
+    for (int i=0; i!=n; ++i) {
+      qtconceptmap.DoCommand(
+        new CommandCreateNewNode(
+          qtconceptmap.GetConceptMap(),
+          qtconceptmap.GetScene(),
+          qtconceptmap.GetQtToolItem(),
+          0.0,
+          0.0
+        )
+      );
+    }
+    assert(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,2));
+    qtconceptmap.DoCommand(
+      new CommandCreateNewEdgeBetweenTwoSelectedNodes(
+        qtconceptmap.GetConceptMap(),
+        qtconceptmap.GetScene(),
+        qtconceptmap.GetQtToolItem()
+      )
+    );
+    assert(DoubleCheckEdgesAndNodes(qtconceptmap,1,2));
+    assert(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,1,0));
+    qtconceptmap.DoCommand(
+      new CommandDeleteSelected(
+        qtconceptmap.GetConceptMap(),
+        qtconceptmap.GetScene(),
+        qtconceptmap.GetQtToolItem()
+      )
+    );
+    assert(DoubleCheckEdgesAndNodes(qtconceptmap,0,2));
+  }
+  #ifdef NOT_NOW_20151230
   #ifdef FIX_ISSUE_10
-  if (verbose) { TRACE("DeleteNode: create two Nodes, delete one Node from QtConceptMap"); }
-  {
-    ConceptMap conceptmap = ribi::cmap::ConceptMapFactory().GetEmptyConceptMap();
-    QtConceptMap qtconceptmap;
-    qtconceptmap.SetConceptMap(conceptmap);
-    assert(conceptmap.GetNodes().size() == 0);
-    qtconceptmap.AddNode(NodeFactory().GetTest(0));
-
-    assert(conceptmap.GetNodes().size() == 1);
-
-    qtconceptmap.AddNode(NodeFactory().GetTest(0));
-
-    assert(qtconceptmap.GetQtNodes().size() == 2);
-
-    qtconceptmap.DeleteQtNode( qtconceptmap.GetQtNodes().back());
-
-    assert(qtconceptmap.GetQtNodes().size() == 1);
-  }
   if (verbose) { TRACE("DeleteNode: delete a Node from ConceptMap using a Command"); }
   {
     ConceptMap conceptmap = ribi::cmap::ConceptMapFactory().GetEmptyConceptMap();

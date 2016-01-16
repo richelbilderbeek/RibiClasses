@@ -136,11 +136,18 @@ ribi::cmap::CommandDeleteSelected::CommandDeleteSelected(
       }
     }
   }
-  //Find the selected edges to be deleted
+  //Find the edges connected to deleted nodes
   for (const auto i: m_scene->items())
   {
     if (QtEdge* qtedge = dynamic_cast<QtEdge*>(i))
     {
+      //Is selected itself
+      if (qtedge->isSelected())
+      {
+        m_qtedges_removed.emplace_back(qtedge);
+        continue;
+      }
+      //Is connected to a deleted QtNode
       const auto j = std::find_if(
         std::begin(m_qtnodes_removed),std::end(m_qtnodes_removed),
         [qtedge](const QtNode* const qtnode) {

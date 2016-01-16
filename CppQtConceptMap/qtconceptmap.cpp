@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 /*
 QtConceptMap, Qt classes for display and interaction with ConceptMap
-Copyright (C) 2013-2015 The Brainweaver Team
+Copyright (C) 2013-2016 Richel Bilderbeek
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -45,11 +45,11 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmapfactory.h"
 #include "conceptmap.h"
 #include "conceptmapedgefactory.h"
+#include "count_edges_with_selectedness.h"
 #include "conceptmapedge.h"
 #include "conceptmaphelper.h"
 #include "conceptmapnodefactory.h"
 #include "conceptmapnode.h"
-#include "qtconceptmapcommanddeleteedge.h"
 #include "qtconceptmapcommanddeleteselected.h"
 #include "qtarrowitem.h"
 #include "qtconceptmapdisplaystrategy.h"
@@ -64,6 +64,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "qtconceptmapexamplesitem.h"
 #include "qtconceptmapitemhighlighter.h"
 #include "qtconceptmapnewarrow.h"
+#include "count_vertices_with_selectedness.h"
 #include "qtconceptmapqtnode.h"
 #include "qtconceptmaptoolsitem.h"
 #include "qtquadbezierarrowitem.h"
@@ -343,9 +344,94 @@ int ribi::cmap::CountQtNodes(const QGraphicsScene * const scene) noexcept
   return cnt;
 }
 
+int ribi::cmap::CountSelectedQtEdges(const QGraphicsScene * const scene) noexcept
+{
+  int cnt{0};
+  for (auto item: scene->items()) {
+    if (dynamic_cast<QtEdge*>(item)
+      && dynamic_cast<QtEdge*>(item)->isSelected()
+    ) {
+      ++cnt;
+    }
+  }
+  return cnt;
+}
+
+int ribi::cmap::CountSelectedQtNodes(const QGraphicsScene * const scene) noexcept
+{
+  int cnt{0};
+  for (auto item: scene->items()) {
+    if (dynamic_cast<QtNode*>(item)
+      && dynamic_cast<QtNode*>(item)->isSelected()
+    ) {
+      ++cnt;
+    }
+  }
+  return cnt;
+}
+
 void ribi::cmap::QtConceptMap::DoCommand(Command * const command) noexcept
 {
   m_undo.push(command);
+  this->UpdateConceptMap();
+}
+
+bool ribi::cmap::DoubleCheckEdgesAndNodes(
+  const QtConceptMap& qtconceptmap,
+  const int n_edges_desired,
+  const int n_nodes_desired
+) noexcept
+{
+  const auto g = qtconceptmap.GetConceptMap();
+  const auto n_nodes = static_cast<int>(boost::num_vertices(g));
+  const auto n_edges = static_cast<int>(boost::num_edges(g));
+  const auto n_qtnodes = CountQtNodes(qtconceptmap.GetScene());
+  const auto n_qtedges = CountQtEdges(qtconceptmap.GetScene());
+  #ifndef NDEBUG
+  if (n_nodes != n_qtnodes)
+  {
+    TRACE(n_nodes);
+    TRACE(n_qtnodes);
+  }
+  if (n_edges != n_qtedges)
+  {
+    TRACE(n_edges);
+    TRACE(n_qtedges);
+  }
+  #endif
+  assert(n_nodes == n_qtnodes);
+  assert(n_edges == n_qtedges);
+  if (n_nodes != n_nodes_desired) return false;
+  if (n_edges != n_edges_desired) return false;
+  return true;
+}
+
+bool ribi::cmap::DoubleCheckSelectedEdgesAndNodes(
+  const QtConceptMap& qtconceptmap,
+  const int n_edges_desired,
+  const int n_nodes_desired
+) noexcept
+{
+  const auto g = qtconceptmap.GetConceptMap();
+  const auto n_selected_nodes = count_vertices_with_selectedness(true,g);
+  const auto n_selected_edges = count_edges_with_selectedness(true,g);
+  const auto n_selected_qtnodes = CountSelectedQtNodes(qtconceptmap.GetScene());
+  const auto n_selected_qtedges = CountSelectedQtEdges(qtconceptmap.GetScene());
+  #ifndef NDEBUG
+  if (n_selected_nodes != n_selected_qtnodes) {
+    TRACE(n_selected_nodes);
+    TRACE(n_selected_qtnodes);
+  }
+  if (n_selected_edges != n_selected_qtedges) {
+    TRACE(n_selected_edges);
+    TRACE(n_selected_qtedges);
+  }
+  #endif
+  assert(n_selected_nodes == n_selected_qtnodes);
+  assert(n_selected_edges == n_selected_qtedges);
+  if (n_selected_nodes != n_nodes_desired) return false;
+  if (n_selected_edges != n_edges_desired) return false;
+  return true;
 }
 
 ribi::cmap::QtEdge * ribi::cmap::FindQtEdge(
@@ -987,6 +1073,12 @@ void ribi::cmap::QtConceptMap::SetExamplesItem(QtExamplesItem * const item)
 {
   assert((item || !item) && "Can be both");
   m_examples_item = item;
+}
+
+void ribi::cmap::QtConceptMap::Undo() noexcept
+{
+  assert(m_undo.count() > 0);
+  m_undo.undo();
 }
 
 void ribi::cmap::QtConceptMap::UpdateConceptMap()

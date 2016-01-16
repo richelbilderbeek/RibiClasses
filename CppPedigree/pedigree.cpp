@@ -25,7 +25,7 @@ void Pedigree::CheckOffspring() const
   //Erase-remove idiom to remove all nullptr kids
   m_offspring.erase(
     std::remove_if(std::begin(m_offspring),std::end(m_offspring),
-      [](auto kid) { return !kid.lock(); }
+      [](std::weak_ptr<Pedigree>& kid) { return !kid.lock(); }
     ),
     std::end(m_offspring)
   );

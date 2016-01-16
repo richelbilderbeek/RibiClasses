@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 /*
 QtConceptMap, Qt classes for display and interaction with ConceptMap
-Copyright (C) 2013-2015 The Brainweaver Team
+Copyright (C) 2013-2016 Richel Bilderbeek
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -186,6 +186,8 @@ public slots:
 
 int CountQtNodes(const QGraphicsScene * const scene) noexcept;
 int CountQtEdges(const QGraphicsScene * const scene) noexcept;
+int CountSelectedQtNodes(const QGraphicsScene * const scene) noexcept;
+int CountSelectedQtEdges(const QGraphicsScene * const scene) noexcept;
 
 QtEdge * FindQtEdge(const int edge_id, const QGraphicsScene * const scene) noexcept;
 
@@ -208,6 +210,12 @@ std::vector<QtEdge*> GetQtEdges(
 ) noexcept;
 
 std::vector<QtNode *> GetQtNodes(const QGraphicsScene * const scene) noexcept;
+
+///Check is QtConceptMap and its ConceptMap have the requested number of edges and nodes
+bool DoubleCheckEdgesAndNodes(const QtConceptMap& qtconceptmap, const int n_edges, const int n_nodes) noexcept;
+
+///Check is QtConceptMap and its ConceptMap have the requested number of selected edges and nodes
+bool DoubleCheckSelectedEdgesAndNodes(const QtConceptMap& qtconceptmap, const int n_edges, const int n_nodes) noexcept;
 
 
 } //~namespace cmap
