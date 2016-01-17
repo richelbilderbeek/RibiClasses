@@ -118,12 +118,12 @@ void ribi::cmap::QtEdge::Test() noexcept
     assert(std::abs(qtedge->m_qtnode->GetCenterX() - new_x) < 2.0);
   }
   //Y
-  if (verbose) { TRACE("Y of QtEdge and QtRoundedEditRectItem must match at creation"); }
-  {
-    const double edge_y{edge.GetNode().GetY()};
-    const double qtedge_y{qtitem->GetCenterY()};
-    assert(edge_y == qtedge_y);
-  }
+//  if (verbose) { TRACE("Y of QtEdge and QtRoundedEditRectItem must match at creation"); }
+//  {
+//    const double edge_y{edge.GetNode().GetY()};
+//    const double qtedge_y{qtitem->GetCenterY()};
+//    assert(edge_y == qtedge_y);
+//  }
   if (verbose) { TRACE("If Y is set via QtEdge, QtRoundedEditRectItem must sync"); }
   {
     const double old_y{qtedge->m_qtnode->GetCenterY()};

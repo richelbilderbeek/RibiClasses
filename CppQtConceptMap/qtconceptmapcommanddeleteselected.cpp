@@ -43,6 +43,7 @@ ribi::cmap::CommandDeleteSelected::CommandDeleteSelected(
     m_qtedges_removed{},
     m_qtnodes_removed{},
     m_scene(scene),
+    m_selected_before{scene->selectedItems()},
     m_tool_item{tool_item},
     m_tool_item_old_buddy{tool_item->GetBuddyItem()}
 {
@@ -162,6 +163,7 @@ ribi::cmap::CommandDeleteSelected::CommandDeleteSelected(
       }
     }
   }
+
 }
 
 void ribi::cmap::CommandDeleteSelected::redo()
@@ -173,6 +175,7 @@ void ribi::cmap::CommandDeleteSelected::redo()
   for (const auto qtnode: m_qtnodes_removed) {
     m_scene->removeItem(qtnode);
   }
+  for (auto item: m_selected_before) { item->setSelected(false); }
   m_tool_item->SetBuddyItem(nullptr);
 }
 
@@ -185,7 +188,7 @@ void ribi::cmap::CommandDeleteSelected::undo()
   for (const auto qtedge: m_qtedges_removed) {
     m_scene->addItem(qtedge);
   }
-
+  for (auto item: m_selected_before) { item->setSelected(true); }
 
   m_tool_item->SetBuddyItem(m_tool_item_old_buddy);
 }

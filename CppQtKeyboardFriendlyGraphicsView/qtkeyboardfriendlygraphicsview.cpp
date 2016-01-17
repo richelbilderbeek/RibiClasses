@@ -263,6 +263,16 @@ void ribi::QtKeyboardFriendlyGraphicsView::KeyPressEventCtrl(QKeyEvent *event) n
 {
   //CTRL: Move items
   assert(event->modifiers() & Qt::ControlModifier);
+
+  //Do special movements
+  if (event->key() == Qt::Key_Space)
+  {
+      if (m_verbose) { std::clog << "Pressing CTRL-Space" << std::endl; }
+    this->SetRandomSelectedness();
+    return;
+  }
+
+
   if (m_verbose) { std::clog << "CTRL pressed: try to move items" << std::endl; }
   double delta_x{0.0};
   double delta_y{0.0};
@@ -302,7 +312,11 @@ void ribi::QtKeyboardFriendlyGraphicsView::KeyPressEventNoModifiers(QKeyEvent *e
   assert(!(event->modifiers() & Qt::ControlModifier));
 
   //Do special movements
-  if (event->key() == Qt::Key_Space) { this->SetRandomFocus(); return; }
+  if (event->key() == Qt::Key_Space)
+  {
+    this->SetRandomFocus(); //If you want to select a random item, use CTRL-space
+    return;
+  }
 
   QGraphicsItem* const current_focus_item = scene()->focusItem(); //Can be nullptr
   if (!current_focus_item) {
@@ -446,5 +460,41 @@ void ribi::QtKeyboardFriendlyGraphicsView::SetRandomFocus()
   else
   {
     if (m_verbose) { std::clog << "No focusable items" << std::endl; }
+  }
+}
+
+
+void ribi::QtKeyboardFriendlyGraphicsView::SetRandomSelectedness()
+{
+  for (auto item: scene()->items())
+  {
+    if (item->isSelected()) {
+      item->setSelected(false);
+      m_signal_update(item);
+    }
+  }
+  assert(this->scene()->selectedItems().size() == 0);
+
+  //Choose a random item visible item to receive selectedness
+  const auto all_items = this->items();
+  QList<QGraphicsItem *> items;
+  std::copy_if(all_items.begin(),all_items.end(),std::back_inserter(items),
+    [](const QGraphicsItem* const item)
+    {
+      return (item->flags() & QGraphicsItem::ItemIsSelectable)
+        && item->isVisible();
+    }
+  );
+  assert(this->scene()->selectedItems().size() == 0);
+  if (!items.empty())
+  {
+    const int i = std::rand() % items.size();
+    assert(i >= 0);
+    assert(i < items.size());
+    auto& new_focus_item = items[i];
+    assert(!new_focus_item->isSelected());
+    new_focus_item->setSelected(true);
+    m_signal_update(new_focus_item);
+    assert(this->scene()->selectedItems().size() == 1);
   }
 }

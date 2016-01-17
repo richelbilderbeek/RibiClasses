@@ -189,6 +189,12 @@ int CountQtEdges(const QGraphicsScene * const scene) noexcept;
 int CountSelectedQtNodes(const QGraphicsScene * const scene) noexcept;
 int CountSelectedQtEdges(const QGraphicsScene * const scene) noexcept;
 
+///Check is QtConceptMap and its ConceptMap have the requested number of edges and nodes
+bool DoubleCheckEdgesAndNodes(const QtConceptMap& qtconceptmap, const int n_edges, const int n_nodes) noexcept;
+
+///Check is QtConceptMap and its ConceptMap have the requested number of selected edges and nodes
+bool DoubleCheckSelectedEdgesAndNodes(const QtConceptMap& qtconceptmap, const int n_edges, const int n_nodes) noexcept;
+
 QtEdge * FindQtEdge(const int edge_id, const QGraphicsScene * const scene) noexcept;
 
 //Find the Qt edge with the same from and to
@@ -211,11 +217,6 @@ std::vector<QtEdge*> GetQtEdges(
 
 std::vector<QtNode *> GetQtNodes(const QGraphicsScene * const scene) noexcept;
 
-///Check is QtConceptMap and its ConceptMap have the requested number of edges and nodes
-bool DoubleCheckEdgesAndNodes(const QtConceptMap& qtconceptmap, const int n_edges, const int n_nodes) noexcept;
-
-///Check is QtConceptMap and its ConceptMap have the requested number of selected edges and nodes
-bool DoubleCheckSelectedEdgesAndNodes(const QtConceptMap& qtconceptmap, const int n_edges, const int n_nodes) noexcept;
 
 
 } //~namespace cmap

@@ -54,7 +54,7 @@ ribi::cmap::QtEdge::QtEdge(
     m_signal_selected_changed{},
     m_signal_key_down_pressed{},
     m_arrow{nullptr}, //Will be initialized below
-    m_edge{edge}, //Will be initialized by setEdge
+    m_edge{edge},
     m_from{from},
     m_qtnode{new QtNode(edge.GetNode())},
     m_show_bounding_rect{false},
@@ -138,7 +138,14 @@ ribi::cmap::QtEdge::QtEdge(
     boost::bind(&ribi::cmap::QtEdge::OnMustUpdateScene,this)
   );
 
-  SetEdge(edge);
+  m_edge.GetNode().SetX( (from->GetCenterX() + to->GetCenterX()) / 2.0 );
+  m_edge.GetNode().SetY( (from->GetCenterY() + to->GetCenterY()) / 2.0 );
+
+  m_qtnode->SetCenterX(m_edge.GetNode().GetX());
+  m_qtnode->SetCenterY(m_edge.GetNode().GetY());
+  m_qtnode->SetText( { m_edge.GetNode().GetConcept().GetName() } );
+  assert(std::abs(m_edge.GetNode().GetY() - m_qtnode->GetCenterY()) < 2.0);
+
 }
 
 ribi::cmap::QtEdge::~QtEdge() noexcept
@@ -419,39 +426,8 @@ void ribi::cmap::QtEdge::paint(QPainter* painter, const QStyleOptionGraphicsItem
 
 void ribi::cmap::QtEdge::SetEdge(const Edge& edge) noexcept
 {
-  const bool verbose{false};
+  if (m_edge == edge) { return; }
 
-  if (m_edge == edge)
-  {
-    return;
-  }
-
-  if (verbose)
-  {
-    std::stringstream s;
-    s << "Setting edge '" << edge.ToStr() << "'\n";
-  }
-
-  bool node_changed{true};
-
-  {
-    const Node node_after = edge.GetNode();
-    const Node node_before = m_edge.GetNode();
-    node_changed = node_before != node_after;
-
-    if (verbose)
-    {
-      if (node_changed)
-      {
-        std::stringstream s;
-        s << "Node will change from " << node_before.ToStr()
-          << " to " << node_after.ToStr() << '\n';
-        TRACE(s.str());
-      }
-    }
-  }
-
-  //Replace
   m_edge = edge;
 
   //Sync

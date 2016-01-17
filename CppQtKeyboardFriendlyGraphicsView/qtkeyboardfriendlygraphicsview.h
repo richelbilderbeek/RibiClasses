@@ -83,26 +83,15 @@ struct QtKeyboardFriendlyGraphicsView : public QGraphicsView
     const Direction direction
   ) const;
 
-  /*
-  ///Obtain the items above the focus_item
-  QGraphicsItem * GetClosestItemAbove(const QGraphicsItem* const focus_item) const;
-
-  ///Obtain the items below the focus_item
-  QGraphicsItem * GetClosestItemBelow(const QGraphicsItem* const focus_item) const;
-
-  ///Obtain the items left of the focus_item
-  QGraphicsItem * GetClosestItemLeft(const QGraphicsItem* const focus_item) const;
-
-  ///Obtain the items right of the focus_item
-  QGraphicsItem * GetClosestItemRight(const QGraphicsItem* const focus_item) const;
-  */
-
   void KeyPressEventCtrl(QKeyEvent *event) noexcept;
   void KeyPressEventNoModifiers(QKeyEvent *event) noexcept;
   void KeyPressEventShift(QKeyEvent *event) noexcept;
 
   ///Give focus to a random item
   void SetRandomFocus();
+
+  ///Give selectedness to one random item
+  void SetRandomSelectedness();
 
   #ifndef NDEBUG
   static void Test() noexcept;

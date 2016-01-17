@@ -54,6 +54,7 @@ using ConceptMap = boost::adjacency_list
 using VertexDescriptor = boost::graph_traits<ConceptMap>::vertex_descriptor;
 using EdgeDescriptor = boost::graph_traits<ConceptMap>::edge_descriptor;
 
+int CountCenterNodes(const ConceptMap& c) noexcept;
 ConceptMap DotToConceptMap(const std::string& s);
 std::vector<Edge> GetEdges(const ConceptMap& c) noexcept;
 std::vector<Node> GetNodes(const ConceptMap& c) noexcept;
