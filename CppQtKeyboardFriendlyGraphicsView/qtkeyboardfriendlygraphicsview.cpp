@@ -267,7 +267,7 @@ void ribi::QtKeyboardFriendlyGraphicsView::KeyPressEventCtrl(QKeyEvent *event) n
   //Do special movements
   if (event->key() == Qt::Key_Space)
   {
-      if (m_verbose) { std::clog << "Pressing CTRL-Space" << std::endl; }
+    if (m_verbose) { std::clog << "Pressing CTRL-Space" << std::endl; }
     this->SetRandomSelectedness();
     return;
   }
@@ -475,6 +475,10 @@ void ribi::QtKeyboardFriendlyGraphicsView::SetRandomSelectedness()
   }
   assert(this->scene()->selectedItems().size() == 0);
 
+  if (this->scene()->focusItem()) {
+    this->scene()->focusItem()->clearFocus();
+  }
+
   //Choose a random item visible item to receive selectedness
   const auto all_items = this->items();
   QList<QGraphicsItem *> items;
@@ -488,7 +492,8 @@ void ribi::QtKeyboardFriendlyGraphicsView::SetRandomSelectedness()
   assert(this->scene()->selectedItems().size() == 0);
   if (!items.empty())
   {
-    const int i = std::rand() % items.size();
+    const int n_items{static_cast<int>(items.size())};
+    const int i = std::rand() % n_items;
     assert(i >= 0);
     assert(i < items.size());
     auto& new_focus_item = items[i];

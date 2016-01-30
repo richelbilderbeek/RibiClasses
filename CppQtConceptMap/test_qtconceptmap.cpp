@@ -330,7 +330,8 @@ void ribi::cmap::QtConceptMap::Test() noexcept
     assert(DoubleCheckEdgesAndNodes(qtconceptmap,0,2));
     assert(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,0));
   }
-  #ifdef NOT_NOW_20151230
+  #ifndef FOR_LUCAS_20160130
+  #ifdef FOR_LUCAS_20160130
   if (verbose) { TRACE("Delete Edge and Node-that-is-head-of-Edge: delete from QtConceptMap"); }
   {
     QtConceptMap qtconceptmap;
@@ -342,20 +343,31 @@ void ribi::cmap::QtConceptMap::Test() noexcept
     assert(DoubleCheckEdgesAndNodes(qtconceptmap,1,2));
     assert(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,1,0));
     std::srand(42);
-    while (CountSelectedQtNodes(qtconceptmap.GetScene()) != 1) {
+    //Select only one single QtNode
+    //PROBLEM: This is an infinite loop. Why?
+    while (CountSelectedQtNodes(qtconceptmap.GetScene()) != 1
+      || CountSelectedQtEdges(qtconceptmap.GetScene()) != 0
+    ) {
       auto ctrl_space = CreateControlSpace();
       qtconceptmap.keyPressEvent(&ctrl_space);
-      std::cerr << ".";
+      std::cerr
+        << CountSelectedQtNodes(qtconceptmap.GetScene())
+        << ","
+        << CountSelectedQtEdges(qtconceptmap.GetScene())
+      ;
     }
+    assert(!"You've fixed the problem halfways");
     assert(CountSelectedQtEdges(qtconceptmap.GetScene()) == 0);
     assert(DoubleCheckEdgesAndNodes(qtconceptmap,1,2));
     assert(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,1));
+    //Deleting the QtNode should also delete the QtEdge that is connected to it
     auto del = CreateDel();
     qtconceptmap.keyPressEvent(&del);
     assert(DoubleCheckEdgesAndNodes(qtconceptmap,0,1));
     assert(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,0));
   }
-  assert(1==2);
+  assert(!"You've fixed it!");
+  #endif // FOR_LUCAS_20160130
   #ifdef FIX_ISSUE_10
   //#define FIX_ISSUE_1
   #ifdef  FIX_ISSUE_1
