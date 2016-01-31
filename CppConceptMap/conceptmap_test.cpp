@@ -402,8 +402,8 @@ void ribi::cmap::TestConceptMap() noexcept
     node_b.SetY(y2);
     const auto edge = EdgeFactory().Create(node_a,node_b);
     conceptmap.AddEdge(edge);
-    assert(std::abs(edge->GetNode().GetX() - x3) < 1.0);
-    assert(std::abs(edge->GetNode().GetY() - y3) < 1.0);
+    assert(std::abs(edge.GetNode().GetX() - x3) < 1.0);
+    assert(std::abs(edge.GetNode().GetY() - y3) < 1.0);
   }
   #endif // FIX_ISSUE_10
   if (verbose) { TRACE("Add nodes and edge, check selected"); }

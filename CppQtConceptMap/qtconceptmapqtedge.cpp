@@ -316,17 +316,17 @@ void ribi::cmap::QtEdge::OnConceptChanged(Node * const node) noexcept
   assert(m_qtnode->GetText() == new_text);
 }
 
-void ribi::cmap::QtEdge::OnEdgeChanged(Edge * const edge) noexcept
+void ribi::cmap::QtEdge::OnEdgeChanged(const Edge& edge) noexcept
 {
   OnNodeChanged(edge);
 }
 
 
-void ribi::cmap::QtEdge::OnNodeChanged(Edge * const edge) noexcept
+void ribi::cmap::QtEdge::OnNodeChanged(const Edge& edge) noexcept
 {
-  m_qtnode->SetCenterX(edge->GetNode().GetX());
-  m_qtnode->SetCenterY(edge->GetNode().GetY());
-  m_qtnode->SetText( { edge->GetNode().GetConcept().GetName() } );
+  m_qtnode->SetCenterX(edge.GetNode().GetX());
+  m_qtnode->SetCenterY(edge.GetNode().GetY());
+  m_qtnode->SetText( { edge.GetNode().GetConcept().GetName() } );
   this->update();
   if (this->scene()) { this->scene()->update(); }
   m_signal_edge_changed(this);

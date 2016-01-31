@@ -64,6 +64,20 @@ std::vector<ribi::cmap::Edge> ribi::cmap::GetEdges(const ConceptMap& c) noexcept
   return v;
 }
 
+#include <boost/graph/graph_traits.hpp>
+#include <boost/graph/properties.hpp>
+#include "install_vertex_custom_type.h"
+#include "my_custom_vertex.h"
+
+ribi::cmap::Node GetNode(const ribi::cmap::VertexDescriptor vd, const ribi::cmap::ConceptMap& g) noexcept
+{
+  const auto my_custom_vertexes_map
+    = get(boost::vertex_custom_type,
+      g
+    );
+  return get(my_custom_vertexes_map, vd);
+}
+
 std::vector<ribi::cmap::Node> ribi::cmap::GetNodes(const ConceptMap& c) noexcept
 {
   const auto vip = vertices(c);

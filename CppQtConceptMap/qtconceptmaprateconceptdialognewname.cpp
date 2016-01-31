@@ -159,27 +159,27 @@ void ribi::cmap::QtRateConceptDialogNewName::on_button_ok_clicked()
 void ribi::cmap::QtRateConceptDialogNewName::OnRatingComplexityChanged(const ribi::cmap::Concept* concept)
 {
   assert(concept);
-  if (ui->box_complexity->currentIndex() != concept->GetRatingComplexity())
+  if (ui->box_complexity->currentIndex() != concept.GetRatingComplexity())
   {
-    ui->box_complexity->setCurrentIndex(concept->GetRatingComplexity());
+    ui->box_complexity->setCurrentIndex(concept.GetRatingComplexity());
   }
 }
 
 void ribi::cmap::QtRateConceptDialogNewName::OnRatingConcretenessChanged(const ribi::cmap::Concept* concept)
 {
   assert(concept);
-  if (ui->box_concreteness->currentIndex() != concept->GetRatingConcreteness())
+  if (ui->box_concreteness->currentIndex() != concept.GetRatingConcreteness())
   {
-    ui->box_concreteness->setCurrentIndex(concept->GetRatingConcreteness());
+    ui->box_concreteness->setCurrentIndex(concept.GetRatingConcreteness());
   }
 }
 
 void ribi::cmap::QtRateConceptDialogNewName::OnRatingSpecificityChanged(const ribi::cmap::Concept* concept)
 {
   assert(concept);
-  if (ui->box_specificity->currentIndex() != concept->GetRatingSpecificity())
+  if (ui->box_specificity->currentIndex() != concept.GetRatingSpecificity())
   {
-    ui->box_specificity->setCurrentIndex(concept->GetRatingSpecificity());
+    ui->box_specificity->setCurrentIndex(concept.GetRatingSpecificity());
   }
 }
 
@@ -214,9 +214,9 @@ void ribi::cmap::QtRateConceptDialogNewName::Test() noexcept
       assert(*concept == *old_concept);
       {
         QtRateConceptDialogNewName d(conceptmap);
-        assert(concept->GetRatingComplexity() == d.ui->box_complexity->currentIndex());
-        assert(concept->GetRatingConcreteness() == d.ui->box_concreteness->currentIndex());
-        assert(concept->GetRatingSpecificity() == d.ui->box_specificity->currentIndex());
+        assert(concept.GetRatingComplexity() == d.ui->box_complexity->currentIndex());
+        assert(concept.GetRatingConcreteness() == d.ui->box_concreteness->currentIndex());
+        assert(concept.GetRatingSpecificity() == d.ui->box_specificity->currentIndex());
         //Change all boxes
         d.ui->box_complexity->setCurrentIndex(((d.ui->box_complexity->currentIndex() + 2) % 4) - 1);
         d.ui->box_concreteness->setCurrentIndex(((d.ui->box_complexity->currentIndex() + 2) % 4) - 1);
@@ -249,9 +249,9 @@ void ribi::cmap::QtRateConceptDialogNewName::Test() noexcept
       assert(concept != old_concept);
       assert(*concept == *old_concept);
       QtRateConceptDialogNewName d(conceptmap);
-      assert(concept->GetRatingComplexity()   == d.ui->box_complexity->currentIndex());
-      assert(concept->GetRatingConcreteness() == d.ui->box_concreteness->currentIndex());
-      assert(concept->GetRatingSpecificity()  == d.ui->box_specificity->currentIndex());
+      assert(concept.GetRatingComplexity()   == d.ui->box_complexity->currentIndex());
+      assert(concept.GetRatingConcreteness() == d.ui->box_concreteness->currentIndex());
+      assert(concept.GetRatingSpecificity()  == d.ui->box_specificity->currentIndex());
       //Change all boxes, in range [-1,2]
       d.ui->box_complexity->setCurrentIndex(((d.ui->box_complexity->currentIndex() + 2) % 4) - 1);
       d.ui->box_concreteness->setCurrentIndex(((d.ui->box_complexity->currentIndex() + 2) % 4) - 1);

@@ -461,11 +461,11 @@ ribi::cmap::QtEdge * ribi::cmap::FindQtEdge(
   assert(from != to);
   const std::vector<QtEdge*> edge_concepts = Collect<QtEdge>(scene);
   const auto iter = std::find_if(edge_concepts.begin(),edge_concepts.end(),
-    [from,to](const QtEdge* const edge)
+    [from,to](const QtEdge* const qtedge)
     {
       return
-        (*edge->GetFrom() == *from && *edge->GetTo() == *to)
-     || (*edge->GetFrom() == *to && *edge->GetTo() == *from);
+        (*qtedge->GetFrom() == *from && *qtedge->GetTo() == *to)
+     || (*qtedge->GetFrom() == *to && *qtedge->GetTo() == *from);
     }
   );
   if (iter == edge_concepts.end()) return nullptr;
@@ -546,9 +546,9 @@ std::vector<ribi::cmap::QtEdge*> ribi::cmap::GetQtEdges(
   const std::vector<QtEdge*> v = GetQtEdges(scene);
   std::vector<QtEdge*> w;
   std::copy_if(v.begin(),v.end(),std::back_inserter(w),
-    [from](const QtEdge* const edge)
+    [from](const QtEdge* const qtedge)
     {
-      return *edge->GetFrom() == *from || *edge->GetTo() == *from;
+      return *qtedge->GetFrom() == *from || *qtedge->GetTo() == *from;
     }
   );
   return w;

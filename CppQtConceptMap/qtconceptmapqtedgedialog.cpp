@@ -119,22 +119,6 @@ double ribi::cmap::QtQtEdgeDialog::GetUiY() const noexcept
   return this->m_qtedgedialog->GetUiY();
 }
 
-void ribi::cmap::QtQtEdgeDialog::OnEdgeChanged(const QtEdge * const
-#ifndef NDEBUG
-  qtedge
-#endif // NDEBUG
-) noexcept
-{
-  assert( qtedge ==  m_qtedge.get());
-  assert(*qtedge == *m_qtedge);
-  //const boost::shared_ptr<QtRoundedEditRectItem> item{
-  //  boost::dynamic_pointer_cast<QtRoundedEditRectItem>(m_qtedge->GetQtNode())
-  //};
-  //assert(item);
-  //m_qtroundededitrectitem_dialog->SetItem(item);
-
-}
-
 void ribi::cmap::QtQtEdgeDialog::OnQtRoundedRectItemChanged(QtEdge * const qtedge) noexcept
 {
   m_qtedgedialog->SetEdge(qtedge->GetEdge());
@@ -201,9 +185,6 @@ void ribi::cmap::QtQtEdgeDialog::SetQtEdge(const boost::shared_ptr<QtEdge>& qted
     m_qtedge->m_signal_base_changed.disconnect(
       boost::bind(&ribi::cmap::QtQtEdgeDialog::OnQtRoundedRectItemChanged,this,boost::lambda::_1)
     );
-    m_qtedge->m_signal_edge_changed.disconnect(
-      boost::bind(&ribi::cmap::QtQtEdgeDialog::OnEdgeChanged,this,boost::lambda::_1)
-    );
   }
 
   //Replace by the new
@@ -213,9 +194,6 @@ void ribi::cmap::QtQtEdgeDialog::SetQtEdge(const boost::shared_ptr<QtEdge>& qted
 
   m_qtedge->m_signal_base_changed.connect(
     boost::bind(&ribi::cmap::QtQtEdgeDialog::OnQtRoundedRectItemChanged,this,boost::lambda::_1)
-  );
-  m_qtedge->m_signal_edge_changed.connect(
-    boost::bind(&ribi::cmap::QtQtEdgeDialog::OnEdgeChanged,this,boost::lambda::_1)
   );
 
   //Emit everything that has changed

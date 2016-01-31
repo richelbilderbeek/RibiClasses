@@ -140,9 +140,9 @@ private:
   QtNode * const m_to;
 
   ///Called whenever the edge changes
-  void OnEdgeChanged(Edge * const edge) noexcept;
+  void OnEdgeChanged(const Edge &edge) noexcept;
   void OnConceptChanged(Node * const node) noexcept;
-  void OnNodeChanged(Edge * const edge) noexcept;
+  void OnNodeChanged(const Edge& edge) noexcept;
   void OnNodePosChanged(QtRoundedRectItem * const node) noexcept;
   void OnTextChanged(QtRoundedEditRectItem* item) noexcept;
 

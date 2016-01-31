@@ -514,7 +514,7 @@ void ribi::cmap::QtConceptMap::Test() noexcept
     );
     m.mouseDoubleClickEvent(&e);
     const int n_nodes_in_scene{static_cast<int>(Collect<QtNode>(m.GetScene()).size())};
-    const int n_nodes_in_conceptmap{static_cast<int>(m.GetConceptMap()->GetNodes().size())};
+    const int n_nodes_in_conceptmap{static_cast<int>(m.GetConceptMap().GetNodes().size())};
     assert(n_nodes_in_scene == n_nodes_in_conceptmap);
   }
   #endif

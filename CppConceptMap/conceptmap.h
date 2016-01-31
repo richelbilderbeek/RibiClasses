@@ -57,6 +57,7 @@ using EdgeDescriptor = boost::graph_traits<ConceptMap>::edge_descriptor;
 int CountCenterNodes(const ConceptMap& c) noexcept;
 ConceptMap DotToConceptMap(const std::string& s);
 std::vector<Edge> GetEdges(const ConceptMap& c) noexcept;
+Node GetNode(const VertexDescriptor vd, const ConceptMap& c) noexcept;
 std::vector<Node> GetNodes(const ConceptMap& c) noexcept;
 std::vector<Edge> GetSortedEdges(const ConceptMap& c) noexcept;
 std::vector<Node> GetSortedNodes(const ConceptMap& c) noexcept;
