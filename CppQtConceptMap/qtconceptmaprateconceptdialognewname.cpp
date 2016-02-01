@@ -18,8 +18,6 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppQtConceptMap.htm
 //---------------------------------------------------------------------------
-#ifdef NOT_NOW_20151230
-
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
@@ -54,24 +52,24 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 
 
 ribi::cmap::QtRateConceptDialog::QtRateConceptDialog(
-  const ConceptMap sub_conceptmap,
+  const ConceptMap conceptmap,
   QWidget* parent)
   : QtHideAndShowDialog(parent),
     ui(new Ui::QtRateConceptDialog),
     m_button_ok_clicked(false),
-    m_concept{sub_GetFocalNode(conceptmap)->GetConcept()},
-    m_initial_complexity(sub_GetFocalNode(conceptmap)->GetConcept().GetRatingComplexity()),
-    m_initial_concreteness(sub_GetFocalNode(conceptmap)->GetConcept().GetRatingConcreteness()),
-    m_initial_specificity(sub_GetFocalNode(conceptmap)->GetConcept().GetRatingSpecificity()),
-    m_sub_conceptmap(sub_conceptmap),
+    m_concept{GetFocalNode(conceptmap).GetConcept()},
+    m_initial_complexity(GetFocalNode(conceptmap).GetConcept().GetRatingComplexity()),
+    m_initial_concreteness(GetFocalNode(conceptmap).GetConcept().GetRatingConcreteness()),
+    m_initial_specificity(GetFocalNode(conceptmap).GetConcept().GetRatingSpecificity()),
+    m_conceptmap(conceptmap),
     m_widget(new QtConceptMap)
 {
   ui->setupUi(this);
   #ifndef NDEBUG
   Test();
   #endif
-  m_widget->SetConceptMap(sub_conceptmap);
-  assert(!m_sub_conceptmap.GetNodes().empty());
+  m_widget->SetConceptMap(conceptmap);
+  assert(boost::num_vertices(m_conceptmap));
 
   assert(m_widget);
   assert(ui->conceptmap_layout);
@@ -86,17 +84,17 @@ ribi::cmap::QtRateConceptDialog::QtRateConceptDialog(
   //Set suggestions
   {
     const std::string s = "Formeel uitgangspunt: "
-      + boost::lexical_cast<std::string>(cmap::Rating::SuggestComplexity(m_sub_conceptmap));
+      + boost::lexical_cast<std::string>(cmap::Rating().SuggestComplexity(m_conceptmap,*vertices(m_conceptmap).first));
     ui->box_complexity->setToolTip(s.c_str());
   }
   {
     const std::string s = "Formeel uitgangspunt: "
-      + boost::lexical_cast<std::string>(cmap::Rating::SuggestConcreteness(m_sub_conceptmap));
+      + boost::lexical_cast<std::string>(cmap::Rating().SuggestConcreteness(m_conceptmap,*vertices(m_conceptmap).first));
     ui->box_concreteness->setToolTip(s.c_str());
   }
   {
     const std::string s = "Formeel uitgangspunt: "
-      + boost::lexical_cast<std::string>(cmap::Rating::SuggestSpecificity(m_sub_conceptmap));
+      + boost::lexical_cast<std::string>(cmap::Rating().SuggestSpecificity(m_conceptmap,*vertices(m_conceptmap).first));
     ui->box_specificity->setToolTip(s.c_str());
   }
 
@@ -156,27 +154,24 @@ void ribi::cmap::QtRateConceptDialog::on_button_ok_clicked()
   close();
 }
 
-void ribi::cmap::QtRateConceptDialog::OnRatingComplexityChanged(const ribi::cmap::Concept* concept)
+void ribi::cmap::QtRateConceptDialog::OnRatingComplexityChanged(const ribi::cmap::Concept& concept)
 {
-  assert(concept);
   if (ui->box_complexity->currentIndex() != concept.GetRatingComplexity())
   {
     ui->box_complexity->setCurrentIndex(concept.GetRatingComplexity());
   }
 }
 
-void ribi::cmap::QtRateConceptDialog::OnRatingConcretenessChanged(const ribi::cmap::Concept* concept)
+void ribi::cmap::QtRateConceptDialog::OnRatingConcretenessChanged(const ribi::cmap::Concept& concept)
 {
-  assert(concept);
   if (ui->box_concreteness->currentIndex() != concept.GetRatingConcreteness())
   {
     ui->box_concreteness->setCurrentIndex(concept.GetRatingConcreteness());
   }
 }
 
-void ribi::cmap::QtRateConceptDialog::OnRatingSpecificityChanged(const ribi::cmap::Concept* concept)
+void ribi::cmap::QtRateConceptDialog::OnRatingSpecificityChanged(const ribi::cmap::Concept& concept)
 {
-  assert(concept);
   if (ui->box_specificity->currentIndex() != concept.GetRatingSpecificity())
   {
     ui->box_specificity->setCurrentIndex(concept.GetRatingSpecificity());
@@ -267,7 +262,7 @@ void ribi::cmap::QtRateConceptDialog::Test() noexcept
 
 void ribi::cmap::QtRateConceptDialog::on_button_tally_relevancies_clicked()
 {
- QtRateConceptTallyDialog d(m_sub_conceptmap);
+ QtRateConceptTallyDialog d(m_conceptmap);
   d.exec(); //Keep this dialog visible, as of 2013-08-30
   ui->box_complexity->setCurrentIndex(d.GetSuggestedComplexity());
   ui->box_concreteness->setCurrentIndex(d.GetSuggestedConcreteness());
@@ -297,5 +292,3 @@ void ribi::cmap::QtRateConceptDialog::on_box_specificity_currentIndexChanged(int
     m_concept.SetRatingSpecificity(ui->box_specificity->currentIndex());
   }
 }
-
-#endif // NOT_NOW_20151230

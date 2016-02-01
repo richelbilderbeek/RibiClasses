@@ -21,8 +21,6 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #ifndef QTCONCEPTMAPRATEDCONCEPTDIALOG_H
 #define QTCONCEPTMAPRATEDCONCEPTDIALOG_H
 
-#ifdef NOT_NOW_20151230
-
 #include <string>
 #include <vector>
 
@@ -34,6 +32,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include <QDialog>
 #include "qtconceptmapfwd.h"
 #include "conceptmapnode.h"
+#include "conceptmap.h"
 #pragma GCC diagnostic pop
 
 namespace Ui { class QtConceptMapRatedConceptDialog; }
@@ -48,7 +47,7 @@ class QtConceptMapRatedConceptDialog : public QDialog
 public:
 
   explicit QtConceptMapRatedConceptDialog(
-    const ConceptMap conceptmap,
+    const ConceptMap& conceptmap,
     const Node& node,
     QWidget *parent = 0
   );
@@ -72,7 +71,5 @@ private:
 } //~namespace cmap
 
 } //~namespace ribi
-
-#endif // NOT_NOW_20151230
 
 #endif // QTCONCEPTMAPRATEDCONCEPTDIALOG_H

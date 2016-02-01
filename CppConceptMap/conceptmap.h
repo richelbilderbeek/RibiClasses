@@ -62,6 +62,7 @@ ConceptMap DotToConceptMap(const std::string& s);
 std::vector<Edge> GetEdges(const ConceptMap& c) noexcept;
 Edge GetFirstEdge(const ConceptMap& c);
 Node GetFocalNode(const ConceptMap& c);
+Node GetFrom(const Edge& edge, const ConceptMap& c) noexcept;
 Node GetFrom(const EdgeDescriptor ed, const ConceptMap& c) noexcept;
 Node GetNode(const VertexDescriptor vd, const ConceptMap& c) noexcept;
 Node GetTo(const EdgeDescriptor ed, const ConceptMap& c) noexcept;

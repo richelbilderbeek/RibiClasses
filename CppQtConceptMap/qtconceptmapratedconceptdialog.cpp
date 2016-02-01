@@ -18,8 +18,6 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppQtConceptMap.htm
 //---------------------------------------------------------------------------
-#ifdef NOT_NOW_20151230
-
 #include "qtconceptmapratedconceptdialog.h"
 
 #include <cassert>
@@ -42,7 +40,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic pop
 
 ribi::cmap::QtConceptMapRatedConceptDialog::QtConceptMapRatedConceptDialog(
-  const ConceptMap conceptmap,
+  const ConceptMap& conceptmap,
   const Node& node,
   QWidget *parent)
   : QDialog(parent),
@@ -83,12 +81,12 @@ ribi::cmap::QtConceptMapRatedConceptDialog::QtConceptMapRatedConceptDialog(
   }
 
 
-  for (const Edge& edge: conceptmap.GetEdges())
+  for (const Edge& edge: GetEdges(conceptmap))
   {
-    if (*edge.GetFrom() == node || *edge.GetTo() == node)
+    if (GetFrom(edge,conceptmap) == node || GetTo(edge, conceptmap) == node)
     {
       //Dependent on arrow
-      if (*edge.GetFrom() == node)
+      if (GetFrom(edge, conceptmap) == node)
       {
         const std::string first_arrow
           = ( edge.HasTailArrow() ? "<- " : "-- ");
@@ -182,5 +180,3 @@ void ribi::cmap::QtConceptMapRatedConceptDialog::DoResizeLists()
   //ui->list_concept_examples->setMaximumHeight(
   //  ui->list_concept_examples->count() * font_in_list_height);
 }
-
-#endif // NOT_NOW_20151230

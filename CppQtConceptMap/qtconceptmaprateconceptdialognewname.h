@@ -21,8 +21,6 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #ifndef QTCONCEPTMAPRATECONCEPTDIALOG_H
 #define QTCONCEPTMAPRATECONCEPTDIALOG_H
 
-#ifdef NOT_NOW_20151230
-
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
@@ -46,16 +44,16 @@ class QtRateConceptDialog : public ribi::QtHideAndShowDialog
     
   public:
   ///concept is the center node
-  ///sub_conceptmap[0] is the same as concept and might be changed
-  ///sub_conceptmap is non-const, as GetRatedConcept will produce a new concept
-  explicit QtRateConceptDialog(const ConceptMap sub_conceptmap,
+  ///conceptmap[0] is the same as concept and might be changed
+  ///conceptmap is non-const, as GetRatedConcept will produce a new concept
+  explicit QtRateConceptDialog(const ConceptMap conceptmap,
     QWidget* parent = 0);
   QtRateConceptDialog(const QtRateConceptDialog&) = delete;
   QtRateConceptDialog& operator=(const QtRateConceptDialog&) = delete;
   ~QtRateConceptDialog() noexcept;
 
   ///Set suggested values for this concept
-  //void MakeSuggestions(const ConceptMap sub_conceptmap);
+  //void MakeSuggestions(const ConceptMap conceptmap);
 
 protected:
   void keyPressEvent(QKeyEvent *);
@@ -84,25 +82,20 @@ private:
   const int m_initial_specificity;
 
   ///Cannot be const, only used in calculating the suggestions
-  const ConceptMap m_sub_conceptmap;
+  const ConceptMap m_conceptmap;
 
   const boost::shared_ptr<QtConceptMap> m_widget;
-  //const boost::shared_ptr<QtRateConceptMap> m_widget;
-  //QtConceptMapRateWidget * const m_widget; //WHY DID I DO THIS???
 
-  void OnRatingComplexityChanged(const Concept* concept);
-  void OnRatingConcretenessChanged(const Concept* concept);
-  void OnRatingSpecificityChanged(const Concept* concept);
+  void OnRatingComplexityChanged(const Concept& concept);
+  void OnRatingConcretenessChanged(const Concept& concept);
+  void OnRatingSpecificityChanged(const Concept& concept);
 
   #ifndef NDEBUG
-  ///Test this class
   static void Test() noexcept;
   #endif
 };
 
 } //~namespace cmap
 } //~namespace ribi
-
-#endif // NOT_NOW_20151230
 
 #endif // QTCONCEPTMAPRATECONCEPTDIALOG_H
