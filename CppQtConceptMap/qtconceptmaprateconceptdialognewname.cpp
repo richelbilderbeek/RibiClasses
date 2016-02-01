@@ -59,10 +59,10 @@ ribi::cmap::QtRateConceptDialog::QtRateConceptDialog(
   : QtHideAndShowDialog(parent),
     ui(new Ui::QtRateConceptDialog),
     m_button_ok_clicked(false),
-    m_concept{sub_conceptmap.GetFocalNode()->GetConcept()},
-    m_initial_complexity(sub_conceptmap.GetFocalNode()->GetConcept().GetRatingComplexity()),
-    m_initial_concreteness(sub_conceptmap.GetFocalNode()->GetConcept().GetRatingConcreteness()),
-    m_initial_specificity(sub_conceptmap.GetFocalNode()->GetConcept().GetRatingSpecificity()),
+    m_concept{sub_GetFocalNode(conceptmap)->GetConcept()},
+    m_initial_complexity(sub_GetFocalNode(conceptmap)->GetConcept().GetRatingComplexity()),
+    m_initial_concreteness(sub_GetFocalNode(conceptmap)->GetConcept().GetRatingConcreteness()),
+    m_initial_specificity(sub_GetFocalNode(conceptmap)->GetConcept().GetRatingSpecificity()),
     m_sub_conceptmap(sub_conceptmap),
     m_widget(new QtConceptMap)
 {

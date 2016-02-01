@@ -60,7 +60,11 @@ ConceptMap CreateDirectNeighbourConceptMap(const VertexDescriptor vd, const Conc
 std::vector<ConceptMap> CreateDirectNeighbourConceptMaps(const ConceptMap& c);
 ConceptMap DotToConceptMap(const std::string& s);
 std::vector<Edge> GetEdges(const ConceptMap& c) noexcept;
+Edge GetFirstEdge(const ConceptMap& c);
+Node GetFocalNode(const ConceptMap& c);
+Node GetFrom(const EdgeDescriptor ed, const ConceptMap& c) noexcept;
 Node GetNode(const VertexDescriptor vd, const ConceptMap& c) noexcept;
+Node GetTo(const EdgeDescriptor ed, const ConceptMap& c) noexcept;
 std::vector<Node> GetNodes(const ConceptMap& c) noexcept;
 std::vector<Edge> GetSortedEdges(const ConceptMap& c) noexcept;
 std::vector<Node> GetSortedNodes(const ConceptMap& c) noexcept;

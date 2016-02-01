@@ -315,7 +315,7 @@ void ribi::cmap::TestConceptMap() noexcept
   {
     auto conceptmap = ConceptMapFactory().GetEmptyConceptMap();
 
-    const int n_nodes_before{static_cast<int>(conceptmap.GetNodes().size())};
+    const int n_nodes_before{static_cast<int>(boost::num_vertices(conceptmap))};
     const auto node_a = NodeFactory().GetTests().at(0);
     const auto node_b = NodeFactory().GetTests().at(1);
 
@@ -329,7 +329,7 @@ void ribi::cmap::TestConceptMap() noexcept
 
     assert(conceptmap.GetSelectedNodes().size() == 2);
 
-    const int n_nodes_after{static_cast<int>(conceptmap.GetNodes().size())};
+    const int n_nodes_after{static_cast<int>(boost::num_vertices(conceptmap))};
     assert(n_nodes_after == n_nodes_before + 2);
   }
 
@@ -338,12 +338,12 @@ void ribi::cmap::TestConceptMap() noexcept
     auto conceptmap = ConceptMapFactory().GetEmptyConceptMap();
 
     const auto node_a = NodeFactory().GetTests().at(0);
-    assert(conceptmap.GetNodes().size() == 0);
+    assert(boost::num_vertices(conceptmap) == 0);
     conceptmap.AddNode(node_a);
-    assert(conceptmap.GetNodes().size() == 1);
+    assert(boost::num_vertices(conceptmap) == 1);
     TRACE("Next trace should be a warning:");
     conceptmap.AddNode(node_a);
-    assert(conceptmap.GetNodes().size() == 1);
+    assert(boost::num_vertices(conceptmap) == 1);
   }
   if (verbose) { TRACE("Add two nodes and delete one, check selected"); }
   {
@@ -416,8 +416,8 @@ void ribi::cmap::TestConceptMap() noexcept
     const auto vd_a = conceptmap.AddNode(node_a);
     const auto vd_b = conceptmap.AddNode(node_b);
     conceptmap.AddEdge(vd_a, vd_b, edge);
-    assert(conceptmap.GetEdges().size() == 1);
-    assert(conceptmap.GetNodes().size() == 2);
+    assert(boost::num_edges(conceptmap) == 1);
+    assert(boost::num_vertices(conceptmap) == 2);
     assert(conceptmap.CountSelectedEdges() == 1);
     assert(conceptmap.CountSelectedNodes() == 0);
   }
@@ -425,28 +425,28 @@ void ribi::cmap::TestConceptMap() noexcept
   {
     ConceptMap conceptmap = ConceptMapFactory().GetTest(1);
 
-    assert(conceptmap.GetNodes().size() == 2);
+    assert(boost::num_vertices(conceptmap) == 2);
     {
       const auto node = conceptmap.GetNodes().back();
       conceptmap.DeleteNode(node);
-      assert(conceptmap.GetNodes().size() == 1);
+      assert(boost::num_vertices(conceptmap) == 1);
     }
     {
       const auto node = conceptmap.GetNodes().back();
       conceptmap.DeleteNode(node);
-      assert(conceptmap.GetNodes().size() == 0);
+      assert(boost::num_vertices(conceptmap) == 0);
     }
   }
   if (verbose) { TRACE("DeleteNode: delete node of a concept map twice"); }
   {
     ConceptMap conceptmap = ConceptMapFactory().GetTest(1);
 
-    assert(conceptmap.GetNodes().size() == 2);
+    assert(boost::num_vertices(conceptmap) == 2);
     const auto node = conceptmap.GetNodes().back();
     conceptmap.DeleteNode(node);
-    assert(conceptmap.GetNodes().size() == 1);
+    assert(boost::num_vertices(conceptmap) == 1);
     conceptmap.DeleteNode(node);
-    assert(conceptmap.GetNodes().size() == 1);
+    assert(boost::num_vertices(conceptmap) == 1);
   }
   #ifdef FIX_ISSUE_10
   if (verbose) { TRACE("Deletion of edge"); }
@@ -458,11 +458,11 @@ void ribi::cmap::TestConceptMap() noexcept
     {
       const ConceptMap conceptmap = ConceptMapFactory().GetHeteromorphousTestConceptMap(test_index);
 
-      assert(conceptmap.GetEdges().size() == n_edges);
-      assert(j < conceptmap.GetEdges().size());
+      assert(boost::num_edges(conceptmap) == n_edges);
+      assert(j < boost::num_edges(conceptmap));
       const Edge edge = conceptmap.GetEdges()[j];
       conceptmap.DeleteEdge(edge);
-      assert(conceptmap.GetEdges().size() == n_edges - 1
+      assert(boost::num_edges(conceptmap) == n_edges - 1
         && "Edge must really be gone");
     }
   }
@@ -475,11 +475,11 @@ void ribi::cmap::TestConceptMap() noexcept
     conceptmap.AddNode(node_to);
     const auto edge = EdgeFactory().GetTest(0,node_from,node_to);
     conceptmap.AddEdge(edge);
-    assert(conceptmap.GetNodes().size() == 2);
-    assert(conceptmap.GetEdges().size() == 1);
+    assert(boost::num_vertices(conceptmap) == 2);
+    assert(boost::num_edges(conceptmap) == 1);
     conceptmap.DeleteNode(node_from);
-    assert(conceptmap.GetNodes().size() == 1);
-    assert(conceptmap.GetEdges().size() == 0);
+    assert(boost::num_vertices(conceptmap) == 1);
+    assert(boost::num_edges(conceptmap) == 0);
   }
   #endif // FIX_ISSUE_10
   if (verbose) { TRACE("Is GetNode()[0] a CenterNode?"); }
@@ -515,8 +515,8 @@ void ribi::cmap::TestConceptMap() noexcept
       conceptmap.SetSelected( Nodes( { conceptmap.GetNodes().front() } ) );
     }
 
-    assert(conceptmap.GetNodes().size() == 2);
-    assert(conceptmap.GetEdges().size() == 1);
+    assert(boost::num_vertices(conceptmap) == 2);
+    assert(boost::num_edges(conceptmap) == 1);
     assert(conceptmap.GetSelectedNodes().size() == 1);
     assert(conceptmap.GetSelectedEdges().size() == 0);
     assert(!conceptmap.GetSelectedNodes().empty());
@@ -536,8 +536,8 @@ void ribi::cmap::TestConceptMap() noexcept
     //Undo the deletion, should bring back node and edge
     conceptmap.Undo();
 
-    assert(conceptmap.GetNodes().size() == 2);
-    assert(conceptmap.GetEdges().size() == 1);
+    assert(boost::num_vertices(conceptmap) == 2);
+    assert(boost::num_edges(conceptmap) == 1);
     assert(conceptmap.GetSelectedNodes().size() == 1);
     assert(conceptmap.GetSelectedEdges().size() == 0);
   }

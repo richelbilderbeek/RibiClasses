@@ -51,12 +51,12 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic pop
 
 ribi::cmap::QtRateConceptTallyDialog::QtRateConceptTallyDialog(
-  const ConceptMap& sub_conceptmap,
+  const ConceptMap& conceptmap,
   QWidget *parent)
   : QtHideAndShowDialog(parent),
     ui(new Ui::QtRateConceptTallyDialog),
-    m_data(CreateData(sub_conceptmap)),
-    m_focus_name(GetFocusName(sub_conceptmap))
+    m_data(CreateData(conceptmap)),
+    m_focus_name(GetFocusName(conceptmap))
 {
   #ifndef NDEBUG
   Test();  
@@ -113,18 +113,19 @@ ribi::cmap::QtRateConceptTallyDialog::QtRateConceptTallyDialog(
         QTableWidgetItem * const i = new QTableWidgetItem;
         i->setFlags(
             Qt::ItemIsSelectable
-          | Qt::ItemIsEnabled);
-        const Edge& edge { std::get<0>(row) };
+          | Qt::ItemIsEnabled
+        );
+        const EdgeDescriptor edge { std::get<0>(row) };
         const bool center_is_from {
-          edge.GetFrom()->GetConcept() == sub_conceptmap.GetFocalNode()->GetConcept()
+          ribi::cmap::GetFrom(edge,conceptmap) == ribi::cmap::GetFocalNode(conceptmap)
         };
-        const Node * other {
-          center_is_from ? edge.GetTo() : edge.GetFrom()
+        const Node other {
+          center_is_from ? ribi::cmap::GetTo(edge,conceptmap) : ribi::cmap::GetFrom(edge, conceptmap)
         };
         const std::string s {
             "via '"
           + concept.GetName() + "' verbonden met '"
-          + other->GetConcept().GetName()
+          + other.GetConcept().GetName()
           + "'"
         };
         i->setText(s.c_str());
@@ -246,50 +247,15 @@ const ribi::cmap::ConceptMap ribi::cmap::QtRateConceptTallyDialog::CreateTestCon
   // - node with a concept with (1) text 'TextNode' (2) one example with text 'TextExampleNode'
   // - edge with a concept with (1) text 'TextEdge' (2) one example with text 'TextExampleEdge'
   // - node with a concept with (1) text 'TextDontCare'
-
-  const Concept concept_node_focal(ConceptFactory().Create(
-    "Node_focal: This is displayed at the top of the dialog and should have line wrapping",
-    {
-      {"Node_focal example",Competency::misc}
-    },
-    0,1,2));
-  const Concept concept_node_other(ConceptFactory().Create(
-    "Node_other: Issue #206 is about line wrapping in this dialog. Before this issue was resolved, this long line trailed with a ... to indicate that there was even more text at the right",
-    {
-      { "Example that won't be displayed here",Competency::misc }
-    },
-    0,1,2));
-
-  const Concept concept_edge(ConceptFactory().Create(
-    "Edge: Issue #206 is about line wrapping in this dialog. Before this issue was resolved, this long line trailed with a ... to indicate that there was even more text at the right",
-    {
-      {"Edge example",Competency::misc}
-    },
-    2,1,0));
-  const Node node_focal(NodeFactory().Create(concept_node_focal));
-  const Node node_other(NodeFactory().Create(concept_node_other));
-
-  const ConceptMap sub_conceptmap(
-    ConceptMapFactory().Create(
-      {
-        node_focal,
-        node_other
-      } ,
-      {
-        EdgeFactory().Create(
-          NodeFactory().Create(concept_edge,1.2,3.4),node_focal,true,node_other,true
-        )
-      }
-    )
-  );
+  ConceptMap sub_conceptmap = ribi::cmap::ConceptMapFactory().GetTest(6);
   return sub_conceptmap;
 }
 
 std::string ribi::cmap::QtRateConceptTallyDialog::GetFocusName(
   const ConceptMap& sub_conceptmap) noexcept
 {
-  assert(sub_conceptmap.GetFocalNode());
-  const Concept focal_concept(sub_conceptmap.GetFocalNode()->GetConcept());
+  assert(boost::num_vertices(sub_conceptmap));
+  const Concept focal_concept(ribi::cmap::GetFocalNode(sub_conceptmap).GetConcept());
   return focal_concept.GetName();
 }
 
@@ -459,7 +425,7 @@ void ribi::cmap::QtRateConceptTallyDialog::Test() noexcept
   const TestTimer test_timer{__func__,__FILE__,0.1};
   //Empty table
   {
-    const ConceptMap conceptmap(ConceptMapFactory().Create());
+    const ConceptMap conceptmap;
     QtRateConceptTallyDialog d(conceptmap);
   }
 
@@ -478,11 +444,11 @@ void ribi::cmap::QtRateConceptTallyDialog::Test() noexcept
 
   assert(d.ui->table->columnCount() == 4);
   assert(d.ui->table->rowCount() == 3);
-  assert(conceptmap.GetNodes().size() == 2);
-  assert(conceptmap.GetEdges().size() == 1);
-  const Node * const focal_node = conceptmap.GetFocalNode();
+  assert(boost::num_vertices(conceptmap) == 2);
+  assert(boost::num_edges(conceptmap) == 1);
+  const Node focal_node = GetFocalNode(conceptmap);
   //const Node other_node = conceptmap.GetNodes()[1]; //Don't care
-  const Edge edge = conceptmap.GetEdges()[0];
+  const Edge edge = ribi::cmap::GetFirstEdge(conceptmap);
 
   assert(d.ui->table->item(0,0)->flags() == (Qt::ItemIsUserCheckable | Qt::ItemIsEnabled | Qt::ItemIsSelectable));
   assert(d.ui->table->item(0,1)->flags() == (Qt::ItemIsUserCheckable | Qt::ItemIsEnabled | Qt::ItemIsSelectable));

@@ -398,10 +398,10 @@ void ribi::cmap::QtConceptMap::Test() noexcept
     qtconceptmap.GetQtEdges()[0]->setToolTip("QtEdges[0]");
     qtconceptmap.GetQtEdges()[0]->GetQtNode()->setToolTip("QtEdges[0] its center QtNode");
 
-    assert(conceptmap.GetNodes().size() == 2);
-    assert(conceptmap.GetNodes().size() == qtconceptmap.GetQtNodes().size());
-    assert(conceptmap.GetEdges().size() == 1);
-    assert(conceptmap.GetEdges().size() == qtconceptmap.GetQtEdges().size());
+    assert(boost::num_vertices(conceptmap) == 2);
+    assert(boost::num_vertices(conceptmap) == qtconceptmap.GetQtNodes().size());
+    assert(boost::num_edges(conceptmap) == 1);
+    assert(boost::num_edges(conceptmap) == qtconceptmap.GetQtEdges().size());
     assert(conceptmap.GetSelectedNodes().size() == 0);
     assert(conceptmap.GetSelectedNodes().size() == qtconceptmap.GetSelectedQtNodes().size());
     assert(conceptmap.GetSelectedEdges().size() == 1);
@@ -426,10 +426,10 @@ void ribi::cmap::QtConceptMap::Test() noexcept
     TRACE(qtconceptmap.GetSelectedQtEdges().size());
 
 
-    assert(conceptmap.GetNodes().size() == 2);
-    assert(conceptmap.GetNodes().size() == qtconceptmap.GetQtNodes().size());
-    assert(conceptmap.GetEdges().size() == 1);
-    assert(conceptmap.GetEdges().size() == qtconceptmap.GetQtEdges().size());
+    assert(boost::num_vertices(conceptmap) == 2);
+    assert(boost::num_vertices(conceptmap) == qtconceptmap.GetQtNodes().size());
+    assert(boost::num_edges(conceptmap) == 1);
+    assert(boost::num_edges(conceptmap) == qtconceptmap.GetQtEdges().size());
     assert(conceptmap.GetSelectedNodes().size() == qtconceptmap.GetSelectedQtNodes().size());
     assert(conceptmap.GetSelectedEdges().size() == qtconceptmap.GetSelectedQtEdges().size());
     assert(conceptmap.GetSelectedNodes().size() == 1);
@@ -450,10 +450,10 @@ void ribi::cmap::QtConceptMap::Test() noexcept
     auto ctrle = CreateControlE();
     qtconceptmap.keyPressEvent(&ctrle);
 
-    assert(conceptmap.GetNodes().size() == 2);
-    assert(conceptmap.GetNodes().size() == qtconceptmap.GetQtNodes().size());
-    assert(conceptmap.GetEdges().size() == 1);
-    assert(conceptmap.GetEdges().size() == qtconceptmap.GetQtEdges().size());
+    assert(boost::num_vertices(conceptmap) == 2);
+    assert(boost::num_vertices(conceptmap) == qtconceptmap.GetQtNodes().size());
+    assert(boost::num_edges(conceptmap) == 1);
+    assert(boost::num_edges(conceptmap) == qtconceptmap.GetQtEdges().size());
     assert(conceptmap.GetSelectedNodes().size() == qtconceptmap.GetSelectedQtNodes().size());
     assert(conceptmap.GetSelectedEdges().size() == qtconceptmap.GetSelectedQtEdges().size());
     assert(conceptmap.GetSelectedNodes().size() == 0);
@@ -469,10 +469,10 @@ void ribi::cmap::QtConceptMap::Test() noexcept
     TRACE(conceptmap.GetSelectedEdges().size());
     TRACE(qtconceptmap.GetSelectedQtEdges().size());
 
-    assert(conceptmap.GetNodes().size() == 2);
-    assert(conceptmap.GetNodes().size() == qtconceptmap.GetQtNodes().size());
-    assert(conceptmap.GetEdges().size() == 1);
-    assert(conceptmap.GetEdges().size() == qtconceptmap.GetQtEdges().size());
+    assert(boost::num_vertices(conceptmap) == 2);
+    assert(boost::num_vertices(conceptmap) == qtconceptmap.GetQtNodes().size());
+    assert(boost::num_edges(conceptmap) == 1);
+    assert(boost::num_edges(conceptmap) == qtconceptmap.GetQtEdges().size());
     assert(conceptmap.GetSelectedNodes().size() == qtconceptmap.GetSelectedQtNodes().size());
     assert(conceptmap.GetSelectedEdges().size() == qtconceptmap.GetSelectedQtEdges().size());
     assert(conceptmap.GetSelectedNodes().size() == 1);
@@ -486,10 +486,10 @@ void ribi::cmap::QtConceptMap::Test() noexcept
     auto cntrlz = CreateControlZ();
     qtconceptmap.keyPressEvent(&cntrlz);
 
-    assert(conceptmap.GetNodes().size() == 2);
-    assert(conceptmap.GetNodes().size() == qtconceptmap.GetQtNodes().size());
-    assert(conceptmap.GetEdges().size() == 1);
-    assert(conceptmap.GetEdges().size() == qtconceptmap.GetQtEdges().size());
+    assert(boost::num_vertices(conceptmap) == 2);
+    assert(boost::num_vertices(conceptmap) == qtconceptmap.GetQtNodes().size());
+    assert(boost::num_edges(conceptmap) == 1);
+    assert(boost::num_edges(conceptmap) == qtconceptmap.GetQtEdges().size());
     assert(conceptmap.GetSelectedNodes().size() == 1);
     assert(conceptmap.GetSelectedNodes().size() == qtconceptmap.GetSelectedQtNodes().size());
     assert(conceptmap.GetSelectedEdges().size() == 0);

@@ -59,7 +59,7 @@ int ribi::cmap::Rating::SuggestComplexity(
   const int n_examples = node.GetConcept().GetExamples().Get().size();
   //const int n_examples
   //  = boost::numeric_cast<int>(
-  //    sub_conceptmap.GetFocalNode()->GetConcept().GetExamples().Get().size()
+  //    sub_GetFocalNode(conceptmap)->GetConcept().GetExamples().Get().size()
   //  );
   return SuggestComplexity(n_edges,n_examples);
 }
@@ -86,7 +86,7 @@ int ribi::cmap::Rating::SuggestConcreteness(
   const int n_examples = node.GetConcept().GetExamples().Get().size();
   //const int n_examples
   //  = boost::numeric_cast<int>(
-  //    sub_conceptmap.GetFocalNode()->GetConcept().GetExamples().Get().size()
+  //    sub_GetFocalNode(conceptmap)->GetConcept().GetExamples().Get().size()
   //  );
   return SuggestConcreteness(n_examples);
 }
@@ -108,7 +108,7 @@ int ribi::cmap::Rating::SuggestSpecificity(
   const int n_examples = node.GetConcept().GetExamples().Get().size();
   //const int n_examples
   //  = boost::numeric_cast<int>(
-  //    sub_conceptmap.GetFocalNode()->GetConcept().GetExamples().Get().size()
+  //    sub_GetFocalNode(conceptmap)->GetConcept().GetExamples().Get().size()
   //  );
   return SuggestSpecificity(n_examples);
 }
