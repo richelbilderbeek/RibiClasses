@@ -21,8 +21,6 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #ifndef QTCONCEPTMAPRATECONCEPTTALLYDIALOG_H
 #define QTCONCEPTMAPRATECONCEPTTALLYDIALOG_H
 
-#ifdef NOT_NOW_20151230
-
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
@@ -30,26 +28,27 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include <boost/shared_ptr.hpp>
 #include "qthideandshowdialog.h"
 #include "qtconceptmapfwd.h"
+#include "conceptmap.h"
 #pragma GCC diagnostic pop
 
-namespace Ui { class QtRateConceptTallyDialogNewName; }
+namespace Ui { class QtRateConceptTallyDialog; }
 
 namespace ribi {
 namespace cmap {
 
-class QtRateConceptTallyDialogNewName : public ribi::QtHideAndShowDialog
+class QtRateConceptTallyDialog : public ribi::QtHideAndShowDialog
 {
   Q_OBJECT
   
 public:
   ///Sub concept map is modified by this dialog
-  explicit QtRateConceptTallyDialogNewName(
-    const ConceptMap& sub_conceptmap,
+  explicit QtRateConceptTallyDialog(
+    const ribi::cmap::ConceptMap& sub_conceptmap,
     QWidget *parent = 0
   );
-  QtRateConceptTallyDialogNewName(const QtRateConceptTallyDialogNewName&) = delete;
-  QtRateConceptTallyDialogNewName& operator=(const QtRateConceptTallyDialogNewName&) = delete;
-  ~QtRateConceptTallyDialogNewName() noexcept;
+  QtRateConceptTallyDialog(const QtRateConceptTallyDialog&) = delete;
+  QtRateConceptTallyDialog& operator=(const QtRateConceptTallyDialog&) = delete;
+  ~QtRateConceptTallyDialog() noexcept;
 
   static const ConceptMap CreateTestConceptMap();
 
@@ -70,7 +69,7 @@ private slots:
   void OnCellChanged(int row, int col);
 
 private:
-  Ui::QtRateConceptTallyDialogNewName *ui;
+  Ui::QtRateConceptTallyDialog *ui;
   //const ConceptMap m_map;
 
   ///The concept map is converted to this data type
@@ -100,7 +99,5 @@ private:
 
 } //~namespace cmap
 } //~namespace ribi
-
-#endif // NOT_NOW_20151230
 
 #endif // QTCONCEPTMAPRATECONCEPTTALLYDIALOG_H

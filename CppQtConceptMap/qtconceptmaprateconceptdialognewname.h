@@ -35,12 +35,12 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmap.h"
 #pragma GCC diagnostic pop
 
-namespace Ui { class QtRateConceptDialogNewName; }
+namespace Ui { class QtRateConceptDialog; }
 namespace ribi {
 namespace cmap {
 
 ///Rate the focal concept of a sub-ConceptMap.
-class QtRateConceptDialogNewName : public ribi::QtHideAndShowDialog
+class QtRateConceptDialog : public ribi::QtHideAndShowDialog
 {
   Q_OBJECT
     
@@ -48,11 +48,11 @@ class QtRateConceptDialogNewName : public ribi::QtHideAndShowDialog
   ///concept is the center node
   ///sub_conceptmap[0] is the same as concept and might be changed
   ///sub_conceptmap is non-const, as GetRatedConcept will produce a new concept
-  explicit QtRateConceptDialogNewName(const ConceptMap sub_conceptmap,
+  explicit QtRateConceptDialog(const ConceptMap sub_conceptmap,
     QWidget* parent = 0);
-  QtRateConceptDialogNewName(const QtRateConceptDialogNewName&) = delete;
-  QtRateConceptDialogNewName& operator=(const QtRateConceptDialogNewName&) = delete;
-  ~QtRateConceptDialogNewName() noexcept;
+  QtRateConceptDialog(const QtRateConceptDialog&) = delete;
+  QtRateConceptDialog& operator=(const QtRateConceptDialog&) = delete;
+  ~QtRateConceptDialog() noexcept;
 
   ///Set suggested values for this concept
   //void MakeSuggestions(const ConceptMap sub_conceptmap);
@@ -70,7 +70,7 @@ private slots:
   void on_box_specificity_currentIndexChanged(int index);
 
 private:
-  Ui::QtRateConceptDialogNewName *ui;
+  Ui::QtRateConceptDialog *ui;
 
   ///To distinguish between closing the dialog by clicking OK, or by ALT-F4
   bool m_button_ok_clicked;

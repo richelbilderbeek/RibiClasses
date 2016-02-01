@@ -18,8 +18,6 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppQtConceptMap.htm
 //---------------------------------------------------------------------------
-#ifdef NOT_NOW_20151230
-
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #include "qtconceptmaprateconcepttallydialognewname.h"
@@ -52,11 +50,11 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "ui_qtconceptmaprateconcepttallydialognewname.h"
 #pragma GCC diagnostic pop
 
-ribi::cmap::QtRateConceptTallyDialogNewName::QtRateConceptTallyDialogNewName(
+ribi::cmap::QtRateConceptTallyDialog::QtRateConceptTallyDialog(
   const ConceptMap& sub_conceptmap,
   QWidget *parent)
   : QtHideAndShowDialog(parent),
-    ui(new Ui::QtRateConceptTallyDialogNewName),
+    ui(new Ui::QtRateConceptTallyDialog),
     m_data(CreateData(sub_conceptmap)),
     m_focus_name(GetFocusName(sub_conceptmap))
 {
@@ -191,13 +189,13 @@ ribi::cmap::QtRateConceptTallyDialogNewName::QtRateConceptTallyDialogNewName(
   }
 }
 
-ribi::cmap::QtRateConceptTallyDialogNewName::~QtRateConceptTallyDialogNewName() noexcept
+ribi::cmap::QtRateConceptTallyDialog::~QtRateConceptTallyDialog() noexcept
 {
   delete ui;
 }
 
-std::vector<ribi::cmap::QtRateConceptTallyDialogNewName::Row>
-  ribi::cmap::QtRateConceptTallyDialogNewName::CreateData(
+std::vector<ribi::cmap::QtRateConceptTallyDialog::Row>
+  ribi::cmap::QtRateConceptTallyDialog::CreateData(
   const ConceptMap& /* map */
 )
 {
@@ -242,7 +240,7 @@ std::vector<ribi::cmap::QtRateConceptTallyDialogNewName::Row>
   return data;
 }
 
-const ribi::cmap::ConceptMap ribi::cmap::QtRateConceptTallyDialogNewName::CreateTestConceptMap()
+const ribi::cmap::ConceptMap ribi::cmap::QtRateConceptTallyDialog::CreateTestConceptMap()
 {
   //Create a subconcept map for testing:
   // - node with a concept with (1) text 'TextNode' (2) one example with text 'TextExampleNode'
@@ -287,7 +285,7 @@ const ribi::cmap::ConceptMap ribi::cmap::QtRateConceptTallyDialogNewName::Create
   return sub_conceptmap;
 }
 
-std::string ribi::cmap::QtRateConceptTallyDialogNewName::GetFocusName(
+std::string ribi::cmap::QtRateConceptTallyDialog::GetFocusName(
   const ConceptMap& sub_conceptmap) noexcept
 {
   assert(sub_conceptmap.GetFocalNode());
@@ -295,7 +293,7 @@ std::string ribi::cmap::QtRateConceptTallyDialogNewName::GetFocusName(
   return focal_concept.GetName();
 }
 
-int ribi::cmap::QtRateConceptTallyDialogNewName::GetSuggestedComplexity() const
+int ribi::cmap::QtRateConceptTallyDialog::GetSuggestedComplexity() const
 {
   //Tally the edges that contribute to complexity
   const int n_edges = std::accumulate(m_data.begin(),m_data.end(),0,
@@ -321,7 +319,7 @@ int ribi::cmap::QtRateConceptTallyDialogNewName::GetSuggestedComplexity() const
   return 2;
 }
 
-int ribi::cmap::QtRateConceptTallyDialogNewName::GetSuggestedConcreteness() const
+int ribi::cmap::QtRateConceptTallyDialog::GetSuggestedConcreteness() const
 {
   //Tally the examples that contribute to concreteness
   const int n_examples = std::accumulate(m_data.begin(),m_data.end(),0,
@@ -339,7 +337,7 @@ int ribi::cmap::QtRateConceptTallyDialogNewName::GetSuggestedConcreteness() cons
   return 2;
 }
 
-int ribi::cmap::QtRateConceptTallyDialogNewName::GetSuggestedSpecificity() const
+int ribi::cmap::QtRateConceptTallyDialog::GetSuggestedSpecificity() const
 {
   //Tally the examples that contribute to specificity
   const int n_examples = std::accumulate(m_data.begin(),m_data.end(),0,
@@ -357,7 +355,7 @@ int ribi::cmap::QtRateConceptTallyDialogNewName::GetSuggestedSpecificity() const
   return 2;
 }
 
-void ribi::cmap::QtRateConceptTallyDialogNewName::keyPressEvent(QKeyEvent * event)
+void ribi::cmap::QtRateConceptTallyDialog::keyPressEvent(QKeyEvent * event)
 {
   if (event->key() == Qt::Key_Escape) { close(); return; }
   if ( (event->modifiers() & Qt::ControlModifier)
@@ -388,7 +386,7 @@ void ribi::cmap::QtRateConceptTallyDialogNewName::keyPressEvent(QKeyEvent * even
   }
 }
 
-void ribi::cmap::QtRateConceptTallyDialogNewName::OnCellChanged(int row_index, int col)
+void ribi::cmap::QtRateConceptTallyDialog::OnCellChanged(int row_index, int col)
 {
   assert(row_index >= 0);
   assert(row_index < static_cast<int>(m_data.size()));
@@ -435,7 +433,7 @@ void ribi::cmap::QtRateConceptTallyDialogNewName::OnCellChanged(int row_index, i
   }
 }
 
-void ribi::cmap::QtRateConceptTallyDialogNewName::resizeEvent(QResizeEvent *)
+void ribi::cmap::QtRateConceptTallyDialog::resizeEvent(QResizeEvent *)
 {
   const int small_col_width = 28;
   ui->table->setColumnWidth(0, small_col_width);
@@ -445,13 +443,13 @@ void ribi::cmap::QtRateConceptTallyDialogNewName::resizeEvent(QResizeEvent *)
   ui->table->setColumnWidth(3,ui->table->width() - (3 * small_col_width) - (3 * extra_space));
 }
 
-void ribi::cmap::QtRateConceptTallyDialogNewName::on_button_ok_clicked()
+void ribi::cmap::QtRateConceptTallyDialog::on_button_ok_clicked()
 {
   close();
 }
 
 #ifndef NDEBUG
-void ribi::cmap::QtRateConceptTallyDialogNewName::Test() noexcept
+void ribi::cmap::QtRateConceptTallyDialog::Test() noexcept
 {
   {
     static bool is_tested = false;
@@ -462,14 +460,14 @@ void ribi::cmap::QtRateConceptTallyDialogNewName::Test() noexcept
   //Empty table
   {
     const ConceptMap conceptmap(ConceptMapFactory().Create());
-    QtRateConceptTallyDialogNewName d(conceptmap);
+    QtRateConceptTallyDialog d(conceptmap);
   }
 
   const ConceptMap conceptmap = CreateTestConceptMap();
   
 
 
-  QtRateConceptTallyDialogNewName d(conceptmap);
+  QtRateConceptTallyDialog d(conceptmap);
 
   #ifndef NDEBUG
   {
@@ -562,5 +560,3 @@ void ribi::cmap::QtRateConceptTallyDialogNewName::Test() noexcept
 
 }
 #endif
-
-#endif // NOT_NOW_20151230
