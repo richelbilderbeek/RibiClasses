@@ -330,7 +330,7 @@ void ribi::cmap::QtConceptMap::Test() noexcept
     assert(DoubleCheckEdgesAndNodes(qtconceptmap,0,2));
     assert(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,0));
   }
-  #ifndef FOR_LUCAS_20160130
+  //#define FOR_LUCAS_20160130
   #ifdef FOR_LUCAS_20160130
   if (verbose) { TRACE("Delete Edge and Node-that-is-head-of-Edge: delete from QtConceptMap"); }
   {
