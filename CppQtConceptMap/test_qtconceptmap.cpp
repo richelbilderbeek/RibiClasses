@@ -368,7 +368,6 @@ void ribi::cmap::QtConceptMap::Test() noexcept
   }
   assert(!"You've fixed it!");
   #endif // FOR_LUCAS_20160130
-  #ifdef FIX_ISSUE_10
   //#define FIX_ISSUE_1
   #ifdef  FIX_ISSUE_1
   verbose = true;
@@ -518,9 +517,6 @@ void ribi::cmap::QtConceptMap::Test() noexcept
     assert(n_nodes_in_scene == n_nodes_in_conceptmap);
   }
   #endif
-  #endif //FIX_ISSUE_10
   TestTimer::SetMaxCnt(1); //Because the base class has been tested now
-#endif // NOT_NOW_20151230
-
 }
-#endif
+#endif //DEBUG

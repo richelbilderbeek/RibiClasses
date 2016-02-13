@@ -22,6 +22,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <iostream>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/isomorphism.hpp>
+#include <boost/graph/graph_traits.hpp>
+#include <boost/graph/properties.hpp>
 #include <boost/graph/graphviz.hpp>
 #include "conceptmapregex.h"
 #include "conceptmapnode.h"
@@ -34,7 +36,13 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "graphviz_decode.h"
 #include "graphviz_encode.h"
 #include "make_custom_and_selectable_vertices_writer.h"
+#include "find_first_custom_edge_with_my_edge.h"
 #include "custom_and_selectable_vertices_writer.h"
+#include "install_vertex_custom_type.h"
+#include "my_custom_vertex.h"
+
+
+
 
 ribi::cmap::ConceptMap ribi::cmap::DotToConceptMap(const std::string& s)
 {
@@ -48,6 +56,40 @@ ribi::cmap::ConceptMap ribi::cmap::DotToConceptMap(const std::string& s)
   dp.property("regular", get(boost::edge_is_selected, g));
   boost::read_graphviz(f,g,dp);
   return g;
+}
+
+ribi::cmap::EdgeDescriptor ribi::cmap::FindEdge(
+  const Edge& edge,
+  const ConceptMap& g
+) noexcept
+{
+  const auto eip = edges(g);
+  const auto i = std::find_if(
+    eip.first, eip.second,
+    [edge,g](const EdgeDescriptor d) {
+      const auto my_edges_map = get(boost::edge_custom_type, g);
+      return get(my_edges_map, d) == edge;
+    }
+  );
+  assert(i != eip.second);
+  return *i;
+}
+
+ribi::cmap::VertexDescriptor ribi::cmap::FindNode(
+  const Node& node,
+  const ConceptMap& g
+) noexcept
+{
+  const auto vip = vertices(g);
+  const auto i = std::find_if(
+    vip.first, vip.second,
+    [node,g](const VertexDescriptor d) {
+      const auto my_vertices_map = get(boost::vertex_custom_type, g);
+      return get(my_vertices_map, d) == node;
+    }
+  );
+  assert(i != vip.second);
+  return *i;
 }
 
 std::vector<ribi::cmap::Edge> ribi::cmap::GetEdges(const ConceptMap& c) noexcept
@@ -64,12 +106,23 @@ std::vector<ribi::cmap::Edge> ribi::cmap::GetEdges(const ConceptMap& c) noexcept
   return v;
 }
 
-#include <boost/graph/graph_traits.hpp>
-#include <boost/graph/properties.hpp>
-#include "install_vertex_custom_type.h"
-#include "my_custom_vertex.h"
+ribi::cmap::Node ribi::cmap::GetFocalNode(const ConceptMap& c)
+{
+  assert(boost::num_vertices(c));
+  return GetNode(*vertices(c).first, c);
+}
 
-ribi::cmap::Node GetNode(const ribi::cmap::VertexDescriptor vd, const ribi::cmap::ConceptMap& g) noexcept
+ribi::cmap::Node ribi::cmap::GetFrom(const Edge& edge, const ConceptMap& c) noexcept
+{
+  return GetFrom(FindEdge(edge, c), c);
+}
+
+ribi::cmap::Node ribi::cmap::GetFrom(const EdgeDescriptor ed, const ConceptMap& c) noexcept
+{
+  return GetNode(boost::source(ed, c), c);
+}
+
+ribi::cmap::Node ribi::cmap::GetNode(const ribi::cmap::VertexDescriptor vd, const ribi::cmap::ConceptMap& g) noexcept
 {
   const auto my_custom_vertexes_map
     = get(boost::vertex_custom_type,
@@ -104,6 +157,16 @@ std::vector<ribi::cmap::Node> ribi::cmap::GetSortedNodes(const ConceptMap& c) no
   auto v = GetNodes(c);
   std::sort(std::begin(v),std::end(v));
   return v;
+}
+
+ribi::cmap::Node ribi::cmap::GetTo(const Edge& edge, const ConceptMap& c) noexcept
+{
+  return GetTo(FindEdge(edge, c), c);
+}
+
+ribi::cmap::Node ribi::cmap::GetTo(const EdgeDescriptor ed, const ConceptMap& c) noexcept
+{
+  return GetNode(boost::target(ed, c), c);
 }
 
 ribi::cmap::ConceptMap ribi::cmap::LoadFromFile(const std::string& dot_filename)

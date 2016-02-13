@@ -89,27 +89,27 @@ ribi::cmap::QtConceptMapRatedConceptDialog::QtConceptMapRatedConceptDialog(
       if (GetFrom(edge, conceptmap) == node)
       {
         const std::string first_arrow
-          = ( edge.HasTailArrow() ? "<- " : "-- ");
+          = ( HasTailArrow(edge, conceptmap) ? "<- " : "-- ");
         const std::string second_arrow
-          = ( edge.HasHeadArrow() ? " -> " : " -- ");
+          = ( HasHeadArrow(edge, conceptmap) ? " -> " : " -- ");
         const std::string text
           = first_arrow
           + edge.GetNode().GetConcept().GetName()
           + second_arrow
-          //+ node.GetConcept().GetName();
-          + edge.GetTo()->GetConcept().GetName();
+          + GetTo(edge, conceptmap).GetConcept().GetName();
         ui->list_cluster_relations->addItem(new QListWidgetItem(text.c_str()));
       }
       else
       {
-        assert(*edge.GetTo() == node);
-        const std::string first_arrow  = (edge.HasHeadArrow() ? "<- " : "-- ");
-        const std::string second_arrow = (edge.HasTailArrow() ? " -> " : " -- ");
+        assert(GetTo(edge, conceptmap) == node);
+        const std::string first_arrow  = (HasHeadArrow(edge, conceptmap) ? "<- " : "-- ");
+        const std::string second_arrow = (HasTailArrow(edge, conceptmap) ? " -> " : " -- ");
         const std::string text
           = first_arrow
           + edge.GetNode().GetConcept().GetName()
           + second_arrow
-          + edge.GetFrom()->GetConcept().GetName();
+          + GetFrom(edge, conceptmap).GetConcept().GetName()
+        ;
         ui->list_cluster_relations->addItem(new QListWidgetItem(text.c_str()));
       }
       //Indendent on arrow: all examples
