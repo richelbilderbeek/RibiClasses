@@ -17,7 +17,7 @@ void ribi::PlaneZ::Test() noexcept
   }
   const TestTimer test_timer(__func__,__FILE__,1.0);
   using boost::geometry::get;
-  const bool verbose{false};
+  const bool verbose{true};
   const bool show_warning{false};
   const auto series = GetTestSeries();
 

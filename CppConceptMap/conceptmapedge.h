@@ -47,10 +47,16 @@ struct Edge
   const Node& GetNode() const noexcept { return m_node; }
         Node& GetNode()       noexcept { return m_node; }
 
+  bool HasHeadArrow() const noexcept { return m_has_head_arrow; }
+  bool HasTailArrow() const noexcept { return m_has_tail_arrow; }
+
   int GetId() const noexcept { return m_id; }
 
   static std::string GetVersion() noexcept;
   static std::vector<std::string> GetVersionHistory() noexcept;
+
+  void SetHeadArrow(const bool has_head_arrow) noexcept { m_has_head_arrow = has_head_arrow; }
+  void SetTailArrow(const bool has_tail_arrow) noexcept { m_has_tail_arrow = has_tail_arrow; }
 
   ///Set the center Node
   void SetNode(const Node& node) noexcept;
@@ -59,6 +65,9 @@ struct Edge
 
 
   private:
+  bool m_has_head_arrow;
+  bool m_has_tail_arrow;
+
   int m_id; //Unique ID, until the Node is copied
 
   ///The Node on the Edge

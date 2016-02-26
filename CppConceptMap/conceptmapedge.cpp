@@ -50,6 +50,8 @@ int ribi::cmap::Edge::sm_ids = 0; //ID to assign
 ribi::cmap::Edge::Edge(
   const Node& node
 ) :
+    m_has_head_arrow{false},
+    m_has_tail_arrow{false},
     m_id{sm_ids++},
     m_node{node}
 {

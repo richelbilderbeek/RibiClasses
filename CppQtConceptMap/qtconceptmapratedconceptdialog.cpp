@@ -89,9 +89,9 @@ ribi::cmap::QtConceptMapRatedConceptDialog::QtConceptMapRatedConceptDialog(
       if (GetFrom(edge, conceptmap) == node)
       {
         const std::string first_arrow
-          = ( HasTailArrow(edge, conceptmap) ? "<- " : "-- ");
+          = edge.HasTailArrow() ? "<- " : "-- ";
         const std::string second_arrow
-          = ( HasHeadArrow(edge, conceptmap) ? " -> " : " -- ");
+          = edge.HasHeadArrow() ? " -> " : " -- ";
         const std::string text
           = first_arrow
           + edge.GetNode().GetConcept().GetName()
@@ -102,8 +102,8 @@ ribi::cmap::QtConceptMapRatedConceptDialog::QtConceptMapRatedConceptDialog(
       else
       {
         assert(GetTo(edge, conceptmap) == node);
-        const std::string first_arrow  = (HasHeadArrow(edge, conceptmap) ? "<- " : "-- ");
-        const std::string second_arrow = (HasTailArrow(edge, conceptmap) ? " -> " : " -- ");
+        const std::string first_arrow  = edge.HasHeadArrow() ? "<- " : "-- ";
+        const std::string second_arrow = edge.HasTailArrow() ? " -> " : " -- ";
         const std::string text
           = first_arrow
           + edge.GetNode().GetConcept().GetName()

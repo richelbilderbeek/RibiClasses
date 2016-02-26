@@ -92,6 +92,15 @@ ribi::cmap::VertexDescriptor ribi::cmap::FindNode(
   return *i;
 }
 
+ribi::cmap::Edge ribi::cmap::GetEdge(const ribi::cmap::EdgeDescriptor vd, const ribi::cmap::ConceptMap& g) noexcept
+{
+  const auto my_custom_edges_map
+    = get(boost::edge_custom_type,
+      g
+    );
+  return get(my_custom_edges_map, vd);
+}
+
 std::vector<ribi::cmap::Edge> ribi::cmap::GetEdges(const ConceptMap& c) noexcept
 {
   const auto eip = edges(c);
@@ -104,6 +113,12 @@ std::vector<ribi::cmap::Edge> ribi::cmap::GetEdges(const ConceptMap& c) noexcept
     }
   );
   return v;
+}
+
+ribi::cmap::Edge ribi::cmap::GetFirstEdge(const ConceptMap& c)
+{
+  assert(boost::num_edges(c) > 0);
+  return GetEdge(*edges(c).first, c);
 }
 
 ribi::cmap::Node ribi::cmap::GetFocalNode(const ConceptMap& c)
