@@ -42,6 +42,15 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "my_custom_vertex.h"
 
 
+int ribi::cmap::CountCenterNodes(const ConceptMap& c) noexcept
+{
+  return CountCenterNodes(GetNodes(c));
+}
+
+std::vector<ribi::cmap::ConceptMap> ribi::cmap::CreateDirectNeighbourConceptMaps(const ConceptMap& c)
+{
+  //TODO
+}
 
 
 ribi::cmap::ConceptMap ribi::cmap::DotToConceptMap(const std::string& s)
@@ -56,6 +65,11 @@ ribi::cmap::ConceptMap ribi::cmap::DotToConceptMap(const std::string& s)
   dp.property("regular", get(boost::edge_is_selected, g));
   boost::read_graphviz(f,g,dp);
   return g;
+}
+
+std::vector<ribi::cmap::Node>::const_iterator ribi::cmap::FindCenterNode(const ConceptMap& c) noexcept
+{
+  return FindCenterNode(GetNodes(c));
 }
 
 ribi::cmap::EdgeDescriptor ribi::cmap::FindEdge(
@@ -182,6 +196,18 @@ ribi::cmap::Node ribi::cmap::GetTo(const Edge& edge, const ConceptMap& c) noexce
 ribi::cmap::Node ribi::cmap::GetTo(const EdgeDescriptor ed, const ConceptMap& c) noexcept
 {
   return GetNode(boost::target(ed, c), c);
+}
+
+bool ribi::cmap::HasCenterNode(const ConceptMap& c) noexcept
+{
+  const auto nodes = GetNodes(c);
+  const auto i = std::find_if(
+    std::begin(nodes),std::end(nodes),
+    [](const Node& node) {
+      return IsCenterNode(node);
+    }
+  );
+  return i != std::end(nodes);
 }
 
 ribi::cmap::ConceptMap ribi::cmap::LoadFromFile(const std::string& dot_filename)

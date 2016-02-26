@@ -22,7 +22,7 @@ HEADERS += \
     ../RibiClasses/CppConceptMap/conceptmap.h \
     ../RibiClasses/CppConceptMap/conceptmaphelper.h \
     ../RibiClasses/CppConceptMap/conceptmapnodefactory.h \
-    ../RibiClasses/CppConceptMap/conceptmapnode.h \
+    $PWD/conceptmapnode.h \
     ../RibiClasses/CppConceptMap/conceptmapregex.h \
     ../RibiClasses/CppConceptMap/conceptmapgraphtypes.h \
     ../RibiClasses/CppConceptMap/conceptmapexamplevertexinvariant.h \
