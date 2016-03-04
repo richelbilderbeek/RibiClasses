@@ -40,6 +40,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "custom_and_selectable_vertices_writer.h"
 #include "install_vertex_custom_type.h"
 #include "my_custom_vertex.h"
+#include "create_all_direct_neighbour_custom_and_selectable_edges_and_vertices_subgraphs.h"
 
 
 int ribi::cmap::CountCenterNodes(const ConceptMap& c) noexcept
@@ -49,7 +50,7 @@ int ribi::cmap::CountCenterNodes(const ConceptMap& c) noexcept
 
 std::vector<ribi::cmap::ConceptMap> ribi::cmap::CreateDirectNeighbourConceptMaps(const ConceptMap& c)
 {
-  //TODO
+  return create_all_direct_neighbour_custom_and_selectable_edges_and_vertices_subgraphs(c);
 }
 
 
