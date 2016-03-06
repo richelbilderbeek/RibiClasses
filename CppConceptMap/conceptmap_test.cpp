@@ -229,6 +229,7 @@ void ribi::cmap::TestConceptMap() noexcept
     assert(e == g);
     assert(e == h);
   }
+  assert(1 == 2);
   if (verbose) { TRACE("Dot conversion"); }
   {
     const std::vector<ConceptMap> v = ConceptMapFactory().GetAllTests();
@@ -244,72 +245,18 @@ void ribi::cmap::TestConceptMap() noexcept
       }
     );
   }
-  #ifdef NOT_NOT_20151231
-  if (verbose) { TRACE("CreateSubs"); }
-  {
-    //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,0.1);
-    //Count the number of expected sub concept maps
-    {
-      const std::vector<ConceptMap> maps
-        = ConceptMapFactory().GetTests();
-      const int n_heteromorphous_conceptmaps = 20;
-      assert(n_heteromorphous_conceptmaps == static_cast<int>(maps.size())
-        && "To warn you if you change the number of testing concept maps");
-      const std::vector<int> n_subs_expected = { 0,2,3,3,3,3,3,4,4,4,4,4,4,4,4,5,5,5,5,5 } ;
-      assert(n_heteromorphous_conceptmaps == static_cast<int>(n_subs_expected.size()));
-      assert(n_subs_expected[ 0] == 0);
-      assert(n_subs_expected[ 1] == 2);
-      assert(n_subs_expected[ 2] == 3);
-      assert(n_subs_expected[ 6] == 3);
-      assert(n_subs_expected[ 7] == 4);
-      assert(n_subs_expected[14] == 4);
-      assert(n_subs_expected[15] == 5);
-      //assert(n_subs_expected[16] == 5);
-
-      assert(maps.size() == n_subs_expected.size());
-      const int sz = static_cast<int>(n_subs_expected.size());
-      for (int i=0; i!=sz; ++i)
-      {
-        const ConceptMap& map = maps[i];
-
-        const std::vector<ConceptMap> subs = map.CreateSubs();
-        assert(static_cast<int>(subs.size()) == n_subs_expected[i]);
-      }
-    }
-  }
-  #ifdef FIX_ISSUE_10
   if (verbose) { TRACE("CountCenterNodes"); }
   //Count the number of CenterNode objects
   {
     //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,0.1);
-    for (const ConceptMap map: ConceptMapFactory().GetHeteromorphousTestConceptMaps())
+    for (const ConceptMap& map: ConceptMapFactory().GetAllTests())
     {
-      if (CountCenterNodes(map) == 0) continue;
-
-      //Count the edges connected to CenterNode
-      const int n_edges_connected_to_center { CountCenterNodeEdges(map) };
-      const int n_center_nodes_expected
-        = n_edges_connected_to_center + 1; //+1, because with no edges, you expect the center node only
-
-      //Count the number of sub concept maps with a center node
-      const std::vector<ConceptMap> subs = map->CreateSubs();
-      const int n_center_nodes_here {
-        static_cast<int>(
-          std::count_if(subs.begin(),subs.end(),
-            [](const ConceptMap sub)
-            {
-              return CountCenterNodes(sub) > 0;
-            }
-          )
-        )
-      };
-      const int n_center_nodes_found = n_center_nodes_here;
-      TRACE(n_center_nodes_expected);
-      TRACE(n_center_nodes_found);
-      assert(n_center_nodes_expected == n_center_nodes_found);
-
+      assert(CountCenterNodes(map) == 0 || CountCenterNodes(map) == 1);
     }
   }
+  assert(!"Fixed 10?");
+  #ifdef NOT_NOT_20151231
+  #ifdef FIX_ISSUE_10
   #endif // FIX_ISSUE_10
   if (verbose) { TRACE("Add two nodes, check selected"); }
   {

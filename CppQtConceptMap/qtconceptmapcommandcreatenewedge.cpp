@@ -30,7 +30,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "qtconceptmapqtnode.h"
 #include "trace.h"
 #include "count_vertices_with_selectedness.h"
-#include "add_edge_between_two_selected_vertices.h"
+#include "add_edge_between_selected_vertices.h"
 #include <boost/graph/isomorphism.hpp>
 #include <QGraphicsScene>
 #include "qtconceptmap.h"
@@ -51,7 +51,7 @@ ribi::cmap::CommandCreateNewEdgeBetweenTwoSelectedNodes::CommandCreateNewEdgeBet
 
   //Update concept map
   assert(count_vertices_with_selectedness(true, m_after) == 2);
-  const auto ed = add_edge_between_two_selected_vertices(m_after);
+  const auto ed = add_edge_between_selected_vertices(m_after);
   assert(!boost::isomorphism(m_before,m_after));
 
   const VertexDescriptor vd_from = boost::source(ed, m_after);

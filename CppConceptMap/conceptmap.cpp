@@ -41,7 +41,13 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "install_vertex_custom_type.h"
 #include "my_custom_vertex.h"
 #include "create_all_direct_neighbour_custom_and_selectable_edges_and_vertices_subgraphs.h"
-
+#include "save_custom_and_selectable_edges_and_vertices_graph_to_dot.h"
+#include "load_directed_custom_and_selectable_edges_and_vertices_graph_from_dot.h"
+#include "find_first_custom_edge_with_my_edge.h"
+#include "find_first_custom_vertex_with_my_vertex.h"
+#include "get_my_custom_edge.h"
+#include "get_my_custom_edges.h"
+#include "select_random_vertex.h"
 
 int ribi::cmap::CountCenterNodes(const ConceptMap& c) noexcept
 {
@@ -53,24 +59,31 @@ std::vector<ribi::cmap::ConceptMap> ribi::cmap::CreateDirectNeighbourConceptMaps
   return create_all_direct_neighbour_custom_and_selectable_edges_and_vertices_subgraphs(c);
 }
 
-
 ribi::cmap::ConceptMap ribi::cmap::DotToConceptMap(const std::string& s)
 {
-  std::stringstream f;
-  f << s;
-  ConceptMap g;
-  boost::dynamic_properties dp(boost::ignore_other_properties);
-  dp.property("label", get(boost::vertex_custom_type, g));
-  dp.property("regular", get(boost::vertex_is_selected, g));
-  dp.property("label", get(boost::edge_custom_type, g));
-  dp.property("regular", get(boost::edge_is_selected, g));
-  boost::read_graphviz(f,g,dp);
-  return g;
+  const std::string temp_filename{FileIo().GetTempFileName(".dot")};
+  {
+    std::ofstream f(temp_filename);
+    f << s;
+  }
+  ConceptMap c = LoadFromFile(temp_filename);
+  FileIo().DeleteFile(temp_filename);
+  return c;
 }
 
-std::vector<ribi::cmap::Node>::const_iterator ribi::cmap::FindCenterNode(const ConceptMap& c) noexcept
+ribi::cmap::VertexDescriptor ribi::cmap::FindCenterNode(const ConceptMap& g) noexcept
 {
-  return FindCenterNode(GetNodes(c));
+  using vd = VertexDescriptor;
+  const auto vip = vertices(g);
+  const auto i = std::find_if(
+    vip.first, vip.second,
+    [g](const vd d) {
+      const auto my_vertex_map = get(boost::vertex_custom_type, g);
+      return IsCenterNode(get(my_vertex_map, d));
+    }
+  );
+  assert(i != vip.second);
+  return *i;
 }
 
 ribi::cmap::EdgeDescriptor ribi::cmap::FindEdge(
@@ -78,16 +91,7 @@ ribi::cmap::EdgeDescriptor ribi::cmap::FindEdge(
   const ConceptMap& g
 ) noexcept
 {
-  const auto eip = edges(g);
-  const auto i = std::find_if(
-    eip.first, eip.second,
-    [edge,g](const EdgeDescriptor d) {
-      const auto my_edges_map = get(boost::edge_custom_type, g);
-      return get(my_edges_map, d) == edge;
-    }
-  );
-  assert(i != eip.second);
-  return *i;
+  return find_first_custom_edge_with_my_edge(edge, g);
 }
 
 ribi::cmap::VertexDescriptor ribi::cmap::FindNode(
@@ -95,29 +99,17 @@ ribi::cmap::VertexDescriptor ribi::cmap::FindNode(
   const ConceptMap& g
 ) noexcept
 {
-  const auto vip = vertices(g);
-  const auto i = std::find_if(
-    vip.first, vip.second,
-    [node,g](const VertexDescriptor d) {
-      const auto my_vertices_map = get(boost::vertex_custom_type, g);
-      return get(my_vertices_map, d) == node;
-    }
-  );
-  assert(i != vip.second);
-  return *i;
+  return find_first_custom_vertex_with_my_vertex(node, g);
 }
 
-ribi::cmap::Edge ribi::cmap::GetEdge(const ribi::cmap::EdgeDescriptor vd, const ribi::cmap::ConceptMap& g) noexcept
+ribi::cmap::Edge ribi::cmap::GetEdge(const ribi::cmap::EdgeDescriptor ed, const ribi::cmap::ConceptMap& g) noexcept
 {
-  const auto my_custom_edges_map
-    = get(boost::edge_custom_type,
-      g
-    );
-  return get(my_custom_edges_map, vd);
+  return get_my_custom_edge(ed, g);
 }
 
 std::vector<ribi::cmap::Edge> ribi::cmap::GetEdges(const ConceptMap& c) noexcept
 {
+  //return get_my_custom_edges(c);
   const auto eip = edges(c);
   std::vector<Edge> v(boost::num_edges(c));
   std::transform(eip.first,eip.second,std::begin(v),
@@ -154,22 +146,19 @@ ribi::cmap::Node ribi::cmap::GetFrom(const EdgeDescriptor ed, const ConceptMap& 
 
 ribi::cmap::Node ribi::cmap::GetNode(const ribi::cmap::VertexDescriptor vd, const ribi::cmap::ConceptMap& g) noexcept
 {
-  const auto my_custom_vertexes_map
-    = get(boost::vertex_custom_type,
-      g
-    );
-  return get(my_custom_vertexes_map, vd);
+  return get_my_custom_vertex(vd, g);
 }
 
 std::vector<ribi::cmap::Node> ribi::cmap::GetNodes(const ConceptMap& c) noexcept
 {
+  //return get_my_custom_vertexes(g);
+
   const auto vip = vertices(c);
   std::vector<Node> v(boost::num_vertices(c));
   std::transform(vip.first,vip.second,std::begin(v),
     [c](const VertexDescriptor& d)
     {
-      const auto vertex_map = get(boost::vertex_custom_type, c);
-      return get(vertex_map, d);
+      return get_my_custom_vertex(d, c);
     }
   );
   return v;
@@ -213,22 +202,14 @@ bool ribi::cmap::HasCenterNode(const ConceptMap& c) noexcept
 
 ribi::cmap::ConceptMap ribi::cmap::LoadFromFile(const std::string& dot_filename)
 {
-  assert(ribi::FileIo().IsRegularFile(dot_filename));
-  std::ifstream f(dot_filename);
-  ConceptMap g;
-  boost::dynamic_properties dp(boost::ignore_other_properties);
-  dp.property("label", get(boost::vertex_custom_type, g));
-  dp.property("regular", get(boost::vertex_is_selected, g));
-  dp.property("label", get(boost::edge_custom_type, g));
-  dp.property("regular", get(boost::edge_is_selected, g));
-  boost::read_graphviz(f,g,dp);
-  return g;
+  return load_directed_custom_and_selectable_edges_and_vertices_graph_from_dot<
+    decltype(ConceptMap())
+  >(dot_filename);
 }
 
 void ribi::cmap::SaveToFile(const ConceptMap& g, const std::string& dot_filename)
 {
-  std::ofstream f(dot_filename);
-  f << ToDot(g);
+  save_custom_and_selectable_edges_and_vertices_graph_to_dot(g, dot_filename);
 }
 
 void ribi::cmap::SaveSummaryToFile(const ConceptMap& g, const std::string& dot_filename)
@@ -253,40 +234,33 @@ void ribi::cmap::SaveSummaryToFile(const ConceptMap& g, const std::string& dot_f
   );
 }
 
-ribi::cmap::ConceptMap ribi::cmap::SelectRandomNode(ConceptMap g) noexcept
+void ribi::cmap::SelectRandomNode(
+  ConceptMap& g,
+  std::mt19937& rng_engine
+) noexcept
 {
-  assert(boost::num_vertices(g) > 0);
-  const int n{static_cast<int>(boost::num_vertices(g))};
-  const int i{std::rand() % n};
-  auto vdi = vertices(g).first;
-  for (int j=0; j!=i; ++j, ++vdi) {}
-  const auto pmap = get(boost::vertex_is_selected,g);
-  put(pmap,*vdi,true);
-  return g;
+  select_random_vertex(g, rng_engine);
 }
 
 std::string ribi::cmap::ToDot(const ConceptMap& g) noexcept
 {
-  std::stringstream f;
-  boost::write_graphviz(f, g,
-    make_custom_and_selectable_vertices_writer(
-      get(boost::vertex_custom_type,g),
-      get(boost::vertex_is_selected,g)
-    ),
-    make_custom_and_selectable_vertices_writer(
-      get(boost::edge_custom_type,g),
-      get(boost::edge_is_selected,g)
-    )
-  );
-  return f.str();
+  const std::string temp_filename{FileIo().GetTempFileName(".dot")};
+  SaveToFile(g, temp_filename);
+  std::stringstream s;
+  s << FileIo().FileToStr(temp_filename);
+  return s.str();
 }
 
 std::string ribi::cmap::ToXml(const ConceptMap& conceptmap) noexcept
 {
- std::stringstream s;
-  s << "<conceptmap>";
-  s << ToDot(conceptmap);
-  s << "</conceptmap>";
+  const std::string temp_filename{FileIo().GetTempFileName(".dot")};
+  SaveToFile(conceptmap, temp_filename);
+  std::stringstream s;
+  s << "<conceptmap>"
+    << FileIo().FileToStr(temp_filename) // << ToDot(conceptmap);
+    << "</conceptmap>"
+  ;
+  FileIo().DeleteFile(temp_filename);
   const std::string r = s.str();
   assert(r.size() >= 13);
   assert(r.substr(0,12) == "<conceptmap>");
@@ -353,7 +327,8 @@ ribi::cmap::ConceptMap ribi::cmap::XmlToConceptMap(const std::string& s)
     const std::string dot_str{
       ribi::xml::StripXmlTag(v[0])
     };
-    conceptmap = DotToConceptMap(dot_str);
+
+    conceptmap = LoadFromFile(dot_str); //DotToConceptMap();
   }
   return conceptmap;
 }
