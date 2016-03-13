@@ -385,9 +385,9 @@ bool ribi::cmap::DoubleCheckEdgesAndNodes(
   const auto g = qtconceptmap.GetConceptMap();
   const auto n_nodes = static_cast<int>(boost::num_vertices(g));
   const auto n_edges = static_cast<int>(boost::num_edges(g));
+  #ifndef NDEBUG
   const auto n_qtnodes = CountQtNodes(qtconceptmap.GetScene());
   const auto n_qtedges = CountQtEdges(qtconceptmap.GetScene());
-  #ifndef NDEBUG
   if (n_nodes != n_qtnodes)
   {
     TRACE(n_nodes);
@@ -415,9 +415,9 @@ bool ribi::cmap::DoubleCheckSelectedEdgesAndNodes(
   const auto g = qtconceptmap.GetConceptMap();
   const auto n_selected_nodes = count_vertices_with_selectedness(true,g);
   const auto n_selected_edges = count_edges_with_selectedness(true,g);
+  #ifndef NDEBUG
   const auto n_selected_qtnodes = CountSelectedQtNodes(qtconceptmap.GetScene());
   const auto n_selected_qtedges = CountSelectedQtEdges(qtconceptmap.GetScene());
-  #ifndef NDEBUG
   if (n_selected_nodes != n_selected_qtnodes) {
     TRACE(n_selected_nodes);
     TRACE(n_selected_qtnodes);

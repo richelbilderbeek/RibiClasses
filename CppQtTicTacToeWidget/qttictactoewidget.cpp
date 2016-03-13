@@ -63,7 +63,7 @@ ribi::tictactoe::QtTicTacToeWidget::QtTicTacToeWidget(
 
   {
     QTimer * const timer = new QTimer(this);
-    QObject::connect(timer,&QTimer::timeout,this,&ribi::tictactoe::QtTicTacToeWidget::OnTimer);
+    QObject::connect(timer,SIGNAL(timeout()),this,SLOT(OnTimer()));
     timer->setInterval(1000);
     timer->start();
   }

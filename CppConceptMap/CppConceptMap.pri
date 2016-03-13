@@ -2,9 +2,6 @@ INCLUDEPATH += \
     ../RibiClasses/CppConceptMap
 
 
-OTHER_FILES += \
-    ../RibiClasses/CppConceptMap/Licence.txt
-
 HEADERS += \
     ../RibiClasses/CppConceptMap/conceptmapcenternodefactory.h \
     ../RibiClasses/CppConceptMap/conceptmapcompetencies.h \
@@ -22,7 +19,7 @@ HEADERS += \
     ../RibiClasses/CppConceptMap/conceptmap.h \
     ../RibiClasses/CppConceptMap/conceptmaphelper.h \
     ../RibiClasses/CppConceptMap/conceptmapnodefactory.h \
-    $PWD/conceptmapnode.h \
+    $$PWD/conceptmapnode.h \
     ../RibiClasses/CppConceptMap/conceptmapregex.h \
     ../RibiClasses/CppConceptMap/conceptmapgraphtypes.h \
     ../RibiClasses/CppConceptMap/conceptmapexamplevertexinvariant.h \
