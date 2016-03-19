@@ -2,12 +2,10 @@ INCLUDEPATH += \
     ../RibiClasses/CppFileIo
 
 SOURCES += \
-    ../RibiClasses/CppFileIo/fileio.cpp \
-    ../RibiClasses/CppFileIo/filename.cpp
+    ../RibiClasses/CppFileIo/fileio.cpp
 
 HEADERS += \
-    ../RibiClasses/CppFileIo/fileio.h \
-    ../RibiClasses/CppFileIo/filename.h
+    ../RibiClasses/CppFileIo/fileio.h
 
 OTHER_FILES += \
     ../RibiClasses/CppFileIo/Licence.txt

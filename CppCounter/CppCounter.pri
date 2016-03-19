@@ -2,8 +2,7 @@ INCLUDEPATH += \
     ../RibiClasses/CppCounter
 
 SOURCES += \
-    ../RibiClasses/CppCounter/counter.cpp \
-    ../RibiClasses/CppCounter/counter_test.cpp
+    ../RibiClasses/CppCounter/counter.cpp
 
 HEADERS  += \
     ../RibiClasses/CppCounter/counter.h

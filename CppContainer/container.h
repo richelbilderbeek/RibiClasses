@@ -164,11 +164,6 @@ struct Container
 
   ///Convert a std::string to uppercase
   std::string ToUpper(std::string s) const;
-
-  private:
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 };
 
 using container = Container;

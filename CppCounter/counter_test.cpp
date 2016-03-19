@@ -18,61 +18,50 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppCounter.htm
 //---------------------------------------------------------------------------
-#ifndef NDEBUG
-
 #include "counter.h"
-
-#include <cassert>
-
-#include "testtimer.h"
+#include <boost/test/unit_test.hpp>
+#include "container.h"
 #include "trace.h"
 
-void ribi::Counter::Test() noexcept
+BOOST_AUTO_TEST_CASE(counter_test)
 {
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
+  using ribi::Counter;
   const bool verbose{false};
   if (verbose) { TRACE("Default-construction must have value zero"); }
   {
     const Counter c;
-    assert(c.Get() == 0);
+    BOOST_CHECK(c.Get() == 0);
   }
   if (verbose) { TRACE("Construction with value must return it"); }
   {
     const Counter c(42);
-    assert(c.Get() == 42);
+    BOOST_CHECK(c.Get() == 42);
   }
   if (verbose) { TRACE("Increment must increment"); }
   {
     Counter c;
     const int old_value = c.Get();
     c.Inc();
-    assert(c.Get() == old_value + 1);
+    BOOST_CHECK(c.Get() == old_value + 1);
   }
   if (verbose) { TRACE("operator++ must increment"); }
   {
     Counter c;
     const int old_value = c.Get();
     ++c;
-    assert(c.Get() == old_value + 1);
+    BOOST_CHECK(c.Get() == old_value + 1);
   }
   if (verbose) { TRACE("operator=="); }
   {
     Counter c;
     Counter d;
-    assert(c == d);
+    BOOST_CHECK(c == d);
   }
   if (verbose) { TRACE("operator!="); }
   {
     Counter c;
     Counter d;
     ++c;
-    assert(c != d);
+    BOOST_CHECK(c != d);
   }
 }
-#endif
-

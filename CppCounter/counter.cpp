@@ -27,9 +27,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 ribi::Counter::Counter(const int initial_count) noexcept
   : m_count(initial_count), m_verbosity{false}
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
+
 }
 
 std::string ribi::Counter::GetVersion() noexcept

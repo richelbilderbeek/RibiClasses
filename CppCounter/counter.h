@@ -65,10 +65,6 @@ struct Counter
   int m_count;
 
   bool m_verbosity;
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 };
 
 bool operator==(const Counter& lhs, const Counter& rhs) noexcept;
