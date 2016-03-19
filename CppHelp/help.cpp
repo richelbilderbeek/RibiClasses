@@ -35,23 +35,24 @@ ribi::Help::Option::Option(
     m_long(option_long),
     m_description(option_description)
 {
-  #ifndef NDEBUG
   const int max_chars_per_line = 80;
   const int chars_for_padding = 7;
   const int max_chars = max_chars_per_line - chars_for_padding;
   const int chars_used = static_cast<int>(1 + m_long.size() + m_description.size());
   if (chars_used > max_chars)
   {
-    TRACE("ERROR");
-    TRACE(chars_used);
-    TRACE(max_chars);
-    TRACE(option_short);
-    TRACE(option_long);
-    TRACE(option_description);
+    std::stringstream msg;
+    msg << __func__ << ": "
+      << "options must be kept short to fit on a line, "
+      << "please shorten the description and/or long option. "
+      << "max_chars: " << max_chars << ", "
+      << "chars_used: " << chars_used << ", "
+      << "option_short: " << option_short << ", "
+      << "option_long: " << option_long << ", "
+      << "option_description: " << option_description
+    ;
+    throw std::invalid_argument(msg.str());
   }
-  assert(chars_used <= max_chars && "Options must be kept short to fit on a line");
-  //os << "-" << p.m_short << ", --" << p.m_long << "  " << p.m_description << '\n';
-  #endif
 }
 
 
@@ -63,11 +64,9 @@ ribi::Help::Help(
   : m_example_uses(example_uses),
     m_options(AddDefaultOptions(options)),
     m_program_description(program_description),
-    m_program_name(program_name)
+    m_program_name(program_name
+)
 {
-  #ifndef NDEBUG
-  Test();
-
   //checks if there are no short or long option occurring twice
   const std::size_t sz = m_options.size();
   for (std::size_t i=0; i!=sz-1; ++i)
@@ -77,23 +76,30 @@ ribi::Help::Help(
     {
       assert(j < m_options.size());
       const Option& b { m_options[j] };
-      if (a.m_short == b.m_short
-        || a.m_long == b.m_long)
+      if (a.m_short == b.m_short)
       {
-        TRACE(a.m_short);
-        TRACE(a.m_long);
-        TRACE(a.m_description);
-        TRACE(b.m_short);
-        TRACE(b.m_long);
-        TRACE(b.m_description);
+        std::stringstream msg;
+        msg
+          << __func__ << ": "
+          << "Every short option must be unique, "
+          << "supplied short option was '" << a.m_short
+          << "'"
+        ;
+        throw std::invalid_argument(msg.str());
       }
-      assert(a.m_short != b.m_short
-        && "Every short option must be unique");
-      assert(a.m_long != b.m_long
-        && "Every long option must be unique");
+      if (a.m_long == b.m_long)
+      {
+        std::stringstream msg;
+        msg
+          << __func__ << ": "
+          << "Every long option must be unique, "
+          << "supplied long option was '" << a.m_long
+          << "'"
+        ;
+        throw std::invalid_argument(msg.str());
+      }
     }
   }
-  #endif
 }
 
 const std::vector<ribi::Help::Option> ribi::Help::AddDefaultOptions(const std::vector<Option>& options)
@@ -141,18 +147,28 @@ const std::vector<ribi::Help::Option> ribi::Help::AddDefaultOptions(const std::v
     std::end(w),
     [](const Option& lhs, const Option& rhs)
       {
-        #ifndef NDEBUG
-        if (lhs.m_short == rhs.m_short
-          || lhs.m_long == rhs.m_long)
+        if (lhs.m_short == rhs.m_short)
         {
-          TRACE(lhs.m_short);
-          TRACE(lhs.m_long);
-          TRACE(lhs.m_description);
-          TRACE(rhs.m_short);
-          TRACE(rhs.m_long);
-          TRACE(rhs.m_description);
+          std::stringstream msg;
+          msg
+            << __func__ << ": "
+            << "Every short option must be unique, "
+            << "supplied short option was '" << lhs.m_short
+            << "'"
+          ;
+          throw std::invalid_argument(msg.str());
         }
-        #endif
+        if (lhs.m_long == rhs.m_long)
+        {
+          std::stringstream msg;
+          msg
+            << __func__ << ": "
+            << "Every long option must be unique, "
+            << "supplied long option was '" << lhs.m_long
+            << "'"
+          ;
+          throw std::invalid_argument(msg.str());
+        }
         assert(lhs.m_short != rhs.m_short
           && "Every short option must be unique");
         assert(lhs.m_long != rhs.m_long
@@ -166,28 +182,17 @@ const std::vector<ribi::Help::Option> ribi::Help::AddDefaultOptions(const std::v
 
 std::string ribi::Help::GetVersion() noexcept
 {
-  return "1.1";
+  return "1.2";
 }
 
 std::vector<std::string> ribi::Help::GetVersionHistory() noexcept
 {
   return {
     "201x-xx-xx: Version 1.0: initial version",
-    "2014-02-27: Version 1.1: started versioning"
+    "2014-02-27: Version 1.1: started versioning",
+    "2016-03-19: Version 1.2: use of Boost.Test",
   };
 }
-
-#ifndef NDEBUG
-void ribi::Help::Test() noexcept
-{
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
-}
-#endif
 
 std::ostream& ribi::operator<<(std::ostream& os, const Help& help)
 {
@@ -209,4 +214,12 @@ std::ostream& ribi::operator<<(std::ostream& os, const Help& help)
     os << "  " << s << '\n';
   }
   return os;
+}
+
+bool ribi::operator==(const Help::Option& lhs, const Help::Option& rhs) noexcept
+{
+  return lhs.m_short == rhs.m_short
+    && lhs.m_long == rhs.m_long
+    && lhs.m_description == rhs.m_description
+  ;
 }

@@ -49,6 +49,9 @@ struct Help
     const std::vector<std::string> example_uses
   );
 
+  /// Add the default options
+  static const std::vector<Option> AddDefaultOptions(const std::vector<Option>& options);
+
   const std::vector<std::string>& GetExampleUses() const noexcept { return m_example_uses; }
   const std::vector<Option>& GetOptions() const noexcept { return  m_options; }
   const std::string& GetProgramDescription() const noexcept { return  m_program_description; }
@@ -56,10 +59,6 @@ struct Help
 
   static std::string GetVersion() noexcept;
   static std::vector<std::string> GetVersionHistory() noexcept;
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 
   private:
 
@@ -73,10 +72,9 @@ struct Help
   //ProjectRichelBilderbeek
   const std::string m_program_name;
 
-  static const std::vector<Option> AddDefaultOptions(const std::vector<Option>& options);
-
 };
 
+bool operator==(const Help::Option& lhs, const Help::Option& rhs) noexcept;
 std::ostream& operator<<(std::ostream& os, const Help& help);
 
 } //~namespace ribi

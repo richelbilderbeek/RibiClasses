@@ -52,7 +52,7 @@ BOOST_AUTO_TEST_CASE(ribi_about_test)
   BOOST_CHECK(about.GetProgrammedAt() == programmed_on);
   BOOST_CHECK(about.GetYears() == years);
   BOOST_CHECK(about.GetUrl() == url);
-  BOOST_CHECK(about.GetVe rsion() == version);
+  BOOST_CHECK(about.GetVersion() == version);
   BOOST_CHECK(about.GetVersionHistory() == version_history);
 
 }
