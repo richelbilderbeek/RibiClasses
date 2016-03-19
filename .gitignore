@@ -28,3 +28,6 @@
 *.app
 *.autosafe
 *.autosave
+*.pro.user
+Makefile
+RibiClassesTest

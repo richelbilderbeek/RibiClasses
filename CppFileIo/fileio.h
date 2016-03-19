@@ -200,18 +200,12 @@ struct FileIo
   //From http://www.richelbilderbeek.nl/CppSimplifyPath.htm
   std::string SimplifyPath(const std::string& s) const noexcept;
 
-
   ///Convert a std::vector to a file
   void VectorToFile(
     const std::vector<std::string>& v,
     const std::string& filename,
     const CopyMode copy_mode = CopyMode::prevent_overwrite
   ) const;
-
-  private:
-  #ifndef NDEBUG
-  void Test() noexcept;
-  #endif
 };
 
 } //~namespace fileio
