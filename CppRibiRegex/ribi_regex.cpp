@@ -37,9 +37,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ribi::Regex::Regex()
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
 }
 
 std::vector<std::string>
@@ -113,14 +110,15 @@ std::string ribi::Regex::GetRegexShapes() const noexcept
 
 std::string ribi::Regex::GetVersion() noexcept
 {
-  return "1.1";
+  return "1.2";
 }
 
 std::vector<std::string> ribi::Regex::GetVersionHistory() noexcept
 {
   return {
     "2014-06-19: Version 1.0: initial version",
-    "2014-01-02: Version 1.1: added GetRegexDutchFloat"
+    "2014-01-02: Version 1.1: added GetRegexDutchFloat",
+    "2016-03-19: Version 1.2: use of Boost.Test"
   };
 }
 
@@ -136,69 +134,3 @@ bool ribi::Regex::IsValidXpressive(const std::string& regex_str) const noexcept
   }
   return true;
 }
-
-#ifndef NDEBUG
-void ribi::Regex::Test() noexcept
-{
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  Regex r;
-  const TestTimer test_timer(__func__,__FILE__,1.0);
-  const bool verbose{false};
-
-  if (verbose) { TRACE("GetRegexMatches, plain, on Dutch postal codes"); }
-  {
-    const std::string s = "In the Netherlands, 1234 AB and 2345 BC are valid zip codes";
-    std::vector<std::string> expected;
-    expected.push_back("1234 AB");
-    expected.push_back("2345 BC");
-    {
-      const std::string r = "(\\d{4} [A-Z]{2})";
-      assert(Regex().GetRegexMatches(s,(r.c_str())) == expected);
-    }
-  }
-  if (verbose) { TRACE("GetRegexMatches, plain, XML"); }
-  {
-    const std::string s = "<concept><name>Concept with examples</name><example>Example 1</example><example>Example 2</example><example>Example 3</example></concept>";
-    const std::vector<std::string> expected {
-      "<example>Example 1</example>",
-      "<example>Example 2</example>",
-      "<example>Example 3</example>"
-    };
-    const std::string regex_str = "(<example>.*?</example>)";
-    assert(r.GetRegexMatches(s,regex_str) == expected);
-  }
-  if (verbose) { TRACE("GetRegexMatches on GetRegexDutchPostalCode"); }
-  {
-    const std::string s = "Both '1234 AB' and '9999 ZZ' are valid Dutch zip codes";
-    const std::string t = r.GetRegexDutchPostalCode();
-    const auto v = r.GetRegexMatches(s,t);
-    //const auto w = r.GetRegexMatchesQRegExp(s,t);
-    const auto x = r.GetRegexMatchesXpressive(s,t);
-    assert(v.size() == 2);
-    //assert(v == w);
-    assert(v == x);
-  }
-  if (verbose) { TRACE("GetRegexMatches on GetRegexShapes"); }
-  {
-    const std::string s = "POLYGON((0 0,0 1,1 0)),LINESTRING(0 0,0 1,1 0)";
-    const std::string t = r.GetRegexShapes();
-    const auto v = r.GetRegexMatches(s,t);
-    assert(v.size() == 2);
-    assert(v[0] == "POLYGON((0 0,0 1,1 0))");
-    assert(v[1] == "LINESTRING(0 0,0 1,1 0)");
-    //const auto w = r.GetRegexMatchesQRegExp(s,t);
-    const auto x = r.GetRegexMatchesXpressive(s,t);
-    //assert(v == w);
-    assert(v == x);
-  }
-  if (verbose) { TRACE("GetRegexDutchFloat"); }
-  {
-    assert( r.GetRegexMatches("1.23",r.GetRegexDutchFloat()).empty());
-    assert(!r.GetRegexMatches("1,23",r.GetRegexDutchFloat()).empty());
-  }
-}
-#endif

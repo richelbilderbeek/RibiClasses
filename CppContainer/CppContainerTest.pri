@@ -1,2 +1,2 @@
 SOURCES += \
-    ../RibiClasses/CppContainer/container_test.cpp
+    $$PWD/container_test.cpp

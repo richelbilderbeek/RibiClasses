@@ -65,12 +65,6 @@ struct Regex
 
   bool IsValidXpressive(const std::string& regex_str) const noexcept;
   bool IsValid(const std::string& regex_str) const noexcept { return IsValidXpressive(regex_str); }
-
-  private:
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 };
 
 } //~namespace ribi
