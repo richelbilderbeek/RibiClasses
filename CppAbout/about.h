@@ -98,6 +98,9 @@ struct About
   ///Obtain the version of this class
   const std::string& GetVersion() const noexcept { return m_version; }
 
+  ///Obtain the version history of this class
+  const std::vector<std::string>& GetVersionHistory() const noexcept { return m_version_history; }
+
   private:
 
   ///The author of this class
