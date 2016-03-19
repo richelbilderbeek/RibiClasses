@@ -17,7 +17,8 @@ include(../RibiClasses/CppFuzzy_equal_to/CppFuzzy_equal_to.pri)
 include(../RibiClasses/CppFuzzy_equal_to/CppFuzzy_equal_toTest.pri)
 #include(../RibiClasses/CppPlane/CppPlane.pri)
 #include(../RibiClasses/CppRibiRegex/CppRibiRegex.pri)
-#include(../RibiClasses/CppXml/CppXml.pri)
+include(../RibiClasses/CppXml/CppXml.pri)
+include(../RibiClasses/CppXml/CppXmlTest.pri)
 
 
 SOURCES += main_test.cpp

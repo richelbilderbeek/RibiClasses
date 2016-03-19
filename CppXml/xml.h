@@ -34,6 +34,26 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 namespace ribi {
 namespace xml {
 
+//From http://www.richelbilderbeek.nl/CppCanLexicalCast.htm
+template <class TargetType, class SourceType>
+bool CanLexicalCast(const SourceType& from)
+{
+  try
+  {
+    boost::lexical_cast<TargetType>(from);
+  }
+  catch (boost::bad_lexical_cast)
+  {
+    return false;
+  }
+  catch (...)
+  {
+    assert(!"Something unexpected happened");
+    throw;
+  }
+  return true;
+}
+
 std::string GetVersion() noexcept;
 std::vector<std::string> GetVersionHistory() noexcept;
 
@@ -308,11 +328,6 @@ std::string StripXmlTag(const std::string& s);
 //{
 //  return ToXml(tag_name,content);
 //}
-
-
-#ifndef NDEBUG
-void Test() noexcept;
-#endif
 
 ///Convert a std::vector to single-line XML
 ///For example, a std::vector with elements {"cat","dog"} and name "animals" becomes
