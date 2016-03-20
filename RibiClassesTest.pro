@@ -21,7 +21,10 @@ include(../RibiClasses/CppRibiRegex/CppRibiRegexTest.pri)
 include(../RibiClasses/CppXml/CppXml.pri)
 include(../RibiClasses/CppXml/CppXmlTest.pri)
 
-
 SOURCES += main_test.cpp
 
 LIBS += -lboost_unit_test_framework
+
+# gcov
+QMAKE_CXXFLAGS += -fprofile-arcs -ftest-coverage
+LIBS += -lgcov

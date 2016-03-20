@@ -5,6 +5,7 @@ compiler: gcc
 before_install:
   - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
   - sudo apt-get update -qq
+  - sudo pip install codecov
 
 addons:
   apt:
@@ -16,9 +17,11 @@ addons:
     - g++-5
     - libboost1.55-all-dev
 
-
 install: 
   - sudo apt-get install -qq g++-5
 
 script: 
   - ./build.sh
+
+after_success: 
+  - codecov
