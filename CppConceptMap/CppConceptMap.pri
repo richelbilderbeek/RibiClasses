@@ -1,7 +1,6 @@
 INCLUDEPATH += \
     ../RibiClasses/CppConceptMap
 
-
 HEADERS += \
     $$PWD/conceptmapcenternodefactory.h \
     $$PWD/conceptmapcompetencies.h \

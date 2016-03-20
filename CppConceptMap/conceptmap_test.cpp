@@ -67,108 +67,129 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include <boost/test/unit_test.hpp>
 
+BOOST_AUTO_TEST_CASE(ribi_concept_map_is_copy_constructable)
+{
+  using namespace ribi::cmap;
+  const ConceptMap a;
+  const ConceptMap b(a);
+  BOOST_CHECK(a == b);
+}
+
+BOOST_AUTO_TEST_CASE(ribi_concept_map_operator_is_equal)
+{
+  using namespace ribi::cmap;
+  const ConceptMap a = ConceptMapFactory().GetTest(1);
+  const ConceptMap b = ConceptMapFactory().GetTest(2);
+  BOOST_CHECK(a != b);
+  ConceptMap c(a);
+  BOOST_CHECK(c == a);
+  BOOST_CHECK(c != b);
+  c = b;
+  BOOST_CHECK(c != a);
+  BOOST_CHECK(c == b);
+}
+
+BOOST_AUTO_TEST_CASE(ribi_concept_map_load_node)
+{
+  using namespace ribi::cmap;
+  const std::string s{
+    "<node><concept><name>A</name><examples></examples><concept_is_complex>1</concept_is_complex><complexity>-1</complexity><concreteness>-1</concreteness><specificity>-1</specificity></concept><x>0</x><y>0</y><is_center_node>0</is_center_node></node>"
+  };
+  std::stringstream t;
+  t << s;
+  Node n;
+  t >> n;
+  BOOST_CHECK(n.GetConcept().GetName() == "A");
+  BOOST_CHECK(ToXml(n) == s);
+  ConceptMap g;
+  const auto vd = boost::add_vertex(g);
+  const auto pmap = get(boost::vertex_custom_type, g);
+  put(pmap, vd, n);
+  const std::string d{ToDot(g)};
+  const std::string dot{
+    "digraph G {\n"
+    "0[label=\"<node><concept><name>A</name><examples></examples><concept_is_complex>1</concept_is_complex><complexity>-1</complexity><concreteness>-1</concreteness><specificity>-1</specificity></concept><x>0</x><y>0</y><is_center_node>0</is_center_node></node>\", regular=\"0\"];\n"
+    "}\n"
+  };
+  if (d != dot)
+  {
+    TRACE(d);
+  }
+  BOOST_CHECK(d == dot); //
+  ConceptMap c{DotToConceptMap(dot)};
+  BOOST_CHECK(boost::num_edges(c) == 0);
+  BOOST_CHECK(boost::num_vertices(c) == 1);
+}
+
+BOOST_AUTO_TEST_CASE(ribi_concept_map_dot_conversion)
+{
+  using namespace ribi::cmap;
+  for (ConceptMap c: ConceptMapFactory().GetAllTests())
+  {
+    const std::string dot{ToDot(c)};
+    ConceptMap d{DotToConceptMap(dot)};
+    BOOST_CHECK(c == d);
+    const std::string dot2{ToDot(d)};
+    BOOST_CHECK(dot == dot2);
+  }
+}
+
+BOOST_AUTO_TEST_CASE(ribi_concept_map_xml_conversion)
+{
+  using namespace ribi::cmap;
+  for (ConceptMap c: ConceptMapFactory().GetAllTests())
+  {
+    const std::string xml{ToXml(c)};
+    ConceptMap d{XmlToConceptMap(xml)};
+    BOOST_CHECK(c == d);
+    const std::string xml2{ToXml(d)};
+    BOOST_CHECK(xml == xml2);
+  }
+}
+
+BOOST_AUTO_TEST_CASE(ribi_concept_map_streaming_empty_graph)
+{
+  using namespace ribi::cmap;
+  ConceptMap a;
+  std::stringstream s;
+  s << a;
+  ConceptMap b;
+  s >> b;
+  BOOST_CHECK(a == b);
+}
+
+BOOST_AUTO_TEST_CASE(ribi_concept_map_simple_dot_to_concept_map)
+{
+  using namespace ribi::cmap;
+  std::string s{
+    "digraph G {\n"
+    "0[label=\"<node><concept><name>A</name><examples></examples><concept_is_complex>1</concept_is_complex><complexity>-1</complexity><concreteness>-1</concreteness><specificity>-1</specificity></concept><x>0</x><y>0</y><is_center_node>0</is_center_node></node>\", regular=\"0\"];\n"
+    "}\n"
+  };
+  {
+    std::ofstream f("tmp.dot");
+    f << s;
+  }
+  ConceptMap c = DotToConceptMap(s);
+  BOOST_CHECK(s == ToDot(c));
+}
+
+BOOST_AUTO_TEST_CASE(ribi_concept_map_stream_single_object)
+{
+  using namespace ribi::cmap;
+  ConceptMap a{ConceptMapFactory().GetTest(1)};
+  std::stringstream s;
+  s << a;
+  ConceptMap b;
+  s >> b;
+  BOOST_CHECK(a == b);
+}
+
 BOOST_AUTO_TEST_CASE(ribi_concept_map_test)
 {
   using namespace ribi::cmap;
   const bool verbose{false};
 
-  if (verbose) { TRACE("Copy constructable"); }
-  {
-    const ConceptMap a;
-    const ConceptMap b(a);
-    BOOST_CHECK(a == b);
-  }
-  if (verbose) { TRACE("operator=="); }
-  {
-    const ConceptMap a = ConceptMapFactory().GetTest(1);
-    const ConceptMap b = ConceptMapFactory().GetTest(2);
-    BOOST_CHECK(a != b);
-    ConceptMap c(a);
-    BOOST_CHECK(c == a);
-    BOOST_CHECK(c != b);
-    c = b;
-    BOOST_CHECK(c != a);
-    BOOST_CHECK(c == b);
-  }
-  //Load Node
-  {
-    const std::string s{
-      "<node><concept><name>A</name><examples></examples><concept_is_complex>1</concept_is_complex><complexity>-1</complexity><concreteness>-1</concreteness><specificity>-1</specificity></concept><x>0</x><y>0</y><is_center_node>0</is_center_node></node>"
-    };
-    std::stringstream t;
-    t << s;
-    Node n;
-    t >> n;
-    BOOST_CHECK(n.GetConcept().GetName() == "A");
-    BOOST_CHECK(ToXml(n) == s);
-    ConceptMap g;
-    const auto vd = boost::add_vertex(g);
-    const auto pmap = get(boost::vertex_custom_type, g);
-    put(pmap, vd, n);
-    const std::string d{ToDot(g)};
-    const std::string dot{
-      "digraph G {\n"
-      "0[label=\"<node><concept><name>A</name><examples></examples><concept_is_complex>1</concept_is_complex><complexity>-1</complexity><concreteness>-1</concreteness><specificity>-1</specificity></concept><x>0</x><y>0</y><is_center_node>0</is_center_node></node>\", regular=\"0\"];\n"
-      "}\n"
-    };
-    BOOST_CHECK(d == dot);
-    ConceptMap c{DotToConceptMap(dot)};
-    BOOST_CHECK(boost::num_edges(c) == 0);
-    BOOST_CHECK(boost::num_vertices(c) == 1);
-  }
-  if (verbose) { TRACE("Dot conversion"); }
-  {
-    for (ConceptMap c: ConceptMapFactory().GetAllTests())
-    {
-      const std::string dot{ToDot(c)};
-      ConceptMap d{DotToConceptMap(dot)};
-      BOOST_CHECK(c == d);
-      const std::string dot2{ToDot(d)};
-      BOOST_CHECK(dot == dot2);
-    }
-  }
-  if (verbose) { TRACE("XML conversion"); }
-  {
-    for (ConceptMap c: ConceptMapFactory().GetAllTests())
-    {
-      const std::string xml{ToXml(c)};
-      ConceptMap d{XmlToConceptMap(xml)};
-      BOOST_CHECK(c == d);
-      const std::string xml2{ToXml(d)};
-      BOOST_CHECK(xml == xml2);
-    }
-  }
-  if (verbose) { TRACE("Streaming: empty graph"); }
-  {
-    ConceptMap a;
-    std::stringstream s;
-    s << a;
-    ConceptMap b;
-    s >> b;
-    BOOST_CHECK(a == b);
-  }
-  {
-    std::string s{
-      "digraph G {\n"
-      "0[label=\"<node><concept><name>A</name><examples></examples><concept_is_complex>1</concept_is_complex><complexity>-1</complexity><concreteness>-1</concreteness><specificity>-1</specificity></concept><x>0</x><y>0</y><is_center_node>0</is_center_node></node>\", regular=\"0\"];\n"
-      "}\n"
-    };
-    {
-      std::ofstream f("tmp.dot");
-      f << s;
-    }
-    ConceptMap c = DotToConceptMap(s);
-    BOOST_CHECK(s == ToDot(c));
-  }
-  if (verbose) { TRACE("Streaming: single object"); }
-  {
-    ConceptMap a{ConceptMapFactory().GetTest(1)};
-    std::stringstream s;
-    s << a;
-    ConceptMap b;
-    s >> b;
-    BOOST_CHECK(a == b);
-  }
   if (verbose) { TRACE("Streaming: two objects"); }
   {
     const ConceptMap e = ConceptMapFactory().GetTest(1);
