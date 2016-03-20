@@ -132,10 +132,6 @@ struct Concept
   ///The rating of this Concept for specificity
   ///-1: not rated, 0: lowest, 2: highest
   int m_rating_specificity;
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 };
 
 std::string ToXml(const Concept& concept) noexcept;

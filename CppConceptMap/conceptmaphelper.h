@@ -151,11 +151,6 @@ double GetDistance(const double x1, const double y1, const double x2, const doub
 ///the Windows operating system, due to different line endings
 std::vector<std::string> SafeFileToVector(const std::string& filename) noexcept;
 
-#ifndef NDEBUG
-///Test the helper functions
-void TestHelperFunctions() noexcept;
-#endif
-
 ///Undo a Wordwrap
 std::string Unwordwrap(const std::vector<std::string>& v) noexcept;
 

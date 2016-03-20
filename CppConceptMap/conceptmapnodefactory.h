@@ -54,10 +54,6 @@ struct NodeFactory
   int GetNumberOfNastyTests() const noexcept;
   std::vector<Node> GetNastyTests() const noexcept;
   Node GetNastyTest(const int test) const noexcept;
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 };
 
 } //~namespace cmap

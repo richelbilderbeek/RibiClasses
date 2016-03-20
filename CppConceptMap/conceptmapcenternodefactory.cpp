@@ -47,9 +47,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ribi::cmap::CenterNodeFactory::CenterNodeFactory()
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
 }
 
 ribi::cmap::Node ribi::cmap::CenterNodeFactory::Create() const noexcept
@@ -139,40 +136,3 @@ ribi::cmap::Node ribi::cmap::CenterNodeFactory::GetNastyTest(const int test_inde
   return node;
 }
 
-#ifndef NDEBUG
-void ribi::cmap::CenterNodeFactory::Test() noexcept
-{
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  {
-    NodeFactory();
-    ConceptFactory();
-    Counter();
-    ExampleFactory();
-    ExamplesFactory();
-    ::ribi::Regex();
-    ::ribi::cmap::TestHelperFunctions();
-    ::ribi::cmap::Regex();
-  }
-  const TestTimer test_timer{__func__,__FILE__,0.1};
-  //Create from Concept constructor
-  {
-    const auto concept = ConceptFactory().GetTest(0);
-    const double x{0.1};
-    const double y{2.3};
-    const auto node = CenterNodeFactory().Create(concept,x,y);
-    assert(node.IsCenterNode());
-    assert(concept == node.GetConcept());
-    assert(node.GetX() == x);
-    assert(node.GetY() == y);
-  }
-  {
-    const std::string xml = "<node><concept><name>Concept without examples</name><examples></examples><concept_is_complex>0</concept_is_complex><complexity>0</complexity><concreteness>1</concreteness><specificity>2</specificity></concept><x>0.1</x><y>2.3</y><is_center_node>1</is_center_node></node>";
-    const auto node = XmlToNode(xml);
-    assert(node.IsCenterNode());
-  }
-}
-#endif

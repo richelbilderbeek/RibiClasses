@@ -35,9 +35,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ribi::cmap::ExamplesFactory::ExamplesFactory() noexcept
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
+
 }
 
 ribi::cmap::Examples ribi::cmap::ExamplesFactory::Create(
@@ -94,28 +92,3 @@ std::vector<ribi::cmap::Examples> ribi::cmap::ExamplesFactory::GetTests() const 
 
 }
 
-#ifndef NDEBUG
-void ribi::cmap::ExamplesFactory::Test() noexcept
-{
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  {
-    Examples();
-  }
-  const bool verbose{false};
-  const TestTimer test_timer(__func__,__FILE__,1.0);
-  ExamplesFactory f;
-  if (verbose) { TRACE("Create must return a valid Examples"); }
-  if (verbose) { TRACE("Examples -> XML -> Examples "); }
-  {
-    const auto examples = ExamplesFactory().GetTest(2);
-    const auto xml = ToXml(examples);
-    const auto new_examples = XmlToExamples(xml);
-    const auto new_xml = ToXml(new_examples);
-    assert(xml == new_xml);
-  }
-}
-#endif // NDEBUG

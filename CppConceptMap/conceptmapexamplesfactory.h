@@ -46,12 +46,6 @@ struct ExamplesFactory
   Examples GetTest(const int i) const noexcept;
   std::vector<Examples> GetNastyTests() const noexcept;
   std::vector<Examples> GetTests() const noexcept;
-
-  private:
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif // NDEBUG
 };
 
 } //~namespace cmap

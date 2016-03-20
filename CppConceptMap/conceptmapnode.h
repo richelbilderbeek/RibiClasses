@@ -105,12 +105,7 @@ struct Node
 
   static int sm_ids; //ID to assign
 
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
-
   friend bool HaveSameIds(const Node& lhs, const Node& rhs) noexcept;
-
 };
 
 ///Count the number of CenterNodes

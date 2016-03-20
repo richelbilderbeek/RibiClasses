@@ -8,9 +8,7 @@
 
 ribi::cmap::Regex::Regex()
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
+
 }
 
 std::string ribi::cmap::Regex::GetRegexCenterNode() const noexcept
@@ -157,31 +155,3 @@ std::vector<std::string>
 }
 
 
-#ifndef NDEBUG
-void ribi::cmap::Regex::Test() noexcept
-{
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  {
-    ribi::Regex();
-  }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
-
-  const ::ribi::cmap::Regex r;
-  const bool verbose{false};
-  if (verbose) { TRACE("GetRegexExample"); }
-  {
-    const std::string s = "<concept><name>Concept with examples</name><example>Example 1</example><example>Example 2</example><example>Example 3</example></concept>";
-    const std::vector<std::string> expected {
-      "<example>Example 1</example>",
-      "<example>Example 2</example>",
-      "<example>Example 3</example>"
-    };
-    const std::string regex_str = r.GetRegexExample();
-    assert(r.GetRegexMatches(s,regex_str) == expected);
-  }
-}
-#endif

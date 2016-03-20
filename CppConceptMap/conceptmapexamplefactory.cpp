@@ -38,9 +38,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ribi::cmap::ExampleFactory::ExampleFactory() noexcept
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
+
 }
 
 ribi::cmap::Example ribi::cmap::ExampleFactory::GetTest(const int i) const noexcept
@@ -74,19 +72,3 @@ std::vector<ribi::cmap::Example> ribi::cmap::ExampleFactory::GetTests() const no
   };
 }
 
-#ifndef NDEBUG
-void ribi::cmap::ExampleFactory::Test() noexcept
-{
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  {
-    Example("Test example 0",Competency::profession,true,false,false);
-    Counter();
-    ExampleFactory().GetTest(0);
-  }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
-}
-#endif // NDEBUG

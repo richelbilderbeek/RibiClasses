@@ -54,7 +54,6 @@ ribi::cmap::Concept::Concept(
 
 {
   #ifndef NDEBUG
-  Test();
   assert(m_rating_complexity   >= -1);
   assert(m_rating_complexity   <=  2);
   assert(m_rating_concreteness >= -1);

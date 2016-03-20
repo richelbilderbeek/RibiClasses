@@ -21,6 +21,7 @@ install:
   - sudo apt-get install -qq g++-5
 
 script: 
+  - ./install_githubs.sh
   - ./build.sh
 
 after_success: 

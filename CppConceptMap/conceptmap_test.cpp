@@ -65,45 +65,30 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "trace.h"
 #include "xml.h"
 
-#ifndef NDEBUG
-void ribi::cmap::TestConceptMap() noexcept
+#include <boost/test/unit_test.hpp>
+
+BOOST_AUTO_TEST_CASE(ribi_concept_map_test)
 {
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  {
-    ribi::FileIo();
-    container();
-    CenterNodeFactory();
-    ConceptFactory();
-    ExamplesFactory();
-    NodeFactory();
-    EdgeFactory();
-    ConceptMapFactory();
-    TestHelperFunctions();
-  }
-  const TestTimer test_timer(__func__,__FILE__,2.0);
+  using namespace ribi::cmap;
   const bool verbose{false};
 
   if (verbose) { TRACE("Copy constructable"); }
   {
     const ConceptMap a;
     const ConceptMap b(a);
-    assert(a == b);
+    BOOST_CHECK(a == b);
   }
   if (verbose) { TRACE("operator=="); }
   {
     const ConceptMap a = ConceptMapFactory().GetTest(1);
     const ConceptMap b = ConceptMapFactory().GetTest(2);
-    assert(a != b);
+    BOOST_CHECK(a != b);
     ConceptMap c(a);
-    assert(c == a);
-    assert(c != b);
+    BOOST_CHECK(c == a);
+    BOOST_CHECK(c != b);
     c = b;
-    assert(c != a);
-    assert(c == b);
+    BOOST_CHECK(c != a);
+    BOOST_CHECK(c == b);
   }
   //Load Node
   {
@@ -114,8 +99,8 @@ void ribi::cmap::TestConceptMap() noexcept
     t << s;
     Node n;
     t >> n;
-    assert(n.GetConcept().GetName() == "A");
-    assert(ToXml(n) == s);
+    BOOST_CHECK(n.GetConcept().GetName() == "A");
+    BOOST_CHECK(ToXml(n) == s);
     ConceptMap g;
     const auto vd = boost::add_vertex(g);
     const auto pmap = get(boost::vertex_custom_type, g);
@@ -126,10 +111,10 @@ void ribi::cmap::TestConceptMap() noexcept
       "0[label=\"<node><concept><name>A</name><examples></examples><concept_is_complex>1</concept_is_complex><complexity>-1</complexity><concreteness>-1</concreteness><specificity>-1</specificity></concept><x>0</x><y>0</y><is_center_node>0</is_center_node></node>\", regular=\"0\"];\n"
       "}\n"
     };
-    assert(d == dot);
+    BOOST_CHECK(d == dot);
     ConceptMap c{DotToConceptMap(dot)};
-    assert(boost::num_edges(c) == 0);
-    assert(boost::num_vertices(c) == 1);
+    BOOST_CHECK(boost::num_edges(c) == 0);
+    BOOST_CHECK(boost::num_vertices(c) == 1);
   }
   if (verbose) { TRACE("Dot conversion"); }
   {
@@ -137,9 +122,9 @@ void ribi::cmap::TestConceptMap() noexcept
     {
       const std::string dot{ToDot(c)};
       ConceptMap d{DotToConceptMap(dot)};
-      assert(c == d);
+      BOOST_CHECK(c == d);
       const std::string dot2{ToDot(d)};
-      assert(dot == dot2);
+      BOOST_CHECK(dot == dot2);
     }
   }
   if (verbose) { TRACE("XML conversion"); }
@@ -148,9 +133,9 @@ void ribi::cmap::TestConceptMap() noexcept
     {
       const std::string xml{ToXml(c)};
       ConceptMap d{XmlToConceptMap(xml)};
-      assert(c == d);
+      BOOST_CHECK(c == d);
       const std::string xml2{ToXml(d)};
-      assert(xml == xml2);
+      BOOST_CHECK(xml == xml2);
     }
   }
   if (verbose) { TRACE("Streaming: empty graph"); }
@@ -160,7 +145,7 @@ void ribi::cmap::TestConceptMap() noexcept
     s << a;
     ConceptMap b;
     s >> b;
-    assert(a == b);
+    BOOST_CHECK(a == b);
   }
   {
     std::string s{
@@ -173,7 +158,7 @@ void ribi::cmap::TestConceptMap() noexcept
       f << s;
     }
     ConceptMap c = DotToConceptMap(s);
-    assert(s == ToDot(c));
+    BOOST_CHECK(s == ToDot(c));
   }
   if (verbose) { TRACE("Streaming: single object"); }
   {
@@ -182,7 +167,7 @@ void ribi::cmap::TestConceptMap() noexcept
     s << a;
     ConceptMap b;
     s >> b;
-    assert(a == b);
+    BOOST_CHECK(a == b);
   }
   if (verbose) { TRACE("Streaming: two objects"); }
   {
@@ -193,8 +178,8 @@ void ribi::cmap::TestConceptMap() noexcept
     ConceptMap g;
     ConceptMap h;
     s >> g >> h;
-    assert(e == g);
-    assert(f == h);
+    BOOST_CHECK(e == g);
+    BOOST_CHECK(f == h);
   }
   if (verbose) { TRACE("Nasty examples: one object"); }
   for (const ConceptMap e: ConceptMapFactory().GetNastyTests())
@@ -206,15 +191,15 @@ void ribi::cmap::TestConceptMap() noexcept
     std::stringstream s;
     s << e;
     ConceptMap f;
-    assert(e != f);
+    BOOST_CHECK(e != f);
     s >> f;
     if (e != f) {
       for (const Edge& edge: GetEdges(e)) { TRACE(edge); }
       for (const Edge& edge: GetEdges(f)) { TRACE(edge); }
       TRACE(e); TRACE(f);
     }
-    assert(GetSortedEdges(e) == GetSortedEdges(f));
-    assert(e == f);
+    BOOST_CHECK(GetSortedEdges(e) == GetSortedEdges(f));
+    BOOST_CHECK(e == f);
   }
   if (verbose) { TRACE("Nasty examples: two objects"); }
   for (const ConceptMap e: ConceptMapFactory().GetNastyTests())
@@ -226,10 +211,10 @@ void ribi::cmap::TestConceptMap() noexcept
     s >> g >> h;
     if (e != g) { TRACE(e); TRACE(g); }
     if (e != h) { TRACE(e); TRACE(h); }
-    assert(e == g);
-    assert(e == h);
+    BOOST_CHECK(e == g);
+    BOOST_CHECK(e == h);
   }
-  assert(1 == 2);
+  BOOST_CHECK(1 == 2);
   if (verbose) { TRACE("Dot conversion"); }
   {
     const std::vector<ConceptMap> v = ConceptMapFactory().GetAllTests();
@@ -238,10 +223,10 @@ void ribi::cmap::TestConceptMap() noexcept
       {
         //Test copy constructor
         const ConceptMap c(node);
-        assert(node == c);
+        BOOST_CHECK(node == c);
         const std::string s{ToDot(c)};
         const ConceptMap d = DotToConceptMap(s);
-        assert(c == d);
+        BOOST_CHECK(c == d);
       }
     );
   }
@@ -251,10 +236,10 @@ void ribi::cmap::TestConceptMap() noexcept
     //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,0.1);
     for (const ConceptMap& map: ConceptMapFactory().GetAllTests())
     {
-      assert(CountCenterNodes(map) == 0 || CountCenterNodes(map) == 1);
+      BOOST_CHECK(CountCenterNodes(map) == 0 || CountCenterNodes(map) == 1);
     }
   }
-  assert(!"Fixed 10?");
+  BOOST_CHECK(!"Fixed 10?");
   #ifdef NOT_NOT_20151231
   #ifdef FIX_ISSUE_10
   #endif // FIX_ISSUE_10
@@ -266,18 +251,18 @@ void ribi::cmap::TestConceptMap() noexcept
     const auto node_a = NodeFactory().GetTests().at(0);
     const auto node_b = NodeFactory().GetTests().at(1);
 
-    assert(conceptmap.GetSelectedNodes().size() == 0);
+    BOOST_CHECK(conceptmap.GetSelectedNodes().size() == 0);
 
     conceptmap.AddNode(node_a);
 
-    assert(conceptmap.GetSelectedNodes().size() == 1);
+    BOOST_CHECK(conceptmap.GetSelectedNodes().size() == 1);
 
     conceptmap.AddNode(node_b);
 
-    assert(conceptmap.GetSelectedNodes().size() == 2);
+    BOOST_CHECK(conceptmap.GetSelectedNodes().size() == 2);
 
     const int n_nodes_after{static_cast<int>(boost::num_vertices(conceptmap))};
-    assert(n_nodes_after == n_nodes_before + 2);
+    BOOST_CHECK(n_nodes_after == n_nodes_before + 2);
   }
 
   if (verbose) { TRACE("Add node twice, must give a warning"); }
@@ -285,12 +270,12 @@ void ribi::cmap::TestConceptMap() noexcept
     auto conceptmap = ConceptMapFactory().GetEmptyConceptMap();
 
     const auto node_a = NodeFactory().GetTests().at(0);
-    assert(boost::num_vertices(conceptmap) == 0);
+    BOOST_CHECK(boost::num_vertices(conceptmap) == 0);
     conceptmap.AddNode(node_a);
-    assert(boost::num_vertices(conceptmap) == 1);
+    BOOST_CHECK(boost::num_vertices(conceptmap) == 1);
     TRACE("Next trace should be a warning:");
     conceptmap.AddNode(node_a);
-    assert(boost::num_vertices(conceptmap) == 1);
+    BOOST_CHECK(boost::num_vertices(conceptmap) == 1);
   }
   if (verbose) { TRACE("Add two nodes and delete one, check selected"); }
   {
@@ -298,13 +283,13 @@ void ribi::cmap::TestConceptMap() noexcept
 
     const auto node_a = NodeFactory().GetTests().at(0);
     const auto node_b = NodeFactory().GetTests().at(1);
-    assert(conceptmap.GetSelectedNodes().size() == 0);
+    BOOST_CHECK(conceptmap.GetSelectedNodes().size() == 0);
     conceptmap.AddNode(node_a);
-    assert(conceptmap.GetSelectedNodes().size() == 1);
+    BOOST_CHECK(conceptmap.GetSelectedNodes().size() == 1);
     conceptmap.AddNode(node_b);
-    assert(conceptmap.GetSelectedNodes().size() == 2);
+    BOOST_CHECK(conceptmap.GetSelectedNodes().size() == 2);
     conceptmap.DeleteNode(node_a);
-    assert(conceptmap.GetSelectedNodes().size() == 1);
+    BOOST_CHECK(conceptmap.GetSelectedNodes().size() == 1);
   }
   if (verbose) { TRACE("Add two nodes, unselect node_a"); }
   {
@@ -314,9 +299,9 @@ void ribi::cmap::TestConceptMap() noexcept
     const auto node_b = NodeFactory().GetTests().at(1);
     conceptmap.AddNode(node_a);
     conceptmap.AddNode(node_b);
-    assert(conceptmap.GetSelectedNodes().size() == 2);
+    BOOST_CHECK(conceptmap.GetSelectedNodes().size() == 2);
     conceptmap.RemoveSelectedness( Nodes( { node_a } ) );
-    assert(conceptmap.GetSelectedNodes().size() == 1);
+    BOOST_CHECK(conceptmap.GetSelectedNodes().size() == 1);
   }
   if (verbose) { TRACE("Add two nodes, unselect node_b"); }
   {
@@ -326,9 +311,9 @@ void ribi::cmap::TestConceptMap() noexcept
     const auto node_b = NodeFactory().GetTests().at(1);
     conceptmap.AddNode(node_a);
     conceptmap.AddNode(node_b);
-    assert(conceptmap.GetSelectedNodes().size() == 2);
+    BOOST_CHECK(conceptmap.GetSelectedNodes().size() == 2);
     conceptmap.RemoveSelectedness( Nodes( { node_b } ) );
-    assert(conceptmap.GetSelectedNodes().size() == 1);
+    BOOST_CHECK(conceptmap.GetSelectedNodes().size() == 1);
   }
   #ifdef FIX_ISSUE_10
   if (verbose) { TRACE("Add nodes and edge, edge its node must be in between the nodes"); }
@@ -349,8 +334,8 @@ void ribi::cmap::TestConceptMap() noexcept
     node_b.SetY(y2);
     const auto edge = EdgeFactory().Create(node_a,node_b);
     conceptmap.AddEdge(edge);
-    assert(std::abs(edge.GetNode().GetX() - x3) < 1.0);
-    assert(std::abs(edge.GetNode().GetY() - y3) < 1.0);
+    BOOST_CHECK(std::abs(edge.GetNode().GetX() - x3) < 1.0);
+    BOOST_CHECK(std::abs(edge.GetNode().GetY() - y3) < 1.0);
   }
   #endif // FIX_ISSUE_10
   if (verbose) { TRACE("Add nodes and edge, check selected"); }
@@ -363,37 +348,37 @@ void ribi::cmap::TestConceptMap() noexcept
     const auto vd_a = conceptmap.AddNode(node_a);
     const auto vd_b = conceptmap.AddNode(node_b);
     conceptmap.AddEdge(vd_a, vd_b, edge);
-    assert(boost::num_edges(conceptmap) == 1);
-    assert(boost::num_vertices(conceptmap) == 2);
-    assert(conceptmap.CountSelectedEdges() == 1);
-    assert(conceptmap.CountSelectedNodes() == 0);
+    BOOST_CHECK(boost::num_edges(conceptmap) == 1);
+    BOOST_CHECK(boost::num_vertices(conceptmap) == 2);
+    BOOST_CHECK(conceptmap.CountSelectedEdges() == 1);
+    BOOST_CHECK(conceptmap.CountSelectedNodes() == 0);
   }
   if (verbose) { TRACE("DeleteNode: delete all two nodes of a concept map"); }
   {
     ConceptMap conceptmap = ConceptMapFactory().GetTest(1);
 
-    assert(boost::num_vertices(conceptmap) == 2);
+    BOOST_CHECK(boost::num_vertices(conceptmap) == 2);
     {
       const auto node = conceptmap.GetNodes().back();
       conceptmap.DeleteNode(node);
-      assert(boost::num_vertices(conceptmap) == 1);
+      BOOST_CHECK(boost::num_vertices(conceptmap) == 1);
     }
     {
       const auto node = conceptmap.GetNodes().back();
       conceptmap.DeleteNode(node);
-      assert(boost::num_vertices(conceptmap) == 0);
+      BOOST_CHECK(boost::num_vertices(conceptmap) == 0);
     }
   }
   if (verbose) { TRACE("DeleteNode: delete node of a concept map twice"); }
   {
     ConceptMap conceptmap = ConceptMapFactory().GetTest(1);
 
-    assert(boost::num_vertices(conceptmap) == 2);
+    BOOST_CHECK(boost::num_vertices(conceptmap) == 2);
     const auto node = conceptmap.GetNodes().back();
     conceptmap.DeleteNode(node);
-    assert(boost::num_vertices(conceptmap) == 1);
+    BOOST_CHECK(boost::num_vertices(conceptmap) == 1);
     conceptmap.DeleteNode(node);
-    assert(boost::num_vertices(conceptmap) == 1);
+    BOOST_CHECK(boost::num_vertices(conceptmap) == 1);
   }
   #ifdef FIX_ISSUE_10
   if (verbose) { TRACE("Deletion of edge"); }
@@ -405,11 +390,11 @@ void ribi::cmap::TestConceptMap() noexcept
     {
       const ConceptMap conceptmap = ConceptMapFactory().GetHeteromorphousTestConceptMap(test_index);
 
-      assert(boost::num_edges(conceptmap) == n_edges);
-      assert(j < boost::num_edges(conceptmap));
+      BOOST_CHECK(boost::num_edges(conceptmap) == n_edges);
+      BOOST_CHECK(j < boost::num_edges(conceptmap));
       const Edge edge = conceptmap.GetEdges()[j];
       conceptmap.DeleteEdge(edge);
-      assert(boost::num_edges(conceptmap) == n_edges - 1
+      BOOST_CHECK(boost::num_edges(conceptmap) == n_edges - 1
         && "Edge must really be gone");
     }
   }
@@ -422,11 +407,11 @@ void ribi::cmap::TestConceptMap() noexcept
     conceptmap.AddNode(node_to);
     const auto edge = EdgeFactory().GetTest(0,node_from,node_to);
     conceptmap.AddEdge(edge);
-    assert(boost::num_vertices(conceptmap) == 2);
-    assert(boost::num_edges(conceptmap) == 1);
+    BOOST_CHECK(boost::num_vertices(conceptmap) == 2);
+    BOOST_CHECK(boost::num_edges(conceptmap) == 1);
     conceptmap.DeleteNode(node_from);
-    assert(boost::num_vertices(conceptmap) == 1);
-    assert(boost::num_edges(conceptmap) == 0);
+    BOOST_CHECK(boost::num_vertices(conceptmap) == 1);
+    BOOST_CHECK(boost::num_edges(conceptmap) == 0);
   }
   #endif // FIX_ISSUE_10
   if (verbose) { TRACE("Is GetNode()[0] a CenterNode?"); }
@@ -436,7 +421,7 @@ void ribi::cmap::TestConceptMap() noexcept
     for (const auto& conceptmap: conceptmaps)
     {
       if (conceptmap.GetNodes().empty()) continue;
-      assert(conceptmap.FindCenterNode() && "Assume a CenterNode at the center of ConceptMap");
+      BOOST_CHECK(conceptmap.FindCenterNode() && "Assume a CenterNode at the center of ConceptMap");
     }
   }
   #ifdef FIX_ISSUE_10
@@ -462,14 +447,14 @@ void ribi::cmap::TestConceptMap() noexcept
       conceptmap.SetSelected( Nodes( { conceptmap.GetNodes().front() } ) );
     }
 
-    assert(boost::num_vertices(conceptmap) == 2);
-    assert(boost::num_edges(conceptmap) == 1);
-    assert(conceptmap.GetSelectedNodes().size() == 1);
-    assert(conceptmap.GetSelectedEdges().size() == 0);
-    assert(!conceptmap.GetSelectedNodes().empty());
+    BOOST_CHECK(boost::num_vertices(conceptmap) == 2);
+    BOOST_CHECK(boost::num_edges(conceptmap) == 1);
+    BOOST_CHECK(conceptmap.GetSelectedNodes().size() == 1);
+    BOOST_CHECK(conceptmap.GetSelectedEdges().size() == 0);
+    BOOST_CHECK(!conceptmap.GetSelectedNodes().empty());
 
     const auto node = conceptmap.GetSelectedNodes().front();
-    assert(conceptmap.GetEdgesConnectedTo(node).size() == 1);
+    BOOST_CHECK(conceptmap.GetEdgesConnectedTo(node).size() == 1);
 
     //Delete the node, edge will be deleted as well
     {
@@ -483,13 +468,12 @@ void ribi::cmap::TestConceptMap() noexcept
     //Undo the deletion, should bring back node and edge
     conceptmap.Undo();
 
-    assert(boost::num_vertices(conceptmap) == 2);
-    assert(boost::num_edges(conceptmap) == 1);
-    assert(conceptmap.GetSelectedNodes().size() == 1);
-    assert(conceptmap.GetSelectedEdges().size() == 0);
+    BOOST_CHECK(boost::num_vertices(conceptmap) == 2);
+    BOOST_CHECK(boost::num_edges(conceptmap) == 1);
+    BOOST_CHECK(conceptmap.GetSelectedNodes().size() == 1);
+    BOOST_CHECK(conceptmap.GetSelectedEdges().size() == 0);
   }
   #endif // FIX_ISSUE_10
 
   #endif // NOT_NOT_20151231
 }
-#endif

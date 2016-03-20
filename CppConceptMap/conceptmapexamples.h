@@ -49,10 +49,6 @@ struct Examples
 private:
 
   std::vector<Example> m_v;
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 };
 
 std::string ToXml(const Examples& node) noexcept;

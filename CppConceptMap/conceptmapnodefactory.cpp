@@ -37,9 +37,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ribi::cmap::NodeFactory::NodeFactory()
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
+
 }
 
 ribi::cmap::Node ribi::cmap::NodeFactory::CreateFromStrings(
@@ -119,46 +117,3 @@ std::vector<ribi::cmap::Node> ribi::cmap::NodeFactory::GetTests() const noexcept
   return nodes;
 }
 
-#ifndef NDEBUG
-void ribi::cmap::NodeFactory::Test() noexcept
-{
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  {
-    NodeFactory().GetTest(0);
-  }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
-  //Number of tests
-  {
-    assert(NodeFactory().GetNumberOfTests()
-      == static_cast<int>(NodeFactory().GetTests().size())
-    );
-    assert(NodeFactory().GetNumberOfNastyTests()
-      == static_cast<int>(NodeFactory().GetNastyTests().size())
-    );
-  }
-  //operator== and operator!=
-  {
-    assert(NodeFactory().GetTest(0) == NodeFactory().GetTest(0));
-    assert(NodeFactory().GetTest(0) != NodeFactory().GetTest(1));
-  }
-  //Deep copy
-  {
-    const Node a = NodeFactory().GetTest(0);
-    const Node b(a);
-    assert(b == NodeFactory().GetTest(0));
-  }
-  //XLM <-> std::string conversions
-  {
-    for (const auto node: NodeFactory().GetTests())
-    {
-      const std::string str{ToXml(node)};
-      const Node node_again{XmlToNode(str)};
-      assert(node == node_again);
-    }
-  }
-}
-#endif

@@ -64,11 +64,6 @@ public:
     const VertexDescriptor& vd_to,
     Graph& g
   ) const noexcept;
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
-
 };
 
 } //~namespace cmap

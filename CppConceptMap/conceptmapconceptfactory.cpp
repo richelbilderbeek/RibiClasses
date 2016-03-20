@@ -39,9 +39,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ribi::cmap::ConceptFactory::ConceptFactory() noexcept
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
 }
 
 ribi::cmap::Concept ribi::cmap::ConceptFactory::Create(
@@ -178,26 +175,3 @@ std::vector<ribi::cmap::Concept> ribi::cmap::ConceptFactory::GetTests() const no
   return v;
 }
 
-#ifndef NDEBUG
-void ribi::cmap::ConceptFactory::Test() noexcept
-{
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  Counter();
-  ConceptFactory().GetTest(0);
-  ExamplesFactory();
-  const bool verbose{false};
-  const TestTimer test_timer(__func__,__FILE__,1.0);
-  if (verbose) { TRACE("Concept -> XML -> Concept "); }
-  {
-    const auto concept = ConceptFactory().GetTest(2);
-    const auto xml = ToXml(concept);
-    const auto new_concept = XmlToConcept(xml);
-    const auto new_xml = ToXml(new_concept);
-    assert(xml == new_xml);
-  }
-}
-#endif

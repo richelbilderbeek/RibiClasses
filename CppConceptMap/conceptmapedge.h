@@ -74,10 +74,6 @@ struct Edge
   Node m_node;
 
   static int sm_ids; //ID to assign
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 };
 
 std::string ToXml(const Edge& edge) noexcept;

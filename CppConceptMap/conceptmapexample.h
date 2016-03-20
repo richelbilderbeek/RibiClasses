@@ -70,11 +70,6 @@ struct Example
   ///Set the text
   void SetText(const std::string& text) noexcept;
 
-  #ifndef NDEBUG
-  ///Test this class
-  static void Test() noexcept;
-  #endif
-
   ///Convert Example to a short std::string
   std::string ToStr() const noexcept;
 

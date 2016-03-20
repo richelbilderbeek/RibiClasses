@@ -53,10 +53,6 @@ struct ConceptFactory
   std::vector<Concept> GetNastyTests() const noexcept;
   std::vector<Concept> GetTests() const noexcept;
   int GetNumberOfTests() const noexcept { return static_cast<int>(GetTests().size()); }
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 };
 
 } //~namespace cmap

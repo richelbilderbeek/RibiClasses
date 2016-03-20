@@ -50,13 +50,6 @@ struct Regex
     const std::string& s,
     const std::string& regex_str
   ) const noexcept;
-
-
-  private:
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 };
 
 } //~namespace cmap

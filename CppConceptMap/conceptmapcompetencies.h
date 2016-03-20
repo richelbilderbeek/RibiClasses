@@ -52,10 +52,6 @@ struct Competencies
   static boost::bimap<Competency,std::string> m_map_english;
   static boost::bimap<Competency,std::string> CreateMapDutch() noexcept;
   static boost::bimap<Competency,std::string> CreateMapEnglish() noexcept;
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 };
 
 } //~namespace cmap

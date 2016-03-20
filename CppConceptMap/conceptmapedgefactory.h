@@ -52,12 +52,6 @@ struct EdgeFactory
   int GetNumberOfNastyTests() const noexcept;
   Edge GetNastyTest(const int index) const noexcept;
   std::vector<Edge> GetNastyTests() const noexcept;
-
-  private:
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 };
 
 } //~namespace cmap

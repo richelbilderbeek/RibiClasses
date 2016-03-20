@@ -28,16 +28,11 @@ boost::bimap<ribi::cmap::Competency,std::string> ribi::cmap::Competencies::m_map
 
 ribi::cmap::Competencies::Competencies()
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
+
 }
 
 boost::bimap<ribi::cmap::Competency,std::string> ribi::cmap::Competencies::CreateMapEnglish() noexcept
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
 
   boost::bimap<Competency,std::string> m;
   m.insert(boost::bimap<Competency,std::string>::value_type(
@@ -62,10 +57,6 @@ boost::bimap<ribi::cmap::Competency,std::string> ribi::cmap::Competencies::Creat
 
 boost::bimap<ribi::cmap::Competency,std::string> ribi::cmap::Competencies::CreateMapDutch() noexcept
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
-
   boost::bimap<Competency,std::string> m;
   m.insert(boost::bimap<Competency,std::string>::value_type(
     Competency::uninitialized,"[Ongeinitialiseerd]"));
@@ -103,46 +94,7 @@ std::vector<ribi::cmap::Competency> ribi::cmap::Competencies::GetAllCompetencies
   return v;
 }
 
-#ifndef NDEBUG
-void ribi::cmap::Competencies::Test() noexcept
-{
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  static_assert(static_cast<int>(Competency::uninitialized) == 0,
-    "Start the uninitialized value at zero, so that GetAllCompetencies can check against n_competencies"
-  );
-  Competencies c;
-  {
-    const std::vector<Competency> v = c.GetAllCompetencies();
-    const std::size_t sz = v.size();
-    for (std::size_t i=0; i!=sz; ++i)
-    {
-      assert(i < v.size());
-      const Competency t = v[i];
-      const std::string s = c.ToStr(t);
-      assert(!s.empty());
-      const Competency u = c.ToType(s);
-      assert(u == t);
-    }
-    for (std::size_t i=0; i!=sz; ++i)
-    {
-      assert(i < v.size());
-      const Competency t = v[i];
-      const std::string s = c.ToStrDutch(t);
-      assert(!s.empty());
-      const Competency u = c.ToTypeFromDutch(s);
-      assert(u == t);
-    }
-  }
-  //ToIndex
-  {
-    assert(c.ToIndex(Competency::uninitialized) == 0);
-  }
-}
-#endif
+
 
 int ribi::cmap::Competencies::ToIndex(const Competency competency) const noexcept
 {

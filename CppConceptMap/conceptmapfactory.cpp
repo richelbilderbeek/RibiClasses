@@ -47,9 +47,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ribi::cmap::ConceptMapFactory::ConceptMapFactory() noexcept
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
+
 }
 
 ribi::cmap::VertexDescriptor ribi::cmap::ConceptMapFactory::AddVertex(
@@ -554,38 +552,3 @@ std::vector<ribi::cmap::Graph > ribi::cmap::ConceptMapFactory::GetAllTests() con
   };
   return v;
 }
-
-#ifndef NDEBUG
-void ribi::cmap::ConceptMapFactory::Test() noexcept
-{
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  {
-    container();
-    ConceptMapFactory().GetEmptyGraph(); //Calls Graph
-  }
-  const bool verbose{false};
-  CenterNodeFactory();
-  EdgeFactory();
-  const TestTimer test_timer(__func__,__FILE__,1.0);
-  const ConceptMapFactory f;
-  {
-    if (f.GetNumberOfAllTests() != static_cast<int>(f.GetAllTests().size()))
-    {
-      TRACE(f.GetNumberOfAllTests());
-      TRACE(f.GetAllTests().size());
-    }
-    assert(f.GetNumberOfAllTests() == static_cast<int>(f.GetAllTests().size()));
-  }
-  if (verbose) { TRACE("All the testing concept maps to be valid"); }
-  {
-    const int n{f.GetNumberOfAllTests()};
-    for (int i=0; i!=n; ++i) {
-      f.GetTest(i);
-    }
-  }
-}
-#endif // NDEBUG

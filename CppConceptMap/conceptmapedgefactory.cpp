@@ -42,9 +42,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ribi::cmap::EdgeFactory::EdgeFactory() noexcept
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
+
 }
 
 
@@ -153,15 +151,3 @@ std::vector<ribi::cmap::Edge> ribi::cmap::EdgeFactory::GetTests() const noexcept
 }
 
 
-#ifndef NDEBUG
-void ribi::cmap::EdgeFactory::Test() noexcept
-{
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  EdgeFactory().GetTest(0);
-  const TestTimer test_timer(__func__,__FILE__,1.0);
-}
-#endif // NDEBUG
