@@ -40,9 +40,7 @@ ribi::PlaneX::PlaneX() noexcept
     Coordinat3D(0.0,0.0,1.0)
   )
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
+
 }
 
 
@@ -52,14 +50,7 @@ ribi::PlaneX::PlaneX(
   const Coordinat3D& p3
 ) : m_plane_z{Create(p1,p2,p3)}
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
-}
 
-ribi::PlaneX::~PlaneX() noexcept
-{
-  //Nothing to do
 }
 
 apfloat ribi::PlaneX::CalcError(const Coordinat3D& coordinat) const noexcept

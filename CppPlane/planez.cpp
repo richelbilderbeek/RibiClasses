@@ -38,9 +38,7 @@ ribi::PlaneZ::PlaneZ() noexcept
     Coordinat3D(0.0,1.0,0.0)
   )
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
+
 }
 
 ribi::PlaneZ::PlaneZ(
@@ -48,9 +46,6 @@ ribi::PlaneZ::PlaneZ(
 )
   : m_coefficients(coefficients)
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
   const bool verbose{false};
   assert(GetCoefficients().size() == 4);
 
@@ -81,9 +76,6 @@ ribi::PlaneZ::PlaneZ(
   const Coordinat3D& p3
 ) : PlaneZ(CalcPlaneZ(p1,p2,p3))
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
   const bool verbose{false};
   assert(GetCoefficients().size() == 4);
 
@@ -92,11 +84,6 @@ ribi::PlaneZ::PlaneZ(
     if (verbose) { TRACE(Container().ToStr(m_coefficients)); }
     throw std::logic_error("Plane (from points) that can be expressed in less than 3D space");
   }
-}
-
-ribi::PlaneZ::~PlaneZ() noexcept
-{
-  //OK
 }
 
 apfloat ribi::PlaneZ::CalcError(const Coordinat3D& coordinat) const noexcept

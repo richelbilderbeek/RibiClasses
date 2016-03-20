@@ -666,10 +666,6 @@ struct Geometry
 
   private:
 
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
-
   ///Replaces what static_cast<int>(a) would do
   int ToInt(const Apfloat& a) const noexcept;
 

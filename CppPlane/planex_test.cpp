@@ -18,38 +18,35 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppPlane.htm
 //---------------------------------------------------------------------------
+#include <boost/test/unit_test.hpp>
+
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
 #include "planex.h"
 
-#include <cassert>
-
 #include "container.h"
 #include "geometry.h"
 #include "planez.h"
-#include "testtimer.h"
 #include "trace.h"
 #pragma GCC diagnostic pop
 
-#ifndef NDEBUG
-void ribi::PlaneX::Test() noexcept
+BOOST_AUTO_TEST_CASE(ribi_planex_test)
 {
-  {
-    static bool is_tested { false };
-    if (is_tested) return;
-    is_tested = true;
-  }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
   using boost::geometry::get;
+  using PlaneX = ::ribi::PlaneX;
+  using Coordinat3D = ::ribi::PlaneX::Coordinat3D;
+  //using Coordinats3D = ::ribi::PlaneX::Coordinats3D;
+  using Coordinat2D = ::ribi::PlaneX::Coordinat2D;
+  //using Geometry = ::ribi::Geometry;
 
   const bool verbose{false};
   if (verbose) TRACE("Default construction");
   {
     const PlaneX p;
-    assert(!p.ToFunction().empty());
-    assert(!p.GetCoefficients().empty());
+    BOOST_CHECK(!p.ToFunction().empty());
+    BOOST_CHECK(!p.GetCoefficients().empty());
   }
   /*
   {
@@ -70,7 +67,7 @@ void ribi::PlaneX::Test() noexcept
       Point(p3_x,p3_y,p3_z)
     );
     const auto t(p.GetCoefficients());
-    assert(t.size() == 4);
+    BOOST_CHECK(t.size() == 4);
     const double a { t[0] };
     const double b { t[1] };
     const double c { t[2] };
@@ -79,10 +76,10 @@ void ribi::PlaneX::Test() noexcept
     const double b_expected { -48.0 };
     const double c_expected {  17.0 };
     const double d_expected { -15.0 };
-    assert(abs(a - a_expected) < 0.001);
-    assert(abs(b - b_expected) < 0.001);
-    assert(abs(c - c_expected) < 0.001);
-    assert(abs(d - d_expected) < 0.001);
+    BOOST_CHECK(abs(a - a_expected) < 0.001);
+    BOOST_CHECK(abs(b - b_expected) < 0.001);
+    BOOST_CHECK(abs(c - c_expected) < 0.001);
+    BOOST_CHECK(abs(d - d_expected) < 0.001);
     const double d_p1_expected { (a * p1_x) + (b * p1_y) + (c * p1_z) };
     const double d_p2_expected { (a * p2_x) + (b * p2_y) + (c * p2_z) };
     const double d_p3_expected { (a * p3_x) + (b * p3_y) + (c * p3_z) };
@@ -101,9 +98,9 @@ void ribi::PlaneX::Test() noexcept
         << "(" << (a * p3_x) << ") + (" << (b * p3_y) << ") + (" << (c * p3_z) << ") = " << d << '\n'
       ;
     }
-    assert(abs(d - d_p1_expected) < 0.001);
-    assert(abs(d - d_p2_expected) < 0.001);
-    assert(abs(d - d_p3_expected) < 0.001);
+    BOOST_CHECK(abs(d - d_p1_expected) < 0.001);
+    BOOST_CHECK(abs(d - d_p2_expected) < 0.001);
+    BOOST_CHECK(abs(d - d_p3_expected) < 0.001);
   }
   */
   //CalcPlaneX
@@ -140,16 +137,16 @@ void ribi::PlaneX::Test() noexcept
     const double b_expected { -3.0 };
     const double c_expected {  1.0 };
     const double d_expected {  5.0 };
-    assert(abs(a - a_expected) < 0.001);
-    assert(abs(b - b_expected) < 0.001);
-    assert(abs(c - c_expected) < 0.001);
-    assert(abs(d - d_expected) < 0.001);
+    BOOST_CHECK(abs(a - a_expected) < 0.001);
+    BOOST_CHECK(abs(b - b_expected) < 0.001);
+    BOOST_CHECK(abs(c - c_expected) < 0.001);
+    BOOST_CHECK(abs(d - d_expected) < 0.001);
     const double d_p1_expected { (a * 1.0) + (b * 1.0) + (c * 10.0) };
     const double d_p2_expected { (a * 1.0) + (b * 2.0) + (c * 13.0) };
     const double d_p3_expected { (a * 2.0) + (b * 1.0) + (c * 12.0) };
-    assert(abs(d - d_p1_expected) < 0.001);
-    assert(abs(d - d_p2_expected) < 0.001);
-    assert(abs(d - d_p3_expected) < 0.001);
+    BOOST_CHECK(abs(d - d_p1_expected) < 0.001);
+    BOOST_CHECK(abs(d - d_p2_expected) < 0.001);
+    BOOST_CHECK(abs(d - d_p3_expected) < 0.001);
     TRACE(p.ToFunction());
   }
   */
@@ -161,9 +158,9 @@ void ribi::PlaneX::Test() noexcept
     const Coordinat3D p2(2.0,5.0,8.0);
     const Coordinat3D p3(3.0,7.0,11.0);
     PlaneX p(p1,p2,p3);
-    assert( abs(p.CalcX(2.0, 3.0)- 1.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
-    assert( abs(p.CalcX(5.0, 8.0)- 2.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
-    assert( abs(p.CalcX(7.0,11.0)-3.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
+    BOOST_CHECK( abs(p.CalcX(2.0, 3.0)- 1.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
+    BOOST_CHECK( abs(p.CalcX(5.0, 8.0)- 2.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
+    BOOST_CHECK( abs(p.CalcX(7.0,11.0)-3.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
   }
   if (verbose) TRACE("CalcX, vertical plane X = 2.0");
   /*
@@ -186,9 +183,9 @@ void ribi::PlaneX::Test() noexcept
     const Coordinat3D p2(2.0, 7.0,11.0);
     const Coordinat3D p3(2.0,13.0,17.0);
     PlaneX p(p1,p2,p3);
-    assert( abs(p.CalcX(1.0,2.0)-2.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
-    assert( abs(p.CalcX(3.0,5.0)-2.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
-    assert( abs(p.CalcX(7.0,9.0)-2.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
+    BOOST_CHECK( abs(p.CalcX(1.0,2.0)-2.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
+    BOOST_CHECK( abs(p.CalcX(3.0,5.0)-2.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
+    BOOST_CHECK( abs(p.CalcX(7.0,9.0)-2.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
   }
   if (verbose) TRACE("ToFunction, 3 points and 4 points");
   {
@@ -212,30 +209,30 @@ void ribi::PlaneX::Test() noexcept
     const Coordinat3D p2(f(y2,z2),y2,z2);
     const Coordinat3D p3(f(y3,z3),y3,z3);
     const PlaneX a(p1,p2,p3);
-    //assert(a.ToFunction() == "x=(2*y) + (3*z) + 5");
-    assert(!a.ToFunction().empty());
+    //BOOST_CHECK(a.ToFunction() == "x=(2*y) + (3*z) + 5");
+    BOOST_CHECK(!a.ToFunction().empty());
     const Coordinat3D p4(f(y4,z4),y4,z4);
-    assert(a.ToFunction() == PlaneX(p1,p2,p4).ToFunction());
-    assert(a.ToFunction() == PlaneX(p1,p3,p4).ToFunction());
-    assert(a.ToFunction() == PlaneX(p1,p4,p3).ToFunction());
-    assert(a.ToFunction() == PlaneX(p2,p1,p3).ToFunction());
-    assert(a.ToFunction() == PlaneX(p2,p1,p4).ToFunction());
-    assert(a.ToFunction() == PlaneX(p2,p3,p1).ToFunction());
-    assert(a.ToFunction() == PlaneX(p2,p3,p4).ToFunction());
-    assert(a.ToFunction() == PlaneX(p2,p4,p1).ToFunction());
-    assert(a.ToFunction() == PlaneX(p2,p4,p3).ToFunction());
-    assert(a.ToFunction() == PlaneX(p3,p1,p2).ToFunction());
-    assert(a.ToFunction() == PlaneX(p3,p1,p4).ToFunction());
-    assert(a.ToFunction() == PlaneX(p3,p2,p1).ToFunction());
-    assert(a.ToFunction() == PlaneX(p3,p2,p4).ToFunction());
-    assert(a.ToFunction() == PlaneX(p3,p4,p1).ToFunction());
-    assert(a.ToFunction() == PlaneX(p3,p4,p2).ToFunction());
-    assert(a.ToFunction() == PlaneX(p4,p1,p2).ToFunction());
-    assert(a.ToFunction() == PlaneX(p4,p1,p3).ToFunction());
-    assert(a.ToFunction() == PlaneX(p4,p2,p1).ToFunction());
-    assert(a.ToFunction() == PlaneX(p4,p2,p3).ToFunction());
-    assert(a.ToFunction() == PlaneX(p4,p3,p1).ToFunction());
-    assert(a.ToFunction() == PlaneX(p4,p3,p2).ToFunction());
+    BOOST_CHECK(a.ToFunction() == PlaneX(p1,p2,p4).ToFunction());
+    BOOST_CHECK(a.ToFunction() == PlaneX(p1,p3,p4).ToFunction());
+    BOOST_CHECK(a.ToFunction() == PlaneX(p1,p4,p3).ToFunction());
+    BOOST_CHECK(a.ToFunction() == PlaneX(p2,p1,p3).ToFunction());
+    BOOST_CHECK(a.ToFunction() == PlaneX(p2,p1,p4).ToFunction());
+    BOOST_CHECK(a.ToFunction() == PlaneX(p2,p3,p1).ToFunction());
+    BOOST_CHECK(a.ToFunction() == PlaneX(p2,p3,p4).ToFunction());
+    BOOST_CHECK(a.ToFunction() == PlaneX(p2,p4,p1).ToFunction());
+    BOOST_CHECK(a.ToFunction() == PlaneX(p2,p4,p3).ToFunction());
+    BOOST_CHECK(a.ToFunction() == PlaneX(p3,p1,p2).ToFunction());
+    BOOST_CHECK(a.ToFunction() == PlaneX(p3,p1,p4).ToFunction());
+    BOOST_CHECK(a.ToFunction() == PlaneX(p3,p2,p1).ToFunction());
+    BOOST_CHECK(a.ToFunction() == PlaneX(p3,p2,p4).ToFunction());
+    BOOST_CHECK(a.ToFunction() == PlaneX(p3,p4,p1).ToFunction());
+    BOOST_CHECK(a.ToFunction() == PlaneX(p3,p4,p2).ToFunction());
+    BOOST_CHECK(a.ToFunction() == PlaneX(p4,p1,p2).ToFunction());
+    BOOST_CHECK(a.ToFunction() == PlaneX(p4,p1,p3).ToFunction());
+    BOOST_CHECK(a.ToFunction() == PlaneX(p4,p2,p1).ToFunction());
+    BOOST_CHECK(a.ToFunction() == PlaneX(p4,p2,p3).ToFunction());
+    BOOST_CHECK(a.ToFunction() == PlaneX(p4,p3,p1).ToFunction());
+    BOOST_CHECK(a.ToFunction() == PlaneX(p4,p3,p2).ToFunction());
   }
 
   if (verbose) TRACE("IsInPlane, X = 1, zooming to smallest three points to determine a plane, point above origin");
@@ -267,9 +264,9 @@ void ribi::PlaneX::Test() noexcept
         TRACE(std::sqrt(std::numeric_limits<double>::epsilon()));
         TRACE(std::numeric_limits<double>::denorm_min());
       }
-      assert(p.IsInPlane(p1));
-      assert(p.IsInPlane(p2));
-      assert(p.IsInPlane(p3));
+      BOOST_CHECK(p.IsInPlane(p1));
+      BOOST_CHECK(p.IsInPlane(p2));
+      BOOST_CHECK(p.IsInPlane(p3));
     }
   }
 
@@ -300,10 +297,10 @@ void ribi::PlaneX::Test() noexcept
       TRACE(p.GetCoefficients()[2]);
       TRACE(p.GetCoefficients()[3]);
     }
-    assert(p.IsInPlane(p1));
-    assert(p.IsInPlane(p2));
-    assert(p.IsInPlane(p3));
-    assert(p.IsInPlane(p4));
+    BOOST_CHECK(p.IsInPlane(p1));
+    BOOST_CHECK(p.IsInPlane(p2));
+    BOOST_CHECK(p.IsInPlane(p3));
+    BOOST_CHECK(p.IsInPlane(p4));
   }
   if (verbose) TRACE("GetProjection");
   {
@@ -331,13 +328,13 @@ void ribi::PlaneX::Test() noexcept
         }
       )
     };
-    assert(v.size() == 3);
-    assert(abs(get<0>(v[0]) - 0.0 ) < 0.001); //no std:: , as apfloat puts abs in the global namespace
-    assert(abs(get<1>(v[0]) - 1.0 ) < 0.001); //no std:: , as apfloat puts abs in the global namespace
-    assert(abs(get<0>(v[1]) - 0.0 ) < 0.001); //no std:: , as apfloat puts abs in the global namespace
-    assert(abs(get<1>(v[1]) - 0.0 ) < 0.001); //no std:: , as apfloat puts abs in the global namespace
-    assert(abs(get<0>(v[2]) - std::sqrt(2.0) ) < 0.001); //no std:: , as apfloat puts abs in the global namespace
-    assert(abs(get<1>(v[2]) - 0.0 ) < 0.001); //no std:: , as apfloat puts abs in the global namespace
+    BOOST_CHECK(v.size() == 3);
+    BOOST_CHECK(abs(get<0>(v[0]) - 0.0 ) < 0.001); //no std:: , as apfloat puts abs in the global namespace
+    BOOST_CHECK(abs(get<1>(v[0]) - 1.0 ) < 0.001); //no std:: , as apfloat puts abs in the global namespace
+    BOOST_CHECK(abs(get<0>(v[1]) - 0.0 ) < 0.001); //no std:: , as apfloat puts abs in the global namespace
+    BOOST_CHECK(abs(get<1>(v[1]) - 0.0 ) < 0.001); //no std:: , as apfloat puts abs in the global namespace
+    BOOST_CHECK(abs(get<0>(v[2]) - std::sqrt(2.0) ) < 0.001); //no std:: , as apfloat puts abs in the global namespace
+    BOOST_CHECK(abs(get<1>(v[2]) - 0.0 ) < 0.001); //no std:: , as apfloat puts abs in the global namespace
 
   }
   if (verbose) TRACE("GetProjection, for X = 2 plane");
@@ -375,13 +372,12 @@ void ribi::PlaneX::Test() noexcept
         }
       )
     };
-    assert(v.size() == 3);
-    assert(abs(get<0>(v[0]) - 0.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
-    assert(abs(get<1>(v[0]) - 0.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
-    assert(abs(get<0>(v[1]) - 1.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
-    assert(abs(get<1>(v[1]) - 0.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
-    assert(abs(get<0>(v[2]) - 0.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
-    assert(abs(get<1>(v[2]) - 1.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
+    BOOST_CHECK(v.size() == 3);
+    BOOST_CHECK(abs(get<0>(v[0]) - 0.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
+    BOOST_CHECK(abs(get<1>(v[0]) - 0.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
+    BOOST_CHECK(abs(get<0>(v[1]) - 1.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
+    BOOST_CHECK(abs(get<1>(v[1]) - 0.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
+    BOOST_CHECK(abs(get<0>(v[2]) - 0.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
+    BOOST_CHECK(abs(get<1>(v[2]) - 1.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
   }
 }
-#endif

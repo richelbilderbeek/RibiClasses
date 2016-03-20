@@ -1,2 +1,2 @@
 SOURCES += \
-    ../RibiClasses/CppAbout/about_test.cpp
+    $$PWD/about_test.cpp

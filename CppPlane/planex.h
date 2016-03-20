@@ -110,8 +110,10 @@ struct PlaneX
   ///Checks if the coordinat is in the plane
   bool IsInPlane(const Coordinat3D& coordinat) const noexcept;
 
+  ///Convert the PlaneX to a x(y,z), e.g 'x=(2*y) + (3*z) + 5' (spaces exactly as shown)
+  std::string ToFunction() const;
+
   private:
-  ~PlaneX() noexcept;
 
   ///A PlaneX is actually a PlaneZ used with its coordinats rotated from (X,Y,Z) to (Z,Y,Y)
   const std::unique_ptr<PlaneZ> m_plane_z;
@@ -131,19 +133,6 @@ struct PlaneX
   ///Rotates the X,Y and Z value of a Coordinat
   static Coordinat3D Rotate(const Coordinat3D& point) noexcept;
 
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
-
-  ///Convert the PlaneX to a x(y,z), e.g 'x=(2*y) + (3*z) + 5' (spaces exactly as shown)
-  std::string ToFunction() const;
-
-  friend void boost::checked_delete<>(      PlaneX*);
-  friend void boost::checked_delete<>(const PlaneX*);
-  friend struct std::default_delete<      PlaneX>;
-  friend struct std::default_delete<const PlaneX>;
-  friend class boost::detail::sp_ms_deleter<      PlaneX>;
-  friend class boost::detail::sp_ms_deleter<const PlaneX>;
   friend std::ostream& operator<<(std::ostream& os,const PlaneX& planex);
 };
 

@@ -171,10 +171,6 @@ struct Plane
   static boost::shared_ptr<PlaneY> CreatePlaneY(const Doubles& coefficients_y) noexcept;
   static boost::shared_ptr<PlaneZ> CreatePlaneZ(const Doubles& coefficients_z) noexcept;
 
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
-
   friend std::ostream& operator<<(std::ostream& os, const Plane& plane) noexcept;
 };
 

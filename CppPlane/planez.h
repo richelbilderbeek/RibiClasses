@@ -72,6 +72,9 @@ struct PlaneZ
     const Coordinat3D& p3
   );
 
+  ///Construct from its coefficients
+  PlaneZ(const Doubles& coefficients);
+
   Double CalcError(const Coordinat3D& coordinat) const noexcept;
 
   ///Get the 2D projection of these 3D points,
@@ -122,11 +125,13 @@ struct PlaneZ
   ///in increasing order of difficulty
   static std::vector<double> GetTestSeries() noexcept;
 
-  private:
-  ///Construct from its coefficients
-  PlaneZ(const Doubles& coefficients);
+  ///Convert the Plane to function z(x,y), e.g
+  ///'z=(2*x) + (3*y) + 5' (spaces exactly as shown)
+  ///Where 2,3 and 5 can be obtained with GetFunctionA,GetFunctionB and GetFunctionC
+  ///respectively
+  std::string ToFunction() const;
 
-  ~PlaneZ() noexcept;
+  private:
 
   //m_coefficients.size == 4
   const Doubles m_coefficients;
@@ -139,23 +144,6 @@ struct PlaneZ
     const Coordinat3D& p2,
     const Coordinat3D& p3
   ) noexcept;
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
-
-  ///Convert the Plane to function z(x,y), e.g
-  ///'z=(2*x) + (3*y) + 5' (spaces exactly as shown)
-  ///Where 2,3 and 5 can be obtained with GetFunctionA,GetFunctionB and GetFunctionC
-  ///respectively
-  std::string ToFunction() const;
-
-  friend void boost::checked_delete<>(      PlaneZ*);
-  friend void boost::checked_delete<>(const PlaneZ*);
-  friend struct std::default_delete<      PlaneZ>;
-  friend struct std::default_delete<const PlaneZ>;
-  friend class boost::detail::sp_ms_deleter<      PlaneZ>;
-  friend class boost::detail::sp_ms_deleter<const PlaneZ>;
 };
 
 std::ostream& operator<<(std::ostream& os,const PlaneZ& planez);

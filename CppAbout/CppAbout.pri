@@ -2,11 +2,11 @@ INCLUDEPATH += \
     ../RibiClasses/CppAbout
 
 SOURCES += \
-    ../RibiClasses/CppAbout/about.cpp
+    $$PWD/about.cpp
 
 HEADERS  += \
-    ../RibiClasses/CppAbout/about.h
+    $$PWD/about.h
 
 OTHER_FILES += \
-    ../RibiClasses/CppAbout/Licence.txt
+    $$PWD/Licence.txt
 

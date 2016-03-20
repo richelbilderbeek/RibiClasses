@@ -112,8 +112,10 @@ struct PlaneY
   ///Checks if the coordinat is in the plane
   bool IsInPlane(const Coordinat3D& coordinat) const noexcept;
 
+  ///Convert the PlaneY to a y(x,z), e.g 'y=(2*x) + (3*z) + 5' (spaces exactly as shown)
+  std::string ToFunction() const;
+
   private:
-  ~PlaneY() noexcept;
 
   ///A PlaneY is actually a PlaneZ used with its coordinats rotated from (X,Y,Z) to (Z,Y,Y)
   const std::unique_ptr<PlaneZ> m_plane_z;
@@ -131,19 +133,6 @@ struct PlaneY
 
   static Coordinat3D Rotate(const Coordinat3D& point) noexcept;
 
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
-
-  ///Convert the PlaneY to a y(x,z), e.g 'y=(2*x) + (3*z) + 5' (spaces exactly as shown)
-  std::string ToFunction() const;
-
-  friend void boost::checked_delete<>(      PlaneY*);
-  friend void boost::checked_delete<>(const PlaneY*);
-  friend struct std::default_delete<      PlaneY>;
-  friend struct std::default_delete<const PlaneY>;
-  friend class boost::detail::sp_ms_deleter<      PlaneY>;
-  friend class boost::detail::sp_ms_deleter<const PlaneY>;
   friend std::ostream& operator<<(std::ostream& os,const PlaneY& planey);
 };
 

@@ -2,11 +2,11 @@ INCLUDEPATH += \
     ../RibiClasses/CppTestTimer
 
 SOURCES += \
-    ../RibiClasses/CppTestTimer/testtimer.cpp
+    $$PWD/testtimer.cpp
 
 HEADERS  += \
-    ../RibiClasses/CppTestTimer/testtimer.h
+    $$PWD/testtimer.h
 
 OTHER_FILES += \
-    ../RibiClasses/CppTestTimer/Licence.txt
+    $$PWD/Licence.txt
 

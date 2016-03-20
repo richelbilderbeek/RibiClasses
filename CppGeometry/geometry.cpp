@@ -148,9 +148,7 @@ GetLineRectIntersectionsImpl(
 
 ribi::Geometry::Geometry()
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
+
 }
 
 ribi::Geometry::Apfloat ribi::Geometry::Atan2(const Apfloat& dx, const Apfloat& dy) const noexcept

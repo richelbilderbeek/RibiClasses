@@ -1,24 +1,26 @@
-
 #include "geometry.h"
-
-#include <cassert>
+#include <boost/test/unit_test.hpp>
 
 #include "apcplx.h" //apfloat's atan2
 
 #include "fuzzy_equal_to.h"
 #include "plane.h"
 #include "ribi_regex.h"
-#include "testtimer.h"
 #include "trace.h"
 
-#ifndef NDEBUG
-void ribi::Geometry::Test() noexcept
+BOOST_AUTO_TEST_CASE(ribi_geometry_test)
 {
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
+  using namespace ribi;
+  using ApCoordinat3D = ::ribi::Geometry::ApCoordinat3D;
+  using ApCoordinats3D = ::ribi::Geometry::ApCoordinats3D;
+  using Coordinat2D = ::ribi::Geometry::Coordinat2D;
+  //using Coordinats2D = ::ribi::Geometry::Coordinats2D;
+  using Coordinat3D = ::ribi::Geometry::Coordinat3D;
+  using Coordinats3D = ::ribi::Geometry::Coordinats3D;
+  using Apfloat = ::ribi::Geometry::Apfloat;
+  using Doubles = ::ribi::Geometry::Doubles;
+  using Polygon = ::ribi::Geometry::Polygon;
+
   {
     const boost::shared_ptr<Plane> plane{
       new Plane(
@@ -29,7 +31,6 @@ void ribi::Geometry::Test() noexcept
     };
   }
   ::ribi::Regex();
-  const TestTimer test_timer(__func__,__FILE__,3.0);
   const bool verbose{false};
   const double pi = boost::math::constants::pi<double>();
   const Geometry g;
@@ -83,9 +84,9 @@ void ribi::Geometry::Test() noexcept
 
       */
     }
-    assert(std::abs(d - d_p1_expected) < 0.001);
-    assert(std::abs(d - d_p2_expected) < 0.001);
-    assert(std::abs(d - d_p3_expected) < 0.001);
+    BOOST_CHECK(std::abs(d - d_p1_expected) < 0.001);
+    BOOST_CHECK(std::abs(d - d_p2_expected) < 0.001);
+    BOOST_CHECK(std::abs(d - d_p3_expected) < 0.001);
   }
   if (verbose) { TRACE("CalcPlane #2"); }
   {
@@ -119,27 +120,27 @@ void ribi::Geometry::Test() noexcept
     const double b_expected = -3.0;
     const double c_expected =  1.0;
     const double d_expected =  5.0;
-    assert(std::abs(a - a_expected) < 0.001);
-    assert(std::abs(b - b_expected) < 0.001);
-    assert(std::abs(c - c_expected) < 0.001);
-    assert(std::abs(d - d_expected) < 0.001);
+    BOOST_CHECK(std::abs(a - a_expected) < 0.001);
+    BOOST_CHECK(std::abs(b - b_expected) < 0.001);
+    BOOST_CHECK(std::abs(c - c_expected) < 0.001);
+    BOOST_CHECK(std::abs(d - d_expected) < 0.001);
     const double d_p1_expected = (a * 1.0) + (b * 1.0) + (c * 10.0);
     const double d_p2_expected = (a * 1.0) + (b * 2.0) + (c * 13.0);
     const double d_p3_expected = (a * 2.0) + (b * 1.0) + (c * 12.0);
-    assert(std::abs(d - d_p1_expected) < 0.001);
-    assert(std::abs(d - d_p2_expected) < 0.001);
-    assert(std::abs(d - d_p3_expected) < 0.001);
+    BOOST_CHECK(std::abs(d - d_p1_expected) < 0.001);
+    BOOST_CHECK(std::abs(d - d_p2_expected) < 0.001);
+    BOOST_CHECK(std::abs(d - d_p3_expected) < 0.001);
 
   }
   if (verbose) { TRACE("Fmod"); }
   {
     const double expected_min = 1.0 - 0.00001;
     const double expected_max = 1.0 + 0.00001;
-    assert(g.Fmod(3.0,2.0) > expected_min && g.Fmod(3.0,2.0) < expected_max);
-    assert(g.Fmod(13.0,2.0) > expected_min && g.Fmod(13.0,2.0) < expected_max);
-    assert(g.Fmod(-1.0,2.0) > expected_min && g.Fmod(-1.0,2.0) < expected_max);
-    assert(g.Fmod(-3.0,2.0) > expected_min && g.Fmod(-3.0,2.0) < expected_max);
-    assert(g.Fmod(-13.0,2.0) > expected_min && g.Fmod(-13.0,2.0) < expected_max);
+    BOOST_CHECK(g.Fmod(3.0,2.0) > expected_min && g.Fmod(3.0,2.0) < expected_max);
+    BOOST_CHECK(g.Fmod(13.0,2.0) > expected_min && g.Fmod(13.0,2.0) < expected_max);
+    BOOST_CHECK(g.Fmod(-1.0,2.0) > expected_min && g.Fmod(-1.0,2.0) < expected_max);
+    BOOST_CHECK(g.Fmod(-3.0,2.0) > expected_min && g.Fmod(-3.0,2.0) < expected_max);
+    BOOST_CHECK(g.Fmod(-13.0,2.0) > expected_min && g.Fmod(-13.0,2.0) < expected_max);
   }
   if (verbose) { TRACE("std::atan2 versus apfloat's atan2"); }
   {
@@ -152,7 +153,7 @@ void ribi::Geometry::Test() noexcept
         const auto b = atan2(Apfloat(dx),Apfloat(dy));
         const auto c = g.Atan2(Apfloat(dx),Apfloat(dy));
         const auto error = abs(a - c);
-        assert(error < 0.01); //apfloat does not use namespace std::
+        BOOST_CHECK(error < 0.01); //apfloat does not use namespace std::
       }
     }
   }
@@ -162,42 +163,42 @@ void ribi::Geometry::Test() noexcept
     {
       const double angle =  g.GetAngleClockCartesian(0.0, 1.0); //North
       const double expected = 0.0 * pi;
-      assert(std::abs(angle-expected) < 0.01);
+      BOOST_CHECK(std::abs(angle-expected) < 0.01);
     }
     {
       const double angle =  g.GetAngleClockCartesian(1.0, 1.0); //North-East
       const double expected = 0.25 * pi;
-      assert(std::abs(angle-expected) < 0.01);
+      BOOST_CHECK(std::abs(angle-expected) < 0.01);
     }
     {
       const double angle =  g.GetAngleClockCartesian(1.0,0.0); //East
       const double expected = 0.5 * pi;
-      assert(std::abs(angle-expected) < 0.01);
+      BOOST_CHECK(std::abs(angle-expected) < 0.01);
     }
     {
       const double angle =  g.GetAngleClockCartesian(1.0,-1.0); //South-East
       const double expected = 0.75 * pi;
-      assert(std::abs(angle-expected) < 0.01);
+      BOOST_CHECK(std::abs(angle-expected) < 0.01);
     }
     {
       const double angle =  g.GetAngleClockCartesian(0.0,-1.0); //South
       const double expected = 1.0 * pi;
-      assert(std::abs(angle-expected) < 0.01);
+      BOOST_CHECK(std::abs(angle-expected) < 0.01);
     }
     {
       const double angle =  g.GetAngleClockCartesian(-1.0,-1.0); //South-West
       const double expected = 1.25 * pi;
-      assert(std::abs(angle-expected) < 0.01);
+      BOOST_CHECK(std::abs(angle-expected) < 0.01);
     }
     {
       const double angle =  g.GetAngleClockCartesian(-1.0,0.0); //West
       const double expected = 1.5 * pi;
-      assert(std::abs(angle-expected) < 0.01);
+      BOOST_CHECK(std::abs(angle-expected) < 0.01);
     }
     {
       const double angle =  g.GetAngleClockCartesian(-1.0,1.0); //North-West
       const double expected = 1.75 * pi;
-      assert(std::abs(angle-expected) < 0.01);
+      BOOST_CHECK(std::abs(angle-expected) < 0.01);
     }
   }
   if (verbose) { TRACE("GetAngleClockCartesian, Apfloat"); }
@@ -205,44 +206,44 @@ void ribi::Geometry::Test() noexcept
     const auto angle =  g.GetAngleClockCartesian(Apfloat(0.0),Apfloat(1.0)); //North
     const auto expected = 0.0 * pi;
     const auto error = abs(angle-expected); //apfloat does not use namespace std::
-    assert(error < 0.01);
+    BOOST_CHECK(error < 0.01);
   }
   if (verbose) { TRACE("GetAngleClockCartesian, Apfloat, test eight directions"); }
   {
     {
       const auto angle =  g.GetAngleClockCartesian(Apfloat(1.0),Apfloat(1.0)); //North-East
       const auto expected = 0.25 * pi;
-      assert(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
+      BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
     }
     {
       const auto angle =  g.GetAngleClockCartesian(Apfloat(1.0),Apfloat(0.0)); //East
       const auto expected = 0.5 * pi;
-      assert(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
+      BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
     }
     {
       const auto angle =  g.GetAngleClockCartesian(Apfloat(1.0),Apfloat(-1.0)); //South-East
       const auto expected = 0.75 * pi;
-      assert(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
+      BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
     }
     {
       const auto angle =  g.GetAngleClockCartesian(Apfloat(0.0),Apfloat(-1.0)); //South
       const auto expected = 1.0 * pi;
-      assert(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
+      BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
     }
     {
       const auto angle =  g.GetAngleClockCartesian(Apfloat(-1.0),Apfloat(-1.0)); //South-West
       const auto expected = 1.25 * pi;
-      assert(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
+      BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
     }
     {
       const auto angle =  g.GetAngleClockCartesian(Apfloat(-1.0),Apfloat(0.0)); //West
       const auto expected = 1.5 * pi;
-      assert(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
+      BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
     }
     {
       const auto angle =  g.GetAngleClockCartesian(Apfloat(-1.0),Apfloat(1.0)); //North-West
       const auto expected = 1.75 * pi;
-      assert(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
+      BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
     }
   }
   if (verbose) { TRACE("GetAngleClockScreen, double, test eight directions"); }
@@ -250,42 +251,42 @@ void ribi::Geometry::Test() noexcept
     {
       const double angle =  g.GetAngleClockScreen(0.0,-1.0); //North
       const double expected = 0.0 * pi;
-      assert(std::abs(angle-expected) < 0.01);
+      BOOST_CHECK(std::abs(angle-expected) < 0.01);
     }
     {
       const double angle =  g.GetAngleClockScreen(1.0,-1.0); //North-East
       const double expected = 0.25 * pi;
-      assert(std::abs(angle-expected) < 0.01);
+      BOOST_CHECK(std::abs(angle-expected) < 0.01);
     }
     {
       const double angle =  g.GetAngleClockScreen(1.0,0.0); //East
       const double expected = 0.5 * pi;
-      assert(std::abs(angle-expected) < 0.01);
+      BOOST_CHECK(std::abs(angle-expected) < 0.01);
     }
     {
       const double angle =  g.GetAngleClockScreen(1.0,1.0); //South-East
       const double expected = 0.75 * pi;
-      assert(std::abs(angle-expected) < 0.01);
+      BOOST_CHECK(std::abs(angle-expected) < 0.01);
     }
     {
       const double angle =  g.GetAngleClockScreen(0.0,1.0); //South
       const double expected = 1.0 * pi;
-      assert(std::abs(angle-expected) < 0.01);
+      BOOST_CHECK(std::abs(angle-expected) < 0.01);
     }
     {
       const double angle =  g.GetAngleClockScreen(-1.0,1.0); //South-West
       const double expected = 1.25 * pi;
-      assert(std::abs(angle-expected) < 0.01);
+      BOOST_CHECK(std::abs(angle-expected) < 0.01);
     }
     {
       const double angle =  g.GetAngleClockScreen(-1.0,0.0); //West
       const double expected = 1.5 * pi;
-      assert(std::abs(angle-expected) < 0.01);
+      BOOST_CHECK(std::abs(angle-expected) < 0.01);
     }
     {
       const double angle =  g.GetAngleClockScreen(-1.0,-1.0); //North-West
       const double expected = 1.75 * pi;
-      assert(std::abs(angle-expected) < 0.01);
+      BOOST_CHECK(std::abs(angle-expected) < 0.01);
     }
   }
   if (verbose) { TRACE("GetAngleClockScreen, Apfloat"); }
@@ -293,44 +294,44 @@ void ribi::Geometry::Test() noexcept
     const auto angle =  g.GetAngleClockScreen(Apfloat(0.0),Apfloat(-1.0)); //North
     const auto expected = 0.0 * pi;
     const auto error = abs(angle-expected); //apfloat does not use namespace std::
-    assert(error < 0.01);
+    BOOST_CHECK(error < 0.01);
   }
   if (verbose) { TRACE("GetAngleClockScreen, Apfloat, eight directions"); }
   {
     {
       const auto angle =  g.GetAngleClockScreen(Apfloat(1.0),Apfloat(-1.0)); //North-East
       const auto expected = 0.25 * pi;
-      assert(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
+      BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
     }
     {
       const auto angle =  g.GetAngleClockScreen(Apfloat(1.0),Apfloat(0.0)); //East
       const auto expected = 0.5 * pi;
-      assert(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
+      BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
     }
     {
       const auto angle =  g.GetAngleClockScreen(Apfloat(1.0),Apfloat(1.0)); //South-East
       const auto expected = 0.75 * pi;
-      assert(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
+      BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
     }
     {
       const auto angle =  g.GetAngleClockScreen(Apfloat(0.0),Apfloat(1.0)); //South
       const auto expected = 1.0 * pi;
-      assert(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
+      BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
     }
     {
       const auto angle =  g.GetAngleClockScreen(Apfloat(-1.0),Apfloat(1.0)); //South-West
       const auto expected = 1.25 * pi;
-      assert(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
+      BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
     }
     {
       const auto angle =  g.GetAngleClockScreen(Apfloat(-1.0),Apfloat(0.0)); //West
       const auto expected = 1.5 * pi;
-      assert(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
+      BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
     }
     {
       const auto angle =  g.GetAngleClockScreen(Apfloat(-1.0),Apfloat(-1.0)); //North-West
       const auto expected = 1.75 * pi;
-      assert(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
+      BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
     }
   }
   if (verbose) { TRACE("GetDistance"); }
@@ -338,22 +339,22 @@ void ribi::Geometry::Test() noexcept
     {
       const double distance = g.GetDistance(3.0,4.0);
       const double expected = 5.0;
-      assert(std::abs(distance-expected) < 0.01);
+      BOOST_CHECK(std::abs(distance-expected) < 0.01);
     }
     {
       const double distance = g.GetDistance(-3.0,4.0);
       const double expected = 5.0;
-      assert(std::abs(distance-expected) < 0.01);
+      BOOST_CHECK(std::abs(distance-expected) < 0.01);
     }
     {
       const double distance = g.GetDistance(3.0,-4.0);
       const double expected = 5.0;
-      assert(std::abs(distance-expected) < 0.01);
+      BOOST_CHECK(std::abs(distance-expected) < 0.01);
     }
     {
       const double distance = g.GetDistance(-3.0,-4.0);
       const double expected = 5.0;
-      assert(std::abs(distance-expected) < 0.01);
+      BOOST_CHECK(std::abs(distance-expected) < 0.01);
     }
   }
   if (verbose) TRACE("double -> apfloat -> double conversion");
@@ -371,196 +372,196 @@ void ribi::Geometry::Test() noexcept
     {
       const apfloat y = x;
       const double z = g.ToDouble(y);
-      assert(x == z);
+      BOOST_CHECK(x == z);
     }
   }
   if (verbose) TRACE("IsClockWise of two angles, doubles");
   {
-    assert( g.IsClockwise(-2.5 * pi,-2.0 * pi));
-    assert(!g.IsClockwise(-2.0 * pi,-2.5 * pi));
-    assert( g.IsClockwise(-1.5 * pi,-1.0 * pi));
-    assert(!g.IsClockwise(-1.0 * pi,-1.5 * pi));
-    assert( g.IsClockwise(-0.5 * pi, 0.0 * pi));
-    assert(!g.IsClockwise( 0.0 * pi,-0.5 * pi));
-    assert( g.IsClockwise( 0.0 * pi, 0.5 * pi));
-    assert(!g.IsClockwise( 0.5 * pi, 0.0 * pi));
-    assert( g.IsClockwise( 0.5 * pi, 1.0 * pi));
-    assert(!g.IsClockwise( 1.0 * pi, 0.5 * pi));
-    assert( g.IsClockwise( 1.5 * pi, 2.0 * pi));
-    assert(!g.IsClockwise( 2.0 * pi, 1.5 * pi));
-    assert( g.IsClockwise( 2.5 * pi, 3.0 * pi));
-    assert(!g.IsClockwise( 3.0 * pi, 2.5 * pi));
+    BOOST_CHECK( g.IsClockwise(-2.5 * pi,-2.0 * pi));
+    BOOST_CHECK(!g.IsClockwise(-2.0 * pi,-2.5 * pi));
+    BOOST_CHECK( g.IsClockwise(-1.5 * pi,-1.0 * pi));
+    BOOST_CHECK(!g.IsClockwise(-1.0 * pi,-1.5 * pi));
+    BOOST_CHECK( g.IsClockwise(-0.5 * pi, 0.0 * pi));
+    BOOST_CHECK(!g.IsClockwise( 0.0 * pi,-0.5 * pi));
+    BOOST_CHECK( g.IsClockwise( 0.0 * pi, 0.5 * pi));
+    BOOST_CHECK(!g.IsClockwise( 0.5 * pi, 0.0 * pi));
+    BOOST_CHECK( g.IsClockwise( 0.5 * pi, 1.0 * pi));
+    BOOST_CHECK(!g.IsClockwise( 1.0 * pi, 0.5 * pi));
+    BOOST_CHECK( g.IsClockwise( 1.5 * pi, 2.0 * pi));
+    BOOST_CHECK(!g.IsClockwise( 2.0 * pi, 1.5 * pi));
+    BOOST_CHECK( g.IsClockwise( 2.5 * pi, 3.0 * pi));
+    BOOST_CHECK(!g.IsClockwise( 3.0 * pi, 2.5 * pi));
   }
   if (verbose) TRACE("IsCounterClockWise of two angles, doubles");
   {
-    assert(!g.IsCounterClockwise(-2.5 * pi,-2.0 * pi));
-    assert( g.IsCounterClockwise(-2.0 * pi,-2.5 * pi));
-    assert(!g.IsCounterClockwise(-1.5 * pi,-1.0 * pi));
-    assert( g.IsCounterClockwise(-1.0 * pi,-1.5 * pi));
-    assert(!g.IsCounterClockwise(-0.5 * pi, 0.0 * pi));
-    assert( g.IsCounterClockwise( 0.0 * pi,-0.5 * pi));
-    assert(!g.IsCounterClockwise( 0.0 * pi, 0.5 * pi));
-    assert( g.IsCounterClockwise( 0.5 * pi, 0.0 * pi));
-    assert(!g.IsCounterClockwise( 0.5 * pi, 1.0 * pi));
-    assert( g.IsCounterClockwise( 1.0 * pi, 0.5 * pi));
-    assert(!g.IsCounterClockwise( 1.5 * pi, 2.0 * pi));
-    assert( g.IsCounterClockwise( 2.0 * pi, 1.5 * pi));
-    assert(!g.IsCounterClockwise( 2.5 * pi, 3.0 * pi));
-    assert( g.IsCounterClockwise( 3.0 * pi, 2.5 * pi));
+    BOOST_CHECK(!g.IsCounterClockwise(-2.5 * pi,-2.0 * pi));
+    BOOST_CHECK( g.IsCounterClockwise(-2.0 * pi,-2.5 * pi));
+    BOOST_CHECK(!g.IsCounterClockwise(-1.5 * pi,-1.0 * pi));
+    BOOST_CHECK( g.IsCounterClockwise(-1.0 * pi,-1.5 * pi));
+    BOOST_CHECK(!g.IsCounterClockwise(-0.5 * pi, 0.0 * pi));
+    BOOST_CHECK( g.IsCounterClockwise( 0.0 * pi,-0.5 * pi));
+    BOOST_CHECK(!g.IsCounterClockwise( 0.0 * pi, 0.5 * pi));
+    BOOST_CHECK( g.IsCounterClockwise( 0.5 * pi, 0.0 * pi));
+    BOOST_CHECK(!g.IsCounterClockwise( 0.5 * pi, 1.0 * pi));
+    BOOST_CHECK( g.IsCounterClockwise( 1.0 * pi, 0.5 * pi));
+    BOOST_CHECK(!g.IsCounterClockwise( 1.5 * pi, 2.0 * pi));
+    BOOST_CHECK( g.IsCounterClockwise( 2.0 * pi, 1.5 * pi));
+    BOOST_CHECK(!g.IsCounterClockwise( 2.5 * pi, 3.0 * pi));
+    BOOST_CHECK( g.IsCounterClockwise( 3.0 * pi, 2.5 * pi));
   }
   if (verbose) TRACE("IsClockWise of two, vector");
   {
-    assert( g.IsClockwise(Doubles( {-2.5 * pi,-2.0 * pi } )));
-    assert(!g.IsClockwise(Doubles( {-2.0 * pi,-2.5 * pi } )));
-    assert( g.IsClockwise(Doubles( {-1.5 * pi,-1.0 * pi } )));
-    assert(!g.IsClockwise(Doubles( {-1.0 * pi,-1.5 * pi } )));
-    assert( g.IsClockwise(Doubles( {-0.5 * pi, 0.0 * pi } )));
-    assert(!g.IsClockwise(Doubles( { 0.0 * pi,-0.5 * pi } )));
-    assert( g.IsClockwise(Doubles( { 0.0 * pi, 0.5 * pi } )));
-    assert(!g.IsClockwise(Doubles( { 0.5 * pi, 0.0 * pi } )));
-    assert( g.IsClockwise(Doubles( { 0.5 * pi, 1.0 * pi } )));
-    assert(!g.IsClockwise(Doubles( { 1.0 * pi, 0.5 * pi } )));
-    assert( g.IsClockwise(Doubles( { 1.5 * pi, 2.0 * pi } )));
-    assert(!g.IsClockwise(Doubles( { 2.0 * pi, 1.5 * pi } )));
-    assert( g.IsClockwise(Doubles( { 2.5 * pi, 3.0 * pi } )));
-    assert(!g.IsClockwise(Doubles( { 3.0 * pi, 2.5 * pi } )));
+    BOOST_CHECK( g.IsClockwise(Doubles( {-2.5 * pi,-2.0 * pi } )));
+    BOOST_CHECK(!g.IsClockwise(Doubles( {-2.0 * pi,-2.5 * pi } )));
+    BOOST_CHECK( g.IsClockwise(Doubles( {-1.5 * pi,-1.0 * pi } )));
+    BOOST_CHECK(!g.IsClockwise(Doubles( {-1.0 * pi,-1.5 * pi } )));
+    BOOST_CHECK( g.IsClockwise(Doubles( {-0.5 * pi, 0.0 * pi } )));
+    BOOST_CHECK(!g.IsClockwise(Doubles( { 0.0 * pi,-0.5 * pi } )));
+    BOOST_CHECK( g.IsClockwise(Doubles( { 0.0 * pi, 0.5 * pi } )));
+    BOOST_CHECK(!g.IsClockwise(Doubles( { 0.5 * pi, 0.0 * pi } )));
+    BOOST_CHECK( g.IsClockwise(Doubles( { 0.5 * pi, 1.0 * pi } )));
+    BOOST_CHECK(!g.IsClockwise(Doubles( { 1.0 * pi, 0.5 * pi } )));
+    BOOST_CHECK( g.IsClockwise(Doubles( { 1.5 * pi, 2.0 * pi } )));
+    BOOST_CHECK(!g.IsClockwise(Doubles( { 2.0 * pi, 1.5 * pi } )));
+    BOOST_CHECK( g.IsClockwise(Doubles( { 2.5 * pi, 3.0 * pi } )));
+    BOOST_CHECK(!g.IsClockwise(Doubles( { 3.0 * pi, 2.5 * pi } )));
   }
   if (verbose) TRACE("IsCounterClockWise of two, vector");
   {
-    assert(!g.IsCounterClockwise(Doubles( {-2.5 * pi,-2.0 * pi } )));
-    assert( g.IsCounterClockwise(Doubles( {-2.0 * pi,-2.5 * pi } )));
-    assert(!g.IsCounterClockwise(Doubles( {-1.5 * pi,-1.0 * pi } )));
-    assert( g.IsCounterClockwise(Doubles( {-1.0 * pi,-1.5 * pi } )));
-    assert(!g.IsCounterClockwise(Doubles( {-0.5 * pi, 0.0 * pi } )));
-    assert( g.IsCounterClockwise(Doubles( { 0.0 * pi,-0.5 * pi } )));
-    assert(!g.IsCounterClockwise(Doubles( { 0.0 * pi, 0.5 * pi } )));
-    assert( g.IsCounterClockwise(Doubles( { 0.5 * pi, 0.0 * pi } )));
-    assert(!g.IsCounterClockwise(Doubles( { 0.5 * pi, 1.0 * pi } )));
-    assert( g.IsCounterClockwise(Doubles( { 1.0 * pi, 0.5 * pi } )));
-    assert(!g.IsCounterClockwise(Doubles( { 1.5 * pi, 2.0 * pi } )));
-    assert( g.IsCounterClockwise(Doubles( { 2.0 * pi, 1.5 * pi } )));
-    assert(!g.IsCounterClockwise(Doubles( { 2.5 * pi, 3.0 * pi } )));
-    assert( g.IsCounterClockwise(Doubles( { 3.0 * pi, 2.5 * pi } )));
+    BOOST_CHECK(!g.IsCounterClockwise(Doubles( {-2.5 * pi,-2.0 * pi } )));
+    BOOST_CHECK( g.IsCounterClockwise(Doubles( {-2.0 * pi,-2.5 * pi } )));
+    BOOST_CHECK(!g.IsCounterClockwise(Doubles( {-1.5 * pi,-1.0 * pi } )));
+    BOOST_CHECK( g.IsCounterClockwise(Doubles( {-1.0 * pi,-1.5 * pi } )));
+    BOOST_CHECK(!g.IsCounterClockwise(Doubles( {-0.5 * pi, 0.0 * pi } )));
+    BOOST_CHECK( g.IsCounterClockwise(Doubles( { 0.0 * pi,-0.5 * pi } )));
+    BOOST_CHECK(!g.IsCounterClockwise(Doubles( { 0.0 * pi, 0.5 * pi } )));
+    BOOST_CHECK( g.IsCounterClockwise(Doubles( { 0.5 * pi, 0.0 * pi } )));
+    BOOST_CHECK(!g.IsCounterClockwise(Doubles( { 0.5 * pi, 1.0 * pi } )));
+    BOOST_CHECK( g.IsCounterClockwise(Doubles( { 1.0 * pi, 0.5 * pi } )));
+    BOOST_CHECK(!g.IsCounterClockwise(Doubles( { 1.5 * pi, 2.0 * pi } )));
+    BOOST_CHECK( g.IsCounterClockwise(Doubles( { 2.0 * pi, 1.5 * pi } )));
+    BOOST_CHECK(!g.IsCounterClockwise(Doubles( { 2.5 * pi, 3.0 * pi } )));
+    BOOST_CHECK( g.IsCounterClockwise(Doubles( { 3.0 * pi, 2.5 * pi } )));
   }
   if (verbose) TRACE("IsClockWise of three, vector");
   {
 
-    assert( g.IsClockwise(Doubles( {-2.5 * pi,-2.0 * pi,-1.8 * pi} ))); //CW
-    assert(!g.IsClockwise(Doubles( {-1.8 * pi,-2.0 * pi,-2.5 * pi} ))); //CCW
-    assert(!g.IsClockwise(Doubles( {-2.0 * pi,-2.5 * pi,-1.8 * pi} ))); //Mess
+    BOOST_CHECK( g.IsClockwise(Doubles( {-2.5 * pi,-2.0 * pi,-1.8 * pi} ))); //CW
+    BOOST_CHECK(!g.IsClockwise(Doubles( {-1.8 * pi,-2.0 * pi,-2.5 * pi} ))); //CCW
+    BOOST_CHECK(!g.IsClockwise(Doubles( {-2.0 * pi,-2.5 * pi,-1.8 * pi} ))); //Mess
 
-    assert( g.IsClockwise(Doubles( {-1.5 * pi,-1.0 * pi,-0.8 * pi} ))); //CW
-    assert(!g.IsClockwise(Doubles( {-0.8 * pi,-1.0 * pi,-1.5 * pi} ))); //CCW
-    assert(!g.IsClockwise(Doubles( {-1.0 * pi,-1.5 * pi,-0.8 * pi} ))); //Mess
+    BOOST_CHECK( g.IsClockwise(Doubles( {-1.5 * pi,-1.0 * pi,-0.8 * pi} ))); //CW
+    BOOST_CHECK(!g.IsClockwise(Doubles( {-0.8 * pi,-1.0 * pi,-1.5 * pi} ))); //CCW
+    BOOST_CHECK(!g.IsClockwise(Doubles( {-1.0 * pi,-1.5 * pi,-0.8 * pi} ))); //Mess
 
-    assert( g.IsClockwise(Doubles( {-0.5 * pi, 0.0 * pi, 0.3 * pi } ))); //CW
-    assert(!g.IsClockwise(Doubles( { 0.3 * pi, 0.0 * pi,-0.5 * pi } ))); //CCW
-    assert(!g.IsClockwise(Doubles( { 0.0 * pi,-0.5 * pi, 0.3 * pi } ))); //Mess
+    BOOST_CHECK( g.IsClockwise(Doubles( {-0.5 * pi, 0.0 * pi, 0.3 * pi } ))); //CW
+    BOOST_CHECK(!g.IsClockwise(Doubles( { 0.3 * pi, 0.0 * pi,-0.5 * pi } ))); //CCW
+    BOOST_CHECK(!g.IsClockwise(Doubles( { 0.0 * pi,-0.5 * pi, 0.3 * pi } ))); //Mess
 
-    assert( g.IsClockwise(Doubles( { 0.0 * pi, 0.5 * pi, 0.8 * pi } ))); //CW
-    assert(!g.IsClockwise(Doubles( { 0.8 * pi, 0.5 * pi, 0.0 * pi } ))); //CCW
-    assert(!g.IsClockwise(Doubles( { 0.5 * pi, 0.0 * pi, 0.8 * pi } ))); //Mess
+    BOOST_CHECK( g.IsClockwise(Doubles( { 0.0 * pi, 0.5 * pi, 0.8 * pi } ))); //CW
+    BOOST_CHECK(!g.IsClockwise(Doubles( { 0.8 * pi, 0.5 * pi, 0.0 * pi } ))); //CCW
+    BOOST_CHECK(!g.IsClockwise(Doubles( { 0.5 * pi, 0.0 * pi, 0.8 * pi } ))); //Mess
 
-    assert( g.IsClockwise(Doubles( { 0.5 * pi, 1.0 * pi, 1.3 * pi } ))); //CW
-    assert(!g.IsClockwise(Doubles( { 1.3 * pi, 1.0 * pi, 0.5 * pi } ))); //CCW
-    assert(!g.IsClockwise(Doubles( { 1.0 * pi, 0.5 * pi, 1.3 * pi } ))); //Mess
+    BOOST_CHECK( g.IsClockwise(Doubles( { 0.5 * pi, 1.0 * pi, 1.3 * pi } ))); //CW
+    BOOST_CHECK(!g.IsClockwise(Doubles( { 1.3 * pi, 1.0 * pi, 0.5 * pi } ))); //CCW
+    BOOST_CHECK(!g.IsClockwise(Doubles( { 1.0 * pi, 0.5 * pi, 1.3 * pi } ))); //Mess
 
-    assert( g.IsClockwise(Doubles( { 1.5 * pi, 2.0 * pi, 2.3 * pi } ))); //CW
-    assert(!g.IsClockwise(Doubles( { 2.3 * pi, 2.0 * pi, 1.5 * pi } ))); //CCW
-    assert(!g.IsClockwise(Doubles( { 2.0 * pi, 1.5 * pi, 2.3 * pi } ))); //Mess
+    BOOST_CHECK( g.IsClockwise(Doubles( { 1.5 * pi, 2.0 * pi, 2.3 * pi } ))); //CW
+    BOOST_CHECK(!g.IsClockwise(Doubles( { 2.3 * pi, 2.0 * pi, 1.5 * pi } ))); //CCW
+    BOOST_CHECK(!g.IsClockwise(Doubles( { 2.0 * pi, 1.5 * pi, 2.3 * pi } ))); //Mess
 
-    assert( g.IsClockwise(Doubles( { 2.5 * pi, 3.0 * pi, 3.3 * pi } ))); //CW
-    assert(!g.IsClockwise(Doubles( { 3.3 * pi, 3.0 * pi, 2.5 * pi } ))); //CCW
-    assert(!g.IsClockwise(Doubles( { 3.0 * pi, 2.5 * pi, 3.3 * pi } ))); //Mess
+    BOOST_CHECK( g.IsClockwise(Doubles( { 2.5 * pi, 3.0 * pi, 3.3 * pi } ))); //CW
+    BOOST_CHECK(!g.IsClockwise(Doubles( { 3.3 * pi, 3.0 * pi, 2.5 * pi } ))); //CCW
+    BOOST_CHECK(!g.IsClockwise(Doubles( { 3.0 * pi, 2.5 * pi, 3.3 * pi } ))); //Mess
   }
   if (verbose) TRACE("IsCounterClockWise of three, vector");
   {
 
-    assert(!g.IsCounterClockwise(Doubles( {-2.5 * pi,-2.0 * pi,-1.8 * pi} ))); //CW
-    assert( g.IsCounterClockwise(Doubles( {-1.8 * pi,-2.0 * pi,-2.5 * pi} ))); //CCW
-    assert(!g.IsCounterClockwise(Doubles( {-2.0 * pi,-2.5 * pi,-1.8 * pi} ))); //Mess
+    BOOST_CHECK(!g.IsCounterClockwise(Doubles( {-2.5 * pi,-2.0 * pi,-1.8 * pi} ))); //CW
+    BOOST_CHECK( g.IsCounterClockwise(Doubles( {-1.8 * pi,-2.0 * pi,-2.5 * pi} ))); //CCW
+    BOOST_CHECK(!g.IsCounterClockwise(Doubles( {-2.0 * pi,-2.5 * pi,-1.8 * pi} ))); //Mess
 
-    assert(!g.IsCounterClockwise(Doubles( {-1.5 * pi,-1.0 * pi,-0.8 * pi} ))); //CW
-    assert( g.IsCounterClockwise(Doubles( {-0.8 * pi,-1.0 * pi,-1.5 * pi} ))); //CCW
-    assert(!g.IsCounterClockwise(Doubles( {-1.0 * pi,-1.5 * pi,-0.8 * pi} ))); //Mess
+    BOOST_CHECK(!g.IsCounterClockwise(Doubles( {-1.5 * pi,-1.0 * pi,-0.8 * pi} ))); //CW
+    BOOST_CHECK( g.IsCounterClockwise(Doubles( {-0.8 * pi,-1.0 * pi,-1.5 * pi} ))); //CCW
+    BOOST_CHECK(!g.IsCounterClockwise(Doubles( {-1.0 * pi,-1.5 * pi,-0.8 * pi} ))); //Mess
 
-    assert(!g.IsCounterClockwise(Doubles( {-0.5 * pi, 0.0 * pi, 0.3 * pi } ))); //CW
-    assert( g.IsCounterClockwise(Doubles( { 0.3 * pi, 0.0 * pi,-0.5 * pi } ))); //CCW
-    assert(!g.IsCounterClockwise(Doubles( { 0.0 * pi,-0.5 * pi, 0.3 * pi } ))); //Mess
+    BOOST_CHECK(!g.IsCounterClockwise(Doubles( {-0.5 * pi, 0.0 * pi, 0.3 * pi } ))); //CW
+    BOOST_CHECK( g.IsCounterClockwise(Doubles( { 0.3 * pi, 0.0 * pi,-0.5 * pi } ))); //CCW
+    BOOST_CHECK(!g.IsCounterClockwise(Doubles( { 0.0 * pi,-0.5 * pi, 0.3 * pi } ))); //Mess
 
-    assert(!g.IsCounterClockwise(Doubles( { 0.0 * pi, 0.5 * pi, 0.8 * pi } ))); //CW
-    assert( g.IsCounterClockwise(Doubles( { 0.8 * pi, 0.5 * pi, 0.0 * pi } ))); //CCW
-    assert(!g.IsCounterClockwise(Doubles( { 0.5 * pi, 0.0 * pi, 0.8 * pi } ))); //Mess
+    BOOST_CHECK(!g.IsCounterClockwise(Doubles( { 0.0 * pi, 0.5 * pi, 0.8 * pi } ))); //CW
+    BOOST_CHECK( g.IsCounterClockwise(Doubles( { 0.8 * pi, 0.5 * pi, 0.0 * pi } ))); //CCW
+    BOOST_CHECK(!g.IsCounterClockwise(Doubles( { 0.5 * pi, 0.0 * pi, 0.8 * pi } ))); //Mess
 
-    assert(!g.IsCounterClockwise(Doubles( { 0.5 * pi, 1.0 * pi, 1.3 * pi } ))); //CW
-    assert( g.IsCounterClockwise(Doubles( { 1.3 * pi, 1.0 * pi, 0.5 * pi } ))); //CCW
-    assert(!g.IsCounterClockwise(Doubles( { 1.0 * pi, 0.5 * pi, 1.3 * pi } ))); //Mess
+    BOOST_CHECK(!g.IsCounterClockwise(Doubles( { 0.5 * pi, 1.0 * pi, 1.3 * pi } ))); //CW
+    BOOST_CHECK( g.IsCounterClockwise(Doubles( { 1.3 * pi, 1.0 * pi, 0.5 * pi } ))); //CCW
+    BOOST_CHECK(!g.IsCounterClockwise(Doubles( { 1.0 * pi, 0.5 * pi, 1.3 * pi } ))); //Mess
 
-    assert(!g.IsCounterClockwise(Doubles( { 1.5 * pi, 2.0 * pi, 2.3 * pi } ))); //CW
-    assert( g.IsCounterClockwise(Doubles( { 2.3 * pi, 2.0 * pi, 1.5 * pi } ))); //CCW
-    assert(!g.IsCounterClockwise(Doubles( { 2.0 * pi, 1.5 * pi, 2.3 * pi } ))); //Mess
+    BOOST_CHECK(!g.IsCounterClockwise(Doubles( { 1.5 * pi, 2.0 * pi, 2.3 * pi } ))); //CW
+    BOOST_CHECK( g.IsCounterClockwise(Doubles( { 2.3 * pi, 2.0 * pi, 1.5 * pi } ))); //CCW
+    BOOST_CHECK(!g.IsCounterClockwise(Doubles( { 2.0 * pi, 1.5 * pi, 2.3 * pi } ))); //Mess
 
-    assert(!g.IsCounterClockwise(Doubles( { 2.5 * pi, 3.0 * pi, 3.3 * pi } ))); //CW
-    assert( g.IsCounterClockwise(Doubles( { 3.3 * pi, 3.0 * pi, 2.5 * pi } ))); //CCW
-    assert(!g.IsCounterClockwise(Doubles( { 3.0 * pi, 2.5 * pi, 3.3 * pi } ))); //Mess
+    BOOST_CHECK(!g.IsCounterClockwise(Doubles( { 2.5 * pi, 3.0 * pi, 3.3 * pi } ))); //CW
+    BOOST_CHECK( g.IsCounterClockwise(Doubles( { 3.3 * pi, 3.0 * pi, 2.5 * pi } ))); //CCW
+    BOOST_CHECK(!g.IsCounterClockwise(Doubles( { 3.0 * pi, 2.5 * pi, 3.3 * pi } ))); //Mess
   }
   if (verbose) TRACE("IsClockWise of four, vector");
   {
 
     //Correct order
-    assert( g.IsClockwise(Doubles( {-2.5 * pi,-2.0 * pi,-1.5 * pi,-1.0 * pi} )));
-    assert( g.IsClockwise(Doubles( {-2.0 * pi,-1.5 * pi,-1.0 * pi,-0.5 * pi} )));
-    assert( g.IsClockwise(Doubles( {-1.5 * pi,-1.0 * pi,-0.5 * pi, 0.0 * pi} )));
-    assert( g.IsClockwise(Doubles( {-1.0 * pi,-0.5 * pi, 0.0 * pi, 0.5 * pi} )));
-    assert( g.IsClockwise(Doubles( {-0.5 * pi, 0.0 * pi, 0.5 * pi, 1.0 * pi} )));
-    assert( g.IsClockwise(Doubles( { 0.0 * pi, 0.5 * pi, 1.0 * pi, 1.5 * pi} )));
-    assert( g.IsClockwise(Doubles( { 0.5 * pi, 1.0 * pi, 1.5 * pi, 2.0 * pi} )));
-    assert( g.IsClockwise(Doubles( { 1.0 * pi, 1.5 * pi, 2.0 * pi, 2.5 * pi} )));
-    assert( g.IsClockwise(Doubles( { 1.5 * pi, 2.0 * pi, 2.5 * pi, 3.0 * pi} )));
-    assert( g.IsClockwise(Doubles( { 2.0 * pi, 2.5 * pi, 3.0 * pi, 3.5 * pi} )));
-    assert( g.IsClockwise(Doubles( { 2.5 * pi, 3.0 * pi, 3.5 * pi, 4.0 * pi} )));
+    BOOST_CHECK( g.IsClockwise(Doubles( {-2.5 * pi,-2.0 * pi,-1.5 * pi,-1.0 * pi} )));
+    BOOST_CHECK( g.IsClockwise(Doubles( {-2.0 * pi,-1.5 * pi,-1.0 * pi,-0.5 * pi} )));
+    BOOST_CHECK( g.IsClockwise(Doubles( {-1.5 * pi,-1.0 * pi,-0.5 * pi, 0.0 * pi} )));
+    BOOST_CHECK( g.IsClockwise(Doubles( {-1.0 * pi,-0.5 * pi, 0.0 * pi, 0.5 * pi} )));
+    BOOST_CHECK( g.IsClockwise(Doubles( {-0.5 * pi, 0.0 * pi, 0.5 * pi, 1.0 * pi} )));
+    BOOST_CHECK( g.IsClockwise(Doubles( { 0.0 * pi, 0.5 * pi, 1.0 * pi, 1.5 * pi} )));
+    BOOST_CHECK( g.IsClockwise(Doubles( { 0.5 * pi, 1.0 * pi, 1.5 * pi, 2.0 * pi} )));
+    BOOST_CHECK( g.IsClockwise(Doubles( { 1.0 * pi, 1.5 * pi, 2.0 * pi, 2.5 * pi} )));
+    BOOST_CHECK( g.IsClockwise(Doubles( { 1.5 * pi, 2.0 * pi, 2.5 * pi, 3.0 * pi} )));
+    BOOST_CHECK( g.IsClockwise(Doubles( { 2.0 * pi, 2.5 * pi, 3.0 * pi, 3.5 * pi} )));
+    BOOST_CHECK( g.IsClockwise(Doubles( { 2.5 * pi, 3.0 * pi, 3.5 * pi, 4.0 * pi} )));
 
     //Swap [0] and [1]
-    assert(!g.IsClockwise(Doubles( {-2.0 * pi,-2.5 * pi,-1.5 * pi,-1.0 * pi} )));
-    assert(!g.IsClockwise(Doubles( {-1.5 * pi,-2.0 * pi,-1.0 * pi,-0.5 * pi} )));
-    assert(!g.IsClockwise(Doubles( {-1.0 * pi,-1.5 * pi,-0.5 * pi, 0.0 * pi} )));
-    assert(!g.IsClockwise(Doubles( {-0.5 * pi,-1.0 * pi, 0.0 * pi, 0.5 * pi} )));
-    assert(!g.IsClockwise(Doubles( { 0.0 * pi,-0.5 * pi, 0.5 * pi, 1.0 * pi} )));
-    assert(!g.IsClockwise(Doubles( { 0.5 * pi, 0.0 * pi, 1.0 * pi, 1.5 * pi} )));
-    assert(!g.IsClockwise(Doubles( { 1.0 * pi, 0.5 * pi, 1.5 * pi, 2.0 * pi} )));
-    assert(!g.IsClockwise(Doubles( { 1.5 * pi, 1.0 * pi, 2.0 * pi, 2.5 * pi} )));
-    assert(!g.IsClockwise(Doubles( { 2.0 * pi, 1.5 * pi, 2.5 * pi, 3.0 * pi} )));
-    assert(!g.IsClockwise(Doubles( { 2.5 * pi, 2.0 * pi, 3.0 * pi, 3.5 * pi} )));
-    assert(!g.IsClockwise(Doubles( { 3.0 * pi, 2.5 * pi, 3.5 * pi, 4.0 * pi} )));
+    BOOST_CHECK(!g.IsClockwise(Doubles( {-2.0 * pi,-2.5 * pi,-1.5 * pi,-1.0 * pi} )));
+    BOOST_CHECK(!g.IsClockwise(Doubles( {-1.5 * pi,-2.0 * pi,-1.0 * pi,-0.5 * pi} )));
+    BOOST_CHECK(!g.IsClockwise(Doubles( {-1.0 * pi,-1.5 * pi,-0.5 * pi, 0.0 * pi} )));
+    BOOST_CHECK(!g.IsClockwise(Doubles( {-0.5 * pi,-1.0 * pi, 0.0 * pi, 0.5 * pi} )));
+    BOOST_CHECK(!g.IsClockwise(Doubles( { 0.0 * pi,-0.5 * pi, 0.5 * pi, 1.0 * pi} )));
+    BOOST_CHECK(!g.IsClockwise(Doubles( { 0.5 * pi, 0.0 * pi, 1.0 * pi, 1.5 * pi} )));
+    BOOST_CHECK(!g.IsClockwise(Doubles( { 1.0 * pi, 0.5 * pi, 1.5 * pi, 2.0 * pi} )));
+    BOOST_CHECK(!g.IsClockwise(Doubles( { 1.5 * pi, 1.0 * pi, 2.0 * pi, 2.5 * pi} )));
+    BOOST_CHECK(!g.IsClockwise(Doubles( { 2.0 * pi, 1.5 * pi, 2.5 * pi, 3.0 * pi} )));
+    BOOST_CHECK(!g.IsClockwise(Doubles( { 2.5 * pi, 2.0 * pi, 3.0 * pi, 3.5 * pi} )));
+    BOOST_CHECK(!g.IsClockwise(Doubles( { 3.0 * pi, 2.5 * pi, 3.5 * pi, 4.0 * pi} )));
 
     //Swap [2] and [3]
-    assert(!g.IsClockwise(Doubles( {-2.5 * pi,-2.0 * pi,-1.0 * pi,-1.5 * pi} )));
-    assert(!g.IsClockwise(Doubles( {-2.0 * pi,-1.5 * pi,-0.5 * pi,-1.0 * pi} )));
-    assert(!g.IsClockwise(Doubles( {-1.5 * pi,-1.0 * pi, 0.0 * pi,-0.5 * pi} )));
-    assert(!g.IsClockwise(Doubles( {-1.0 * pi,-0.5 * pi, 0.5 * pi, 0.0 * pi} )));
-    assert(!g.IsClockwise(Doubles( {-0.5 * pi, 0.0 * pi, 1.0 * pi, 0.5 * pi} )));
-    assert(!g.IsClockwise(Doubles( { 0.0 * pi, 0.5 * pi, 1.5 * pi, 1.0 * pi} )));
-    assert(!g.IsClockwise(Doubles( { 0.5 * pi, 1.0 * pi, 2.0 * pi, 1.5 * pi} )));
-    assert(!g.IsClockwise(Doubles( { 1.0 * pi, 1.5 * pi, 2.5 * pi, 2.0 * pi} )));
-    assert(!g.IsClockwise(Doubles( { 1.5 * pi, 2.0 * pi, 3.0 * pi, 2.5 * pi} )));
-    assert(!g.IsClockwise(Doubles( { 2.0 * pi, 2.5 * pi, 3.5 * pi, 3.0 * pi} )));
-    assert(!g.IsClockwise(Doubles( { 2.5 * pi, 3.0 * pi, 4.0 * pi, 3.5 * pi} )));
+    BOOST_CHECK(!g.IsClockwise(Doubles( {-2.5 * pi,-2.0 * pi,-1.0 * pi,-1.5 * pi} )));
+    BOOST_CHECK(!g.IsClockwise(Doubles( {-2.0 * pi,-1.5 * pi,-0.5 * pi,-1.0 * pi} )));
+    BOOST_CHECK(!g.IsClockwise(Doubles( {-1.5 * pi,-1.0 * pi, 0.0 * pi,-0.5 * pi} )));
+    BOOST_CHECK(!g.IsClockwise(Doubles( {-1.0 * pi,-0.5 * pi, 0.5 * pi, 0.0 * pi} )));
+    BOOST_CHECK(!g.IsClockwise(Doubles( {-0.5 * pi, 0.0 * pi, 1.0 * pi, 0.5 * pi} )));
+    BOOST_CHECK(!g.IsClockwise(Doubles( { 0.0 * pi, 0.5 * pi, 1.5 * pi, 1.0 * pi} )));
+    BOOST_CHECK(!g.IsClockwise(Doubles( { 0.5 * pi, 1.0 * pi, 2.0 * pi, 1.5 * pi} )));
+    BOOST_CHECK(!g.IsClockwise(Doubles( { 1.0 * pi, 1.5 * pi, 2.5 * pi, 2.0 * pi} )));
+    BOOST_CHECK(!g.IsClockwise(Doubles( { 1.5 * pi, 2.0 * pi, 3.0 * pi, 2.5 * pi} )));
+    BOOST_CHECK(!g.IsClockwise(Doubles( { 2.0 * pi, 2.5 * pi, 3.5 * pi, 3.0 * pi} )));
+    BOOST_CHECK(!g.IsClockwise(Doubles( { 2.5 * pi, 3.0 * pi, 4.0 * pi, 3.5 * pi} )));
   }
   if (verbose) TRACE("IsCounterClockWise of four, vector");
   {
 
     //Clockwise order
-    assert(!g.IsCounterClockwise(Doubles( {-2.5 * pi,-2.0 * pi,-1.5 * pi,-1.0 * pi} )));
-    assert(!g.IsCounterClockwise(Doubles( {-2.0 * pi,-1.5 * pi,-1.0 * pi,-0.5 * pi} )));
-    assert(!g.IsCounterClockwise(Doubles( {-1.5 * pi,-1.0 * pi,-0.5 * pi, 0.0 * pi} )));
-    assert(!g.IsCounterClockwise(Doubles( {-1.0 * pi,-0.5 * pi, 0.0 * pi, 0.5 * pi} )));
-    assert(!g.IsCounterClockwise(Doubles( {-0.5 * pi, 0.0 * pi, 0.5 * pi, 1.0 * pi} )));
-    assert(!g.IsCounterClockwise(Doubles( { 0.0 * pi, 0.5 * pi, 1.0 * pi, 1.5 * pi} )));
-    assert(!g.IsCounterClockwise(Doubles( { 0.5 * pi, 1.0 * pi, 1.5 * pi, 2.0 * pi} )));
-    assert(!g.IsCounterClockwise(Doubles( { 1.0 * pi, 1.5 * pi, 2.0 * pi, 2.5 * pi} )));
-    assert(!g.IsCounterClockwise(Doubles( { 1.5 * pi, 2.0 * pi, 2.5 * pi, 3.0 * pi} )));
-    assert(!g.IsCounterClockwise(Doubles( { 2.0 * pi, 2.5 * pi, 3.0 * pi, 3.5 * pi} )));
-    assert(!g.IsCounterClockwise(Doubles( { 2.5 * pi, 3.0 * pi, 3.5 * pi, 4.0 * pi} )));
+    BOOST_CHECK(!g.IsCounterClockwise(Doubles( {-2.5 * pi,-2.0 * pi,-1.5 * pi,-1.0 * pi} )));
+    BOOST_CHECK(!g.IsCounterClockwise(Doubles( {-2.0 * pi,-1.5 * pi,-1.0 * pi,-0.5 * pi} )));
+    BOOST_CHECK(!g.IsCounterClockwise(Doubles( {-1.5 * pi,-1.0 * pi,-0.5 * pi, 0.0 * pi} )));
+    BOOST_CHECK(!g.IsCounterClockwise(Doubles( {-1.0 * pi,-0.5 * pi, 0.0 * pi, 0.5 * pi} )));
+    BOOST_CHECK(!g.IsCounterClockwise(Doubles( {-0.5 * pi, 0.0 * pi, 0.5 * pi, 1.0 * pi} )));
+    BOOST_CHECK(!g.IsCounterClockwise(Doubles( { 0.0 * pi, 0.5 * pi, 1.0 * pi, 1.5 * pi} )));
+    BOOST_CHECK(!g.IsCounterClockwise(Doubles( { 0.5 * pi, 1.0 * pi, 1.5 * pi, 2.0 * pi} )));
+    BOOST_CHECK(!g.IsCounterClockwise(Doubles( { 1.0 * pi, 1.5 * pi, 2.0 * pi, 2.5 * pi} )));
+    BOOST_CHECK(!g.IsCounterClockwise(Doubles( { 1.5 * pi, 2.0 * pi, 2.5 * pi, 3.0 * pi} )));
+    BOOST_CHECK(!g.IsCounterClockwise(Doubles( { 2.0 * pi, 2.5 * pi, 3.0 * pi, 3.5 * pi} )));
+    BOOST_CHECK(!g.IsCounterClockwise(Doubles( { 2.5 * pi, 3.0 * pi, 3.5 * pi, 4.0 * pi} )));
   }
 
   if (verbose) TRACE("IsClockWise of four, vector, going round more than once");
@@ -577,8 +578,8 @@ void ribi::Geometry::Test() noexcept
   */
   {
 
-    assert(!g.IsClockwise(Doubles( {0.0 * pi,0.9 * pi,1.8 * pi,2.7 * pi} )));
-    assert(!g.IsCounterClockwise(Doubles( {0.0 * pi,0.9 * pi,1.8 * pi,2.7 * pi} )));
+    BOOST_CHECK(!g.IsClockwise(Doubles( {0.0 * pi,0.9 * pi,1.8 * pi,2.7 * pi} )));
+    BOOST_CHECK(!g.IsCounterClockwise(Doubles( {0.0 * pi,0.9 * pi,1.8 * pi,2.7 * pi} )));
   }
   if (verbose) TRACE("IsCounterClockWise of four, vector, going round more than once");
   /*
@@ -594,8 +595,8 @@ void ribi::Geometry::Test() noexcept
   */
   {
 
-    assert(!g.IsCounterClockwise(Doubles( {2.0 * pi,1.1 * pi,0.2 * pi,-0.7 * pi} )));
-    assert(!g.IsCounterClockwise(Doubles( {2.7 * pi,1.8 * pi,0.9 * pi,0.0 * pi} )));
+    BOOST_CHECK(!g.IsCounterClockwise(Doubles( {2.0 * pi,1.1 * pi,0.2 * pi,-0.7 * pi} )));
+    BOOST_CHECK(!g.IsCounterClockwise(Doubles( {2.7 * pi,1.8 * pi,0.9 * pi,0.0 * pi} )));
   }
   if (verbose) { TRACE("IsClockwise, 3D, from #228, test for positive, three of four points"); }
   {
@@ -613,7 +614,7 @@ void ribi::Geometry::Test() noexcept
       Coordinat3D(-0.55,2,0)
     };
     const Coordinat3D observer{-2.1871,3.74169,5};
-    assert(g.IsClockwiseCartesian(points,observer));
+    BOOST_CHECK(g.IsClockwiseCartesian(points,observer));
   }
 
   if (verbose) { TRACE("IsCounterClockwise, 3D, from #228, test for positive, three of four points"); }
@@ -632,7 +633,7 @@ void ribi::Geometry::Test() noexcept
       Coordinat3D(-3.78624,2,10)
     };
     const Coordinat3D observer{-2.1871,3.74169,5};
-    assert(g.IsCounterClockwiseCartesian(points,observer));
+    BOOST_CHECK(g.IsCounterClockwiseCartesian(points,observer));
   }
   if (verbose) { TRACE("IsCounterClockwise, 3D, from #228, test for positive, all four points"); }
   {
@@ -651,7 +652,7 @@ void ribi::Geometry::Test() noexcept
       Coordinat3D(-0.55,2,10)
     };
     const Coordinat3D observer{-2.1871,3.74169,5};
-    assert(g.IsCounterClockwiseCartesian(points,observer));
+    BOOST_CHECK(g.IsCounterClockwiseCartesian(points,observer));
   }
   if (verbose) TRACE("IsConvex, two dimensions");
   {
@@ -683,7 +684,7 @@ void ribi::Geometry::Test() noexcept
 
       Polygon polygon;
       boost::geometry::append(polygon, points);
-      assert(g.IsConvex(polygon));
+      BOOST_CHECK(g.IsConvex(polygon));
     }
     //Concave shape
     {
@@ -697,7 +698,7 @@ void ribi::Geometry::Test() noexcept
 
       Polygon polygon;
       boost::geometry::append(polygon, points);
-      assert(!g.IsConvex(polygon));
+      BOOST_CHECK(!g.IsConvex(polygon));
     }
   }
   if (verbose) TRACE("Convex shape, 2D, from error #1");
@@ -723,7 +724,7 @@ void ribi::Geometry::Test() noexcept
       {9.28854,40.6764},
       {17.4971,44.4009}
     };
-    assert(g.IsConvex(points));
+    BOOST_CHECK(g.IsConvex(points));
   }
   if (verbose) TRACE("Convex shape, 2D, from error #2");
   {
@@ -753,7 +754,7 @@ void ribi::Geometry::Test() noexcept
       {17.497 ,44.4009},
       { 9.2885,40.6764}
     };
-    assert(!g.IsConvex(points));
+    BOOST_CHECK(!g.IsConvex(points));
   }
 
 
@@ -778,7 +779,7 @@ void ribi::Geometry::Test() noexcept
       {17.497 ,44.4009},
       {17.497 ,33.0765}
     };
-    assert(g.IsConvex(points));
+    BOOST_CHECK(g.IsConvex(points));
   }
 
   if (verbose) TRACE("Convex shape, 2D, from error #3, point 5");
@@ -802,7 +803,7 @@ void ribi::Geometry::Test() noexcept
       {17.497 ,33.0765},
       {17.497 ,44.4009}
     };
-    assert(g.IsConvex(points));
+    BOOST_CHECK(g.IsConvex(points));
   }
 
   if (verbose) TRACE("Convex shape, 2D, from error #3, point 5");
@@ -822,7 +823,7 @@ void ribi::Geometry::Test() noexcept
       {8.24075,679.58 },
       {15.9835,682.926}
     };
-    assert(g.IsConvex(points));
+    BOOST_CHECK(g.IsConvex(points));
   }
 
 
@@ -847,7 +848,7 @@ void ribi::Geometry::Test() noexcept
         ApCoordinat3D(0.0,0.0,1.0)
       };
 
-      assert(!g.IsConvex(points) && "This is an hourglass shape, so it is not convex");
+      BOOST_CHECK(!g.IsConvex(points) && "This is an hourglass shape, so it is not convex");
     }
     if (verbose) TRACE("Convex shape, 3D, points in Y=0 plane, C shape");
     {
@@ -866,7 +867,7 @@ void ribi::Geometry::Test() noexcept
         ApCoordinat3D(0.0,0.0,1.0),
         ApCoordinat3D(1.0,0.0,1.0)
       };
-      assert(g.IsConvex(points) && "This is a corrected hourglass shape, so it is convex");
+      BOOST_CHECK(g.IsConvex(points) && "This is a corrected hourglass shape, so it is convex");
     }
   }
   if (verbose) TRACE("Convex shape, 3D, points in X=Y plane");
@@ -889,7 +890,7 @@ void ribi::Geometry::Test() noexcept
         ApCoordinat3D(1.0,1.0,1.0),
         ApCoordinat3D(0.0,0.0,1.0)
       };
-      assert(!g.IsConvex(points) && "This is an hourglass shape, so it is not convex");
+      BOOST_CHECK(!g.IsConvex(points) && "This is an hourglass shape, so it is not convex");
     }
     //Convex shape, 3D, points in X=Y plane
     {
@@ -911,7 +912,7 @@ void ribi::Geometry::Test() noexcept
         ApCoordinat3D(0.0,0.0,1.0),
         ApCoordinat3D(1.0,1.0,1.0)
       };
-      assert(g.IsConvex(points) && "This is a corrected hourglass shape, so it is convex");
+      BOOST_CHECK(g.IsConvex(points) && "This is a corrected hourglass shape, so it is convex");
     }
   }
   if (verbose) TRACE("Convex shape, 3D, points in 2X=Y plane, not at origin");
@@ -924,7 +925,7 @@ void ribi::Geometry::Test() noexcept
         ApCoordinat3D(2.0,4.0,1.0),
         ApCoordinat3D(1.0,1.0,1.0)
       };
-      assert(!g.IsConvex(points) && "This is an hourglass shape, so it is not convex");
+      BOOST_CHECK(!g.IsConvex(points) && "This is an hourglass shape, so it is not convex");
     }
     {
       const ApCoordinats3D points {
@@ -933,7 +934,7 @@ void ribi::Geometry::Test() noexcept
         ApCoordinat3D(1.0,1.0,1.0),
         ApCoordinat3D(2.0,2.0,1.0)
       };
-      assert(g.IsConvex(points) && "This is a corrected hourglass shape, so it is convex");
+      BOOST_CHECK(g.IsConvex(points) && "This is a corrected hourglass shape, so it is convex");
     }
   }
   if (verbose) TRACE("Convex shape, 3D, points in 2X=Y plane, above Z=0");
@@ -945,7 +946,7 @@ void ribi::Geometry::Test() noexcept
         ApCoordinat3D(2.0,4.0,2.0),
         ApCoordinat3D(1.0,1.0,2.0)
       };
-      assert(!g.IsConvex(points) && "This is an hourglass shape, so it is not convex");
+      BOOST_CHECK(!g.IsConvex(points) && "This is an hourglass shape, so it is not convex");
     }
     {
       const ApCoordinats3D points {
@@ -954,7 +955,7 @@ void ribi::Geometry::Test() noexcept
         ApCoordinat3D(1.0,1.0,2.0),
         ApCoordinat3D(2.0,2.0,2.0)
       };
-      assert(g.IsConvex(points) && "This is a corrected hourglass shape, so it is convex");
+      BOOST_CHECK(g.IsConvex(points) && "This is a corrected hourglass shape, so it is convex");
     }
   }
   if (verbose) TRACE("Convex shape, 3D, from error");
@@ -976,7 +977,7 @@ void ribi::Geometry::Test() noexcept
         ApCoordinat3D(2.35114,3.23607,6.0),
         ApCoordinat3D(1.17557,2.35781,6.0)
       };
-      assert(!g.IsConvex(points) && "This is an hourglass shape, so it is not convex");
+      BOOST_CHECK(!g.IsConvex(points) && "This is an hourglass shape, so it is not convex");
     }
     {
       /*
@@ -994,7 +995,7 @@ void ribi::Geometry::Test() noexcept
         ApCoordinat3D(1.17557,2.35781,6.0),
         ApCoordinat3D(2.35114,3.23607,6.0)
       };
-      assert(g.IsConvex(points) && "This is a corrected hourglass shape, so it is convex");
+      BOOST_CHECK(g.IsConvex(points) && "This is a corrected hourglass shape, so it is convex");
     }
   }
 
@@ -1027,10 +1028,10 @@ void ribi::Geometry::Test() noexcept
         const double y = static_cast<double>(j-1) * 5.0;
         const ApCoordinat3D above(x, y, 2.0);
         const ApCoordinat3D below(x, y,-1.0);
-        assert(!g.IsClockwiseCartesian(coordinats,above));
-        assert( g.IsClockwiseCartesian(coordinats,below));
-        assert( g.IsCounterClockwiseCartesian(coordinats,above));
-        assert(!g.IsCounterClockwiseCartesian(coordinats,below));
+        BOOST_CHECK(!g.IsClockwiseCartesian(coordinats,above));
+        BOOST_CHECK( g.IsClockwiseCartesian(coordinats,below));
+        BOOST_CHECK( g.IsCounterClockwiseCartesian(coordinats,above));
+        BOOST_CHECK(!g.IsCounterClockwiseCartesian(coordinats,below));
       }
     }
   }
@@ -1062,10 +1063,10 @@ void ribi::Geometry::Test() noexcept
         const double y = static_cast<double>(j-1) * 5.0;
         const ApCoordinat3D above(x, y, 2.0);
         const ApCoordinat3D below(x, y,-1.0);
-        assert( g.IsClockwiseCartesian(coordinats,above));
-        assert(!g.IsClockwiseCartesian(coordinats,below));
-        assert(!g.IsCounterClockwiseCartesian(coordinats,above));
-        assert( g.IsCounterClockwiseCartesian(coordinats,below));
+        BOOST_CHECK( g.IsClockwiseCartesian(coordinats,above));
+        BOOST_CHECK(!g.IsClockwiseCartesian(coordinats,below));
+        BOOST_CHECK(!g.IsCounterClockwiseCartesian(coordinats,above));
+        BOOST_CHECK( g.IsCounterClockwiseCartesian(coordinats,below));
       }
     }
   }
@@ -1096,9 +1097,9 @@ void ribi::Geometry::Test() noexcept
     const auto center_x = boost::geometry::get<0>(center);
     const auto center_y = boost::geometry::get<1>(center);
     const auto center_z = boost::geometry::get<2>(center);
-    assert(center_x > 1.49 && center_x < 1.51);
-    assert(center_y > 1.49 && center_y < 1.51);
-    assert(center_z > 0.99 && center_z < 1.01);
+    BOOST_CHECK(center_x > 1.49 && center_x < 1.51);
+    BOOST_CHECK(center_y > 1.49 && center_y < 1.51);
+    BOOST_CHECK(center_z > 0.99 && center_z < 1.01);
   }
 
   if (verbose) TRACE("IsClockwise, clockwise, in three dimensions, four points in XY plane");
@@ -1130,12 +1131,12 @@ void ribi::Geometry::Test() noexcept
         const double y = static_cast<double>(j-1) * 5.0;
         const ApCoordinat3D above(x, y, 2.0);
         const ApCoordinat3D below(x, y,-1.0);
-        assert(!g.IsClockwiseCartesianHorizontal(coordinats));
-        assert( g.IsCounterClockwiseCartesianHorizontal(coordinats));
-        assert(!g.IsClockwiseCartesian(coordinats,above));
-        assert( g.IsClockwiseCartesian(coordinats,below));
-        assert( g.IsCounterClockwiseCartesian(coordinats,above));
-        assert(!g.IsCounterClockwiseCartesian(coordinats,below));
+        BOOST_CHECK(!g.IsClockwiseCartesianHorizontal(coordinats));
+        BOOST_CHECK( g.IsCounterClockwiseCartesianHorizontal(coordinats));
+        BOOST_CHECK(!g.IsClockwiseCartesian(coordinats,above));
+        BOOST_CHECK( g.IsClockwiseCartesian(coordinats,below));
+        BOOST_CHECK( g.IsCounterClockwiseCartesian(coordinats,above));
+        BOOST_CHECK(!g.IsCounterClockwiseCartesian(coordinats,below));
       }
     }
   }
@@ -1167,10 +1168,10 @@ void ribi::Geometry::Test() noexcept
         const double y = static_cast<double>(j-1) * 5.0;
         const ApCoordinat3D above(x, y, 2.0);
         const ApCoordinat3D below(x, y,-1.0);
-        assert( g.IsClockwiseCartesian(coordinats,above));
-        assert(!g.IsClockwiseCartesian(coordinats,below));
-        assert(!g.IsCounterClockwiseCartesian(coordinats,above));
-        assert( g.IsCounterClockwiseCartesian(coordinats,below));
+        BOOST_CHECK( g.IsClockwiseCartesian(coordinats,above));
+        BOOST_CHECK(!g.IsClockwiseCartesian(coordinats,below));
+        BOOST_CHECK(!g.IsCounterClockwiseCartesian(coordinats,above));
+        BOOST_CHECK( g.IsCounterClockwiseCartesian(coordinats,below));
       }
     }
   }
@@ -1202,10 +1203,10 @@ void ribi::Geometry::Test() noexcept
         const Apfloat y = static_cast<double>(j-1) * 5.0;
         const ApCoordinat3D above(x, y, 2.0);
         const ApCoordinat3D below(x, y,-1.0);
-        assert(!g.IsClockwiseCartesian(coordinats,above));
-        assert(!g.IsClockwiseCartesian(coordinats,below));
-        assert(!g.IsCounterClockwiseCartesian(coordinats,above));
-        assert(!g.IsCounterClockwiseCartesian(coordinats,below));
+        BOOST_CHECK(!g.IsClockwiseCartesian(coordinats,above));
+        BOOST_CHECK(!g.IsClockwiseCartesian(coordinats,below));
+        BOOST_CHECK(!g.IsCounterClockwiseCartesian(coordinats,above));
+        BOOST_CHECK(!g.IsCounterClockwiseCartesian(coordinats,below));
       }
     }
   }
@@ -1217,7 +1218,7 @@ void ribi::Geometry::Test() noexcept
     const ApCoordinat3D c(-3.64472,-0.25,10.0);
     const ApCoordinat3D d(-4.52988,-0.25,10.0);
     const ApCoordinats3D v{a,b,c,d};
-    assert(Geometry().IsPlane(v));
+    BOOST_CHECK(Geometry().IsPlane(v));
   }
   if (verbose) TRACE("Translate");
   {
@@ -1234,7 +1235,7 @@ void ribi::Geometry::Test() noexcept
       {-0.5,-1.0}, //3
       {-0.5, 0.0}  //4
     };
-    assert(
+    BOOST_CHECK(
       std::equal(
         translated_points.begin(),translated_points.end(),
         translated_points_expected.begin(),
@@ -1260,7 +1261,7 @@ void ribi::Geometry::Test() noexcept
       {0.0, 0.0}, //3
       {0.0, 2.0}  //4
     };
-    assert(
+    BOOST_CHECK(
       std::equal(
         rescaled_points.begin(),rescaled_points.end(),
         rescaled_points_expected.begin(),
@@ -1303,7 +1304,7 @@ void ribi::Geometry::Test() noexcept
       {-0.5,-1.0}, //3
       {-0.5, 1.0}  //4
     };
-    assert(
+    BOOST_CHECK(
       std::equal(
         rescaled_points.begin(),rescaled_points.end(),
         rescaled_points_expected.begin(),
@@ -1323,7 +1324,7 @@ void ribi::Geometry::Test() noexcept
     const std::string s
       = g.WktToSvg("POLYGON((0 0,0 1,1 0)),LINESTRING(0 0,0 1,1 0)",1.0)
     ;
-    assert(!s.empty());
+    BOOST_CHECK(!s.empty());
   }
 
   using Point = boost::geometry::model::d2::point_xy<double>;
@@ -1335,27 +1336,27 @@ void ribi::Geometry::Test() noexcept
     {
       const Line line1 = g.CreateLine( { Point(0.0,0.0), Point(2.0,2.0) } );
       const Line line2 = g.CreateLine( { Point(2.0,0.0), Point(0.0,2.0) } );
-      assert( g.GetLineLineIntersections(line1,line2).size() == 1);
-      assert( fuzzy_equal_to()(g.GetLineLineIntersections(line1,line2)[0].x(),1.0) );
-      assert( fuzzy_equal_to()(g.GetLineLineIntersections(line1,line2)[0].y(),1.0) );
+      BOOST_CHECK( g.GetLineLineIntersections(line1,line2).size() == 1);
+      BOOST_CHECK( fuzzy_equal_to()(g.GetLineLineIntersections(line1,line2)[0].x(),1.0) );
+      BOOST_CHECK( fuzzy_equal_to()(g.GetLineLineIntersections(line1,line2)[0].y(),1.0) );
     }
     //Lines are finite, however, as the line segment
     //(0,0)-(0.2,0.2) does not intersect line segment (2,0)-(0,2) at point (1,1)
     {
       const Line line1 = g.CreateLine( { Point(0.0,0.0), Point(0.2,0.2) } );
       const Line line2 = g.CreateLine( { Point(2.0,0.0), Point(0.0,2.0) } );
-      assert( g.GetLineLineIntersections(line1,line2).size() == 0);
+      BOOST_CHECK( g.GetLineLineIntersections(line1,line2).size() == 0);
     }
     //Lines can cross at two points, if the lines are on top of each other
     {
       //Order of lines does not matter for tests to succeed
       const Line line1 = g.CreateLine( { Point(0.0,0.0), Point(3.0,3.0) } );
       const Line line2 = g.CreateLine( { Point(1.0,1.0), Point(4.0,4.0) } );
-      assert( g.GetLineLineIntersections(line1,line2).size() == 2);
-      assert( fuzzy_equal_to()(g.GetLineLineIntersections(line1,line2)[0].x(),1.0) );
-      assert( fuzzy_equal_to()(g.GetLineLineIntersections(line1,line2)[0].y(),1.0) );
-      assert( fuzzy_equal_to()(g.GetLineLineIntersections(line1,line2)[1].x(),3.0) );
-      assert( fuzzy_equal_to()(g.GetLineLineIntersections(line1,line2)[1].y(),3.0) );
+      BOOST_CHECK( g.GetLineLineIntersections(line1,line2).size() == 2);
+      BOOST_CHECK( fuzzy_equal_to()(g.GetLineLineIntersections(line1,line2)[0].x(),1.0) );
+      BOOST_CHECK( fuzzy_equal_to()(g.GetLineLineIntersections(line1,line2)[0].y(),1.0) );
+      BOOST_CHECK( fuzzy_equal_to()(g.GetLineLineIntersections(line1,line2)[1].x(),3.0) );
+      BOOST_CHECK( fuzzy_equal_to()(g.GetLineLineIntersections(line1,line2)[1].y(),3.0) );
     }
   }
   if (verbose) { TRACE("GetLineRectIntersections"); }
@@ -1366,9 +1367,9 @@ void ribi::Geometry::Test() noexcept
       const Rect rect(Point(1.0,0.0), Point(3.0,3.9));
       g.GetLineRectIntersections(line,rect);
       const std::vector<Point> v = g.GetLineRectIntersections(line,rect);
-      assert(v.size() == 1);
-      assert( fuzzy_equal_to()(v[0].x(),1.0) );
-      assert( fuzzy_equal_to()(v[0].y(),1.0) );
+      BOOST_CHECK(v.size() == 1);
+      BOOST_CHECK( fuzzy_equal_to()(v[0].x(),1.0) );
+      BOOST_CHECK( fuzzy_equal_to()(v[0].y(),1.0) );
     }
     //Assume line segment (0,0)-(2,2) intersects with rectangle (0,1)-(3,9) at point (1,1)
     {
@@ -1376,9 +1377,9 @@ void ribi::Geometry::Test() noexcept
       const Rect rect(Point(0.0,1.0), Point(3.0,9.0));
       g.GetLineRectIntersections(line,rect);
       const std::vector<Point> v = g.GetLineRectIntersections(line,rect);
-      assert(v.size() == 1);
-      assert( fuzzy_equal_to()(v[0].x(),1.0) );
-      assert( fuzzy_equal_to()(v[0].y(),1.0) );
+      BOOST_CHECK(v.size() == 1);
+      BOOST_CHECK( fuzzy_equal_to()(v[0].x(),1.0) );
+      BOOST_CHECK( fuzzy_equal_to()(v[0].y(),1.0) );
     }
     //Assume line segment (0,0)-(2,2) intersects with rectangle (1,1)-(3,3) at point (1,1) once
     {
@@ -1386,9 +1387,9 @@ void ribi::Geometry::Test() noexcept
       const Rect rect(Point(1.0,1.0), Point(3.0,3.0));
       g.GetLineRectIntersections(line,rect);
       const std::vector<Point> v = g.GetLineRectIntersections(line,rect);
-      assert(v.size() == 1);
-      assert( fuzzy_equal_to()(v[0].x(),1.0) );
-      assert( fuzzy_equal_to()(v[0].y(),1.0) );
+      BOOST_CHECK(v.size() == 1);
+      BOOST_CHECK( fuzzy_equal_to()(v[0].x(),1.0) );
+      BOOST_CHECK( fuzzy_equal_to()(v[0].y(),1.0) );
     }
 
     //Assume line segment (0,0)-(4,4) intersects with rectangle (1,0)-(3,9) at points (1,1) and (3,3)
@@ -1397,11 +1398,11 @@ void ribi::Geometry::Test() noexcept
       const Rect rect(Point(1.0,0.0), Point(3.0,3.9));
       g.GetLineRectIntersections(line,rect);
       const std::vector<Point> v = g.GetLineRectIntersections(line,rect);
-      assert(v.size() == 2);
-      assert( fuzzy_equal_to()(v[0].x(),1.0) );
-      assert( fuzzy_equal_to()(v[0].y(),1.0) );
-      assert( fuzzy_equal_to()(v[1].x(),3.0) );
-      assert( fuzzy_equal_to()(v[1].y(),3.0) );
+      BOOST_CHECK(v.size() == 2);
+      BOOST_CHECK( fuzzy_equal_to()(v[0].x(),1.0) );
+      BOOST_CHECK( fuzzy_equal_to()(v[0].y(),1.0) );
+      BOOST_CHECK( fuzzy_equal_to()(v[1].x(),3.0) );
+      BOOST_CHECK( fuzzy_equal_to()(v[1].y(),3.0) );
     }
     //Assume line segment (0,0)-(4,4) intersects with rectangle (0,1)-(3,9) at points (1,1) and (3,3)
     {
@@ -1409,11 +1410,11 @@ void ribi::Geometry::Test() noexcept
       const Rect rect(Point(0.0,1.0), Point(3.0,9.0));
       g.GetLineRectIntersections(line,rect);
       const std::vector<Point> v = g.GetLineRectIntersections(line,rect);
-      assert(v.size() == 2);
-      assert( fuzzy_equal_to()(v[0].x(),1.0) );
-      assert( fuzzy_equal_to()(v[0].y(),1.0) );
-      assert( fuzzy_equal_to()(v[1].x(),3.0) );
-      assert( fuzzy_equal_to()(v[1].y(),3.0) );
+      BOOST_CHECK(v.size() == 2);
+      BOOST_CHECK( fuzzy_equal_to()(v[0].x(),1.0) );
+      BOOST_CHECK( fuzzy_equal_to()(v[0].y(),1.0) );
+      BOOST_CHECK( fuzzy_equal_to()(v[1].x(),3.0) );
+      BOOST_CHECK( fuzzy_equal_to()(v[1].y(),3.0) );
     }
     //Assume line segment (0,0)-(4,4) intersects with rectangle (1,1)-(3,3) at points (1,1) and (3,3)
     {
@@ -1421,11 +1422,11 @@ void ribi::Geometry::Test() noexcept
       const Rect rect(Point(1.0,1.0), Point(3.0,3.0));
       g.GetLineRectIntersections(line,rect);
       const std::vector<Point> v = g.GetLineRectIntersections(line,rect);
-      assert(v.size() == 2);
-      assert( fuzzy_equal_to()(v[0].x(),1.0) );
-      assert( fuzzy_equal_to()(v[0].y(),1.0) );
-      assert( fuzzy_equal_to()(v[1].x(),3.0) );
-      assert( fuzzy_equal_to()(v[1].y(),3.0) );
+      BOOST_CHECK(v.size() == 2);
+      BOOST_CHECK( fuzzy_equal_to()(v[0].x(),1.0) );
+      BOOST_CHECK( fuzzy_equal_to()(v[0].y(),1.0) );
+      BOOST_CHECK( fuzzy_equal_to()(v[1].x(),3.0) );
+      BOOST_CHECK( fuzzy_equal_to()(v[1].y(),3.0) );
     }
   }
 
@@ -1433,13 +1434,13 @@ void ribi::Geometry::Test() noexcept
   {
 
     const auto p = g.WktToLinestring("LINESTRING(0 0 0 1 1 1 1 0)");
-    assert(p.size() == 4);
+    BOOST_CHECK(p.size() == 4);
   }
   //WktToPolygon: open linestring to polygon
   {
 
     const auto p = g.WktToPolygon("POLYGON((0 0 0 1 1 1 1 0))");
-    assert(p.outer().size() == 4);
+    BOOST_CHECK(p.outer().size() == 4);
   }
   //ToPolygon: open linestring to polygon
   {
@@ -1456,7 +1457,7 @@ void ribi::Geometry::Test() noexcept
 
     const auto l = g.WktToLinestring("LINESTRING(2 1 1 1 1 2 2 2)");
     const auto p = g.ToPolygon(l);
-    assert(p.outer().size() == 4);
+    BOOST_CHECK(p.outer().size() == 4);
   }
   //ToPolygon: closed linestring to polygon
   {
@@ -1473,8 +1474,7 @@ void ribi::Geometry::Test() noexcept
 
     const auto l = g.WktToLinestring("LINESTRING(2 1 1 1 1 2 2 2 2 1)");
     const auto p = g.ToPolygon(l);
-    assert(p.outer().size() == 4);
+    BOOST_CHECK(p.outer().size() == 4);
   }
 }
-#endif
 

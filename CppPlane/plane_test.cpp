@@ -1,6 +1,7 @@
-#include "plane.h"
+#include <boost/test/unit_test.hpp>
 
-#include <cassert>
+
+#include "plane.h"
 
 #include <boost/limits.hpp>
 #include <boost/make_shared.hpp>
@@ -13,20 +14,11 @@
 #include "testtimer.h"
 #include "trace.h"
 
-#ifndef NDEBUG
-void ribi::Plane::Test() noexcept
+BOOST_AUTO_TEST_CASE(ribi_plane_test)
 {
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  Container();
-  Geometry();
-  { const auto planex = boost::make_shared<PlaneX>(); assert(planex); }
-  { const auto planey = boost::make_shared<PlaneY>(); assert(planey); }
-  { const auto planez = boost::make_shared<PlaneZ>(); assert(planez); }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
+  using namespace ribi;
+  using Coordinat3D = ::ribi::Plane::Coordinat3D;
+
   const bool verbose{false};
   const bool show_warning{false};
   using boost::geometry::get;
@@ -40,10 +32,10 @@ void ribi::Plane::Test() noexcept
     const Coordinat3D p2( 4.0, 6.0,9.0);
     const Coordinat3D p3(12.0,11.0,9.0);
     const Plane p(p1,p2,p3);
-    assert(p.CanCalcX());
-    assert(p.CanCalcY());
-    assert(p.CanCalcZ());
-    assert(
+    BOOST_CHECK(p.CanCalcX());
+    BOOST_CHECK(p.CanCalcY());
+    BOOST_CHECK(p.CanCalcZ());
+    BOOST_CHECK(
       !p.CalcProjection(
         {
           Coordinat3D(0.0,0.0,1.0),
@@ -60,10 +52,10 @@ void ribi::Plane::Test() noexcept
     const Coordinat3D p2(2.0, 6.0,9.0);
     const Coordinat3D p3(2.0,11.0,9.0);
     const Plane p(p1,p2,p3);
-    assert(p.CanCalcX());
-    assert(!p.CanCalcY());
-    assert(!p.CanCalcZ());
-    assert(
+    BOOST_CHECK(p.CanCalcX());
+    BOOST_CHECK(!p.CanCalcY());
+    BOOST_CHECK(!p.CanCalcZ());
+    BOOST_CHECK(
       !p.CalcProjection(
         {
           Coordinat3D(0.0,0.0,1.0),
@@ -79,10 +71,10 @@ void ribi::Plane::Test() noexcept
     const Coordinat3D p2(123.0, 6.0,9.0);
     const Coordinat3D p3(123.0,11.0,9.0);
     const Plane p(p1,p2,p3);
-    assert(p.CanCalcX());
-    assert(!p.CanCalcY());
-    assert(!p.CanCalcZ());
-    assert(
+    BOOST_CHECK(p.CanCalcX());
+    BOOST_CHECK(!p.CanCalcY());
+    BOOST_CHECK(!p.CanCalcZ());
+    BOOST_CHECK(
       !p.CalcProjection(
         {
           Coordinat3D(0.0,0.0,1.0),
@@ -99,10 +91,10 @@ void ribi::Plane::Test() noexcept
     const Coordinat3D p3(11.0,3.0,13.0);
     const Plane p(p1,p2,p3);
 
-    assert(p.CanCalcY());
-    assert(!p.CanCalcX());
-    assert(!p.CanCalcZ());
-    assert(
+    BOOST_CHECK(p.CanCalcY());
+    BOOST_CHECK(!p.CanCalcX());
+    BOOST_CHECK(!p.CanCalcZ());
+    BOOST_CHECK(
       !p.CalcProjection(
         {
           Coordinat3D(0.0,0.0,1.0),
@@ -118,10 +110,10 @@ void ribi::Plane::Test() noexcept
     const Coordinat3D p2( 7.0,11.0,5.0);
     const Coordinat3D p3(13.0,17.0,5.0);
     const Plane p(p1,p2,p3);
-    assert(p.CanCalcZ());
-    assert(!p.CanCalcX());
-    assert(!p.CanCalcY());
-    assert(
+    BOOST_CHECK(p.CanCalcZ());
+    BOOST_CHECK(!p.CanCalcX());
+    BOOST_CHECK(!p.CanCalcY());
+    BOOST_CHECK(
       !p.CalcProjection(
         {
           Coordinat3D(0.0,0.0,1.0),
@@ -139,74 +131,74 @@ void ribi::Plane::Test() noexcept
     const Coordinat3D p2(0.0,1.0,0.0);
     const Coordinat3D p3(1.0,0.0,0.0);
     const Plane p(p1,p2,p3);
-    assert(!p.CanCalcX());
-    assert(!p.CanCalcY());
-    assert( p.CanCalcZ());
+    BOOST_CHECK(!p.CanCalcX());
+    BOOST_CHECK(!p.CanCalcY());
+    BOOST_CHECK( p.CanCalcZ());
 
-    assert( p.IsInPlane(Coordinat3D( 0.0, 0.0,0.0)));
-    assert( p.IsInPlane(Coordinat3D(-1.0,-1.0,0.0)));
-    assert( p.IsInPlane(Coordinat3D( 1.0,-1.0,0.0)));
-    assert( p.IsInPlane(Coordinat3D(-1.0, 1.0,0.0)));
-    assert( p.IsInPlane(Coordinat3D( 1.0, 1.0,0.0)));
+    BOOST_CHECK( p.IsInPlane(Coordinat3D( 0.0, 0.0,0.0)));
+    BOOST_CHECK( p.IsInPlane(Coordinat3D(-1.0,-1.0,0.0)));
+    BOOST_CHECK( p.IsInPlane(Coordinat3D( 1.0,-1.0,0.0)));
+    BOOST_CHECK( p.IsInPlane(Coordinat3D(-1.0, 1.0,0.0)));
+    BOOST_CHECK( p.IsInPlane(Coordinat3D( 1.0, 1.0,0.0)));
   }
   if (verbose) TRACE("CanCalcZ and IsInPlane, Z = 0 plane, from smallest possible coordinat");
   {
     const double i = std::numeric_limits<double>::denorm_min();
-    assert(i > 0.0);
+    BOOST_CHECK(i > 0.0);
     const Coordinat3D p1(0.0,0.0,0.0);
     const Coordinat3D p2(0.0,  i,0.0);
     const Coordinat3D p3(  i,0.0,0.0);
     const Plane p(p1,p2,p3);
-    assert(!p.CanCalcX());
-    assert(!p.CanCalcY());
-    assert( p.CanCalcZ());
+    BOOST_CHECK(!p.CanCalcX());
+    BOOST_CHECK(!p.CanCalcY());
+    BOOST_CHECK( p.CanCalcZ());
 
-    assert( p.IsInPlane(Coordinat3D( 0.0, 0.0,0.0)));
-    assert( p.IsInPlane(Coordinat3D(-1.0,-1.0,0.0)));
-    assert( p.IsInPlane(Coordinat3D( 1.0,-1.0,0.0)));
-    assert( p.IsInPlane(Coordinat3D(-1.0, 1.0,0.0)));
-    assert( p.IsInPlane(Coordinat3D( 1.0, 1.0,0.0)));
+    BOOST_CHECK( p.IsInPlane(Coordinat3D( 0.0, 0.0,0.0)));
+    BOOST_CHECK( p.IsInPlane(Coordinat3D(-1.0,-1.0,0.0)));
+    BOOST_CHECK( p.IsInPlane(Coordinat3D( 1.0,-1.0,0.0)));
+    BOOST_CHECK( p.IsInPlane(Coordinat3D(-1.0, 1.0,0.0)));
+    BOOST_CHECK( p.IsInPlane(Coordinat3D( 1.0, 1.0,0.0)));
 
   }
   if (verbose) TRACE("CanCalcZ, Z = 0 plane, from biggest possible coordinat");
   {
     const double i = std::numeric_limits<double>::max();
-    assert(i > 0.0);
+    BOOST_CHECK(i > 0.0);
     const Coordinat3D p1(0.0,0.0,0.0);
     const Coordinat3D p2(0.0,  i,0.0);
     const Coordinat3D p3(  i,0.0,0.0);
     const Plane p(p1,p2,p3);
-    assert(!p.CanCalcX());
-    assert(!p.CanCalcY());
-    assert( p.CanCalcZ());
+    BOOST_CHECK(!p.CanCalcX());
+    BOOST_CHECK(!p.CanCalcY());
+    BOOST_CHECK( p.CanCalcZ());
 
-    assert( p.IsInPlane(Coordinat3D( 0.0, 0.0,0.0)));
-    assert( p.IsInPlane(Coordinat3D(-1.0,-1.0,0.0)));
-    assert( p.IsInPlane(Coordinat3D( 1.0,-1.0,0.0)));
-    assert( p.IsInPlane(Coordinat3D(-1.0, 1.0,0.0)));
-    assert( p.IsInPlane(Coordinat3D( 1.0, 1.0,0.0)));
+    BOOST_CHECK( p.IsInPlane(Coordinat3D( 0.0, 0.0,0.0)));
+    BOOST_CHECK( p.IsInPlane(Coordinat3D(-1.0,-1.0,0.0)));
+    BOOST_CHECK( p.IsInPlane(Coordinat3D( 1.0,-1.0,0.0)));
+    BOOST_CHECK( p.IsInPlane(Coordinat3D(-1.0, 1.0,0.0)));
+    BOOST_CHECK( p.IsInPlane(Coordinat3D( 1.0, 1.0,0.0)));
   }
   if (verbose) TRACE("CanCalcZ, Z = 0 plane, zooming in");
   {
     for (const double i:series)
     {
       if (i == 0.0) continue;
-      assert(i != 0.0 && "Cannot express plane when all its coordinats are at origin");
+      BOOST_CHECK(i != 0.0 && "Cannot express plane when all its coordinats are at origin");
       const Coordinat3D p1(0.0,0.0,0.0);
       const Coordinat3D p2(0.0,  i,0.0);
       const Coordinat3D p3(  i,0.0,0.0);
       const Plane p(p1,p2,p3);
-      assert(!p.CanCalcX());
-      assert(!p.CanCalcY());
-      assert( p.CanCalcZ());
+      BOOST_CHECK(!p.CanCalcX());
+      BOOST_CHECK(!p.CanCalcY());
+      BOOST_CHECK( p.CanCalcZ());
 
       for (const double j:series)
       {
-        assert(p.IsInPlane(Coordinat3D(0.0,0.0,0.0)));
-        assert(p.IsInPlane(Coordinat3D(  j,  j,0.0)));
-        assert(p.IsInPlane(Coordinat3D(  j, -j,0.0)));
-        assert(p.IsInPlane(Coordinat3D( -j,  j,0.0)));
-        assert(p.IsInPlane(Coordinat3D( -j, -j,0.0)));
+        BOOST_CHECK(p.IsInPlane(Coordinat3D(0.0,0.0,0.0)));
+        BOOST_CHECK(p.IsInPlane(Coordinat3D(  j,  j,0.0)));
+        BOOST_CHECK(p.IsInPlane(Coordinat3D(  j, -j,0.0)));
+        BOOST_CHECK(p.IsInPlane(Coordinat3D( -j,  j,0.0)));
+        BOOST_CHECK(p.IsInPlane(Coordinat3D( -j, -j,0.0)));
       }
     }
   }
@@ -233,8 +225,8 @@ void ribi::Plane::Test() noexcept
       const Coordinat3D p2(0.0,  i,z);
       const Coordinat3D p3(  i,0.0,z);
       const Plane p(p1,p2,p3);
-      assert(!p.CanCalcX());
-      assert(!p.CanCalcY());
+      BOOST_CHECK(!p.CanCalcX());
+      BOOST_CHECK(!p.CanCalcY());
       if (!p.CanCalcZ())
       {
         TRACE("ERROR");
@@ -242,7 +234,7 @@ void ribi::Plane::Test() noexcept
         TRACE(i);
       }
 
-      assert( p.CanCalcZ());
+      BOOST_CHECK( p.CanCalcZ());
 
       for (const double j:series)
       {
@@ -293,10 +285,10 @@ void ribi::Plane::Test() noexcept
           TRACE(p);
 
         }
-        assert(p.IsInPlane(Coordinat3D(  j,  j,z)));
-        assert(p.IsInPlane(Coordinat3D(  j, -j,z)));
-        assert(p.IsInPlane(Coordinat3D( -j,  j,z)));
-        assert(p.IsInPlane(Coordinat3D( -j, -j,z)));
+        BOOST_CHECK(p.IsInPlane(Coordinat3D(  j,  j,z)));
+        BOOST_CHECK(p.IsInPlane(Coordinat3D(  j, -j,z)));
+        BOOST_CHECK(p.IsInPlane(Coordinat3D( -j,  j,z)));
+        BOOST_CHECK(p.IsInPlane(Coordinat3D( -j, -j,z)));
       }
     }
   }
@@ -311,13 +303,13 @@ void ribi::Plane::Test() noexcept
       for (double i=min; i<max; i*=10.0)
       {
         if (i == 0.0) continue;
-        assert(i != 0.0 && "Cannot express plane when all its coordinats are at origin");
+        BOOST_CHECK(i != 0.0 && "Cannot express plane when all its coordinats are at origin");
         const Coordinat3D p1(0.0,0.0,z);
         const Coordinat3D p2(0.0,  i,z);
         const Coordinat3D p3(  i,0.0,z);
         const Plane p(p1,p2,p3);
-        assert(!p.CanCalcX());
-        assert(!p.CanCalcY());
+        BOOST_CHECK(!p.CanCalcX());
+        BOOST_CHECK(!p.CanCalcY());
         if (!p.CanCalcZ())
         {
           TRACE("ERROR");
@@ -325,7 +317,7 @@ void ribi::Plane::Test() noexcept
           TRACE(i);
         }
 
-        assert( p.CanCalcZ());
+        BOOST_CHECK( p.CanCalcZ());
 
         for (const double j:series)
         {
@@ -366,10 +358,10 @@ void ribi::Plane::Test() noexcept
             TRACE(p);
 
           }
-          assert(p.IsInPlane(Coordinat3D(  j,  j,z)));
-          assert(p.IsInPlane(Coordinat3D(  j, -j,z)));
-          assert(p.IsInPlane(Coordinat3D( -j,  j,z)));
-          assert(p.IsInPlane(Coordinat3D( -j, -j,z)));
+          BOOST_CHECK(p.IsInPlane(Coordinat3D(  j,  j,z)));
+          BOOST_CHECK(p.IsInPlane(Coordinat3D(  j, -j,z)));
+          BOOST_CHECK(p.IsInPlane(Coordinat3D( -j,  j,z)));
+          BOOST_CHECK(p.IsInPlane(Coordinat3D( -j, -j,z)));
         }
       }
     }
@@ -395,38 +387,38 @@ void ribi::Plane::Test() noexcept
     const Coordinat3D p2(0.0,0.0,1.0);
     const Coordinat3D p3(0.0,1.0,0.0);
     const Plane p(p1,p2,p3);
-    assert( p.CanCalcX());
-    assert(!p.CanCalcY());
-    assert(!p.CanCalcZ());
+    BOOST_CHECK( p.CanCalcX());
+    BOOST_CHECK(!p.CanCalcY());
+    BOOST_CHECK(!p.CanCalcZ());
 
     for (double i = std::numeric_limits<double>::denorm_min();
       i < 1.0e-8; //std::numeric_limits<double>::max();
       i *= 10.0)
     {
-      assert(p.IsInPlane(Coordinat3D(0.0, i, i)));
-      assert(p.IsInPlane(Coordinat3D(0.0, i,-i)));
-      assert(p.IsInPlane(Coordinat3D(0.0,-i, i)));
-      assert(p.IsInPlane(Coordinat3D(0.0,-i,-i)));
+      BOOST_CHECK(p.IsInPlane(Coordinat3D(0.0, i, i)));
+      BOOST_CHECK(p.IsInPlane(Coordinat3D(0.0, i,-i)));
+      BOOST_CHECK(p.IsInPlane(Coordinat3D(0.0,-i, i)));
+      BOOST_CHECK(p.IsInPlane(Coordinat3D(0.0,-i,-i)));
     }
   }
   if (verbose) TRACE("IsInPlane, X = 0 plane, from smallest possible coordinats");
   {
     const double i = std::numeric_limits<double>::denorm_min();
-    assert(i > 0.0);
+    BOOST_CHECK(i > 0.0);
     const Coordinat3D p1(0.0,0.0,0.0);
     const Coordinat3D p2(0.0,0.0,i);
     const Coordinat3D p3(0.0,i,0.0);
     const Plane p(p1,p2,p3);
-    assert( p.CanCalcX());
-    assert(!p.CanCalcY());
-    assert(!p.CanCalcZ());
+    BOOST_CHECK( p.CanCalcX());
+    BOOST_CHECK(!p.CanCalcY());
+    BOOST_CHECK(!p.CanCalcZ());
   }
   if (verbose) TRACE("IsInPlane, X = 0 plane, zooming in, #223");
   {
     for (const double i:series)
     {
       if (i == 0.0) continue;
-      assert(i != 0.0 && "Cannot express plane when all its coordinats are at origin");
+      BOOST_CHECK(i != 0.0 && "Cannot express plane when all its coordinats are at origin");
       const Coordinat3D p1(0.0,0.0,0.0);
       const Coordinat3D p2(0.0,0.0,  i);
       const Coordinat3D p3(0.0,  i,0.0);
@@ -444,10 +436,10 @@ void ribi::Plane::Test() noexcept
           if (p.CanCalcY()) { TRACE(Container().ToStr(p.GetCoefficientsY())); }
           if (p.CanCalcZ()) { TRACE(Container().ToStr(p.GetCoefficientsZ())); }
         }
-        assert(p.IsInPlane(Coordinat3D(0.0, j, j)));
-        assert(p.IsInPlane(Coordinat3D(0.0, j,-j)));
-        assert(p.IsInPlane(Coordinat3D(0.0,-j, j)));
-        assert(p.IsInPlane(Coordinat3D(0.0,-j,-j)));
+        BOOST_CHECK(p.IsInPlane(Coordinat3D(0.0, j, j)));
+        BOOST_CHECK(p.IsInPlane(Coordinat3D(0.0, j,-j)));
+        BOOST_CHECK(p.IsInPlane(Coordinat3D(0.0,-j, j)));
+        BOOST_CHECK(p.IsInPlane(Coordinat3D(0.0,-j,-j)));
       }
     }
   }
@@ -475,39 +467,39 @@ void ribi::Plane::Test() noexcept
     const Coordinat3D p2(0.0,0.0,1.0);
     const Coordinat3D p3(1.0,0.0,0.0);
     const Plane p(p1,p2,p3);
-    assert(!p.CanCalcX());
-    assert( p.CanCalcY());
-    assert(!p.CanCalcZ());
+    BOOST_CHECK(!p.CanCalcX());
+    BOOST_CHECK( p.CanCalcY());
+    BOOST_CHECK(!p.CanCalcZ());
 
     for (double i = std::numeric_limits<double>::denorm_min();
       i < 1.0e8 /*std::numeric_limits<double>::max()*/;
       i *= 10.0
     )
     {
-      assert(p.IsInPlane(Coordinat3D( i,0.0, i)));
-      assert(p.IsInPlane(Coordinat3D( i,0.0,-i)));
-      assert(p.IsInPlane(Coordinat3D(-i,0.0, i)));
-      assert(p.IsInPlane(Coordinat3D(-i,0.0,-i)));
+      BOOST_CHECK(p.IsInPlane(Coordinat3D( i,0.0, i)));
+      BOOST_CHECK(p.IsInPlane(Coordinat3D( i,0.0,-i)));
+      BOOST_CHECK(p.IsInPlane(Coordinat3D(-i,0.0, i)));
+      BOOST_CHECK(p.IsInPlane(Coordinat3D(-i,0.0,-i)));
     }
   }
   if (verbose) TRACE("IsInPlane, Y = 0 plane, from smallest possible coordinats");
   {
     const double i = std::numeric_limits<double>::denorm_min();
-    assert(i > 0.0);
+    BOOST_CHECK(i > 0.0);
     const Coordinat3D p1(0.0,0.0,0.0);
     const Coordinat3D p2(0.0,0.0,  i);
     const Coordinat3D p3(  i,0.0,0.0);
     const Plane p(p1,p2,p3);
-    assert(!p.CanCalcX());
-    assert( p.CanCalcY());
-    assert(!p.CanCalcZ());
+    BOOST_CHECK(!p.CanCalcX());
+    BOOST_CHECK( p.CanCalcY());
+    BOOST_CHECK(!p.CanCalcZ());
   }
   if (verbose) TRACE("IsInPlane, Y = 0 plane, zooming in, #223");
   {
     for (const double i:series)
     {
       if (i == 0.0) continue;
-      assert(i != 0.0 && "Cannot express plane when all its coordinats are at origin");
+      BOOST_CHECK(i != 0.0 && "Cannot express plane when all its coordinats are at origin");
       const Coordinat3D p1(0.0,0.0,0.0);
       const Coordinat3D p2(0.0,0.0,  i);
       const Coordinat3D p3(  i,0.0,0.0);
@@ -525,10 +517,10 @@ void ribi::Plane::Test() noexcept
           if (p.CanCalcY()) { TRACE(Container().ToStr(p.GetCoefficientsY())); }
           if (p.CanCalcZ()) { TRACE(Container().ToStr(p.GetCoefficientsZ())); }
         }
-        assert(p.IsInPlane(Coordinat3D( j,0.0, j)));
-        assert(p.IsInPlane(Coordinat3D( j,0.0,-j)));
-        assert(p.IsInPlane(Coordinat3D(-j,0.0, j)));
-        assert(p.IsInPlane(Coordinat3D(-j,0.0,-j)));
+        BOOST_CHECK(p.IsInPlane(Coordinat3D( j,0.0, j)));
+        BOOST_CHECK(p.IsInPlane(Coordinat3D( j,0.0,-j)));
+        BOOST_CHECK(p.IsInPlane(Coordinat3D(-j,0.0, j)));
+        BOOST_CHECK(p.IsInPlane(Coordinat3D(-j,0.0,-j)));
       }
     }
   }
@@ -564,7 +556,7 @@ void ribi::Plane::Test() noexcept
       const Coordinat3D p2(0.0,1.0,0.0);
       const Coordinat3D p3(1.0,0.0,slope);
       const Plane p(p1,p2,p3);
-      assert( p.IsInPlane(Coordinat3D( 1.0, 1.0,slope)));
+      BOOST_CHECK( p.IsInPlane(Coordinat3D( 1.0, 1.0,slope)));
 
       if (slope_less < slope) //Not always true, when slope is very small
       {
@@ -574,7 +566,7 @@ void ribi::Plane::Test() noexcept
           TRACE(p.CalcError(Coordinat3D(1.0, 1.0,slope_less)));
           TRACE(p.CalcMaxError(Coordinat3D(1.0, 1.0,slope_less)));
         }
-        assert(!p.IsInPlane(Coordinat3D( 1.0, 1.0,slope_less)));
+        BOOST_CHECK(!p.IsInPlane(Coordinat3D( 1.0, 1.0,slope_less)));
       }
       if (slope_more > slope) //Not always true, when slope is very big
       {
@@ -583,7 +575,7 @@ void ribi::Plane::Test() noexcept
           TRACE("ERROR");
           TRACE(p.CalcError(Coordinat3D( 1.0, 1.0,slope_more)));
         }
-        assert(!p.IsInPlane(Coordinat3D( 1.0, 1.0,slope_more)));
+        BOOST_CHECK(!p.IsInPlane(Coordinat3D( 1.0, 1.0,slope_more)));
       }
     }
   }
@@ -628,7 +620,7 @@ void ribi::Plane::Test() noexcept
       const Coordinat3D p2(0.0,0.0,1.0);
       const Coordinat3D p3(co.first,co.second,0.0);
       const Plane p(p1,p2,p3);
-      assert( p.IsInPlane(Coordinat3D(co.first,co.second,1.0)));
+      BOOST_CHECK( p.IsInPlane(Coordinat3D(co.first,co.second,1.0)));
     }
   }
   if (verbose) TRACE("CalcProjection, from a crash in the program");
@@ -639,10 +631,10 @@ void ribi::Plane::Test() noexcept
     const Coordinat3D p4(-1.0, 0.0,1.0);
     const Plane p(p1,p2,p3);
 
-    assert(p.CanCalcY());
-    assert(!p.CanCalcX());
-    assert(!p.CanCalcZ());
-    assert(!p.CalcProjection( { p1,p2,p3,p4 } ).empty());
+    BOOST_CHECK(p.CanCalcY());
+    BOOST_CHECK(!p.CanCalcX());
+    BOOST_CHECK(!p.CanCalcZ());
+    BOOST_CHECK(!p.CalcProjection( { p1,p2,p3,p4 } ).empty());
   }
   if (verbose) TRACE("IsInPlane, from #218");
   {
@@ -667,7 +659,7 @@ void ribi::Plane::Test() noexcept
     try
     {
       const bool must_be_true = p.IsInPlane(p4);
-      assert(must_be_true);
+      BOOST_CHECK(must_be_true);
     }
     catch (std::exception&)
     {
@@ -683,7 +675,7 @@ void ribi::Plane::Test() noexcept
       TRACE(s.str());
       TRACE("BREAK");
     }
-    assert(p.IsInPlane(p4));
+    BOOST_CHECK(p.IsInPlane(p4));
   }
 
   if (verbose) TRACE("IsInPlane, crashes with Plane v1.5");
@@ -707,7 +699,7 @@ void ribi::Plane::Test() noexcept
     {
       const apfloat x1_as_apfloat(x1);
       const double  x1_as_double(Geometry().ToDoubleSafe(x1_as_apfloat));
-      assert(x1 == x1_as_double);
+      BOOST_CHECK(x1 == x1_as_double);
     }
 
     const Coordinat3D p1(x1,y1,z1);
@@ -725,7 +717,7 @@ void ribi::Plane::Test() noexcept
       TRACE("BREAK");
     }
 
-    assert(p.IsInPlane(p4));
+    BOOST_CHECK(p.IsInPlane(p4));
   }
   #ifdef NOT_TODAY_20140714
   if (verbose) TRACE("IsInPlane, crashes with Plane v1.6");
@@ -759,7 +751,7 @@ void ribi::Plane::Test() noexcept
     const Plane p(p1,p2,p3);
     try
     {
-      assert(p.IsInPlane(p4));
+      BOOST_CHECK(p.IsInPlane(p4));
     }
     catch (std::exception&)
     {
@@ -775,8 +767,7 @@ void ribi::Plane::Test() noexcept
       TRACE(s.str());
       TRACE("BREAK");
     }
-    assert(p.IsInPlane(p4));
+    BOOST_CHECK(p.IsInPlane(p4));
   }
   #endif
 }
-#endif

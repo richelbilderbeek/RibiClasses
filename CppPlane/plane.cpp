@@ -45,8 +45,6 @@ ribi::Plane::Plane(
   m_points( {p1,p2,p3} )
 {
   #ifndef NDEBUG
-  Test();
-  
   assert(Geometry().IsEqual3d(m_points[0],p1));
   assert(Geometry().IsEqual3d(m_points[1],p2));
   assert(Geometry().IsEqual3d(m_points[2],p3));

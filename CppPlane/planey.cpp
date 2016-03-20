@@ -38,9 +38,7 @@ ribi::PlaneY::PlaneY() noexcept
     Coordinat3D(0.0,0.0,1.0)
   )
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
+
 }
 
 ribi::PlaneY::PlaneY(
@@ -50,14 +48,7 @@ ribi::PlaneY::PlaneY(
 )
   : m_plane_z{Create(p1,p2,p3)}
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
-}
 
-ribi::PlaneY::~PlaneY()
-{
-  //OK
 }
 
 apfloat ribi::PlaneY::CalcError(const Coordinat3D& coordinat) const noexcept
