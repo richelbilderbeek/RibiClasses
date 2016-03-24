@@ -2,12 +2,12 @@ INCLUDEPATH += \
     ../RibiClasses/CppDnaSequence
 
 SOURCES += \
-    ../RibiClasses/CppDnaSequence/dnasequence.cpp \
-    ../RibiClasses/CppDnaSequence/dnasequence_test.cpp
+    $$PWD/dnasequence.cpp \
+    $$PWD/dnasequence_test.cpp
 
 HEADERS  += \
-    ../RibiClasses/CppDnaSequence/dnasequence.h
+    $$PWD/dnasequence.h
 
 OTHER_FILES += \
-    ../RibiClasses/CppDnaSequence/Licence.txt
+    $$PWD/Licence.txt
 

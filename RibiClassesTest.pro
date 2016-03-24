@@ -13,6 +13,8 @@ include(../RibiClasses/CppCounter/CppCounterTest.pri)
 include(../RibiClasses/CppConceptMap/CppConceptMap.pri)
 include(../RibiClasses/CppConceptMap/CppConceptMapTest.pri)
 
+include(../RibiClasses/CppDnaSequence/CppDnaSequence.pri)
+
 include(../RibiClasses/CppGeometry/CppGeometry.pri)
 include(../RibiClasses/CppGeometry/CppGeometryTest.pri)
 include(../RibiClasses/CppFuzzy_equal_to/CppFuzzy_equal_to.pri)
