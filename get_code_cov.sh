@@ -1,6 +1,6 @@
 #!/bin/bash
-GCOV_EXE=gcov-4.8 # gcov and g++ versions must match
-OBJ_FILES_PATH=debug
+GCOV_EXE=gcov-5 # gcov and g++ versions must match
+OBJ_FILES_PATH=.
 
 if [ ! -d "$OBJ_FILES_PATH" ]
 then
@@ -8,7 +8,7 @@ then
   exit 1
 fi
 
-for filename in `find . -name *.cpp`; do $GCOV_EXE -o $OBJ_FILES_PATH $filename; done
+for filename in `find . | egrep '\.cpp'`; do $GCOV_EXE -o $OBJ_FILES_PATH $filename; done
 
 # Display gcov files
-for filename in `find . -name *.gcov`; do cat $filename; done
+#for filename in `find . -name *.gcov`; do cat $filename; done

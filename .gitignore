@@ -34,3 +34,5 @@ RibiClassesTest
 *.gcda
 *.gcno
 temp.txt
+*.gcov
+tmp*

@@ -1,5 +1,6 @@
 #include "conceptmapexample.h"
 #include <boost/test/unit_test.hpp>
+#include <boost/numeric/conversion/cast.hpp>
 
 #include "conceptmapexamplefactory.h"
 #include "trace.h"

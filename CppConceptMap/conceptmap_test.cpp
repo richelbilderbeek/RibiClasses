@@ -214,11 +214,6 @@ BOOST_AUTO_TEST_CASE(ribi_concept_map_test)
     ConceptMap f;
     BOOST_CHECK(e != f);
     s >> f;
-    if (e != f) {
-      for (const Edge& edge: GetEdges(e)) { TRACE(edge); }
-      for (const Edge& edge: GetEdges(f)) { TRACE(edge); }
-      TRACE(e); TRACE(f);
-    }
     BOOST_CHECK(GetSortedEdges(e) == GetSortedEdges(f));
     BOOST_CHECK(e == f);
   }
