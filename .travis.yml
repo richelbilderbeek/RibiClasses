@@ -23,6 +23,7 @@ install:
 script: 
   - ./install_githubs.sh
   - ./build.sh
+  - ./get_code_cov.sh
 
 after_success: 
   - codecov
