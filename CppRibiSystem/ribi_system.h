@@ -35,11 +35,6 @@ struct System
   std::string GetHome() const noexcept;
   std::string GetPath() const noexcept;
   std::string GetWhoami() const noexcept;
-
-  private:
-  #ifndef NDEBUG
-  void Test() noexcept;
-  #endif
 };
 
 } //~namespace ribi

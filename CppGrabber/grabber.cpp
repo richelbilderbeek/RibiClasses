@@ -32,7 +32,7 @@ ribi::Grabber::~Grabber() noexcept
 
 std::string ribi::Grabber::GetVersion() noexcept
 {
-  return "1.2";
+  return "1.3";
 }
 
 std::vector<std::string> ribi::Grabber::GetVersionHistory() noexcept
@@ -41,6 +41,7 @@ std::vector<std::string> ribi::Grabber::GetVersionHistory() noexcept
     "2014-08-04: Version 1.0: initial version",
     "2015-08-21: Version 1.1: replaced deprecated construct",
     "2015-09-13: Version 1.2: support both Qt4 and Qt5",
+    "2016-03-25: Version 1.3: moved tests to Boost.Test",
   };
 }
 
@@ -69,20 +70,3 @@ void ribi::Grabber::Grab() const noexcept
 
   screenshot.save(m_filename.c_str());
 }
-
-#ifndef NDEBUG
-void ribi::Grabber::Test() noexcept
-{
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
-  const bool verbose{false};
-  if (verbose) { TRACE("Default-construction of Grabber"); }
-  {
-    const Grabber g(0);
-  }
-}
-#endif

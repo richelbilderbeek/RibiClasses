@@ -39,6 +39,12 @@ struct Time
   //Returns date in YYYY-MM-DD format
   std::string GetTodayIso8601() const noexcept { return GetTodayIso8601Stl(); }
 
+  //Returns date in YYYY-MM-DD format using Boost
+  std::string GetTodayIso8601Boost() const noexcept;
+
+  //Returns date in YYYY-MM-DD format using the STL
+  std::string GetTodayIso8601Stl() const noexcept;
+
   //Returns date in YYYYMMDD format
   int GetTodayIso8601AsInt() const noexcept;
 
@@ -48,13 +54,6 @@ struct Time
   void Wait(const double n_secs) const noexcept;
 
   private:
-
-  std::string GetTodayIso8601Boost() const noexcept;
-  std::string GetTodayIso8601Stl() const noexcept;
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 
 
 };

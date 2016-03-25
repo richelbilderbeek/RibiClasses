@@ -33,11 +33,6 @@ struct Grabber : public QObject
   private:
   const std::string m_filename;
   const int m_win_id;
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
-
 };
 
 } //~namespace ribi

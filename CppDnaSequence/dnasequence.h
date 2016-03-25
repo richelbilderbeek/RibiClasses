@@ -18,10 +18,6 @@ struct DnaSequence
   private:
   std::string m_description;
   const std::string m_sequence;
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 };
 
 ///Will throw if there are unexpected characters

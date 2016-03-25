@@ -319,7 +319,8 @@ ribi::cmap::ConceptMap ribi::cmap::XmlToConceptMap(const std::string& s)
     msg << __func__ << ": incorrect ending tag";
     throw std::logic_error(msg.str());
   }
-  ConceptMap conceptmap;
+  //Need to write the DOT to file
+  const std::string dot_filename = ribi::fileio::FileIo().GetTempFileName(".dot");
   {
     const std::vector<std::string> v
       = Regex().GetRegexMatches(s,Regex().GetRegexConceptMap());
@@ -328,8 +329,11 @@ ribi::cmap::ConceptMap ribi::cmap::XmlToConceptMap(const std::string& s)
       ribi::xml::StripXmlTag(v[0])
     };
 
-    conceptmap = LoadFromFile(dot_str); //DotToConceptMap();
+    std::ofstream f(dot_filename);
+    f << dot_str;
   }
+  ConceptMap conceptmap = LoadFromFile(dot_filename);
+  ribi::fileio::FileIo().DeleteFile(dot_filename);
   return conceptmap;
 }
 

@@ -1,31 +1,22 @@
 #include "dnasequence.h"
+#include <boost/test/unit_test.hpp>
 
-#include <cassert>
+
 #include <stdexcept>
 
 #include "container.h"
 #include "testtimer.h"
 
-#ifndef NDEBUG
-void ribi::DnaSequence::Test() noexcept
+BOOST_AUTO_TEST_CASE(dna_sequence_test)
 {
-  {
-    static bool is_tested {false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  {
-    Container();
-  }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
-
+  using DnaSequence = ribi::DnaSequence;
   //Recovery of parameters
   {
     const std::string description{"description"};
     const std::string sequence{"ACGT"};
     const DnaSequence s(description,sequence);
-    assert(s.GetDescription() == description);
-    assert(s.GetSequence() == sequence);
+    BOOST_CHECK(s.GetDescription() == description);
+    BOOST_CHECK(s.GetSequence() == sequence);
   }
   //operator==
   {
@@ -33,37 +24,29 @@ void ribi::DnaSequence::Test() noexcept
     const std::string sequence{"ACGT"};
     const DnaSequence s(description,sequence);
     const DnaSequence t(description,sequence);
-    assert(s == t);
+    BOOST_CHECK(s == t);
   }
   //operator!= on different description
   {
     const std::string sequence{"ACGT"};
     const DnaSequence s("description1",sequence);
     const DnaSequence t("description2",sequence);
-    assert(s != t);
+    BOOST_CHECK(s != t);
   }
   //operator!= on different sequence
   {
     const std::string description{"description"};
     const DnaSequence s(description,"ACGT");
     const DnaSequence t(description,"ACGTT");
-    assert(s != t);
+    BOOST_CHECK(s != t);
   }
   {
-    try
-    {
-      DnaSequence s("description","incorrect_sequence");
-      assert(!"Should not get here");
-    }
-    catch (std::logic_error&)
-    {
-      //Well detected!
-    }
+    BOOST_CHECK_THROW(
+      DnaSequence("description","incorrect_sequence"),
+      std::invalid_argument
+    );
   }
-  //CleanSequence
   {
-    assert(CleanSequence("a g c") == "AGC");
+    BOOST_CHECK(ribi::CleanSequence("a g c") == "AGC");
   }
 }
-#endif
-

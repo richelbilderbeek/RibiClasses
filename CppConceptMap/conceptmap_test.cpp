@@ -62,7 +62,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "make_custom_and_selectable_vertices_writer.h"
 #include "my_custom_vertex.h"
 #include "testtimer.h"
-#include "trace.h"
 #include "xml.h"
 
 #include <boost/test/unit_test.hpp>
@@ -109,11 +108,12 @@ BOOST_AUTO_TEST_CASE(ribi_concept_map_load_node)
   const std::string dot{
     "digraph G {\n"
     "0[label=\"<node><concept><name>A</name><examples></examples><concept_is_complex>1</concept_is_complex><complexity>-1</complexity><concreteness>-1</concreteness><specificity>-1</specificity></concept><x>0</x><y>0</y><is_center_node>0</is_center_node></node>\", regular=\"0\"];\n"
-    "}\n"
+    "}"
   };
   if (d != dot)
   {
-    TRACE(d);
+    std::cerr << dot << '\n';
+    std::cerr << d << '\n';
   }
   BOOST_CHECK(d == dot); //
   ConceptMap c{DotToConceptMap(dot)};
@@ -164,13 +164,13 @@ BOOST_AUTO_TEST_CASE(ribi_concept_map_simple_dot_to_concept_map)
   std::string s{
     "digraph G {\n"
     "0[label=\"<node><concept><name>A</name><examples></examples><concept_is_complex>1</concept_is_complex><complexity>-1</complexity><concreteness>-1</concreteness><specificity>-1</specificity></concept><x>0</x><y>0</y><is_center_node>0</is_center_node></node>\", regular=\"0\"];\n"
-    "}\n"
+    "}"
   };
   {
     std::ofstream f("tmp.dot");
     f << s;
   }
-  ConceptMap c = DotToConceptMap(s);
+  const ConceptMap c = DotToConceptMap(s);
   BOOST_CHECK(s == ToDot(c));
 }
 
@@ -185,24 +185,23 @@ BOOST_AUTO_TEST_CASE(ribi_concept_map_stream_single_object)
   BOOST_CHECK(a == b);
 }
 
-BOOST_AUTO_TEST_CASE(ribi_concept_map_test)
+BOOST_AUTO_TEST_CASE(ribi_concept_map_stream_two_objects)
 {
   using namespace ribi::cmap;
-  const bool verbose{false};
+  const ConceptMap e = ConceptMapFactory().GetTest(1);
+  const ConceptMap f = ConceptMapFactory().GetTest(2);
+  std::stringstream s;
+  s << e << f;
+  ConceptMap g;
+  ConceptMap h;
+  s >> g >> h;
+  BOOST_CHECK(e == g);
+  BOOST_CHECK(f == h);
+}
 
-  if (verbose) { TRACE("Streaming: two objects"); }
-  {
-    const ConceptMap e = ConceptMapFactory().GetTest(1);
-    const ConceptMap f = ConceptMapFactory().GetTest(2);
-    std::stringstream s;
-    s << e << f;
-    ConceptMap g;
-    ConceptMap h;
-    s >> g >> h;
-    BOOST_CHECK(e == g);
-    BOOST_CHECK(f == h);
-  }
-  if (verbose) { TRACE("Nasty examples: one object"); }
+BOOST_AUTO_TEST_CASE(ribi_concept_map_stream_one_nasty_object)
+{
+  using namespace ribi::cmap;
   for (const ConceptMap e: ConceptMapFactory().GetNastyTests())
   {
     {
@@ -217,7 +216,11 @@ BOOST_AUTO_TEST_CASE(ribi_concept_map_test)
     BOOST_CHECK(GetSortedEdges(e) == GetSortedEdges(f));
     BOOST_CHECK(e == f);
   }
-  if (verbose) { TRACE("Nasty examples: two objects"); }
+}
+
+BOOST_AUTO_TEST_CASE(ribi_concept_map_stream_two_nasty_objects)
+{
+  using namespace ribi::cmap;
   for (const ConceptMap e: ConceptMapFactory().GetNastyTests())
   {
     std::stringstream s;
@@ -225,37 +228,26 @@ BOOST_AUTO_TEST_CASE(ribi_concept_map_test)
     ConceptMap g;
     ConceptMap h;
     s >> g >> h;
-    if (e != g) { TRACE(e); TRACE(g); }
-    if (e != h) { TRACE(e); TRACE(h); }
     BOOST_CHECK(e == g);
     BOOST_CHECK(e == h);
   }
-  BOOST_CHECK(1 == 2);
-  if (verbose) { TRACE("Dot conversion"); }
+}
+
+
+
+BOOST_AUTO_TEST_CASE(ribi_concept_map_count_center_nodes)
+{
+  using namespace ribi::cmap;
+  for (const ConceptMap& map: ConceptMapFactory().GetAllTests())
   {
-    const std::vector<ConceptMap> v = ConceptMapFactory().GetAllTests();
-    std::for_each(v.begin(),v.end(),
-      [](const ConceptMap& node)
-      {
-        //Test copy constructor
-        const ConceptMap c(node);
-        BOOST_CHECK(node == c);
-        const std::string s{ToDot(c)};
-        const ConceptMap d = DotToConceptMap(s);
-        BOOST_CHECK(c == d);
-      }
-    );
+    BOOST_CHECK(CountCenterNodes(map) == 0 || CountCenterNodes(map) == 1);
   }
-  if (verbose) { TRACE("CountCenterNodes"); }
-  //Count the number of CenterNode objects
-  {
-    //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,0.1);
-    for (const ConceptMap& map: ConceptMapFactory().GetAllTests())
-    {
-      BOOST_CHECK(CountCenterNodes(map) == 0 || CountCenterNodes(map) == 1);
-    }
-  }
-  BOOST_CHECK(!"Fixed 10?");
+}
+
+BOOST_AUTO_TEST_CASE(ribi_concept_map_test)
+{
+  using namespace ribi::cmap;
+  //BOOST_CHECK(!"Fixed 10?");
   #ifdef NOT_NOT_20151231
   #ifdef FIX_ISSUE_10
   #endif // FIX_ISSUE_10

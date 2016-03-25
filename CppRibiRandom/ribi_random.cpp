@@ -117,16 +117,12 @@ std::string ribi::Random::RandomImpl::GetString(const int length) noexcept
 
 ribi::Random::Random() : m_impl{new RandomImpl}
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
+
 }
 
 ribi::Random::Random(const int seed) : m_impl{new RandomImpl(seed)}
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
+
 }
 
 ribi::Random::~Random()
@@ -176,24 +172,3 @@ std::vector<std::string> ribi::Random::GetVersionHistory() noexcept
     "2014-12-27: Version 1.1: removed deprecated functions"
   };
 }
-
-#ifndef NDEBUG
-void ribi::Random::Test() noexcept
-{
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
-  Random r(42);
-  {
-    assert(r.GetFraction() >= 0.0);
-    assert(r.GetFraction()  < 1.0);
-  }
-  {
-    const auto s = r.GetString(99);
-    assert(std::count(std::begin(s),std::end(s),s[0]) < 10);
-  }
-}
-#endif

@@ -36,9 +36,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ribi::System::System()
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
+
 }
 
 std::string ribi::System::GetHome() const noexcept {
@@ -66,27 +64,3 @@ std::string ribi::System::GetWhoami() const noexcept
   FileIo().DeleteFile(tempfilename);
   return user;
 }
-
-#ifndef NDEBUG
-void ribi::System::Test() noexcept
-{
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  {
-    FileIo();
-  }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
-  System s;
-  const bool verbose{false};
-  std::stringstream text;
-  text
-    << "home: '" << s.GetHome() << "'\n"
-    << "path: '" << s.GetPath() << "'\n"
-    << "whoami: '" << s.GetWhoami() << "'"
-  ;
-  if (verbose) TRACE(text.str());
-}
-#endif

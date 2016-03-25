@@ -12,9 +12,7 @@ ribi::DnaSequence::DnaSequence(const std::string& description, const std::string
   : m_description{description},
     m_sequence{CleanSequence(sequence)}
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
+
 }
 
 std::string ribi::CleanSequence(std::string s)
@@ -33,7 +31,7 @@ std::string ribi::CleanSequence(std::string s)
     s << "Sequence::Sequence: sequence can only contain the characters 'A','C','G','T'"
       << ", found character: " << *iter
     ;
-    throw std::logic_error(s.str().c_str());
+    throw std::invalid_argument(s.str().c_str());
   }
   return s;
 }

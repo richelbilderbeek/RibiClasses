@@ -1,11 +1,12 @@
-INCLUDEPATH += $$PWD
+INCLUDEPATH += \
+    ../RibiClasses/CppRibiTime
 
 SOURCES += \
-    ../RibiClasses/CppRibiTime/ribi_time.cpp
+    $$PWD/ribi_time.cpp
 
 HEADERS  += \
-    ../RibiClasses/CppRibiTime/ribi_time.h
+    $$PWD/ribi_time.h
 
 OTHER_FILES += \
-    ../RibiClasses/CppRibiTime/Licence.txt
+    $$PWD/Licence.txt
 

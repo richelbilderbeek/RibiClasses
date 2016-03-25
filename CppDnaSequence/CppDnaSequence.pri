@@ -2,8 +2,7 @@ INCLUDEPATH += \
     ../RibiClasses/CppDnaSequence
 
 SOURCES += \
-    $$PWD/dnasequence.cpp \
-    $$PWD/dnasequence_test.cpp
+    $$PWD/dnasequence.cpp
 
 HEADERS  += \
     $$PWD/dnasequence.h

@@ -36,9 +36,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ribi::Time::Time()
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
+
 }
 
 int ribi::Time::GetTodayIso8601AsInt() const noexcept
@@ -125,23 +123,3 @@ void ribi::Time::Wait(const double n_secs) const noexcept
     if (secs_passed > n_secs) return;
   }
 }
-
-#ifndef NDEBUG
-void ribi::Time::Test() noexcept
-{
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
-  //const bool verbose{false};
-  const Time t;
-  {
-    t.Wait(0.0);
-  }
-  assert(t.GetTodayIso8601Boost() == t.GetTodayIso8601Stl());
-  assert(!t.GetTodayIso8601Stl().empty());
-  assert(t.GetTodayIso8601AsInt() > 0);
-}
-#endif

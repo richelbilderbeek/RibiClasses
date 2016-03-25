@@ -66,9 +66,6 @@ struct Random
   private:
   struct RandomImpl;
   const std::unique_ptr<RandomImpl> m_impl;
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 };
 
 } //~namespace ribi
