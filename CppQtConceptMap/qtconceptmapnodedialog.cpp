@@ -49,10 +49,6 @@ ribi::cmap::QtNodeDialog::QtNodeDialog(QWidget *parent)
     m_qtconceptdialog{new QtConceptDialog}
 {
   ui->setupUi(this);
-  #ifndef NDEBUG
-  Test();
-  #endif
-
   {
     assert(layout());
     layout()->addWidget(m_qtconceptdialog.get());
@@ -253,30 +249,6 @@ void ribi::cmap::QtNodeDialog::SetUiY(const double y) noexcept
   //m_node.SetY(y);
   //on_box_y_valueChanged(y);
 }
-
-
-#ifndef NDEBUG
-void ribi::cmap::QtNodeDialog::Test() noexcept
-{
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  NodeFactory().GetTest(1);
-  QtConceptDialog();
-
-  const TestTimer test_timer(__func__,__FILE__,1.0);
-  const bool verbose{false};
-  QtNodeDialog dialog;
-  Node node(NodeFactory().GetTest(1));
-  dialog.SetNode(node);
-  if (verbose) { TRACE("X of QtNode and QtNodeDialog must match at start"); }
-  {
-    assert(std::abs(dialog.GetUiX() - node.GetX()) < 2.0);
-  }
-}
-#endif
 
 void ribi::cmap::QtNodeDialog::on_box_x_valueChanged(double arg1)
 {

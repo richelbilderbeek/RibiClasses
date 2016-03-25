@@ -216,10 +216,6 @@ struct QtQuadBezierArrowItem : public QGraphicsItem
   void setX(const double&) = delete;
   void setY(const double&) = delete;
 
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
-
   friend std::ostream& operator<<(std::ostream& os, const QtQuadBezierArrowItem& arrow) noexcept;
 };
 

@@ -89,10 +89,6 @@ private:
 
   //concept is non-const, as its displayal by this dialog renders it editable
   void OnRatingSpecificityChanged(Concept& concept) noexcept;
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 };
 
 } //~namespace cmap

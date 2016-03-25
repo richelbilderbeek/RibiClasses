@@ -27,10 +27,6 @@ struct QtImage
   QImage Paint(const QGraphicsItem& item) noexcept;
 
   QImage Xor(const QImage& base, const QImage& to_xor) noexcept;
-  private:
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 };
 
 } //namespace ribi

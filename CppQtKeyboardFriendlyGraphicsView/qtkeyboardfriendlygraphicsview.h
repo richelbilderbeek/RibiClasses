@@ -92,10 +92,6 @@ struct QtKeyboardFriendlyGraphicsView : public QGraphicsView
 
   ///Give selectedness to one random item
   void SetRandomSelectedness();
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 };
 
 } //~namespace ribi

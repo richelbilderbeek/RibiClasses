@@ -233,6 +233,18 @@ BOOST_AUTO_TEST_CASE(ribi_concept_map_stream_two_nasty_objects)
   }
 }
 
+BOOST_AUTO_TEST_CASE(ribi_concept_map_save_and_load_nasty_test)
+{
+  using namespace ribi::cmap;
+  for (const ConceptMap c: ConceptMapFactory().GetNastyTests())
+  {
+    const auto filename = ribi::fileio::FileIo().GetTempFileName();
+    SaveToFile(c, filename);
+    const ConceptMap d = LoadFromFile(filename);
+    ribi::fileio::FileIo().DeleteFile(filename);
+    BOOST_CHECK(c == d);
+  }
+}
 
 
 BOOST_AUTO_TEST_CASE(ribi_concept_map_count_center_nodes)

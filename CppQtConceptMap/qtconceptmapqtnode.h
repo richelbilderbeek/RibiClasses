@@ -86,10 +86,6 @@ private:
   void OnXchanged(Node * const node) noexcept;
   void OnYchanged(Node * const node) noexcept;
   void OnConceptChanged(Node * const node) noexcept;
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 };
 
 std::ostream& operator<<(std::ostream& os, const QtNode& qtnode) noexcept;

@@ -116,7 +116,6 @@ ribi::cmap::QtConceptMap::QtConceptMap(QWidget* parent)
     m_tools{new QtTool}
 {
   #ifndef NDEBUG
-  Test();
   this->SetVerbosity(true);
   #endif
 

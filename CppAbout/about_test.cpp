@@ -54,5 +54,13 @@ BOOST_AUTO_TEST_CASE(ribi_about_test)
   BOOST_CHECK(about.GetUrl() == url);
   BOOST_CHECK(about.GetVersion() == version);
   BOOST_CHECK(about.GetVersionHistory() == version_history);
-
+  BOOST_CHECK(!about.CreateAboutText().empty());
+  BOOST_CHECK(!about.CreateLibrariesUsedText().empty());
+  BOOST_CHECK(!about.CreateLicenceText().empty());
+  BOOST_CHECK(!about.CreateVersionHistory().empty());
+  BOOST_CHECK(!about.GetAboutVersionHistory().empty());
+  BOOST_CHECK(about.GetStlVersion() == __VERSION__);
+  std::stringstream s;
+  s << about;
+  BOOST_CHECK(!s.str().empty());
 }

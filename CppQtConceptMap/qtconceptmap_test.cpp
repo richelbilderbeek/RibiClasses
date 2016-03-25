@@ -1,31 +1,6 @@
-//---------------------------------------------------------------------------
-/*
-QtConceptMap, Qt classes for display and interaction with ConceptMap
-Copyright (C) 2013-2016 Richel Bilderbeek
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
-GNU General Public License for more details.
-You should have received a copy of the GNU General Public License
-along with this program.If not, see <http://www.gnu.org/licenses/>.
-*/
-//---------------------------------------------------------------------------
-//From http://www.richelbilderbeek.nl/CppQtConceptMap.htm
-//---------------------------------------------------------------------------
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
-#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
 #include "qtconceptmap.h"
-
+#include <boost/test/unit_test.hpp>
 #include <chrono>
-
 #include <QApplication>
 #include <QMouseEvent>
 #include <boost/graph/isomorphism.hpp>
@@ -62,32 +37,23 @@ QKeyEvent CreateRight() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Rig
 QKeyEvent CreateSpace() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Space,Qt::NoModifier); }
 QKeyEvent CreateUp() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Up,Qt::NoModifier); }
 
-#ifndef NDEBUG
-void ribi::cmap::QtConceptMap::Test() noexcept
+BOOST_AUTO_TEST_CASE(qt_concept_map_test)
 {
-  {
-    static bool is_tested = false;
-    if (is_tested) return;
-    is_tested = true;
-  }
-
-  const TestTimer test_timer{__func__,__FILE__,2.0};
-  TestTimer::SetMaxCnt(2); //Because the base class (QtKeyboardFriendlyGraphicsView)
-                           //has to be tested as well
+  using namespace ribi::cmap;
   bool verbose{false};
 
   if (verbose) { TRACE("SetConceptMap, all tests"); }
   for (const auto conceptmap: ConceptMapFactory().GetAllTests())
   {
     QtConceptMap m;
-    assert(CountQtNodes(m.GetScene()) == 0);
+    BOOST_CHECK(CountQtNodes(m.GetScene()) == 0);
     m.SetConceptMap(conceptmap);
     const auto n_nodes = static_cast<int>(boost::num_vertices(conceptmap));
     const auto n_edges = static_cast<int>(boost::num_edges(conceptmap));
     const auto n_qtnodes = CountQtNodes(m.GetScene());
     const auto n_qtedges = CountQtEdges(m.GetScene());
-    assert(n_nodes == n_qtnodes);
-    assert(n_edges == n_qtedges);
+    BOOST_CHECK(n_nodes == n_qtnodes);
+    BOOST_CHECK(n_edges == n_qtedges);
   }
   if (verbose) { TRACE("A new command must be put in QUndoStack"); }
   {
@@ -102,11 +68,11 @@ void ribi::cmap::QtConceptMap::Test() noexcept
         0.0
       )
     };
-    assert(qtconceptmap.GetUndo().count() == 0);
+    BOOST_CHECK(qtconceptmap.GetUndo().count() == 0);
 
     qtconceptmap.DoCommand(command);
 
-    assert(qtconceptmap.GetUndo().count() == 1);
+    BOOST_CHECK(qtconceptmap.GetUndo().count() == 1);
   }
   //---------------------------------------------------------------------------
   // CREATE NODES
@@ -114,8 +80,8 @@ void ribi::cmap::QtConceptMap::Test() noexcept
   if (verbose) { TRACE("Create one node"); }
   {
     QtConceptMap qtconceptmap;
-    assert(DoubleCheckEdgesAndNodes(qtconceptmap,0,0));
-    assert(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,0));
+    BOOST_CHECK(DoubleCheckEdgesAndNodes(qtconceptmap,0,0));
+    BOOST_CHECK(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,0));
     qtconceptmap.DoCommand(
       new CommandCreateNewNode(
         qtconceptmap.GetConceptMap(),
@@ -125,12 +91,12 @@ void ribi::cmap::QtConceptMap::Test() noexcept
         0.0
       )
     );
-    assert(DoubleCheckEdgesAndNodes(qtconceptmap,0,1));
-      assert(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,1));
+    BOOST_CHECK(DoubleCheckEdgesAndNodes(qtconceptmap,0,1));
+      BOOST_CHECK(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,1));
 
     qtconceptmap.Undo();
-    assert(DoubleCheckEdgesAndNodes(qtconceptmap,0,0));
-      assert(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,0));
+    BOOST_CHECK(DoubleCheckEdgesAndNodes(qtconceptmap,0,0));
+      BOOST_CHECK(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,0));
   }
   if (verbose) { TRACE("CTRL-N creates a new QtNode"); }
   {
@@ -138,13 +104,13 @@ void ribi::cmap::QtConceptMap::Test() noexcept
 
     auto ctrl_n = CreateControlN();
     qtconceptmap.keyPressEvent(&ctrl_n);
-    assert(DoubleCheckEdgesAndNodes(qtconceptmap,0,1));
-    assert(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,1));
+    BOOST_CHECK(DoubleCheckEdgesAndNodes(qtconceptmap,0,1));
+    BOOST_CHECK(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,1));
   }
   if (verbose) { TRACE("Create nodes"); }
   {
     QtConceptMap qtconceptmap;
-    assert(DoubleCheckEdgesAndNodes(qtconceptmap,0,0));
+    BOOST_CHECK(DoubleCheckEdgesAndNodes(qtconceptmap,0,0));
 
     const int n{10};
     for (int i=0; i!=n; ++i) {
@@ -157,11 +123,11 @@ void ribi::cmap::QtConceptMap::Test() noexcept
           0.0
         )
       );
-      assert(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,i + 1));
+      BOOST_CHECK(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,i + 1));
     }
-    assert(DoubleCheckEdgesAndNodes(qtconceptmap,0,n));
+    BOOST_CHECK(DoubleCheckEdgesAndNodes(qtconceptmap,0,n));
     for (int i=0; i!=n; ++i) { qtconceptmap.Undo(); }
-    assert(DoubleCheckEdgesAndNodes(qtconceptmap,0,0));
+    BOOST_CHECK(DoubleCheckEdgesAndNodes(qtconceptmap,0,0));
   }
   if (verbose) { TRACE("CTRL-N, CTRL-N creates two QtNodes"); }
   {
@@ -171,8 +137,8 @@ void ribi::cmap::QtConceptMap::Test() noexcept
     qtconceptmap.keyPressEvent(&ctrl_n);
     qtconceptmap.keyPressEvent(&ctrl_n);
 
-    assert(DoubleCheckEdgesAndNodes(qtconceptmap,0,2));
-    assert(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,2));
+    BOOST_CHECK(DoubleCheckEdgesAndNodes(qtconceptmap,0,2));
+    BOOST_CHECK(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,2));
   }
 
   //---------------------------------------------------------------------------
@@ -181,7 +147,7 @@ void ribi::cmap::QtConceptMap::Test() noexcept
   if (verbose) { TRACE("Delete nodes: create two Nodes, delete one Node from QtConceptMap"); }
   {
     QtConceptMap qtconceptmap;
-    assert(DoubleCheckEdgesAndNodes(qtconceptmap,0,0));
+    BOOST_CHECK(DoubleCheckEdgesAndNodes(qtconceptmap,0,0));
 
     const int n{10};
     for (int i=0; i!=n; ++i) {
@@ -194,9 +160,9 @@ void ribi::cmap::QtConceptMap::Test() noexcept
           0.0
         )
       );
-      assert(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,i + 1));
+      BOOST_CHECK(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,i + 1));
     }
-    assert(DoubleCheckEdgesAndNodes(qtconceptmap,0,n));
+    BOOST_CHECK(DoubleCheckEdgesAndNodes(qtconceptmap,0,n));
     qtconceptmap.DoCommand(
       new CommandDeleteSelected(
         qtconceptmap.GetConceptMap(),
@@ -204,14 +170,14 @@ void ribi::cmap::QtConceptMap::Test() noexcept
         qtconceptmap.GetQtToolItem()
       )
     );
-    assert(DoubleCheckEdgesAndNodes(qtconceptmap,0,0));
+    BOOST_CHECK(DoubleCheckEdgesAndNodes(qtconceptmap,0,0));
     qtconceptmap.Undo();
-    assert(DoubleCheckEdgesAndNodes(qtconceptmap,0,n));
+    BOOST_CHECK(DoubleCheckEdgesAndNodes(qtconceptmap,0,n));
   }
   if (verbose) { TRACE("Delete Edge"); }
   {
     QtConceptMap qtconceptmap;
-    assert(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,0));
+    BOOST_CHECK(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,0));
     const int n{2};
     for (int i=0; i!=n; ++i) {
       qtconceptmap.DoCommand(
@@ -224,7 +190,7 @@ void ribi::cmap::QtConceptMap::Test() noexcept
         )
       );
     }
-    assert(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,2));
+    BOOST_CHECK(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,2));
     qtconceptmap.DoCommand(
       new CommandCreateNewEdgeBetweenTwoSelectedNodes(
         qtconceptmap.GetConceptMap(),
@@ -232,8 +198,8 @@ void ribi::cmap::QtConceptMap::Test() noexcept
         qtconceptmap.GetQtToolItem()
       )
     );
-    assert(DoubleCheckEdgesAndNodes(qtconceptmap,1,2));
-    assert(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,1,0));
+    BOOST_CHECK(DoubleCheckEdgesAndNodes(qtconceptmap,1,2));
+    BOOST_CHECK(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,1,0));
     qtconceptmap.DoCommand(
       new CommandDeleteSelected(
         qtconceptmap.GetConceptMap(),
@@ -241,7 +207,7 @@ void ribi::cmap::QtConceptMap::Test() noexcept
         qtconceptmap.GetQtToolItem()
       )
     );
-    assert(DoubleCheckEdgesAndNodes(qtconceptmap,0,2));
+    BOOST_CHECK(DoubleCheckEdgesAndNodes(qtconceptmap,0,2));
   }
 
   if (verbose) { TRACE("CTRL-N, CTRL-N, delete, creates two QtNodes and deletes two"); }
@@ -253,8 +219,8 @@ void ribi::cmap::QtConceptMap::Test() noexcept
     qtconceptmap.keyPressEvent(&ctrl_n);
     auto del = CreateDel();
     qtconceptmap.keyPressEvent(&del);
-    assert(DoubleCheckEdgesAndNodes(qtconceptmap,0,0));
-    assert(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,0));
+    BOOST_CHECK(DoubleCheckEdgesAndNodes(qtconceptmap,0,0));
+    BOOST_CHECK(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,0));
   }
   if (verbose) { TRACE("CTRL-N, CTRL-N, space, delete, creates two QtNodes, selects one and deletes one"); }
   {
@@ -264,12 +230,12 @@ void ribi::cmap::QtConceptMap::Test() noexcept
     qtconceptmap.keyPressEvent(&ctrl_n);
     auto space = CreateSpace();
     qtconceptmap.keyPressEvent(&space);
-    assert(DoubleCheckEdgesAndNodes(qtconceptmap,0,2));
-    assert(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,1));
+    BOOST_CHECK(DoubleCheckEdgesAndNodes(qtconceptmap,0,2));
+    BOOST_CHECK(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,1));
     auto del = CreateDel();
     qtconceptmap.keyPressEvent(&del);
-    assert(DoubleCheckEdgesAndNodes(qtconceptmap,0,1));
-    assert(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,0));
+    BOOST_CHECK(DoubleCheckEdgesAndNodes(qtconceptmap,0,1));
+    BOOST_CHECK(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,0));
   }
   //---------------------------------------------------------------------------
   // CREATE EDGES
@@ -292,7 +258,7 @@ void ribi::cmap::QtConceptMap::Test() noexcept
         )
       );
     }
-    assert(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,2));
+    BOOST_CHECK(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,2));
     qtconceptmap.DoCommand(
       new CommandCreateNewEdgeBetweenTwoSelectedNodes(
         qtconceptmap.GetConceptMap(),
@@ -300,8 +266,8 @@ void ribi::cmap::QtConceptMap::Test() noexcept
         qtconceptmap.GetQtToolItem()
       )
     );
-    assert(DoubleCheckEdgesAndNodes(qtconceptmap,1,2));
-    assert(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,1,0));
+    BOOST_CHECK(DoubleCheckEdgesAndNodes(qtconceptmap,1,2));
+    BOOST_CHECK(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,1,0));
   }
   if (verbose) { TRACE("CTRL-N, CTRL-N, CTRL-E: new Edge should be selected"); }
   {
@@ -311,8 +277,8 @@ void ribi::cmap::QtConceptMap::Test() noexcept
     qtconceptmap.keyPressEvent(&ctrl_n);
     auto ctrl_e = CreateControlE();
     qtconceptmap.keyPressEvent(&ctrl_e);
-    assert(DoubleCheckEdgesAndNodes(qtconceptmap,1,2));
-    assert(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,1,0));
+    BOOST_CHECK(DoubleCheckEdgesAndNodes(qtconceptmap,1,2));
+    BOOST_CHECK(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,1,0));
   }
   //---------------------------------------------------------------------------
   // DELETE EDGES (also via source/target nodes)
@@ -327,8 +293,8 @@ void ribi::cmap::QtConceptMap::Test() noexcept
     qtconceptmap.keyPressEvent(&ctrl_e);
     auto del = CreateDel();
     qtconceptmap.keyPressEvent(&del);
-    assert(DoubleCheckEdgesAndNodes(qtconceptmap,0,2));
-    assert(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,0));
+    BOOST_CHECK(DoubleCheckEdgesAndNodes(qtconceptmap,0,2));
+    BOOST_CHECK(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,0));
   }
   //#define FOR_LUCAS_20160130
   #ifdef FOR_LUCAS_20160130
@@ -340,8 +306,8 @@ void ribi::cmap::QtConceptMap::Test() noexcept
     qtconceptmap.keyPressEvent(&ctrl_n);
     auto ctrl_e = CreateControlE();
     qtconceptmap.keyPressEvent(&ctrl_e);
-    assert(DoubleCheckEdgesAndNodes(qtconceptmap,1,2));
-    assert(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,1,0));
+    BOOST_CHECK(DoubleCheckEdgesAndNodes(qtconceptmap,1,2));
+    BOOST_CHECK(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,1,0));
     std::srand(42);
     //Select only one single QtNode
     //PROBLEM: This is an infinite loop. Why?
@@ -356,17 +322,17 @@ void ribi::cmap::QtConceptMap::Test() noexcept
         << CountSelectedQtEdges(qtconceptmap.GetScene())
       ;
     }
-    assert(!"You've fixed the problem halfways");
-    assert(CountSelectedQtEdges(qtconceptmap.GetScene()) == 0);
-    assert(DoubleCheckEdgesAndNodes(qtconceptmap,1,2));
-    assert(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,1));
+    BOOST_CHECK(!"You've fixed the problem halfways");
+    BOOST_CHECK(CountSelectedQtEdges(qtconceptmap.GetScene()) == 0);
+    BOOST_CHECK(DoubleCheckEdgesAndNodes(qtconceptmap,1,2));
+    BOOST_CHECK(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,1));
     //Deleting the QtNode should also delete the QtEdge that is connected to it
     auto del = CreateDel();
     qtconceptmap.keyPressEvent(&del);
-    assert(DoubleCheckEdgesAndNodes(qtconceptmap,0,1));
-    assert(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,0));
+    BOOST_CHECK(DoubleCheckEdgesAndNodes(qtconceptmap,0,1));
+    BOOST_CHECK(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,0));
   }
-  assert(!"You've fixed it!");
+  BOOST_CHECK(!"You've fixed it!");
   #endif // FOR_LUCAS_20160130
   //#define FIX_ISSUE_1
   #ifdef  FIX_ISSUE_1
@@ -389,7 +355,7 @@ void ribi::cmap::QtConceptMap::Test() noexcept
     auto ctrle = CreateControlE();
     qtconceptmap.keyPressEvent(&ctrle);
 
-    assert(qtconceptmap.GetQtNodes().size() == 2);
+    BOOST_CHECK(qtconceptmap.GetQtNodes().size() == 2);
     qtconceptmap.GetQtNodes()[0]->SetCenterPos(-100.0,0.0);
     qtconceptmap.GetQtNodes()[0]->setToolTip("QtNodes[0]");
     qtconceptmap.GetQtNodes()[1]->SetCenterPos( 100.0,0.0);
@@ -397,19 +363,19 @@ void ribi::cmap::QtConceptMap::Test() noexcept
     qtconceptmap.GetQtEdges()[0]->setToolTip("QtEdges[0]");
     qtconceptmap.GetQtEdges()[0]->GetQtNode()->setToolTip("QtEdges[0] its center QtNode");
 
-    assert(boost::num_vertices(conceptmap) == 2);
-    assert(boost::num_vertices(conceptmap) == qtconceptmap.GetQtNodes().size());
-    assert(boost::num_edges(conceptmap) == 1);
-    assert(boost::num_edges(conceptmap) == qtconceptmap.GetQtEdges().size());
-    assert(conceptmap.GetSelectedNodes().size() == 0);
-    assert(conceptmap.GetSelectedNodes().size() == qtconceptmap.GetSelectedQtNodes().size());
-    assert(conceptmap.GetSelectedEdges().size() == 1);
-    assert(conceptmap.GetSelectedEdges().size() == qtconceptmap.GetSelectedQtEdges().size());
+    BOOST_CHECK(boost::num_vertices(conceptmap) == 2);
+    BOOST_CHECK(boost::num_vertices(conceptmap) == qtconceptmap.GetQtNodes().size());
+    BOOST_CHECK(boost::num_edges(conceptmap) == 1);
+    BOOST_CHECK(boost::num_edges(conceptmap) == qtconceptmap.GetQtEdges().size());
+    BOOST_CHECK(conceptmap.GetSelectedNodes().size() == 0);
+    BOOST_CHECK(conceptmap.GetSelectedNodes().size() == qtconceptmap.GetSelectedQtNodes().size());
+    BOOST_CHECK(conceptmap.GetSelectedEdges().size() == 1);
+    BOOST_CHECK(conceptmap.GetSelectedEdges().size() == qtconceptmap.GetSelectedQtEdges().size());
 
     //Fails if item is invisible
     qtconceptmap.showFullScreen();
     for (int i=0; i!=100; ++i) qApp->processEvents();
-    assert(qtconceptmap.scene()->selectedItems().count() > 0);
+    BOOST_CHECK(qtconceptmap.scene()->selectedItems().count() > 0);
 
 
     if (verbose) { TRACE("Unselect the edge, select the node by pressing an arrow key"); }
@@ -425,14 +391,14 @@ void ribi::cmap::QtConceptMap::Test() noexcept
     TRACE(qtconceptmap.GetSelectedQtEdges().size());
 
 
-    assert(boost::num_vertices(conceptmap) == 2);
-    assert(boost::num_vertices(conceptmap) == qtconceptmap.GetQtNodes().size());
-    assert(boost::num_edges(conceptmap) == 1);
-    assert(boost::num_edges(conceptmap) == qtconceptmap.GetQtEdges().size());
-    assert(conceptmap.GetSelectedNodes().size() == qtconceptmap.GetSelectedQtNodes().size());
-    assert(conceptmap.GetSelectedEdges().size() == qtconceptmap.GetSelectedQtEdges().size());
-    assert(conceptmap.GetSelectedNodes().size() == 1);
-    assert(conceptmap.GetSelectedEdges().size() == 0);
+    BOOST_CHECK(boost::num_vertices(conceptmap) == 2);
+    BOOST_CHECK(boost::num_vertices(conceptmap) == qtconceptmap.GetQtNodes().size());
+    BOOST_CHECK(boost::num_edges(conceptmap) == 1);
+    BOOST_CHECK(boost::num_edges(conceptmap) == qtconceptmap.GetQtEdges().size());
+    BOOST_CHECK(conceptmap.GetSelectedNodes().size() == qtconceptmap.GetSelectedQtNodes().size());
+    BOOST_CHECK(conceptmap.GetSelectedEdges().size() == qtconceptmap.GetSelectedQtEdges().size());
+    BOOST_CHECK(conceptmap.GetSelectedNodes().size() == 1);
+    BOOST_CHECK(conceptmap.GetSelectedEdges().size() == 0);
   }
   if (verbose) { TRACE("Delete Node-that-is-head-of-Edge, then Undo"); }
   {
@@ -449,14 +415,14 @@ void ribi::cmap::QtConceptMap::Test() noexcept
     auto ctrle = CreateControlE();
     qtconceptmap.keyPressEvent(&ctrle);
 
-    assert(boost::num_vertices(conceptmap) == 2);
-    assert(boost::num_vertices(conceptmap) == qtconceptmap.GetQtNodes().size());
-    assert(boost::num_edges(conceptmap) == 1);
-    assert(boost::num_edges(conceptmap) == qtconceptmap.GetQtEdges().size());
-    assert(conceptmap.GetSelectedNodes().size() == qtconceptmap.GetSelectedQtNodes().size());
-    assert(conceptmap.GetSelectedEdges().size() == qtconceptmap.GetSelectedQtEdges().size());
-    assert(conceptmap.GetSelectedNodes().size() == 0);
-    assert(conceptmap.GetSelectedEdges().size() == 1);
+    BOOST_CHECK(boost::num_vertices(conceptmap) == 2);
+    BOOST_CHECK(boost::num_vertices(conceptmap) == qtconceptmap.GetQtNodes().size());
+    BOOST_CHECK(boost::num_edges(conceptmap) == 1);
+    BOOST_CHECK(boost::num_edges(conceptmap) == qtconceptmap.GetQtEdges().size());
+    BOOST_CHECK(conceptmap.GetSelectedNodes().size() == qtconceptmap.GetSelectedQtNodes().size());
+    BOOST_CHECK(conceptmap.GetSelectedEdges().size() == qtconceptmap.GetSelectedQtEdges().size());
+    BOOST_CHECK(conceptmap.GetSelectedNodes().size() == 0);
+    BOOST_CHECK(conceptmap.GetSelectedEdges().size() == 1);
 
 
     //Select a node
@@ -468,14 +434,14 @@ void ribi::cmap::QtConceptMap::Test() noexcept
     TRACE(conceptmap.GetSelectedEdges().size());
     TRACE(qtconceptmap.GetSelectedQtEdges().size());
 
-    assert(boost::num_vertices(conceptmap) == 2);
-    assert(boost::num_vertices(conceptmap) == qtconceptmap.GetQtNodes().size());
-    assert(boost::num_edges(conceptmap) == 1);
-    assert(boost::num_edges(conceptmap) == qtconceptmap.GetQtEdges().size());
-    assert(conceptmap.GetSelectedNodes().size() == qtconceptmap.GetSelectedQtNodes().size());
-    assert(conceptmap.GetSelectedEdges().size() == qtconceptmap.GetSelectedQtEdges().size());
-    assert(conceptmap.GetSelectedNodes().size() == 1);
-    assert(conceptmap.GetSelectedEdges().size() == 0);
+    BOOST_CHECK(boost::num_vertices(conceptmap) == 2);
+    BOOST_CHECK(boost::num_vertices(conceptmap) == qtconceptmap.GetQtNodes().size());
+    BOOST_CHECK(boost::num_edges(conceptmap) == 1);
+    BOOST_CHECK(boost::num_edges(conceptmap) == qtconceptmap.GetQtEdges().size());
+    BOOST_CHECK(conceptmap.GetSelectedNodes().size() == qtconceptmap.GetSelectedQtNodes().size());
+    BOOST_CHECK(conceptmap.GetSelectedEdges().size() == qtconceptmap.GetSelectedQtEdges().size());
+    BOOST_CHECK(conceptmap.GetSelectedNodes().size() == 1);
+    BOOST_CHECK(conceptmap.GetSelectedEdges().size() == 0);
 
     //Delete the node, edge will be deleted as well
     auto del = CreateDel();
@@ -485,17 +451,17 @@ void ribi::cmap::QtConceptMap::Test() noexcept
     auto cntrlz = CreateControlZ();
     qtconceptmap.keyPressEvent(&cntrlz);
 
-    assert(boost::num_vertices(conceptmap) == 2);
-    assert(boost::num_vertices(conceptmap) == qtconceptmap.GetQtNodes().size());
-    assert(boost::num_edges(conceptmap) == 1);
-    assert(boost::num_edges(conceptmap) == qtconceptmap.GetQtEdges().size());
-    assert(conceptmap.GetSelectedNodes().size() == 1);
-    assert(conceptmap.GetSelectedNodes().size() == qtconceptmap.GetSelectedQtNodes().size());
-    assert(conceptmap.GetSelectedEdges().size() == 0);
-    assert(conceptmap.GetSelectedEdges().size() == qtconceptmap.GetSelectedQtEdges().size());
+    BOOST_CHECK(boost::num_vertices(conceptmap) == 2);
+    BOOST_CHECK(boost::num_vertices(conceptmap) == qtconceptmap.GetQtNodes().size());
+    BOOST_CHECK(boost::num_edges(conceptmap) == 1);
+    BOOST_CHECK(boost::num_edges(conceptmap) == qtconceptmap.GetQtEdges().size());
+    BOOST_CHECK(conceptmap.GetSelectedNodes().size() == 1);
+    BOOST_CHECK(conceptmap.GetSelectedNodes().size() == qtconceptmap.GetSelectedQtNodes().size());
+    BOOST_CHECK(conceptmap.GetSelectedEdges().size() == 0);
+    BOOST_CHECK(conceptmap.GetSelectedEdges().size() == qtconceptmap.GetSelectedQtEdges().size());
 
   }
-  assert(!"Fixed issue #1");
+  BOOST_CHECK(!"Fixed issue #1");
   #endif // FIX_ISSUE_1
 
   #ifdef NOT_NOW_20160226
@@ -515,12 +481,10 @@ void ribi::cmap::QtConceptMap::Test() noexcept
     m.mouseDoubleClickEvent(&e);
     const int n_nodes_in_scene{static_cast<int>(Collect<QtNode>(m.GetScene()).size())};
     const int n_nodes_in_conceptmap{static_cast<int>(m.GetConceptMap().GetNodes().size())};
-    assert(n_nodes_in_scene == n_nodes_in_conceptmap);
+    BOOST_CHECK(n_nodes_in_scene == n_nodes_in_conceptmap);
   }
   #endif //NOT_NOW_20160226
 
 
   #endif
-  TestTimer::SetMaxCnt(1); //Because the base class has been tested now
 }
-#endif //DEBUG

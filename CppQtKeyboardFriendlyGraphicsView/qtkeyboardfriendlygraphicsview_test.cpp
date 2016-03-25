@@ -1,9 +1,5 @@
 #include "qtkeyboardfriendlygraphicsview.h"
-
-#ifndef NDEBUG
-//Everything only present in debug mode
-#include <cassert>
-
+#include <boost/test/unit_test.hpp>
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #include <QApplication>
@@ -50,22 +46,10 @@ namespace ribi {
   }
 }
 
-void ribi::QtKeyboardFriendlyGraphicsView::Test() noexcept
+BOOST_AUTO_TEST_CASE(qt_keyboard_friendly_graphics_view_test)
 {
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  {
-    Counter();
-    ribi::FileIo();
-    ribi::System();
-    ribi::Time();
-    ribi::Container();
-  }
   using namespace ribi::qtkeyboardfriendlygraphicsview;
-  const TestTimer test_timer(__func__,__FILE__,1.0);
+  using namespace ribi;
   bool verbose{false};
   QtKeyboardFriendlyGraphicsView view;
   QGraphicsRectItem * const item1{new QGraphicsRectItem};
@@ -255,6 +239,3 @@ void ribi::QtKeyboardFriendlyGraphicsView::Test() noexcept
     assert(item2->hasFocus());
   }
 }
-#endif
-
-

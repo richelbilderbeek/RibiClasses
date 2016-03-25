@@ -83,10 +83,6 @@ private:
   void OnConceptChanged(const Node& node);
   void OnXchanged(const Node& node);
   void OnYchanged(const Node& node);
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 };
 
 } //~namespace cmap

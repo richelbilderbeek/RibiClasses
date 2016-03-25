@@ -58,9 +58,6 @@ ribi::cmap::QtEdgeDialog::QtEdgeDialog(
     m_qtnodedialog_to{new QtNodeDialog}
 {
   ui->setupUi(this);
-  #ifndef NDEBUG
-  Test();
-  #endif
   {
     assert(ui->groupBox->layout());
     const auto my_layout = ui->groupBox->layout();
@@ -301,67 +298,6 @@ void ribi::cmap::QtEdgeDialog::SetUiY(const double y) noexcept
 {
   m_qtnodedialog->SetUiY(y);
 }
-
-
-#ifndef NDEBUG
-void ribi::cmap::QtEdgeDialog::Test() noexcept
-{
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  NodeFactory();
-  EdgeFactory();
-  QtExampleDialog();
-  QtExamplesDialog();
-  QtNodeDialog();
-
-  const TestTimer test_timer(__func__,__FILE__,1.0);
-  const bool verbose{false};
-  const Node from = NodeFactory().GetTest(0);
-  const Node to = NodeFactory().GetTest(0);
-  Edge edge = EdgeFactory().GetTest(0);
-  QtEdgeDialog dialog(edge);
-  if (verbose) { TRACE("X of QtNode and QtNodeDialog must match at start"); }
-  {
-    assert(std::abs(dialog.GetUiX() - edge.GetNode().GetX()) < 2.0);
-  }
-  if (verbose) { TRACE("SetX and GetX must be symmetric"); }
-  {
-    const double new_x{dialog.GetUiX() + 10.0};
-    dialog.SetUiX(new_x);
-    assert(std::abs(dialog.GetUiX() - new_x) < 1.0);
-  }
-  if (verbose) { TRACE("SetY and GetY must be symmetric"); }
-  {
-    const double new_y{dialog.GetUiY() + 10.0};
-    dialog.SetUiY(new_y);
-    assert(std::abs(dialog.GetUiY() - new_y) < 1.0);
-  }
-  if (verbose) { TRACE("If X is set via Edge, QtNodeDialog must sync"); }
-  {
-    const double old_x{edge.GetNode().GetX()};
-    const double new_x{old_x + 10.0};
-    edge.GetNode().SetX(new_x);
-    assert(std::abs(new_x - dialog.GetUiX()) < 2.0);
-  }
-  if (verbose) { TRACE("SetUiHasHeadArrow and GetUiHasHeadArrow must be symmetric"); }
-  {
-    dialog.SetUiHasHeadArrow(true);
-    assert(dialog.GetUiHasHeadArrow());
-    dialog.SetUiHasHeadArrow(false);
-    assert(!dialog.GetUiHasHeadArrow());
-  }
-  if (verbose) { TRACE("SetUiHasTailArrow and GetUiHasTailArrow must be symmetric"); }
-  {
-    dialog.SetUiHasHeadArrow(true);
-    assert(dialog.GetUiHasHeadArrow());
-    dialog.SetUiHasHeadArrow(false);
-    assert(!dialog.GetUiHasHeadArrow());
-  }
-}
-#endif
 
 void ribi::cmap::QtEdgeDialog::on_box_head_arrow_stateChanged(int)
 {

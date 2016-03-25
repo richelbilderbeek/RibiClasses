@@ -47,6 +47,10 @@ ribi::cmap::QtConceptDialog::QtConceptDialog(QWidget *parent) :
   m_qtexamplesdialog{new QtExamplesDialog(this)}
 {
   ui->setupUi(this);
+  #ifndef NDEBUG
+  Test();
+  #endif
+
   {
     assert(layout());
     layout()->addWidget(m_qtexamplesdialog);
@@ -250,6 +254,21 @@ void ribi::cmap::QtConceptDialog::SetUiName(const std::string& name) noexcept
   ui->edit_name->setText(name.c_str());
   assert(GetUiName() == name);
 }
+
+
+#ifndef NDEBUG
+void ribi::cmap::QtConceptDialog::Test() noexcept
+{
+  {
+    static bool is_tested{false};
+    if (is_tested) return;
+    is_tested = true;
+  }
+  QtExamplesDialog();
+  const TestTimer test_timer(__func__,__FILE__,1.0);
+  QtConceptDialog d;
+}
+#endif
 
 /*
 void ribi::cmap::QtConceptDialog::on_box_competency_currentIndexChanged(int index)

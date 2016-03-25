@@ -65,9 +65,6 @@ ribi::cmap::QtRateConceptDialog::QtRateConceptDialog(
     m_widget(new QtConceptMap)
 {
   ui->setupUi(this);
-  #ifndef NDEBUG
-  Test();
-  #endif
   m_widget->SetConceptMap(conceptmap);
   assert(boost::num_vertices(m_conceptmap));
 
@@ -177,88 +174,6 @@ void ribi::cmap::QtRateConceptDialog::OnRatingSpecificityChanged(const ribi::cma
     ui->box_specificity->setCurrentIndex(concept.GetRatingSpecificity());
   }
 }
-
-#ifndef NDEBUG
-void ribi::cmap::QtRateConceptDialog::Test() noexcept
-{
-  {
-    static bool is_tested = false;
-    if (is_tested) return;
-    is_tested = true;
-  }
-  const TestTimer test_timer{__func__,__FILE__,0.1};
-  #ifdef RJCB_TODO //TODO RJCB: Put back in
-  {
-    const std::vector<ConceptMap> conceptmaps
-      = ConceptMapFactory().GetAllTests();
-    const std::size_t n_conceptmaps = conceptmaps.size();
-    for (std::size_t i=0; i!=n_conceptmaps; ++i)
-    {
-      const ConceptMap conceptmap = conceptmaps[i];
-      if (!conceptmap)
-      {
-        QtRateConceptDialog d(conceptmap);
-        continue;
-      }
-      
-      const Concept concept = conceptmap->GetFocalNode()->GetConcept();
-      assert(concept);
-      const Concept old_concept = ConceptFactory().DeepCopy(concept);
-      assert(old_concept);
-      assert(concept != old_concept);
-      assert(*concept == *old_concept);
-      {
-        QtRateConceptDialog d(conceptmap);
-        assert(concept.GetRatingComplexity() == d.ui->box_complexity->currentIndex());
-        assert(concept.GetRatingConcreteness() == d.ui->box_concreteness->currentIndex());
-        assert(concept.GetRatingSpecificity() == d.ui->box_specificity->currentIndex());
-        //Change all boxes
-        d.ui->box_complexity->setCurrentIndex(((d.ui->box_complexity->currentIndex() + 2) % 4) - 1);
-        d.ui->box_concreteness->setCurrentIndex(((d.ui->box_complexity->currentIndex() + 2) % 4) - 1);
-        d.ui->box_specificity->setCurrentIndex(((d.ui->box_complexity->currentIndex() + 2) % 4) - 1);
-        //But do not click OK
-        d.close();
-        //Need to call the destructor
-      }
-      assert(*concept == *old_concept && "Without clicking OK, QtRateStrategyDialog must not change the concept");
-    }
-  }
-  {
-    const std::vector<ConceptMap> conceptmaps
-      = ConceptMapFactory().GetAllTests();
-    const std::size_t n_conceptmaps = conceptmaps.size();
-    for (std::size_t i=0; i!=n_conceptmaps; ++i)
-    {
-      const ConceptMap conceptmap = conceptmaps[i];
-      if (!conceptmap)
-      {
-        QtRateConceptDialog d(conceptmap);
-        continue;
-      }
-      
-      const Concept concept = conceptmap->GetFocalNode()->GetConcept();
-      assert(concept);
-      const boost::shared_ptr<const Concept> old_concept = ConceptFactory().DeepCopy(concept);
-
-      assert(old_concept);
-      assert(concept != old_concept);
-      assert(*concept == *old_concept);
-      QtRateConceptDialog d(conceptmap);
-      assert(concept.GetRatingComplexity()   == d.ui->box_complexity->currentIndex());
-      assert(concept.GetRatingConcreteness() == d.ui->box_concreteness->currentIndex());
-      assert(concept.GetRatingSpecificity()  == d.ui->box_specificity->currentIndex());
-      //Change all boxes, in range [-1,2]
-      d.ui->box_complexity->setCurrentIndex(((d.ui->box_complexity->currentIndex() + 2) % 4) - 1);
-      d.ui->box_concreteness->setCurrentIndex(((d.ui->box_complexity->currentIndex() + 2) % 4) - 1);
-      d.ui->box_specificity->setCurrentIndex(((d.ui->box_complexity->currentIndex() + 2) % 4) - 1);
-      d.ui->button_ok->click();
-      assert(*concept != *old_concept && "QtRateStrategyDialog must change the concept when clicked OK");
-    }
-  }
-  #endif
-
-}
-#endif
 
 void ribi::cmap::QtRateConceptDialog::on_button_tally_relevancies_clicked()
 {

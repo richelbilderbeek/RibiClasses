@@ -72,10 +72,6 @@ private:
   void OnItemUpdated( /*const QGraphicsItem * const item*/ );
 
   void SetExamples(const Examples& examples);
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 };
 
 } //~namespace cmap

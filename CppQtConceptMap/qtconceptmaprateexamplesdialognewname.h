@@ -74,10 +74,6 @@ private:
 
   ///Obtain the rated examples
   Examples GetRatedExamples() const;
-
-  ///Test this class
-  static void Test() noexcept;
-
 };
 
 } //~namespace cmap

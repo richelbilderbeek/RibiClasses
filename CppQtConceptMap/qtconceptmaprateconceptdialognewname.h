@@ -89,10 +89,6 @@ private:
   void OnRatingComplexityChanged(const Concept& concept);
   void OnRatingConcretenessChanged(const Concept& concept);
   void OnRatingSpecificityChanged(const Concept& concept);
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 };
 
 } //~namespace cmap

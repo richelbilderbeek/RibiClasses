@@ -10,9 +10,7 @@
 
 ribi::cmap::QtNodeFactory::QtNodeFactory()
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
+
 }
 
 boost::shared_ptr<ribi::cmap::QtNode> ribi::cmap::QtNodeFactory::Create(
@@ -52,28 +50,3 @@ std::vector<boost::shared_ptr<ribi::cmap::QtNode>> ribi::cmap::QtNodeFactory::Ge
   );
   return qtnodes;
 }
-
-#ifndef NDEBUG
-void ribi::cmap::QtNodeFactory::Test() noexcept
-{
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  QtNodeFactory().GetTest(0);
-
-  const TestTimer test_timer(__func__,__FILE__,1.0);
-  const bool verbose{false};
-  const QtNodeFactory f;
-  if (verbose) { TRACE("Create all QtNodes") }
-  {
-    const int n = f.GetNumberOfTests();
-    for (int i=0; i!=n; ++i)
-    {
-      const auto qtnode = f.GetTest(i);
-      assert(qtnode);
-    }
-  }
-}
-#endif

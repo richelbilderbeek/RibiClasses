@@ -67,10 +67,6 @@ private:
   //void OnDisplayStrategyChanged(QtNode * const qtnode) noexcept;
   void OnNodeChanged(QtNode * const qtnode) noexcept;
   void OnQtRoundedRectItemChanged(QtNode * const qtnode) noexcept;
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 };
 
 } //~namespace cmap

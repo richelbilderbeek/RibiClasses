@@ -13,9 +13,6 @@
 
 ribi::cmap::QtEdgeFactory::QtEdgeFactory()
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
 }
 
 boost::shared_ptr<ribi::cmap::QtEdge> ribi::cmap::QtEdgeFactory::Create(
@@ -73,18 +70,3 @@ std::vector<boost::shared_ptr<ribi::cmap::QtEdge>> ribi::cmap::QtEdgeFactory::Ge
   assert(GetNumberOfTests() == static_cast<int>(qtedges.size()));
   return qtedges;
 }
-
-#ifndef NDEBUG
-void ribi::cmap::QtEdgeFactory::Test() noexcept
-{
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  QtNodeFactory();
-  QtNodeFactory().GetTest(0);
-  QtEdgeFactory().GetTest(0,QtNodeFactory().GetTest(0),QtNodeFactory().GetTest(0));
-  const TestTimer test_timer(__func__,__FILE__,1.0);
-}
-#endif

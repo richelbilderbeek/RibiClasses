@@ -56,9 +56,6 @@ ribi::cmap::QtExamplesItem::QtExamplesItem(
     m_qtedge{nullptr},
     m_qtnode{nullptr}
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
   this->setPen(QPen(QColor(255,0,0)));
   this->setBrush(QtBrushFactory::CreateWhiteGradientBrush());
   this->setFlags(0);
@@ -141,19 +138,3 @@ void ribi::cmap::QtExamplesItem::SetExamples(const Examples& examples)
   }
   this->SetText(v);
 }
-
-#ifndef NDEBUG
-void ribi::cmap::QtExamplesItem::Test() noexcept
-{
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  QtRoundedEditRectItem();
-
-  const TestTimer test_timer(__func__,__FILE__,1.0);
-}
-#endif
-
-

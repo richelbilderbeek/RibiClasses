@@ -150,10 +150,6 @@ private:
   void OnRequestSceneUpdate();
 
   void setSelected(bool selected) = delete;
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 };
 
 std::ostream& operator<<(std::ostream& os, const QtEdge& qtedge) noexcept;

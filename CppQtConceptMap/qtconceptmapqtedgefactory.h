@@ -43,11 +43,6 @@ struct QtEdgeFactory
     const boost::shared_ptr<QtNode>& from,
     const boost::shared_ptr<QtNode>& to
   ) const noexcept;
-
-  private:
-  #ifndef NDEBUG
-  void Test() noexcept;
-  #endif
 };
 
 } //~namespace cmap

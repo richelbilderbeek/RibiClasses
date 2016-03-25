@@ -71,10 +71,6 @@ ribi::QtQuadBezierArrowItem::QtQuadBezierArrowItem(
     m_to{to},
     m_verbose{false}
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
-
   assert(from);
   assert(to);
   assert((mid || !mid) && "No mid results in a straight arrow");

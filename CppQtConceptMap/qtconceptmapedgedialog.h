@@ -94,10 +94,6 @@ private:
 //  void OnNodeChanged(Edge * const edge);
 //  void OnTailArrowChanged(Edge * const edge);
 //  void OnToChanged(Edge * const edge);
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 };
 
 } //~namespace cmap

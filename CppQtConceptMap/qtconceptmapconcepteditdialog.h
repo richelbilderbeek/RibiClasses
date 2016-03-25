@@ -76,10 +76,6 @@ private:
 
   ///The original concept, used if user presses cancel
   const Concept m_concept_original;
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif //NDEBUG
 };
 
 } //~namespace cmap

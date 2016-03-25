@@ -185,10 +185,6 @@ private:
 
   ///Called whenever a base class item is changed
   void OnBaseChanged(QtRoundedRectItem * const) noexcept;
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 };
 
 //std::ostream& operator<<(std::ostream& os, const QtRoundedEditRectItem&) noexcept;

@@ -48,7 +48,10 @@ struct QtArrowItem : public QGraphicsLineItem
     const double x2,
     const double y2,
     const bool head,
-    QGraphicsItem* parent = 0);
+    QGraphicsItem* parent = 0
+  ) noexcept;
+
+  virtual ~QtArrowItem() noexcept {}
 
   ///Obtain the version of this class
   static std::string GetVersion() noexcept;
@@ -91,7 +94,6 @@ struct QtArrowItem : public QGraphicsLineItem
   boost::signals2::signal<void (This*)> m_signal_item_requests_scene_update;
 
 protected:
-  virtual ~QtArrowItem() noexcept {}
 
   QRectF boundingRect() const;
   virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
@@ -120,10 +122,6 @@ private:
 
   ///Show arrow at tail
   bool m_tail;
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 };
 
 } //~namespace ribi

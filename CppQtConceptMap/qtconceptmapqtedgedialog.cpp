@@ -58,9 +58,6 @@ ribi::cmap::QtQtEdgeDialog::QtQtEdgeDialog(
   m_qtedgedialog{new QtEdgeDialog(qtedge->GetEdge())},
   m_qtroundededitrectitem_dialog{new QtRoundedEditRectItemDialog}
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
   ui->setupUi(this);
 
   {
@@ -236,53 +233,3 @@ void ribi::cmap::QtQtEdgeDialog::SetUiY(const double y) const noexcept
   this->m_qtedgedialog->SetUiY(y);
 }
 
-#ifndef NDEBUG
-void ribi::cmap::QtQtEdgeDialog::Test() noexcept
-{
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  {
-    NodeFactory();
-    QtNodeFactory();
-    QtRoundedEditRectItemDialog();
-    QtRoundedEditRectItem();
-    const auto from = NodeFactory().GetTest(1);
-    const auto to = NodeFactory().GetTest(1);
-    const auto qtfrom = QtNodeFactory().Create(from);
-    const auto qtto = QtNodeFactory().Create(to);
-    const Edge edge = EdgeFactory().GetTest(1);
-    QtEdgeDialog qtedgedial(edge);
-    //QtEdge(edge,qtfrom.get(),qtto.get());
-    QtEdge qtedge(edge,qtfrom.get(),qtto.get());
-  }
-
-  const TestTimer test_timer(__func__,__FILE__,1.0);
-  const bool verbose{false};
-
-  const auto from = NodeFactory().GetTest(1);
-  const auto to = NodeFactory().GetTest(1);
-  const auto edge = EdgeFactory().GetTest(1);
-  const auto qtfrom = QtNodeFactory().Create(from);
-  const auto qtto = QtNodeFactory().Create(to);
-  const boost::shared_ptr<QtEdge> qtedge(new QtEdge(edge,qtfrom.get(),qtto.get()));
-  QtQtEdgeDialog dialog(qtedge);
-
-  if (verbose) { TRACE("SetX and GetX must be symmetric"); }
-  {
-    const double new_x{dialog.GetUiX() + 10.0};
-    dialog.SetUiX(new_x);
-    assert(std::abs(dialog.GetUiX() - new_x) < 2.0);
-  }
-  if (verbose) { TRACE("SetY and GetY must be symmetric"); }
-  {
-    const double new_y{dialog.GetUiY() + 10.0};
-    dialog.SetUiY(new_y);
-    assert(std::abs(dialog.GetUiY() - new_y) < 2.0);
-  }
-  dialog.SetQtEdge(nullptr);
-  //dialog = QtQtEdgeDialog();
-}
-#endif

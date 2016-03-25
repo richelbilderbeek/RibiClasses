@@ -91,10 +91,6 @@ private:
   static std::string
     GetFocusName(const ConceptMap& sub_conceptmap) noexcept;
 
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
-
 };
 
 } //~namespace cmap

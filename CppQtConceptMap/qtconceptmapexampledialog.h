@@ -70,10 +70,6 @@ private:
   void OnIsConcreteChanged(const Example& example);
   void OnIsSpecificChanged(const Example& example);
   void OnTextChanged(const Example& example);
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 };
 
 } //~namespace cmap

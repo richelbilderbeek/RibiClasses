@@ -75,10 +75,6 @@ private:
   boost::shared_ptr<QtRoundedEditRectItemDialog> m_qtroundededitrectitem_dialog;
 
   void OnQtRoundedRectItemChanged(QtEdge * const qtedge) noexcept;
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 };
 
 } //~namespace cmap

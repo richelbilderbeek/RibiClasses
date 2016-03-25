@@ -47,7 +47,8 @@ ribi::QtArrowItem::QtArrowItem(
   const double x2,
   const double y2,
   const bool head,
-  QGraphicsItem* parent)
+  QGraphicsItem* parent
+) noexcept
   : QGraphicsLineItem(x1,y1,x2,y2,parent),
     m_signal_item_requests_scene_update{},
     m_arrow_head_clicking_distance(20.0),

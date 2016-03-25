@@ -57,10 +57,6 @@ ribi::cmap::QtNode::QtNode(const Node& node)
     m_node{node},
     m_show_bounding_rect{false}
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
-
   //Allow mouse tracking
   this->setAcceptHoverEvents(true);
 
@@ -254,63 +250,6 @@ void ribi::cmap::QtNode::SetNode(const Node& node) noexcept
   this->SetCenterPos(m_node.GetX(), m_node.GetY());
   this->SetText( { node.GetConcept().GetName() } );
 }
-
-#ifndef NDEBUG
-void ribi::cmap::QtNode::Test() noexcept
-{
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  {
-    Container();
-    QtRoundedEditRectItem();
-    QtNodeFactory().GetTest(1);
-  }
-
-  const TestTimer test_timer(__func__,__FILE__,1.0);
-  const bool verbose{false};
-  const double max_error = 2.0;
-
-  if (verbose) { TRACE("QtNode can be converted to QtRoundedEditRectItem") }
-  {
-    const auto qtnode = QtNodeFactory().GetTest(1);
-    const boost::shared_ptr<QtRoundedEditRectItem> edit_rect{boost::dynamic_pointer_cast<QtRoundedEditRectItem>(qtnode)};
-    assert(edit_rect);
-    assert(qtnode == edit_rect);
-  }
-
-  if (verbose) { TRACE("Test X coordinat in Node and QtRoundedEditRectItem being equal at creation") }
-  {
-    const auto qtnode = QtNodeFactory().GetTest(1);
-    const boost::shared_ptr<QtRoundedEditRectItem> edit_rect{boost::dynamic_pointer_cast<QtRoundedEditRectItem>(qtnode)};
-    const auto node = qtnode->GetNode();
-    const double node_x = node.GetX();
-    const double edit_rect_x = edit_rect->GetCenterX();
-    assert(std::abs(node_x - edit_rect_x) < max_error);
-  }
-  if (verbose) { TRACE("Test Y coordinat in Node and QtRoundedEditRectItem being equal at creation") }
-  {
-    const auto qtnode = QtNodeFactory().GetTest(1);
-    const boost::shared_ptr<QtRoundedEditRectItem> edit_rect{boost::dynamic_pointer_cast<QtRoundedEditRectItem>(qtnode)};
-    const auto node = qtnode->GetNode();
-    const double node_y = node.GetY();
-    const double edit_rect_y = edit_rect->GetCenterY();
-    assert(std::abs(node_y - edit_rect_y) < max_error);
-  }
-  if (verbose) {TRACE("When changing the concept's name via QtNode, the Node must be changed as well");}
-  {
-    const auto qtnode = QtNodeFactory().GetTest(1);
-    const boost::shared_ptr<QtRoundedEditRectItem> qtrectitem{boost::dynamic_pointer_cast<QtRoundedEditRectItem>(qtnode)};
-    const std::string old_name = qtrectitem->GetText()[0];
-    const std::string new_name{old_name + " (modified)"};
-    qtrectitem->SetText( { new_name } );
-    const std::string new_name_again{qtnode->GetNode().GetConcept().GetName()};
-    assert(new_name_again == new_name);
-  }
-}
-#endif
 
 std::string ribi::cmap::QtNode::ToStr() const noexcept
 {

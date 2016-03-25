@@ -39,9 +39,7 @@ ribi::QtKeyboardFriendlyGraphicsView::QtKeyboardFriendlyGraphicsView(QWidget* pa
     m_signal_update{},
     m_verbose{false}
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
+
 }
 
 QGraphicsItem* ribi::QtKeyboardFriendlyGraphicsView::GetClosest(

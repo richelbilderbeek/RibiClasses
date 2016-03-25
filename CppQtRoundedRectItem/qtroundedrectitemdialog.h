@@ -103,10 +103,6 @@ private:
   void OnRadiusYchanged(QtRoundedRectItem * const qtitem) noexcept;
   void OnWidthChanged(QtRoundedRectItem * const qtitem) noexcept;
   void OnHeightChanged(QtRoundedRectItem * const qtitem) noexcept;
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 };
 
 } //~namespace ribi

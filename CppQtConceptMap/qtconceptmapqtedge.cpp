@@ -60,10 +60,6 @@ ribi::cmap::QtEdge::QtEdge(
     m_show_bounding_rect{false},
     m_to{to}
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
-
   //Allow mouse tracking
   //OTOH: must be done by the other thing
   //this->setAcceptHoverEvents(true);

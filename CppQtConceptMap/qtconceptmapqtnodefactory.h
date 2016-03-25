@@ -28,11 +28,6 @@ struct QtNodeFactory
   int GetNumberOfTests() const noexcept;
   std::vector<boost::shared_ptr<QtNode>> GetTests() const noexcept;
   boost::shared_ptr<QtNode> GetTest(const int test) const noexcept;
-
-  private:
-  #ifndef NDEBUG
-  void Test() noexcept;
-  #endif
 };
 
 } //~namespace cmap

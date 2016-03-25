@@ -40,9 +40,6 @@ std::map<ribi::cmap::Competency,QIcon > ribi::cmap::QtCompetency::m_icon_map;
 
 ribi::cmap::QtCompetency::QtCompetency()
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
 }
 
 ribi::cmap::Competency ribi::cmap::QtCompetency::ColorToCompetency(const QColor& color) const
@@ -120,9 +117,6 @@ const std::map<ribi::cmap::Competency,QIcon> ribi::cmap::QtCompetency::CreateIco
 
 ribi::cmap::Competency ribi::cmap::QtCompetency::IconToCompetency(const QIcon& icon) const
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
   if (m_icon_map.empty()) m_icon_map = CreateIconMap();
   assert(!m_icon_map.empty());
   const auto iter = std::find_if(m_icon_map.begin(),m_icon_map.end(),
@@ -138,38 +132,3 @@ ribi::cmap::Competency ribi::cmap::QtCompetency::IconToCompetency(const QIcon& i
   assert(iter!=m_icon_map.end());
   return iter->first;
 }
-
-#ifndef NDEBUG
-void ribi::cmap::QtCompetency::Test() noexcept
-{
-  {
-    static bool is_tested = false;
-    if (is_tested) return;
-    is_tested = true;
-  }
-  const TestTimer test_timer{__func__,__FILE__,0.1};
-  //Conversion between QColor and cmap::Competency
-  {
-    const std::vector<cmap::Competency> v = Competencies().GetAllCompetencies();
-    std::for_each(v.begin(),v.end(),
-      [](const cmap::Competency& competency)
-      {
-        QColor color = ribi::cmap::QtCompetency().CompetencyToColor(competency);
-        assert(ribi::cmap::QtCompetency().ColorToCompetency(color) == competency);
-      }
-    );
-  }
-  //Conversion between QIcon and cmap::Competency
-  {
-    const std::vector<cmap::Competency> v = Competencies().GetAllCompetencies();
-    std::for_each(v.begin(),v.end(),
-      [](const cmap::Competency& competency)
-      {
-        QIcon icon = ribi::cmap::QtCompetency().CompetencyToIcon(competency);
-        assert(ribi::cmap::QtCompetency().IconToCompetency(icon) == competency);
-      }
-    );
-  }
-
-}
-#endif

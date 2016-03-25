@@ -65,10 +65,6 @@ private:
   Arrow m_arrow;
 
   void OnItemUpdated(const QtQuadBezierArrowItem * const item) noexcept;
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 };
 
 } //~namespace ribi

@@ -102,12 +102,6 @@ private:
   void OnPaddingChanged(QtRoundedEditRectItem * const qtitem) noexcept;
   void OnTextChanged(QtRoundedEditRectItem * const qtitem) noexcept;
   void OnTextPenChanged(QtRoundedEditRectItem * const qtitem) noexcept;
-
-
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 };
 
 } //~namespace ribi

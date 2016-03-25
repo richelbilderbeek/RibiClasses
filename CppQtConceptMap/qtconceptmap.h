@@ -83,10 +83,6 @@ public:
 
   void SetConceptMap(const ConceptMap& conceptmap);
 
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
-
   void Undo() noexcept;
 
   ///Signal emitted when a concept map item requests to be edited

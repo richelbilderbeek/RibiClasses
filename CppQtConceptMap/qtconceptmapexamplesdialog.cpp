@@ -50,9 +50,6 @@ ribi::cmap::QtExamplesDialog::QtExamplesDialog(QWidget *parent)
     m_examples{}
 {
   ui->setupUi(this);
-  #ifndef NDEBUG
-  Test();
-  #endif
 }
 
 ribi::cmap::QtExamplesDialog::~QtExamplesDialog()
@@ -182,22 +179,3 @@ void ribi::cmap::QtExamplesDialog::SetExamples(const Examples& examples)
   assert( m_examples ==  examples);
   this->setMinimumHeight(GetMinimumHeight(m_examples));
 }
-
-#ifndef NDEBUG
-void ribi::cmap::QtExamplesDialog::Test() noexcept
-{
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  QtExampleDialog();
-  const TestTimer test_timer(__func__,__FILE__,1.0);
-  QtExamplesDialog d;
-  for(const auto examples: ExamplesFactory().GetTests())
-  {
-    d.SetExamples(examples);
-    assert(d.GetExamples() == examples);
-  }
-}
-#endif

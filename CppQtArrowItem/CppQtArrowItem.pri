@@ -2,11 +2,11 @@ INCLUDEPATH += \
     ../RibiClasses/CppQtArrowItem
 
 SOURCES += \
-    ../RibiClasses/CppQtArrowItem/qtarrowitem.cpp
+    $$PWD/qtarrowitem.cpp
 
 HEADERS  += \
-    ../RibiClasses/CppQtArrowItem/qtarrowitem.h
+    $$PWD/qtarrowitem.h
 
 OTHER_FILES += \
-    ../RibiClasses/CppQtArrowItem/Licence.txt
+    $$PWD/Licence.txt
 

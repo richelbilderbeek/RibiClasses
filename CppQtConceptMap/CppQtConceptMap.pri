@@ -23,7 +23,6 @@ SOURCES += \
     ../RibiClasses/CppQtConceptMap/qtconceptmapqtedge.cpp \
     ../RibiClasses/CppQtConceptMap/qtconceptmapqtedgedialog.cpp \
     ../RibiClasses/CppQtConceptMap/qtconceptmapqtedgefactory.cpp \
-    ../RibiClasses/CppQtConceptMap/qtconceptmapqtedge_test.cpp \
     ../RibiClasses/CppQtConceptMap/qtconceptmapqtnode.cpp \
     ../RibiClasses/CppQtConceptMap/qtconceptmapqtnodedialog.cpp \
     ../RibiClasses/CppQtConceptMap/qtconceptmapqtnodefactory.cpp \
@@ -32,10 +31,6 @@ SOURCES += \
     ../RibiClasses/CppQtConceptMap/qtconceptmapratedconceptdialog.cpp \
     ../RibiClasses/CppQtConceptMap/qtconceptmaprateexamplesdialognewname.cpp \
     ../RibiClasses/CppQtConceptMap/qtconceptmaptoolsitem.cpp \
-#    ../RibiClasses/CppQtConceptMap/qtdisplayconceptmap.cpp \
-#    ../RibiClasses/CppQtConceptMap/qtrateconceptmap.cpp \
-#    ../RibiClasses/CppQtConceptMap/test_qtrateconceptmap.cpp \
-    ../RibiClasses/CppQtConceptMap/test_qtconceptmap.cpp \
     ../RibiClasses/CppQtConceptMap/qtconceptmapcommand.cpp \
     ../RibiClasses/CppQtConceptMap/qtconceptmapcommandaddselectedrandom.cpp \
     ../RibiClasses/CppQtConceptMap/qtconceptmapcommandcreatenewedge.cpp \
@@ -48,7 +43,6 @@ SOURCES += \
 
 HEADERS += \
     ../RibiClasses/CppQtConceptMap/qtconceptmapbrushfactory.h \
-#    ../RibiClasses/CppQtConceptMap/qtconceptmapcenternode.h \
     ../RibiClasses/CppQtConceptMap/qtconceptmapcollect.h \
     ../RibiClasses/CppQtConceptMap/qtconceptmapcompetency.h \
     ../RibiClasses/CppQtConceptMap/qtconceptmapconceptdialog.h \
@@ -74,9 +68,6 @@ HEADERS += \
     ../RibiClasses/CppQtConceptMap/qtconceptmapratedconceptdialog.h \
     ../RibiClasses/CppQtConceptMap/qtconceptmaprateexamplesdialognewname.h \
     ../RibiClasses/CppQtConceptMap/qtconceptmaprating.h \
-#    ../RibiClasses/CppQtConceptMap/qtdisplayconceptmap.h \
-#   ../RibiClasses/CppQtConceptMap/qtitemdisplaystrategy.h \
-#    ../RibiClasses/CppQtConceptMap/qtrateconceptmap.h \
     ../RibiClasses/CppQtConceptMap/qtconceptmaptoolsitem.h \
     ../RibiClasses/CppQtConceptMap/qtconceptmapcommand.h \
     ../RibiClasses/CppQtConceptMap/qtconceptmapcommandaddselectedrandom.h \

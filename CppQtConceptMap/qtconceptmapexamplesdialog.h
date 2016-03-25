@@ -65,11 +65,6 @@ private:
   Examples m_examples;
 
   void OnExamplesChanged(Examples& examples) noexcept;
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
-
 };
 
 } //~namespace ribi
