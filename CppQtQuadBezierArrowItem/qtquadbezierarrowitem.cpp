@@ -43,7 +43,6 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 
 #include "geometry.h"
 #include "grabber.h"
-#include "testtimer.h"
 #include "trace.h"
 #include "qtroundededitrectitem.h"
 #include "qtroundedrectitem.h"
@@ -549,92 +548,6 @@ QPainterPath ribi::QtQuadBezierArrowItem::shape() const noexcept
   stroker.setWidth(m_click_easy_width);
   return stroker.createStroke(curve);
 }
-
-#ifndef NDEBUG
-void ribi::QtQuadBezierArrowItem::Test() noexcept
-{
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  {
-    Geometry();
-    QtRoundedEditRectItem();
-  }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
-
-  //Render one QtQuadBezierArrowItem
-  {
-    QGraphicsScene * const my_scene{new QGraphicsScene};
-    std::vector<QGraphicsRectItem *> rects;
-    //From
-    {
-      const double x1{50.0};
-      const double y1{0.0};
-      QtRoundedEditRectItem * const rect = new QtRoundedEditRectItem;
-      rect->SetCenterPos(x1,y1);
-      my_scene->addItem(rect);
-      rects.push_back(rect);
-    }
-    //Center
-    {
-      const double x1{0.0};
-      const double y1{0.0};
-      QtRoundedEditRectItem * const rect = new QtRoundedEditRectItem;
-      rect->SetCenterPos(x1,y1);
-      my_scene->addItem(rect);
-      rects.push_back(rect);
-    }
-    //To
-    {
-      const double x1{ 0.0};
-      const double y1{50.0};
-      QtRoundedEditRectItem * const rect = new QtRoundedEditRectItem;
-      rect->SetCenterPos(x1,y1);
-      my_scene->addItem(rect);
-      rects.push_back(rect);
-    }
-    //Arrow
-    QtQuadBezierArrowItem * arrow{new QtQuadBezierArrowItem(
-        rects[0],
-        false,
-        rects[1],
-        true,
-        rects[2]
-      )
-    };
-    my_scene->addItem(arrow);
-    //Scales
-    {
-      QGraphicsLineItem * const xaxis{new QGraphicsLineItem(-100.0,0.0,100.0,0.0)};
-      QGraphicsLineItem * const yaxis{new QGraphicsLineItem(0.0,-100.0,0.0,100.0)};
-      my_scene->addItem(xaxis);
-      my_scene->addItem(yaxis);
-    }
-
-    QGraphicsView * const view{new QGraphicsView};
-    view->setScene(my_scene);
-    ribi::Grabber grabber(view->winId(),"QtQuadBezierArrowItemTest1.png");
-    view->show();
-    view->setGeometry(0,0,300,300);
-    arrow->SetVerbosity(false);
-    //Increase max value of i if screenshot does not show the QGraphicsView
-    for (int i=0; i!=10; ++i) { qApp->processEvents(); }
-    view->show();
-    grabber.Grab();
-
-    //Same general tests
-    assert(arrow->GetCenter().x() == 25.0);
-    assert(arrow->GetCenter().y() == 25.0);
-    assert(arrow->zValue() < rects[0]->zValue());
-    assert(arrow->zValue() < rects[1]->zValue());
-    assert(arrow->zValue() < arrow->GetMidItem()->zValue());
-    delete my_scene;
-    delete view;
-  }
-}
-#endif
 
 std::ostream& ribi::operator<<(std::ostream& os, const QtQuadBezierArrowItem& arrow) noexcept
 {

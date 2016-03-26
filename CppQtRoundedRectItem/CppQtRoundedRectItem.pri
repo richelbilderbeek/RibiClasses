@@ -3,8 +3,7 @@ INCLUDEPATH += \
 
 SOURCES += \
     ../RibiClasses/CppQtRoundedRectItem/qtroundedrectitem.cpp \
-    ../RibiClasses/CppQtRoundedRectItem/qtroundedrectitemdialog.cpp \
-    ../RibiClasses/CppQtRoundedRectItem/qtroundedrectitem_test.cpp
+    ../RibiClasses/CppQtRoundedRectItem/qtroundedrectitemdialog.cpp
 
 HEADERS  += \
     ../RibiClasses/CppQtRoundedRectItem/qtroundedrectitem.h \

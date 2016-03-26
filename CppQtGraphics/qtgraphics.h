@@ -57,10 +57,6 @@ private:
   ///Pixel-by-pixel
   void DrawImageSlowest(QImage& target, const QImage& source,  const int left, const int top) const noexcept;
 
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 };
 
 } //~namespace ribi

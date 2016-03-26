@@ -1,0 +1,3 @@
+SOURCES += \
+    $$PWD/qtroundedrectitem_test.cpp \
+    $$PWD/qtroundedrectitemdialog_test.cpp

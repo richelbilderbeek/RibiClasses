@@ -33,10 +33,19 @@ include(../RibiClasses/CppQtConceptMap/CppQtConceptMapTest.pri)
 include(../RibiClasses/CppQtDisplayPosItem/CppQtDisplayPosItem.pri)
 include(../RibiClasses/CppQtHideAndShowDialog/CppQtHideAndShowDialog.pri)
 include(../RibiClasses/CppQtKeyboardFriendlyGraphicsView/CppQtKeyboardFriendlyGraphicsView.pri)
+
 include(../RibiClasses/CppQtQuadBezierArrowItem/CppQtQuadBezierArrowItem.pri)
+include(../RibiClasses/CppQtQuadBezierArrowItem/CppQtQuadBezierArrowItemTest.pri)
+
 include(../RibiClasses/CppQtImage/CppQtImage.pri)
+include(../RibiClasses/CppQtImage/CppQtImageTest.pri)
+
 include(../RibiClasses/CppQtRoundedEditRectItem/CppQtRoundedEditRectItem.pri)
+include(../RibiClasses/CppQtRoundedEditRectItem/CppQtRoundedEditRectItemTest.pri)
+
 include(../RibiClasses/CppQtRoundedRectItem/CppQtRoundedRectItem.pri)
+include(../RibiClasses/CppQtRoundedRectItem/CppQtRoundedRectItemTest.pri)
+
 include(../RibiClasses/CppQtScopedDisable/CppQtScopedDisable.pri)
 
 

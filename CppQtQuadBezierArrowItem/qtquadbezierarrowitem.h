@@ -56,6 +56,26 @@ struct QtQuadBezierArrowItem : public QGraphicsItem
   ///collision detection
   QRectF boundingRect() const override final;
 
+  ///Obtain point 'center'
+  /*
+
+  F
+   \
+    \
+  C  M  B
+    /
+   /
+  T
+
+  F = From
+  T = To
+  M = Mid
+  C = Center
+  B = Beyond
+
+  */
+  QPointF GetCenter() const noexcept;
+
   ///Get the QPen used to indicate that the arrow has focus
   const QPen& GetFocusPen() const noexcept { return m_focus_pen; }
 
@@ -190,26 +210,6 @@ struct QtQuadBezierArrowItem : public QGraphicsItem
 
   ///Obtain point 'beyond'
   QPointF GetBeyond() const noexcept;
-
-  ///Obtain point 'center'
-  /*
-
-  F
-   \
-    \
-  C  M  B
-    /
-   /
-  T
-
-  F = From
-  T = To
-  M = Mid
-  C = Center
-  B = Beyond
-
-  */
-  QPointF GetCenter() const noexcept;
 
   QPointF pos() const = delete;
   void setPos(const QPointF&) = delete;

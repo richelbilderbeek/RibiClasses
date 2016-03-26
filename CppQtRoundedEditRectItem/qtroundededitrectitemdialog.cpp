@@ -46,9 +46,6 @@ ribi::QtRoundedEditRectItemDialog::QtRoundedEditRectItemDialog(QWidget *parent)
     m_dialog{boost::make_shared<QtRoundedRectItemDialog>()},
     m_item{}
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
   ui->setupUi(this);
 
   assert(this->layout());
@@ -323,28 +320,6 @@ void ribi::QtRoundedEditRectItemDialog::SetUiY(const double y) noexcept
 {
   this->m_dialog->SetUiY(y);
 }
-
-
-#ifndef NDEBUG
-void ribi::QtRoundedEditRectItemDialog::Test() noexcept
-{
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  QtRoundedEditRectItem();
-  const TestTimer test_timer(__func__,__FILE__,1.0);
-
-  /*
-  assert(ui->box_padding_top->value() == m_item->GetPadding().top);
-  assert(ui->box_padding_right->value() == m_item->GetPadding().right);
-  assert(ui->box_padding_bottom->value() == m_item->GetPadding().bottom);
-  assert(ui->box_padding_left->value() == m_item->GetPadding().left);
-  assert(m_item->GetText() == Container().SeperateString(ui->text->toPlainText().toStdString(),'\n'));
-  */
-}
-#endif
 
 void ribi::QtRoundedEditRectItemDialog::on_box_padding_left_valueChanged(double arg1)
 {

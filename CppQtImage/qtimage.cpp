@@ -16,9 +16,7 @@
 
 ribi::QtImage::QtImage() noexcept
 {
-  #ifndef NDEBUG
-  Test();
-  #endif // NDEBUG
+
 }
 
 QImage ribi::QtImage::Difference(const QImage& base, const QImage& to_xor) noexcept
@@ -77,39 +75,6 @@ QImage ribi::QtImage::Paint(const QGraphicsItem& item) noexcept
     return image;
   }
 }
-
-
-#ifndef NDEBUG
-void ribi::QtImage::Test() noexcept
-{
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
-  const bool verbose{false};
-  if (verbose) { TRACE("Default-construction of QtImage"); }
-  {
-    const QtImage q;
-  }
-  if (verbose) { TRACE("QImage pixel manipultion"); }
-  {
-    QImage q(1,1,QImage::Format_RGB32);
-    q.setPixel(0,0,qRgb(1,2,3));
-    assert(q.pixel(0,0) == qRgb(1,2,3));
-  }
-  if (verbose) { TRACE("QGraphicsItem rendering"); }
-  {
-    QGraphicsSimpleTextItem item;
-    item.setText(__func__);
-    QImage image{QtImage().Paint(item)};
-    assert(image.width() > 1);
-    assert(image.height() > 1);
-    image.save("tmp_ribi_QtImage_Test.png");
-  }
-}
-#endif
 
 QImage ribi::QtImage::Xor(const QImage& base, const QImage& to_xor) noexcept
 {
