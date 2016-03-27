@@ -40,9 +40,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ribi::CaesarCipher::CaesarCipher(const int key)
   : m_key(key)
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
+
 }
 
 std::string ribi::CaesarCipher::Clean(const std::string& s) noexcept
@@ -131,14 +129,15 @@ char ribi::CaesarCipher::Encrypt(const char c, const int d) const noexcept
 
 std::string ribi::CaesarCipher::GetVersion() noexcept
 {
-  return "1.1";
+  return "1.2";
 }
 
 std::vector<std::string> ribi::CaesarCipher::GetVersionHistory() noexcept
 {
   return {
     "2014-04-01: version 1.0: initial version",
-    "2014-04-07: version 1.1: use lowercase characters, added Clean and IsClean member functions"
+    "2014-04-07: version 1.1: use lowercase characters, added Clean and IsClean member functions",
+    "2016-03-27: version 1.2: use of Boost.Test",
   };
 }
 
@@ -147,46 +146,3 @@ bool ribi::CaesarCipher::IsClean(const std::string& s) noexcept
   for (const auto& c:s) { if (c < 'a' || c > 'z') return false; }
   return true;
 }
-
-#ifndef NDEBUG
-void ribi::CaesarCipher::Test() noexcept
-{
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
-  {
-    const CaesarCipher e(0);
-    const std::string s = "ABCDEFGH";
-    assert(!CaesarCipher::IsClean(s));
-    const std::string t = CaesarCipher::Clean(s);
-    assert(t == "abcdefgh");
-    assert(CaesarCipher::IsClean(t));
-    assert(t == e.Encrypt(t));
-    assert(t == e.Deencrypt(t));
-  }
-  {
-    const std::vector<std::string> v {
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ",
-      "A",
-      "AB",
-      "I am a dirty string"
-    };
-    for (const std::string& s: v)
-    {
-      for (const int key: {0,1,2,4,8,16,257,-13,-12345} )
-      {
-        const CaesarCipher e(key);
-        const std::string t = CaesarCipher::Clean(s);
-        assert(CaesarCipher::IsClean(t));
-        assert(e.Deencrypt(e.Encrypt(t)) == t);
-        //Test encryption with real, decryption with faker
-        const CaesarCipher faker(key + 1);
-        assert(faker.Deencrypt(e.Encrypt(t)) != t);
-      }
-    }
-  }
-}
-#endif

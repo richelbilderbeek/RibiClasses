@@ -61,6 +61,9 @@ public:
   ///Obtain the suggested specificity, calculated from this dialog
   int GetSuggestedSpecificity() const;
 
+  const Ui::QtRateConceptTallyDialog * GetUi() const noexcept { return ui; }
+        Ui::QtRateConceptTallyDialog * GetUi()       noexcept { return ui; }
+
 protected:
   void keyPressEvent(QKeyEvent *);
   void resizeEvent(QResizeEvent *);

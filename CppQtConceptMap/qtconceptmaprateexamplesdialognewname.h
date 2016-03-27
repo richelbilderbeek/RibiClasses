@@ -45,10 +45,14 @@ class QtRateExamplesDialogNewName : public ribi::QtHideAndShowDialog
 public:
   explicit QtRateExamplesDialogNewName(
     const Concept& concept,
-    QWidget* parent = 0);
+    QWidget* parent = 0
+  );
   QtRateExamplesDialogNewName(const QtRateExamplesDialogNewName&) = delete;
   QtRateExamplesDialogNewName& operator=(const QtRateExamplesDialogNewName&) = delete;
   ~QtRateExamplesDialogNewName() noexcept;
+
+  ///Obtain the rated examples
+  Examples GetRatedExamples() const;
 
 protected:
   void keyPressEvent(QKeyEvent *);
@@ -71,9 +75,6 @@ private:
   Concept m_concept;
 
   const Concept m_concept_at_start;
-
-  ///Obtain the rated examples
-  Examples GetRatedExamples() const;
 };
 
 } //~namespace cmap

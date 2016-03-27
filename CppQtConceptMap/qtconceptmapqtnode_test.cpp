@@ -55,7 +55,7 @@ BOOST_AUTO_TEST_CASE(ribi_cmap_qtconceptmapqtnode_test)
   const bool verbose{false};
   const double max_error = 2.0;
 
-  if (verbose) { TRACE("QtNode can be converted to QtRoundedEditRectItem") }
+  if (verbose) { TRACE("QtNode can be converted to QtRoundedEditRectItem"); }
   {
     const auto qtnode = QtNodeFactory().GetTest(1);
     const boost::shared_ptr<QtRoundedEditRectItem> edit_rect{boost::dynamic_pointer_cast<QtRoundedEditRectItem>(qtnode)};
@@ -63,7 +63,7 @@ BOOST_AUTO_TEST_CASE(ribi_cmap_qtconceptmapqtnode_test)
     BOOST_CHECK(qtnode == edit_rect);
   }
 
-  if (verbose) { TRACE("Test X coordinat in Node and QtRoundedEditRectItem being equal at creation") }
+  if (verbose) { TRACE("Test X coordinat in Node and QtRoundedEditRectItem being equal at creation"); }
   {
     const auto qtnode = QtNodeFactory().GetTest(1);
     const boost::shared_ptr<QtRoundedEditRectItem> edit_rect{boost::dynamic_pointer_cast<QtRoundedEditRectItem>(qtnode)};
@@ -72,7 +72,7 @@ BOOST_AUTO_TEST_CASE(ribi_cmap_qtconceptmapqtnode_test)
     const double edit_rect_x = edit_rect->GetCenterX();
     BOOST_CHECK(std::abs(node_x - edit_rect_x) < max_error);
   }
-  if (verbose) { TRACE("Test Y coordinat in Node and QtRoundedEditRectItem being equal at creation") }
+  if (verbose) { TRACE("Test Y coordinat in Node and QtRoundedEditRectItem being equal at creation"); }
   {
     const auto qtnode = QtNodeFactory().GetTest(1);
     const boost::shared_ptr<QtRoundedEditRectItem> edit_rect{boost::dynamic_pointer_cast<QtRoundedEditRectItem>(qtnode)};

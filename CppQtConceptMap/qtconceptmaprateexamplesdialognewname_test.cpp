@@ -17,8 +17,9 @@
 
 BOOST_AUTO_TEST_CASE(ribi_cmap_qtrateexamplesdialog_test)
 {
+  using namespace ribi::cmap;
   {
-    const int sz = ribi::cmap::ConceptFactory().GetTests().size();
+    const int sz = ConceptFactory().GetTests().size();
     for (int i=0; i!=sz; ++i)
     {
       BOOST_CHECK(i < static_cast<int>(ConceptFactory().GetTests().size()));

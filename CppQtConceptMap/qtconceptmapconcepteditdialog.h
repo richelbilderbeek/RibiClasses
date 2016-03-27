@@ -56,16 +56,22 @@ public:
   ///The concept being modified
   const Concept& GetConcept() const noexcept { return m_concept; }
 
+  const Ui::QtConceptMapConceptEditDialog * GetUi() const noexcept { return ui; }
+        Ui::QtConceptMapConceptEditDialog * GetUi()       noexcept { return ui; }
+
+public slots:
+
+  void on_button_add_clicked();
+
+  ///Finally convert what the GUI displays to a Concept
+  void on_button_ok_clicked();
+
 protected:
   void keyPressEvent(QKeyEvent *);
 
 private slots:
   void RemoveEmptyItem(QListWidgetItem * item);
 
-  void on_button_add_clicked();
-
-  ///Finally convert what the GUI displays to a Concept
-  void on_button_ok_clicked();
 
 private:
   Ui::QtConceptMapConceptEditDialog *ui;

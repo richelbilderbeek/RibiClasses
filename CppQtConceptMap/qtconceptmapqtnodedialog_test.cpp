@@ -20,11 +20,10 @@
 #include "trace.h"
 
 #include "ui_qtconceptmapqtnodedialog.h"
-//#include "ui_qtconceptmapnodedialog.h"
-//#include "ui_qtroundededitrectitemdialog.h"
 
 BOOST_AUTO_TEST_CASE(ribi_cmap_qtqtnodedialog_test)
 {
+  using namespace ribi::cmap;
   const bool verbose{false};
   QtQtNodeDialog dialog;
   const auto node = NodeFactory().GetTest(1);
