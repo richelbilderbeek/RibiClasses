@@ -50,8 +50,6 @@ public:
   QtRateConceptTallyDialog& operator=(const QtRateConceptTallyDialog&) = delete;
   ~QtRateConceptTallyDialog() noexcept;
 
-  static const ConceptMap CreateTestConceptMap();
-
   ///Obtain the suggested complexity, calculated from this dialog
   int GetSuggestedComplexity() const;
 
@@ -91,8 +89,7 @@ private:
   static std::vector<Row>
     CreateData(const ConceptMap& map);
 
-  static std::string
-    GetFocusName(const ConceptMap& sub_conceptmap) noexcept;
+  static std::string GetFocusName(const ConceptMap& sub_conceptmap);
 
 };
 

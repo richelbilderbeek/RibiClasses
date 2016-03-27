@@ -36,35 +36,35 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 namespace ribi {
 namespace cmap {
 
-///Class to convert cmap::Competency to QColor and vice versa
+///Class to convert Competency to QColor and vice versa
 struct QtCompetency
 {
   QtCompetency();
 
-  ///Convert a QColor to a cmap::Competency
-  cmap::Competency ColorToCompetency(const QColor& color) const;
+  ///Convert a QColor to a Competency
+  Competency ColorToCompetency(const QColor& color) const;
 
-  ///Convert a cmap::Competency to a QColor
-  QColor CompetencyToColor(const cmap::Competency competency) const;
+  ///Convert a Competency to a QColor
+  QColor CompetencyToColor(const Competency competency) const;
 
-  ///Convert a cmap::Competency to a QIcon
-  QIcon CompetencyToIcon(const cmap::Competency competency) const;
+  ///Convert a Competency to a QIcon
+  QIcon CompetencyToIcon(const Competency competency) const;
 
-  ///Convert a QIcon to a cmap::Competency
-  cmap::Competency IconToCompetency(const QIcon& icon) const;
+  ///Convert a QIcon to a Competency
+  Competency IconToCompetency(const QIcon& icon) const;
 
   private:
-  ///The map between cmap::Competency and QColor
-  static const std::map<cmap::Competency,QColor> m_color_map;
+  ///The map between Competency and QColor
+  static std::map<Competency,QColor> m_color_map;
 
-  ///The map between cmap::Competency and QIcon
-  static std::map<cmap::Competency,QIcon> m_icon_map;
+  ///The map between Competency and QIcon
+  static std::map<Competency,QIcon> m_icon_map;
 
-  ///Create map between cmap::Competency and QColor
-  static const std::map<cmap::Competency,QColor> CreateColorMap();
+  ///Create map between Competency and QColor
+  static std::map<Competency,QColor> CreateColorMap();
 
-  ///Create map between cmap::Competency and QIcon
-  static const std::map<cmap::Competency,QIcon> CreateIconMap();
+  ///Create map between Competency and QIcon
+  static std::map<Competency,QIcon> CreateIconMap();
 };
 
 } //~namespace cmap

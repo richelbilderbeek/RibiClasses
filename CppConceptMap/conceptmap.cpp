@@ -130,7 +130,14 @@ ribi::cmap::Edge ribi::cmap::GetFirstEdge(const ConceptMap& c)
 
 ribi::cmap::Node ribi::cmap::GetFocalNode(const ConceptMap& c)
 {
-  assert(boost::num_vertices(c));
+  if (boost::num_vertices(c) == 0)
+  {
+    std::stringstream msg;
+    msg << __func__ << ": "
+      << "Cannot get the focal node, if there are zero nodes"
+    ;
+    throw std::logic_error(msg.str());
+  }
   return GetNode(*vertices(c).first, c);
 }
 

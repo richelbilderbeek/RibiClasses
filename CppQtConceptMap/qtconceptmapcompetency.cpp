@@ -32,18 +32,24 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include <QPixmap>
 #include "testtimer.h"
 #include "trace.h"
+#include "qtimage.h"
+//#include "qtgraphics.h"
 #pragma GCC diagnostic pop
 
-const std::map<ribi::cmap::Competency,QColor> ribi::cmap::QtCompetency::m_color_map = ribi::cmap::QtCompetency::CreateColorMap();
-//const std::map<cmap::Competency,QIcon > ribi::cmap::QtCompetency::m_icon_map  = ribi::cmap::QtCompetency::CreateIconMap();
-std::map<ribi::cmap::Competency,QIcon > ribi::cmap::QtCompetency::m_icon_map;
+//const std::map<ribi::cmap::Competency,QColor> ribi::cmap::QtCompetency::m_color_map = ribi::cmap::QtCompetency::CreateColorMap();
+//const std::map<ribi::cmap::Competency,QIcon> ribi::cmap::QtCompetency::m_icon_map  = ribi::cmap::QtCompetency::CreateIconMap();
+std::map<ribi::cmap::Competency,QColor> ribi::cmap::QtCompetency::m_color_map;
+std::map<ribi::cmap::Competency,QIcon> ribi::cmap::QtCompetency::m_icon_map;
 
 ribi::cmap::QtCompetency::QtCompetency()
 {
+  if (m_color_map.empty()) m_color_map = CreateColorMap();
+  if (m_icon_map.empty()) m_icon_map = CreateIconMap();
 }
 
 ribi::cmap::Competency ribi::cmap::QtCompetency::ColorToCompetency(const QColor& color) const
 {
+  assert(!m_color_map.empty());
   const auto iter = std::find_if(m_color_map.begin(),m_color_map.end(),
     [color](const std::pair<cmap::Competency,QColor>& p)
     {
@@ -59,6 +65,7 @@ ribi::cmap::Competency ribi::cmap::QtCompetency::ColorToCompetency(const QColor&
 
 QColor ribi::cmap::QtCompetency::CompetencyToColor(const cmap::Competency competency) const
 {
+  assert(!m_color_map.empty());
   const auto iter = m_color_map.find(competency);
   assert(iter!=m_color_map.end());
   return iter->second;
@@ -66,7 +73,6 @@ QColor ribi::cmap::QtCompetency::CompetencyToColor(const cmap::Competency compet
 
 QIcon ribi::cmap::QtCompetency::CompetencyToIcon(const cmap::Competency competency) const
 {
-  if (m_icon_map.empty()) m_icon_map = CreateIconMap();
   assert(!m_icon_map.empty());
   const auto iter = m_icon_map.find(competency);
   assert(iter!=m_icon_map.end());
@@ -75,7 +81,7 @@ QIcon ribi::cmap::QtCompetency::CompetencyToIcon(const cmap::Competency competen
   return icon;
 }
 
-const std::map<ribi::cmap::Competency,QColor> ribi::cmap::QtCompetency::CreateColorMap()
+std::map<ribi::cmap::Competency,QColor> ribi::cmap::QtCompetency::CreateColorMap()
 {
   return
   {
@@ -90,37 +96,26 @@ const std::map<ribi::cmap::Competency,QColor> ribi::cmap::QtCompetency::CreateCo
   };
 }
 
-const std::map<ribi::cmap::Competency,QIcon> ribi::cmap::QtCompetency::CreateIconMap()
+std::map<ribi::cmap::Competency,QIcon> ribi::cmap::QtCompetency::CreateIconMap()
 {
   return
   {
-    /*
-    { cmap::Competency::uninitialized      , QIcon(":/images/PicWhite14x14.png") },
-    { cmap::Competency::profession         , QIcon(":/images/PicPurple14x14.png") },
-    { cmap::Competency::organisations      , QIcon(":/images/PicBlue14x14.png") },
-    { cmap::Competency::social_surroundings, QIcon(":/images/PicCyan14x14.png") },
-    { cmap::Competency::target_audience    , QIcon(":/images/PicGreen14x14.png") },
-    { cmap::Competency::ti_knowledge       , QIcon(":/images/PicYelow14x14.png") },
-    { cmap::Competency::prof_growth        , QIcon(":/images/PicOrange14x14.png") },
-    { cmap::Competency::misc               , QIcon(":/images/PicRed14x14.png") }
-    */
-    { cmap::Competency::uninitialized      , QIcon(":/images/PicWhite14x14.png") },
-    { cmap::Competency::profession         , QIcon(":/images/PicRed14x14.png") },
-    { cmap::Competency::organisations      , QIcon(":/images/PicOrange14x14.png") },
-    { cmap::Competency::social_surroundings, QIcon(":/images/PicYellow14x14.png") },
-    { cmap::Competency::target_audience    , QIcon(":/images/PicGreen14x14.png") },
-    { cmap::Competency::ti_knowledge       , QIcon(":/images/PicCyan14x14.png") },
-    { cmap::Competency::prof_growth        , QIcon(":/images/PicBlue14x14.png") },
-    { cmap::Competency::misc               , QIcon(":/images/PicPurple14x14.png") }
+    { cmap::Competency::uninitialized      , QIcon(":/CppQtConceptMap/images/PicWhite14x14.png") },
+    { cmap::Competency::profession         , QIcon(":/CppQtConceptMap/images/PicRed14x14.png") },
+    { cmap::Competency::organisations      , QIcon(":/CppQtConceptMap/images/PicOrange14x14.png") },
+    { cmap::Competency::social_surroundings, QIcon(":/CppQtConceptMap/images/PicYellow14x14.png") },
+    { cmap::Competency::target_audience    , QIcon(":/CppQtConceptMap/images/PicGreen14x14.png") },
+    { cmap::Competency::ti_knowledge       , QIcon(":/CppQtConceptMap/images/PicCyan14x14.png") },
+    { cmap::Competency::prof_growth        , QIcon(":/CppQtConceptMap/images/PicBlue14x14.png") },
+    { cmap::Competency::misc               , QIcon(":/CppQtConceptMap/images/PicPurple14x14.png") }
   };
 }
 
 ribi::cmap::Competency ribi::cmap::QtCompetency::IconToCompetency(const QIcon& icon) const
 {
-  if (m_icon_map.empty()) m_icon_map = CreateIconMap();
   assert(!m_icon_map.empty());
   const auto iter = std::find_if(m_icon_map.begin(),m_icon_map.end(),
-    [icon](const std::pair<cmap::Competency,QIcon>& p)
+    [icon](const std::pair<Competency,QIcon>& p)
     {
 
       return icon.pixmap(14,14).toImage() == (p.second).pixmap(14,14).toImage();

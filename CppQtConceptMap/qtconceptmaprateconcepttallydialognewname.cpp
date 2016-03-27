@@ -55,8 +55,8 @@ ribi::cmap::QtRateConceptTallyDialog::QtRateConceptTallyDialog(
   QWidget *parent)
   : QtHideAndShowDialog(parent),
     ui(new Ui::QtRateConceptTallyDialog),
-    m_data(CreateData(conceptmap)),
-    m_focus_name(GetFocusName(conceptmap))
+    m_data{CreateData(conceptmap)},
+    m_focus_name{GetFocusName(conceptmap)}
 {
   ui->setupUi(this);
 
@@ -238,20 +238,17 @@ std::vector<ribi::cmap::QtRateConceptTallyDialog::Row>
   return data;
 }
 
-const ribi::cmap::ConceptMap ribi::cmap::QtRateConceptTallyDialog::CreateTestConceptMap()
-{
-  //Create a subconcept map for testing:
-  // - node with a concept with (1) text 'TextNode' (2) one example with text 'TextExampleNode'
-  // - edge with a concept with (1) text 'TextEdge' (2) one example with text 'TextExampleEdge'
-  // - node with a concept with (1) text 'TextDontCare'
-  ConceptMap sub_conceptmap = ribi::cmap::ConceptMapFactory().GetTest(6);
-  return sub_conceptmap;
-}
-
 std::string ribi::cmap::QtRateConceptTallyDialog::GetFocusName(
-  const ConceptMap& sub_conceptmap) noexcept
+  const ConceptMap& sub_conceptmap)
 {
-  assert(boost::num_vertices(sub_conceptmap));
+  if (boost::num_vertices(sub_conceptmap) == 0)
+  {
+    std::stringstream msg;
+    msg << __func__ << ": cannot get the name of a focal node, "
+      << "when there are zero nodes"
+    ;
+    throw std::logic_error(msg.str());
+  }
   const Concept focal_concept(ribi::cmap::GetFocalNode(sub_conceptmap).GetConcept());
   return focal_concept.GetName();
 }

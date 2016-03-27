@@ -28,30 +28,33 @@
 #include "ui_qtconceptmaprateconcepttallydialognewname.h"
 #pragma GCC diagnostic pop
 
-BOOST_AUTO_TEST_CASE(ribi_cmap_qtrateconcepttallydialog_test)
+BOOST_AUTO_TEST_CASE(ribi_cmap_qtrateconcepttallydialog_construct_with_empty_conceptmap)
 {
   using namespace ribi::cmap;
-  //Empty table
-  {
-    const ConceptMap conceptmap;
-    QtRateConceptTallyDialog d(conceptmap);
-  }
+  const ConceptMap empty_conceptmap;
+  BOOST_CHECK_THROW(QtRateConceptTallyDialog{empty_conceptmap}, std::logic_error);
+}
 
-  const ConceptMap conceptmap = QtRateConceptTallyDialog::CreateTestConceptMap();
+BOOST_AUTO_TEST_CASE(ribi_cmap_qtrateconcepttallydialog_construct_with_test_conceptmap)
+{
+  using namespace ribi::cmap;
+  const ConceptMap conceptmap = ConceptMapFactory().Get6();
+  BOOST_CHECK_NO_THROW(QtRateConceptTallyDialog{conceptmap});
+}
 
-  QtRateConceptTallyDialog d(conceptmap);
+BOOST_AUTO_TEST_CASE(ribi_cmap_qtrateconcepttallydialog_measure_ui_from_test_concept_map)
+{
+  using namespace ribi::cmap;
 
-  #ifndef NDEBUG
-  {
-    if(d.GetUi()->table->columnCount() != 4) TRACE(d.GetUi()->table->columnCount());
-    if(d.GetUi()->table->rowCount() != 3) TRACE(d.GetUi()->table->rowCount());
-  }
-  #endif
+  const ConceptMap conceptmap = ConceptMapFactory().Get6();
+  QtRateConceptTallyDialog d{conceptmap};
+  d.show();
+  for (int i=0; i!=1000; ++i) qApp->processEvents();
 
-  BOOST_CHECK(d.GetUi()->table->columnCount() == 4);
-  BOOST_CHECK(d.GetUi()->table->rowCount() == 3);
-  BOOST_CHECK(boost::num_vertices(conceptmap) == 2);
-  BOOST_CHECK(boost::num_edges(conceptmap) == 1);
+  BOOST_CHECK_EQUAL(d.GetUi()->table->columnCount(), 4);
+  BOOST_CHECK_EQUAL(d.GetUi()->table->rowCount(), 3);
+  BOOST_CHECK_EQUAL(boost::num_vertices(conceptmap), 2);
+  BOOST_CHECK_EQUAL(boost::num_edges(conceptmap), 1);
   const Node focal_node = GetFocalNode(conceptmap);
   //const Node other_node = conceptmap.GetNodes()[1]; //Don't care
   const Edge edge = ribi::cmap::GetFirstEdge(conceptmap);
