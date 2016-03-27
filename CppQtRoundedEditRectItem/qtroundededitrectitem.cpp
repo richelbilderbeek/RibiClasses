@@ -56,10 +56,6 @@ ribi::QtRoundedEditRectItem::QtRoundedEditRectItem(
     m_text( {""} ), //Empty std::vector<std::string>, as m_text must be set by SetText
     m_text_pen{}
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
-
   this->setFlags(
       QGraphicsItem::ItemIsFocusable
     | QGraphicsItem::ItemIsMovable

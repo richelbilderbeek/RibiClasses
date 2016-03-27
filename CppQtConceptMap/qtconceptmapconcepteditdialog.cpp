@@ -65,9 +65,6 @@ ribi::cmap::QtConceptMapConceptEditDialog::QtConceptMapConceptEditDialog(
     m_concept{concept},
     m_concept_original{concept}
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
   ui->setupUi(this);
 
   //Convert the concept to its GUI elements
@@ -154,90 +151,6 @@ void ribi::cmap::QtConceptMapConceptEditDialog::RemoveEmptyItem(QListWidgetItem 
     this->update();
   }
 }
-
-#ifndef NDEBUG
-void ribi::cmap::QtConceptMapConceptEditDialog::Test() noexcept
-{
-  {
-    static bool is_tested = false;
-    if (is_tested) return;
-    is_tested = true;
-  }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
-  {
-    //Assume reading in a concept and clicking OK without modification does not modify anything
-    const auto v = ribi::cmap::ConceptFactory().GetTests();
-    std::for_each(v.begin(),v.end(),
-      [](const Concept& concept)
-      {
-        const Concept old_concept(concept);
-        assert(concept == old_concept);
-        QtConceptMapConceptEditDialog d(concept);
-        //Do nothing...
-        d.on_button_ok_clicked();
-        #ifdef CONCEPTMAP_WRITE_TO_CONCEPT
-        assert(d.WriteToConcept() == old_concept);
-        #else
-        assert(concept == old_concept);
-        #endif
-      }
-    );
-  }
-  {
-    //Assume reading in a concept and clicking OK after modification of the name does modify concept
-    const auto v = ribi::cmap::ConceptFactory().GetTests();
-    std::for_each(v.begin(),v.end(),
-      [](const Concept& concept)
-      {
-        const Concept old_concept(concept);
-        assert(concept == old_concept);
-        QtConceptMapConceptEditDialog d(concept);
-        d.ui->edit_concept->setText(d.ui->edit_concept->text() + "MODIFICATION");
-        d.on_button_ok_clicked();
-        assert(d.GetConcept() != old_concept);
-      }
-    );
-  }
-  {
-    //Assume reading in a concept and clicking OK after adding an example
-    const auto v = ribi::cmap::ConceptFactory().GetTests();
-    std::for_each(v.begin(),v.end(),
-      [](const Concept& concept)
-      {
-        const Concept old_concept(concept);
-        assert(concept == old_concept);
-        QtConceptMapConceptEditDialog d(concept);
-        assert(d.ui->edit_text->text().isEmpty());
-        d.ui->edit_text->setText("TO BE ADDED EXAMPLE");
-        d.on_button_add_clicked(); //Should add
-        d.on_button_ok_clicked();
-        assert(d.GetConcept() != old_concept);
-      }
-    );
-  }
-  {
-    //Assume reading in a concept and NOT clicking OK does not change the concept,
-    //even when having changed the name and examples in the GUI
-    const auto v = ribi::cmap::ConceptFactory().GetTests();
-    std::for_each(v.begin(),v.end(),
-      [](const Concept& concept)
-      {
-        const Concept old_concept(concept);
-        assert(concept == old_concept);
-        QtConceptMapConceptEditDialog d(concept);
-        //Change name
-        d.ui->edit_concept->setText(d.ui->edit_concept->text() + "MODIFICATION");
-        //Change examples
-        assert(d.ui->edit_text->text().isEmpty());
-        d.ui->edit_text->setText("TO BE ADDED EXAMPLE");
-        d.on_button_add_clicked(); //Should add
-        //DO NOT PRESS OK d.on_button_ok_clicked();
-        assert(d.GetConcept() == old_concept);
-      }
-    );
-  }
-}
-#endif
 
 void ribi::cmap::QtConceptMapConceptEditDialog::on_button_ok_clicked()
 {

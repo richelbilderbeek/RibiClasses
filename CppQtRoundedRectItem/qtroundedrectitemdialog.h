@@ -55,6 +55,9 @@ public:
 
   static int GetMinimumHeight() noexcept { return 276; }
 
+  const Ui::QtRoundedRectItemDialog * GetUi() const noexcept { return ui; }
+        Ui::QtRoundedRectItemDialog * GetUi()       noexcept { return ui; }
+
   ///Read the X value directly from GUI
   double GetUiX() const noexcept;
   ///Read the Y value directly from GUI

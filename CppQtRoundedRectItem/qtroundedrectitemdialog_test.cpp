@@ -2,6 +2,7 @@
 
 #include <boost/test/unit_test.hpp>
 #include "qtroundedrectitem.h"
+#include "ui_qtroundedrectitemdialog.h"
 #include "trace.h"
 
 BOOST_AUTO_TEST_CASE(ribi_qtroundedrectitem_dialog_test)
@@ -14,45 +15,45 @@ BOOST_AUTO_TEST_CASE(ribi_qtroundedrectitem_dialog_test)
   //Change all, sorted by UI component name
   if (verbose) { TRACE("Set/Get Contour pen must be symmetric"); }
   {
-    dialog.ui->box_contour_pen_width->setValue( item->GetContourPen().widthF() + 10.0 );
+    dialog.GetUi()->box_contour_pen_width->setValue( item->GetContourPen().widthF() + 10.0 );
     QPen new_pen = item->GetContourPen();
-    new_pen.setWidthF(dialog.ui->box_contour_pen_width->value() + 10.0);
+    new_pen.setWidthF(dialog.GetUi()->box_contour_pen_width->value() + 10.0);
     item->SetContourPen(new_pen);
     BOOST_CHECK(item->GetContourPen() == new_pen);
   }
   if (verbose) { TRACE("Set/Get Focus pen width must be symmetric"); }
   {
-    dialog.ui->box_focus_pen_width->setValue( item->GetFocusPen().widthF() + 10.0);
+    dialog.GetUi()->box_focus_pen_width->setValue( item->GetFocusPen().widthF() + 10.0);
     QPen new_pen = item->GetFocusPen();
-    new_pen.setWidthF(dialog.ui->box_focus_pen_width->value() + 10.0);
+    new_pen.setWidthF(dialog.GetUi()->box_focus_pen_width->value() + 10.0);
     item->SetFocusPen(new_pen);
     BOOST_CHECK(item->GetFocusPen() == new_pen);
   }
   if (verbose) { TRACE("Set/Get InnerHeight must be symmetric"); }
   {
-    dialog.ui->box_height->setValue(item->GetInnerHeight() + 10.0);
-    const auto new_height = dialog.ui->box_height->value() + 10.0;
+    dialog.GetUi()->box_height->setValue(item->GetInnerHeight() + 10.0);
+    const auto new_height = dialog.GetUi()->box_height->value() + 10.0;
     item->SetInnerHeight(new_height);
     BOOST_CHECK(std::abs(item->GetInnerHeight() - new_height) < 2.0);
   }
   if (verbose) { TRACE("Set/Get OuterHeight must be symmetric"); }
   {
-    dialog.ui->box_height_including_pen->setValue(item->GetOuterHeight() + 10.0);
-    const auto new_height = dialog.ui->box_height_including_pen->value() + 10.0;
+    dialog.GetUi()->box_height_including_pen->setValue(item->GetOuterHeight() + 10.0);
+    const auto new_height = dialog.GetUi()->box_height_including_pen->value() + 10.0;
     item->SetOuterHeight(new_height);
     BOOST_CHECK(std::abs(item->GetOuterHeight() - new_height) < 2.0);
   }
   if (verbose) { TRACE("Set/Get Radius X must be symmetric"); }
   {
-    dialog.ui->box_radius_x->setValue(item->GetRadiusX() + 10.0);
-    const auto new_x = dialog.ui->box_radius_x->value() + 10.0;
+    dialog.GetUi()->box_radius_x->setValue(item->GetRadiusX() + 10.0);
+    const auto new_x = dialog.GetUi()->box_radius_x->value() + 10.0;
     item->SetRadiusX(new_x);
     BOOST_CHECK(std::abs(item->GetRadiusX() - new_x) < 2.0);
   }
   if (verbose) { TRACE("Set/Get Radius Y must be symmetric"); }
   {
-    dialog.ui->box_radius_y->setValue(item->GetRadiusY() + 10.0);
-    const auto new_y = dialog.ui->box_radius_y->value() + 10.0;
+    dialog.GetUi()->box_radius_y->setValue(item->GetRadiusY() + 10.0);
+    const auto new_y = dialog.GetUi()->box_radius_y->value() + 10.0;
     item->SetRadiusY(new_y);
     BOOST_CHECK(std::abs(item->GetRadiusY() - new_y) < 2.0);
   }
@@ -65,22 +66,22 @@ BOOST_AUTO_TEST_CASE(ribi_qtroundedrectitem_dialog_test)
   }
   if (verbose) { TRACE("Set/Get OuterWidth must be symmetric"); }
   {
-    dialog.ui->box_width_including_pen->setValue(item->GetOuterWidth() + 10.0);
-    const auto new_width = dialog.ui->box_width_including_pen->value() + 10.0;
+    dialog.GetUi()->box_width_including_pen->setValue(item->GetOuterWidth() + 10.0);
+    const auto new_width = dialog.GetUi()->box_width_including_pen->value() + 10.0;
     item->SetOuterWidth(new_width);
     BOOST_CHECK(std::abs(item->GetOuterWidth() - new_width) < 2.0);
   }
   if (verbose) { TRACE("Set/Get X must be symmetric"); }
   {
-    dialog.ui->box_x->setValue(item->GetCenterX() + 10.0);
-    const auto new_x = dialog.ui->box_x->value() + 10.0;
+    dialog.GetUi()->box_x->setValue(item->GetCenterX() + 10.0);
+    const auto new_x = dialog.GetUi()->box_x->value() + 10.0;
     item->SetCenterX(new_x);
     BOOST_CHECK(std::abs(item->GetCenterX() - new_x) < 2.0);
   }
   if (verbose) { TRACE("Set/Get Y must be symmetric"); }
   {
-    dialog.ui->box_y->setValue(item->GetCenterY() + 10.0);
-    const auto new_y = dialog.ui->box_y->value() + 10.0;
+    dialog.GetUi()->box_y->setValue(item->GetCenterY() + 10.0);
+    const auto new_y = dialog.GetUi()->box_y->value() + 10.0;
     item->SetCenterY(new_y);
     BOOST_CHECK(std::abs(item->GetCenterY() - new_y) < 2.0);
   }

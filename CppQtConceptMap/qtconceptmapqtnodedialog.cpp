@@ -55,9 +55,6 @@ ribi::cmap::QtQtNodeDialog::QtQtNodeDialog(QWidget *parent)
   m_qtnodedialog{},
   m_qtroundededitrectitem_dialog{}
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
   ui->setupUi(this);
   {
     assert(!this->layout());
@@ -268,40 +265,3 @@ void ribi::cmap::QtQtNodeDialog::SetUiY(const double y) noexcept
 {
   m_qtnodedialog->SetUiY(y);
 }
-
-#ifndef NDEBUG
-void ribi::cmap::QtQtNodeDialog::Test() noexcept
-{
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  {
-    QtNodeFactory();
-    QtNodeFactory().GetTest(1);
-    QtNodeDialog();
-    QtRoundedEditRectItemDialog();
-  }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
-  const bool verbose{false};
-  QtQtNodeDialog dialog;
-  const auto node = NodeFactory().GetTest(1);
-  const boost::shared_ptr<QtNode> qtnode{new QtNode(node)};
-  dialog.SetQtNode(qtnode);
-  if (verbose) { TRACE("SetUiX and GetUiX must be symmetric"); }
-  {
-    const double old_x{dialog.GetUiX()};
-    const double new_x{old_x + 10.0};
-    dialog.SetUiX(new_x);
-    assert(std::abs(dialog.GetUiX() - new_x) < 2.0);
-  }
-  if (verbose) { TRACE("SetUiY and GetUiY must be symmetric"); }
-  {
-    const double old_y{dialog.GetUiY()};
-    const double new_y{old_y + 10.0};
-    dialog.SetUiY(new_y);
-    assert(std::abs(dialog.GetUiY() - new_y) < 2.0);
-  }
-}
-#endif

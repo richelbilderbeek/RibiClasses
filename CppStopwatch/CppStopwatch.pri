@@ -2,11 +2,11 @@ INCLUDEPATH += \
     ../RibiClasses/CppStopwatch
 
 SOURCES += \
-    ../RibiClasses/CppStopwatch/stopwatch.cpp
+    $$PWD/stopwatch.cpp
 
 HEADERS  += \
-    ../RibiClasses/CppStopwatch/stopwatch.h
+    $$PWD/stopwatch.h
 
 OTHER_FILES += \
-    ../RibiClasses/CppStopwatch/Licence.txt
+    $$PWD/Licence.txt
 

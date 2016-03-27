@@ -44,11 +44,6 @@ struct QtGraphics
   ///Scanline with std::copy
   void DrawImage(QImage& target, const QImage& source,  const int left, const int top) const noexcept;
 
-  std::string GetVersion() const noexcept;
-  std::vector<std::string> GetVersionHistory() const noexcept;
-
-private:
-
   ///Draw a QImage on another QImage
   ///Scanline with indexed copy
   void DrawImageSlow(QImage& target, const QImage& source,  const int left, const int top) const noexcept;
@@ -57,6 +52,8 @@ private:
   ///Pixel-by-pixel
   void DrawImageSlowest(QImage& target, const QImage& source,  const int left, const int top) const noexcept;
 
+  std::string GetVersion() const noexcept;
+  std::vector<std::string> GetVersionHistory() const noexcept;
 };
 
 } //~namespace ribi

@@ -22,8 +22,12 @@ install:
 
 script: 
   - ./install_githubs.sh
-  - ./build.sh
+  - ./build_console.sh
+  - ./build_desktop.sh
   - ./get_code_cov.sh
+
+after_failure: 
+  - codecov
 
 after_success: 
   - codecov

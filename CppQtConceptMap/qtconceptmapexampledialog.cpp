@@ -43,9 +43,6 @@ ribi::cmap::QtExampleDialog::QtExampleDialog(QWidget *parent) :
   m_example{" ",Competency::uninitialized,false,false,false}
 {
   ui->setupUi(this);
-  #ifndef NDEBUG
-  Test();
-  #endif
   {
     const auto v = Competencies().GetAllCompetencies();
     for (const auto c: v)
@@ -209,20 +206,6 @@ void ribi::cmap::QtExampleDialog::OnTextChanged(const Example& example)
 {
   ui->edit_text->setText(example.GetText().c_str());
 }
-
-#ifndef NDEBUG
-void ribi::cmap::QtExampleDialog::Test() noexcept
-{
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  ExampleFactory();
-  const TestTimer test_timer(__func__,__FILE__,1.0);
-  QtExampleDialog d;
-}
-#endif
 
 void ribi::cmap::QtExampleDialog::on_box_competency_currentIndexChanged(int index)
 {

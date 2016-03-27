@@ -18,6 +18,7 @@ include(../RibiClasses/CppRibiRandom/CppRibiRandom.pri)
 include(../RibiClasses/CppRibiRegex/CppRibiRegex.pri)
 include(../RibiClasses/CppRibiSystem/CppRibiSystem.pri)
 include(../RibiClasses/CppRibiTime/CppRibiTime.pri)
+include(../RibiClasses/CppStopwatch/CppStopwatch.pri)
 include(../RibiClasses/CppXml/CppXml.pri)
 
 # Desktop classes
@@ -32,6 +33,10 @@ include(../RibiClasses/CppQtConceptMap/CppQtConceptMapTest.pri)
 
 include(../RibiClasses/CppQtDisplayPosItem/CppQtDisplayPosItem.pri)
 include(../RibiClasses/CppQtHideAndShowDialog/CppQtHideAndShowDialog.pri)
+
+include(../RibiClasses/CppQtGraphics/CppQtGraphics.pri)
+include(../RibiClasses/CppQtGraphics/CppQtGraphicsTest.pri)
+
 include(../RibiClasses/CppQtKeyboardFriendlyGraphicsView/CppQtKeyboardFriendlyGraphicsView.pri)
 
 include(../RibiClasses/CppQtQuadBezierArrowItem/CppQtQuadBezierArrowItem.pri)

@@ -162,6 +162,44 @@ void ribi::cmap::QtRateExamplesDialogNewName::keyPressEvent(QKeyEvent* e)
   QDialog::keyPressEvent(e);
 }
 
+void ribi::cmap::QtRateExamplesDialogNewName::Test() noexcept
+{
+  {
+    static bool is_tested = false;
+    if (is_tested) return;
+    is_tested = true;
+  }
+  {
+    QtCompetency();
+    QtRateExamplesDialogNewName(cmap::ConceptFactory().GetTests()[0]).GetRatedExamples();
+  }
+
+  const TestTimer test_timer{__func__,__FILE__,0.1};
+  {
+    const int sz = ribi::cmap::ConceptFactory().GetTests().size();
+    for (int i=0; i!=sz; ++i)
+    {
+      assert(i < static_cast<int>(ConceptFactory().GetTests().size()));
+      const auto a = QtRateExamplesDialogNewName(ConceptFactory().GetTests()[i]).GetRatedExamples();
+      for (int j=0; j!=sz; ++j)
+      {
+        assert(j < static_cast<int>(ConceptFactory().GetTests().size()));
+        const auto b = QtRateExamplesDialogNewName(ConceptFactory().GetTests()[j]).GetRatedExamples();
+        assert(a != b);
+        if (i == j)
+        {
+          assert(a == b);
+        }
+        else
+        {
+          assert(a != b);
+        }
+      }
+    }
+  }
+
+}
+
 void ribi::cmap::QtRateExamplesDialogNewName::on_button_prof_clicked()
 {
   if (ui->list->currentItem())

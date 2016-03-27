@@ -25,17 +25,15 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 
 #include <cassert>
 
-#include "stopwatch.h"
-#include "testtimer.h"
-#include "trace.h"
+//#include "stopwatch.h"
+//#include "testtimer.h"
+//#include "trace.h"
 #pragma GCC diagnostic pop
 
 
 ribi::QtGraphics::QtGraphics()
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
+
 }
 
 QImage ribi::QtGraphics::CreateImage(const int width, const int height, const int z) const noexcept
@@ -143,84 +141,16 @@ void ribi::QtGraphics::DrawImageSlowest(
 
 std::string ribi::QtGraphics::GetVersion() const noexcept
 {
-  return "1.2";
+  return "1.3";
 }
 
 std::vector<std::string> ribi::QtGraphics::GetVersionHistory() const noexcept
 {
   return {
     "2015-02-22: version 1.0: initial version",
-    "2015-08-28: version 1.1: added CreateImage and DrawImage"
-    "2015-09-05: version 1.2: improved speed of DrawImage by an order of magnitude"
+    "2015-08-28: version 1.1: added CreateImage and DrawImage",
+    "2015-09-05: version 1.2: improved speed of DrawImage by an order of magnitude",
+    "2016-03-27: version 1.3: use of Boost.Test",
   };
 }
 
-#ifndef NDEBUG
-void ribi::QtGraphics::Test() noexcept
-{
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  {
-    Stopwatch();
-  }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
-  const bool verbose{false};
-  if (verbose) { TRACE("Default-construction of QtGraphics"); }
-  {
-    const QtGraphics q;
-  }
-  //CreateImage
-  {
-    const QImage a = QtGraphics().CreateImage(256,256,64);
-    assert(!a.isNull());
-  }
-  {
-    QImage target = QtGraphics().CreateImage(256,256,64);
-    assert(!target.isNull());
-    const QImage source = QtGraphics().CreateImage(196,156,196);
-    assert(!source.isNull());
-    QtGraphics().DrawImage(target,source,32,64);
-  }
-  {
-    QImage target_slowest = QtGraphics().CreateImage(256,256,64);
-    QImage target_slow    = QtGraphics().CreateImage(256,256,64);
-    QImage target_fast    = QtGraphics().CreateImage(256,256,64);
-    const QImage source   = QtGraphics().CreateImage(196,156,196);
-    QtGraphics().DrawImage(       target_fast   ,source,32,64);
-    QtGraphics().DrawImageSlow   (target_slow   ,source,32,64);
-    QtGraphics().DrawImageSlowest(target_slowest,source,32,64);
-    assert(target_fast == target_slow);
-    assert(target_fast == target_slowest);
-  }
-  const bool do_timing{false};
-  if (do_timing)
-  {
-    //TRACE 't_fast' line 188 in file '../../Classes/CppQtGraphics/qtgraphics.cpp': '0,032000000000000001'
-    //TRACE 't_slow' line 189 in file '../../Classes/CppQtGraphics/qtgraphics.cpp': '0,51700000000000002'
-    //TRACE 't_slowest' line 190 in file '../../Classes/CppQtGraphics/qtgraphics.cpp': '1,169'
-    const int sz{5000};
-    QImage target_fast    = QtGraphics().CreateImage(sz,sz);
-    QImage target_slow    = QtGraphics().CreateImage(sz,sz);
-    QImage target_slowest = QtGraphics().CreateImage(sz,sz);
-    const QImage source   = QtGraphics().CreateImage(sz,sz);
-    Stopwatch s_fast;
-    QtGraphics().DrawImage(target_fast,source,0,0);
-    const double t_fast{s_fast.GetElapsedSecs()};
-    Stopwatch s_slow;
-    QtGraphics().DrawImageSlow(target_slow,source,0,0);
-    const double t_slow{s_slow.GetElapsedSecs()};
-    Stopwatch s_slowest;
-    QtGraphics().DrawImageSlowest(target_slowest,source,0,0);
-    const double t_slowest{s_slowest.GetElapsedSecs()};
-    TRACE(t_fast);
-    TRACE(t_slow);
-    TRACE(t_slowest);
-    assert(t_fast < t_slow);
-    assert(t_slow < t_slowest);
-    assert(t_fast * 10.0 < t_slow);
-  }
-}
-#endif

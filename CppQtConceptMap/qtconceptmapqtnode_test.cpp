@@ -48,7 +48,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "trace.h"
 
 #include <boost/test/unit_test.hpp>
-BOOST_AUTO_TEST_CASE(ribi_cmap_qtedge_dialog_test)
+BOOST_AUTO_TEST_CASE(ribi_cmap_qtconceptmapqtnode_test)
 {
   using namespace ribi;
   using namespace ribi::cmap;
@@ -91,19 +91,4 @@ BOOST_AUTO_TEST_CASE(ribi_cmap_qtedge_dialog_test)
     const std::string new_name_again{qtnode->GetNode().GetConcept().GetName()};
     BOOST_CHECK(new_name_again == new_name);
   }
-}
-
-std::string ribi::cmap::QtNode::ToStr() const noexcept
-{
-  std::stringstream s;
-  s << (*this);
-  return s.str();
-}
-
-std::ostream& ribi::cmap::operator<<(std::ostream& os, const QtNode& qtnode) noexcept
-{
-  os
-    << qtnode.GetNode()
-  ;
-  return os;
 }

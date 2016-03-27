@@ -47,10 +47,6 @@ ribi::QtRoundedRectItem::QtRoundedRectItem(QGraphicsItem *parent)
    m_radius_x(4.0),
    m_radius_y(4.0)
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
-
   this->setFlags(
       QGraphicsItem::ItemIsFocusable
     | QGraphicsItem::ItemIsMovable

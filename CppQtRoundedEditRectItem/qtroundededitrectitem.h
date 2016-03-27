@@ -59,12 +59,81 @@ class QtRoundedEditRectItem : public QtRoundedRectItem
   ///Get the font by which the text is drawn
   const QFont& GetFont() const noexcept;
 
+  ///Obtain the padded text rectangle for a single line
+  ///where the center lies at the correct location
+  /*
+          |
+          |
+      +-------+
+      |       |
+      | ABCDE |
+      |       |
+      +-------+
+      |       |
+   ---|       |---
+      |       |
+      +-------+
+      |       |
+      |       |
+      |       |
+      +-------+
+          |
+          |
+
+      Line 0/3
+  */
+  static QRectF GetPaddedTextRectAtLine(const std::string& s, const QFont& font, const int line, const int n_lines) noexcept;
+
+  ///Obtain the padded text rectangle for a single line
+  ///where the center lies at the origin
+  /*
+          |
+          |
+      +-------+
+      |       |
+   ---| ABCDE |---
+      |       |
+      +-------+
+          |
+          |
+  */
+  static QRectF GetPaddedTextRectAtOrigin(const std::string& s, const QFont& font) noexcept;
+
   const Padding& GetPadding() const noexcept { return m_padding; }
 
   ///Obtain the text on the item
   const std::vector<std::string>& GetText() const noexcept;
 
   const QPen& GetTextPen() const noexcept { return m_text_pen; }
+
+  ///Obtain the unpadded text rectangle for a single line,
+  ///where the center lies at the origin
+  /*
+          |
+          |
+       +-----+
+    ---|ABCDE|---
+       +-----+
+          |
+          |
+  */
+  static QRectF GetTextRectAtOrigin(const std::string& s, const QFont& font) noexcept;
+
+  ///Obtain the unpadded text rectangle for the whole text,
+  ///where the center lies at the origin
+  ///Note: even this rectangle is enlarged by a pixel in both dimensions, so the text will be drawn in full
+  /*
+          |
+          |
+       +-----+
+       |ABCDE|
+    ---|ABCDE|---
+       |ABCDE|
+       +-----+
+          |
+          |
+  */
+  static QRectF GetTextRectAtOrigin(const std::vector<std::string>& text, const QFont& font) noexcept;
 
   ///Obtain the version of this class
   static std::string GetVersion() noexcept;
@@ -114,74 +183,7 @@ private:
   ///The pen by which the text is drawn
   QPen m_text_pen;
 
-  ///Obtain the unpadded text rectangle for a single line,
-  ///where the center lies at the origin
-  /*
-          |
-          |
-       +-----+
-    ---|ABCDE|---
-       +-----+
-          |
-          |
-  */
-  static QRectF GetTextRectAtOrigin(const std::string& s, const QFont& font) noexcept;
 
-  ///Obtain the unpadded text rectangle for the whole text,
-  ///where the center lies at the origin
-  ///Note: even this rectangle is enlarged by a pixel in both dimensions, so the text will be drawn in full
-  /*
-          |
-          |
-       +-----+
-       |ABCDE|
-    ---|ABCDE|---
-       |ABCDE|
-       +-----+
-          |
-          |
-  */
-  static QRectF GetTextRectAtOrigin(const std::vector<std::string>& text, const QFont& font) noexcept;
-
-  ///Obtain the padded text rectangle for a single line
-  ///where the center lies at the origin
-  /*
-          |
-          |
-      +-------+
-      |       |
-   ---| ABCDE |---
-      |       |
-      +-------+
-          |
-          |
-  */
-  static QRectF GetPaddedTextRectAtOrigin(const std::string& s, const QFont& font) noexcept;
-
-  ///Obtain the padded text rectangle for a single line
-  ///where the center lies at the correct location
-  /*
-          |
-          |
-      +-------+
-      |       |
-      | ABCDE |
-      |       |
-      +-------+
-      |       |
-   ---|       |---
-      |       |
-      +-------+
-      |       |
-      |       |
-      |       |
-      +-------+
-          |
-          |
-
-      Line 0/3
-  */
-  static QRectF GetPaddedTextRectAtLine(const std::string& s, const QFont& font, const int line, const int n_lines) noexcept;
 
   ///Called whenever a base class item is changed
   void OnBaseChanged(QtRoundedRectItem * const) noexcept;
