@@ -2,12 +2,11 @@ INCLUDEPATH += \
     ../RibiClasses/CppQtKeyboardFriendlyGraphicsView
 
 SOURCES += \
-    ../RibiClasses/CppQtKeyboardFriendlyGraphicsView/qtkeyboardfriendlygraphicsview.cpp \
-    ../RibiClasses/CppQtKeyboardFriendlyGraphicsView/qtkeyboardfriendlygraphicsview_test.cpp
+    $$PWD/qtkeyboardfriendlygraphicsview.cpp
 
 HEADERS  += \
-    ../RibiClasses/CppQtKeyboardFriendlyGraphicsView/qtkeyboardfriendlygraphicsview.h
+    $$PWD/qtkeyboardfriendlygraphicsview.h
 
 OTHER_FILES += \
-    ../RibiClasses/CppQtKeyboardFriendlyGraphicsView/Licence.txt
+    $$PWD/Licence.txt
 
