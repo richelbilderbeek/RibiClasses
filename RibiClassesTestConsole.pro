@@ -45,3 +45,6 @@ LIBS += \
   -lboost_date_time \
   -lboost_graph \
   -lboost_regex
+
+# QResources give this error
+QMAKE_CXXFLAGS += -Wno-unused-variable

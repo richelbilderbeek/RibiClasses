@@ -1,5 +1,6 @@
-
+# Qt does not go well with -Weffc++
 include(../RibiLibraries/DesktopApplicationNoWeffcpp.pri)
+
 include(../RibiLibraries/GeneralConsole.pri)
 include(../RibiLibraries/GeneralConsoleTest.pri)
 include(../RibiLibraries/Apfloat.pri)
@@ -68,3 +69,6 @@ LIBS += \
   -lboost_date_time \
   -lboost_graph \
   -lboost_regex
+
+# QResources give this error
+QMAKE_CXXFLAGS += -Wno-unused-variable
