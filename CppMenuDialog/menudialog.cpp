@@ -89,7 +89,7 @@ int ribi::MenuDialog::Execute(const std::vector<std::string>& argv) noexcept
     );
     return 0;
   }
-  else if (s == "--licence" || s == "-l")
+  else if (s == "--license" || s == "--licence" || s == "-l")
   {
     const std::vector<std::string> v { GetAbout().CreateLicenceText() };
     std::copy(
