@@ -53,10 +53,6 @@ struct CaesarCipher
 
   char Encrypt(const char c, const int d) const noexcept;
   char Deencrypt(const char c, const int d) const noexcept;
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 };
 
 } //~namespace ribi

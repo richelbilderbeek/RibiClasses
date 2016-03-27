@@ -36,3 +36,4 @@ RibiClassesTest
 temp.txt
 *.gcov
 tmp*
+ui_*

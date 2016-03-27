@@ -79,7 +79,6 @@ ConceptMap LoadFromFile(const std::string& dot_filename);
 void SaveToFile(const ConceptMap& g, const std::string& dot_filename);
 void SaveSummaryToFile(const ConceptMap& g, const std::string& dot_filename);
 void SelectRandomNode(ConceptMap& conceptmap, std::mt19937& rng_engine) noexcept;
-void TestConceptMap() noexcept;
 std::string ToXml(const ConceptMap& conceptmap) noexcept;
 std::string ToDot(const ConceptMap& conceptmap) noexcept;
 ConceptMap UnselectEdges(ConceptMap conceptmap) noexcept;

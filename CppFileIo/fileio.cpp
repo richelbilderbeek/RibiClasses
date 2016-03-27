@@ -75,15 +75,16 @@ void ribi::fileio::FileIo::CopyFile(
 
 void ribi::fileio::FileIo::CreateFolder(const std::string& folder) const
 {
-  #ifndef NDEBUG
   if(IsFolder(folder))
   {
-    TRACE("ERROR");
-    TRACE(folder);
+    std::stringstream msg;
+    msg << __func__ << ": "
+      << "can only create folders that do not exist yet, "
+      << "folder name supplied: '"
+      << folder << "' was found to exist"
+    ;
+    throw std::invalid_argument(msg.str());
   }
-  #endif
-  assert(!IsFolder(folder)
-    && "Can only create folders that do not exist yet");
   const auto cmd = "mkdir " + folder;
   const auto error = std::system(cmd.c_str());
   #ifndef NDEBUG
@@ -104,15 +105,16 @@ void ribi::fileio::FileIo::CreateFolder(const std::string& folder) const
 
 void ribi::fileio::FileIo::DeleteFile(const std::string& filename) const
 {
-  #ifndef NDEBUG
   if(!IsRegularFile(filename))
   {
-    TRACE("ERROR");
-    TRACE(filename);
+    std::stringstream msg;
+    msg << __func__ << ": "
+      << "can only delete existing files, "
+      << "filename supplied: '"
+      << filename << "' was not found"
+    ;
+    throw std::invalid_argument(msg.str());
   }
-  #endif
-  assert(IsRegularFile(filename)
-    && "Can only delete existing files");
   std::remove(filename.c_str());
 
   //Under Windows, readonly files must be made deleteable
@@ -138,8 +140,16 @@ void ribi::fileio::FileIo::DeleteFile(const std::string& filename) const
 
 void ribi::fileio::FileIo::DeleteFolder(const std::string& folder) const
 {
-  assert(IsFolder(folder)
-    && "Can only delete folders that do exist");
+  if (!IsFolder(folder))
+  {
+    std::stringstream msg;
+    msg << __func__ << ": "
+      << "can only delte folders that exist, "
+      << "folder name supplied: '"
+      << folder << "' was found not to exist"
+    ;
+    throw std::invalid_argument(msg.str());
+  }
 
   //Delete all files
   for (const auto& subfolder: GetFoldersInFolder(folder))
@@ -187,16 +197,26 @@ bool ribi::fileio::FileIo::FilesAreIdentical(
   const std::string& filename_b
 ) const
 {
-  #ifndef NDEBUG
-  if (!IsRegularFile(filename_a))
+  if(!IsRegularFile(filename_a))
   {
-    TRACE(filename_a);
+    std::stringstream msg;
+    msg << __func__ << ": "
+      << "can only compare existing files, "
+      << "filename_a supplied: '"
+      << filename_a << "' was not found"
+    ;
+    throw std::invalid_argument(msg.str());
   }
-  if (!IsRegularFile(filename_b))
+  if(!IsRegularFile(filename_b))
   {
-    TRACE(filename_b);
+    std::stringstream msg;
+    msg << __func__ << ": "
+      << "can only compare existing files, "
+      << "filename_a supplied: '"
+      << filename_b << "' was not found"
+    ;
+    throw std::invalid_argument(msg.str());
   }
-  #endif
   assert(IsRegularFile(filename_a) && "File must exist to be compared");
   assert(IsRegularFile(filename_b) && "File must exist to be compared");
   const auto v = FileToVector(filename_a);
@@ -207,6 +227,17 @@ bool ribi::fileio::FileIo::FilesAreIdentical(
 std::string ribi::fileio::FileIo::FileToStr(
   const std::string& filename) const
 {
+  if(!IsRegularFile(filename))
+  {
+    std::stringstream msg;
+    msg << __func__ << ": "
+      << "can only convert existing files, "
+      << "filename supplied: '"
+      << filename << "' was not found"
+    ;
+    throw std::invalid_argument(msg.str());
+  }
+
   std::string s;
   for (const auto& t: FileToVector(filename))
   {
@@ -219,12 +250,16 @@ std::string ribi::fileio::FileIo::FileToStr(
 std::vector<std::string> ribi::fileio::FileIo::FileToVector(
   const std::string& filename) const
 {
-  #ifndef NDEBUG
-  if (!IsRegularFile(filename))
+  if(!IsRegularFile(filename))
   {
-    TRACE(filename);
+    std::stringstream msg;
+    msg << __func__ << ": "
+      << "can only convert existing files, "
+      << "filename supplied: '"
+      << filename << "' was not found"
+    ;
+    throw std::invalid_argument(msg.str());
   }
-  #endif
   assert(IsRegularFile(filename));
   assert(!IsFolder(filename));
   std::vector<std::string> v;
@@ -674,18 +709,31 @@ void ribi::fileio::FileIo::RenameFile(
   const std::string& to,
   const RenameMode rename_mode) const
 {
-  #ifndef NDEBUG
-  if (!IsRegularFile(from))
+  if(!IsRegularFile(from))
   {
-    TRACE(from);
+    std::stringstream msg;
+    msg << __func__ << ": "
+      << "can only rename existing files, "
+      << "filename supplied: '"
+      << from << "' was not found"
+    ;
+    throw std::invalid_argument(msg.str());
   }
-  #endif
-  assert(IsRegularFile(from) && "Cannot rename a non-existing file");
-  assert(from != to && "Cannot rename to the same filename");
+  if(from == to)
+  {
+    std::stringstream msg;
+    msg << __func__ << ": "
+      << "can only rename a file to its same name. "
+      << "Filename supplied: '"
+      << from << "'"
+    ;
+    throw std::invalid_argument(msg.str());
+  }
   if (rename_mode == RenameMode::prevent_overwrite && IsRegularFile(to))
   {
     throw std::logic_error("Renaming to an existing file is not allowed");
   }
+
   if (IsRegularFile(to))
   {
     //DeleteFile ensures a correct deletion

@@ -19,6 +19,7 @@
 
 BOOST_AUTO_TEST_CASE(ribi_cmap_qtconceptmap_concepteditdialog_test)
 {
+  using namespace ribi::cmap;
   {
     //Assume reading in a concept and clicking OK without modification does not modify anything
     const auto v = ribi::cmap::ConceptFactory().GetTests();

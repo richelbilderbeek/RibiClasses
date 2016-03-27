@@ -162,17 +162,6 @@ ribi::cmap::Concept ribi::cmap::XmlToConcept(const std::string& s) noexcept
   {
     const std::vector<std::string> v
       = Regex().GetRegexMatches(s,Regex().GetRegexName());
-    #ifndef NDEBUG
-    if (v.size() != 1)
-    {
-      TRACE("ERROR");
-      TRACE(s);
-      TRACE(Regex().GetRegexName());
-      TRACE(v.size());
-      for (const auto& t: v) { TRACE(t); }
-      TRACE("BREAK");
-    }
-    #endif
     assert(v.size() == 1);
     name = ribi::xml::StripXmlTag(v[0]);
   }
