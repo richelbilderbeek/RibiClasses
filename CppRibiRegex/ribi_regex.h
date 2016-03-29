@@ -43,6 +43,7 @@ struct Regex
     const std::string& regex_str
   ) const noexcept { return GetRegexMatchesXpressive(s,regex_str); }
 
+  ///Note: works differently than expected
   std::vector<std::string>
     GetRegexMatchesQRegExp(
     const std::string& s,

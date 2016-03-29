@@ -3,100 +3,105 @@
 
 #include "conceptmapnodefactory.h"
 #include "conceptmapedgefactory.h"
-#include "trace.h"
 
-BOOST_AUTO_TEST_CASE(ribi_concept_map_edge_test)
+BOOST_AUTO_TEST_CASE(ribi_concept_map_edge_copy_constructor)
 {
   using namespace ribi::cmap;
-  const bool verbose{false};
-  const std::vector<Node> nodes{NodeFactory().GetTest(0),NodeFactory().GetTest(1)};
-  if (verbose) { TRACE("Copy constructor"); }
-  {
-    const auto edge1 = EdgeFactory().GetTest(1);
-    const auto edge2(edge1);
-    assert(edge1 == edge2);
-    assert(edge1.GetNode().GetX() == edge2.GetNode().GetX());
-    assert(edge1.GetNode().GetX() == edge2.GetNode().GetX());
-  }
-  if (verbose) { TRACE("Assignment operator"); }
-  {
-    const auto edge1 = EdgeFactory().GetTest(0);
-    auto edge2 = EdgeFactory().GetTest(1);
-    assert(edge1 != edge2);
-    edge2 = edge1;
-    assert(edge1 == edge2);
-  }
-  if (verbose) { TRACE("Operator=="); }
+  const auto edge1 = EdgeFactory().GetTest(1);
+  const auto edge2(edge1);
+  BOOST_CHECK_EQUAL(edge1, edge2);
+  BOOST_CHECK_EQUAL(edge1.GetNode().GetX(), edge2.GetNode().GetX());
+  BOOST_CHECK_EQUAL(edge1.GetNode().GetX(), edge2.GetNode().GetX());
+}
+
+BOOST_AUTO_TEST_CASE(ribi_concept_map_edge_assignment_operator)
+{
+  using namespace ribi::cmap;
+  const auto edge1 = EdgeFactory().GetTest(0);
+  auto edge2 = EdgeFactory().GetTest(1);
+  BOOST_CHECK_NE(edge1, edge2);
+  edge2 = edge1;
+  BOOST_CHECK_EQUAL(edge1, edge2);
+
+}
+
+BOOST_AUTO_TEST_CASE(ribi_concept_map_edge_operator_is_equal)
+{
+  using namespace ribi::cmap;
   {
     const auto edge1 = EdgeFactory().GetTest(0);
     const auto edge2 = EdgeFactory().GetTest(0);
-    assert(edge1 == edge2);
+    BOOST_CHECK_EQUAL(edge1, edge2);
   }
-  if (verbose) { TRACE("Operator=="); }
   {
     const auto edge1 = EdgeFactory().GetTest(1);
     const auto edge2 = EdgeFactory().GetTest(1);
-    assert(edge1.GetNode().GetX() == edge2.GetNode().GetX());
-    assert(edge1 == edge2);
+    BOOST_CHECK_EQUAL(edge1.GetNode().GetX(), edge2.GetNode().GetX());
+    BOOST_CHECK_EQUAL(edge1, edge2);
   }
-  if (verbose) { TRACE("Operator!="); }
-  {
-    const auto edge1 = EdgeFactory().GetTest(0);
-    const auto edge2 = EdgeFactory().GetTest(1);
-    assert(edge1 != edge2);
-  }
-  if (verbose) { TRACE("Edge->XML->Edge must result in the same edge"); }
-  {
-    const Edge edge_before{EdgeFactory().GetTest(0)};
-    const std::string s{ToXml(edge_before)};
-    const Edge edge_after{XmlToEdge(s)};
-    if (ToXml(edge_before) != ToXml(edge_after))
-    {
-      TRACE(ToXml(edge_before));
-      TRACE(ToXml(edge_after ));
-      TRACE(edge_before.GetNode().GetX());
-      TRACE(edge_before.GetNode().GetY());
-      TRACE(edge_after.GetNode().GetX());
-      TRACE(edge_after.GetNode().GetY());
-    }
-    assert(ToXml(edge_before) == ToXml(edge_after));
-    assert(edge_before == edge_after);
-  }
-  if (verbose) { TRACE("Stream operator"); }
-  {
-    const auto edge1 = EdgeFactory().GetTest(0);
-    std::stringstream s;
-    s << edge1;
-    Edge edge2;
-    s >> edge2;
-    assert(edge1 == edge2);
-  }
-  if (verbose) { TRACE("Stream operators"); }
-  {
-    const Edge e = EdgeFactory().GetTest(1);
-    const Edge f = EdgeFactory().GetTest(2);
-    std::stringstream s;
-    s << e << f;
-    Edge g;
-    Edge h;
-    s >> g >> h;
-    if (e != g) { TRACE(e); TRACE(g); }
-    if (f != h) { TRACE(f); TRACE(h); }
-    assert(e == g);
-    assert(f == h);
-  }
-  if (verbose) { TRACE("Stream operator for nasty"); }
+}
+
+BOOST_AUTO_TEST_CASE(ribi_concept_map_edge_operator_is_not_equal)
+{
+  using namespace ribi::cmap;
+  const auto edge1 = EdgeFactory().GetTest(0);
+  const auto edge2 = EdgeFactory().GetTest(1);
+  BOOST_CHECK_NE(edge1, edge2);
+}
+
+
+BOOST_AUTO_TEST_CASE(ribi_concept_map_edge_edge_to_xml_to_edge)
+{
+  using namespace ribi::cmap;
+  const Edge edge_before{EdgeFactory().GetTest(0)};
+  const std::string s{ToXml(edge_before)};
+  const Edge edge_after{XmlToEdge(s)};
+  BOOST_CHECK_EQUAL(ToXml(edge_before), ToXml(edge_after));
+  BOOST_CHECK_EQUAL(edge_before, edge_after);
+}
+
+BOOST_AUTO_TEST_CASE(ribi_concept_map_edge_edge_stream_operator)
+{
+  using namespace ribi::cmap;
+  const auto edge1 = EdgeFactory().GetTest(0);
+  std::stringstream s;
+  s << edge1;
+  Edge edge2;
+  s >> edge2;
+  BOOST_CHECK_EQUAL(edge1, edge2);
+}
+
+BOOST_AUTO_TEST_CASE(ribi_concept_map_edge_edge_stream_operators)
+{
+  using namespace ribi::cmap;
+  const Edge e = EdgeFactory().GetTest(1);
+  const Edge f = EdgeFactory().GetTest(2);
+  std::stringstream s;
+  s << e << f;
+  Edge g;
+  Edge h;
+  s >> g >> h;
+  BOOST_CHECK_EQUAL(e, g);
+  BOOST_CHECK_EQUAL(f, h);
+}
+
+BOOST_AUTO_TEST_CASE(ribi_concept_map_edge_edge_stream_operator_nasty)
+{
+  using namespace ribi::cmap;
   for (const Edge e: EdgeFactory().GetNastyTests())
   {
     std::stringstream s;
     s << e;
     Edge f;
-    assert(e != f);
+    BOOST_CHECK_NE(e, f);
     s >> f;
-    if (e != f) { TRACE(e); TRACE(f); }
-    assert(e == f);
+    BOOST_CHECK_EQUAL(e, f);
   }
-  if (verbose) { TRACE("Stream operators for nasty"); }
+}
+
+BOOST_AUTO_TEST_CASE(ribi_concept_map_edge_edge_stream_operators_nasty)
+{
+  using namespace ribi::cmap;
   for (const Edge e: EdgeFactory().GetNastyTests())
   {
     std::stringstream s;
@@ -104,9 +109,7 @@ BOOST_AUTO_TEST_CASE(ribi_concept_map_edge_test)
     Edge g;
     Edge h;
     s >> g >> h;
-    if (e != g) { TRACE(e); TRACE(g); }
-    if (e != h) { TRACE(e); TRACE(h); }
-    assert(e == g);
-    assert(e == h);
+    BOOST_CHECK_EQUAL(e, g);
+    BOOST_CHECK_EQUAL(e, h);
   }
 }

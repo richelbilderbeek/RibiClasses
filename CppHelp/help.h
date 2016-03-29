@@ -37,7 +37,8 @@ struct Help
     explicit Option(
       const char option_short,
       const std::string& option_long,
-      const std::string& option_description);
+      const std::string& option_description
+    );
     char m_short;              // a
     std::string m_long;        // about
     std::string m_description; // displays the about information

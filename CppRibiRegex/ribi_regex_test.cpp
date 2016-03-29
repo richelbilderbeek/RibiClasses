@@ -22,60 +22,81 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <boost/test/unit_test.hpp>
 #include "trace.h"
 
-BOOST_AUTO_TEST_CASE(ribi_regex_test)
+BOOST_AUTO_TEST_CASE(ribi_regex_get_regex_matches_on_plain_string_dutch_postal_codes)
 {
-  ribi::Regex r;
-  const bool verbose{false};
+  const ribi::Regex r;
+  const std::string s = "In the Netherlands, 1234 AB and 2345 BC are valid zip codes";
+  std::vector<std::string> expected;
+  expected.push_back("1234 AB");
+  expected.push_back("2345 BC");
+  const std::string t = "(\\d{4} [A-Z]{2})";
+  BOOST_CHECK(r.GetRegexMatches(s,t) == expected);
 
-  if (verbose) { TRACE("GetRegexMatches, plain, on Dutch postal codes"); }
-  {
-    const std::string s = "In the Netherlands, 1234 AB and 2345 BC are valid zip codes";
-    std::vector<std::string> expected;
-    expected.push_back("1234 AB");
-    expected.push_back("2345 BC");
-    {
-      const std::string t = "(\\d{4} [A-Z]{2})";
-      BOOST_CHECK(r.GetRegexMatches(s,(t.c_str())) == expected);
-    }
-  }
-  if (verbose) { TRACE("GetRegexMatches, plain, XML"); }
-  {
-    const std::string s = "<concept><name>Concept with examples</name><example>Example 1</example><example>Example 2</example><example>Example 3</example></concept>";
-    const std::vector<std::string> expected {
-      "<example>Example 1</example>",
-      "<example>Example 2</example>",
-      "<example>Example 3</example>"
-    };
-    const std::string regex_str = "(<example>.*?</example>)";
-    BOOST_CHECK(r.GetRegexMatches(s,regex_str) == expected);
-  }
-  if (verbose) { TRACE("GetRegexMatches on GetRegexDutchPostalCode"); }
-  {
-    const std::string s = "Both '1234 AB' and '9999 ZZ' are valid Dutch zip codes";
-    const std::string t = r.GetRegexDutchPostalCode();
-    const auto v = r.GetRegexMatches(s,t);
-    //const auto w = r.GetRegexMatchesQRegExp(s,t);
-    const auto x = r.GetRegexMatchesXpressive(s,t);
-    BOOST_CHECK(v.size() == 2);
-    //BOOST_CHECK(v == w);
-    BOOST_CHECK(v == x);
-  }
-  if (verbose) { TRACE("GetRegexMatches on GetRegexShapes"); }
-  {
-    const std::string s = "POLYGON((0 0,0 1,1 0)),LINESTRING(0 0,0 1,1 0)";
-    const std::string t = r.GetRegexShapes();
-    const auto v = r.GetRegexMatches(s,t);
-    BOOST_CHECK(v.size() == 2);
-    BOOST_CHECK(v[0] == "POLYGON((0 0,0 1,1 0))");
-    BOOST_CHECK(v[1] == "LINESTRING(0 0,0 1,1 0)");
-    //const auto w = r.GetRegexMatchesQRegExp(s,t);
-    const auto x = r.GetRegexMatchesXpressive(s,t);
-    //BOOST_CHECK(v == w);
-    BOOST_CHECK(v == x);
-  }
-  if (verbose) { TRACE("GetRegexDutchFloat"); }
-  {
-    BOOST_CHECK( r.GetRegexMatches("1.23",r.GetRegexDutchFloat()).empty());
-    BOOST_CHECK(!r.GetRegexMatches("1,23",r.GetRegexDutchFloat()).empty());
-  }
+  const auto regex_dutch_postal_code = r.GetRegexDutchPostalCode();
+  BOOST_CHECK(r.GetRegexMatches(s,regex_dutch_postal_code) == expected);
+}
+
+BOOST_AUTO_TEST_CASE(ribi_regex_get_regex_matches_on_plain_string_xml_tags)
+{
+  const ribi::Regex r;
+  const std::string s = "<concept><name>Concept with examples</name><example>Example 1</example><example>Example 2</example><example>Example 3</example></concept>";
+  const std::vector<std::string> expected {
+    "<example>Example 1</example>",
+    "<example>Example 2</example>",
+    "<example>Example 3</example>"
+  };
+  const std::string regex_str = "(<example>.*?</example>)";
+  BOOST_CHECK(r.GetRegexMatches(s,regex_str) == expected);
+}
+
+BOOST_AUTO_TEST_CASE(ribi_regex_get_regex_matches_algorithms)
+{
+  const ribi::Regex r;
+  const std::string s = "Both '1234 AB' and '9999 ZZ' are valid Dutch zip codes";
+  const std::string t = r.GetRegexDutchPostalCode();
+  const auto v = r.GetRegexMatches(s,t);
+  const auto w = r.GetRegexMatchesQRegExp(s,t);
+  const auto x = r.GetRegexMatchesXpressive(s,t);
+  BOOST_CHECK(v.size() == 2);
+  BOOST_CHECK(v != w); //?Why?
+  BOOST_CHECK(v == x);
+}
+
+BOOST_AUTO_TEST_CASE(ribi_regex_get_regex_matches_on_polygon)
+{
+  const ribi::Regex r;
+  const std::string s = "POLYGON((0 0,0 1,1 0))";
+  const std::string t = r.GetRegexPolygon();
+  const auto v = r.GetRegexMatches(s,t);
+  BOOST_CHECK(v.size() == 1);
+  BOOST_CHECK(v[0] == "POLYGON((0 0,0 1,1 0))");
+}
+
+BOOST_AUTO_TEST_CASE(ribi_regex_get_regex_matches_on_shapes)
+{
+  const ribi::Regex r;
+  const std::string s = "POLYGON((0 0,0 1,1 0)),LINESTRING(0 0,0 1,1 0)";
+  const std::string t = r.GetRegexShapes();
+  const auto v = r.GetRegexMatches(s,t);
+  BOOST_CHECK(v.size() == 2);
+  BOOST_CHECK(v[0] == "POLYGON((0 0,0 1,1 0))");
+  BOOST_CHECK(v[1] == "LINESTRING(0 0,0 1,1 0)");
+  const auto w = r.GetRegexMatchesQRegExp(s,t);
+  const auto x = r.GetRegexMatchesXpressive(s,t);
+  //BOOST_CHECK(v == w); //?Why?
+  BOOST_CHECK(v == x);
+}
+
+BOOST_AUTO_TEST_CASE(ribi_regex_get_regex_matches_on_dutch_float)
+{
+  const ribi::Regex r;
+  BOOST_CHECK( r.GetRegexMatches("1.23",r.GetRegexDutchFloat()).empty());
+  BOOST_CHECK(!r.GetRegexMatches("1,23",r.GetRegexDutchFloat()).empty());
+}
+
+BOOST_AUTO_TEST_CASE(ribi_regex_version)
+{
+  const ribi::Regex r;
+  BOOST_CHECK(!r.GetVersion().empty());
+  BOOST_CHECK(!r.GetVersionHistory().empty());
 }

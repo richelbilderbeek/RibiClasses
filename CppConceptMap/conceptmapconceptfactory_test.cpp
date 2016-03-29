@@ -6,14 +6,17 @@
 
 BOOST_AUTO_TEST_CASE(ribi_concept_map_concept_factory_test)
 {
-  using namespace ribi::cmap;
-  const bool verbose{false};
-  if (verbose) { TRACE("Concept -> XML -> Concept "); }
-  {
-    const auto concept = ConceptFactory().GetTest(2);
-    const auto xml = ToXml(concept);
-    const auto new_concept = XmlToConcept(xml);
-    const auto new_xml = ToXml(new_concept);
-    BOOST_CHECK(xml == new_xml);
-  }
+  BOOST_CHECK_EQUAL(
+    ribi::cmap::ConceptFactory().GetTests().size(),
+    ribi::cmap::ConceptFactory().GetNumberOfTests()
+  );
+}
+
+BOOST_AUTO_TEST_CASE(ribi_concept_map_concept_factory_concept_to_xml_to_concept)
+{
+  const auto concept = ribi::cmap::ConceptFactory().GetTest(2);
+  const auto xml = ribi::cmap::ToXml(concept);
+  const auto new_concept = ribi::cmap::XmlToConcept(xml);
+  const auto new_xml = ribi::cmap::ToXml(new_concept);
+  BOOST_CHECK(xml == new_xml);
 }
