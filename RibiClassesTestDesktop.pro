@@ -2,7 +2,6 @@
 include(../RibiLibraries/DesktopApplicationNoWeffcpp.pri)
 
 include(../RibiLibraries/GeneralConsole.pri)
-include(../RibiLibraries/GeneralConsoleTest.pri)
 include(../RibiLibraries/Apfloat.pri)
 #include(../RibiLibraries/BoostAll.pri)
 include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
