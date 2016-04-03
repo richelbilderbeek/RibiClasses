@@ -56,9 +56,6 @@ include(../RibiClasses/CppQtScopedDisable/CppQtScopedDisable.pri)
 
 SOURCES += main_test_desktop.cpp
 
-# Boost.Test
-LIBS += -lboost_unit_test_framework
-
 # gcov
 QMAKE_CXXFLAGS += -fprofile-arcs -ftest-coverage
 LIBS += -lgcov
@@ -71,3 +68,6 @@ LIBS += \
 
 # QResources give this error
 QMAKE_CXXFLAGS += -Wno-unused-variable
+
+# QTest
+QT += testlib

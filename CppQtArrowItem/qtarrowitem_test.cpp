@@ -1,10 +1,11 @@
+#include "qtarrowitem_test.h"
 #include "qtarrowitem.h"
-#include <boost/test/unit_test.hpp>
 
-BOOST_AUTO_TEST_CASE(qtarrowitem_test)
+void ribi::qtarrowitem_test::can_default_construct() const noexcept
 {
-  BOOST_CHECK_NO_THROW(
-    ribi::QtArrowItem(
+  try
+  {
+    ribi::QtArrowItem a(
       0.0, //const double x1,
       0.0, //const double y1,
       false, //const bool tail,
@@ -12,6 +13,12 @@ BOOST_AUTO_TEST_CASE(qtarrowitem_test)
       200.0, //const double y2,
       true, //const bool head,
       nullptr //QGraphicsItem* parent = 0
-    )
-  );
+    );
+
+    QVERIFY(!a.scene());
+  }
+  catch (...)
+  {
+    QVERIFY(!"Should not get here");
+  }
 }

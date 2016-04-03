@@ -12,3 +12,18 @@ SOURCES += \
     $$PWD/qtconceptmaprateexamplesdialognewname_test.cpp \
     $$PWD/qtconceptmapqtnode_test.cpp \
     $$PWD/qtconceptmap_test.cpp
+
+HEADERS += \
+    $$PWD/qtconceptmapcompetency_test.h \
+    $$PWD/qtconceptmapconcepteditdialog_test.h \
+    $$PWD/qtconceptmapedgedialog_test.h \
+    $$PWD/qtconceptmapexamplesdialog_test.h \
+    $$PWD/qtconceptmapnodedialog_test.h \
+    $$PWD/qtconceptmapqtedgedialog_test.h \
+    $$PWD/qtconceptmapqtedge_test.h \
+    $$PWD/qtconceptmapqtnodedialog_test.h \
+    $$PWD/qtconceptmapqtnodefactory_test.h \
+    $$PWD/qtconceptmaprateconcepttallydialognewname_test.h \
+    $$PWD/qtconceptmaprateexamplesdialognewname_test.h \
+    $$PWD/qtconceptmapqtnode_test.h \
+    $$PWD/qtconceptmap_test.h

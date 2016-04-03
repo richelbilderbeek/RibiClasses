@@ -1,4 +1,5 @@
 #include "qtconceptmap.h"
+#include "qtconceptmap.h"
 #include <boost/test/unit_test.hpp>
 #include <chrono>
 #include <QApplication>

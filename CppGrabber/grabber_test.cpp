@@ -2,7 +2,7 @@
 #include "grabber.h"
 #include <boost/test/unit_test.hpp>
 
-void grabber_test::can_default_construct()
+void ribi::grabber_test::can_default_construct()
 {
   QVERIFY(!ribi::Grabber(0).GetVersion().empty());
 }
