@@ -116,7 +116,7 @@ ribi::cmap::QtConceptMap::QtConceptMap(QWidget* parent)
     m_tools{new QtTool}
 {
   #ifndef NDEBUG
-  this->SetVerbosity(true);
+  this->SetVerbosity(false);
   #endif
 
   this->setScene(new QGraphicsScene(this));

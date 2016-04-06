@@ -29,7 +29,6 @@ void ribi::cmap::qtconceptmaprateexamplesdialognewname_test::all_tests()
       {
         QVERIFY(j < static_cast<int>(ConceptFactory().GetTests().size()));
         const auto b = QtRateExamplesDialogNewName(ConceptFactory().GetTests()[j]).GetRatedExamples();
-        QVERIFY(a != b);
         if (i == j)
         {
           QVERIFY(a == b);
