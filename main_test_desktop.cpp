@@ -14,6 +14,11 @@
 #include "qtconceptmaprateexamplesdialognewname_test.h"
 #include "qtconceptmapqtnode_test.h"
 #include "qtconceptmap_test.h"
+#include "qtquadbezierarrowdialog_test.h"
+#include "qtquadbezierarrowitem_test.h"
+#include "qtroundededitrectitem_test.h"
+#include "qtroundedrectitem_test.h"
+#include "qtroundedrectitemdialog_test.h"
 
 int main(int argc, char *argv[])
 {
@@ -34,6 +39,10 @@ int main(int argc, char *argv[])
   { ribi::cmap::qtconceptmaprateexamplesdialognewname_test t; error |= QTest::qExec(&t, argc, argv); }
   { ribi::cmap::qtconceptmapqtnode_test t; error |= QTest::qExec(&t, argc, argv); }
   { ribi::cmap::qtconceptmap_test t; error |= QTest::qExec(&t, argc, argv); }
-
+  { ribi::qtquadbezierarrowdialog_test t; error |= QTest::qExec(&t, argc, argv); }
+  { ribi::qtquadbezierarrowitem_test t; error |= QTest::qExec(&t, argc, argv); }
+  { ribi::qtroundededitrectitem_test t; error |= QTest::qExec(&t, argc, argv); }
+  { ribi::qtroundedrectitem_test t; error |= QTest::qExec(&t, argc, argv); }
+  { ribi::qtroundedrectitemdialog_test t; error |= QTest::qExec(&t, argc, argv); }
   return error;
 }

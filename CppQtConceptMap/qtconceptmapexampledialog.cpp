@@ -32,7 +32,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmapcompetencies.h"
 #include "conceptmapexample.h"
 #include "conceptmapexamplefactory.h"
-#include "testtimer.h"
+
 #include "trace.h"
 
 #pragma GCC diagnostic pop

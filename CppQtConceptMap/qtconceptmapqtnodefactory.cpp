@@ -5,7 +5,7 @@
 #include "conceptmapnodefactory.h"
 #include "qtconceptmapqtnode.h"
 
-#include "testtimer.h"
+
 #include "trace.h"
 
 ribi::cmap::QtNodeFactory::QtNodeFactory()

@@ -1,10 +1,11 @@
+#include "qtconceptmapqtedgedialog_test.h"
 #include "qtconceptmapqtedgedialog.h"
 #include "qtconceptmapqtnodefactory.h"
 #include "conceptmapnodefactory.h"
 #include "conceptmapedgefactory.h"
 
-#include <boost/test/unit_test.hpp>
-BOOST_AUTO_TEST_CASE(ribi_cmap_qtedge_dialog_test)
+
+void ribi::cmap::qtconceptmapqtedgedialog_test::all_tests()
 {
   using namespace ribi::cmap;
 
@@ -20,13 +21,13 @@ BOOST_AUTO_TEST_CASE(ribi_cmap_qtedge_dialog_test)
   {
     const double new_x{dialog.GetUiX() + 10.0};
     dialog.SetUiX(new_x);
-    BOOST_CHECK(std::abs(dialog.GetUiX() - new_x) < 2.0);
+    QVERIFY(std::abs(dialog.GetUiX() - new_x) < 2.0);
   }
   //if (verbose) { TRACE("SetY and GetY must be symmetric"); }
   {
     const double new_y{dialog.GetUiY() + 10.0};
     dialog.SetUiY(new_y);
-    BOOST_CHECK(std::abs(dialog.GetUiY() - new_y) < 2.0);
+    QVERIFY(std::abs(dialog.GetUiY() - new_y) < 2.0);
   }
   dialog.SetQtEdge(nullptr);
   //dialog = QtQtEdgeDialog();

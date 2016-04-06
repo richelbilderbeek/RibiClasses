@@ -34,7 +34,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "fileio.h"
 #include "conceptmapregex.h"
-#include "testtimer.h"
+
 #include "trace.h"
 #pragma GCC diagnostic pop
 

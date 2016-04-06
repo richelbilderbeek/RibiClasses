@@ -1,5 +1,6 @@
+#include "qtconceptmapqtnodedialog_test.h"
 #include "qtconceptmapqtnodedialog.h"
-#include <boost/test/unit_test.hpp>
+
 
 #include <sstream>
 
@@ -16,12 +17,12 @@
 #include "qtitemdisplaystrategy.h"
 #include "qtroundededitrectitemdialog.h"
 
-#include "testtimer.h"
+
 #include "trace.h"
 
 #include "ui_qtconceptmapqtnodedialog.h"
 
-BOOST_AUTO_TEST_CASE(ribi_cmap_qtqtnodedialog_test)
+void ribi::cmap::qtconceptmapqtnodedialog_test::all_tests()
 {
   using namespace ribi::cmap;
   const bool verbose{false};
@@ -34,13 +35,13 @@ BOOST_AUTO_TEST_CASE(ribi_cmap_qtqtnodedialog_test)
     const double old_x{dialog.GetUiX()};
     const double new_x{old_x + 10.0};
     dialog.SetUiX(new_x);
-    BOOST_CHECK(std::abs(dialog.GetUiX() - new_x) < 2.0);
+    QVERIFY(std::abs(dialog.GetUiX() - new_x) < 2.0);
   }
   if (verbose) { TRACE("SetUiY and GetUiY must be symmetric"); }
   {
     const double old_y{dialog.GetUiY()};
     const double new_y{old_y + 10.0};
     dialog.SetUiY(new_y);
-    BOOST_CHECK(std::abs(dialog.GetUiY() - new_y) < 2.0);
+    QVERIFY(std::abs(dialog.GetUiY() - new_y) < 2.0);
   }
 }

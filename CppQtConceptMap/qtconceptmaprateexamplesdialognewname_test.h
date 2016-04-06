@@ -1,5 +1,5 @@
-#ifndef XXX_TEST_H
-#define XXX_TEST_H
+#ifndef qtconceptmaprateexamplesdialognewname_test_H
+#define qtconceptmaprateexamplesdialognewname_test_H
 
 #include <QtTest/QtTest>
 
@@ -11,10 +11,10 @@ class qtconceptmaprateexamplesdialognewname_test : public QObject
     Q_OBJECT
 
 private slots:
-  void can_default_construct();
+  void all_tests();
 };
 
 } //~namespace cmap
 } //~namespace ribi
 
-#endif // XXX_TEST_H
+#endif // qtconceptmaprateexamplesdialognewname_test_H

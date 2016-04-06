@@ -1,5 +1,6 @@
+#include "qtconceptmapconcepteditdialog_test.h"
 #include "qtconceptmapconcepteditdialog.h"
-#include <boost/test/unit_test.hpp>
+
 
 #include <QKeyEvent>
 #include <QObjectList>
@@ -14,10 +15,10 @@
 #include "conceptmapconceptfactory.h"
 #include "qtconceptmapcompetency.h"
 #include "ui_qtconceptmapconcepteditdialog.h"
-#include "testtimer.h"
+
 #include "trace.h"
 
-BOOST_AUTO_TEST_CASE(ribi_cmap_qtconceptmap_concepteditdialog_test)
+void ribi::cmap::qtconceptmapconcepteditdialog_test::all_tests()
 {
   using namespace ribi::cmap;
   {
@@ -27,14 +28,14 @@ BOOST_AUTO_TEST_CASE(ribi_cmap_qtconceptmap_concepteditdialog_test)
       [](const Concept& concept)
       {
         const Concept old_concept(concept);
-        BOOST_CHECK(concept == old_concept);
+        QVERIFY(concept == old_concept);
         QtConceptMapConceptEditDialog d(concept);
         //Do nothing...
         d.on_button_ok_clicked();
         #ifdef CONCEPTMAP_WRITE_TO_CONCEPT
-        BOOST_CHECK(d.WriteToConcept() == old_concept);
+        QVERIFY(d.WriteToConcept() == old_concept);
         #else
-        BOOST_CHECK(concept == old_concept);
+        QVERIFY(concept == old_concept);
         #endif
       }
     );
@@ -46,11 +47,11 @@ BOOST_AUTO_TEST_CASE(ribi_cmap_qtconceptmap_concepteditdialog_test)
       [](const Concept& concept)
       {
         const Concept old_concept(concept);
-        BOOST_CHECK(concept == old_concept);
+        QVERIFY(concept == old_concept);
         QtConceptMapConceptEditDialog d(concept);
         d.GetUi()->edit_concept->setText(d.GetUi()->edit_concept->text() + "MODIFICATION");
         d.on_button_ok_clicked();
-        BOOST_CHECK(d.GetConcept() != old_concept);
+        QVERIFY(d.GetConcept() != old_concept);
       }
     );
   }
@@ -61,13 +62,13 @@ BOOST_AUTO_TEST_CASE(ribi_cmap_qtconceptmap_concepteditdialog_test)
       [](const Concept& concept)
       {
         const Concept old_concept(concept);
-        BOOST_CHECK(concept == old_concept);
+        QVERIFY(concept == old_concept);
         QtConceptMapConceptEditDialog d(concept);
-        BOOST_CHECK(d.GetUi()->edit_text->text().isEmpty());
+        QVERIFY(d.GetUi()->edit_text->text().isEmpty());
         d.GetUi()->edit_text->setText("TO BE ADDED EXAMPLE");
         d.on_button_add_clicked(); //Should add
         d.on_button_ok_clicked();
-        BOOST_CHECK(d.GetConcept() != old_concept);
+        QVERIFY(d.GetConcept() != old_concept);
       }
     );
   }
@@ -79,16 +80,16 @@ BOOST_AUTO_TEST_CASE(ribi_cmap_qtconceptmap_concepteditdialog_test)
       [](const Concept& concept)
       {
         const Concept old_concept(concept);
-        BOOST_CHECK(concept == old_concept);
+        QVERIFY(concept == old_concept);
         QtConceptMapConceptEditDialog d(concept);
         //Change name
         d.GetUi()->edit_concept->setText(d.GetUi()->edit_concept->text() + "MODIFICATION");
         //Change examples
-        BOOST_CHECK(d.GetUi()->edit_text->text().isEmpty());
+        QVERIFY(d.GetUi()->edit_text->text().isEmpty());
         d.GetUi()->edit_text->setText("TO BE ADDED EXAMPLE");
         d.on_button_add_clicked(); //Should add
         //DO NOT PRESS OK d.on_button_ok_clicked();
-        BOOST_CHECK(d.GetConcept() == old_concept);
+        QVERIFY(d.GetConcept() == old_concept);
       }
     );
   }

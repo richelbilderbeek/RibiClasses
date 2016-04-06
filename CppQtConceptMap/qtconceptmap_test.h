@@ -11,7 +11,7 @@ class qtconceptmap_test : public QObject
     Q_OBJECT
 
 private slots:
-  void can_default_construct();
+  void all_tests();
 };
 
 } //~namespace cmap

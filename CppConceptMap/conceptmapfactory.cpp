@@ -40,7 +40,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmapnodefactory.h"
 #include "conceptmapregex.h"
 #include "trace.h"
-#include "testtimer.h"
+
 #include "xml.h"
 
 #pragma GCC diagnostic pop

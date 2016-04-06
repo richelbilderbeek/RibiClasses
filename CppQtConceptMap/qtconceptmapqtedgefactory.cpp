@@ -8,7 +8,7 @@
 #include "qtconceptmapqtedge.h"
 #include "qtconceptmapqtnode.h"
 #include "qtconceptmapqtnodefactory.h"
-#include "testtimer.h"
+
 #include "trace.h"
 
 ribi::cmap::QtEdgeFactory::QtEdgeFactory()

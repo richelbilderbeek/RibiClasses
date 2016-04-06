@@ -3,7 +3,7 @@
 #include <cassert>
 
 #include "ribi_regex.h"
-#include "testtimer.h"
+
 #include "trace.h"
 
 ribi::cmap::Regex::Regex()

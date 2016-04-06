@@ -35,7 +35,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "container.h"
 #include "qtroundedrectitemdialog.h"
 #include "qtroundededitrectitem.h"
-#include "testtimer.h"
+
 #include "trace.h"
 #include "ui_qtroundededitrectitemdialog.h"
 #pragma GCC diagnostic pop

@@ -1,7 +1,7 @@
-#include <boost/test/unit_test.hpp>
+#include "qtconceptmapqtnodefactory_test.h"
 #include "qtconceptmapqtnodefactory.h"
 
-BOOST_AUTO_TEST_CASE(ribi_cmap_qtnode_factory_create_all_qtnodes)
+void ribi::cmap::qtconceptmapqtnodefactory_test::all_tests()
 {
   using namespace ribi::cmap;
   const QtNodeFactory f;
@@ -9,6 +9,6 @@ BOOST_AUTO_TEST_CASE(ribi_cmap_qtnode_factory_create_all_qtnodes)
   for (int i=0; i!=n; ++i)
   {
     const auto qtnode = f.GetTest(i);
-    BOOST_CHECK(qtnode);
+    QVERIFY(qtnode.get()); //Need .get for QVERIFY
   }
 }

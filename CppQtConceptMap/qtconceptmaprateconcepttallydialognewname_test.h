@@ -1,5 +1,5 @@
-#ifndef XXX_TEST_H
-#define XXX_TEST_H
+#ifndef qtconceptmaprateconcepttallydialognewname_test_H
+#define qtconceptmaprateconcepttallydialognewname_test_H
 
 #include <QtTest/QtTest>
 
@@ -11,10 +11,13 @@ class qtconceptmaprateconcepttallydialognewname_test : public QObject
     Q_OBJECT
 
 private slots:
-  void can_default_construct();
+  void construct_with_empty_conceptmap();
+  void construct_with_test_conceptmap();
+  void measure_ui_from_test_concept_map();
+
 };
 
 } //~namespace cmap
 } //~namespace ribi
 
-#endif // XXX_TEST_H
+#endif // qtconceptmaprateconcepttallydialognewname_test_H

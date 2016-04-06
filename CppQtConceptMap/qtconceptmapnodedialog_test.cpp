@@ -1,5 +1,6 @@
+#include "qtconceptmapnodedialog_test.h"
 #include "qtconceptmapnodedialog.h"
-#include <boost/test/unit_test.hpp>
+
 
 #include <boost/bind/bind.hpp>
 #include <boost/lambda/lambda.hpp>
@@ -13,10 +14,10 @@
 #include "qtconceptmapconceptdialog.h"
 #include "qtconceptmapexamplesdialog.h"
 #include "ui_qtconceptmapnodedialog.h"
-#include "testtimer.h"
+
 #include "trace.h"
 
-BOOST_AUTO_TEST_CASE(ribi_cmap_qtnode_dialog_test)
+void ribi::cmap::qtconceptmapnodedialog_test::all_tests()
 {
   using namespace ribi::cmap;
   QtNodeDialog dialog;
@@ -24,6 +25,6 @@ BOOST_AUTO_TEST_CASE(ribi_cmap_qtnode_dialog_test)
   dialog.SetNode(node);
   //if (verbose) { TRACE("X of QtNode and QtNodeDialog must match at start"); }
   {
-    BOOST_CHECK(std::abs(dialog.GetUiX() - node.GetX()) < 2.0);
+    QVERIFY(std::abs(dialog.GetUiX() - node.GetX()) < 2.0);
   }
 }

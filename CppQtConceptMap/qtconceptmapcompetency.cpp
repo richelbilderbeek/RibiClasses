@@ -30,7 +30,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 
 #include <QImage>
 #include <QPixmap>
-#include "testtimer.h"
+
 #include "trace.h"
 #include "qtimage.h"
 //#include "qtgraphics.h"

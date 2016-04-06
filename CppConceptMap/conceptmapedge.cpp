@@ -40,7 +40,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "graphviz_decode.h"
 #include "graphviz_encode.h"
 #include "is_graphviz_friendly.h"
-#include "testtimer.h"
+
 #include "trace.h"
 #include "xml.h"
 #pragma GCC diagnostic pop

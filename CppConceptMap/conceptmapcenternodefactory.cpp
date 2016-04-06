@@ -40,7 +40,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmapregex.h"
 #include "counter.h"
 #include "ribi_regex.h"
-#include "testtimer.h"
+
 #include "trace.h"
 #include "xml.h"
 #pragma GCC diagnostic pop

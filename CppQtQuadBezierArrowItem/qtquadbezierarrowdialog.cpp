@@ -14,7 +14,7 @@
 
 #include "qtquadbezierarrowitem.h"
 #include "trace.h"
-#include "testtimer.h"
+
 #include "ui_qtquadbezierarrowdialog.h"
 #pragma GCC diagnostic pop
 

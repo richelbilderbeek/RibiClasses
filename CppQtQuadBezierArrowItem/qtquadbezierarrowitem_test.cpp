@@ -1,14 +1,13 @@
-#include "qtquadbezierarrowitem.h"
-
-#include <boost/test/unit_test.hpp>
+#include "qtquadbezierarrowitem_test.h"
 
 #include <QApplication>
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include "grabber.h"
 #include "qtroundededitrectitem.h"
+#include "qtquadbezierarrowitem.h"
 
-BOOST_AUTO_TEST_CASE(ribi_qt_quad_bezier_arrow_item_test)
+void ribi::qtquadbezierarrowitem_test::all_tests()
 {
   using namespace ribi;
   //Render one QtQuadBezierArrowItem
@@ -72,11 +71,11 @@ BOOST_AUTO_TEST_CASE(ribi_qt_quad_bezier_arrow_item_test)
     grabber.Grab();
 
     //Same general tests
-    BOOST_CHECK(arrow->GetCenter().x() == 25.0);
-    BOOST_CHECK(arrow->GetCenter().y() == 25.0);
-    BOOST_CHECK(arrow->zValue() < rects[0]->zValue());
-    BOOST_CHECK(arrow->zValue() < rects[1]->zValue());
-    BOOST_CHECK(arrow->zValue() < arrow->GetMidItem()->zValue());
+    QVERIFY(arrow->GetCenter().x() == 25.0);
+    QVERIFY(arrow->GetCenter().y() == 25.0);
+    QVERIFY(arrow->zValue() < rects[0]->zValue());
+    QVERIFY(arrow->zValue() < rects[1]->zValue());
+    QVERIFY(arrow->zValue() < arrow->GetMidItem()->zValue());
     delete my_scene;
     delete view;
   }

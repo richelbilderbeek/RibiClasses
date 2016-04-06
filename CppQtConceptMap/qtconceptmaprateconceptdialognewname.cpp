@@ -37,7 +37,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmapfactory.h"
 #include "conceptmap.h"
 #include "conceptmapedge.h"
-#include "testtimer.h"
+
 #include "conceptmapexamplesfactory.h"
 #include "conceptmapexamples.h"
 //#include "conceptmapfile.h"

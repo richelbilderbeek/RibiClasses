@@ -1,5 +1,5 @@
-#ifndef XXX_TEST_H
-#define XXX_TEST_H
+#ifndef qtconceptmapnodedialog_test_H
+#define qtconceptmapnodedialog_test_H
 
 #include <QtTest/QtTest>
 
@@ -11,10 +11,10 @@ class qtconceptmapnodedialog_test : public QObject
     Q_OBJECT
 
 private slots:
-  void can_default_construct();
+  void all_tests();
 };
 
 } //~namespace cmap
 } //~namespace ribi
 
-#endif // XXX_TEST_H
+#endif // qtconceptmapnodedialog_test_H

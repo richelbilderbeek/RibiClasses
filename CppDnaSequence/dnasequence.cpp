@@ -6,7 +6,7 @@
 #include <stdexcept>
 
 #include "container.h"
-#include "testtimer.h"
+
 
 ribi::DnaSequence::DnaSequence(const std::string& description, const std::string& sequence)
   : m_description{description},

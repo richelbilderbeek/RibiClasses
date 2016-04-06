@@ -1,6 +1,7 @@
+#include "qtconceptmap_test.h"
 #include "qtconceptmap.h"
 #include "qtconceptmap.h"
-#include <boost/test/unit_test.hpp>
+
 #include <chrono>
 #include <QApplication>
 #include <QMouseEvent>
@@ -22,7 +23,7 @@
 #include "qtconceptmapqtnode.h"
 #include "conceptmapnodefactory.h"
 #include "ribi_system.h"
-#include "testtimer.h"
+
 #include "trace.h"
 #pragma GCC diagnostic pop
 
@@ -38,7 +39,7 @@ QKeyEvent CreateRight() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Rig
 QKeyEvent CreateSpace() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Space,Qt::NoModifier); }
 QKeyEvent CreateUp() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Up,Qt::NoModifier); }
 
-BOOST_AUTO_TEST_CASE(qt_concept_map_test)
+void ribi::cmap::qtconceptmap_test::all_tests()
 {
   using namespace ribi::cmap;
   bool verbose{false};
@@ -47,14 +48,14 @@ BOOST_AUTO_TEST_CASE(qt_concept_map_test)
   for (const auto conceptmap: ConceptMapFactory().GetAllTests())
   {
     QtConceptMap m;
-    BOOST_CHECK(CountQtNodes(m.GetScene()) == 0);
+    QVERIFY(CountQtNodes(m.GetScene()) == 0);
     m.SetConceptMap(conceptmap);
     const auto n_nodes = static_cast<int>(boost::num_vertices(conceptmap));
     const auto n_edges = static_cast<int>(boost::num_edges(conceptmap));
     const auto n_qtnodes = CountQtNodes(m.GetScene());
     const auto n_qtedges = CountQtEdges(m.GetScene());
-    BOOST_CHECK(n_nodes == n_qtnodes);
-    BOOST_CHECK(n_edges == n_qtedges);
+    QVERIFY(n_nodes == n_qtnodes);
+    QVERIFY(n_edges == n_qtedges);
   }
   if (verbose) { TRACE("A new command must be put in QUndoStack"); }
   {
@@ -69,11 +70,11 @@ BOOST_AUTO_TEST_CASE(qt_concept_map_test)
         0.0
       )
     };
-    BOOST_CHECK(qtconceptmap.GetUndo().count() == 0);
+    QVERIFY(qtconceptmap.GetUndo().count() == 0);
 
     qtconceptmap.DoCommand(command);
 
-    BOOST_CHECK(qtconceptmap.GetUndo().count() == 1);
+    QVERIFY(qtconceptmap.GetUndo().count() == 1);
   }
   //---------------------------------------------------------------------------
   // CREATE NODES
@@ -81,8 +82,8 @@ BOOST_AUTO_TEST_CASE(qt_concept_map_test)
   if (verbose) { TRACE("Create one node"); }
   {
     QtConceptMap qtconceptmap;
-    BOOST_CHECK(DoubleCheckEdgesAndNodes(qtconceptmap,0,0));
-    BOOST_CHECK(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,0));
+    QVERIFY(DoubleCheckEdgesAndNodes(qtconceptmap,0,0));
+    QVERIFY(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,0));
     qtconceptmap.DoCommand(
       new CommandCreateNewNode(
         qtconceptmap.GetConceptMap(),
@@ -92,12 +93,12 @@ BOOST_AUTO_TEST_CASE(qt_concept_map_test)
         0.0
       )
     );
-    BOOST_CHECK(DoubleCheckEdgesAndNodes(qtconceptmap,0,1));
-      BOOST_CHECK(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,1));
+    QVERIFY(DoubleCheckEdgesAndNodes(qtconceptmap,0,1));
+      QVERIFY(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,1));
 
     qtconceptmap.Undo();
-    BOOST_CHECK(DoubleCheckEdgesAndNodes(qtconceptmap,0,0));
-      BOOST_CHECK(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,0));
+    QVERIFY(DoubleCheckEdgesAndNodes(qtconceptmap,0,0));
+      QVERIFY(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,0));
   }
   if (verbose) { TRACE("CTRL-N creates a new QtNode"); }
   {
@@ -105,13 +106,13 @@ BOOST_AUTO_TEST_CASE(qt_concept_map_test)
 
     auto ctrl_n = CreateControlN();
     qtconceptmap.keyPressEvent(&ctrl_n);
-    BOOST_CHECK(DoubleCheckEdgesAndNodes(qtconceptmap,0,1));
-    BOOST_CHECK(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,1));
+    QVERIFY(DoubleCheckEdgesAndNodes(qtconceptmap,0,1));
+    QVERIFY(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,1));
   }
   if (verbose) { TRACE("Create nodes"); }
   {
     QtConceptMap qtconceptmap;
-    BOOST_CHECK(DoubleCheckEdgesAndNodes(qtconceptmap,0,0));
+    QVERIFY(DoubleCheckEdgesAndNodes(qtconceptmap,0,0));
 
     const int n{10};
     for (int i=0; i!=n; ++i) {
@@ -124,11 +125,11 @@ BOOST_AUTO_TEST_CASE(qt_concept_map_test)
           0.0
         )
       );
-      BOOST_CHECK(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,i + 1));
+      QVERIFY(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,i + 1));
     }
-    BOOST_CHECK(DoubleCheckEdgesAndNodes(qtconceptmap,0,n));
+    QVERIFY(DoubleCheckEdgesAndNodes(qtconceptmap,0,n));
     for (int i=0; i!=n; ++i) { qtconceptmap.Undo(); }
-    BOOST_CHECK(DoubleCheckEdgesAndNodes(qtconceptmap,0,0));
+    QVERIFY(DoubleCheckEdgesAndNodes(qtconceptmap,0,0));
   }
   if (verbose) { TRACE("CTRL-N, CTRL-N creates two QtNodes"); }
   {
@@ -138,8 +139,8 @@ BOOST_AUTO_TEST_CASE(qt_concept_map_test)
     qtconceptmap.keyPressEvent(&ctrl_n);
     qtconceptmap.keyPressEvent(&ctrl_n);
 
-    BOOST_CHECK(DoubleCheckEdgesAndNodes(qtconceptmap,0,2));
-    BOOST_CHECK(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,2));
+    QVERIFY(DoubleCheckEdgesAndNodes(qtconceptmap,0,2));
+    QVERIFY(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,2));
   }
 
   //---------------------------------------------------------------------------
@@ -148,7 +149,7 @@ BOOST_AUTO_TEST_CASE(qt_concept_map_test)
   if (verbose) { TRACE("Delete nodes: create two Nodes, delete one Node from QtConceptMap"); }
   {
     QtConceptMap qtconceptmap;
-    BOOST_CHECK(DoubleCheckEdgesAndNodes(qtconceptmap,0,0));
+    QVERIFY(DoubleCheckEdgesAndNodes(qtconceptmap,0,0));
 
     const int n{10};
     for (int i=0; i!=n; ++i) {
@@ -161,9 +162,9 @@ BOOST_AUTO_TEST_CASE(qt_concept_map_test)
           0.0
         )
       );
-      BOOST_CHECK(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,i + 1));
+      QVERIFY(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,i + 1));
     }
-    BOOST_CHECK(DoubleCheckEdgesAndNodes(qtconceptmap,0,n));
+    QVERIFY(DoubleCheckEdgesAndNodes(qtconceptmap,0,n));
     qtconceptmap.DoCommand(
       new CommandDeleteSelected(
         qtconceptmap.GetConceptMap(),
@@ -171,14 +172,14 @@ BOOST_AUTO_TEST_CASE(qt_concept_map_test)
         qtconceptmap.GetQtToolItem()
       )
     );
-    BOOST_CHECK(DoubleCheckEdgesAndNodes(qtconceptmap,0,0));
+    QVERIFY(DoubleCheckEdgesAndNodes(qtconceptmap,0,0));
     qtconceptmap.Undo();
-    BOOST_CHECK(DoubleCheckEdgesAndNodes(qtconceptmap,0,n));
+    QVERIFY(DoubleCheckEdgesAndNodes(qtconceptmap,0,n));
   }
   if (verbose) { TRACE("Delete Edge"); }
   {
     QtConceptMap qtconceptmap;
-    BOOST_CHECK(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,0));
+    QVERIFY(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,0));
     const int n{2};
     for (int i=0; i!=n; ++i) {
       qtconceptmap.DoCommand(
@@ -191,7 +192,7 @@ BOOST_AUTO_TEST_CASE(qt_concept_map_test)
         )
       );
     }
-    BOOST_CHECK(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,2));
+    QVERIFY(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,2));
     qtconceptmap.DoCommand(
       new CommandCreateNewEdgeBetweenTwoSelectedNodes(
         qtconceptmap.GetConceptMap(),
@@ -199,8 +200,8 @@ BOOST_AUTO_TEST_CASE(qt_concept_map_test)
         qtconceptmap.GetQtToolItem()
       )
     );
-    BOOST_CHECK(DoubleCheckEdgesAndNodes(qtconceptmap,1,2));
-    BOOST_CHECK(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,1,0));
+    QVERIFY(DoubleCheckEdgesAndNodes(qtconceptmap,1,2));
+    QVERIFY(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,1,0));
     qtconceptmap.DoCommand(
       new CommandDeleteSelected(
         qtconceptmap.GetConceptMap(),
@@ -208,7 +209,7 @@ BOOST_AUTO_TEST_CASE(qt_concept_map_test)
         qtconceptmap.GetQtToolItem()
       )
     );
-    BOOST_CHECK(DoubleCheckEdgesAndNodes(qtconceptmap,0,2));
+    QVERIFY(DoubleCheckEdgesAndNodes(qtconceptmap,0,2));
   }
 
   if (verbose) { TRACE("CTRL-N, CTRL-N, delete, creates two QtNodes and deletes two"); }
@@ -220,8 +221,8 @@ BOOST_AUTO_TEST_CASE(qt_concept_map_test)
     qtconceptmap.keyPressEvent(&ctrl_n);
     auto del = CreateDel();
     qtconceptmap.keyPressEvent(&del);
-    BOOST_CHECK(DoubleCheckEdgesAndNodes(qtconceptmap,0,0));
-    BOOST_CHECK(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,0));
+    QVERIFY(DoubleCheckEdgesAndNodes(qtconceptmap,0,0));
+    QVERIFY(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,0));
   }
   if (verbose) { TRACE("CTRL-N, CTRL-N, space, delete, creates two QtNodes, selects one and deletes one"); }
   {
@@ -231,12 +232,12 @@ BOOST_AUTO_TEST_CASE(qt_concept_map_test)
     qtconceptmap.keyPressEvent(&ctrl_n);
     auto space = CreateSpace();
     qtconceptmap.keyPressEvent(&space);
-    BOOST_CHECK(DoubleCheckEdgesAndNodes(qtconceptmap,0,2));
-    BOOST_CHECK(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,1));
+    QVERIFY(DoubleCheckEdgesAndNodes(qtconceptmap,0,2));
+    QVERIFY(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,1));
     auto del = CreateDel();
     qtconceptmap.keyPressEvent(&del);
-    BOOST_CHECK(DoubleCheckEdgesAndNodes(qtconceptmap,0,1));
-    BOOST_CHECK(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,0));
+    QVERIFY(DoubleCheckEdgesAndNodes(qtconceptmap,0,1));
+    QVERIFY(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,0));
   }
   //---------------------------------------------------------------------------
   // CREATE EDGES
@@ -259,7 +260,7 @@ BOOST_AUTO_TEST_CASE(qt_concept_map_test)
         )
       );
     }
-    BOOST_CHECK(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,2));
+    QVERIFY(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,2));
     qtconceptmap.DoCommand(
       new CommandCreateNewEdgeBetweenTwoSelectedNodes(
         qtconceptmap.GetConceptMap(),
@@ -267,8 +268,8 @@ BOOST_AUTO_TEST_CASE(qt_concept_map_test)
         qtconceptmap.GetQtToolItem()
       )
     );
-    BOOST_CHECK(DoubleCheckEdgesAndNodes(qtconceptmap,1,2));
-    BOOST_CHECK(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,1,0));
+    QVERIFY(DoubleCheckEdgesAndNodes(qtconceptmap,1,2));
+    QVERIFY(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,1,0));
   }
   if (verbose) { TRACE("CTRL-N, CTRL-N, CTRL-E: new Edge should be selected"); }
   {
@@ -278,8 +279,8 @@ BOOST_AUTO_TEST_CASE(qt_concept_map_test)
     qtconceptmap.keyPressEvent(&ctrl_n);
     auto ctrl_e = CreateControlE();
     qtconceptmap.keyPressEvent(&ctrl_e);
-    BOOST_CHECK(DoubleCheckEdgesAndNodes(qtconceptmap,1,2));
-    BOOST_CHECK(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,1,0));
+    QVERIFY(DoubleCheckEdgesAndNodes(qtconceptmap,1,2));
+    QVERIFY(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,1,0));
   }
   //---------------------------------------------------------------------------
   // DELETE EDGES (also via source/target nodes)
@@ -294,8 +295,8 @@ BOOST_AUTO_TEST_CASE(qt_concept_map_test)
     qtconceptmap.keyPressEvent(&ctrl_e);
     auto del = CreateDel();
     qtconceptmap.keyPressEvent(&del);
-    BOOST_CHECK(DoubleCheckEdgesAndNodes(qtconceptmap,0,2));
-    BOOST_CHECK(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,0));
+    QVERIFY(DoubleCheckEdgesAndNodes(qtconceptmap,0,2));
+    QVERIFY(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,0));
   }
   //#define FOR_LUCAS_20160130
   #ifdef FOR_LUCAS_20160130
@@ -307,8 +308,8 @@ BOOST_AUTO_TEST_CASE(qt_concept_map_test)
     qtconceptmap.keyPressEvent(&ctrl_n);
     auto ctrl_e = CreateControlE();
     qtconceptmap.keyPressEvent(&ctrl_e);
-    BOOST_CHECK(DoubleCheckEdgesAndNodes(qtconceptmap,1,2));
-    BOOST_CHECK(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,1,0));
+    QVERIFY(DoubleCheckEdgesAndNodes(qtconceptmap,1,2));
+    QVERIFY(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,1,0));
     std::srand(42);
     //Select only one single QtNode
     //PROBLEM: This is an infinite loop. Why?
@@ -323,17 +324,17 @@ BOOST_AUTO_TEST_CASE(qt_concept_map_test)
         << CountSelectedQtEdges(qtconceptmap.GetScene())
       ;
     }
-    BOOST_CHECK(!"You've fixed the problem halfways");
-    BOOST_CHECK(CountSelectedQtEdges(qtconceptmap.GetScene()) == 0);
-    BOOST_CHECK(DoubleCheckEdgesAndNodes(qtconceptmap,1,2));
-    BOOST_CHECK(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,1));
+    QVERIFY(!"You've fixed the problem halfways");
+    QVERIFY(CountSelectedQtEdges(qtconceptmap.GetScene()) == 0);
+    QVERIFY(DoubleCheckEdgesAndNodes(qtconceptmap,1,2));
+    QVERIFY(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,1));
     //Deleting the QtNode should also delete the QtEdge that is connected to it
     auto del = CreateDel();
     qtconceptmap.keyPressEvent(&del);
-    BOOST_CHECK(DoubleCheckEdgesAndNodes(qtconceptmap,0,1));
-    BOOST_CHECK(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,0));
+    QVERIFY(DoubleCheckEdgesAndNodes(qtconceptmap,0,1));
+    QVERIFY(DoubleCheckSelectedEdgesAndNodes(qtconceptmap,0,0));
   }
-  BOOST_CHECK(!"You've fixed it!");
+  QVERIFY(!"You've fixed it!");
   #endif // FOR_LUCAS_20160130
   //#define FIX_ISSUE_1
   #ifdef  FIX_ISSUE_1
@@ -356,7 +357,7 @@ BOOST_AUTO_TEST_CASE(qt_concept_map_test)
     auto ctrle = CreateControlE();
     qtconceptmap.keyPressEvent(&ctrle);
 
-    BOOST_CHECK(qtconceptmap.GetQtNodes().size() == 2);
+    QVERIFY(qtconceptmap.GetQtNodes().size() == 2);
     qtconceptmap.GetQtNodes()[0]->SetCenterPos(-100.0,0.0);
     qtconceptmap.GetQtNodes()[0]->setToolTip("QtNodes[0]");
     qtconceptmap.GetQtNodes()[1]->SetCenterPos( 100.0,0.0);
@@ -364,19 +365,19 @@ BOOST_AUTO_TEST_CASE(qt_concept_map_test)
     qtconceptmap.GetQtEdges()[0]->setToolTip("QtEdges[0]");
     qtconceptmap.GetQtEdges()[0]->GetQtNode()->setToolTip("QtEdges[0] its center QtNode");
 
-    BOOST_CHECK(boost::num_vertices(conceptmap) == 2);
-    BOOST_CHECK(boost::num_vertices(conceptmap) == qtconceptmap.GetQtNodes().size());
-    BOOST_CHECK(boost::num_edges(conceptmap) == 1);
-    BOOST_CHECK(boost::num_edges(conceptmap) == qtconceptmap.GetQtEdges().size());
-    BOOST_CHECK(conceptmap.GetSelectedNodes().size() == 0);
-    BOOST_CHECK(conceptmap.GetSelectedNodes().size() == qtconceptmap.GetSelectedQtNodes().size());
-    BOOST_CHECK(conceptmap.GetSelectedEdges().size() == 1);
-    BOOST_CHECK(conceptmap.GetSelectedEdges().size() == qtconceptmap.GetSelectedQtEdges().size());
+    QVERIFY(boost::num_vertices(conceptmap) == 2);
+    QVERIFY(boost::num_vertices(conceptmap) == qtconceptmap.GetQtNodes().size());
+    QVERIFY(boost::num_edges(conceptmap) == 1);
+    QVERIFY(boost::num_edges(conceptmap) == qtconceptmap.GetQtEdges().size());
+    QVERIFY(conceptmap.GetSelectedNodes().size() == 0);
+    QVERIFY(conceptmap.GetSelectedNodes().size() == qtconceptmap.GetSelectedQtNodes().size());
+    QVERIFY(conceptmap.GetSelectedEdges().size() == 1);
+    QVERIFY(conceptmap.GetSelectedEdges().size() == qtconceptmap.GetSelectedQtEdges().size());
 
     //Fails if item is invisible
     qtconceptmap.showFullScreen();
     for (int i=0; i!=100; ++i) qApp->processEvents();
-    BOOST_CHECK(qtconceptmap.scene()->selectedItems().count() > 0);
+    QVERIFY(qtconceptmap.scene()->selectedItems().count() > 0);
 
 
     if (verbose) { TRACE("Unselect the edge, select the node by pressing an arrow key"); }
@@ -392,14 +393,14 @@ BOOST_AUTO_TEST_CASE(qt_concept_map_test)
     TRACE(qtconceptmap.GetSelectedQtEdges().size());
 
 
-    BOOST_CHECK(boost::num_vertices(conceptmap) == 2);
-    BOOST_CHECK(boost::num_vertices(conceptmap) == qtconceptmap.GetQtNodes().size());
-    BOOST_CHECK(boost::num_edges(conceptmap) == 1);
-    BOOST_CHECK(boost::num_edges(conceptmap) == qtconceptmap.GetQtEdges().size());
-    BOOST_CHECK(conceptmap.GetSelectedNodes().size() == qtconceptmap.GetSelectedQtNodes().size());
-    BOOST_CHECK(conceptmap.GetSelectedEdges().size() == qtconceptmap.GetSelectedQtEdges().size());
-    BOOST_CHECK(conceptmap.GetSelectedNodes().size() == 1);
-    BOOST_CHECK(conceptmap.GetSelectedEdges().size() == 0);
+    QVERIFY(boost::num_vertices(conceptmap) == 2);
+    QVERIFY(boost::num_vertices(conceptmap) == qtconceptmap.GetQtNodes().size());
+    QVERIFY(boost::num_edges(conceptmap) == 1);
+    QVERIFY(boost::num_edges(conceptmap) == qtconceptmap.GetQtEdges().size());
+    QVERIFY(conceptmap.GetSelectedNodes().size() == qtconceptmap.GetSelectedQtNodes().size());
+    QVERIFY(conceptmap.GetSelectedEdges().size() == qtconceptmap.GetSelectedQtEdges().size());
+    QVERIFY(conceptmap.GetSelectedNodes().size() == 1);
+    QVERIFY(conceptmap.GetSelectedEdges().size() == 0);
   }
   if (verbose) { TRACE("Delete Node-that-is-head-of-Edge, then Undo"); }
   {
@@ -416,14 +417,14 @@ BOOST_AUTO_TEST_CASE(qt_concept_map_test)
     auto ctrle = CreateControlE();
     qtconceptmap.keyPressEvent(&ctrle);
 
-    BOOST_CHECK(boost::num_vertices(conceptmap) == 2);
-    BOOST_CHECK(boost::num_vertices(conceptmap) == qtconceptmap.GetQtNodes().size());
-    BOOST_CHECK(boost::num_edges(conceptmap) == 1);
-    BOOST_CHECK(boost::num_edges(conceptmap) == qtconceptmap.GetQtEdges().size());
-    BOOST_CHECK(conceptmap.GetSelectedNodes().size() == qtconceptmap.GetSelectedQtNodes().size());
-    BOOST_CHECK(conceptmap.GetSelectedEdges().size() == qtconceptmap.GetSelectedQtEdges().size());
-    BOOST_CHECK(conceptmap.GetSelectedNodes().size() == 0);
-    BOOST_CHECK(conceptmap.GetSelectedEdges().size() == 1);
+    QVERIFY(boost::num_vertices(conceptmap) == 2);
+    QVERIFY(boost::num_vertices(conceptmap) == qtconceptmap.GetQtNodes().size());
+    QVERIFY(boost::num_edges(conceptmap) == 1);
+    QVERIFY(boost::num_edges(conceptmap) == qtconceptmap.GetQtEdges().size());
+    QVERIFY(conceptmap.GetSelectedNodes().size() == qtconceptmap.GetSelectedQtNodes().size());
+    QVERIFY(conceptmap.GetSelectedEdges().size() == qtconceptmap.GetSelectedQtEdges().size());
+    QVERIFY(conceptmap.GetSelectedNodes().size() == 0);
+    QVERIFY(conceptmap.GetSelectedEdges().size() == 1);
 
 
     //Select a node
@@ -435,14 +436,14 @@ BOOST_AUTO_TEST_CASE(qt_concept_map_test)
     TRACE(conceptmap.GetSelectedEdges().size());
     TRACE(qtconceptmap.GetSelectedQtEdges().size());
 
-    BOOST_CHECK(boost::num_vertices(conceptmap) == 2);
-    BOOST_CHECK(boost::num_vertices(conceptmap) == qtconceptmap.GetQtNodes().size());
-    BOOST_CHECK(boost::num_edges(conceptmap) == 1);
-    BOOST_CHECK(boost::num_edges(conceptmap) == qtconceptmap.GetQtEdges().size());
-    BOOST_CHECK(conceptmap.GetSelectedNodes().size() == qtconceptmap.GetSelectedQtNodes().size());
-    BOOST_CHECK(conceptmap.GetSelectedEdges().size() == qtconceptmap.GetSelectedQtEdges().size());
-    BOOST_CHECK(conceptmap.GetSelectedNodes().size() == 1);
-    BOOST_CHECK(conceptmap.GetSelectedEdges().size() == 0);
+    QVERIFY(boost::num_vertices(conceptmap) == 2);
+    QVERIFY(boost::num_vertices(conceptmap) == qtconceptmap.GetQtNodes().size());
+    QVERIFY(boost::num_edges(conceptmap) == 1);
+    QVERIFY(boost::num_edges(conceptmap) == qtconceptmap.GetQtEdges().size());
+    QVERIFY(conceptmap.GetSelectedNodes().size() == qtconceptmap.GetSelectedQtNodes().size());
+    QVERIFY(conceptmap.GetSelectedEdges().size() == qtconceptmap.GetSelectedQtEdges().size());
+    QVERIFY(conceptmap.GetSelectedNodes().size() == 1);
+    QVERIFY(conceptmap.GetSelectedEdges().size() == 0);
 
     //Delete the node, edge will be deleted as well
     auto del = CreateDel();
@@ -452,17 +453,17 @@ BOOST_AUTO_TEST_CASE(qt_concept_map_test)
     auto cntrlz = CreateControlZ();
     qtconceptmap.keyPressEvent(&cntrlz);
 
-    BOOST_CHECK(boost::num_vertices(conceptmap) == 2);
-    BOOST_CHECK(boost::num_vertices(conceptmap) == qtconceptmap.GetQtNodes().size());
-    BOOST_CHECK(boost::num_edges(conceptmap) == 1);
-    BOOST_CHECK(boost::num_edges(conceptmap) == qtconceptmap.GetQtEdges().size());
-    BOOST_CHECK(conceptmap.GetSelectedNodes().size() == 1);
-    BOOST_CHECK(conceptmap.GetSelectedNodes().size() == qtconceptmap.GetSelectedQtNodes().size());
-    BOOST_CHECK(conceptmap.GetSelectedEdges().size() == 0);
-    BOOST_CHECK(conceptmap.GetSelectedEdges().size() == qtconceptmap.GetSelectedQtEdges().size());
+    QVERIFY(boost::num_vertices(conceptmap) == 2);
+    QVERIFY(boost::num_vertices(conceptmap) == qtconceptmap.GetQtNodes().size());
+    QVERIFY(boost::num_edges(conceptmap) == 1);
+    QVERIFY(boost::num_edges(conceptmap) == qtconceptmap.GetQtEdges().size());
+    QVERIFY(conceptmap.GetSelectedNodes().size() == 1);
+    QVERIFY(conceptmap.GetSelectedNodes().size() == qtconceptmap.GetSelectedQtNodes().size());
+    QVERIFY(conceptmap.GetSelectedEdges().size() == 0);
+    QVERIFY(conceptmap.GetSelectedEdges().size() == qtconceptmap.GetSelectedQtEdges().size());
 
   }
-  BOOST_CHECK(!"Fixed issue #1");
+  QVERIFY(!"Fixed issue #1");
   #endif // FIX_ISSUE_1
 
   #ifdef NOT_NOW_20160226
@@ -482,7 +483,7 @@ BOOST_AUTO_TEST_CASE(qt_concept_map_test)
     m.mouseDoubleClickEvent(&e);
     const int n_nodes_in_scene{static_cast<int>(Collect<QtNode>(m.GetScene()).size())};
     const int n_nodes_in_conceptmap{static_cast<int>(m.GetConceptMap().GetNodes().size())};
-    BOOST_CHECK(n_nodes_in_scene == n_nodes_in_conceptmap);
+    QVERIFY(n_nodes_in_scene == n_nodes_in_conceptmap);
   }
   #endif //NOT_NOW_20160226
 

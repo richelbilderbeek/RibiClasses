@@ -39,7 +39,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmapconceptfactory.h"
 #include "qtconceptmapcompetency.h"
 #include "ui_qtconceptmapconcepteditdialog.h"
-#include "testtimer.h"
+
 #include "trace.h"
 #pragma GCC diagnostic pop
 

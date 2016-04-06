@@ -10,7 +10,7 @@
 #include <QGraphicsScene>
 #include <QPainter>
 
-#include "testtimer.h"
+
 #include "trace.h"
 #pragma GCC diagnostic pop
 

@@ -45,7 +45,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "qtconceptmapqtnodefactory.h"
 #include "qtconceptmapratestrategy.h"
 #include "qtitemdisplaystrategy.h"
-#include "testtimer.h"
+
 #include "trace.h"
 #pragma GCC diagnostic pop
 

@@ -1,27 +1,4 @@
-//---------------------------------------------------------------------------
-/*
-QtConceptMap, Qt classes for display and interaction with ConceptMap
-Copyright (C) 2013-2016 Richel Bilderbeek
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
-GNU General Public License for more details.
-You should have received a copy of the GNU General Public License
-along with this program.If not, see <http://www.gnu.org/licenses/>.
-*/
-//---------------------------------------------------------------------------
-//From http://www.richelbilderbeek.nl/CppQtConceptMap.htm
-//---------------------------------------------------------------------------
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
-#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
+#include "qtconceptmapqtnode_test.h"
 #include "qtconceptmapqtnode.h"
 
 #include <climits>
@@ -44,11 +21,11 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "qtconceptmapqtnodefactory.h"
 #include "qtconceptmapratestrategy.h"
 #include "qtitemdisplaystrategy.h"
-#include "testtimer.h"
+
 #include "trace.h"
 
-#include <boost/test/unit_test.hpp>
-BOOST_AUTO_TEST_CASE(ribi_cmap_qtconceptmapqtnode_test)
+
+void ribi::cmap::qtconceptmapqtnode_test::all_tests()
 {
   using namespace ribi;
   using namespace ribi::cmap;
@@ -59,8 +36,8 @@ BOOST_AUTO_TEST_CASE(ribi_cmap_qtconceptmapqtnode_test)
   {
     const auto qtnode = QtNodeFactory().GetTest(1);
     const boost::shared_ptr<QtRoundedEditRectItem> edit_rect{boost::dynamic_pointer_cast<QtRoundedEditRectItem>(qtnode)};
-    BOOST_CHECK(edit_rect);
-    BOOST_CHECK(qtnode == edit_rect);
+    QVERIFY(edit_rect.get());
+    QVERIFY(qtnode == edit_rect);
   }
 
   if (verbose) { TRACE("Test X coordinat in Node and QtRoundedEditRectItem being equal at creation"); }
@@ -70,7 +47,7 @@ BOOST_AUTO_TEST_CASE(ribi_cmap_qtconceptmapqtnode_test)
     const auto node = qtnode->GetNode();
     const double node_x = node.GetX();
     const double edit_rect_x = edit_rect->GetCenterX();
-    BOOST_CHECK(std::abs(node_x - edit_rect_x) < max_error);
+    QVERIFY(std::abs(node_x - edit_rect_x) < max_error);
   }
   if (verbose) { TRACE("Test Y coordinat in Node and QtRoundedEditRectItem being equal at creation"); }
   {
@@ -79,7 +56,7 @@ BOOST_AUTO_TEST_CASE(ribi_cmap_qtconceptmapqtnode_test)
     const auto node = qtnode->GetNode();
     const double node_y = node.GetY();
     const double edit_rect_y = edit_rect->GetCenterY();
-    BOOST_CHECK(std::abs(node_y - edit_rect_y) < max_error);
+    QVERIFY(std::abs(node_y - edit_rect_y) < max_error);
   }
   if (verbose) {TRACE("When changing the concept's name via QtNode, the Node must be changed as well");}
   {
@@ -89,6 +66,6 @@ BOOST_AUTO_TEST_CASE(ribi_cmap_qtconceptmapqtnode_test)
     const std::string new_name{old_name + " (modified)"};
     qtrectitem->SetText( { new_name } );
     const std::string new_name_again{qtnode->GetNode().GetConcept().GetName()};
-    BOOST_CHECK(new_name_again == new_name);
+    QVERIFY(new_name_again == new_name);
   }
 }

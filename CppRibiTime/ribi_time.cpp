@@ -29,7 +29,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include <boost/date_time/gregorian/gregorian.hpp>
 
-#include "testtimer.h"
+
 #include "trace.h"
 
 #pragma GCC diagnostic pop

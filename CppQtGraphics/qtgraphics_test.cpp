@@ -1,35 +1,10 @@
-//---------------------------------------------------------------------------
-/*
-QtGraphics, Qt graphics code snippets
-Copyright (C) 2015-2016 Richel Bilderbeek
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
-GNU General Public License for more details.
-You should have received a copy of the GNU General Public License
-along with this program.If not, see <http://www.gnu.org/licenses/>.
-*/
-//---------------------------------------------------------------------------
-//From http://www.richelbilderbeek.nl/CppQtArrowItem.htm
-//---------------------------------------------------------------------------
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
+#include "qtgraphics_test.h"
 #include "qtgraphics.h"
-#include <boost/test/unit_test.hpp>
-
 #include "stopwatch.h"
-#include "testtimer.h"
-#include "trace.h"
-#pragma GCC diagnostic pop
 
-BOOST_AUTO_TEST_CASE(ribi_qtgraphics_test)
+#include "trace.h"
+
+void ribi::qtgraphics_test::all_tests()
 {
   using namespace ribi;
   const bool verbose{false};
@@ -40,13 +15,13 @@ BOOST_AUTO_TEST_CASE(ribi_qtgraphics_test)
   //CreateImage
   {
     const QImage a = QtGraphics().CreateImage(256,256,64);
-    BOOST_CHECK(!a.isNull());
+    QVERIFY(!a.isNull());
   }
   {
     QImage target = QtGraphics().CreateImage(256,256,64);
-    BOOST_CHECK(!target.isNull());
+    QVERIFY(!target.isNull());
     const QImage source = QtGraphics().CreateImage(196,156,196);
-    BOOST_CHECK(!source.isNull());
+    QVERIFY(!source.isNull());
     QtGraphics().DrawImage(target,source,32,64);
   }
   {
@@ -57,8 +32,8 @@ BOOST_AUTO_TEST_CASE(ribi_qtgraphics_test)
     QtGraphics().DrawImage(       target_fast   ,source,32,64);
     QtGraphics().DrawImageSlow   (target_slow   ,source,32,64);
     QtGraphics().DrawImageSlowest(target_slowest,source,32,64);
-    BOOST_CHECK(target_fast == target_slow);
-    BOOST_CHECK(target_fast == target_slowest);
+    QVERIFY(target_fast == target_slow);
+    QVERIFY(target_fast == target_slowest);
   }
   const bool do_timing{false};
   if (do_timing)
@@ -83,8 +58,8 @@ BOOST_AUTO_TEST_CASE(ribi_qtgraphics_test)
     TRACE(t_fast);
     TRACE(t_slow);
     TRACE(t_slowest);
-    BOOST_CHECK(t_fast < t_slow);
-    BOOST_CHECK(t_slow < t_slowest);
-    BOOST_CHECK(t_fast * 10.0 < t_slow);
+    QVERIFY(t_fast < t_slow);
+    QVERIFY(t_slow < t_slowest);
+    QVERIFY(t_fast * 10.0 < t_slow);
   }
 }

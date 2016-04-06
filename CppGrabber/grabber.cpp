@@ -11,7 +11,7 @@
 #include <QScreen>
 #include <QApplication>
 
-#include "testtimer.h"
+
 #include "trace.h"
 #pragma GCC diagnostic pop
 

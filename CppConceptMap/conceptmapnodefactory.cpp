@@ -30,7 +30,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmapconceptfactory.h"
 #include "conceptmapregex.h"
 #include "container.h"
-#include "testtimer.h"
+
 #include "trace.h"
 #include "xml.h"
 #pragma GCC diagnostic pop
