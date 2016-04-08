@@ -53,7 +53,8 @@ include(../RibiClasses/CppQtRoundedRectItem/CppQtRoundedRectItemTest.pri)
 
 include(../RibiClasses/CppQtScopedDisable/CppQtScopedDisable.pri)
 
-SOURCES += main_test_desktop.cpp
+SOURCES += \
+    qtmain_test_desktop.cpp
 
 # gcov
 QMAKE_CXXFLAGS += -fprofile-arcs -ftest-coverage

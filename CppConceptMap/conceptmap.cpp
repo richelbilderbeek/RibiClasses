@@ -71,8 +71,17 @@ ribi::cmap::ConceptMap ribi::cmap::DotToConceptMap(const std::string& s)
   return c;
 }
 
-ribi::cmap::VertexDescriptor ribi::cmap::FindCenterNode(const ConceptMap& g) noexcept
+ribi::cmap::VertexDescriptor ribi::cmap::FindCenterNode(const ConceptMap& g)
 {
+  if (CountCenterNodes(g) != 1)
+  {
+    std::stringstream msg;
+    msg << __func__ << ": "
+      << "Cannot find the one center node, as there are "
+      << CountCenterNodes(g)
+    ;
+    throw std::logic_error(msg.str());
+  }
   using vd = VertexDescriptor;
   const auto vip = vertices(g);
   const auto i = std::find_if(
@@ -100,6 +109,20 @@ ribi::cmap::VertexDescriptor ribi::cmap::FindNode(
 ) noexcept
 {
   return find_first_custom_vertex_with_my_vertex(node, g);
+}
+
+ribi::cmap::Node ribi::cmap::GetCenterNode(const ConceptMap& c)
+{
+  if (CountCenterNodes(c) != 1)
+  {
+    std::stringstream msg;
+    msg << __func__ << ": "
+      << "Cannot get the one center node, as there are "
+      << CountCenterNodes(c)
+    ;
+    throw std::logic_error(msg.str());
+  }
+  return GetNode(FindCenterNode(c), c);
 }
 
 ribi::cmap::Edge ribi::cmap::GetEdge(const ribi::cmap::EdgeDescriptor ed, const ribi::cmap::ConceptMap& g) noexcept

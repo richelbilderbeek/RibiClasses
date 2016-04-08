@@ -1,3 +1,4 @@
+#include <iostream>
 #include <QtTest/QtTest>
 #include "grabber_test.h"
 #include "qtarrowitem_test.h"
@@ -44,5 +45,7 @@ int main(int argc, char *argv[])
   { ribi::qtroundededitrectitem_test t; error |= QTest::qExec(&t, argc, argv); }
   { ribi::qtroundedrectitem_test t; error |= QTest::qExec(&t, argc, argv); }
   { ribi::qtroundedrectitemdialog_test t; error |= QTest::qExec(&t, argc, argv); }
+  if (error == 0) { std::cout << "Pass\n"; }
+  if (error != 0) { std::cout << "Fail\n"; }
   return error;
 }

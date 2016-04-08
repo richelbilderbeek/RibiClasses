@@ -34,15 +34,10 @@ namespace cmap {
 
 struct NodeFactory;
 
-///A Node is a Concept with coordinats, that is used as an Element in a ConceptMap
+///A Node is a Concept with coordinats
 ///A Node is the GUI independent part of a node. It is displayed as:
-/// - QtNode (as QtConceptMapElement: a QGraphicsItem, to be used in a QGraphicsView)
-/// - QtNodeDialog (as a QDialog, to be used in a QDialog)
-///Node is used as a base class by:
-/// - CenterNode
 struct Node
 {
-  ///Use NodeFactory as an unused argument to enforce using it
   explicit Node(
     const Concept& concept = Concept(),
     const bool is_center_node = false,
@@ -58,6 +53,9 @@ struct Node
   static std::vector<Node> GetTests() noexcept;
 
   int GetId() const noexcept { return m_id; }
+
+  ///Get the text on the concept
+  const std::string& GetName() const noexcept { return m_concept.GetName(); }
 
   ///Get the x coordinat
   double GetX() const noexcept { return m_x; }
