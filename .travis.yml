@@ -31,6 +31,8 @@ before_script:
 script: 
   - ./install_githubs.sh
   - ./build_console.sh
+  - ./RibiClassesTestConsole
   - ./build_desktop.sh
+  - ./RibiClassesTestDesktop
   - ./get_code_cov.sh
   - codecov

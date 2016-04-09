@@ -26,9 +26,29 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "fileiofwd.h"
 #include "filecopymode.h"
 
-namespace ribi {
-namespace fileio {
 
+namespace ribi {
+
+///New form: just in namespace ribi
+
+///Obtain the name of a file that does not exist
+///Will throw a std::runtime_error in the unlikely
+///case it fails after one thousand times
+///The 'post' is a string to be at the filename's end
+///For example:
+/// - GetTempFileName("") -> tmp01234567
+/// - GetTempFileName(".txt") -> tmp01234567.txt
+std::string get_temp_filename(const std::string& post = "");
+std::string get_temp_filename_simple(const std::string& post = "");
+
+///Determines if a filename is a regular file
+///From http://www.richelbilderbeek.nl/CppIsRegularFile.htm
+bool is_regular_file(const std::string& filename) noexcept;
+
+
+
+///Deprecated versions:
+namespace fileio {
 struct FileIo
 {
   enum class RenameMode { allow_overwrite, prevent_overwrite };

@@ -567,7 +567,7 @@ std::string ribi::fileio::FileIo::GetSuperFolder(const std::string& folder) cons
     : folder.substr(0,i);
 }
 
-std::string ribi::fileio::FileIo::GetTempFileName(const std::string& post) const
+std::string ribi::get_temp_filename(const std::string& post)
 {
   //Limit the number of searches, to prevent the program from freezing
   //It might occur that the first random names are taken, because
@@ -580,8 +580,9 @@ std::string ribi::fileio::FileIo::GetTempFileName(const std::string& post) const
       << std::rand()
       << std::rand()
       << std::rand()
-      << post;
-    if (!IsRegularFile(s.str())) return s.str();
+      << post
+    ;
+    if (!is_regular_file(s.str())) return s.str();
   }
 
   std::stringstream s;
@@ -592,7 +593,12 @@ std::string ribi::fileio::FileIo::GetTempFileName(const std::string& post) const
   throw std::runtime_error(s.str());
 }
 
-std::string ribi::fileio::FileIo::GetTempFileNameSimple(const std::string& post) const
+std::string ribi::fileio::FileIo::GetTempFileName(const std::string& post) const
+{
+  return ribi::get_temp_filename(post);
+}
+
+std::string ribi::get_temp_filename_simple(const std::string& post)
 {
   //Limit the number of searches, to prevent the program from freezing
   for (auto i = 0; i!=1000; ++i)
@@ -601,7 +607,7 @@ std::string ribi::fileio::FileIo::GetTempFileNameSimple(const std::string& post)
     s << "tmp"
       << i
       << post;
-    if (!IsRegularFile(s.str())) return s.str();
+    if (!is_regular_file(s.str())) return s.str();
   }
 
   std::stringstream s;
@@ -612,7 +618,10 @@ std::string ribi::fileio::FileIo::GetTempFileNameSimple(const std::string& post)
   throw std::runtime_error(s.str());
 }
 
-
+std::string ribi::fileio::FileIo::GetTempFileNameSimple(const std::string& post) const
+{
+  return ribi::get_temp_filename_simple(post);
+}
 std::string ribi::fileio::FileIo::GetTempFolderName() const
 {
   //Limit the number of searches, to prevent the program from freezing
@@ -674,9 +683,14 @@ bool ribi::fileio::FileIo::IsFolder(const std::string& filename) const noexcept
   return QDir(filename.c_str()).exists();
 }
 
-bool ribi::fileio::FileIo::IsRegularFile(const std::string& filename) const noexcept
+bool ribi::is_regular_file(const std::string& filename) noexcept
 {
   return !QDir(filename.c_str()).exists() && QFile::exists(filename.c_str());
+}
+
+bool ribi::fileio::FileIo::IsRegularFile(const std::string& filename) const noexcept
+{
+  return ::ribi::is_regular_file(filename);
 }
 
 bool ribi::fileio::FileIo::IsUnixPath(const std::string& path) const noexcept

@@ -41,7 +41,7 @@ struct Regex
     GetRegexMatches(
     const std::string& s,
     const std::string& regex_str
-  ) const noexcept { return GetRegexMatchesXpressive(s,regex_str); }
+  ) const { return GetRegexMatchesXpressive(s,regex_str); }
 
   ///Note: works differently than expected
   std::vector<std::string>
@@ -54,7 +54,7 @@ struct Regex
     GetRegexMatchesXpressive(
     const std::string& s,
     const std::string& regex_str
-  ) const noexcept;
+  ) const;
 
   std::string GetRegexDutchFloat() const noexcept;
   std::string GetRegexDutchPostalCode() const noexcept;

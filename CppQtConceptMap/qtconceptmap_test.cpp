@@ -39,6 +39,17 @@ QKeyEvent CreateRight() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Rig
 QKeyEvent CreateSpace() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Space,Qt::NoModifier); }
 QKeyEvent CreateUp() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Up,Qt::NoModifier); }
 
+void ribi::cmap::qtconceptmap_test::create_node()
+{
+  QtConceptMap d;
+  d.show();
+  QTest::keyClick(&d, Qt::Key_N, Qt::ControlModifier, 100);
+  const auto excepted_vertices = 1;
+  const auto measured_vertices = boost::num_vertices(d.GetConceptMap());
+  QVERIFY(measured_vertices == excepted_vertices);
+}
+
+
 void ribi::cmap::qtconceptmap_test::all_tests()
 {
   using namespace ribi::cmap;

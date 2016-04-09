@@ -37,3 +37,4 @@ temp.txt
 *.gcov
 tmp*
 ui_*
+RibiClassesTestConsole

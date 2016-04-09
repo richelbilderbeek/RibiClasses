@@ -20,6 +20,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 #include "conceptmap.h"
 #include <iostream>
+#include <boost/algorithm/string/replace.hpp>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/isomorphism.hpp>
 #include <boost/graph/graph_traits.hpp>
@@ -363,13 +364,20 @@ ribi::cmap::ConceptMap ribi::cmap::XmlToConceptMap(const std::string& s)
  if (s.size() < 13)
   {
     std::stringstream msg;
-    msg << __func__ << ": string too short";
+    msg << __func__ << ": string too short, "
+      << "received '" << s << "'"
+    ;
     throw std::logic_error(msg.str());
   }
-  if (s.substr(0,12) != "<conceptmap>")
+  const std::string required_tag{"<conceptmap>"};
+  const int required_tag_size{static_cast<int>(required_tag.size())};
+  if (s.substr(0, required_tag_size) != required_tag)
   {
     std::stringstream msg;
-    msg << __func__ << ": incorrect starting tag";
+    msg << __func__ << ": incorrect starting tag, "
+      << "required '" << required_tag << "', "
+      << "received '" << s << "'"
+    ;
     throw std::logic_error(msg.str());
   }
   if (s.substr(s.size() - 13,13) != "</conceptmap>")

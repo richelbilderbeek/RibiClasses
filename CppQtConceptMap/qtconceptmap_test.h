@@ -11,6 +11,7 @@ class qtconceptmap_test : public QObject
     Q_OBJECT
 
 private slots:
+  void create_node();
   void all_tests();
 };
 

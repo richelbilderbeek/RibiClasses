@@ -25,7 +25,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "ribi_regex.h"
 
 #include <cassert>
-
+#include <sstream>
+#include <stdexcept>
 #include <boost/xpressive/xpressive.hpp>
 
 #include <QRegExp>
@@ -63,9 +64,17 @@ std::vector<std::string>
   ribi::Regex::GetRegexMatchesXpressive(
   const std::string& s,
   const std::string& regex_str
-) const noexcept
+) const
 {
-  assert(IsValidXpressive(regex_str));
+  if (!IsValidXpressive(regex_str))
+  {
+    std::stringstream msg;
+    msg << __func__ << ": "
+      << "invalid regex '" << regex_str
+      << "' supplied"
+    ;
+    throw std::invalid_argument(msg.str());
+  }
 
   const boost::xpressive::sregex r
     = boost::xpressive::sregex::compile(regex_str)

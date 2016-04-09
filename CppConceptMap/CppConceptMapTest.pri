@@ -15,4 +15,4 @@ SOURCES += \
     $$PWD/conceptmapnode_test.cpp \
     $$PWD/conceptmapnodefactory_test.cpp \
     $$PWD/conceptmapregex_test.cpp \
-    CppConceptMap/conceptmapcompetency_test.cpp
+    $$PWD/conceptmapcompetency_test.cpp
