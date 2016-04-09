@@ -72,7 +72,7 @@ void ribi::cmap::qtconceptmaprateconcepttallydialognewname_test::measure_ui_from
   QCOMPARE(d.GetUi()->table->rowCount(), 3);
   QCOMPARE(boost::num_vertices(conceptmap), 2);
   QCOMPARE(boost::num_edges(conceptmap), 1);
-  const Node focal_node = GetFocalNode(conceptmap);
+  const Node focal_node = GetFirstNode(conceptmap);
   //const Node other_node = conceptmap.GetNodes()[1]; //Don't care
   const Edge edge = ribi::cmap::GetFirstEdge(conceptmap);
 

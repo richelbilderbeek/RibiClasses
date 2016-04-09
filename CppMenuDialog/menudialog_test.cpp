@@ -1,27 +1,7 @@
-//---------------------------------------------------------------------------
-/*
-MenuDialog, menu dialog class
-Copyright (C) 2013-2016 Richel Bilderbeek
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU General Public License for more details.
-You should have received a copy of the GNU General Public License
-along with this program. If not, see <http://www.gnu.org/licenses/>.
-*/
-//---------------------------------------------------------------------------
-//From http://www.richelbilderbeek.nl/CppMenuDialog.htm
-//---------------------------------------------------------------------------
 #include "menudialog.h"
 #include <boost/test/unit_test.hpp>
 
-BOOST_AUTO_TEST_CASE(ribi_menu_dialog_convert_arguments_test)
+BOOST_AUTO_TEST_CASE(test_ribi_menu_dialog_convert_arguments_test)
 {
   char ** argv = new char*[2];
   argv[0] = new char[16];
@@ -37,4 +17,56 @@ BOOST_AUTO_TEST_CASE(ribi_menu_dialog_convert_arguments_test)
   delete[] argv[0];
   delete[] argv[1];
   delete[] argv;
+}
+
+struct test_ribi_menu_dialog_custom_dialog : public ribi::MenuDialog
+{
+  ribi::About GetAbout() const noexcept {
+    return ribi::About(
+      "author",
+      "name",
+      "description",
+      "today",
+      "this year",
+      "https://www.richelbilderbeek.nl",
+      GetVersion(),
+      GetVersionHistory()
+    );
+  }
+
+  ///Obtain the help information of this class
+  ribi::Help GetHelp() const noexcept {
+    return ribi::Help(
+      "name",
+      "description",
+      {},
+      {}
+    );
+  }
+
+  ///Obtain the version of this class
+  std::string GetVersion() const noexcept { return "1.0"; }
+
+  ///Obtain the version history of this class
+  std::vector<std::string> GetVersionHistory() const noexcept { return {"today: first version" }; }
+
+  protected:
+  ///When Execute has done the default parse, the arguments are passed to ExecuteSpecific.
+  ///Here the program itself is called.
+  ///Returns the error code to give back to the operatings system
+  ///Make it a non-const member function: a menu is allowed to have state
+  int ExecuteSpecific(const std::vector<std::string>&) noexcept { return 0; }
+
+};
+
+BOOST_AUTO_TEST_CASE(test_ribi_menu_dialog_execute_custom_menu)
+{
+  test_ribi_menu_dialog_custom_dialog d;
+  BOOST_CHECK_EQUAL(d.Execute( {} ), 0);
+  BOOST_CHECK_EQUAL(d.Execute( { "test" } ), 0);
+  BOOST_CHECK_EQUAL(d.Execute( { "test", "--about" } ), 0);
+  BOOST_CHECK_EQUAL(d.Execute( { "test", "--help" } ), 0);
+  BOOST_CHECK_EQUAL(d.Execute( { "test", "--history" } ), 0);
+  BOOST_CHECK_EQUAL(d.Execute( { "test", "--license" } ), 0);
+  BOOST_CHECK_EQUAL(d.Execute( { "test", "--version" } ), 0);
 }

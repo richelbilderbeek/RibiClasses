@@ -42,7 +42,7 @@ struct TestTimer
   static int GetMaxCnt() noexcept;
   static std::string GetVersion() noexcept;
   static std::vector<std::string> GetVersionHistory() noexcept;
-  static void SetMaxCnt(const int max_cnt) noexcept;
+  static void SetMaxCnt(const int max_cnt);
 
   private:
   const std::unique_ptr<TestTimerImpl> m_impl;

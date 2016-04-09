@@ -45,7 +45,7 @@ std::vector<std::string> ribi::MenuDialog::ConvertArguments(
 int ribi::MenuDialog::Execute(const std::vector<std::string>& argv) noexcept
 {
   const int argc = static_cast<int>(argv.size());
-  if (argc == 1)
+  if (argc <= 1)
   {
     return ExecuteSpecific(argv);
   }

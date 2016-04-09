@@ -14,7 +14,24 @@
 #include "testtimer.h"
 #include "trace.h"
 
-BOOST_AUTO_TEST_CASE(ribi_plane_test)
+BOOST_AUTO_TEST_CASE(test_ribi_plane_construct_simple)
+{
+  using Plane = ribi::Plane;
+  const boost::shared_ptr<Plane> plane{
+    new Plane(
+      Plane::Coordinat3D(0.0,0.0,0.0),
+      Plane::Coordinat3D(0.0,1.0,0.0),
+      Plane::Coordinat3D(1.0,0.0,0.0)
+    )
+  };
+  const Plane plane2(
+    Plane::Coordinat3D(0.0,0.0,0.0),
+    Plane::Coordinat3D(0.0,1.0,0.0),
+    Plane::Coordinat3D(1.0,0.0,0.0)
+  );
+}
+
+BOOST_AUTO_TEST_CASE(test_ribi_plane)
 {
   using namespace ribi;
   using Coordinat3D = ::ribi::Plane::Coordinat3D;

@@ -8,7 +8,227 @@
 #include "ribi_regex.h"
 #include "trace.h"
 
-BOOST_AUTO_TEST_CASE(ribi_geometry_test)
+BOOST_AUTO_TEST_CASE(test_ribi_geometry_CalcPlane_1)
+{
+  const bool verbose{false};
+  const ribi::Geometry g;
+  using Coordinat3D = ::ribi::Geometry::Coordinat3D;
+  using boost::geometry::cs::cartesian;
+  const double p1_x =  1.0;
+  const double p1_y =  2.0;
+  const double p1_z =  3.0;
+  const double p2_x =  4.0;
+  const double p2_y =  6.0;
+  const double p2_z =  9.0;
+  const double p3_x = 12.0;
+  const double p3_y = 11.0;
+  const double p3_z =  9.0;
+  const Coordinat3D p1(p1_x,p1_y,p1_z);
+  const Coordinat3D p2(p2_x,p2_y,p2_z);
+  const Coordinat3D p3(p3_x,p3_y,p3_z);
+  const auto t(g.CalcPlane(p1,p2,p3));
+  const double a = t[0];
+  const double b = t[1];
+  const double c = t[2];
+  const double d = t[3];
+  const double d_p1_expected = (a * p1_x) + (b * p1_y) + (c * p1_z);
+  const double d_p2_expected = (a * p2_x) + (b * p2_y) + (c * p2_z);
+  const double d_p3_expected = (a * p3_x) + (b * p3_y) + (c * p3_z);
+  if (verbose)
+  {
+    std::clog
+      << "(a * x) + (b * y) + (c * z) = d" << '\n'
+      << "(" << a << " * x) + (" << b << " * y) + (" << c << " * z) = " << d << '\n'
+      << "(" << a << " * " << p1_x << ") + (" << b << " * " << p1_y << ") + (" << c << " * " << p1_z << ") = " << d << '\n'
+      << "(" << (a * p1_x) << ") + (" << (b * p1_y) << ") + (" << (c * p1_z) << ") = " << d << '\n'
+      << "(" << a << " * " << p2_x << ") + (" << b << " * " << p2_y << ") + (" << c << " * " << p2_z << ") = " << d << '\n'
+      << "(" << (a * p2_x) << ") + (" << (b * p2_y) << ") + (" << (c * p2_z) << ") = " << d << '\n'
+      << "(" << a << " * " << p3_x << ") + (" << b << " * " << p3_y << ") + (" << c << " * " << p3_z << ") = " << d << '\n'
+      << "(" << (a * p3_x) << ") + (" << (b * p3_y) << ") + (" << (c * p3_z) << ") = " << d << '\n'
+    ;
+    /* Screen output
+
+    (a * x) + (b * y) + (c * z) = d
+    (30 * x) + (-48 * y) + (17 * z) = -15
+    (30 * 1) + (-48 * 2) + (17 * 3) = -15
+    (30) + (-96) + (51) = -15
+    (30 * 4) + (-48 * 6) + (17 * 9) = -15
+    (120) + (-288) + (153) = -15
+    (30 * 12) + (-48 * 11) + (17 * 9) = -15
+    (360) + (-528) + (153) = -15
+
+    */
+  }
+  BOOST_CHECK(std::abs(d - d_p1_expected) < 0.001);
+  BOOST_CHECK(std::abs(d - d_p2_expected) < 0.001);
+  BOOST_CHECK(std::abs(d - d_p3_expected) < 0.001);
+}
+
+BOOST_AUTO_TEST_CASE(test_ribi_geometry_CalcPlane_2)
+{
+  //CalcPlane return the coefficients in the following form:
+  // A.x + B.y + C.z = D
+  //Converting this to z being a function of x and y:
+  // -C.z = A.x + B.y - D
+  // z = -A/C.x - B/C.y + D/C
+  //In this test, use the formula:
+  //  z = (2.0 * x) + (3.0 * y) + (5.0)
+  //Coefficients must then become:
+  //  -A/C = 2.0
+  //  -B/C = 3.0
+  //   D/C = 5.0
+  //Coefficients are, when setting C to 1.0:
+  //  -A = 2.0 => A = -2.0
+  //  -B = 3.0 => B = -3.0
+  //   C = 1.0
+  //   D = 5.0
+  using Coordinat3D = ::ribi::Geometry::Coordinat3D;
+  using boost::geometry::model::point;
+  using boost::geometry::cs::cartesian;
+  const ribi::Geometry g;
+  const Coordinat3D p1(1.0,1.0,10.0);
+  const Coordinat3D p2(1.0,2.0,13.0);
+  const Coordinat3D p3(2.0,1.0,12.0);
+  const auto t(g.CalcPlane(p1,p2,p3));
+  const double a = t[0];
+  const double b = t[1];
+  const double c = t[2];
+  const double d = t[3];
+  const double a_expected = -2.0;
+  const double b_expected = -3.0;
+  const double c_expected =  1.0;
+  const double d_expected =  5.0;
+  BOOST_CHECK(std::abs(a - a_expected) < 0.001);
+  BOOST_CHECK(std::abs(b - b_expected) < 0.001);
+  BOOST_CHECK(std::abs(c - c_expected) < 0.001);
+  BOOST_CHECK(std::abs(d - d_expected) < 0.001);
+  const double d_p1_expected = (a * 1.0) + (b * 1.0) + (c * 10.0);
+  const double d_p2_expected = (a * 1.0) + (b * 2.0) + (c * 13.0);
+  const double d_p3_expected = (a * 2.0) + (b * 1.0) + (c * 12.0);
+  BOOST_CHECK(std::abs(d - d_p1_expected) < 0.001);
+  BOOST_CHECK(std::abs(d - d_p2_expected) < 0.001);
+  BOOST_CHECK(std::abs(d - d_p3_expected) < 0.001);
+}
+
+BOOST_AUTO_TEST_CASE(test_ribi_geometry_Fmod)
+{
+  const ribi::Geometry g;
+  const double expected_min = 1.0 - 0.00001;
+  const double expected_max = 1.0 + 0.00001;
+  BOOST_CHECK(g.Fmod(3.0,2.0) > expected_min && g.Fmod(3.0,2.0) < expected_max);
+  BOOST_CHECK(g.Fmod(13.0,2.0) > expected_min && g.Fmod(13.0,2.0) < expected_max);
+  BOOST_CHECK(g.Fmod(-1.0,2.0) > expected_min && g.Fmod(-1.0,2.0) < expected_max);
+  BOOST_CHECK(g.Fmod(-3.0,2.0) > expected_min && g.Fmod(-3.0,2.0) < expected_max);
+  BOOST_CHECK(g.Fmod(-13.0,2.0) > expected_min && g.Fmod(-13.0,2.0) < expected_max);
+}
+
+BOOST_AUTO_TEST_CASE(test_ribi_geometry_std_atan2_versus_apfloats_atan2)
+{
+  using Apfloat = ::ribi::Geometry::Apfloat;
+  const ribi::Geometry g;
+  for (double dx = -1.0; dx < 1.01; dx += 1.0)
+  {
+    for (double dy = -1.0; dy < 1.01; dy += 1.0)
+    {
+      if (dx == 0.0 && dy == 0.0) continue;
+      const auto a = std::atan2(dx,dy);
+      const auto b = atan2(Apfloat(dx),Apfloat(dy));
+      const auto c = g.Atan2(Apfloat(dx),Apfloat(dy));
+      const auto error = abs(a - c);
+      BOOST_CHECK(error < 0.01); //apfloat does not use namespace std::
+    }
+  }
+}
+
+BOOST_AUTO_TEST_CASE(test_ribi_geometry_GetAngleClockCartesian_double)
+{
+  const ribi::Geometry g;
+  const double pi = boost::math::constants::pi<double>();
+  {
+    const double angle =  g.GetAngleClockCartesian(0.0, 1.0); //North
+    const double expected = 0.0 * pi;
+    BOOST_CHECK(std::abs(angle-expected) < 0.01);
+  }
+  {
+    const double angle =  g.GetAngleClockCartesian(1.0, 1.0); //North-East
+    const double expected = 0.25 * pi;
+    BOOST_CHECK(std::abs(angle-expected) < 0.01);
+  }
+  {
+    const double angle =  g.GetAngleClockCartesian(1.0,0.0); //East
+    const double expected = 0.5 * pi;
+    BOOST_CHECK(std::abs(angle-expected) < 0.01);
+  }
+  {
+    const double angle =  g.GetAngleClockCartesian(1.0,-1.0); //South-East
+    const double expected = 0.75 * pi;
+    BOOST_CHECK(std::abs(angle-expected) < 0.01);
+  }
+  {
+    const double angle =  g.GetAngleClockCartesian(0.0,-1.0); //South
+    const double expected = 1.0 * pi;
+    BOOST_CHECK(std::abs(angle-expected) < 0.01);
+  }
+  {
+    const double angle =  g.GetAngleClockCartesian(-1.0,-1.0); //South-West
+    const double expected = 1.25 * pi;
+    BOOST_CHECK(std::abs(angle-expected) < 0.01);
+  }
+  {
+    const double angle =  g.GetAngleClockCartesian(-1.0,0.0); //West
+    const double expected = 1.5 * pi;
+    BOOST_CHECK(std::abs(angle-expected) < 0.01);
+  }
+  {
+    const double angle =  g.GetAngleClockCartesian(-1.0,1.0); //North-West
+    const double expected = 1.75 * pi;
+    BOOST_CHECK(std::abs(angle-expected) < 0.01);
+  }
+}
+
+BOOST_AUTO_TEST_CASE(test_ribi_geometry_GetAngleClockCartesian_Apfloat)
+{
+  using Apfloat = ::ribi::Geometry::Apfloat;
+  const ribi::Geometry g;
+  const double pi = boost::math::constants::pi<double>();
+  {
+    const auto angle =  g.GetAngleClockCartesian(Apfloat(1.0),Apfloat(1.0)); //North-East
+    const auto expected = 0.25 * pi;
+    BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
+  }
+  {
+    const auto angle =  g.GetAngleClockCartesian(Apfloat(1.0),Apfloat(0.0)); //East
+    const auto expected = 0.5 * pi;
+    BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
+  }
+  {
+    const auto angle =  g.GetAngleClockCartesian(Apfloat(1.0),Apfloat(-1.0)); //South-East
+    const auto expected = 0.75 * pi;
+    BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
+  }
+  {
+    const auto angle =  g.GetAngleClockCartesian(Apfloat(0.0),Apfloat(-1.0)); //South
+    const auto expected = 1.0 * pi;
+    BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
+  }
+  {
+    const auto angle =  g.GetAngleClockCartesian(Apfloat(-1.0),Apfloat(-1.0)); //South-West
+    const auto expected = 1.25 * pi;
+    BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
+  }
+  {
+    const auto angle =  g.GetAngleClockCartesian(Apfloat(-1.0),Apfloat(0.0)); //West
+    const auto expected = 1.5 * pi;
+    BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
+  }
+  {
+    const auto angle =  g.GetAngleClockCartesian(Apfloat(-1.0),Apfloat(1.0)); //North-West
+    const auto expected = 1.75 * pi;
+    BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
+  }
+}
+
+BOOST_AUTO_TEST_CASE(test_ribi_geometry)
 {
   using namespace ribi;
   using ApCoordinat3D = ::ribi::Geometry::ApCoordinat3D;
@@ -22,230 +242,11 @@ BOOST_AUTO_TEST_CASE(ribi_geometry_test)
   using Polygon = ::ribi::Geometry::Polygon;
 
   {
-    const boost::shared_ptr<Plane> plane{
-      new Plane(
-        Plane::Coordinat3D(0.0,0.0,0.0),
-        Plane::Coordinat3D(0.0,1.0,0.0),
-        Plane::Coordinat3D(1.0,0.0,0.0)
-      )
-    };
   }
-  ::ribi::Regex();
   const bool verbose{false};
   const double pi = boost::math::constants::pi<double>();
   const Geometry g;
-  if (verbose) { TRACE("CalcPlane #2"); }
-  {
-    //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,1.0);
-    using boost::geometry::cs::cartesian;
-    const double p1_x =  1.0;
-    const double p1_y =  2.0;
-    const double p1_z =  3.0;
-    const double p2_x =  4.0;
-    const double p2_y =  6.0;
-    const double p2_z =  9.0;
-    const double p3_x = 12.0;
-    const double p3_y = 11.0;
-    const double p3_z =  9.0;
-    const Coordinat3D p1(p1_x,p1_y,p1_z);
-    const Coordinat3D p2(p2_x,p2_y,p2_z);
-    const Coordinat3D p3(p3_x,p3_y,p3_z);
-    const auto t(g.CalcPlane(p1,p2,p3));
-    const double a = t[0];
-    const double b = t[1];
-    const double c = t[2];
-    const double d = t[3];
-    const double d_p1_expected = (a * p1_x) + (b * p1_y) + (c * p1_z);
-    const double d_p2_expected = (a * p2_x) + (b * p2_y) + (c * p2_z);
-    const double d_p3_expected = (a * p3_x) + (b * p3_y) + (c * p3_z);
-    const bool verbose{false};
-    if (verbose)
-    {
-      std::clog
-        << "(a * x) + (b * y) + (c * z) = d" << '\n'
-        << "(" << a << " * x) + (" << b << " * y) + (" << c << " * z) = " << d << '\n'
-        << "(" << a << " * " << p1_x << ") + (" << b << " * " << p1_y << ") + (" << c << " * " << p1_z << ") = " << d << '\n'
-        << "(" << (a * p1_x) << ") + (" << (b * p1_y) << ") + (" << (c * p1_z) << ") = " << d << '\n'
-        << "(" << a << " * " << p2_x << ") + (" << b << " * " << p2_y << ") + (" << c << " * " << p2_z << ") = " << d << '\n'
-        << "(" << (a * p2_x) << ") + (" << (b * p2_y) << ") + (" << (c * p2_z) << ") = " << d << '\n'
-        << "(" << a << " * " << p3_x << ") + (" << b << " * " << p3_y << ") + (" << c << " * " << p3_z << ") = " << d << '\n'
-        << "(" << (a * p3_x) << ") + (" << (b * p3_y) << ") + (" << (c * p3_z) << ") = " << d << '\n'
-      ;
-      /* Screen output
 
-      (a * x) + (b * y) + (c * z) = d
-      (30 * x) + (-48 * y) + (17 * z) = -15
-      (30 * 1) + (-48 * 2) + (17 * 3) = -15
-      (30) + (-96) + (51) = -15
-      (30 * 4) + (-48 * 6) + (17 * 9) = -15
-      (120) + (-288) + (153) = -15
-      (30 * 12) + (-48 * 11) + (17 * 9) = -15
-      (360) + (-528) + (153) = -15
-
-      */
-    }
-    BOOST_CHECK(std::abs(d - d_p1_expected) < 0.001);
-    BOOST_CHECK(std::abs(d - d_p2_expected) < 0.001);
-    BOOST_CHECK(std::abs(d - d_p3_expected) < 0.001);
-  }
-  if (verbose) { TRACE("CalcPlane #2"); }
-  {
-    //CalcPlane return the coefficients in the following form:
-    // A.x + B.y + C.z = D
-    //Converting this to z being a function of x and y:
-    // -C.z = A.x + B.y - D
-    // z = -A/C.x - B/C.y + D/C
-    //In this test, use the formula:
-    //  z = (2.0 * x) + (3.0 * y) + (5.0)
-    //Coefficients must then become:
-    //  -A/C = 2.0
-    //  -B/C = 3.0
-    //   D/C = 5.0
-    //Coefficients are, when setting C to 1.0:
-    //  -A = 2.0 => A = -2.0
-    //  -B = 3.0 => B = -3.0
-    //   C = 1.0
-    //   D = 5.0
-    using boost::geometry::model::point;
-    using boost::geometry::cs::cartesian;
-    const Coordinat3D p1(1.0,1.0,10.0);
-    const Coordinat3D p2(1.0,2.0,13.0);
-    const Coordinat3D p3(2.0,1.0,12.0);
-    const auto t(g.CalcPlane(p1,p2,p3));
-    const double a = t[0];
-    const double b = t[1];
-    const double c = t[2];
-    const double d = t[3];
-    const double a_expected = -2.0;
-    const double b_expected = -3.0;
-    const double c_expected =  1.0;
-    const double d_expected =  5.0;
-    BOOST_CHECK(std::abs(a - a_expected) < 0.001);
-    BOOST_CHECK(std::abs(b - b_expected) < 0.001);
-    BOOST_CHECK(std::abs(c - c_expected) < 0.001);
-    BOOST_CHECK(std::abs(d - d_expected) < 0.001);
-    const double d_p1_expected = (a * 1.0) + (b * 1.0) + (c * 10.0);
-    const double d_p2_expected = (a * 1.0) + (b * 2.0) + (c * 13.0);
-    const double d_p3_expected = (a * 2.0) + (b * 1.0) + (c * 12.0);
-    BOOST_CHECK(std::abs(d - d_p1_expected) < 0.001);
-    BOOST_CHECK(std::abs(d - d_p2_expected) < 0.001);
-    BOOST_CHECK(std::abs(d - d_p3_expected) < 0.001);
-
-  }
-  if (verbose) { TRACE("Fmod"); }
-  {
-    const double expected_min = 1.0 - 0.00001;
-    const double expected_max = 1.0 + 0.00001;
-    BOOST_CHECK(g.Fmod(3.0,2.0) > expected_min && g.Fmod(3.0,2.0) < expected_max);
-    BOOST_CHECK(g.Fmod(13.0,2.0) > expected_min && g.Fmod(13.0,2.0) < expected_max);
-    BOOST_CHECK(g.Fmod(-1.0,2.0) > expected_min && g.Fmod(-1.0,2.0) < expected_max);
-    BOOST_CHECK(g.Fmod(-3.0,2.0) > expected_min && g.Fmod(-3.0,2.0) < expected_max);
-    BOOST_CHECK(g.Fmod(-13.0,2.0) > expected_min && g.Fmod(-13.0,2.0) < expected_max);
-  }
-  if (verbose) { TRACE("std::atan2 versus apfloat's atan2"); }
-  {
-    for (double dx = -1.0; dx < 1.01; dx += 1.0)
-    {
-      for (double dy = -1.0; dy < 1.01; dy += 1.0)
-      {
-        if (dx == 0.0 && dy == 0.0) continue;
-        const auto a = std::atan2(dx,dy);
-        const auto b = atan2(Apfloat(dx),Apfloat(dy));
-        const auto c = g.Atan2(Apfloat(dx),Apfloat(dy));
-        const auto error = abs(a - c);
-        BOOST_CHECK(error < 0.01); //apfloat does not use namespace std::
-      }
-    }
-  }
-
-  if (verbose) { TRACE("GetAngleClockCartesian, double"); }
-  {
-    {
-      const double angle =  g.GetAngleClockCartesian(0.0, 1.0); //North
-      const double expected = 0.0 * pi;
-      BOOST_CHECK(std::abs(angle-expected) < 0.01);
-    }
-    {
-      const double angle =  g.GetAngleClockCartesian(1.0, 1.0); //North-East
-      const double expected = 0.25 * pi;
-      BOOST_CHECK(std::abs(angle-expected) < 0.01);
-    }
-    {
-      const double angle =  g.GetAngleClockCartesian(1.0,0.0); //East
-      const double expected = 0.5 * pi;
-      BOOST_CHECK(std::abs(angle-expected) < 0.01);
-    }
-    {
-      const double angle =  g.GetAngleClockCartesian(1.0,-1.0); //South-East
-      const double expected = 0.75 * pi;
-      BOOST_CHECK(std::abs(angle-expected) < 0.01);
-    }
-    {
-      const double angle =  g.GetAngleClockCartesian(0.0,-1.0); //South
-      const double expected = 1.0 * pi;
-      BOOST_CHECK(std::abs(angle-expected) < 0.01);
-    }
-    {
-      const double angle =  g.GetAngleClockCartesian(-1.0,-1.0); //South-West
-      const double expected = 1.25 * pi;
-      BOOST_CHECK(std::abs(angle-expected) < 0.01);
-    }
-    {
-      const double angle =  g.GetAngleClockCartesian(-1.0,0.0); //West
-      const double expected = 1.5 * pi;
-      BOOST_CHECK(std::abs(angle-expected) < 0.01);
-    }
-    {
-      const double angle =  g.GetAngleClockCartesian(-1.0,1.0); //North-West
-      const double expected = 1.75 * pi;
-      BOOST_CHECK(std::abs(angle-expected) < 0.01);
-    }
-  }
-  if (verbose) { TRACE("GetAngleClockCartesian, Apfloat"); }
-  {
-    const auto angle =  g.GetAngleClockCartesian(Apfloat(0.0),Apfloat(1.0)); //North
-    const auto expected = 0.0 * pi;
-    const auto error = abs(angle-expected); //apfloat does not use namespace std::
-    BOOST_CHECK(error < 0.01);
-  }
-  if (verbose) { TRACE("GetAngleClockCartesian, Apfloat, test eight directions"); }
-  {
-    {
-      const auto angle =  g.GetAngleClockCartesian(Apfloat(1.0),Apfloat(1.0)); //North-East
-      const auto expected = 0.25 * pi;
-      BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
-    }
-    {
-      const auto angle =  g.GetAngleClockCartesian(Apfloat(1.0),Apfloat(0.0)); //East
-      const auto expected = 0.5 * pi;
-      BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
-    }
-    {
-      const auto angle =  g.GetAngleClockCartesian(Apfloat(1.0),Apfloat(-1.0)); //South-East
-      const auto expected = 0.75 * pi;
-      BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
-    }
-    {
-      const auto angle =  g.GetAngleClockCartesian(Apfloat(0.0),Apfloat(-1.0)); //South
-      const auto expected = 1.0 * pi;
-      BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
-    }
-    {
-      const auto angle =  g.GetAngleClockCartesian(Apfloat(-1.0),Apfloat(-1.0)); //South-West
-      const auto expected = 1.25 * pi;
-      BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
-    }
-    {
-      const auto angle =  g.GetAngleClockCartesian(Apfloat(-1.0),Apfloat(0.0)); //West
-      const auto expected = 1.5 * pi;
-      BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
-    }
-    {
-      const auto angle =  g.GetAngleClockCartesian(Apfloat(-1.0),Apfloat(1.0)); //North-West
-      const auto expected = 1.75 * pi;
-      BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
-    }
-  }
   if (verbose) { TRACE("GetAngleClockScreen, double, test eight directions"); }
   {
     {

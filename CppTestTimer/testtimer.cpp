@@ -21,6 +21,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "testtimer.h"
 
 #include <cassert>
+#include <sstream>
 #include <iostream>
 
 #include <boost/timer.hpp>
@@ -151,15 +152,11 @@ ribi::TestTimer::~TestTimer() noexcept
     << " seconds)"
     << std::endl
   ;
-  if (elapsed_secs > m_impl->m_max_time_sec)
-  {
-    std::exit(0);
-  }
 }
 
 std::string ribi::TestTimer::GetVersion() noexcept
 {
-  return "1.4";
+  return "1.5";
 }
 
 std::vector<std::string> ribi::TestTimer::GetVersionHistory() noexcept
@@ -169,16 +166,25 @@ std::vector<std::string> ribi::TestTimer::GetVersionHistory() noexcept
     "2014-08-08: version 1.1: allow setting a maximum amount of TestTimers active",
     "2014-08-10: version 1.2: count the number of constructed TestTimers",
     "2014-12-24: version 1.3: added GetMaxCnt",
-    "2014-12-31: version 1.4: use of std::unique_ptr"
+    "2014-12-31: version 1.4: use of std::unique_ptr",
+    "2016-04-09: version 1.5: should not call std::exit in desctructor",
   };
 }
 
 int ribi::TestTimer::GetMaxCnt() noexcept
 {
-  return TestTimerImpl::m_max_cnt;
+  return TestTimerImpl::m_max_cnt - 1;
 }
 
-void ribi::TestTimer::SetMaxCnt(const int max_cnt) noexcept
+void ribi::TestTimer::SetMaxCnt(const int max_cnt)
 {
+  if (max_cnt < 1)
+  {
+    std::stringstream msg;
+    msg << __func__ << ": "
+      << "TestTimer max_count must be >= 1, instead of " << max_cnt
+    ;
+    throw std::invalid_argument(msg.str());
+  }
   TestTimerImpl::m_max_cnt = max_cnt + 1;
 }
