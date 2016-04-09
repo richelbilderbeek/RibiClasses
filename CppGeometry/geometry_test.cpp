@@ -512,6 +512,71 @@ BOOST_AUTO_TEST_CASE(test_ribi_geometry_IsCounterClockWise_three_angles_vector)
   BOOST_CHECK(!g.IsCounterClockwise(Doubles( { 3.0 * pi, 2.5 * pi, 3.3 * pi } ))); //Mess
 }
 
+BOOST_AUTO_TEST_CASE(test_ribi_geometry_IsClockWise_four_angles_vector)
+{
+  const ribi::Geometry g;
+  const double pi = boost::math::constants::pi<double>();
+  using Doubles = ::ribi::Geometry::Doubles;
+  //Correct order
+  BOOST_CHECK( g.IsClockwise(Doubles( {-2.5 * pi,-2.0 * pi,-1.5 * pi,-1.0 * pi} )));
+  BOOST_CHECK( g.IsClockwise(Doubles( {-2.0 * pi,-1.5 * pi,-1.0 * pi,-0.5 * pi} )));
+  BOOST_CHECK( g.IsClockwise(Doubles( {-1.5 * pi,-1.0 * pi,-0.5 * pi, 0.0 * pi} )));
+  BOOST_CHECK( g.IsClockwise(Doubles( {-1.0 * pi,-0.5 * pi, 0.0 * pi, 0.5 * pi} )));
+  BOOST_CHECK( g.IsClockwise(Doubles( {-0.5 * pi, 0.0 * pi, 0.5 * pi, 1.0 * pi} )));
+  BOOST_CHECK( g.IsClockwise(Doubles( { 0.0 * pi, 0.5 * pi, 1.0 * pi, 1.5 * pi} )));
+  BOOST_CHECK( g.IsClockwise(Doubles( { 0.5 * pi, 1.0 * pi, 1.5 * pi, 2.0 * pi} )));
+  BOOST_CHECK( g.IsClockwise(Doubles( { 1.0 * pi, 1.5 * pi, 2.0 * pi, 2.5 * pi} )));
+  BOOST_CHECK( g.IsClockwise(Doubles( { 1.5 * pi, 2.0 * pi, 2.5 * pi, 3.0 * pi} )));
+  BOOST_CHECK( g.IsClockwise(Doubles( { 2.0 * pi, 2.5 * pi, 3.0 * pi, 3.5 * pi} )));
+  BOOST_CHECK( g.IsClockwise(Doubles( { 2.5 * pi, 3.0 * pi, 3.5 * pi, 4.0 * pi} )));
+
+  //Swap [0] and [1]
+  BOOST_CHECK(!g.IsClockwise(Doubles( {-2.0 * pi,-2.5 * pi,-1.5 * pi,-1.0 * pi} )));
+  BOOST_CHECK(!g.IsClockwise(Doubles( {-1.5 * pi,-2.0 * pi,-1.0 * pi,-0.5 * pi} )));
+  BOOST_CHECK(!g.IsClockwise(Doubles( {-1.0 * pi,-1.5 * pi,-0.5 * pi, 0.0 * pi} )));
+  BOOST_CHECK(!g.IsClockwise(Doubles( {-0.5 * pi,-1.0 * pi, 0.0 * pi, 0.5 * pi} )));
+  BOOST_CHECK(!g.IsClockwise(Doubles( { 0.0 * pi,-0.5 * pi, 0.5 * pi, 1.0 * pi} )));
+  BOOST_CHECK(!g.IsClockwise(Doubles( { 0.5 * pi, 0.0 * pi, 1.0 * pi, 1.5 * pi} )));
+  BOOST_CHECK(!g.IsClockwise(Doubles( { 1.0 * pi, 0.5 * pi, 1.5 * pi, 2.0 * pi} )));
+  BOOST_CHECK(!g.IsClockwise(Doubles( { 1.5 * pi, 1.0 * pi, 2.0 * pi, 2.5 * pi} )));
+  BOOST_CHECK(!g.IsClockwise(Doubles( { 2.0 * pi, 1.5 * pi, 2.5 * pi, 3.0 * pi} )));
+  BOOST_CHECK(!g.IsClockwise(Doubles( { 2.5 * pi, 2.0 * pi, 3.0 * pi, 3.5 * pi} )));
+  BOOST_CHECK(!g.IsClockwise(Doubles( { 3.0 * pi, 2.5 * pi, 3.5 * pi, 4.0 * pi} )));
+
+  //Swap [2] and [3]
+  BOOST_CHECK(!g.IsClockwise(Doubles( {-2.5 * pi,-2.0 * pi,-1.0 * pi,-1.5 * pi} )));
+  BOOST_CHECK(!g.IsClockwise(Doubles( {-2.0 * pi,-1.5 * pi,-0.5 * pi,-1.0 * pi} )));
+  BOOST_CHECK(!g.IsClockwise(Doubles( {-1.5 * pi,-1.0 * pi, 0.0 * pi,-0.5 * pi} )));
+  BOOST_CHECK(!g.IsClockwise(Doubles( {-1.0 * pi,-0.5 * pi, 0.5 * pi, 0.0 * pi} )));
+  BOOST_CHECK(!g.IsClockwise(Doubles( {-0.5 * pi, 0.0 * pi, 1.0 * pi, 0.5 * pi} )));
+  BOOST_CHECK(!g.IsClockwise(Doubles( { 0.0 * pi, 0.5 * pi, 1.5 * pi, 1.0 * pi} )));
+  BOOST_CHECK(!g.IsClockwise(Doubles( { 0.5 * pi, 1.0 * pi, 2.0 * pi, 1.5 * pi} )));
+  BOOST_CHECK(!g.IsClockwise(Doubles( { 1.0 * pi, 1.5 * pi, 2.5 * pi, 2.0 * pi} )));
+  BOOST_CHECK(!g.IsClockwise(Doubles( { 1.5 * pi, 2.0 * pi, 3.0 * pi, 2.5 * pi} )));
+  BOOST_CHECK(!g.IsClockwise(Doubles( { 2.0 * pi, 2.5 * pi, 3.5 * pi, 3.0 * pi} )));
+  BOOST_CHECK(!g.IsClockwise(Doubles( { 2.5 * pi, 3.0 * pi, 4.0 * pi, 3.5 * pi} )));
+}
+
+BOOST_AUTO_TEST_CASE(test_ribi_geometry_IsCounterClockWise_four_angles_vector)
+{
+  const ribi::Geometry g;
+  const double pi = boost::math::constants::pi<double>();
+  using Doubles = ::ribi::Geometry::Doubles;
+  //Clockwise order
+  BOOST_CHECK(!g.IsCounterClockwise(Doubles( {-2.5 * pi,-2.0 * pi,-1.5 * pi,-1.0 * pi} )));
+  BOOST_CHECK(!g.IsCounterClockwise(Doubles( {-2.0 * pi,-1.5 * pi,-1.0 * pi,-0.5 * pi} )));
+  BOOST_CHECK(!g.IsCounterClockwise(Doubles( {-1.5 * pi,-1.0 * pi,-0.5 * pi, 0.0 * pi} )));
+  BOOST_CHECK(!g.IsCounterClockwise(Doubles( {-1.0 * pi,-0.5 * pi, 0.0 * pi, 0.5 * pi} )));
+  BOOST_CHECK(!g.IsCounterClockwise(Doubles( {-0.5 * pi, 0.0 * pi, 0.5 * pi, 1.0 * pi} )));
+  BOOST_CHECK(!g.IsCounterClockwise(Doubles( { 0.0 * pi, 0.5 * pi, 1.0 * pi, 1.5 * pi} )));
+  BOOST_CHECK(!g.IsCounterClockwise(Doubles( { 0.5 * pi, 1.0 * pi, 1.5 * pi, 2.0 * pi} )));
+  BOOST_CHECK(!g.IsCounterClockwise(Doubles( { 1.0 * pi, 1.5 * pi, 2.0 * pi, 2.5 * pi} )));
+  BOOST_CHECK(!g.IsCounterClockwise(Doubles( { 1.5 * pi, 2.0 * pi, 2.5 * pi, 3.0 * pi} )));
+  BOOST_CHECK(!g.IsCounterClockwise(Doubles( { 2.0 * pi, 2.5 * pi, 3.0 * pi, 3.5 * pi} )));
+  BOOST_CHECK(!g.IsCounterClockwise(Doubles( { 2.5 * pi, 3.0 * pi, 3.5 * pi, 4.0 * pi} )));
+}
+
+
 BOOST_AUTO_TEST_CASE(test_ribi_geometry)
 {
   const ribi::Geometry g;
@@ -527,65 +592,6 @@ BOOST_AUTO_TEST_CASE(test_ribi_geometry)
   using Apfloat = ::ribi::Geometry::Apfloat;
   using Doubles = ::ribi::Geometry::Doubles;
   using Polygon = ::ribi::Geometry::Polygon;
-
-  if (verbose) TRACE("IsClockWise of four, vector");
-  {
-
-    //Correct order
-    BOOST_CHECK( g.IsClockwise(Doubles( {-2.5 * pi,-2.0 * pi,-1.5 * pi,-1.0 * pi} )));
-    BOOST_CHECK( g.IsClockwise(Doubles( {-2.0 * pi,-1.5 * pi,-1.0 * pi,-0.5 * pi} )));
-    BOOST_CHECK( g.IsClockwise(Doubles( {-1.5 * pi,-1.0 * pi,-0.5 * pi, 0.0 * pi} )));
-    BOOST_CHECK( g.IsClockwise(Doubles( {-1.0 * pi,-0.5 * pi, 0.0 * pi, 0.5 * pi} )));
-    BOOST_CHECK( g.IsClockwise(Doubles( {-0.5 * pi, 0.0 * pi, 0.5 * pi, 1.0 * pi} )));
-    BOOST_CHECK( g.IsClockwise(Doubles( { 0.0 * pi, 0.5 * pi, 1.0 * pi, 1.5 * pi} )));
-    BOOST_CHECK( g.IsClockwise(Doubles( { 0.5 * pi, 1.0 * pi, 1.5 * pi, 2.0 * pi} )));
-    BOOST_CHECK( g.IsClockwise(Doubles( { 1.0 * pi, 1.5 * pi, 2.0 * pi, 2.5 * pi} )));
-    BOOST_CHECK( g.IsClockwise(Doubles( { 1.5 * pi, 2.0 * pi, 2.5 * pi, 3.0 * pi} )));
-    BOOST_CHECK( g.IsClockwise(Doubles( { 2.0 * pi, 2.5 * pi, 3.0 * pi, 3.5 * pi} )));
-    BOOST_CHECK( g.IsClockwise(Doubles( { 2.5 * pi, 3.0 * pi, 3.5 * pi, 4.0 * pi} )));
-
-    //Swap [0] and [1]
-    BOOST_CHECK(!g.IsClockwise(Doubles( {-2.0 * pi,-2.5 * pi,-1.5 * pi,-1.0 * pi} )));
-    BOOST_CHECK(!g.IsClockwise(Doubles( {-1.5 * pi,-2.0 * pi,-1.0 * pi,-0.5 * pi} )));
-    BOOST_CHECK(!g.IsClockwise(Doubles( {-1.0 * pi,-1.5 * pi,-0.5 * pi, 0.0 * pi} )));
-    BOOST_CHECK(!g.IsClockwise(Doubles( {-0.5 * pi,-1.0 * pi, 0.0 * pi, 0.5 * pi} )));
-    BOOST_CHECK(!g.IsClockwise(Doubles( { 0.0 * pi,-0.5 * pi, 0.5 * pi, 1.0 * pi} )));
-    BOOST_CHECK(!g.IsClockwise(Doubles( { 0.5 * pi, 0.0 * pi, 1.0 * pi, 1.5 * pi} )));
-    BOOST_CHECK(!g.IsClockwise(Doubles( { 1.0 * pi, 0.5 * pi, 1.5 * pi, 2.0 * pi} )));
-    BOOST_CHECK(!g.IsClockwise(Doubles( { 1.5 * pi, 1.0 * pi, 2.0 * pi, 2.5 * pi} )));
-    BOOST_CHECK(!g.IsClockwise(Doubles( { 2.0 * pi, 1.5 * pi, 2.5 * pi, 3.0 * pi} )));
-    BOOST_CHECK(!g.IsClockwise(Doubles( { 2.5 * pi, 2.0 * pi, 3.0 * pi, 3.5 * pi} )));
-    BOOST_CHECK(!g.IsClockwise(Doubles( { 3.0 * pi, 2.5 * pi, 3.5 * pi, 4.0 * pi} )));
-
-    //Swap [2] and [3]
-    BOOST_CHECK(!g.IsClockwise(Doubles( {-2.5 * pi,-2.0 * pi,-1.0 * pi,-1.5 * pi} )));
-    BOOST_CHECK(!g.IsClockwise(Doubles( {-2.0 * pi,-1.5 * pi,-0.5 * pi,-1.0 * pi} )));
-    BOOST_CHECK(!g.IsClockwise(Doubles( {-1.5 * pi,-1.0 * pi, 0.0 * pi,-0.5 * pi} )));
-    BOOST_CHECK(!g.IsClockwise(Doubles( {-1.0 * pi,-0.5 * pi, 0.5 * pi, 0.0 * pi} )));
-    BOOST_CHECK(!g.IsClockwise(Doubles( {-0.5 * pi, 0.0 * pi, 1.0 * pi, 0.5 * pi} )));
-    BOOST_CHECK(!g.IsClockwise(Doubles( { 0.0 * pi, 0.5 * pi, 1.5 * pi, 1.0 * pi} )));
-    BOOST_CHECK(!g.IsClockwise(Doubles( { 0.5 * pi, 1.0 * pi, 2.0 * pi, 1.5 * pi} )));
-    BOOST_CHECK(!g.IsClockwise(Doubles( { 1.0 * pi, 1.5 * pi, 2.5 * pi, 2.0 * pi} )));
-    BOOST_CHECK(!g.IsClockwise(Doubles( { 1.5 * pi, 2.0 * pi, 3.0 * pi, 2.5 * pi} )));
-    BOOST_CHECK(!g.IsClockwise(Doubles( { 2.0 * pi, 2.5 * pi, 3.5 * pi, 3.0 * pi} )));
-    BOOST_CHECK(!g.IsClockwise(Doubles( { 2.5 * pi, 3.0 * pi, 4.0 * pi, 3.5 * pi} )));
-  }
-  if (verbose) TRACE("IsCounterClockWise of four, vector");
-  {
-
-    //Clockwise order
-    BOOST_CHECK(!g.IsCounterClockwise(Doubles( {-2.5 * pi,-2.0 * pi,-1.5 * pi,-1.0 * pi} )));
-    BOOST_CHECK(!g.IsCounterClockwise(Doubles( {-2.0 * pi,-1.5 * pi,-1.0 * pi,-0.5 * pi} )));
-    BOOST_CHECK(!g.IsCounterClockwise(Doubles( {-1.5 * pi,-1.0 * pi,-0.5 * pi, 0.0 * pi} )));
-    BOOST_CHECK(!g.IsCounterClockwise(Doubles( {-1.0 * pi,-0.5 * pi, 0.0 * pi, 0.5 * pi} )));
-    BOOST_CHECK(!g.IsCounterClockwise(Doubles( {-0.5 * pi, 0.0 * pi, 0.5 * pi, 1.0 * pi} )));
-    BOOST_CHECK(!g.IsCounterClockwise(Doubles( { 0.0 * pi, 0.5 * pi, 1.0 * pi, 1.5 * pi} )));
-    BOOST_CHECK(!g.IsCounterClockwise(Doubles( { 0.5 * pi, 1.0 * pi, 1.5 * pi, 2.0 * pi} )));
-    BOOST_CHECK(!g.IsCounterClockwise(Doubles( { 1.0 * pi, 1.5 * pi, 2.0 * pi, 2.5 * pi} )));
-    BOOST_CHECK(!g.IsCounterClockwise(Doubles( { 1.5 * pi, 2.0 * pi, 2.5 * pi, 3.0 * pi} )));
-    BOOST_CHECK(!g.IsCounterClockwise(Doubles( { 2.0 * pi, 2.5 * pi, 3.0 * pi, 3.5 * pi} )));
-    BOOST_CHECK(!g.IsCounterClockwise(Doubles( { 2.5 * pi, 3.0 * pi, 3.5 * pi, 4.0 * pi} )));
-  }
 
   if (verbose) TRACE("IsClockWise of four, vector, going round more than once");
   /*

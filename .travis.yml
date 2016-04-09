@@ -15,11 +15,12 @@ addons:
     packages:
     - gcc-5
     - g++-5
+    - gcov-5
     - libboost1.55-all-dev
 
 install: 
   - sudo apt-get install -qq g++-5
-  - sudo apt-get install -qq gcov-5
+  # - sudo apt-get install -qq gcov-5
 
 # Start virtual X server, from https://docs.travis-ci.com/user/gui-and-headless-browsers/
 before_script:
