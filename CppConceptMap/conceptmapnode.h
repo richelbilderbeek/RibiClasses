@@ -45,6 +45,9 @@ struct Node
     const double y = 0.0
   ) noexcept;
 
+  ///When all text is GraphViz-friendly encoded, Decode will get the normal text back
+  void Decode() noexcept { m_concept.Decode(); }
+
   ///Get the Concept
   const Concept& GetConcept() const noexcept { return m_concept; }
         Concept& GetConcept()       noexcept { return m_concept; }
@@ -128,7 +131,7 @@ bool operator==(const Node& lhs, const Node& rhs) noexcept;
 bool operator!=(const Node& lhs, const Node& rhs) noexcept;
 bool operator<(const Node& lhs, const Node& rhs) noexcept;
 std::ostream& operator<<(std::ostream& os, const Node& node) noexcept;
-std::istream& operator>>(std::istream& is, Node& node) noexcept;
+std::istream& operator>>(std::istream& is, Node& node);
 
 } //~namespace cmap
 } //~namespace ribi

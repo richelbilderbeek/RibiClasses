@@ -41,6 +41,9 @@ struct Examples
 {
   explicit Examples(const std::vector<Example>& v = {});
 
+  ///When all text is GraphViz-friendly encoded, Decode will get the normal text back
+  void Decode() noexcept;
+
   const std::vector<Example>& Get() const noexcept { return m_v; }
         std::vector<Example>& Get()       noexcept { return m_v; }
 
@@ -52,10 +55,10 @@ private:
 };
 
 std::string ToXml(const Examples& node) noexcept;
-Examples XmlToExamples(const std::string& s) noexcept;
+Examples XmlToExamples(const std::string& s);
 
 std::ostream& operator<<(std::ostream& os, const Examples& concept) noexcept;
-std::istream& operator>>(std::istream& is, Examples& concept) noexcept;
+std::istream& operator>>(std::istream& is, Examples& concept);
 
 bool operator==(const Examples& lhs, const Examples& rhs);
 bool operator!=(const Examples& lhs, const Examples& rhs);

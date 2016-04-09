@@ -40,6 +40,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "custom_and_selectable_vertices_writer.h"
 #include "install_vertex_custom_type.h"
 #include "my_custom_vertex.h"
+#include "graphviz_decode.h"
 #include "create_all_direct_neighbour_custom_and_selectable_edges_and_vertices_subgraphs.h"
 #include "save_custom_and_selectable_edges_and_vertices_graph_to_dot.h"
 #include "load_directed_custom_and_selectable_edges_and_vertices_graph_from_dot.h"
@@ -57,6 +58,31 @@ int ribi::cmap::CountCenterNodes(const ConceptMap& c) noexcept
 std::vector<ribi::cmap::ConceptMap> ribi::cmap::CreateDirectNeighbourConceptMaps(const ConceptMap& c)
 {
   return create_all_direct_neighbour_custom_and_selectable_edges_and_vertices_subgraphs(c);
+}
+
+void ribi::cmap::DecodeConceptMap(ConceptMap& g) noexcept
+{
+  const auto vip = vertices(g);
+  std::for_each(vip.first, vip.second,
+    [&g](const VertexDescriptor vd)
+    {
+      auto vertex_map = get(boost::vertex_custom_type, g);
+      Node node = get(vertex_map, vd);
+      node.Decode();
+      put(vertex_map, vd, node);
+    }
+  );
+
+  const auto eip = edges(g);
+  std::for_each(eip.first, eip.second,
+    [&g](const EdgeDescriptor ed)
+    {
+      auto edge_map = get(boost::edge_custom_type, g);
+      Edge edge = get(edge_map, ed);
+      edge.Decode();
+      put(edge_map, ed, edge);
+    }
+  );
 }
 
 ribi::cmap::ConceptMap ribi::cmap::DotToConceptMap(const std::string& s)
@@ -151,13 +177,13 @@ ribi::cmap::Edge ribi::cmap::GetFirstEdge(const ConceptMap& c)
   return GetEdge(*edges(c).first, c);
 }
 
-ribi::cmap::Node ribi::cmap::GetFocalNode(const ConceptMap& c)
+ribi::cmap::Node ribi::cmap::GetFirstNode(const ConceptMap& c)
 {
   if (boost::num_vertices(c) == 0)
   {
     std::stringstream msg;
     msg << __func__ << ": "
-      << "Cannot get the focal node, if there are zero nodes"
+      << "Cannot get the first node, if there are zero nodes"
     ;
     throw std::logic_error(msg.str());
   }
@@ -232,9 +258,12 @@ bool ribi::cmap::HasCenterNode(const ConceptMap& c) noexcept
 
 ribi::cmap::ConceptMap ribi::cmap::LoadFromFile(const std::string& dot_filename)
 {
-  return load_directed_custom_and_selectable_edges_and_vertices_graph_from_dot<
-    decltype(ConceptMap())
-  >(dot_filename);
+  auto g = load_directed_custom_and_selectable_edges_and_vertices_graph_from_dot<
+      decltype(ConceptMap())
+    >(dot_filename)
+  ;
+  DecodeConceptMap(g);
+  return g;
 }
 
 void ribi::cmap::SaveToFile(const ConceptMap& g, const std::string& dot_filename)

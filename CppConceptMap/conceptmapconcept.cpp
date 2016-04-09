@@ -63,6 +63,11 @@ ribi::cmap::Concept::Concept(
   #endif
 }
 
+void ribi::cmap::Concept::Decode() noexcept
+{
+  m_name = graphviz_decode(m_name);
+  m_examples.Decode();
+}
 
 void ribi::cmap::Concept::SetExamples(const Examples& examples) noexcept
 {
@@ -146,7 +151,7 @@ std::string ribi::cmap::ToXml(const Concept& concept) noexcept
   return r;
 }
 
-ribi::cmap::Concept ribi::cmap::XmlToConcept(const std::string& s) noexcept
+ribi::cmap::Concept ribi::cmap::XmlToConcept(const std::string& s)
 {
   assert(s.size() >= 19);
   assert(s.substr(0,9) == "<concept>");
@@ -164,6 +169,7 @@ ribi::cmap::Concept ribi::cmap::XmlToConcept(const std::string& s) noexcept
       = Regex().GetRegexMatches(s,Regex().GetRegexName());
     assert(v.size() == 1);
     name = ribi::xml::StripXmlTag(v[0]);
+    name = graphviz_decode(name);
   }
   //m_examples
   {
@@ -222,25 +228,10 @@ std::ostream& ribi::cmap::operator<<(std::ostream& os, const Concept& concept) n
   return os;
 }
 
-std::istream& ribi::cmap::operator>>(std::istream& is, Concept& concept) noexcept
+std::istream& ribi::cmap::operator>>(std::istream& is, Concept& concept)
 {
   std::string s;
   is >> s;
-  /*
-
-  //eat until '</concept>'
-  is >> std::noskipws;
-  std::string s;
-  while (1)
-  {
-    char c;
-    is >> c;
-    s += c;
-    assert(s != "00000000000000000000000000000000000000000");
-    if(s.size() > 10 && s.substr(s.size() - 10,10) == "</concept>") break;
-  }
-  */
-  assert(s != "0");
   concept = XmlToConcept(graphviz_decode(s));
   return is;
 }

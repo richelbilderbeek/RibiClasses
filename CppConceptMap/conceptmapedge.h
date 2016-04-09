@@ -44,6 +44,9 @@ struct Edge
 
   ~Edge() noexcept;
 
+  ///When all text is GraphViz-friendly encoded, Decode will get the normal text back
+  void Decode() noexcept { m_node.Decode(); }
+
   const Node& GetNode() const noexcept { return m_node; }
         Node& GetNode()       noexcept { return m_node; }
 

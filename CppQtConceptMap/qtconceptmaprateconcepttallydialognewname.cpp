@@ -114,7 +114,7 @@ ribi::cmap::QtRateConceptTallyDialog::QtRateConceptTallyDialog(
         );
         const EdgeDescriptor edge { std::get<0>(row) };
         const bool center_is_from {
-          ribi::cmap::GetFrom(edge,conceptmap) == ribi::cmap::GetFocalNode(conceptmap)
+          ribi::cmap::GetFrom(edge,conceptmap) == ribi::cmap::GetFirstNode(conceptmap)
         };
         const Node other {
           center_is_from ? ribi::cmap::GetTo(edge,conceptmap) : ribi::cmap::GetFrom(edge, conceptmap)
@@ -249,7 +249,7 @@ std::string ribi::cmap::QtRateConceptTallyDialog::GetFocusName(
     ;
     throw std::logic_error(msg.str());
   }
-  const Concept focal_concept(ribi::cmap::GetFocalNode(sub_conceptmap).GetConcept());
+  const Concept focal_concept(ribi::cmap::GetFirstNode(sub_conceptmap).GetConcept());
   return focal_concept.GetName();
 }
 

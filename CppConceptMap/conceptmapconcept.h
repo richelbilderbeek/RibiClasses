@@ -55,6 +55,9 @@ struct Concept
     const int rating_specificity = -1
   );
 
+  ///When all text is GraphViz-friendly encoded, Decode will get the normal text back
+  void Decode() noexcept;
+
   ///Get the examples of the concept, e.g. 'Plato', 'Aristotle'
   const Examples& GetExamples() const noexcept { return m_examples; }
         Examples& GetExamples()       noexcept { return m_examples; }
@@ -135,10 +138,10 @@ struct Concept
 };
 
 std::string ToXml(const Concept& concept) noexcept;
-Concept XmlToConcept(const std::string& s) noexcept;
+Concept XmlToConcept(const std::string& s);
 
 std::ostream& operator<<(std::ostream& os, const Concept& concept) noexcept;
-std::istream& operator>>(std::istream& is, Concept& concept) noexcept;
+std::istream& operator>>(std::istream& is, Concept& concept);
 
 bool operator==(const Concept& lhs, const Concept& rhs);
 bool operator!=(const Concept& lhs, const Concept& rhs);

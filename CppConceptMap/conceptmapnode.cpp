@@ -256,7 +256,7 @@ std::ostream& ribi::cmap::operator<<(std::ostream& os, const Node& node) noexcep
   return os;
 }
 
-std::istream& ribi::cmap::operator>>(std::istream& is, Node& node) noexcept
+std::istream& ribi::cmap::operator>>(std::istream& is, Node& node)
 {
   #ifdef NO_EAT
   std::string s;

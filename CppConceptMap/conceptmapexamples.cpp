@@ -49,6 +49,14 @@ ribi::cmap::Examples::Examples(
 
 }
 
+void ribi::cmap::Examples::Decode() noexcept
+{
+  for (auto& example: Get())
+  {
+    example.Decode();
+  };
+}
+
 std::string ribi::cmap::Examples::ToStr() const noexcept
 {
   std::stringstream s;
@@ -86,7 +94,7 @@ std::string ribi::cmap::ToXml(const Examples& any_examples) noexcept
   return r;
 }
 
-ribi::cmap::Examples ribi::cmap::XmlToExamples(const std::string& s) noexcept
+ribi::cmap::Examples ribi::cmap::XmlToExamples(const std::string& s)
 {
   if (s.size() < 20)
   {
@@ -132,7 +140,7 @@ std::ostream& ribi::cmap::operator<<(std::ostream& os, const Examples& examples)
   return os;
 }
 
-std::istream& ribi::cmap::operator>>(std::istream& is, Examples& examples) noexcept
+std::istream& ribi::cmap::operator>>(std::istream& is, Examples& examples)
 {
   std::string s;
   is >> s;

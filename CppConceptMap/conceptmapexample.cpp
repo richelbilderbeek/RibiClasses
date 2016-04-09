@@ -63,6 +63,11 @@ ribi::cmap::Example::Example(
 
 }
 
+void ribi::cmap::Example::Decode() noexcept
+{
+  m_text = graphviz_decode(m_text);
+}
+
 void ribi::cmap::Example::SetCompetency(const Competency competency) noexcept
 {
   m_competency = competency;
@@ -133,7 +138,7 @@ std::string ribi::cmap::ToXml(const Example& example) noexcept
   return r;
 }
 
-ribi::cmap::Example ribi::cmap::XmlToExample(const std::string& s) noexcept
+ribi::cmap::Example ribi::cmap::XmlToExample(const std::string& s)
 {
   if (s.size() < 17)
   {
@@ -171,7 +176,6 @@ ribi::cmap::Example ribi::cmap::XmlToExample(const std::string& s) noexcept
       = Regex().GetRegexMatches(s,Regex().GetRegexCompetency());
     assert(v.size() == 1);
     competency = Competencies().ToType(ribi::xml::StripXmlTag(v[0]));
-    //competency = Example::StrToCompetency(ribi::xml::StripXmlTag(v[0]));
   }
   //is_complex
   {
@@ -200,6 +204,7 @@ ribi::cmap::Example ribi::cmap::XmlToExample(const std::string& s) noexcept
       = Regex().GetRegexMatches(s,Regex().GetRegexText());
     assert(v.size() == 1 && "GetRegexText must be present once in an Example");
     text = ribi::xml::StripXmlTag(v[0]);
+    text = graphviz_decode(text);
   }
 
   Example example(
@@ -219,7 +224,7 @@ std::ostream& ribi::cmap::operator<<(std::ostream& os, const Example& example) n
   return os;
 }
 
-std::istream& ribi::cmap::operator>>(std::istream& is, Example& example) noexcept
+std::istream& ribi::cmap::operator>>(std::istream& is, Example& example)
 {
   std::string s;
   is >> s;

@@ -40,6 +40,9 @@ struct Example
     const bool is_specific = true
   );
 
+  ///When all text is GraphViz-friendly encoded, Decode will get the normal text back
+  void Decode() noexcept;
+
   ///Get the competency, as might be judged by an assessor
   Competency GetCompetency() const noexcept { return m_competency; }
 
@@ -97,10 +100,10 @@ private:
 
 
 std::string ToXml(const Example& example) noexcept;
-Example XmlToExample(const std::string& s) noexcept;
+Example XmlToExample(const std::string& s);
 
 std::ostream& operator<<(std::ostream& os, const Example& example) noexcept;
-std::istream& operator>>(std::istream& is, Example& example) noexcept;
+std::istream& operator>>(std::istream& is, Example& example);
 
 bool operator==(const Example& lhs, const Example& rhs) noexcept;
 bool operator!=(const Example& lhs, const Example& rhs) noexcept;
