@@ -576,24 +576,11 @@ BOOST_AUTO_TEST_CASE(test_ribi_geometry_IsCounterClockWise_four_angles_vector)
   BOOST_CHECK(!g.IsCounterClockwise(Doubles( { 2.5 * pi, 3.0 * pi, 3.5 * pi, 4.0 * pi} )));
 }
 
-
-BOOST_AUTO_TEST_CASE(test_ribi_geometry)
+BOOST_AUTO_TEST_CASE(test_ribi_geometry_IsClockWise_four_vector_going_beyond_round)
 {
   const ribi::Geometry g;
-  const bool verbose{false};
   const double pi = boost::math::constants::pi<double>();
-  using namespace ribi;
-  using ApCoordinat3D = ::ribi::Geometry::ApCoordinat3D;
-  using ApCoordinats3D = ::ribi::Geometry::ApCoordinats3D;
-  using Coordinat2D = ::ribi::Geometry::Coordinat2D;
-  //using Coordinats2D = ::ribi::Geometry::Coordinats2D;
-  using Coordinat3D = ::ribi::Geometry::Coordinat3D;
-  using Coordinats3D = ::ribi::Geometry::Coordinats3D;
-  using Apfloat = ::ribi::Geometry::Apfloat;
   using Doubles = ::ribi::Geometry::Doubles;
-  using Polygon = ::ribi::Geometry::Polygon;
-
-  if (verbose) TRACE("IsClockWise of four, vector, going round more than once");
   /*
        A
        | _-D
@@ -605,12 +592,15 @@ BOOST_AUTO_TEST_CASE(test_ribi_geometry)
         B
 
   */
-  {
+  BOOST_CHECK(!g.IsClockwise(Doubles( {0.0 * pi,0.9 * pi,1.8 * pi,2.7 * pi} )));
+  BOOST_CHECK(!g.IsCounterClockwise(Doubles( {0.0 * pi,0.9 * pi,1.8 * pi,2.7 * pi} )));
+}
 
-    BOOST_CHECK(!g.IsClockwise(Doubles( {0.0 * pi,0.9 * pi,1.8 * pi,2.7 * pi} )));
-    BOOST_CHECK(!g.IsCounterClockwise(Doubles( {0.0 * pi,0.9 * pi,1.8 * pi,2.7 * pi} )));
-  }
-  if (verbose) TRACE("IsCounterClockWise of four, vector, going round more than once");
+BOOST_AUTO_TEST_CASE(test_ribi_geometry_IsCounterClockWise_four_vector_going_beyond_round)
+{
+  const ribi::Geometry g;
+  const double pi = boost::math::constants::pi<double>();
+  using Doubles = ::ribi::Geometry::Doubles;
   /*
        D
        | _-A
@@ -622,12 +612,16 @@ BOOST_AUTO_TEST_CASE(test_ribi_geometry)
         C
 
   */
-  {
+  BOOST_CHECK(!g.IsCounterClockwise(Doubles( {2.0 * pi,1.1 * pi,0.2 * pi,-0.7 * pi} )));
+  BOOST_CHECK(!g.IsCounterClockwise(Doubles( {2.7 * pi,1.8 * pi,0.9 * pi,0.0 * pi} )));
+}
 
-    BOOST_CHECK(!g.IsCounterClockwise(Doubles( {2.0 * pi,1.1 * pi,0.2 * pi,-0.7 * pi} )));
-    BOOST_CHECK(!g.IsCounterClockwise(Doubles( {2.7 * pi,1.8 * pi,0.9 * pi,0.0 * pi} )));
-  }
-  if (verbose) { TRACE("IsClockwise, 3D, from #228, test for positive, three of four points"); }
+BOOST_AUTO_TEST_CASE(test_ribi_geometry_IsClockWise_3d_from_issue_228)
+{
+  const ribi::Geometry g;
+  const double pi = boost::math::constants::pi<double>();
+  using Coordinat3D = ::ribi::Geometry::Coordinat3D;
+  using Coordinats3D = ::ribi::Geometry::Coordinats3D;
   {
     /*
     (-3.78624,2,10)
@@ -645,8 +639,6 @@ BOOST_AUTO_TEST_CASE(test_ribi_geometry)
     const Coordinat3D observer{-2.1871,3.74169,5};
     BOOST_CHECK(g.IsClockwiseCartesian(points,observer));
   }
-
-  if (verbose) { TRACE("IsCounterClockwise, 3D, from #228, test for positive, three of four points"); }
   {
     /*
     (-0.55,2,0)
@@ -664,7 +656,6 @@ BOOST_AUTO_TEST_CASE(test_ribi_geometry)
     const Coordinat3D observer{-2.1871,3.74169,5};
     BOOST_CHECK(g.IsCounterClockwiseCartesian(points,observer));
   }
-  if (verbose) { TRACE("IsCounterClockwise, 3D, from #228, test for positive, all four points"); }
   {
     /*
     (-0.55,2,0)
@@ -683,7 +674,14 @@ BOOST_AUTO_TEST_CASE(test_ribi_geometry)
     const Coordinat3D observer{-2.1871,3.74169,5};
     BOOST_CHECK(g.IsCounterClockwiseCartesian(points,observer));
   }
-  if (verbose) TRACE("IsConvex, two dimensions");
+}
+
+BOOST_AUTO_TEST_CASE(test_ribi_geometry_IsConvex_2d)
+{
+  const ribi::Geometry g;
+  const double pi = boost::math::constants::pi<double>();
+  using Coordinat2D = ::ribi::Geometry::Coordinat2D;
+  using Polygon = ::ribi::Geometry::Polygon;
   {
     /* Polygons used:
 
@@ -730,7 +728,7 @@ BOOST_AUTO_TEST_CASE(test_ribi_geometry)
       BOOST_CHECK(!g.IsConvex(polygon));
     }
   }
-  if (verbose) TRACE("Convex shape, 2D, from error #1");
+  // Convex shape, 2D, from error #1
   {
 
     /*
@@ -755,7 +753,7 @@ BOOST_AUTO_TEST_CASE(test_ribi_geometry)
     };
     BOOST_CHECK(g.IsConvex(points));
   }
-  if (verbose) TRACE("Convex shape, 2D, from error #2");
+  // Convex shape, 2D, from error #2
   {
     //From 3D points:
     /*
@@ -787,7 +785,7 @@ BOOST_AUTO_TEST_CASE(test_ribi_geometry)
   }
 
 
-  if (verbose) TRACE("Convex shape, 2D, from error #3, point 0");
+  // Convex shape, 2D, from error #3, point 0
   {
     /*
         __--2
@@ -811,7 +809,7 @@ BOOST_AUTO_TEST_CASE(test_ribi_geometry)
     BOOST_CHECK(g.IsConvex(points));
   }
 
-  if (verbose) TRACE("Convex shape, 2D, from error #3, point 5");
+  // Convex shape, 2D, from error #3, point 5
   {
     /*
             3
@@ -835,7 +833,7 @@ BOOST_AUTO_TEST_CASE(test_ribi_geometry)
     BOOST_CHECK(g.IsConvex(points));
   }
 
-  if (verbose) TRACE("Convex shape, 2D, from error #3, point 5");
+  // Convex shape, 2D, from error #3, point 5
   {
     /*
 
@@ -854,7 +852,20 @@ BOOST_AUTO_TEST_CASE(test_ribi_geometry)
     };
     BOOST_CHECK(g.IsConvex(points));
   }
+}
 
+
+BOOST_AUTO_TEST_CASE(test_ribi_geometry)
+{
+  const ribi::Geometry g;
+  const bool verbose{false};
+  const double pi = boost::math::constants::pi<double>();
+  using namespace ribi;
+  using ApCoordinat3D = ::ribi::Geometry::ApCoordinat3D;
+  using ApCoordinats3D = ::ribi::Geometry::ApCoordinats3D;
+  using Coordinat2D = ::ribi::Geometry::Coordinat2D;
+  //using Coordinats2D = ::ribi::Geometry::Coordinats2D;
+  using Apfloat = ::ribi::Geometry::Apfloat;
 
   if (verbose) TRACE("Convex shape, 3D, points in Y=0 plane");
   {

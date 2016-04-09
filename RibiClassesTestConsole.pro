@@ -38,7 +38,7 @@ LIBS += -lboost_unit_test_framework
 
 # gcov
 QMAKE_CXXFLAGS += -fprofile-arcs -ftest-coverage
-LIBS += -lgcov
+LIBS += -lgcov-5
 
 # Boost.Graph
 LIBS += \
