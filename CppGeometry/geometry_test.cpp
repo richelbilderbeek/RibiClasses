@@ -228,6 +228,120 @@ BOOST_AUTO_TEST_CASE(test_ribi_geometry_GetAngleClockCartesian_Apfloat)
   }
 }
 
+BOOST_AUTO_TEST_CASE(test_ribi_geometry_GetAngleClockScreen_double)
+{
+  const ribi::Geometry g;
+  const double pi = boost::math::constants::pi<double>();
+  {
+    const double angle =  g.GetAngleClockScreen(0.0,-1.0); //North
+    const double expected = 0.0 * pi;
+    BOOST_CHECK(std::abs(angle-expected) < 0.01);
+  }
+  {
+    const double angle =  g.GetAngleClockScreen(1.0,-1.0); //North-East
+    const double expected = 0.25 * pi;
+    BOOST_CHECK(std::abs(angle-expected) < 0.01);
+  }
+  {
+    const double angle =  g.GetAngleClockScreen(1.0,0.0); //East
+    const double expected = 0.5 * pi;
+    BOOST_CHECK(std::abs(angle-expected) < 0.01);
+  }
+  {
+    const double angle =  g.GetAngleClockScreen(1.0,1.0); //South-East
+    const double expected = 0.75 * pi;
+    BOOST_CHECK(std::abs(angle-expected) < 0.01);
+  }
+  {
+    const double angle =  g.GetAngleClockScreen(0.0,1.0); //South
+    const double expected = 1.0 * pi;
+    BOOST_CHECK(std::abs(angle-expected) < 0.01);
+  }
+  {
+    const double angle =  g.GetAngleClockScreen(-1.0,1.0); //South-West
+    const double expected = 1.25 * pi;
+    BOOST_CHECK(std::abs(angle-expected) < 0.01);
+  }
+  {
+    const double angle =  g.GetAngleClockScreen(-1.0,0.0); //West
+    const double expected = 1.5 * pi;
+    BOOST_CHECK(std::abs(angle-expected) < 0.01);
+  }
+  {
+    const double angle =  g.GetAngleClockScreen(-1.0,-1.0); //North-West
+    const double expected = 1.75 * pi;
+    BOOST_CHECK(std::abs(angle-expected) < 0.01);
+  }
+}
+
+BOOST_AUTO_TEST_CASE(test_ribi_geometry_GetAngleClockScreen_Apfloat)
+{
+  using Apfloat = ::ribi::Geometry::Apfloat;
+  const ribi::Geometry g;
+  const double pi = boost::math::constants::pi<double>();
+  {
+    const auto angle =  g.GetAngleClockScreen(Apfloat(1.0),Apfloat(-1.0)); //North-East
+    const auto expected = 0.25 * pi;
+    BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
+  }
+  {
+    const auto angle =  g.GetAngleClockScreen(Apfloat(1.0),Apfloat(0.0)); //East
+    const auto expected = 0.5 * pi;
+    BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
+  }
+  {
+    const auto angle =  g.GetAngleClockScreen(Apfloat(1.0),Apfloat(1.0)); //South-East
+    const auto expected = 0.75 * pi;
+    BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
+  }
+  {
+    const auto angle =  g.GetAngleClockScreen(Apfloat(0.0),Apfloat(1.0)); //South
+    const auto expected = 1.0 * pi;
+    BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
+  }
+  {
+    const auto angle =  g.GetAngleClockScreen(Apfloat(-1.0),Apfloat(1.0)); //South-West
+    const auto expected = 1.25 * pi;
+    BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
+  }
+  {
+    const auto angle =  g.GetAngleClockScreen(Apfloat(-1.0),Apfloat(0.0)); //West
+    const auto expected = 1.5 * pi;
+    BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
+  }
+  {
+    const auto angle =  g.GetAngleClockScreen(Apfloat(-1.0),Apfloat(-1.0)); //North-West
+    const auto expected = 1.75 * pi;
+    BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
+  }
+}
+
+BOOST_AUTO_TEST_CASE(test_ribi_geometry_GetDistance)
+{
+  const ribi::Geometry g;
+  {
+    const double distance = g.GetDistance(3.0,4.0);
+    const double expected = 5.0;
+    BOOST_CHECK(std::abs(distance-expected) < 0.01);
+  }
+  {
+    const double distance = g.GetDistance(-3.0,4.0);
+    const double expected = 5.0;
+    BOOST_CHECK(std::abs(distance-expected) < 0.01);
+  }
+  {
+    const double distance = g.GetDistance(3.0,-4.0);
+    const double expected = 5.0;
+    BOOST_CHECK(std::abs(distance-expected) < 0.01);
+  }
+  {
+    const double distance = g.GetDistance(-3.0,-4.0);
+    const double expected = 5.0;
+    BOOST_CHECK(std::abs(distance-expected) < 0.01);
+  }
+
+}
+
 BOOST_AUTO_TEST_CASE(test_ribi_geometry)
 {
   using namespace ribi;
@@ -245,118 +359,10 @@ BOOST_AUTO_TEST_CASE(test_ribi_geometry)
   }
   const bool verbose{false};
   const double pi = boost::math::constants::pi<double>();
-  const Geometry g;
+  const ribi::Geometry g;
 
-  if (verbose) { TRACE("GetAngleClockScreen, double, test eight directions"); }
-  {
-    {
-      const double angle =  g.GetAngleClockScreen(0.0,-1.0); //North
-      const double expected = 0.0 * pi;
-      BOOST_CHECK(std::abs(angle-expected) < 0.01);
-    }
-    {
-      const double angle =  g.GetAngleClockScreen(1.0,-1.0); //North-East
-      const double expected = 0.25 * pi;
-      BOOST_CHECK(std::abs(angle-expected) < 0.01);
-    }
-    {
-      const double angle =  g.GetAngleClockScreen(1.0,0.0); //East
-      const double expected = 0.5 * pi;
-      BOOST_CHECK(std::abs(angle-expected) < 0.01);
-    }
-    {
-      const double angle =  g.GetAngleClockScreen(1.0,1.0); //South-East
-      const double expected = 0.75 * pi;
-      BOOST_CHECK(std::abs(angle-expected) < 0.01);
-    }
-    {
-      const double angle =  g.GetAngleClockScreen(0.0,1.0); //South
-      const double expected = 1.0 * pi;
-      BOOST_CHECK(std::abs(angle-expected) < 0.01);
-    }
-    {
-      const double angle =  g.GetAngleClockScreen(-1.0,1.0); //South-West
-      const double expected = 1.25 * pi;
-      BOOST_CHECK(std::abs(angle-expected) < 0.01);
-    }
-    {
-      const double angle =  g.GetAngleClockScreen(-1.0,0.0); //West
-      const double expected = 1.5 * pi;
-      BOOST_CHECK(std::abs(angle-expected) < 0.01);
-    }
-    {
-      const double angle =  g.GetAngleClockScreen(-1.0,-1.0); //North-West
-      const double expected = 1.75 * pi;
-      BOOST_CHECK(std::abs(angle-expected) < 0.01);
-    }
-  }
-  if (verbose) { TRACE("GetAngleClockScreen, Apfloat"); }
-  {
-    const auto angle =  g.GetAngleClockScreen(Apfloat(0.0),Apfloat(-1.0)); //North
-    const auto expected = 0.0 * pi;
-    const auto error = abs(angle-expected); //apfloat does not use namespace std::
-    BOOST_CHECK(error < 0.01);
-  }
-  if (verbose) { TRACE("GetAngleClockScreen, Apfloat, eight directions"); }
-  {
-    {
-      const auto angle =  g.GetAngleClockScreen(Apfloat(1.0),Apfloat(-1.0)); //North-East
-      const auto expected = 0.25 * pi;
-      BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
-    }
-    {
-      const auto angle =  g.GetAngleClockScreen(Apfloat(1.0),Apfloat(0.0)); //East
-      const auto expected = 0.5 * pi;
-      BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
-    }
-    {
-      const auto angle =  g.GetAngleClockScreen(Apfloat(1.0),Apfloat(1.0)); //South-East
-      const auto expected = 0.75 * pi;
-      BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
-    }
-    {
-      const auto angle =  g.GetAngleClockScreen(Apfloat(0.0),Apfloat(1.0)); //South
-      const auto expected = 1.0 * pi;
-      BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
-    }
-    {
-      const auto angle =  g.GetAngleClockScreen(Apfloat(-1.0),Apfloat(1.0)); //South-West
-      const auto expected = 1.25 * pi;
-      BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
-    }
-    {
-      const auto angle =  g.GetAngleClockScreen(Apfloat(-1.0),Apfloat(0.0)); //West
-      const auto expected = 1.5 * pi;
-      BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
-    }
-    {
-      const auto angle =  g.GetAngleClockScreen(Apfloat(-1.0),Apfloat(-1.0)); //North-West
-      const auto expected = 1.75 * pi;
-      BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
-    }
-  }
   if (verbose) { TRACE("GetDistance"); }
   {
-    {
-      const double distance = g.GetDistance(3.0,4.0);
-      const double expected = 5.0;
-      BOOST_CHECK(std::abs(distance-expected) < 0.01);
-    }
-    {
-      const double distance = g.GetDistance(-3.0,4.0);
-      const double expected = 5.0;
-      BOOST_CHECK(std::abs(distance-expected) < 0.01);
-    }
-    {
-      const double distance = g.GetDistance(3.0,-4.0);
-      const double expected = 5.0;
-      BOOST_CHECK(std::abs(distance-expected) < 0.01);
-    }
-    {
-      const double distance = g.GetDistance(-3.0,-4.0);
-      const double expected = 5.0;
-      BOOST_CHECK(std::abs(distance-expected) < 0.01);
-    }
   }
   if (verbose) TRACE("double -> apfloat -> double conversion");
   {
