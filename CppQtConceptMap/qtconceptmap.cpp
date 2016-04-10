@@ -139,7 +139,11 @@ ribi::cmap::QtConceptMap::QtConceptMap(QWidget* parent)
   }
 
   //Connect the scene
+  #if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
   QObject::connect(scene(),SIGNAL(focusItemChanged(QGraphicsItem*,QGraphicsItem*,Qt::FocusReason)),this,SLOT(onFocusItemChanged(QGraphicsItem*,QGraphicsItem*,Qt::FocusReason)));
+  #else
+
+  #endif
   QObject::connect(scene(),SIGNAL(selectionChanged()),this,SLOT(onSelectionChanged()));
 
 
