@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
 {
   QApplication a(argc, argv);
   int error = 0;
-  if (1 == 2)
+  if (1 == 1)
   {
     { ribi::grabber_test t; error |= QTest::qExec(&t, argc, argv); }
     { ribi::qtarrowitem_test t; error |= QTest::qExec(&t, argc, argv); }

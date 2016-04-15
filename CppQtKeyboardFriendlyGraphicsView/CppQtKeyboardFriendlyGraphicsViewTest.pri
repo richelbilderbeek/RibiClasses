@@ -2,4 +2,4 @@ SOURCES += \
     $$PWD/qtkeyboardfriendlygraphicsview_test.cpp
 
 HEADERS += \
-    CppQtKeyboardFriendlyGraphicsView/qtkeyboardfriendlygraphicsview_test.h
+    $$PWD/qtkeyboardfriendlygraphicsview_test.h
