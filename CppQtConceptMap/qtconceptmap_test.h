@@ -22,6 +22,7 @@ private slots:
   void create_ten_nodes_and_undo_keyboard();
   void create_two_nodes_command();
   void create_two_nodes_keyboard();
+  void default_construction();
   void delete_one_edge_by_node_command();
   void delete_one_edge_by_node_keyboard();
   void delete_one_edge_command();

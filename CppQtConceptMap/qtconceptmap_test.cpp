@@ -17,6 +17,7 @@
 #include "qtconceptmapcommanddeleteselected.h"
 #include "qtconceptmapqtnode.h"
 #include "qtconceptmapcommandunselectrandom.h"
+#include "qtconceptmapexamplesitem.h"
 #include "conceptmap.h"
 #include "conceptmapedge.h"
 #include "conceptmapedgefactory.h"
@@ -26,19 +27,6 @@
 #include "ribi_system.h"
 
 #include "trace.h"
-#pragma GCC diagnostic pop
-
-QKeyEvent CreateControlDown() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Down,Qt::ControlModifier); }
-QKeyEvent CreateControlE() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_E,Qt::ControlModifier); }
-//QKeyEvent CreateControlN() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_N,Qt::ControlModifier); }
-QKeyEvent CreateControlSpace() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Space,Qt::ControlModifier); }
-QKeyEvent CreateControlZ() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Z,Qt::ControlModifier); }
-QKeyEvent CreateDel() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Delete,Qt::NoModifier); }
-QKeyEvent CreateDown() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Down,Qt::NoModifier); }
-QKeyEvent CreateLeft() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Left,Qt::NoModifier); }
-QKeyEvent CreateRight() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Right,Qt::NoModifier); }
-QKeyEvent CreateSpace() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Space,Qt::NoModifier); }
-QKeyEvent CreateUp() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Up,Qt::NoModifier); }
 
 void ribi::cmap::qtconceptmap_test::create_one_edge_command()
 {
@@ -153,6 +141,7 @@ void ribi::cmap::qtconceptmap_test::create_one_node_keyboard()
 void ribi::cmap::qtconceptmap_test::create_one_node_mouse()
 {
   QtConceptMap m;
+  m.show();
   QTest::mouseDClick(&m, Qt::MouseButton::LeftButton, 0, QPoint(0.0,0.0), 100);
   const int n_nodes_in_scene{static_cast<int>(Collect<QtNode>(m.GetScene()).size())};
   const int n_nodes_in_conceptmap{static_cast<int>(boost::num_vertices(m.GetConceptMap()))};
@@ -214,6 +203,28 @@ void ribi::cmap::qtconceptmap_test::create_two_nodes_keyboard()
   QTest::keyClick(&m, Qt::Key_N, Qt::ControlModifier, 100);
   QVERIFY(DoubleCheckEdgesAndNodes(m,0,2));
   QVERIFY(DoubleCheckSelectedEdgesAndNodes(m,0,2));
+}
+
+void ribi::cmap::qtconceptmap_test::default_construction()
+{
+  QtConceptMap m;
+
+  //No nodes, no edges
+  QVERIFY(DoubleCheckEdgesAndNodes(m,0,0));
+  QVERIFY(DoubleCheckSelectedEdgesAndNodes(m,0,0));
+
+  //No examples selected, QGraphicsItem is created though (is that a good idea?)
+  QVERIFY(m.GetQtExamplesItem());
+  QVERIFY(!m.GetQtExamplesItem()->GetBuddyItem());
+
+  //No nodes with a Tool icon above it
+  QVERIFY(m.GetQtToolItem());
+
+  //Scene
+  QVERIFY(m.GetScene());
+
+  //No undo info yet
+  QVERIFY(m.GetUndo().count() == 0);
 }
 
 void ribi::cmap::qtconceptmap_test::delete_one_edge_by_node_command()
@@ -381,7 +392,7 @@ void ribi::cmap::qtconceptmap_test::select_left_node_keyboard()
   QVERIFY(DoubleCheckSelectedEdgesAndNodes(m,1,0));
   QTest::keyClick(&m, Qt::Key_Left, Qt::NoModifier, 100);
   QVERIFY(DoubleCheckEdgesAndNodes(m,1,2));
-  //TODO: QVERIFY(DoubleCheckSelectedEdgesAndNodes(m,0,1));
+  QVERIFY(DoubleCheckSelectedEdgesAndNodes(m,0,1)); //FAILS
 }
 
 void ribi::cmap::qtconceptmap_test::select_random_node_keyboard()

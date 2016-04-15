@@ -1,12 +1,9 @@
+#include "qtkeyboardfriendlygraphicsview_test.h"
 #include "qtkeyboardfriendlygraphicsview.h"
-#include <boost/test/unit_test.hpp>
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
+
 #include <QApplication>
 #include <QKeyEvent>
 #include <QGraphicsRectItem>
-#pragma GCC diagnostic pop
-
 #include "container.h"
 #include "fileio.h"
 #include "testtimer.h"
@@ -15,40 +12,8 @@
 #include "ribi_time.h"
 #include "trace.h"
 
-namespace ribi {
-  namespace qtkeyboardfriendlygraphicsview {
-    QKeyEvent CreateCtrlLeft() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Left,Qt::ControlModifier); }
-    QKeyEvent CreateCtrlRight() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Right,Qt::ControlModifier); }
-    QKeyEvent CreateShift() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Shift,Qt::NoModifier); }
-    QKeyEvent CreateShiftLeft() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Left,Qt::ShiftModifier); }
-    QKeyEvent CreateShiftRight() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Right,Qt::ShiftModifier); }
-    QKeyEvent CreateDown() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Down,Qt::NoModifier); }
-    QKeyEvent CreateLeft() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Left,Qt::NoModifier); }
-    QKeyEvent CreateRight() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Right,Qt::NoModifier); }
-    QKeyEvent CreateSpace() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Space,Qt::NoModifier); }
-    QKeyEvent CreateUp() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_Up,Qt::NoModifier); }
-    QKeyEvent CreateX() noexcept { return QKeyEvent(QEvent::KeyPress,Qt::Key_X,Qt::NoModifier); }
-    QKeyEvent CreateRandomKey() noexcept {
-      switch (std::rand() % 9)
-      {
-        case 0: return CreateCtrlLeft();
-        case 1: return CreateCtrlRight();
-        case 2: return CreateShift();
-        case 3: return CreateShiftLeft();
-        case 4: return CreateShiftRight();
-        case 5: return CreateLeft();
-        case 6: return CreateRight();
-        case 7: return CreateSpace();
-        case 8: return CreateX();
-      }
-      return CreateSpace();
-    }
-  }
-}
-
-BOOST_AUTO_TEST_CASE(qt_keyboard_friendly_graphics_view_test)
+void ribi::qtkeyboardfriendlygraphicsview_test::all()
 {
-  using namespace ribi::qtkeyboardfriendlygraphicsview;
   using namespace ribi;
   bool verbose{false};
   QtKeyboardFriendlyGraphicsView view;
@@ -71,26 +36,24 @@ BOOST_AUTO_TEST_CASE(qt_keyboard_friendly_graphics_view_test)
   {
     item1->setSelected(false);
     item2->setSelected(false);
-    assert(view.scene()->selectedItems().empty());
-    auto space = CreateSpace();
-    view.keyPressEvent(&space);
-    assert(view.scene()->selectedItems().size() == 1);
+    QVERIFY(view.scene()->selectedItems().empty());
+    QTest::keyClick(&view, Qt::Key_Space, Qt::NoModifier, 100);
+    QVERIFY(view.scene()->selectedItems().size() == 1);
   }
   if (verbose) { TRACE("Space causes m_signal_update to be emitted"); }
   {
     item1->setSelected(false);
     item2->setSelected(false);
-    assert(view.scene()->selectedItems().empty());
+    QVERIFY(view.scene()->selectedItems().empty());
 
     Counter c{0}; //For receiving the signal
     view.m_signal_update.connect(
       boost::bind(&ribi::Counter::Inc,&c) //Do not forget the &
     );
 
-    auto space = CreateSpace();
-    view.keyPressEvent(&space);
+    QTest::keyClick(&view, Qt::Key_Space, Qt::NoModifier, 100);
 
-    assert(c.Get() > 0);
+    QVERIFY(c.Get() > 0);
     view.m_signal_update.disconnect(
       boost::bind(&ribi::Counter::Inc,&c) //Do not forget the &
     );
@@ -102,10 +65,9 @@ BOOST_AUTO_TEST_CASE(qt_keyboard_friendly_graphics_view_test)
       boost::bind(&ribi::Counter::Inc,&c) //Do not forget the &
     );
 
-    auto key_x = CreateX();
-    view.keyPressEvent(&key_x);
+    QTest::keyClick(&view, Qt::Key_X, Qt::NoModifier, 100);
 
-    assert(c.Get() == 0);
+    QVERIFY(c.Get() == 0);
     view.m_signal_update.disconnect(
       boost::bind(&ribi::Counter::Inc,&c) //Do not forget the &
     );
@@ -119,23 +81,21 @@ BOOST_AUTO_TEST_CASE(qt_keyboard_friendly_graphics_view_test)
     item2->setSelected(true);
     item2->setFocus();
     item2->setPos(-100.0,0.0);
-    assert(view.scene()->items().size() == 2);
-    assert(view.scene()->selectedItems().size() == 1);
+    QVERIFY(view.scene()->items().size() == 2);
+    QVERIFY(view.scene()->selectedItems().size() == 1);
 
     Counter c{0}; //For receiving the signal
     view.m_signal_update.connect(
       boost::bind(&ribi::Counter::Inc,&c) //Do not forget the &
     );
-    auto right = CreateRight();
     view.SetVerbosity(verbose);
     c.SetVerbosity(verbose);
-    view.keyPressEvent(&right);
+    QTest::keyClick(&view, Qt::Key_Right, Qt::NoModifier, 100);
 
-    assert(c.Get() == 2 && "When transferring selectedness, one unselect and one select takes place");
-    auto left = CreateLeft();
-    view.keyPressEvent(&left);
+    QVERIFY(c.Get() == 2 && "When transferring selectedness, one unselect and one select takes place");
+    QTest::keyClick(&view, Qt::Key_Left, Qt::NoModifier, 100);
 
-    assert(c.Get() == 4 && "When transferring selectedness again, one unselect and one select takes place");
+    QVERIFY(c.Get() == 4 && "When transferring selectedness again, one unselect and one select takes place");
     view.m_signal_update.disconnect(
       boost::bind(&ribi::Counter::Inc,&c) //Do not forget the &
     );
@@ -149,7 +109,7 @@ BOOST_AUTO_TEST_CASE(qt_keyboard_friendly_graphics_view_test)
     item2->setSelected(true);
     item2->setFocus();
     item2->setPos(-100.0,0.0);
-    assert(view.scene()->selectedItems().size() == 1);
+    QVERIFY(view.scene()->selectedItems().size() == 1);
 
     Counter c{0}; //For receiving the signal
 
@@ -158,11 +118,10 @@ BOOST_AUTO_TEST_CASE(qt_keyboard_friendly_graphics_view_test)
       boost::bind(&ribi::Counter::Inc,&c) //Do not forget the &
     );
 
-    auto shift_right = CreateShiftRight();
     view.SetVerbosity(verbose);
-    view.keyPressEvent(&shift_right);
+    QTest::keyClick(&view, Qt::Key_Right, Qt::ShiftModifier, 100);
 
-    assert(c.Get() == 1);
+    QVERIFY(c.Get() == 1);
     view.m_signal_update.disconnect(
       boost::bind(&ribi::Counter::Inc,&c) //Do not forget the &
     );
@@ -176,18 +135,17 @@ BOOST_AUTO_TEST_CASE(qt_keyboard_friendly_graphics_view_test)
     item2->setSelected(true);
     item2->setFocus();
     item2->setPos(-100.0,0.0);
-    assert(view.scene()->selectedItems().size() == 1);
+    QVERIFY(view.scene()->selectedItems().size() == 1);
 
     Counter c{0}; //For receiving the signal
     view.m_signal_update.connect(
       boost::bind(&ribi::Counter::Inc,&c) //Do not forget the &
     );
 
-    auto left = CreateLeft(); //Move away, tranfer selectedness to nothing
-    view.keyPressEvent(&left);
+    QTest::keyClick(&view, Qt::Key_Left, Qt::NoModifier, 100);
 
-    assert(view.scene()->selectedItems().size() == 0);
-    assert(c.Get() == 1);
+    QVERIFY(view.scene()->selectedItems().size() == 0);
+    QVERIFY(c.Get() == 1);
     view.m_signal_update.disconnect(
       boost::bind(&ribi::Counter::Inc,&c) //Do not forget the &
     );
@@ -199,26 +157,33 @@ BOOST_AUTO_TEST_CASE(qt_keyboard_friendly_graphics_view_test)
     item2->clearFocus();
     item1->setSelected(true);
     item2->setSelected(true);
-    assert(view.scene()->selectedItems().size() == 2);
-    auto space = CreateSpace();
-
+    QVERIFY(view.scene()->selectedItems().size() == 2);
     for (int i=0; i!=100; ++i) //Very often
     {
-      view.keyPressEvent(&space);
-      assert(view.scene()->selectedItems().size() == 1);
+      QTest::keyClick(&view, Qt::Key_Space, Qt::NoModifier, 100);
+      QVERIFY(view.scene()->selectedItems().size() == 1);
     }
   }
   if (verbose) { TRACE("Send random keys to widget"); }
   {
     item1->setPos(150,150);
     item2->setPos(50,50);
-    assert(view.scene());
-    assert(!view.scene()->items().empty());
-    for (int i=0; i!=1000; ++i)
+    QVERIFY(view.scene());
+    QVERIFY(!view.scene()->items().empty());
+    for (int i=0; i!=100; ++i)
     {
-      for (int j=0; j!=10; ++j) qApp->processEvents();
-      auto key = CreateRandomKey();
-      view.keyPressEvent(&key);
+      switch (std::rand() % 9)
+      {
+        case 0: QTest::keyClick(&view, Qt::Key_Left, Qt::ControlModifier, 100); break;
+        case 1: QTest::keyClick(&view, Qt::Key_Right, Qt::ControlModifier, 100); break;
+        case 2: QTest::keyClick(&view, Qt::Key_Space, Qt::NoModifier, 100); break;
+        case 3: QTest::keyClick(&view, Qt::Key_Left, Qt::ShiftModifier, 100); break;
+        case 4: QTest::keyClick(&view, Qt::Key_Right, Qt::ShiftModifier, 100); break;
+        case 5: QTest::keyClick(&view, Qt::Key_Left, Qt::NoModifier, 100); break;
+        case 6: QTest::keyClick(&view, Qt::Key_Right, Qt::NoModifier, 100); break;
+        case 7: QTest::keyClick(&view, Qt::Key_Space, Qt::NoModifier, 100); break;
+        case 8: QTest::keyClick(&view, Qt::Key_X, Qt::NoModifier, 100); break;
+      }
     }
   }
   if (verbose) { TRACE("Tapping SHIFT must not remove focus"); }
@@ -230,11 +195,10 @@ BOOST_AUTO_TEST_CASE(qt_keyboard_friendly_graphics_view_test)
     item2->setSelected(true);
     item2->setFocus();
     item2->setPos(-100.0,0.0);
-    assert(item2->hasFocus());
+    QVERIFY(item2->hasFocus());
 
-    auto shift = CreateShift();
     view.SetVerbosity(verbose);
-    view.keyPressEvent(&shift);
+    QTest::keyClick(&view, Qt::Key_Shift, Qt::NoModifier, 100);
 
     assert(item2->hasFocus());
   }

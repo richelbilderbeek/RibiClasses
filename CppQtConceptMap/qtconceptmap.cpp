@@ -722,7 +722,6 @@ void ribi::cmap::QtConceptMap::mouseDoubleClickEvent(QMouseEvent *event)
     );
   }
   catch (std::logic_error& ) {}
-  event->accept();
 }
 
 void ribi::cmap::QtConceptMap::mouseMoveEvent(QMouseEvent * event)

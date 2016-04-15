@@ -38,6 +38,7 @@ include(../RibiClasses/CppQtGraphics/CppQtGraphics.pri)
 include(../RibiClasses/CppQtGraphics/CppQtGraphicsTest.pri)
 
 include(../RibiClasses/CppQtKeyboardFriendlyGraphicsView/CppQtKeyboardFriendlyGraphicsView.pri)
+include(../RibiClasses/CppQtKeyboardFriendlyGraphicsView/CppQtKeyboardFriendlyGraphicsViewTest.pri)
 
 include(../RibiClasses/CppQtQuadBezierArrowItem/CppQtQuadBezierArrowItem.pri)
 include(../RibiClasses/CppQtQuadBezierArrowItem/CppQtQuadBezierArrowItemTest.pri)
