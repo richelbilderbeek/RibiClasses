@@ -11,7 +11,29 @@ class qtconceptmap_test : public QObject
     Q_OBJECT
 
 private slots:
-  void create_node();
+  void create_one_edge_command();
+  void create_one_edge_keyboard();
+  void create_one_node_and_undo_command();
+  void create_one_node_and_undo_keyboard();
+  void create_one_node_command();
+  void create_one_node_keyboard();
+  void create_one_node_mouse();
+  void create_ten_nodes_and_undo_command();
+  void create_ten_nodes_and_undo_keyboard();
+  void create_two_nodes_command();
+  void create_two_nodes_keyboard();
+  void delete_one_edge_by_node_command();
+  void delete_one_edge_by_node_keyboard();
+  void delete_one_edge_command();
+  void delete_one_edge_keyboard();
+  void delete_one_node_command();
+  void delete_one_node_keyboard();
+  void delete_two_nodes_command();
+  void delete_two_nodes_keyboard();
+  void is_command_put_on_undo_stack();
+  void select_left_node_keyboard();
+  void select_random_node_keyboard();
+  void setting_concept_maps_edges_qtedges_nodes_qtnodes_must_match();
   void all_tests();
 };
 

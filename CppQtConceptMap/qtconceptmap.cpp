@@ -709,24 +709,20 @@ void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event) noexcept
 
 void ribi::cmap::QtConceptMap::mouseDoubleClickEvent(QMouseEvent *event)
 {
-  if (GetVerbosity()) { TRACE_FUNC(); }
-  UpdateConceptMap();
-  try
-  {
+  //Create new node
+  try {
     this->DoCommand(
       new CommandCreateNewNode(
         m_conceptmap,
         scene(),
         m_tools,
-        mapToScene(event->pos()).x(),
-        mapToScene(event->pos()).y()
+        event->x(),
+        event->y()
       )
     );
   }
-  catch (std::logic_error& )
-  {
-
-  }
+  catch (std::logic_error& ) {}
+  event->accept();
 }
 
 void ribi::cmap::QtConceptMap::mouseMoveEvent(QMouseEvent * event)
