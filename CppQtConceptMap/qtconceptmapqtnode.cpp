@@ -18,17 +18,12 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppQtConceptMap.htm
 //---------------------------------------------------------------------------
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
-#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
 #include "qtconceptmapqtnode.h"
 
 #include <cassert>
 #include <climits>
 
-#include <boost/lambda/lambda.hpp>
-#include <boost/signals2.hpp>
+//#include <boost/lambda/lambda.hpp>
 
 #include <QCursor>
 #include <QKeyEvent>
@@ -45,15 +40,13 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "qtconceptmapqtnodefactory.h"
 #include "qtconceptmapratestrategy.h"
 #include "qtitemdisplaystrategy.h"
-
 #include "trace.h"
-#pragma GCC diagnostic pop
 
 ribi::cmap::QtNode::QtNode(const Node& node)
   : QtRoundedEditRectItem(),
-    m_signal_base_changed{},
-    m_signal_key_down_pressed{},
-    m_signal_node_changed{},
+    //m_signal_base_changed{},
+    //m_signal_key_down_pressed{},
+    //m_signal_node_changed{},
     m_node{node},
     m_show_bounding_rect{false}
 {
@@ -71,13 +64,13 @@ ribi::cmap::QtNode::QtNode(const Node& node)
 
   SetNode(node);
 
-  m_signal_pos_changed.connect(
-    boost::bind(&ribi::cmap::QtNode::OnPosChanged,this,boost::lambda::_1)
-  );
+  //m_signal_pos_changed.connect(
+  //  boost::bind(&ribi::cmap::QtNode::OnPosChanged,this,boost::lambda::_1)
+  //);
 
-  this->m_signal_text_changed.connect(
-    boost::bind(&ribi::cmap::QtNode::OnTextChanged,this,boost::lambda::_1)
-  );
+  //this->m_signal_text_changed.connect(
+  //  boost::bind(&ribi::cmap::QtNode::OnTextChanged,this,boost::lambda::_1)
+  //);
 }
 
 ribi::cmap::QtNode::~QtNode() noexcept
@@ -100,14 +93,14 @@ void ribi::cmap::QtNode::EnableAll()
 void ribi::cmap::QtNode::focusInEvent(QFocusEvent* e) noexcept
 {
   QtRoundedEditRectItem::focusInEvent(e);
-  this->m_signal_selected_changed(this);
+  //this->m_signal_selected_changed(this);
   assert(hasFocus());
 }
 
 void ribi::cmap::QtNode::focusOutEvent(QFocusEvent* e) noexcept
 {
   QtRoundedEditRectItem::focusOutEvent(e);
-  this->m_signal_selected_changed(this);
+  //this->m_signal_selected_changed(this);
   assert(!hasFocus());
 }
 
@@ -122,7 +115,7 @@ void ribi::cmap::QtNode::hoverMoveEvent(QGraphicsSceneHoverEvent*) noexcept
 
 void ribi::cmap::QtNode::keyPressEvent(QKeyEvent *event) noexcept
 {
-  m_signal_key_down_pressed(this,event->key());
+  //m_signal_key_down_pressed(this,event->key());
   Base::keyPressEvent(event);
 }
 

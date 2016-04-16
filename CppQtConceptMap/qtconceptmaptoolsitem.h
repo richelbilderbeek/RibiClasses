@@ -32,7 +32,6 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include <QGraphicsPixmapItem>
 
 #include <boost/shared_ptr.hpp>
-#include <boost/signals2.hpp>
 
 #include "conceptmapnode.h"
 
@@ -65,7 +64,7 @@ struct QtTool : public QGraphicsPixmapItem
   void SetBuddyItem(const QtNode * const item);
 
   ///Signalled when a tool is clicked
-  boost::signals2::signal<void ()> m_signal_clicked;
+  //boost::signals2::signal<void ()> m_signal_clicked;
 
   protected:
   void hoverMoveEvent(QGraphicsSceneHoverEvent *event);

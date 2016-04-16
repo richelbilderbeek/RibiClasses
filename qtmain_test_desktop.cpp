@@ -26,30 +26,26 @@ int main(int argc, char *argv[])
 {
   QApplication a(argc, argv);
   int error = 0;
-  if (1 == 1)
-  {
-    { ribi::grabber_test t; error |= QTest::qExec(&t, argc, argv); }
-    { ribi::qtarrowitem_test t; error |= QTest::qExec(&t, argc, argv); }
-    { ribi::cmap::qtconceptmapcompetency_test t; error |= QTest::qExec(&t, argc, argv); }
-    { ribi::cmap::qtconceptmapconcepteditdialog_test t; error |= QTest::qExec(&t, argc, argv); }
-    { ribi::cmap::qtconceptmapedgedialog_test t; error |= QTest::qExec(&t, argc, argv); }
-    { ribi::cmap::qtconceptmapexamplesdialog_test t; error |= QTest::qExec(&t, argc, argv); }
-    { ribi::cmap::qtconceptmapnodedialog_test t; error |= QTest::qExec(&t, argc, argv); }
-    { ribi::cmap::qtconceptmapqtedgedialog_test t; error |= QTest::qExec(&t, argc, argv); }
-    { ribi::cmap::qtconceptmapqtedge_test t; error |= QTest::qExec(&t, argc, argv); }
-    { ribi::cmap::qtconceptmapqtnodedialog_test t; error |= QTest::qExec(&t, argc, argv); }
-    { ribi::cmap::qtconceptmapqtnodefactory_test t; error |= QTest::qExec(&t, argc, argv); }
-    { ribi::cmap::qtconceptmaprateconcepttallydialognewname_test t; error |= QTest::qExec(&t, argc, argv); }
-    { ribi::cmap::qtconceptmaprateexamplesdialognewname_test t; error |= QTest::qExec(&t, argc, argv); }
-    { ribi::cmap::qtconceptmapqtnode_test t; error |= QTest::qExec(&t, argc, argv); }
-    { ribi::cmap::qtconceptmap_test t; error |= QTest::qExec(&t, argc, argv); }
-    { ribi::qtquadbezierarrowdialog_test t; error |= QTest::qExec(&t, argc, argv); }
-    { ribi::qtquadbezierarrowitem_test t; error |= QTest::qExec(&t, argc, argv); }
-    { ribi::qtroundededitrectitem_test t; error |= QTest::qExec(&t, argc, argv); }
-    { ribi::qtroundedrectitem_test t; error |= QTest::qExec(&t, argc, argv); }
-    { ribi::qtroundedrectitemdialog_test t; error |= QTest::qExec(&t, argc, argv); }
-  }
-
+  { ribi::grabber_test t; error |= QTest::qExec(&t, argc, argv); }
+  { ribi::qtarrowitem_test t; error |= QTest::qExec(&t, argc, argv); }
+  { ribi::cmap::qtconceptmapcompetency_test t; error |= QTest::qExec(&t, argc, argv); }
+  { ribi::cmap::qtconceptmapconcepteditdialog_test t; error |= QTest::qExec(&t, argc, argv); }
+  { ribi::cmap::qtconceptmapedgedialog_test t; error |= QTest::qExec(&t, argc, argv); }
+  { ribi::cmap::qtconceptmapexamplesdialog_test t; error |= QTest::qExec(&t, argc, argv); }
+  { ribi::cmap::qtconceptmapnodedialog_test t; error |= QTest::qExec(&t, argc, argv); }
+  { ribi::cmap::qtconceptmapqtedgedialog_test t; error |= QTest::qExec(&t, argc, argv); }
+  { ribi::cmap::qtconceptmapqtedge_test t; error |= QTest::qExec(&t, argc, argv); }
+  { ribi::cmap::qtconceptmapqtnodedialog_test t; error |= QTest::qExec(&t, argc, argv); }
+  { ribi::cmap::qtconceptmapqtnodefactory_test t; error |= QTest::qExec(&t, argc, argv); }
+  { ribi::cmap::qtconceptmaprateconcepttallydialognewname_test t; error |= QTest::qExec(&t, argc, argv); }
+  { ribi::cmap::qtconceptmaprateexamplesdialognewname_test t; error |= QTest::qExec(&t, argc, argv); }
+  { ribi::cmap::qtconceptmapqtnode_test t; error |= QTest::qExec(&t, argc, argv); }
+  { ribi::cmap::qtconceptmap_test t; error |= QTest::qExec(&t, argc, argv); }
+  { ribi::qtquadbezierarrowdialog_test t; error |= QTest::qExec(&t, argc, argv); }
+  { ribi::qtquadbezierarrowitem_test t; error |= QTest::qExec(&t, argc, argv); }
+  { ribi::qtroundededitrectitem_test t; error |= QTest::qExec(&t, argc, argv); }
+  { ribi::qtroundedrectitem_test t; error |= QTest::qExec(&t, argc, argv); }
+  { ribi::qtroundedrectitemdialog_test t; error |= QTest::qExec(&t, argc, argv); }
   { ribi::qtkeyboardfriendlygraphicsview_test t; error |= QTest::qExec(&t, argc, argv); }
 
   if (error == 0) { std::cout << "Pass\n"; }

@@ -179,9 +179,9 @@ void ribi::cmap::QtQtEdgeDialog::SetQtEdge(const boost::shared_ptr<QtEdge>& qted
   if (m_qtedge)
   {
     //Disconnect old
-    m_qtedge->m_signal_base_changed.disconnect(
-      boost::bind(&ribi::cmap::QtQtEdgeDialog::OnQtRoundedRectItemChanged,this,boost::lambda::_1)
-    );
+    //m_qtedge->m_signal_base_changed.disconnect(
+    //  boost::bind(&ribi::cmap::QtQtEdgeDialog::OnQtRoundedRectItemChanged,this,boost::lambda::_1)
+    //);
   }
 
   //Replace by the new
@@ -189,18 +189,18 @@ void ribi::cmap::QtQtEdgeDialog::SetQtEdge(const boost::shared_ptr<QtEdge>& qted
 
   if (!m_qtedge) return;
 
-  m_qtedge->m_signal_base_changed.connect(
-    boost::bind(&ribi::cmap::QtQtEdgeDialog::OnQtRoundedRectItemChanged,this,boost::lambda::_1)
-  );
+  //m_qtedge->m_signal_base_changed.connect(
+  //  boost::bind(&ribi::cmap::QtQtEdgeDialog::OnQtRoundedRectItemChanged,this,boost::lambda::_1)
+  //);
 
   //Emit everything that has changed
-  if (qtroundededitrectitem_changed)
+  //if (qtroundededitrectitem_changed)
   {
-    m_qtedge->m_signal_base_changed(m_qtedge.get());
+    //m_qtedge->m_signal_base_changed(m_qtedge.get());
   }
-  if (edge_changed)
+  //if (edge_changed)
   {
-    m_qtedge->m_signal_edge_changed(m_qtedge.get());
+    //m_qtedge->m_signal_edge_changed(m_qtedge.get());
   }
 
   this->setMinimumHeight(

@@ -244,21 +244,21 @@ void ribi::QtRoundedEditRectItemDialog::SetItem(
     }
 
     //Disconnect m_item
-    m_item->m_signal_base_changed.disconnect(
-      boost::bind(&ribi::QtRoundedEditRectItemDialog::OnBaseChanged,this,boost::lambda::_1)
-    );
-    m_item->m_signal_font_changed.disconnect(
-      boost::bind(&ribi::QtRoundedEditRectItemDialog::OnFontChanged,this,boost::lambda::_1)
-    );
-    m_item->m_signal_padding_changed.disconnect(
-      boost::bind(&ribi::QtRoundedEditRectItemDialog::OnPaddingChanged,this,boost::lambda::_1)
-    );
-    m_item->m_signal_text_changed.disconnect(
-      boost::bind(&ribi::QtRoundedEditRectItemDialog::OnTextChanged,this,boost::lambda::_1)
-    );
-    m_item->m_signal_text_pen_changed.disconnect(
-      boost::bind(&ribi::QtRoundedEditRectItemDialog::OnTextPenChanged,this,boost::lambda::_1)
-    );
+//    m_item->m_signal_base_changed.disconnect(
+//      boost::bind(&ribi::QtRoundedEditRectItemDialog::OnBaseChanged,this,boost::lambda::_1)
+//    );
+//    m_item->m_signal_font_changed.disconnect(
+//      boost::bind(&ribi::QtRoundedEditRectItemDialog::OnFontChanged,this,boost::lambda::_1)
+//    );
+//    m_item->m_signal_padding_changed.disconnect(
+//      boost::bind(&ribi::QtRoundedEditRectItemDialog::OnPaddingChanged,this,boost::lambda::_1)
+//    );
+//    m_item->m_signal_text_changed.disconnect(
+//      boost::bind(&ribi::QtRoundedEditRectItemDialog::OnTextChanged,this,boost::lambda::_1)
+//    );
+//    m_item->m_signal_text_pen_changed.disconnect(
+//      boost::bind(&ribi::QtRoundedEditRectItemDialog::OnTextPenChanged,this,boost::lambda::_1)
+//    );
   }
 
   //Replace m_item by the new one
@@ -270,43 +270,43 @@ void ribi::QtRoundedEditRectItemDialog::SetItem(
   assert(m_item->GetText() == text_after);
   assert(m_item->GetTextPen() == text_pen_after);
 
-  m_item->m_signal_base_changed.connect(
-    boost::bind(&ribi::QtRoundedEditRectItemDialog::OnBaseChanged,this,boost::lambda::_1)
-  );
-  m_item->m_signal_font_changed.connect(
-    boost::bind(&ribi::QtRoundedEditRectItemDialog::OnFontChanged,this,boost::lambda::_1)
-  );
-  m_item->m_signal_padding_changed.connect(
-    boost::bind(&ribi::QtRoundedEditRectItemDialog::OnPaddingChanged,this,boost::lambda::_1)
-  );
-  m_item->m_signal_text_changed.connect(
-    boost::bind(&ribi::QtRoundedEditRectItemDialog::OnTextChanged,this,boost::lambda::_1)
-  );
-  m_item->m_signal_text_pen_changed.connect(
-    boost::bind(&ribi::QtRoundedEditRectItemDialog::OnTextPenChanged,this,boost::lambda::_1)
-  );
+//  m_item->m_signal_base_changed.connect(
+//    boost::bind(&ribi::QtRoundedEditRectItemDialog::OnBaseChanged,this,boost::lambda::_1)
+//  );
+//  m_item->m_signal_font_changed.connect(
+//    boost::bind(&ribi::QtRoundedEditRectItemDialog::OnFontChanged,this,boost::lambda::_1)
+//  );
+//  m_item->m_signal_padding_changed.connect(
+//    boost::bind(&ribi::QtRoundedEditRectItemDialog::OnPaddingChanged,this,boost::lambda::_1)
+//  );
+//  m_item->m_signal_text_changed.connect(
+//    boost::bind(&ribi::QtRoundedEditRectItemDialog::OnTextChanged,this,boost::lambda::_1)
+//  );
+//  m_item->m_signal_text_pen_changed.connect(
+//    boost::bind(&ribi::QtRoundedEditRectItemDialog::OnTextPenChanged,this,boost::lambda::_1)
+//  );
 
   //Emit everything that has changed
-  if (base_changed)
-  {
-    m_item->m_signal_base_changed(m_item.get());
-  }
-  if (font_changed)
-  {
-    m_item->m_signal_font_changed(m_item.get());
-  }
-  if (padding_changed)
-  {
-    m_item->m_signal_padding_changed(m_item.get());
-  }
-  if (text_changed)
-  {
-    m_item->m_signal_text_changed(m_item.get());
-  }
-  if (text_pen_changed)
-  {
-    m_item->m_signal_text_pen_changed(m_item.get());
-  }
+//  if (base_changed)
+//  {
+//    m_item->m_signal_base_changed(m_item.get());
+//  }
+//  if (font_changed)
+//  {
+//    m_item->m_signal_font_changed(m_item.get());
+//  }
+//  if (padding_changed)
+//  {
+//    m_item->m_signal_padding_changed(m_item.get());
+//  }
+//  if (text_changed)
+//  {
+//    m_item->m_signal_text_changed(m_item.get());
+//  }
+//  if (text_pen_changed)
+//  {
+//    m_item->m_signal_text_pen_changed(m_item.get());
+//  }
   assert( item ==  m_item);
   assert(*item == *m_item);
 }

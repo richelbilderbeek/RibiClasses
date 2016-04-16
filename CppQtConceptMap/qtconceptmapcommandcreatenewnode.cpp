@@ -40,10 +40,14 @@ ribi::cmap::CommandCreateNewNode::CommandCreateNewNode(
     m_qtnode{nullptr},
     m_scene(scene),
     m_tool_item{tool_item},
-    m_tool_item_old_buddy{tool_item->GetBuddyItem()},
+    m_tool_item_old_buddy{tool_item ? tool_item->GetBuddyItem() : nullptr},
     m_x{x},
     m_y{y}
 {
+  assert(scene);
+  assert(tool_item);
+
+
   this->setText("Create new node");
 
   //Add the vertex to the concept map

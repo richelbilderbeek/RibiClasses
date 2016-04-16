@@ -51,7 +51,7 @@ ribi::cmap::QtExamplesItem::QtExamplesItem(
       QFont("monospace",9),
       parent
     ),
-    m_signal_request_scene_update{},
+    //m_signal_request_scene_update{},
     m_item{nullptr},
     m_qtedge{nullptr},
     m_qtnode{nullptr}
@@ -67,7 +67,7 @@ ribi::cmap::QtExamplesItem::QtExamplesItem(
 void ribi::cmap::QtExamplesItem::OnItemUpdated()
 {
   this->update();
-  this->m_signal_request_scene_update();
+  //this->m_signal_request_scene_update();
 }
 
 void ribi::cmap::QtExamplesItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) noexcept
@@ -96,32 +96,32 @@ void ribi::cmap::QtExamplesItem::SetBuddyItem(const QGraphicsItem * const item)
     m_qtnode = dynamic_cast<const QtNode*>(item);
     if (m_qtedge && !m_qtedge->GetQtNode()->GetNode().GetConcept().GetExamples().Get().empty())
     {
-      m_qtedge->m_signal_edge_changed.connect(
-        boost::bind(
-          &ribi::cmap::QtExamplesItem::OnItemUpdated,this // ,boost::lambda::_1
-        )
-      );
+      //m_qtedge->m_signal_edge_changed.connect(
+      //  boost::bind(
+      //    &ribi::cmap::QtExamplesItem::OnItemUpdated,this // ,boost::lambda::_1
+      //  )
+      //);
       this->SetExamples(m_qtedge->GetQtNode()->GetNode().GetConcept().GetExamples());
       this->setVisible(true);
     }
     if (m_qtnode && !m_qtnode->GetNode().GetConcept().GetExamples().Get().empty())
     {
-      m_qtnode->m_signal_node_changed.connect(
-        boost::bind(
-          &ribi::cmap::QtExamplesItem::OnItemUpdated,this //,boost::lambda::_1
-        )
-      );
+      //m_qtnode->m_signal_node_changed.connect(
+      //  boost::bind(
+      //    &ribi::cmap::QtExamplesItem::OnItemUpdated,this //,boost::lambda::_1
+      //  )
+      //);
       this->SetExamples(m_qtnode->GetNode().GetConcept().GetExamples());
       this->setVisible(true);
     }
-    m_signal_request_scene_update();
+    //m_signal_request_scene_update();
   }
   else
   {
     if (this->isVisible())
     {
       this->setVisible(false);
-      m_signal_request_scene_update();
+      //m_signal_request_scene_update();
     }
   }
 }

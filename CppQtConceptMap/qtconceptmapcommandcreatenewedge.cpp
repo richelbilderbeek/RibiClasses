@@ -47,10 +47,18 @@ ribi::cmap::CommandCreateNewEdgeBetweenTwoSelectedNodes::CommandCreateNewEdgeBet
     m_tool_item{tool_item},
     m_qtedge{nullptr}
 {
+  if (count_vertices_with_selectedness(true, m_after) != 2)
+  {
+    std::stringstream msg;
+    msg << __func__ << ": "
+      << "Must have two selected vertices, instead of "
+      << count_vertices_with_selectedness(true, m_after)
+    ;
+    throw std::invalid_argument(msg.str());
+  }
   this->setText("Create new edge");
 
   //Update concept map
-  assert(count_vertices_with_selectedness(true, m_after) == 2);
   const auto ed = add_edge_between_selected_vertices(m_after);
   assert(!boost::isomorphism(m_before,m_after));
 

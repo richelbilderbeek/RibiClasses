@@ -21,16 +21,9 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #ifndef QTROUNDEDRECTITEM_H
 #define QTROUNDEDRECTITEM_H
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
-#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
 #include <iosfwd>
-#include <boost/signals2.hpp>
-
 #include <QGraphicsRectItem>
 #include <QPen>
-#pragma GCC diagnostic pop
 
 namespace ribi {
 
@@ -144,14 +137,14 @@ class QtRoundedRectItem : public QGraphicsRectItem
   ///Call setSelected and emits m_signal_selected_changed
   void SetSelected(bool selected) noexcept;
 
-  mutable boost::signals2::signal<void (QtRoundedRectItem*)> m_signal_contour_pen_changed;
-  mutable boost::signals2::signal<void (QtRoundedRectItem*)> m_signal_focus_pen_changed;
-  mutable boost::signals2::signal<void (QtRoundedRectItem*)> m_signal_height_changed;
-  mutable boost::signals2::signal<void (QtRoundedRectItem*)> m_signal_pos_changed;
-  mutable boost::signals2::signal<void (QtRoundedRectItem*)> m_signal_radius_x_changed;
-  mutable boost::signals2::signal<void (QtRoundedRectItem*)> m_signal_radius_y_changed;
-  mutable boost::signals2::signal<void (QtRoundedRectItem*)> m_signal_selected_changed;
-  mutable boost::signals2::signal<void (QtRoundedRectItem*)> m_signal_width_changed;
+  //mutable boost::signals2::signal<void (QtRoundedRectItem*)> m_signal_contour_pen_changed;
+  //mutable boost::signals2::signal<void (QtRoundedRectItem*)> m_signal_focus_pen_changed;
+  //mutable boost::signals2::signal<void (QtRoundedRectItem*)> m_signal_height_changed;
+  //mutable boost::signals2::signal<void (QtRoundedRectItem*)> m_signal_pos_changed;
+  //mutable boost::signals2::signal<void (QtRoundedRectItem*)> m_signal_radius_x_changed;
+  //mutable boost::signals2::signal<void (QtRoundedRectItem*)> m_signal_radius_y_changed;
+  //mutable boost::signals2::signal<void (QtRoundedRectItem*)> m_signal_selected_changed;
+  //mutable boost::signals2::signal<void (QtRoundedRectItem*)> m_signal_width_changed;
 
   ///Signal emitted when this item has moved
   //mutable boost::signals2::signal<void ()> m_signal_request_scene_update;

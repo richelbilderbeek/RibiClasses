@@ -33,7 +33,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic pop
 
 ribi::cmap::QtTool::QtTool()
-  : m_signal_clicked(),
+  : //m_signal_clicked(),
     m_item(nullptr)
 {
   this->setPixmap(QPixmap(":/CppQtConceptMap/images/CppQtConceptMapArrow14x14.png"));
@@ -79,7 +79,7 @@ void ribi::cmap::QtTool::hoverMoveEvent(QGraphicsSceneHoverEvent *)
 void ribi::cmap::QtTool::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
   QGraphicsPixmapItem::mousePressEvent(event);
-  m_signal_clicked();
+  //m_signal_clicked();
 }
 
 void ribi::cmap::QtTool::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)

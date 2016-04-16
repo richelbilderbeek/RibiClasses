@@ -28,7 +28,6 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
 #include <boost/shared_ptr.hpp>
-#include <boost/signals2.hpp>
 #include "conceptmapexamples.h"
 #include "qthideandshowdialog.h"
 #include "qtconceptmapfwd.h"
@@ -55,7 +54,7 @@ public:
         Examples& GetExamples()       noexcept { return m_examples; }
 
   ///Something of one of the examples was changed
-  mutable boost::signals2::signal<void(QtExamplesDialog*)> m_signal_qtexamplesdialog_changed;
+  //mutable boost::signals2::signal<void(QtExamplesDialog*)> m_signal_qtexamplesdialog_changed;
 
   static int GetMinimumHeight(const Examples& examples) noexcept;
 

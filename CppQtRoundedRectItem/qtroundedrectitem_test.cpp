@@ -10,29 +10,36 @@
 #include "counter.h"
 #include "trace.h"
 
+void ribi::qtroundedrectitem_test::default_construction()
+{
+  const QtRoundedRectItem i;
+  QVERIFY(std::abs(i.GetCenterX() - 0.0) < 0.0001);
+  QVERIFY(std::abs(i.GetCenterY() - 0.0) < 0.0001);
+}
+
+void ribi::qtroundedrectitem_test::set_and_get_outer_x()
+{
+  QtRoundedRectItem i;
+  const auto old_x = i.GetCenterX();
+  const auto new_x = old_x + 10.0;
+  i.SetCenterX(new_x);
+  QVERIFY(std::abs(i.GetCenterX() - new_x) < 4.0);
+}
+
+void ribi::qtroundedrectitem_test::set_and_get_outer_y()
+{
+  QtRoundedRectItem i;
+  const auto old_y = i.GetCenterY();
+  const auto new_y = old_y + 10.0;
+  i.SetCenterY(new_y);
+  QVERIFY(std::abs(i.GetCenterY() - new_y) < 4.0);
+}
+
 void ribi::qtroundedrectitem_test::all_tests()
 {
   using namespace ribi;
   const bool verbose{false};
-  if (verbose) { TRACE("Construction"); }
-  {
-    QtRoundedRectItem();
-  }
   QtRoundedRectItem i;
-  if (verbose) { TRACE("SetOuterX and GetOuterX must be symmetric"); }
-  {
-    const auto old_x = i.GetCenterX();
-    const auto new_x = old_x + 10.0;
-    i.SetCenterX(new_x);
-    QVERIFY(std::abs(i.GetCenterX() - new_x) < 4.0);
-  }
-  if (verbose) { TRACE("SetOuterY and GetOuterY must be symmetric"); }
-  {
-    const auto old_y = i.GetCenterY();
-    const auto new_y = old_y + 10.0;
-    i.SetCenterY(new_y);
-    QVERIFY(std::abs(i.GetCenterY() - new_y) < 4.0);
-  }
   if (verbose) { TRACE("SetOuterPos and GetOuterPos must be symmetric"); }
   {
     const auto old_pos = i.GetCenterPos();
@@ -129,28 +136,6 @@ void ribi::qtroundedrectitem_test::all_tests()
     i.SetCenterX(i.GetCenterX() + 10.0);
     i.SetCenterY(i.GetCenterY() + 10.0);
     QVERIFY(i.GetInnerRect().contains(i.GetCenterPos()));
-  }
-  if (verbose) { TRACE("If item changes its selection, m_signal_selected_changed must be emitted"); }
-  {
-    Counter c{0}; //For receiving the signal
-    i.m_signal_selected_changed.connect(
-      boost::bind(&ribi::Counter::Inc,&c) //Do not forget the &
-    );
-    i.SetSelected(true);
-    i.SetSelected(false);
-    QVERIFY(c.Get() > 0);
-  }
-
-  if (verbose) { TRACE("After a drag event, m_signal_pos_changed must be emitted"); }
-  {
-    //Cannot be tested
-    //Counter c{0}; //For receiving the signal
-    //i.m_signal_pos_changed.connect(
-    //  boost::bind(&ribi::Counter::Inc,&c) //Do not forget the &
-    //);
-    //const QGraphicsSceneMouseEvent * const event{new QGraphicsSceneMouseEvent};
-    //QCoreApplication::sendEvent(&i,event);
-    //QVERIFY(c.Get() > 0);
   }
   if (verbose) { TRACE("GetInnerRect should not change if width of contour pen changes"); }
   {

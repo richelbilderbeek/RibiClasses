@@ -24,15 +24,9 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include <string>
 #include <vector>
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
-#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
-#include <boost/signals2.hpp>
 #include <QFont>
 #include "qtroundedrectitem.h"
 #include "qtroundededitrectitempadding.h"
-#pragma GCC diagnostic pop
 
 namespace ribi {
 
@@ -156,11 +150,11 @@ class QtRoundedEditRectItem : public QtRoundedRectItem
   ///Called when the user wants to edit the text
   //boost::signals2::signal<void(QtRoundedEditRectItem*)> m_signal_item_requests_edit;
 
-  boost::signals2::signal<void(QtRoundedEditRectItem*)> m_signal_base_changed;
-  boost::signals2::signal<void(QtRoundedEditRectItem*)> m_signal_font_changed;
-  boost::signals2::signal<void(QtRoundedEditRectItem*)> m_signal_padding_changed;
-  boost::signals2::signal<void(QtRoundedEditRectItem*)> m_signal_text_changed;
-  boost::signals2::signal<void(QtRoundedEditRectItem*)> m_signal_text_pen_changed;
+  //boost::signals2::signal<void(QtRoundedEditRectItem*)> m_signal_base_changed;
+  //boost::signals2::signal<void(QtRoundedEditRectItem*)> m_signal_font_changed;
+  //boost::signals2::signal<void(QtRoundedEditRectItem*)> m_signal_padding_changed;
+  //boost::signals2::signal<void(QtRoundedEditRectItem*)> m_signal_text_changed;
+  //boost::signals2::signal<void(QtRoundedEditRectItem*)> m_signal_text_pen_changed;
 
 protected:
   virtual void keyPressEvent(QKeyEvent* event) noexcept;

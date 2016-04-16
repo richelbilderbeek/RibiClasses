@@ -47,7 +47,7 @@ ribi::QtPathArrowItem::QtPathArrowItem(
   const QPointF& head_pos,
   QGraphicsItem *parent)
   : QGraphicsItem(parent),       //New since Qt5
-    m_signal_item_requests_scene_update{},
+    //m_signal_item_requests_scene_update{},
     m_focus_pen(QPen(Qt::DashLine)),
     m_head(head),
     m_head_pos(head_pos),
@@ -112,13 +112,13 @@ void ribi::QtPathArrowItem::keyPressEvent(QKeyEvent *event)
       break;
   }
   QGraphicsItem::keyPressEvent(event);
-  m_signal_item_requests_scene_update(this);
+  //m_signal_item_requests_scene_update(this);
 
 }
 
 void ribi::QtPathArrowItem::mouseMoveEvent(QGraphicsSceneMouseEvent*)
 {
-  m_signal_item_requests_scene_update(this);
+  //m_signal_item_requests_scene_update(this);
   //QGraphicsLineItem::mouseMoveEvent(event);
 }
 

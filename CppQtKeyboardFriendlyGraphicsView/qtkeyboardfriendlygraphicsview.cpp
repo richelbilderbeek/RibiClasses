@@ -36,7 +36,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 
 ribi::QtKeyboardFriendlyGraphicsView::QtKeyboardFriendlyGraphicsView(QWidget* parent)
   : QGraphicsView(new QGraphicsScene,parent),
-    m_signal_update{},
+    //m_signal_update{},
     m_verbose{false}
 {
 
@@ -299,7 +299,7 @@ void ribi::QtKeyboardFriendlyGraphicsView::KeyPressEventCtrl(QKeyEvent *event) n
     if (!(item->flags() & QGraphicsItem::ItemIsMovable)) { continue; }
     item->setPos(item->pos() + QPointF(delta_x,delta_y));
     if (m_verbose) { std::clog << "(1) m_signal_update(item)" << std::endl; }
-    m_signal_update(item);
+    //m_signal_update(item);
   }
   scene()->update();
 }
@@ -340,7 +340,7 @@ void ribi::QtKeyboardFriendlyGraphicsView::KeyPressEventNoModifiers(QKeyEvent *e
     if (m_verbose) { std::clog << "Unselect: " << item->toolTip().toStdString() << std::endl; }
     assert(item->isSelected());
     item->setSelected(false);
-    m_signal_update(item);
+    //m_signal_update(item);
   }
   assert(!current_focus_item->isSelected() && "Focus item must have lost focus now");
   //Select newly selected
@@ -349,7 +349,7 @@ void ribi::QtKeyboardFriendlyGraphicsView::KeyPressEventNoModifiers(QKeyEvent *e
     if (m_verbose) { std::clog << "Select: " << new_selected_item->toolTip().toStdString() << std::endl; }
     assert(!new_selected_item->isSelected());
     new_selected_item->setSelected(true);
-    m_signal_update(new_selected_item);
+    //m_signal_update(new_selected_item);
   }
   //Transfer focus
   current_focus_item->clearFocus();
@@ -393,7 +393,7 @@ void ribi::QtKeyboardFriendlyGraphicsView::KeyPressEventShift(QKeyEvent *event) 
     assert(new_added_selected_item);
     assert(!new_added_selected_item->isSelected());
     new_added_selected_item->setSelected(true);
-    m_signal_update(new_added_selected_item);
+    //m_signal_update(new_added_selected_item);
   }
 
   //Transfer focus
@@ -415,7 +415,7 @@ void ribi::QtKeyboardFriendlyGraphicsView::SetRandomFocus()
     item->setSelected(false); // #239
     item->clearFocus();
     item->setEnabled(true);
-    m_signal_update(item);
+    //m_signal_update(item);
   }
   else
   {
@@ -427,7 +427,7 @@ void ribi::QtKeyboardFriendlyGraphicsView::SetRandomFocus()
   {
     assert(item->isSelected());
     item->setSelected(false);
-    m_signal_update(item);
+    //m_signal_update(item);
   }
 
 
@@ -453,7 +453,7 @@ void ribi::QtKeyboardFriendlyGraphicsView::SetRandomFocus()
     assert(!new_focus_item->isSelected());
     new_focus_item->setSelected(true); // #239
     new_focus_item->setFocus();
-    m_signal_update(new_focus_item);
+    //m_signal_update(new_focus_item);
   }
   else
   {
@@ -468,7 +468,7 @@ void ribi::QtKeyboardFriendlyGraphicsView::SetRandomSelectedness()
   {
     if (item->isSelected()) {
       item->setSelected(false);
-      m_signal_update(item);
+      //m_signal_update(item);
     }
   }
   assert(this->scene()->selectedItems().size() == 0);
@@ -497,7 +497,7 @@ void ribi::QtKeyboardFriendlyGraphicsView::SetRandomSelectedness()
     auto& new_focus_item = items[i];
     assert(!new_focus_item->isSelected());
     new_focus_item->setSelected(true);
-    m_signal_update(new_focus_item);
+    //m_signal_update(new_focus_item);
     assert(this->scene()->selectedItems().size() == 1);
   }
 }

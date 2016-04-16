@@ -49,10 +49,10 @@ ribi::cmap::QtEdge::QtEdge(
     QtNode * const from,
     QtNode * const to
 )
-  : m_signal_base_changed{},
-    m_signal_edge_changed{},
-    m_signal_selected_changed{},
-    m_signal_key_down_pressed{},
+  : //m_signal_base_changed{},
+    //m_signal_edge_changed{},
+    //m_signal_selected_changed{},
+    //m_signal_key_down_pressed{},
     m_arrow{nullptr}, //Will be initialized below
     m_edge{edge},
     m_from{from},
@@ -123,16 +123,16 @@ ribi::cmap::QtEdge::QtEdge(
     m_arrow->SetMidY( (m_arrow->GetFromY() + m_arrow->GetToY()) / 2.0 );
   }
 
-  m_qtnode->m_signal_pos_changed.connect(
-    boost::bind(&ribi::cmap::QtEdge::OnNodePosChanged,this,boost::lambda::_1)
-  );
+  //m_qtnode->m_signal_pos_changed.connect(
+  //  boost::bind(&ribi::cmap::QtEdge::OnNodePosChanged,this,boost::lambda::_1)
+  //);
 
-  m_from->m_signal_node_changed.connect(
-    boost::bind(&ribi::cmap::QtEdge::OnMustUpdateScene,this)
-  );
-  m_to->m_signal_node_changed.connect(
-    boost::bind(&ribi::cmap::QtEdge::OnMustUpdateScene,this)
-  );
+  //m_from->m_signal_node_changed.connect(
+  //  boost::bind(&ribi::cmap::QtEdge::OnMustUpdateScene,this)
+  //);
+  //m_to->m_signal_node_changed.connect(
+  //  boost::bind(&ribi::cmap::QtEdge::OnMustUpdateScene,this)
+  //);
 
   m_edge.GetNode().SetX( (from->GetCenterX() + to->GetCenterX()) / 2.0 );
   m_edge.GetNode().SetY( (from->GetCenterY() + to->GetCenterY()) / 2.0 );
@@ -146,9 +146,9 @@ ribi::cmap::QtEdge::QtEdge(
 
 ribi::cmap::QtEdge::~QtEdge() noexcept
 {
-  m_qtnode->m_signal_text_changed.disconnect(
-    boost::bind(&ribi::cmap::QtEdge::OnTextChanged,this,boost::lambda::_1)
-  );
+  //m_qtnode->m_signal_text_changed.disconnect(
+  //  boost::bind(&ribi::cmap::QtEdge::OnTextChanged,this,boost::lambda::_1)
+  //);
 }
 
 QRectF ribi::cmap::QtEdge::boundingRect() const
@@ -226,15 +226,15 @@ void ribi::cmap::QtEdge1::dragMoveEvent(QGraphicsSceneDragDropEvent *) noexcept
 void ribi::cmap::QtEdge::focusInEvent(QFocusEvent* e) noexcept
 {
   QGraphicsItem::focusInEvent(e);
-  this->m_signal_selected_changed(this);
-  m_signal_selected_changed(this);
+  //this->m_signal_selected_changed(this);
+  //m_signal_selected_changed(this);
   assert(hasFocus());
 }
 
 void ribi::cmap::QtEdge::focusOutEvent(QFocusEvent* e) noexcept
 {
   QGraphicsItem::focusOutEvent(e);
-  this->m_signal_selected_changed(this);
+  //this->m_signal_selected_changed(this);
   assert(!hasFocus());
 }
 
@@ -246,7 +246,7 @@ bool ribi::cmap::QtEdge::isSelected() const
 void ribi::cmap::QtEdge::keyPressEvent(QKeyEvent *event) noexcept
 {
   assert(m_arrow);
-  m_signal_key_down_pressed(this,event->key());
+  //m_signal_key_down_pressed(this,event->key());
   /*
   if (m_arrow->isEnabled())
   {
@@ -325,7 +325,7 @@ void ribi::cmap::QtEdge::OnNodeChanged(const Edge& edge) noexcept
   m_qtnode->SetText( { edge.GetNode().GetConcept().GetName() } );
   this->update();
   if (this->scene()) { this->scene()->update(); }
-  m_signal_edge_changed(this);
+  //m_signal_edge_changed(this);
 }
 
 void ribi::cmap::QtEdge::OnNodePosChanged(QtRoundedRectItem * const node) noexcept
@@ -334,7 +334,7 @@ void ribi::cmap::QtEdge::OnNodePosChanged(QtRoundedRectItem * const node) noexce
   this->m_qtnode->SetCenterY(node->y());
   this->m_qtnode->update();
   this->update();
-  m_signal_edge_changed(this);
+  //m_signal_edge_changed(this);
 }
 
 void ribi::cmap::QtEdge::OnTextChanged(QtRoundedEditRectItem* item) noexcept
@@ -344,7 +344,7 @@ void ribi::cmap::QtEdge::OnTextChanged(QtRoundedEditRectItem* item) noexcept
   if (old_name != new_name)
   {
     this->GetEdge().GetNode().GetConcept().SetName(new_name);
-    m_signal_edge_changed(this);
+    //m_signal_edge_changed(this);
   }
 }
 
@@ -449,7 +449,7 @@ void ribi::cmap::QtEdge::SetHasTailArrow(const bool has_tail_arrow) noexcept
 void ribi::cmap::QtEdge::SetSelected(bool selected)
 {
   this->GetQtNode()->SetSelected(selected);
-  m_signal_selected_changed(this);
+  //m_signal_selected_changed(this);
 }
 
 QPainterPath ribi::cmap::QtEdge::shape() const noexcept

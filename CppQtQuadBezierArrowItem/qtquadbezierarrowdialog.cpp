@@ -151,13 +151,13 @@ void ribi::QtQuadBezierArrowDialog::SetArrow(const Arrow& arrow) noexcept
   const auto has_tail_after = arrow->HasTail();
   const auto to_item_after = arrow->GetToItem();
 
-  bool focus_pen_changed{true};
-  bool from_item_changed{true};
-  bool has_head_changed{true};
-  bool mid_item_changed{true};
-  bool pen_changed{true};
-  bool has_tail_changed{true};
-  bool to_item_changed{true};
+//  bool focus_pen_changed{true};
+//  bool from_item_changed{true};
+//  bool has_head_changed{true};
+//  bool mid_item_changed{true};
+//  bool pen_changed{true};
+  //bool has_tail_changed{true};
+  //bool to_item_changed{true};
 
   if (m_arrow)
   {
@@ -166,66 +166,66 @@ void ribi::QtQuadBezierArrowDialog::SetArrow(const Arrow& arrow) noexcept
     const auto has_head_before = m_arrow->HasHead();
     const auto mid_item_before = m_arrow->GetMidItem();
     const auto pen_before = m_arrow->GetPen();
-    const auto has_tail_before = m_arrow->HasTail();
-    const auto to_item_before = m_arrow->GetToItem();
+    //const auto has_tail_before = m_arrow->HasTail();
+    //const auto to_item_before = m_arrow->GetToItem();
 
-    focus_pen_changed = focus_pen_before != focus_pen_after;
-    from_item_changed = from_item_before != from_item_after;
-    has_head_changed = has_head_before != has_head_after;
-    mid_item_changed = mid_item_before != mid_item_after;
-    pen_changed = pen_before != pen_after;
-    has_tail_changed = has_tail_before != has_tail_after;
-    to_item_changed = to_item_before != to_item_after;
+//    focus_pen_changed = focus_pen_before != focus_pen_after;
+//    from_item_changed = from_item_before != from_item_after;
+//    has_head_changed = has_head_before != has_head_after;
+//    mid_item_changed = mid_item_before != mid_item_after;
+//    pen_changed = pen_before != pen_after;
+    //has_tail_changed = has_tail_before != has_tail_after;
+    //to_item_changed = to_item_before != to_item_after;
 
-    if (verbose)
+//    if (verbose)
     {
-      if (focus_pen_changed)
-      {
-        std::stringstream s;
-        s
-          << "Focus pen will change from width "
-          << focus_pen_before.widthF()
-          << " to "
-          << focus_pen_after.widthF()
-          << '\n'
-        ;
-        TRACE(s.str());
-      }
-      if (from_item_changed)
-      {
-        std::stringstream s;
-        s << "From item will change from " << from_item_before
-          << " to " << from_item_after << '\n';
-        TRACE(s.str());
-      }
-      if (has_head_changed)
-      {
-        std::stringstream s;
-        s << "Has head will change from '" << has_head_before
-          << "' to '" << has_head_after << "'\n";
-        TRACE(s.str());
-      }
-      if (mid_item_changed)
-      {
-        std::stringstream s;
-        s << "Mid item will change from " << mid_item_before
-          << " to " << mid_item_after << '\n';
-        TRACE(s.str());
-      }
-      if (pen_changed)
-      {
-        std::stringstream s;
-        s << "Normal pen will change from " << pen_before.widthF()
-          << " to " << pen_after.widthF() << '\n'
-        ;
-        TRACE(s.str());
-      }
+//      if (focus_pen_changed)
+//      {
+//        std::stringstream s;
+//        s
+//          << "Focus pen will change from width "
+//          << focus_pen_before.widthF()
+//          << " to "
+//          << focus_pen_after.widthF()
+//          << '\n'
+//        ;
+//        TRACE(s.str());
+//      }
+//      if (from_item_changed)
+//      {
+//        std::stringstream s;
+//        s << "From item will change from " << from_item_before
+//          << " to " << from_item_after << '\n';
+//        TRACE(s.str());
+//      }
+//      if (has_head_changed)
+//      {
+//        std::stringstream s;
+//        s << "Has head will change from '" << has_head_before
+//          << "' to '" << has_head_after << "'\n";
+//        TRACE(s.str());
+//      }
+//      if (mid_item_changed)
+//      {
+//        std::stringstream s;
+//        s << "Mid item will change from " << mid_item_before
+//          << " to " << mid_item_after << '\n';
+//        TRACE(s.str());
+//      }
+//      if (pen_changed)
+//      {
+//        std::stringstream s;
+//        s << "Normal pen will change from " << pen_before.widthF()
+//          << " to " << pen_after.widthF() << '\n'
+//        ;
+//        TRACE(s.str());
+//      }
     }
 
     //Disconnect m_arrow
-    m_arrow->m_signal_item_updated.disconnect(
-      boost::bind(&ribi::QtQuadBezierArrowDialog::OnItemUpdated,this,boost::lambda::_1)
-    );
+    //m_arrow->m_signal_item_updated.disconnect(
+    //  boost::bind(&ribi::QtQuadBezierArrowDialog::OnItemUpdated,this,boost::lambda::_1)
+    //);
     /*
     Not sure if I need this high detailed granulity
 
@@ -258,9 +258,9 @@ void ribi::QtQuadBezierArrowDialog::SetArrow(const Arrow& arrow) noexcept
   assert(m_arrow->HasHead() == has_head_after);
   assert(m_arrow->HasTail() == has_tail_after);
 
-  m_arrow->m_signal_item_updated.connect(
-    boost::bind(&ribi::QtQuadBezierArrowDialog::OnItemUpdated,this,boost::lambda::_1)
-  );
+  //m_arrow->m_signal_item_updated.connect(
+  //  boost::bind(&ribi::QtQuadBezierArrowDialog::OnItemUpdated,this,boost::lambda::_1)
+  //);
 
   /* Not sure if I need this high detailed granulity
 
@@ -282,17 +282,17 @@ void ribi::QtQuadBezierArrowDialog::SetArrow(const Arrow& arrow) noexcept
   */
 
   //Emit everything that has changed
-  if (
-     focus_pen_changed
-  || from_item_changed
-  || has_head_changed
-  || mid_item_changed
-  || pen_changed
-  || has_tail_changed
-  || to_item_changed
-  )
+  //if (
+  //   focus_pen_changed
+  //|| from_item_changed
+  //|| has_head_changed
+  //|| mid_item_changed
+  //|| pen_changed
+  //|| has_tail_changed
+  //|| to_item_changed
+  //)
   {
-     m_arrow->m_signal_item_updated(m_arrow.get());
+     //m_arrow->m_signal_item_updated(m_arrow.get());
   }
 
   /* Not sure if I need this high detailed granulity

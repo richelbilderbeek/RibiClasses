@@ -21,16 +21,10 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #ifndef QTCONCEPTMAPEXAMPLESITEM_H
 #define QTCONCEPTMAPEXAMPLESITEM_H
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
-#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
-#include <boost/shared_ptr.hpp>
-#include <boost/signals2.hpp>
+//#include <boost/shared_ptr.hpp>
 #include "qtroundededitrectitem.h"
 #include "qtconceptmapfwd.h"
-#include "qtconceptmapqtedge.h"
-#pragma GCC diagnostic pop
+//#include "qtconceptmapqtedge.h"
 
 namespace ribi {
 namespace cmap {
@@ -51,7 +45,7 @@ struct QtExamplesItem : public QtRoundedEditRectItem
   void SetBuddyItem(const QGraphicsItem* const item);
 
   ///Request update of QGraphicsScene, because this item has changed
-  mutable boost::signals2::signal<void() > m_signal_request_scene_update;
+  //mutable boost::signals2::signal<void() > m_signal_request_scene_update;
   ///The competency, as might be judged by an assessor
 
 protected:

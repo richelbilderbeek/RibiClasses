@@ -44,7 +44,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 
 ribi::cmap::QtExamplesDialog::QtExamplesDialog(QWidget *parent)
   : QtHideAndShowDialog(parent),
-    m_signal_qtexamplesdialog_changed{},
+    //m_signal_qtexamplesdialog_changed{},
     ui(new Ui::QtExamplesDialog),
     m_dialogs{},
     m_examples{}
@@ -150,9 +150,9 @@ void ribi::cmap::QtExamplesDialog::SetExamples(const Examples& examples)
 
   if (m_examples == examples) return;
 
-  bool examples_changed = true;
+  //bool examples_changed = true;
   {
-    examples_changed = m_examples != examples;
+    //examples_changed = m_examples != examples;
 
     //Disconnect m_examples
     //m_examples->m_signal_examples_changed.disconnect(
@@ -167,13 +167,13 @@ void ribi::cmap::QtExamplesDialog::SetExamples(const Examples& examples)
   //  boost::bind(&ribi::cmap::QtExamplesDialog::OnExamplesChanged,this,boost::lambda::_1)
   //);
   //Emit that everything has changed
-  if (examples_changed)
+  //if (examples_changed)
   {
     //For those interested in m_examples
     //m_examples->m_signal_examples_changed(m_examples.get());
 
     //For those interested in this dialog
-    m_signal_qtexamplesdialog_changed(this);
+    //m_signal_qtexamplesdialog_changed(this);
   }
 
   assert( m_examples ==  examples);

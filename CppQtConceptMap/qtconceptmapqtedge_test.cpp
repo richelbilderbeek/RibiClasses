@@ -104,14 +104,4 @@ void ribi::cmap::qtconceptmapqtedge_test::all_tests()
     qtedge->GetQtNode()->SetCenterY(new_y);
     QVERIFY(qtedge->GetQtNode()->GetCenterY() == new_y);
   }
-  if (verbose) { TRACE("If a QtEdge its Edge's tail arrow is changed, a signal must be emitted by Edge"); }
-  {
-    Counter c{0}; //For receiving the signal
-    qtedge->m_signal_selected_changed.connect(
-      boost::bind(&ribi::Counter::Inc,&c) //Do not forget the &
-    );
-    qtedge->SetSelected(true);
-    qtedge->SetSelected(false);
-    QVERIFY(c.Get() > 0);
-  }
 }

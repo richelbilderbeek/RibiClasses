@@ -211,12 +211,12 @@ void ribi::cmap::QtQtNodeDialog::SetQtNode(const boost::shared_ptr<QtNode>& qtno
       }
     }
     //Disconnect m_concept
-    m_qtnode->m_signal_base_changed.disconnect(
-      boost::bind(&ribi::cmap::QtQtNodeDialog::OnQtRoundedRectItemChanged,this,boost::lambda::_1)
-    );
-    m_qtnode->m_signal_node_changed.disconnect(
-      boost::bind(&ribi::cmap::QtQtNodeDialog::OnNodeChanged,this,boost::lambda::_1)
-    );
+//    m_qtnode->m_signal_base_changed.disconnect(
+//      boost::bind(&ribi::cmap::QtQtNodeDialog::OnQtRoundedRectItemChanged,this,boost::lambda::_1)
+//    );
+//    m_qtnode->m_signal_node_changed.disconnect(
+//      boost::bind(&ribi::cmap::QtQtNodeDialog::OnNodeChanged,this,boost::lambda::_1)
+//    );
   }
 
   //Replace m_example by the new one
@@ -224,22 +224,22 @@ void ribi::cmap::QtQtNodeDialog::SetQtNode(const boost::shared_ptr<QtNode>& qtno
 
   assert(m_qtnode->GetNode() == node_after);
 
-  m_qtnode->m_signal_base_changed.connect(
-    boost::bind(&ribi::cmap::QtQtNodeDialog::OnQtRoundedRectItemChanged,this,boost::lambda::_1)
-  );
-  m_qtnode->m_signal_node_changed.connect(
-    boost::bind(&ribi::cmap::QtQtNodeDialog::OnNodeChanged,this,boost::lambda::_1)
-  );
+//  m_qtnode->m_signal_base_changed.connect(
+//    boost::bind(&ribi::cmap::QtQtNodeDialog::OnQtRoundedRectItemChanged,this,boost::lambda::_1)
+//  );
+//  m_qtnode->m_signal_node_changed.connect(
+//    boost::bind(&ribi::cmap::QtQtNodeDialog::OnNodeChanged,this,boost::lambda::_1)
+//  );
 
   //Emit everything that has changed
-  if (qtroundededitrectitem_changed)
-  {
-    m_qtnode->m_signal_base_changed(m_qtnode.get());
-  }
-  if (node_changed)
-  {
-    m_qtnode->m_signal_node_changed(m_qtnode.get());
-  }
+//  if (qtroundededitrectitem_changed)
+//  {
+//    m_qtnode->m_signal_base_changed(m_qtnode.get());
+//  }
+//  if (node_changed)
+//  {
+//    m_qtnode->m_signal_node_changed(m_qtnode.get());
+//  }
 
   this->setMinimumHeight(
     this->GetMinimumHeight(

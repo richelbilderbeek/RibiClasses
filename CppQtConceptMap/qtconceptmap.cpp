@@ -33,8 +33,10 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include <boost/math/constants/constants.hpp>
 #include <boost/numeric/conversion/cast.hpp>
 
+#include <QApplication>
 #include <QGraphicsScene>
 #include <QKeyEvent>
+#include <QDebug>
 
 #include "fuzzy_equal_to.h"
 #include "qtconceptmapcollect.h"
@@ -107,8 +109,6 @@ std::vector<ribi::cmap::QtNode*>
 
 ribi::cmap::QtConceptMap::QtConceptMap(QWidget* parent)
   : QtKeyboardFriendlyGraphicsView(parent),
-    m_signal_conceptmapitem_requests_edit{},
-    m_signal_request_rate_concept{},
     m_arrow(nullptr),
     m_conceptmap{},
     m_examples_item(new QtExamplesItem),
@@ -121,8 +121,13 @@ ribi::cmap::QtConceptMap::QtConceptMap(QWidget* parent)
 
   this->setScene(new QGraphicsScene(this));
 
+  //Add QtExamplesItem
   assert(!m_examples_item->scene());
   scene()->addItem(m_examples_item); //Add the examples so it has a parent
+
+  //Add QtTool
+  assert(!m_tools->scene());
+  this->scene()->addItem(m_tools);
 
   assert(Collect<QtNode>(scene()).empty());
 
@@ -161,57 +166,13 @@ ribi::cmap::QtConceptMap::~QtConceptMap()
 
 }
 
-void ribi::cmap::QtConceptMap::CleanMe()
+void ribi::cmap::QtConceptMap::RemoveConceptMap()
 {
-  //Prepare cleaning the scene
-  assert(GetQtExamplesItem());
+  if (m_arrow) { delete m_arrow; m_arrow = nullptr; }
   SetExamplesItem(nullptr);
-
-  assert(m_tools);
-  this->m_tools = nullptr;
-  assert(!m_tools);
   if (m_highlighter) m_highlighter->SetItem(nullptr); //Do this before destroying items
-
-  this->m_arrow = nullptr;
-
-  assert(!m_tools);
-
-  //Clear the scene, invalidates all scene items copies
-  assert(this->scene());
-  this->scene()->clear();
-
-  //Put stuff back in
-  assert(!m_tools);
-
-  //Add the invisible examples item
-  {
-    assert(!GetQtExamplesItem());
-    QtExamplesItem * const examples_item = new QtExamplesItem;
-    assert(examples_item);
-    assert(!m_tools);
-    SetExamplesItem(examples_item);
-    assert(!m_tools);
-    //Signal #4
-    examples_item->m_signal_request_scene_update.connect(
-      boost::bind(
-        &ribi::cmap::QtConceptMap::OnRequestSceneUpdate,this));
-    examples_item->setVisible(false);
-    assert(!examples_item->scene());
-    this->scene()->addItem(examples_item);
-  }
-
-  //Add the tools item
-  {
-    assert(!m_tools);
-    m_tools = new QtTool;
-    //Signal #5
-    m_tools->m_signal_clicked.connect(
-      boost::bind(
-        &ribi::cmap::QtConceptMap::OnToolsClicked,
-        this));
-    assert(!m_tools->scene());
-    this->scene()->addItem(m_tools);
-  }
+  assert(m_tools);
+  m_tools->SetBuddyItem(nullptr);
 }
 
 #ifdef NOT_NOW_20151230
@@ -377,33 +338,38 @@ void ribi::cmap::QtConceptMap::DoCommand(Command * const command) noexcept
 {
   m_undo.push(command);
   this->UpdateConceptMap();
+  qApp->processEvents();
 }
 
 bool ribi::cmap::DoubleCheckEdgesAndNodes(
   const QtConceptMap& qtconceptmap,
   const int n_edges_desired,
   const int n_nodes_desired
-) noexcept
+)
 {
   const auto g = qtconceptmap.GetConceptMap();
   const auto n_nodes = static_cast<int>(boost::num_vertices(g));
   const auto n_edges = static_cast<int>(boost::num_edges(g));
-  #ifndef NDEBUG
   const auto n_qtnodes = CountQtNodes(qtconceptmap.GetScene());
   const auto n_qtedges = CountQtEdges(qtconceptmap.GetScene());
   if (n_nodes != n_qtnodes)
   {
-    TRACE(n_nodes);
-    TRACE(n_qtnodes);
+    std::stringstream msg;
+    msg << __func__ << ": "
+      << "Internal inconsistency, "
+      << "n_nodes (" << n_nodes << ") != n_qtedges (" << n_qtedges << ")"
+    ;
+    throw std::logic_error(msg.str());
   }
   if (n_edges != n_qtedges)
   {
-    TRACE(n_edges);
-    TRACE(n_qtedges);
+    std::stringstream msg;
+    msg << __func__ << ": "
+      << "Internal inconsistency, "
+      << "n_edges (" << n_edges << ") != n_qtedges (" << n_qtedges << ")"
+    ;
+    throw std::logic_error(msg.str());
   }
-  #endif
-  assert(n_nodes == n_qtnodes);
-  assert(n_edges == n_qtedges);
   if (n_nodes != n_nodes_desired) return false;
   if (n_edges != n_edges_desired) return false;
   return true;
@@ -413,25 +379,34 @@ bool ribi::cmap::DoubleCheckSelectedEdgesAndNodes(
   const QtConceptMap& qtconceptmap,
   const int n_edges_desired,
   const int n_nodes_desired
-) noexcept
+)
 {
   const auto g = qtconceptmap.GetConceptMap();
   const auto n_selected_nodes = count_vertices_with_selectedness(true,g);
   const auto n_selected_edges = count_edges_with_selectedness(true,g);
-  #ifndef NDEBUG
   const auto n_selected_qtnodes = CountSelectedQtNodes(qtconceptmap.GetScene());
   const auto n_selected_qtedges = CountSelectedQtEdges(qtconceptmap.GetScene());
-  if (n_selected_nodes != n_selected_qtnodes) {
-    TRACE(n_selected_nodes);
-    TRACE(n_selected_qtnodes);
+
+  if (n_selected_nodes != n_selected_qtnodes)
+  {
+    std::stringstream msg;
+    msg << __func__ << ": "
+      << "Internal inconsistency, "
+      << "n_selected_nodes (" << n_selected_nodes << ") != n_selected_qtnodes (" 
+      << n_selected_qtnodes << ")"
+    ;
+    throw std::logic_error(msg.str());
   }
-  if (n_selected_edges != n_selected_qtedges) {
-    TRACE(n_selected_edges);
-    TRACE(n_selected_qtedges);
+  if (n_selected_edges != n_selected_qtedges)
+  {
+    std::stringstream msg;
+    msg << __func__ << ": "
+      << "Internal inconsistency, "
+      << "n_selected_edges (" << n_selected_edges << ") != n_selected_qtedges (" 
+      << n_selected_qtedges << ")"
+    ;
+    throw std::logic_error(msg.str());
   }
-  #endif
-  assert(n_selected_nodes == n_selected_qtnodes);
-  assert(n_selected_edges == n_selected_qtedges);
   if (n_selected_nodes != n_nodes_desired) return false;
   if (n_selected_edges != n_edges_desired) return false;
   return true;
@@ -709,15 +684,16 @@ void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event) noexcept
 
 void ribi::cmap::QtConceptMap::mouseDoubleClickEvent(QMouseEvent *event)
 {
-  //Create new node
+  //Create new node at the mouse cursor its position
   try {
+    const QPointF pos = mapToScene(event->pos());
     this->DoCommand(
       new CommandCreateNewNode(
         m_conceptmap,
         scene(),
         m_tools,
-        event->x(),
-        event->y()
+        pos.x(),
+        pos.y()
       )
     );
   }
@@ -772,6 +748,7 @@ void ribi::cmap::QtConceptMap::mousePressEvent(QMouseEvent *event)
       }
       catch (std::logic_error&) { return; }
     }
+    assert(m_arrow->scene() == this->scene());
     this->scene()->removeItem(m_arrow);
     m_arrow = nullptr;
     assert(m_highlighter);
@@ -785,9 +762,9 @@ void ribi::cmap::QtConceptMap::mousePressEvent(QMouseEvent *event)
   {
     //Let any node (in this case the central node) emit an update for the Examples
     //to hide.
-    if (GetCenterNode()) {
-      GetCenterNode()->m_signal_node_changed(GetCenterNode());
-    }
+    //if (GetCenterNode()) {
+    //  GetCenterNode()->m_signal_node_changed(GetCenterNode());
+    //}
   }
 }
 
@@ -803,17 +780,9 @@ void ribi::cmap::QtConceptMap::onFocusItemChanged(
     m_arrow = new QtNewArrow(
       m_tools->GetBuddyItem(),m_tools->GetBuddyItem()->GetCenterPos()
     );
+    this->scene()->addItem(m_arrow);
   }
 }
-
-/*
-void ribi::cmap::QtConceptMap::OnItemRequestsUpdate(const QGraphicsItem* const item)
-{
-  m_tools->SetBuddyItem(dynamic_cast<const QtNode*>(item));
-  GetQtExamplesItem()->SetBuddyItem(item);
-  scene()->update();
-}
-*/
 
 void ribi::cmap::QtConceptMap::OnEdgeKeyDownPressed(QtEdge* const edge, const int key)
 {
@@ -836,13 +805,14 @@ void ribi::cmap::QtConceptMap::OnNodeKeyDownPressed(QtNode* const item, const in
   this->setFocus();
   this->scene()->setFocusItem(item);
   item->SetSelected(true);
-  item->m_signal_node_changed(item);
+  //item->m_signal_node_changed(item);
   this->scene()->update();
   //this->OnItemRequestsUpdate(item);
 }
 
 void ribi::cmap::QtConceptMap::OnRequestSceneUpdate()
 {
+  assert(!"I am not called");
   scene()->update();
 }
 
@@ -1021,7 +991,7 @@ void ribi::cmap::QtConceptMap::RepositionItems()
 
 void ribi::cmap::QtConceptMap::SetConceptMap(const ConceptMap& conceptmap)
 {
-  CleanMe();
+  RemoveConceptMap();
   m_conceptmap = conceptmap;
 
   assert(this->scene());

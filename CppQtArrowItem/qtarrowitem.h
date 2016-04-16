@@ -23,15 +23,8 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 
 #include <string>
 #include <vector>
-
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
-#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
-#include <boost/signals2.hpp>
 #include <QGraphicsLineItem>
 #include <QPen>
-#pragma GCC diagnostic pop
 
 namespace ribi {
 
@@ -91,7 +84,7 @@ struct QtArrowItem : public QGraphicsLineItem
   void SetTailPos(const double x, const double y) noexcept;
 
   ///Signal emitted when this item has changed and the scene needs to be updated
-  boost::signals2::signal<void (This*)> m_signal_item_requests_scene_update;
+  //boost::signals2::signal<void (This*)> m_signal_item_requests_scene_update;
 
 protected:
 

@@ -50,7 +50,7 @@ ribi::QtArrowItem::QtArrowItem(
   QGraphicsItem* parent
 ) noexcept
   : QGraphicsLineItem(x1,y1,x2,y2,parent),
-    m_signal_item_requests_scene_update{},
+    //m_signal_item_requests_scene_update{},
     m_arrow_head_clicking_distance(20.0),
     m_focus_pen(QPen(Qt::DashLine)),
     m_head(head),
@@ -116,12 +116,12 @@ void ribi::QtArrowItem::keyPressEvent(QKeyEvent *event)
       break;
   }
   QGraphicsLineItem::keyPressEvent(event);
-  m_signal_item_requests_scene_update(this);
+  //m_signal_item_requests_scene_update(this);
 }
 
 void ribi::QtArrowItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-  m_signal_item_requests_scene_update(this);
+  //m_signal_item_requests_scene_update(this);
   QGraphicsLineItem::mouseMoveEvent(event);
 }
 

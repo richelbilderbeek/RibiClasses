@@ -11,6 +11,9 @@ class qtroundedrectitem_test : public QObject
 
 private slots:
   void all_tests();
+  void default_construction();
+  void set_and_get_outer_x();
+  void set_and_get_outer_y();
 };
 
 } //~namespace ribi

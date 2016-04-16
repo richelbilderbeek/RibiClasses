@@ -21,25 +21,21 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #ifndef QTCONCEPTMAPEDGEITEM_H
 #define QTCONCEPTMAPEDGEITEM_H
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
-#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
-#include <boost/shared_ptr.hpp>
-#include <boost/signals2.hpp>
+//#include <boost/shared_ptr.hpp>
 #include <QGraphicsItem>
 #include "qtconceptmapfwd.h"
-#include "conceptmapnode.h"
+//#include "conceptmapnode.h"
 #include "qtconceptmapqtnode.h"
 #include "conceptmapedge.h"
-
-#pragma GCC diagnostic pop
 
 namespace ribi {
 
 struct QtRoundedRectItem;
 
 namespace cmap {
+
+struct Edge;
+struct Node;
 
 ///The QtEdge is a QtConceptMapElement that
 ///draws a curve underneath itself, between head and tail arrowhead
@@ -106,11 +102,6 @@ struct QtEdge : public QGraphicsItem
 
 
   std::string ToStr() const noexcept;
-
-  mutable boost::signals2::signal<void (QtEdge *)> m_signal_base_changed;
-  mutable boost::signals2::signal<void (QtEdge *)> m_signal_edge_changed;
-  mutable boost::signals2::signal<void (QtEdge *)> m_signal_selected_changed;
-  mutable boost::signals2::signal<void (QtEdge *,const int key)> m_signal_key_down_pressed;
 
 protected:
   void focusInEvent(QFocusEvent *event) noexcept override final;

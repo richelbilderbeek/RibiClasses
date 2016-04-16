@@ -80,14 +80,4 @@ void ribi::qtroundededitrectitem_test::all_tests()
     QVERIFY(QtRoundedEditRectItem::GetPaddedTextRectAtOrigin("X",QFont()).width()
       >= QtRoundedEditRectItem::GetTextRectAtOrigin("X",QFont()).width());
   }
-  if (verbose) { TRACE("If item changes its selection, m_signal_selected_changed must be emitted"); }
-  {
-    Counter c{0}; //For receiving the signal
-    item.m_signal_selected_changed.connect(
-      boost::bind(&ribi::Counter::Inc,&c) //Do not forget the &
-    );
-    item.SetSelected(true);
-    item.SetSelected(false);
-    QVERIFY(c.Get() > 0);
-  }
 }

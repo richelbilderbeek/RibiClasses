@@ -21,17 +21,11 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #ifndef QTCONCEPTMAPCONCEPTMAP_H
 #define QTCONCEPTMAPCONCEPTMAP_H
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
-#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
 #include <QUndoStack>
-
 #include "qtkeyboardfriendlygraphicsview.h"
 #include "qtconceptmapfwd.h"
 #include "qtconceptmapqtedge.h"
 #include "conceptmap.h"
-#pragma GCC diagnostic pop
 
 namespace ribi {
 namespace cmap {
@@ -85,11 +79,6 @@ public:
 
   void Undo() noexcept;
 
-  ///Signal emitted when a concept map item requests to be edited
-  boost::signals2::signal<void(QtRoundedEditRectItem*)> m_signal_conceptmapitem_requests_edit;
-
-  boost::signals2::signal<void(const ConceptMap sub_conceptmap)> m_signal_request_rate_concept;
-
 public slots:
 
   void keyPressEvent(QKeyEvent* event) noexcept;
@@ -142,7 +131,7 @@ private:
   QUndoStack m_undo;
 
   ///Remove all Qt and non-Qt items
-  void CleanMe();
+  void RemoveConceptMap();
 
   ///Called when an Edge gets deleted from the ConceptMap
   void DeleteEdge(const Edge& edge);
@@ -171,11 +160,6 @@ private slots:
 
 public slots:
 
-  ///Called whenever a concept is clicked or moved
-  ///If item is nullptr, the last item might be deleted
-  ///Use QGraphicsItem* due to QtKeyboardFriendlyGraphicsView working on QGraphicsItems
-  //void OnItemRequestsUpdate(const QGraphicsItem* const item);
-
   ///Called when an item requests a scene update
   void OnRequestSceneUpdate();
 };
@@ -186,10 +170,12 @@ int CountSelectedQtNodes(const QGraphicsScene * const scene) noexcept;
 int CountSelectedQtEdges(const QGraphicsScene * const scene) noexcept;
 
 ///Check is QtConceptMap and its ConceptMap have the requested number of edges and nodes
-bool DoubleCheckEdgesAndNodes(const QtConceptMap& qtconceptmap, const int n_edges, const int n_nodes) noexcept;
+///Will throw if there is an internal inconsistency
+bool DoubleCheckEdgesAndNodes(const QtConceptMap& qtconceptmap, const int n_edges, const int n_nodes);
 
 ///Check is QtConceptMap and its ConceptMap have the requested number of selected edges and nodes
-bool DoubleCheckSelectedEdgesAndNodes(const QtConceptMap& qtconceptmap, const int n_edges, const int n_nodes) noexcept;
+///Will throw if there is an internal inconsistency
+bool DoubleCheckSelectedEdgesAndNodes(const QtConceptMap& qtconceptmap, const int n_edges, const int n_nodes);
 
 QtEdge * FindQtEdge(const int edge_id, const QGraphicsScene * const scene) noexcept;
 

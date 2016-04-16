@@ -58,14 +58,4 @@ void ribi::cmap::qtconceptmapqtnode_test::all_tests()
     const double edit_rect_y = edit_rect->GetCenterY();
     QVERIFY(std::abs(node_y - edit_rect_y) < max_error);
   }
-  if (verbose) {TRACE("When changing the concept's name via QtNode, the Node must be changed as well");}
-  {
-    const auto qtnode = QtNodeFactory().GetTest(1);
-    const boost::shared_ptr<QtRoundedEditRectItem> qtrectitem{boost::dynamic_pointer_cast<QtRoundedEditRectItem>(qtnode)};
-    const std::string old_name = qtrectitem->GetText()[0];
-    const std::string new_name{old_name + " (modified)"};
-    qtrectitem->SetText( { new_name } );
-    const std::string new_name_again{qtnode->GetNode().GetConcept().GetName()};
-    QVERIFY(new_name_again == new_name);
-  }
 }
