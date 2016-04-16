@@ -35,4 +35,4 @@ script:
   - ./RibiClassesTestDesktop
   - ./get_code_cov.sh
   - codecov
-  - ./no_temp_files.sh
+  # - ./no_temp_files.sh # TODO: put this back in
