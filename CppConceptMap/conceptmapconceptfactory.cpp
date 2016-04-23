@@ -111,6 +111,13 @@ std::vector<ribi::cmap::Concept> ribi::cmap::ConceptFactory::GetNastyTests() con
   return v;
 }
 
+int ribi::cmap::ConceptFactory::GetNumberOfTests() const noexcept
+{
+  const int sz{3};
+  assert(GetTests().size() == sz);
+  return sz;
+}
+
 ribi::cmap::Concept ribi::cmap::ConceptFactory::GetTest(const int i) const noexcept
 {
   const auto v = GetTests();
@@ -119,21 +126,26 @@ ribi::cmap::Concept ribi::cmap::ConceptFactory::GetTest(const int i) const noexc
   return v[i];
 }
 
-std::vector<ribi::cmap::Concept> ribi::cmap::ConceptFactory::GetTests() const noexcept
+std::array<ribi::cmap::Concept, 3> ribi::cmap::ConceptFactory::GetTests() const noexcept
 {
-  std::vector<Concept> v;
+  const int sz{3};
+  std::array<Concept, 3> v;
+  assert(sz == static_cast<int>(v.size()));
+  int i{0};
   {
     const Examples examples;
     const Concept p("Concept without examples", examples, false, 0, 1, 2);
     assert(p.GetRatingComplexity() >= -1);
     assert(p.GetRatingComplexity() <=  2);
-    v.push_back(p);
+    assert(i < sz);
+    v[i++] = p;
   }
   {
     const Concept p = Create("Concept with one example", { { "Only example", cmap::Competency::profession } }, 1, 2, 0);
     assert(p.GetRatingComplexity() >= -1);
     assert(p.GetRatingComplexity() <=  2);
-    v.push_back(p);
+    assert(i < sz);
+    v[i++] = p;
   }
   /*
   {
@@ -170,7 +182,8 @@ std::vector<ribi::cmap::Concept> ribi::cmap::ConceptFactory::GetTests() const no
     );
     assert(p.GetRatingComplexity() >= -1);
     assert(p.GetRatingComplexity() <=  2);
-    v.push_back(p);
+    assert(i < sz);
+    v[i++] = p;
   }
   return v;
 }
