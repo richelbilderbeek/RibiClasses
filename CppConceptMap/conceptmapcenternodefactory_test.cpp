@@ -37,12 +37,12 @@ BOOST_AUTO_TEST_CASE(ribi_concept_map_center_node_factory_test_sizes_must_match)
   using namespace ribi::cmap;
   const CenterNodeFactory f;
   {
-    const auto tests_sz = f.GetTests();
+    const auto tests_sz = f.GetTests().size();
     const auto n_tests = f.GetNumberOfTests();
     BOOST_CHECK_EQUAL(n_tests, static_cast<int>(tests_sz));
   }
   {
-    const auto nasty_tests_sz = f.GetNastyTests();
+    const auto nasty_tests_sz = f.GetNastyTests().size();
     const auto n_nasty_tests = f.GetNumberOfNastyTests();
     BOOST_CHECK_EQUAL(n_nasty_tests, static_cast<int>(nasty_tests_sz));
   }

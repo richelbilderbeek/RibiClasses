@@ -1,9 +1,16 @@
+#INCLUDEPATH += C:/Boost/include
+#DEPENDPATH += C:/Boost/include
+
+#INCLUDEPATH += C:/Boost
+#LIBS += C:/Boost/stage/lib/libboost_filesystem-mgw49-mt-1_59.a
+#LIBS += C:/Boost/stage/lib/libboost_system-mgw49-mt-d-1_59.a
+#LIBS += C:/Boost/stage/lib/libboost_graph-mgw49-mt-d-1_59.a
 
 include(../RibiLibraries/ConsoleApplicationNoWeffcpp.pri)
 include(../RibiLibraries/GeneralConsole.pri)
 include(../RibiLibraries/GeneralConsoleTest.pri)
 include(../RibiLibraries/Apfloat.pri)
-#include(../RibiLibraries/BoostAll.pri)
+include(../RibiLibraries/BoostAll.pri)
 include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
 
 include(../RibiClasses/CppContainer/CppContainer.pri)

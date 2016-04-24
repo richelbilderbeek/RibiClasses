@@ -39,7 +39,7 @@ BOOST_AUTO_TEST_CASE(ribi_help_too_long_option)
       "long",
       "too long of a description that does not fit the 80 characters per line rule anymore, especially when I continue here"
     ), std::invalid_argument
-  )
+  );
 }
 
 BOOST_AUTO_TEST_CASE(ribi_help_short_option_duplicate)
