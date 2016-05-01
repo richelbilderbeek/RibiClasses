@@ -1017,7 +1017,7 @@ void ribi::cmap::QtConceptMap::SetConceptMap(const ConceptMap& conceptmap)
   }
   //Add the Edges
   const auto eip = edges(m_conceptmap);
-  for(auto i=eip.first; i!=eip.second; ++i)
+  for(auto i = eip.first; i != eip.second; ++i)
   {
     const VertexDescriptor vd_from = boost::source(*i, m_conceptmap);
     const VertexDescriptor vd_to = boost::target(*i, m_conceptmap);
