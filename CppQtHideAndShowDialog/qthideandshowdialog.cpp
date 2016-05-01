@@ -25,6 +25,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "qthideandshowdialog.h"
 
 #include <cassert>
+#include <QApplication>
 #include <QKeyEvent>
 
 #include "trace.h"
