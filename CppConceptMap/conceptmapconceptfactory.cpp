@@ -83,13 +83,13 @@ std::vector<ribi::cmap::Concept> ribi::cmap::ConceptFactory::GetNastyTests() con
   std::vector<Concept> v;
   {
     const Examples examples;
-    const Concept p(" Concept<without >examples", examples, false, 0, 1, 2);
+    const Concept p(" Concept with (n < 1) examples", examples, false, 0, 1, 2);
     assert(p.GetRatingComplexity() >= -1);
     assert(p.GetRatingComplexity() <=  2);
     v.push_back(p);
   }
   {
-    const Concept p = Create("Concept>with<one example ", { { " Only> example", cmap::Competency::profession } }, 1, 2, 0);
+    const Concept p = Create("Concept (n > 0 && n < 2) examples ", { { " Only one of (n > 2) examples", cmap::Competency::profession } }, 1, 2, 0);
     assert(p.GetRatingComplexity() >= -1);
     assert(p.GetRatingComplexity() <=  2);
     v.push_back(p);
@@ -98,10 +98,10 @@ std::vector<ribi::cmap::Concept> ribi::cmap::ConceptFactory::GetNastyTests() con
     const Concept p = Create(
       " Very>long<multi-line concept with four Roman examples that also each span multiple lines, that is, eighty characters",
       {
-        { "Example I/IV,<<  >spanning multiple lines> (that is, having at least eight characters) and is rated as cmap::Competency::misc ", cmap::Competency::misc },
-        { " Example II/IV,< spanning multiple lines (that is, having at least eight characters) and is rated as cmap::Competency::uninitialized", cmap::Competency::uninitialized },
-        { "Example III/IV,>>  spanning multiple< lines> (that is, having at least eight characters) and is rated as cmap::Competency::profession ", cmap::Competency::profession },
-        { " Example III/IV,>  spanning multiple lines<< (that is, having at least eight characters) and is rated as cmap::Competency::social_surroundings", cmap::Competency::social_surroundings }
+        { "Example I/IV,spanning (n > 1) lines  (that is, having at least eight characters) and is rated as cmap::Competency::misc ", cmap::Competency::misc },
+        { " Example II/IV,spanning (n >= (256 >> 9) lines (that is, having at least eight characters) and is rated as cmap::Competency::uninitialized", cmap::Competency::uninitialized },
+        { "Example III/IV, spanning <<<multiple>>> lines (that is, having at least eight characters) and is rated as cmap::Competency::profession ", cmap::Competency::profession },
+        { " Example III/IV, spanning multiple lines (n >= (1 << 1)) (that is, having at least eight characters) and is rated as cmap::Competency::social_surroundings", cmap::Competency::social_surroundings }
       }, 1, 2, 0
     );
     assert(p.GetRatingComplexity() >= -1);

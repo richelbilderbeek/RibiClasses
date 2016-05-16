@@ -347,7 +347,7 @@ void ribi::QtQuadBezierArrowItem::paint(QPainter* painter, const QStyleOptionGra
   curve.quadTo(p_beyond,p_end_head);
   painter->drawPath(curve);
 
-  if (GetMidItem())
+  if (GetMidItem() && GetMidItem()->isVisible())
   {
     painter->drawEllipse(GetMidItem()->pos(),1,1);
   }

@@ -58,6 +58,8 @@ struct Edge
   static std::string GetVersion() noexcept;
   static std::vector<std::string> GetVersionHistory() noexcept;
 
+  ///These arrows are needed: the graph is an undirected graph with/without arrows at either/both sides
+  ///This cannot be done by using a directed
   void SetHeadArrow(const bool has_head_arrow) noexcept { m_has_head_arrow = has_head_arrow; }
   void SetTailArrow(const bool has_tail_arrow) noexcept { m_has_tail_arrow = has_tail_arrow; }
 

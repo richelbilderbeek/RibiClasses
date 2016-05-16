@@ -1032,6 +1032,10 @@ void ribi::cmap::QtConceptMap::SetConceptMap(const ConceptMap& conceptmap)
     const auto edge_map = get(boost::edge_custom_type, m_conceptmap);
     const Edge edge = get(edge_map, *i);
     QtEdge * const qtedge{new QtEdge(edge,qtfrom,qtto)};
+    if (qtfrom->GetNode().IsCenterNode() || qtto->GetNode().IsCenterNode())
+    {
+      qtedge->GetQtNode()->setVisible(false);
+    }
     scene()->addItem(qtedge);
   }
   assert(GetConceptMap() == conceptmap);
