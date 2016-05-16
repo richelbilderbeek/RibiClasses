@@ -324,7 +324,8 @@ void ribi::QtQuadBezierArrowItem::paint(QPainter* painter, const QStyleOptionGra
   {
     painter->setPen(m_pen);
   }
-  //Line must go _though_ mid pos, instead of using it as a virtual hinge point
+
+  //Line must go _through_ mid pos, instead of using it as a virtual hinge point
   //Solution:
   // - define point 'between' as the middle between from and to
   // - point 'center' is the center point of the item there
@@ -332,25 +333,35 @@ void ribi::QtQuadBezierArrowItem::paint(QPainter* painter, const QStyleOptionGra
 
   const QPointF p_end_head{GetHead()};
   const QPointF p_end_tail{GetTail()};
-
-  /*
-  const QPointF p_center((p_end_tail + p_end_head) / 2.0);
-  const double dx_mid_center = GetMidItem() ? (GetMidItem()->pos().x() - p_center.x()) : 0.0;
-  const double dy_mid_center = GetMidItem() ? (GetMidItem()->pos().y() - p_center.y()) : 0.0;
-  const QPointF p_beyond(p_center.x() + dx_mid_center + dx_mid_center, p_center.y() + dy_mid_center + dy_mid_center);
-  */
-  const QPointF p_center{GetCenter()};
   const QPointF p_beyond{GetBeyond()};
-
+  //const QPointF p_center{GetCenter()};
   QPainterPath curve;
   curve.moveTo(p_end_tail);
-  curve.quadTo(p_beyond,p_end_head);
-  painter->drawPath(curve);
 
   if (GetMidItem() && GetMidItem()->isVisible())
   {
+    //Curve through midpoint
     painter->drawEllipse(GetMidItem()->pos(),1,1);
+    /*
+    const QPointF p_center((p_end_tail + p_end_head) / 2.0);
+    const double dx_mid_center = GetMidItem() ? (GetMidItem()->pos().x() - p_center.x()) : 0.0;
+    const double dy_mid_center = GetMidItem() ? (GetMidItem()->pos().y() - p_center.y()) : 0.0;
+    const QPointF p_beyond(p_center.x() + dx_mid_center + dx_mid_center, p_center.y() + dy_mid_center + dy_mid_center);
+    */
+    curve.quadTo(p_beyond,p_end_head);
   }
+  else
+  {
+    //Straight line
+    curve.lineTo(p_end_head);
+    //Keep middle item between tail and head
+    if (GetMidItem()) {
+      GetMidItem()->setX((GetHead().x() + GetTail().x()) / 2.0);
+      GetMidItem()->setY((GetHead().y() + GetTail().y()) / 2.0);
+    }
+  }
+  painter->drawPath(curve);
+
 
   {
     const double sz = 10.0; //pixels
@@ -445,7 +456,7 @@ void ribi::QtQuadBezierArrowItem::paint(QPainter* painter, const QStyleOptionGra
     TRACE(Geometry().ToStr(this->GetTail()));
     TRACE(Geometry().ToStr(this->GetFromItem()->pos()));
     TRACE(Geometry().ToStr(GetMidItem()->pos()));
-    TRACE(Geometry().ToStr(p_center));
+    //TRACE(Geometry().ToStr(p_center));
     TRACE(Geometry().ToStr(p_beyond));
     TRACE(Geometry().ToStr(this->GetToItem()->pos()));
     TRACE(Geometry().ToStr(this->GetHead()));

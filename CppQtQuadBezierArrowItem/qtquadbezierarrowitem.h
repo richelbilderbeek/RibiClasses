@@ -86,6 +86,7 @@ struct QtQuadBezierArrowItem : public QGraphicsItem
   ///Get the item where the arrow pass through in the middle
   ///Use the specific GetMid* member functions to modify this item
   const QGraphicsItem* GetMidItem() const noexcept { return m_mid; }
+        QGraphicsItem* GetMidItem()       noexcept { return m_mid; }
   double GetMidX() const noexcept { return m_mid->x(); }
   double GetMidY() const noexcept { return m_mid->y(); }
 
