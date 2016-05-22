@@ -63,14 +63,6 @@ ribi::cmap::QtNode::QtNode(const Node& node)
   );
 
   SetNode(node);
-
-  //m_signal_pos_changed.connect(
-  //  boost::bind(&ribi::cmap::QtNode::OnPosChanged,this,boost::lambda::_1)
-  //);
-
-  //this->m_signal_text_changed.connect(
-  //  boost::bind(&ribi::cmap::QtNode::OnTextChanged,this,boost::lambda::_1)
-  //);
 }
 
 ribi::cmap::QtNode::~QtNode() noexcept
@@ -122,6 +114,7 @@ void ribi::cmap::QtNode::keyPressEvent(QKeyEvent *event) noexcept
 
 void ribi::cmap::QtNode::OnConceptChanged(Node * const node) noexcept
 {
+  assert(!"Am I used?");
   //Node changed, sync QtRoundedRectItem
   assert(node);
   assert(*node == m_node);
@@ -134,6 +127,7 @@ void ribi::cmap::QtNode::OnConceptChanged(Node * const node) noexcept
 
 void ribi::cmap::QtNode::OnPosChanged(const QtRoundedRectItem * const item) noexcept
 {
+  assert(!"Am I used?");
   //QtRoundedRectItem changed, sync Node
   assert(item);
   const auto new_pos = item->GetCenterPos();
@@ -146,6 +140,7 @@ void ribi::cmap::QtNode::OnTextChanged(const QtRoundedRectItem * const
 #endif
 ) noexcept
 {
+  assert(!"Am I used?");
   //QtRoundedRectItem changed, sync Node
   assert(item);
   assert(item == this);
@@ -161,6 +156,7 @@ void ribi::cmap::QtNode::OnTextChanged(const QtRoundedRectItem * const
 
 void ribi::cmap::QtNode::OnXchanged(Node * const node) noexcept
 {
+  assert(!"Am I used?");
   const bool verbose{false};
   if (verbose) { TRACE("Slot ribi::cmap::QtNode::OnXchanged"); }
 
@@ -171,16 +167,11 @@ void ribi::cmap::QtNode::OnXchanged(Node * const node) noexcept
 
 void ribi::cmap::QtNode::OnYchanged(Node * const node) noexcept
 {
+  assert(!"Am I used?");
   //Node changed, sync QtRoundedRectItem
   assert(node);
   SetCenterY(node->GetY());
 }
-
-
-//void ribi::cmap::QtNode::OnRequestsSceneUpdate()
-//{
-  //this->m_signal_request_scene_update();
-//}
 
 void ribi::cmap::QtNode::paint(
   QPainter* painter, const QStyleOptionGraphicsItem* item, QWidget* widget
@@ -195,12 +186,14 @@ void ribi::cmap::QtNode::paint(
     painter->setBrush(Qt::transparent);
     painter->setPen(Qt::black);
     //Draw indicator that a concept has examples in it
+    //painter->translate(-GetCenterPos());
     painter->drawRect(
-      GetInnerRect().right() - 5.0,
-      GetInnerRect().top() + 3.0,
+      (GetInnerRect().width() / 2.0) - 5.0,
+      -(GetInnerRect().height() / 2.0) + 3.0,
       3.0,
       3.0
       );
+    //painter->translate(GetCenterPos());
   }
 
   //Check if item can move (as the center node cannot)
