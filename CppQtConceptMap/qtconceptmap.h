@@ -72,8 +72,10 @@ public:
   static std::string GetVersion() noexcept;
   static std::vector<std::string> GetVersionHistory() noexcept;
 
+  void HideExamplesItem() noexcept;
 
-  void RemoveExamplesItem() noexcept { SetExamplesItem(nullptr); }
+  [[deprecated("Replaced by HideExamplesItem, which correctly described the member function")]]
+  void RemoveExamplesItem() noexcept = delete;
 
   void SetConceptMap(const ConceptMap& conceptmap);
 
@@ -152,6 +154,9 @@ private:
   /// Writes the selecteness of the QtConceptMap
   /// to the ConceptMap
   void UpdateConceptMap();
+
+  ///The QtExamplesItem must be shown on nodes with examples
+  void UpdateExamplesItem();
 
 private slots:
 

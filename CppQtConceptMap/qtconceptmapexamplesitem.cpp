@@ -74,7 +74,7 @@ void ribi::cmap::QtExamplesItem::paint(QPainter *painter, const QStyleOptionGrap
 {
   //this->SetExamples(this->m_item->GetNode().GetConcept().GetExamples());
   const auto qtnode = m_qtedge ? m_qtedge->GetQtNode() : m_qtnode;
-
+  assert(qtnode);
   const QPointF p = qtnode->GetCenterPos();
   const auto w = qtnode->GetOuterWidth();
   const auto h = qtnode->GetOuterHeight();
@@ -89,39 +89,21 @@ void ribi::cmap::QtExamplesItem::paint(QPainter *painter, const QStyleOptionGrap
 
 void ribi::cmap::QtExamplesItem::SetBuddyItem(const QGraphicsItem * const item)
 {
-  if (m_item != item)
+  this->setVisible(false);
+  m_item = item;
+  if (m_item)
   {
-    m_item = item;
-    m_qtedge = dynamic_cast<const QtEdge*>(item);
-    m_qtnode = dynamic_cast<const QtNode*>(item);
+    m_qtedge = dynamic_cast<const QtEdge*>(m_item);
+    m_qtnode = dynamic_cast<const QtNode*>(m_item);
     if (m_qtedge && !m_qtedge->GetQtNode()->GetNode().GetConcept().GetExamples().Get().empty())
     {
-      //m_qtedge->m_signal_edge_changed.connect(
-      //  boost::bind(
-      //    &ribi::cmap::QtExamplesItem::OnItemUpdated,this // ,boost::lambda::_1
-      //  )
-      //);
       this->SetExamples(m_qtedge->GetQtNode()->GetNode().GetConcept().GetExamples());
       this->setVisible(true);
     }
     if (m_qtnode && !m_qtnode->GetNode().GetConcept().GetExamples().Get().empty())
     {
-      //m_qtnode->m_signal_node_changed.connect(
-      //  boost::bind(
-      //    &ribi::cmap::QtExamplesItem::OnItemUpdated,this //,boost::lambda::_1
-      //  )
-      //);
       this->SetExamples(m_qtnode->GetNode().GetConcept().GetExamples());
       this->setVisible(true);
-    }
-    //m_signal_request_scene_update();
-  }
-  else
-  {
-    if (this->isVisible())
-    {
-      this->setVisible(false);
-      //m_signal_request_scene_update();
     }
   }
 }

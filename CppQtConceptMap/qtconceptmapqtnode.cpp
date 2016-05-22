@@ -181,19 +181,14 @@ void ribi::cmap::QtNode::paint(
 
   if (!GetNode().GetConcept().GetExamples().Get().empty())
   {
-    //painter->setBrush(m_display_strategy->GetIndicatorBrush());
-    //painter->setPen(m_display_strategy->GetIndicatorPen());
     painter->setBrush(Qt::transparent);
     painter->setPen(Qt::black);
-    //Draw indicator that a concept has examples in it
-    //painter->translate(-GetCenterPos());
     painter->drawRect(
       (GetInnerRect().width() / 2.0) - 5.0,
       -(GetInnerRect().height() / 2.0) + 3.0,
       3.0,
       3.0
-      );
-    //painter->translate(GetCenterPos());
+    );
   }
 
   //Check if item can move (as the center node cannot)

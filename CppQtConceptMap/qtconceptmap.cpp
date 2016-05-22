@@ -151,6 +151,7 @@ ribi::cmap::QtConceptMap::QtConceptMap(QWidget* parent)
   #endif
   QObject::connect(scene(),SIGNAL(selectionChanged()),this,SLOT(onSelectionChanged()));
 
+  m_examples_item->SetCenterPos(100,100);
 
 }
 
@@ -166,10 +167,17 @@ ribi::cmap::QtConceptMap::~QtConceptMap()
 
 }
 
+void ribi::cmap::QtConceptMap::HideExamplesItem() noexcept
+{
+  m_examples_item->hide();
+}
+
 void ribi::cmap::QtConceptMap::RemoveConceptMap()
 {
   if (m_arrow) { delete m_arrow; m_arrow = nullptr; }
-  SetExamplesItem(nullptr);
+  assert(m_examples_item);
+  m_examples_item->hide();
+  //m_examples_item = nullptr;
   if (m_highlighter) m_highlighter->SetItem(nullptr); //Do this before destroying items
   assert(m_tools);
   m_tools->SetBuddyItem(nullptr);
@@ -698,6 +706,7 @@ void ribi::cmap::QtConceptMap::mouseDoubleClickEvent(QMouseEvent *event)
     );
   }
   catch (std::logic_error& ) {}
+  UpdateExamplesItem();
 }
 
 void ribi::cmap::QtConceptMap::mouseMoveEvent(QMouseEvent * event)
@@ -757,15 +766,7 @@ void ribi::cmap::QtConceptMap::mousePressEvent(QMouseEvent *event)
 
   QtKeyboardFriendlyGraphicsView::mousePressEvent(event);
 
-  //If nothing is selected, hide the Examples
-  if (!GetScene()->focusItem() && !this->GetScene()->selectedItems().count())
-  {
-    //Let any node (in this case the central node) emit an update for the Examples
-    //to hide.
-    //if (GetCenterNode()) {
-    //  GetCenterNode()->m_signal_node_changed(GetCenterNode());
-    //}
-  }
+  UpdateExamplesItem();
 }
 
 void ribi::cmap::QtConceptMap::onFocusItemChanged(
@@ -860,6 +861,8 @@ void ribi::cmap::QtConceptMap::OnToolsClicked()
   m_arrow->update();
   this->scene()->update();
 }
+
+
 
 void ribi::cmap::QtConceptMap::RepositionItems()
 {
@@ -1041,11 +1044,10 @@ void ribi::cmap::QtConceptMap::SetConceptMap(const ConceptMap& conceptmap)
   assert(GetConceptMap() == conceptmap);
 }
 
-void ribi::cmap::QtConceptMap::SetExamplesItem(QtExamplesItem * const item)
-{
-  assert((item || !item) && "Can be both");
-  m_examples_item = item;
-}
+//void ribi::cmap::QtConceptMap::SetExamplesItem(QtExamplesItem * const item)
+//{
+//  m_examples_item = item;
+//}
 
 void ribi::cmap::QtConceptMap::Undo() noexcept
 {
@@ -1055,6 +1057,22 @@ void ribi::cmap::QtConceptMap::Undo() noexcept
 
 void ribi::cmap::QtConceptMap::UpdateConceptMap()
 {
+  UpdateExamplesItem();
   for (const auto item: this->scene()->items()) { item->update(); }
   onSelectionChanged();
+}
+
+void ribi::cmap::QtConceptMap::UpdateExamplesItem()
+{
+  //If nothing is selected, hide the Examples
+  m_examples_item->SetBuddyItem(nullptr); //Handles visibility
+  assert(GetScene());
+  if (GetScene()->selectedItems().count() == 1)
+  {
+    QtNode * const selected_qtnode = dynamic_cast<QtNode*>(GetScene()->selectedItems().first());
+    if (selected_qtnode)
+    {
+      m_examples_item->SetBuddyItem(selected_qtnode); //Handles visibility
+    }
+  }
 }
