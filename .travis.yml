@@ -5,10 +5,10 @@ compiler: gcc
 before_install:
   - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
   - sudo apt-get update -qq
-  - apt-cache search gcc
-  - apt-cache search g++
-  - apt-cache search gcov
-  - apt-cache search libboost  - sudo apt-get install -qq g++-5
+  - apt-cache search "g++" | egrep "^gcc"
+  - apt-cache search "g++" | egrep "^g\+\+"
+  - apt-cache search "gcov"| egrep "^gcov"
+  - apt-cache search "libboost"| egrep "^libboost
   - sudo pip install codecov
 
 addons:
