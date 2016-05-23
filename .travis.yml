@@ -8,7 +8,7 @@ before_install:
   - apt-cache search "g++" | egrep "^gcc"
   - apt-cache search "g++" | egrep "^g\+\+"
   - apt-cache search "gcov"
-  - apt-cache search "libboost" | egrep "^libboost
+  - apt-cache search "libboost" | egrep "^libboost"
   - sudo pip install codecov
 
 addons:
