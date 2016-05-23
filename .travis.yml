@@ -19,7 +19,10 @@ addons:
     - libboost1.55-all-dev
 
 install: 
-  - sudo apt-get install -qq g++-5
+  - apt-cache search gcc
+  - apt-cache search g++
+  - apt-cache search gcov
+  - apt-cache search libboost  - sudo apt-get install -qq g++-5
   - sudo update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-5 90
 
 # Start virtual X server, from https://docs.travis-ci.com/user/gui-and-headless-browsers/
