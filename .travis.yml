@@ -16,11 +16,11 @@ addons:
     sources:
     - boost-latest
     - ubuntu-toolchain-r-test
-    packages:
-    - gcc-5
-    - g++-5
-    - gcov-5
-    - libboost1.55-all-dev
+#    packages:
+#    - gcc-5
+#    - g++-5
+#    - gcov-5
+#    - libboost1.55-all-dev
 
 install: 
   - sudo update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-5 90
