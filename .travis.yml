@@ -37,3 +37,10 @@ script:
   - ./get_code_cov.sh
   - codecov
   # - ./no_temp_files.sh # TODO: put this back in
+
+
+after_failure:
+ - apt-cache search gcc
+ - apt-cache search g++
+ - apt-cache search gcov
+ - apt-cache search libboost
