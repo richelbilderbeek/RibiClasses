@@ -5,6 +5,10 @@ compiler: gcc
 before_install:
   - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
   - sudo apt-get update -qq
+  - apt-cache search gcc
+  - apt-cache search g++
+  - apt-cache search gcov
+  - apt-cache search libboost  - sudo apt-get install -qq g++-5
   - sudo pip install codecov
 
 addons:
@@ -19,10 +23,6 @@ addons:
     - libboost1.55-all-dev
 
 install: 
-  - apt-cache search gcc
-  - apt-cache search g++
-  - apt-cache search gcov
-  - apt-cache search libboost  - sudo apt-get install -qq g++-5
   - sudo update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-5 90
 
 # Start virtual X server, from https://docs.travis-ci.com/user/gui-and-headless-browsers/
