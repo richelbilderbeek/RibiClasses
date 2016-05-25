@@ -40,10 +40,14 @@ namespace cmap {
 ///QtNewArrow is the arrow shown before a new one is added
 struct QtNewArrow : public QtArrowItem
 {
-  QtNewArrow(
+  QtNewArrow();
+
+  ///Set and show the arrow in itis initial condition
+  void Start(
     QtNode * const from,
     const QPointF& current_to
   );
+
   QtNewArrow(const QtNewArrow&) = delete;
   QtNewArrow& operator=(const QtNewArrow&) = delete;
   ///Obtain the source node
@@ -56,7 +60,7 @@ struct QtNewArrow : public QtArrowItem
 
   ///The source node
   ///Cannot be const as the user might want to edit it
-  QtNode * const m_from;
+  QtNode * m_from;
 };
 
 } //~namespace cmap

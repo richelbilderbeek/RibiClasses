@@ -31,7 +31,6 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include <QPainter>
 
 #include "geometry.h"
-//#include "qtconceptmapconceptitem.h"
 #include "qtconceptmapqtnode.h"
 #include "trace.h"
 
@@ -40,21 +39,10 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include <boost/geometry/geometries/point_xy.hpp>
 #pragma GCC diagnostic pop
 
-ribi::cmap::QtNewArrow::QtNewArrow(
-  QtNode * const from,
-  const QPointF& current_to)
-  : QtArrowItem(
-      from->GetCenterX(),
-      from->GetCenterY(),
-      false,
-      current_to.x(),
-      current_to.y(),
-      true
-    ),
-    m_from(from)
+ribi::cmap::QtNewArrow::QtNewArrow()
+  : QtArrowItem(0.0, 0.0, false, 0.0, 0.0, true),
+    m_from{nullptr}
 {
-  assert(m_from);
-
   //New arrows are above all items
   this->setZValue(2.0);
 
@@ -69,8 +57,22 @@ ribi::cmap::QtNewArrow::QtNewArrow(
   assert(!(this->flags() & QGraphicsItem::ItemIsMovable ));
 }
 
+void ribi::cmap::QtNewArrow::Start(
+  QtNode * const from,
+  const QPointF& current_to
+)
+{
+  assert(from);
+  this->SetTailPos(from->GetCenterX(), from->GetCenterY());
+  this->SetHasTail(false);
+  this->SetHeadPos(current_to.x(), current_to.y());
+  this->SetHasHead(false);
+  this->show();
+}
+
 void ribi::cmap::QtNewArrow::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
+  if (!m_from) return;
   typedef boost::geometry::model::d2::point_xy<double> Point;
   typedef boost::geometry::model::linestring<Point> Line;
   typedef boost::geometry::model::box<Point> Rect;

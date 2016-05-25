@@ -109,7 +109,7 @@ std::vector<ribi::cmap::QtNode*>
 
 ribi::cmap::QtConceptMap::QtConceptMap(QWidget* parent)
   : QtKeyboardFriendlyGraphicsView(parent),
-    m_arrow(nullptr),
+    m_arrow{new QtNewArrow},
     m_conceptmap{},
     m_examples_item(new QtExamplesItem),
     m_highlighter{new QtItemHighlighter},
@@ -120,6 +120,11 @@ ribi::cmap::QtConceptMap::QtConceptMap(QWidget* parent)
   #endif
 
   this->setScene(new QGraphicsScene(this));
+
+  //Add QtNewArrow
+  assert(!m_arrow->scene());
+  scene()->addItem(m_arrow); //Add the QtNewArrow so it has a parent
+  m_arrow->hide();
 
   //Add QtExamplesItem
   assert(!m_examples_item->scene());
@@ -163,6 +168,7 @@ ribi::cmap::QtConceptMap::~QtConceptMap()
   delete m_tools;
   m_tools = nullptr;
   if (m_highlighter) m_highlighter->SetItem(nullptr); //Do this before destroying items
+  delete m_arrow;
   m_arrow = nullptr;
 
 }
@@ -174,7 +180,8 @@ void ribi::cmap::QtConceptMap::HideExamplesItem() noexcept
 
 void ribi::cmap::QtConceptMap::RemoveConceptMap()
 {
-  if (m_arrow) { delete m_arrow; m_arrow = nullptr; }
+  assert(m_arrow);
+  m_arrow->hide();
   assert(m_examples_item);
   m_examples_item->hide();
   //m_examples_item = nullptr;
@@ -633,11 +640,10 @@ void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event) noexcept
     {
       if (GetVerbosity()) { TRACE("Pressing Escape"); }
       //Only remove the 'new arrow' if present
-      if (m_arrow)
+      if (m_arrow->isVisible())
       {
         if (GetVerbosity()) { TRACE("Remove the new arrow"); }
-        this->scene()->removeItem(m_arrow);
-        m_arrow = nullptr;
+        m_arrow->hide();
         return;
       }
     }
@@ -711,9 +717,7 @@ void ribi::cmap::QtConceptMap::mouseDoubleClickEvent(QMouseEvent *event)
 
 void ribi::cmap::QtConceptMap::mouseMoveEvent(QMouseEvent * event)
 {
-  //if (GetVerbosity()) { TRACE_FUNC(); }
-
-  if (m_arrow)
+  if (m_arrow->isVisible())
   {
     const QPointF pos = mapToScene(event->pos());
     m_arrow->SetHeadPos(pos.x(),pos.y());
@@ -737,7 +741,7 @@ void ribi::cmap::QtConceptMap::mousePressEvent(QMouseEvent *event)
   if (GetVerbosity()) { TRACE_FUNC(); }
   UpdateConceptMap();
   assert(m_highlighter);
-  if (m_arrow) //&& m_highlighter->GetItem())
+  if (m_arrow->isVisible()) //&& m_highlighter->GetItem())
   {
     if (m_highlighter->GetItem() && m_arrow->GetFrom() != m_highlighter->GetItem())
     {
@@ -757,9 +761,7 @@ void ribi::cmap::QtConceptMap::mousePressEvent(QMouseEvent *event)
       }
       catch (std::logic_error&) { return; }
     }
-    assert(m_arrow->scene() == this->scene());
-    this->scene()->removeItem(m_arrow);
-    m_arrow = nullptr;
+    m_arrow->hide();
     assert(m_highlighter);
     m_highlighter->SetItem(nullptr);
   }
@@ -777,11 +779,10 @@ void ribi::cmap::QtConceptMap::onFocusItemChanged(
     m_tools->SetBuddyItem(qtnode);
     onSelectionChanged();
   }
-  if (newFocus == m_tools && !m_arrow && m_tools->GetBuddyItem()) {
-    m_arrow = new QtNewArrow(
+  if (newFocus == m_tools && !m_arrow->isVisible() && m_tools->GetBuddyItem()) {
+    m_arrow->Start(
       m_tools->GetBuddyItem(),m_tools->GetBuddyItem()->GetCenterPos()
-    );
-    this->scene()->addItem(m_arrow);
+    ); //Also sets visibility
   }
 }
 
@@ -853,11 +854,9 @@ void ribi::cmap::QtConceptMap::OnToolsClicked()
     m_tools->GetBuddyItem()->GetCenterY() - 32.0
     - m_tools->GetBuddyItem()->GetRadiusY()
   );
-  m_arrow = new QtNewArrow(
+  m_arrow->Start(
     m_tools->GetBuddyItem(),cursor_pos_approx
   );
-  assert(!m_arrow->scene());
-  this->scene()->addItem(m_arrow);
   m_arrow->update();
   this->scene()->update();
 }
