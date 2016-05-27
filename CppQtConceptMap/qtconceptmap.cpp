@@ -184,7 +184,6 @@ void ribi::cmap::QtConceptMap::RemoveConceptMap()
   m_arrow->hide();
   assert(m_examples_item);
   m_examples_item->hide();
-  //m_examples_item = nullptr;
   if (m_highlighter) m_highlighter->SetItem(nullptr); //Do this before destroying items
   assert(m_tools);
   m_tools->SetBuddyItem(nullptr);
@@ -192,7 +191,6 @@ void ribi::cmap::QtConceptMap::RemoveConceptMap()
 }
 
 #ifdef NOT_NOW_20151230
-
 void ribi::cmap::QtConceptMap::DeleteEdge(const Edge& edge)
 {
   //Already deleted
@@ -809,16 +807,9 @@ void ribi::cmap::QtConceptMap::OnNodeKeyDownPressed(QtNode* const item, const in
   this->setFocus();
   this->scene()->setFocusItem(item);
   item->SetSelected(true);
-  //item->m_signal_node_changed(item);
   this->scene()->update();
-  //this->OnItemRequestsUpdate(item);
 }
 
-void ribi::cmap::QtConceptMap::OnRequestSceneUpdate()
-{
-  assert(!"I am not called");
-  scene()->update();
-}
 
 void ribi::cmap::QtConceptMap::onSelectionChanged()
 {
@@ -867,6 +858,7 @@ void ribi::cmap::QtConceptMap::OnToolsClicked()
 
 void ribi::cmap::QtConceptMap::RepositionItems()
 {
+  assert(!"Not used");
 
   {
     //The ray of the upcoming circle of nodes, is the larger of
@@ -1045,11 +1037,6 @@ void ribi::cmap::QtConceptMap::SetConceptMap(const ConceptMap& conceptmap)
   }
   assert(GetConceptMap() == conceptmap);
 }
-
-//void ribi::cmap::QtConceptMap::SetExamplesItem(QtExamplesItem * const item)
-//{
-//  m_examples_item = item;
-//}
 
 void ribi::cmap::QtConceptMap::Undo() noexcept
 {

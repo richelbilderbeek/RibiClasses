@@ -162,11 +162,6 @@ private slots:
 
   void onFocusItemChanged(QGraphicsItem*,QGraphicsItem*,Qt::FocusReason);
   void onSelectionChanged();
-
-public slots:
-
-  ///Called when an item requests a scene update
-  void OnRequestSceneUpdate();
 };
 
 int CountQtNodes(const QGraphicsScene * const scene) noexcept;
