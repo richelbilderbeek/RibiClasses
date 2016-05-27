@@ -620,6 +620,16 @@ void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event) noexcept
 
   switch (event->key())
   {
+    case Qt::Key_F2:
+    {
+      const auto items = scene()->selectedItems();
+      if (items.size() != 1) break;
+      if (QtNode * const qtnode = dynamic_cast<QtNode*>(items.front()))
+      {
+        OnNodeKeyDownPressed(qtnode, event->key());
+      }
+    }
+    break;
     case Qt::Key_Delete:
     {
       UpdateConceptMap();
@@ -786,22 +796,16 @@ void ribi::cmap::QtConceptMap::onFocusItemChanged(
   }
 }
 
-void ribi::cmap::QtConceptMap::OnEdgeKeyDownPressed(QtEdge* const edge, const int key)
-{
-  assert(edge);
-  if (!edge) throw std::logic_error("ribi::cmap::QtConceptMap::OnEdgeKeyDownPressed: edge must be non-nullptr");
-  if (key != Qt::Key_F2) return;
-}
-
 void ribi::cmap::QtConceptMap::OnNodeKeyDownPressed(QtNode* const item, const int key)
 {
   if (key != Qt::Key_F2) return;
   assert(item);
-
   {
     QtScopedDisable<QtConceptMap> disable(this);
     QtConceptMapConceptEditDialog d(item->GetNode().GetConcept());
     d.exec();
+    item->GetNode().SetConcept(d.GetConcept());
+    item->SetText( { d.GetConcept().GetName() } );
   }
   this->show();
   this->setFocus();
