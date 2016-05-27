@@ -37,7 +37,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 
 ribi::QtKeyboardFriendlyGraphicsView::QtKeyboardFriendlyGraphicsView(QWidget* parent)
   : QGraphicsView(new QGraphicsScene,parent),
-    //m_signal_update{},
+    m_rng_engine{0},
     m_verbose{false}
 {
 
@@ -446,15 +446,15 @@ void ribi::QtKeyboardFriendlyGraphicsView::SetRandomFocus()
 
   if (!items.empty())
   {
-    const int i = std::rand() % items.size();
-    if (m_verbose) { std::clog << "Giving the " << i << "th item focus" << std::endl; }
+    std::uniform_int_distribution<int> distribution(0, static_cast<int>(items.size()) - 1);
+    const int i{distribution(m_rng_engine)};
     assert(i >= 0);
     assert(i < items.size());
+    if (m_verbose) { std::clog << "Giving the " << i << "th item focus" << std::endl; }
     auto& new_focus_item = items[i];
     assert(!new_focus_item->isSelected());
     new_focus_item->setSelected(true); // #239
     new_focus_item->setFocus();
-    //m_signal_update(new_focus_item);
   }
   else
   {
@@ -491,14 +491,13 @@ void ribi::QtKeyboardFriendlyGraphicsView::SetRandomSelectedness()
   assert(this->scene()->selectedItems().size() == 0);
   if (!items.empty())
   {
-    const int n_items{static_cast<int>(items.size())};
-    const int i = std::rand() % n_items;
+    std::uniform_int_distribution<int> distribution(0, static_cast<int>(items.size()) - 1);
+    const int i{distribution(m_rng_engine)};
     assert(i >= 0);
     assert(i < items.size());
     auto& new_focus_item = items[i];
     assert(!new_focus_item->isSelected());
     new_focus_item->setSelected(true);
-    //m_signal_update(new_focus_item);
     assert(this->scene()->selectedItems().size() == 1);
   }
 }

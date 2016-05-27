@@ -118,13 +118,14 @@ ribi::cmap::QtConceptMap::QtConceptMap(QWidget* parent)
   #ifndef NDEBUG
   this->SetVerbosity(false);
   #endif
-
   this->setScene(new QGraphicsScene(this));
+  assert(!m_highlighter->GetItem());
 
   //Add QtNewArrow
   assert(!m_arrow->scene());
   scene()->addItem(m_arrow); //Add the QtNewArrow so it has a parent
   m_arrow->hide();
+  assert(!m_arrow->isVisible());
 
   //Add QtExamplesItem
   assert(!m_examples_item->scene());
@@ -156,8 +157,7 @@ ribi::cmap::QtConceptMap::QtConceptMap(QWidget* parent)
   #endif
   QObject::connect(scene(),SIGNAL(selectionChanged()),this,SLOT(onSelectionChanged()));
 
-  m_examples_item->SetCenterPos(100,100);
-
+  m_examples_item->SetCenterPos(123,456); //Irrelevant where
 }
 
 ribi::cmap::QtConceptMap::~QtConceptMap()
@@ -188,6 +188,7 @@ void ribi::cmap::QtConceptMap::RemoveConceptMap()
   if (m_highlighter) m_highlighter->SetItem(nullptr); //Do this before destroying items
   assert(m_tools);
   m_tools->SetBuddyItem(nullptr);
+  assert(!m_arrow->isVisible());
 }
 
 #ifdef NOT_NOW_20151230
@@ -644,6 +645,7 @@ void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event) noexcept
       {
         if (GetVerbosity()) { TRACE("Remove the new arrow"); }
         m_arrow->hide();
+        assert(!m_arrow->isVisible());
         return;
       }
     }
@@ -741,7 +743,7 @@ void ribi::cmap::QtConceptMap::mousePressEvent(QMouseEvent *event)
   if (GetVerbosity()) { TRACE_FUNC(); }
   UpdateConceptMap();
   assert(m_highlighter);
-  if (m_arrow->isVisible()) //&& m_highlighter->GetItem())
+  if (m_arrow->isVisible())
   {
     if (m_highlighter->GetItem() && m_arrow->GetFrom() != m_highlighter->GetItem())
     {
@@ -772,14 +774,14 @@ void ribi::cmap::QtConceptMap::mousePressEvent(QMouseEvent *event)
 }
 
 void ribi::cmap::QtConceptMap::onFocusItemChanged(
-  QGraphicsItem * newFocus, QGraphicsItem */*oldFocus*/, Qt::FocusReason /*reason*/
+  QGraphicsItem * newFocus, QGraphicsItem */*oldFocus*/, Qt::FocusReason reason
 )
 {
   if (const QtNode * const qtnode = dynamic_cast<const QtNode*>(newFocus)) {
     m_tools->SetBuddyItem(qtnode);
     onSelectionChanged();
   }
-  if (newFocus == m_tools && !m_arrow->isVisible() && m_tools->GetBuddyItem()) {
+  if (newFocus == m_tools && !m_arrow->isVisible() && m_tools->GetBuddyItem() && reason == Qt::MouseFocusReason) {
     m_arrow->Start(
       m_tools->GetBuddyItem(),m_tools->GetBuddyItem()->GetCenterPos()
     ); //Also sets visibility
@@ -995,12 +997,13 @@ void ribi::cmap::QtConceptMap::SetConceptMap(const ConceptMap& conceptmap)
 {
   RemoveConceptMap();
   m_conceptmap = conceptmap;
+  assert(GetConceptMap() == conceptmap);
 
   assert(this->scene());
 
   //This std::vector keeps the QtNodes in the same order as the nodes in the concept map
   //You cannot rely on Collect<QtConceptMapNodeConcept*>(scene), as this shuffles the order
-  std::vector<QtNode*> qtnodes;
+  //std::vector<QtNode*> qtnodes;
 
   assert(Collect<QtNode>(scene()).empty());
 

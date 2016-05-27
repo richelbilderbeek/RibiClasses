@@ -55,6 +55,8 @@ struct QtKeyboardFriendlyGraphicsView : public QGraphicsView
 
   private:
 
+  ///The RNG engine. When a user presses space, a random item is chosen
+  std::mt19937 m_rng_engine;
   bool m_verbose;
 
   ///Obtain the closest item in the collection
