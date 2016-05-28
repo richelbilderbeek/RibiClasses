@@ -75,7 +75,7 @@ Node GetFrom(const EdgeDescriptor ed, const ConceptMap& c) noexcept;
 Node GetNode(const VertexDescriptor vd, const ConceptMap& c) noexcept;
 Node GetTo(const EdgeDescriptor ed, const ConceptMap& c) noexcept;
 Node GetTo(const Edge& edge, const ConceptMap& c) noexcept;
-std::vector<Node> GetNodes(const ConceptMap& c) noexcept;
+std::vector<Node> GetNodes(const ConceptMap& c) noexcept; /// Because 'get_my_custom_vertexes(c)' does not work yet
 std::vector<Edge> GetSortedEdges(const ConceptMap& c) noexcept;
 std::vector<Node> GetSortedNodes(const ConceptMap& c) noexcept;
 bool HasCenterNode(const ConceptMap& c) noexcept;
