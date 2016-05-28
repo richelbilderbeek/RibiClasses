@@ -186,7 +186,6 @@ QtEdge * FindQtEdge(
   const QGraphicsScene * const scene
 ) noexcept;
 
-
 QtNode * FindQtNode(const int node_id, const QGraphicsScene * const scene) noexcept;
 
 std::vector<QtEdge *> GetQtEdges(const QGraphicsScene * const scene) noexcept;

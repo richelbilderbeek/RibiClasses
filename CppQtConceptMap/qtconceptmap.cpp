@@ -44,6 +44,8 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "container.h"
 #include "conceptmapconceptfactory.h"
 #include "conceptmapconcept.h"
+#include "get_my_custom_vertex.h"
+#include "set_my_custom_vertex.h"
 #include "conceptmapfactory.h"
 #include "conceptmap.h"
 #include "conceptmapedgefactory.h"
@@ -804,9 +806,18 @@ void ribi::cmap::QtConceptMap::OnNodeKeyDownPressed(QtNode* const item, const in
     QtScopedDisable<QtConceptMap> disable(this);
     QtConceptMapConceptEditDialog d(item->GetNode().GetConcept());
     d.exec();
+    //Find the Node
+    const auto vd = FindNode(item->GetNode(), m_conceptmap);
+    //Update the node here
+    auto node = item->GetNode();
+    node.SetConcept(d.GetConcept());
+    //Update the node in the concept map
+    set_my_custom_vertex(node, vd, m_conceptmap);
+    //Update the QtNode
     item->GetNode().SetConcept(d.GetConcept());
     item->SetText( { d.GetConcept().GetName() } );
   }
+
   this->show();
   this->setFocus();
   this->scene()->setFocusItem(item);
