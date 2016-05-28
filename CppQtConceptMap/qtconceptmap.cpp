@@ -800,13 +800,13 @@ void ribi::cmap::QtConceptMap::onFocusItemChanged(
 
 void ribi::cmap::QtConceptMap::OnNodeKeyDownPressed(QtNode* const item, const int key)
 {
-  if (key != Qt::Key_F2) return;
   assert(item);
+  if (key != Qt::Key_F2)
   {
     QtScopedDisable<QtConceptMap> disable(this);
     QtConceptMapConceptEditDialog d(item->GetNode().GetConcept());
     d.exec();
-    //Find the Node
+    //Find the original Node
     const auto vd = FindNode(item->GetNode(), m_conceptmap);
     //Update the node here
     auto node = item->GetNode();
