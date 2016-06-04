@@ -32,7 +32,7 @@ struct Node;
 class ConceptMapFactory
 {
 public:
-  using Graphs = std::vector<Graph>;
+  using Graphs = std::vector<ConceptMap>;
 
   ConceptMapFactory() noexcept;
 

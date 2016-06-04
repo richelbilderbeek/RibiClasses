@@ -57,10 +57,6 @@ ribi::cmap::QtRateConceptDialog::QtRateConceptDialog(
   : QtHideAndShowDialog(parent),
     ui(new Ui::QtRateConceptDialog),
     m_button_ok_clicked(false),
-    m_concept{GetFirstNode(conceptmap).GetConcept()},
-    m_initial_complexity(GetFirstNode(conceptmap).GetConcept().GetRatingComplexity()),
-    m_initial_concreteness(GetFirstNode(conceptmap).GetConcept().GetRatingConcreteness()),
-    m_initial_specificity(GetFirstNode(conceptmap).GetConcept().GetRatingSpecificity()),
     m_conceptmap(conceptmap),
     m_widget(new QtConceptMap)
 {
@@ -72,10 +68,9 @@ ribi::cmap::QtRateConceptDialog::QtRateConceptDialog(
   assert(ui->conceptmap_layout);
 
   ui->conceptmap_layout->addWidget(m_widget.get());
-
-  ui->box_complexity->setCurrentIndex(m_initial_complexity);
-  ui->box_concreteness->setCurrentIndex(m_initial_concreteness);
-  ui->box_specificity->setCurrentIndex(m_initial_specificity);
+  ui->box_complexity->setCurrentIndex(GetFirstNode(conceptmap).GetConcept().GetRatingComplexity());
+  ui->box_concreteness->setCurrentIndex(GetFirstNode(conceptmap).GetConcept().GetRatingConcreteness());
+  ui->box_specificity->setCurrentIndex(GetFirstNode(conceptmap).GetConcept().GetRatingSpecificity());
   ui->box_complexity->setFocus();
 
   //Set suggestions
@@ -107,15 +102,22 @@ ribi::cmap::QtRateConceptDialog::QtRateConceptDialog(
 
 ribi::cmap::QtRateConceptDialog::~QtRateConceptDialog() noexcept
 {
-  //If user clicked OK, keep the current ratings (which are updated by the comboboxes)
-  //else the user cancelled, so put back the initial ratings
-  if (!m_button_ok_clicked)
-  {
-    m_concept.SetRatingComplexity(m_initial_complexity);
-    m_concept.SetRatingConcreteness(m_initial_concreteness);
-    m_concept.SetRatingSpecificity(m_initial_specificity);
-  }
   delete ui;
+}
+
+int ribi::cmap::QtRateConceptDialog::GetComplexity() const noexcept
+{
+  return ui->box_complexity->currentIndex();
+}
+
+int ribi::cmap::QtRateConceptDialog::GetConcreteness() const noexcept
+{
+  return ui->box_concreteness->currentIndex();
+}
+
+int ribi::cmap::QtRateConceptDialog::GetSpecificity() const noexcept
+{
+  return ui->box_specificity->currentIndex();
 }
 
 void ribi::cmap::QtRateConceptDialog::keyPressEvent(QKeyEvent* e)
@@ -131,30 +133,6 @@ void ribi::cmap::QtRateConceptDialog::on_button_ok_clicked()
   close();
 }
 
-void ribi::cmap::QtRateConceptDialog::OnRatingComplexityChanged(const ribi::cmap::Concept& concept)
-{
-  if (ui->box_complexity->currentIndex() != concept.GetRatingComplexity())
-  {
-    ui->box_complexity->setCurrentIndex(concept.GetRatingComplexity());
-  }
-}
-
-void ribi::cmap::QtRateConceptDialog::OnRatingConcretenessChanged(const ribi::cmap::Concept& concept)
-{
-  if (ui->box_concreteness->currentIndex() != concept.GetRatingConcreteness())
-  {
-    ui->box_concreteness->setCurrentIndex(concept.GetRatingConcreteness());
-  }
-}
-
-void ribi::cmap::QtRateConceptDialog::OnRatingSpecificityChanged(const ribi::cmap::Concept& concept)
-{
-  if (ui->box_specificity->currentIndex() != concept.GetRatingSpecificity())
-  {
-    ui->box_specificity->setCurrentIndex(concept.GetRatingSpecificity());
-  }
-}
-
 void ribi::cmap::QtRateConceptDialog::on_button_tally_relevancies_clicked()
 {
   QtRateConceptTallyDialog d(m_conceptmap);
@@ -162,28 +140,4 @@ void ribi::cmap::QtRateConceptDialog::on_button_tally_relevancies_clicked()
   ui->box_complexity->setCurrentIndex(d.GetSuggestedComplexity());
   ui->box_concreteness->setCurrentIndex(d.GetSuggestedConcreteness());
   ui->box_specificity->setCurrentIndex(d.GetSuggestedSpecificity());
-}
-
-void ribi::cmap::QtRateConceptDialog::on_box_complexity_currentIndexChanged(int)
-{
-  if (m_concept.GetRatingComplexity() != ui->box_complexity->currentIndex())
-  {
-    m_concept.SetRatingComplexity(ui->box_complexity->currentIndex());
-  }
-}
-
-void ribi::cmap::QtRateConceptDialog::on_box_concreteness_currentIndexChanged(int)
-{
-  if (m_concept.GetRatingConcreteness() != ui->box_concreteness->currentIndex())
-  {
-    m_concept.SetRatingConcreteness(ui->box_concreteness->currentIndex());
-  }
-}
-
-void ribi::cmap::QtRateConceptDialog::on_box_specificity_currentIndexChanged(int)
-{
-  if (m_concept.GetRatingSpecificity() != ui->box_specificity->currentIndex())
-  {
-    m_concept.SetRatingSpecificity(ui->box_specificity->currentIndex());
-  }
 }

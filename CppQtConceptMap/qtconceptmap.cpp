@@ -833,12 +833,28 @@ void ribi::cmap::QtConceptMap::OnNodeKeyDownPressed(QtNode* const item, const in
     ///The widget requested for a rating of the already supplied sub concept map,
     ///with the focal concept item as the central node
     QtScopedDisable<QtConceptMap> disable(this);
-
     const auto vd = FindNode(item->GetNode(), m_conceptmap);
     const auto subgraph = create_direct_neighbour_custom_and_selectable_edges_and_vertices_subgraph(vd, m_conceptmap);
-    ribi::cmap::QtRateConceptDialog d(subgraph); //Item may be changed
+    SaveSummaryToImage(m_conceptmap, "test_concept_map.png");
+    SaveSummaryToImage(subgraph, "test_subgraph.png");
+    qDebug() << "graph nodes: " << boost::num_vertices(m_conceptmap) << ", subgraph nodes: " << boost::num_vertices(subgraph);
+    qDebug() << "graph edges: " << boost::num_edges(m_conceptmap) << ", subgraph edgs: " << boost::num_edges(subgraph);
+    ribi::cmap::QtRateConceptDialog d(subgraph);
     d.exec();
-    //Copy changes back
+    if (d.GetOkClicked())
+    {
+      //Find the original Node
+      //const auto vd = FindNode(item->GetNode(), m_conceptmap);
+      //Update the node here
+      auto node = item->GetNode();
+      node.GetConcept().SetRatingComplexity(d.GetComplexity());
+      node.GetConcept().SetRatingConcreteness(d.GetConcreteness());
+      node.GetConcept().SetRatingSpecificity(d.GetSpecificity());
+      //Update the node in the concept map
+      set_my_custom_vertex(node, vd, m_conceptmap);
+      //Update the QtNode
+      item->GetNode().SetConcept(node.GetConcept());
+    }
   }
   this->show();
   this->setFocus();

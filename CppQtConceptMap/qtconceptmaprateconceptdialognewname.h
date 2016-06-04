@@ -52,6 +52,13 @@ class QtRateConceptDialog : public ribi::QtHideAndShowDialog
   QtRateConceptDialog& operator=(const QtRateConceptDialog&) = delete;
   ~QtRateConceptDialog() noexcept;
 
+  ///To distinguish between closing the dialog by clicking OK, or by ALT-F4
+  bool GetOkClicked() const noexcept { return m_button_ok_clicked; }
+
+  int GetComplexity() const noexcept;
+  int GetConcreteness() const noexcept;
+  int GetSpecificity() const noexcept;
+
   ///Set suggested values for this concept
   //void MakeSuggestions(const ConceptMap conceptmap);
 
@@ -63,9 +70,9 @@ private slots:
 
   void on_button_tally_relevancies_clicked();
 
-  void on_box_complexity_currentIndexChanged(int index);
-  void on_box_concreteness_currentIndexChanged(int index);
-  void on_box_specificity_currentIndexChanged(int index);
+  //void on_box_complexity_currentIndexChanged(int index);
+  //void on_box_concreteness_currentIndexChanged(int index);
+  //void on_box_specificity_currentIndexChanged(int index);
 
 private:
   Ui::QtRateConceptDialog *ui;
@@ -76,19 +83,14 @@ private:
   ///The center concept, may be changed when the user clicks OK
   Concept m_concept;
 
-  ///The complexity at this dialog its creation, stored so that the user can cancel the dialog
-  const int m_initial_complexity;
-  const int m_initial_concreteness;
-  const int m_initial_specificity;
-
   ///Cannot be const, only used in calculating the suggestions
   const ConceptMap m_conceptmap;
 
   const boost::shared_ptr<QtConceptMap> m_widget;
 
-  void OnRatingComplexityChanged(const Concept& concept);
-  void OnRatingConcretenessChanged(const Concept& concept);
-  void OnRatingSpecificityChanged(const Concept& concept);
+//  void OnRatingComplexityChanged(const Concept& concept);
+//  void OnRatingConcretenessChanged(const Concept& concept);
+//  void OnRatingSpecificityChanged(const Concept& concept);
 };
 
 } //~namespace cmap

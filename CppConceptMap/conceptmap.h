@@ -29,31 +29,11 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "install_edge_is_selected.h"
 #include "conceptmapnode.h"
 #include "conceptmapedge.h"
-
+#include "conceptmapgraphtypes.h"
 namespace ribi {
 namespace cmap {
 
-using ConceptMap = boost::adjacency_list
-<
-  boost::vecS,
-  boost::vecS,
-  boost::directedS,
-  boost::property<
-    boost::vertex_custom_type_t, Node,
-    boost::property<
-      boost::vertex_is_selected_t, bool
-    >
-  >,
-  boost::property<
-    boost::edge_custom_type_t, Edge,
-    boost::property<
-      boost::edge_is_selected_t, bool
-    >
-  >
->;
-using VertexDescriptor = boost::graph_traits<ConceptMap>::vertex_descriptor;
-static_assert(sizeof(VertexDescriptor) == sizeof(VertexDescriptor&),"On university computer");
-using EdgeDescriptor = boost::graph_traits<ConceptMap>::edge_descriptor;
+//Concept map definition is in 'conceptmapgraphtypes.h'
 
 int CountCenterNodes(const ConceptMap& c) noexcept;
 ConceptMap CreateDirectNeighbourConceptMap(const VertexDescriptor vd, const ConceptMap& c);
@@ -81,6 +61,8 @@ std::vector<Node> GetSortedNodes(const ConceptMap& c) noexcept;
 bool HasCenterNode(const ConceptMap& c) noexcept;
 ConceptMap LoadFromFile(const std::string& dot_filename);
 void SaveToFile(const ConceptMap& g, const std::string& dot_filename);
+void SaveToImage(const ConceptMap& g, const std::string& png_filename);
+void SaveSummaryToImage(const ConceptMap& g, const std::string& png_filename);
 void SaveSummaryToFile(const ConceptMap& g, const std::string& dot_filename);
 void SelectRandomNode(ConceptMap& conceptmap, std::mt19937& rng_engine) noexcept;
 std::string ToXml(const ConceptMap& conceptmap) noexcept;

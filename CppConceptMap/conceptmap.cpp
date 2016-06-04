@@ -31,6 +31,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmapconcept.h"
 #include "conceptmapexamples.h"
 #include "conceptmapexample.h"
+#include "convert_dot_to_svg.h"
+#include "convert_svg_to_png.h"
 #include "fileio.h"
 #include "trace.h"
 #include "xml.h"
@@ -44,6 +46,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "graphviz_decode.h"
 #include "create_all_direct_neighbour_custom_and_selectable_edges_and_vertices_subgraphs.h"
 #include "save_custom_and_selectable_edges_and_vertices_graph_to_dot.h"
+#include "load_undirected_custom_and_selectable_edges_and_vertices_graph_from_dot.h"
 #include "load_directed_custom_and_selectable_edges_and_vertices_graph_from_dot.h"
 #include "find_first_custom_edge_with_my_edge.h"
 #include "find_first_custom_vertex_with_my_vertex.h"
@@ -259,7 +262,7 @@ bool ribi::cmap::HasCenterNode(const ConceptMap& c) noexcept
 
 ribi::cmap::ConceptMap ribi::cmap::LoadFromFile(const std::string& dot_filename)
 {
-  auto g = load_directed_custom_and_selectable_edges_and_vertices_graph_from_dot<
+  auto g = load_undirected_custom_and_selectable_edges_and_vertices_graph_from_dot<
       decltype(ConceptMap())
     >(dot_filename)
   ;
@@ -270,6 +273,28 @@ ribi::cmap::ConceptMap ribi::cmap::LoadFromFile(const std::string& dot_filename)
 void ribi::cmap::SaveToFile(const ConceptMap& g, const std::string& dot_filename)
 {
   save_custom_and_selectable_edges_and_vertices_graph_to_dot(g, dot_filename);
+}
+
+void ribi::cmap::SaveToImage(const ConceptMap& g, const std::string& png_filename)
+{
+  const std::string dot_filename{"SaveToImage.dot"};
+  const std::string svg_filename{"SaveToImage.svg"};
+  SaveToFile(g, dot_filename);
+  convert_dot_to_svg(dot_filename, svg_filename);
+  convert_svg_to_png(svg_filename, png_filename);
+  ribi::FileIo().DeleteFile(dot_filename);
+  ribi::FileIo().DeleteFile(svg_filename);
+}
+
+void ribi::cmap::SaveSummaryToImage(const ConceptMap& g, const std::string& png_filename)
+{
+  const std::string dot_filename{"SaveToImage.dot"};
+  const std::string svg_filename{"SaveToImage.svg"};
+  SaveSummaryToFile(g, dot_filename);
+  convert_dot_to_svg(dot_filename, svg_filename);
+  convert_svg_to_png(svg_filename, png_filename);
+  ribi::FileIo().DeleteFile(dot_filename);
+  ribi::FileIo().DeleteFile(svg_filename);
 }
 
 void ribi::cmap::SaveSummaryToFile(const ConceptMap& g, const std::string& dot_filename)

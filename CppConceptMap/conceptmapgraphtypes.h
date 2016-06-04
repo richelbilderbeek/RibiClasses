@@ -13,11 +13,11 @@
 namespace ribi {
 namespace cmap {
 
-using Graph = boost::adjacency_list
+using ConceptMap = boost::adjacency_list
 <
   boost::vecS,
   boost::vecS,
-  boost::directedS,
+  boost::undirectedS,
   boost::property<
     boost::vertex_custom_type_t, Node,
     boost::property<
@@ -31,10 +31,14 @@ using Graph = boost::adjacency_list
     >
   >
 >;
-using VertexDescriptor = boost::graph_traits<Graph>::vertex_descriptor;
-using EdgeDescriptor = boost::graph_traits<Graph>::edge_descriptor;
+using Graph = ConceptMap;
+using VertexDescriptor = boost::graph_traits<ConceptMap>::vertex_descriptor;
+static_assert(sizeof(VertexDescriptor) == sizeof(VertexDescriptor&),"On university computer");
+using EdgeDescriptor = boost::graph_traits<ConceptMap>::edge_descriptor;
 
 } //~namespace cmap
 } //~namespace ribi
+
+
 
 #endif // CONCEPTMAPGRAPHTYPE_H
