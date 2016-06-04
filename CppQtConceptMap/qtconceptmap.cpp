@@ -44,6 +44,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "container.h"
 #include "conceptmapconceptfactory.h"
 #include "conceptmapconcept.h"
+#include "create_direct_neighbour_custom_and_selectable_edges_and_vertices_subgraph.h"
 #include "get_my_custom_vertex.h"
 #include "set_my_custom_vertex.h"
 #include "conceptmapfactory.h"
@@ -54,6 +55,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmaphelper.h"
 #include "conceptmapnodefactory.h"
 #include "conceptmapnode.h"
+#include "qtconceptmaprateconceptdialognewname.h"
 #include "qtconceptmapcommanddeleteselected.h"
 #include "qtarrowitem.h"
 #include "qtconceptmapdisplaystrategy.h"
@@ -115,6 +117,7 @@ ribi::cmap::QtConceptMap::QtConceptMap(QWidget* parent)
     m_conceptmap{},
     m_examples_item(new QtExamplesItem),
     m_highlighter{new QtItemHighlighter},
+    m_mode{Mode::edit},
     m_tools{new QtTool}
 {
   #ifndef NDEBUG
@@ -622,13 +625,21 @@ void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event) noexcept
 
   switch (event->key())
   {
+    case Qt::Key_F1:
     case Qt::Key_F2:
     {
       const auto items = scene()->selectedItems();
-      if (items.size() != 1) break;
+      if (items.size() != 1) {
+        qDebug() << "Must select one item, selected " << items.size() << " items";
+        break;
+      }
       if (QtNode * const qtnode = dynamic_cast<QtNode*>(items.front()))
       {
         OnNodeKeyDownPressed(qtnode, event->key());
+      }
+      else
+      {
+        qDebug() << "Must select one QtNode";
       }
     }
     break;
@@ -801,7 +812,7 @@ void ribi::cmap::QtConceptMap::onFocusItemChanged(
 void ribi::cmap::QtConceptMap::OnNodeKeyDownPressed(QtNode* const item, const int key)
 {
   assert(item);
-  if (key != Qt::Key_F2)
+  if (m_mode == Mode::edit && key == Qt::Key_F2)
   {
     QtScopedDisable<QtConceptMap> disable(this);
     QtConceptMapConceptEditDialog d(item->GetNode().GetConcept());
@@ -817,7 +828,18 @@ void ribi::cmap::QtConceptMap::OnNodeKeyDownPressed(QtNode* const item, const in
     item->GetNode().SetConcept(d.GetConcept());
     item->SetText( { d.GetConcept().GetName() } );
   }
+  else if (m_mode == Mode::rate && key == Qt::Key_F1)
+  {
+    ///The widget requested for a rating of the already supplied sub concept map,
+    ///with the focal concept item as the central node
+    QtScopedDisable<QtConceptMap> disable(this);
 
+    const auto vd = FindNode(item->GetNode(), m_conceptmap);
+    const auto subgraph = create_direct_neighbour_custom_and_selectable_edges_and_vertices_subgraph(vd, m_conceptmap);
+    ribi::cmap::QtRateConceptDialog d(subgraph); //Item may be changed
+    d.exec();
+    //Copy changes back
+  }
   this->show();
   this->setFocus();
   this->scene()->setFocusItem(item);

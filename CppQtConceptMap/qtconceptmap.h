@@ -39,6 +39,10 @@ class QtConceptMap : public ribi::QtKeyboardFriendlyGraphicsView
   Q_OBJECT
 
 public:
+  ///The mode of the concept map:
+  /// * edit: the concept map is edited by the student
+  /// * rate: the edited concept map is rated by the assessor
+  enum class Mode { edit, rate };
 
   explicit QtConceptMap(QWidget* parent = 0);
   QtConceptMap(const QtConceptMap&) = delete;
@@ -78,6 +82,8 @@ public:
   void RemoveExamplesItem() noexcept = delete;
 
   void SetConceptMap(const ConceptMap& conceptmap);
+
+  void SetMode(const Mode mode) noexcept { m_mode = mode; }
 
   void Undo() noexcept;
 
@@ -126,6 +132,8 @@ private:
 
   ///The item highlighter, used when creating a new relation
   QtItemHighlighter * const m_highlighter;
+
+  Mode m_mode;
 
   ///The item showing the tools
   QtTool * m_tools;

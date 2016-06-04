@@ -121,26 +121,6 @@ ribi::cmap::QtRateConceptDialog::~QtRateConceptDialog() noexcept
 void ribi::cmap::QtRateConceptDialog::keyPressEvent(QKeyEvent* e)
 {
   if (e->key()  == Qt::Key_Escape) { close(); return; }
-  if ( (e->modifiers() & Qt::ControlModifier)
-    && (e->modifiers() & Qt::ShiftModifier)
-    && e->key() == Qt::Key_T)
-  {
-    //Translate
-    this->setWindowTitle("Assess cluster");
-    ui->button_ok->setText("OK");
-    ui->button_tally_relevancies->setText("Evaluate illustrations");
-    ui->label_complexity->setText("Complexity");
-    ui->label_concreteness->setText("Concreteness");
-    ui->label_specificity->setText("Specificity");
-/*
-
-De relevantie van voorbeelden en relaties		Relevance of illustrations
-Voorbeelden/toelichting bij concept: Illustrations and relations of the cluster:
-
-*/
-    return;
-  }
-
   //QDialog::keyPressEvent(e);
 }
 
@@ -177,7 +157,7 @@ void ribi::cmap::QtRateConceptDialog::OnRatingSpecificityChanged(const ribi::cma
 
 void ribi::cmap::QtRateConceptDialog::on_button_tally_relevancies_clicked()
 {
- QtRateConceptTallyDialog d(m_conceptmap);
+  QtRateConceptTallyDialog d(m_conceptmap);
   d.exec(); //Keep this dialog visible, as of 2013-08-30
   ui->box_complexity->setCurrentIndex(d.GetSuggestedComplexity());
   ui->box_concreteness->setCurrentIndex(d.GetSuggestedConcreteness());
