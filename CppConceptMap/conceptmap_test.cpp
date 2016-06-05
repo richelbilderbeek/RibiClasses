@@ -106,7 +106,7 @@ BOOST_AUTO_TEST_CASE(ribi_concept_map_load_node)
   put(pmap, vd, n);
   const std::string d{ToDot(g)};
   const std::string dot{
-    "digraph G {\n"
+    "graph G {\n"
     "0[label=\"<node><concept><name>A</name><examples></examples><concept_is_complex>1</concept_is_complex><complexity>-1</complexity><concreteness>-1</concreteness><specificity>-1</specificity></concept><x>0</x><y>0</y><is_center_node>0</is_center_node></node>\", regular=\"0\"];\n"
     "}"
   };
@@ -162,7 +162,7 @@ BOOST_AUTO_TEST_CASE(ribi_concept_map_simple_dot_to_concept_map)
 {
   using namespace ribi::cmap;
   std::string s{
-    "digraph G {\n"
+    "graph G {\n"
     "0[label=\"<node><concept><name>A</name><examples></examples><concept_is_complex>1</concept_is_complex><complexity>-1</complexity><concreteness>-1</concreteness><specificity>-1</specificity></concept><x>0</x><y>0</y><is_center_node>0</is_center_node></node>\", regular=\"0\"];\n"
     "}"
   };
