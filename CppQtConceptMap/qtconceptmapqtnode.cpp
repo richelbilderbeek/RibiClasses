@@ -32,6 +32,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 
 #include "conceptmapconcept.h"
 #include "conceptmapexamples.h"
+#include "conceptmaphelper.h"
 #include "conceptmapnodefactory.h"
 #include "conceptmapnode.h"
 #include "container.h"
@@ -229,7 +230,7 @@ void ribi::cmap::QtNode::SetNode(const Node& node) noexcept
 {
   m_node = node;
   this->SetCenterPos(m_node.GetX(), m_node.GetY());
-  this->SetText( { node.GetConcept().GetName() } );
+  this->SetText(Wordwrap(node.GetConcept().GetName(), m_wordwrap_length));
 }
 
 std::string ribi::cmap::QtNode::ToStr() const noexcept

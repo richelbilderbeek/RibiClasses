@@ -3,5 +3,5 @@ SOURCES += \
     $$PWD/qtroundedrectitemdialog_test.cpp
 
 HEADERS += \
-    CppQtRoundedRectItem/qtroundedrectitem_test.h \
-    CppQtRoundedRectItem/qtroundedrectitemdialog_test.h
+    $$PWD/qtroundedrectitem_test.h \
+    $$PWD/qtroundedrectitemdialog_test.h

@@ -52,6 +52,8 @@ struct QtNode : public QtRoundedEditRectItem
   const Node& GetNode() const noexcept { return m_node; }
         Node& GetNode()       noexcept { return m_node; }
 
+  static int GetWordWrapLength() noexcept { return m_wordwrap_length; }
+
   void SetNode(const Node& node) noexcept;
 
   std::string ToStr() const noexcept;
@@ -80,6 +82,8 @@ private:
   Node m_node;
 
   bool m_show_bounding_rect;
+
+  static const int m_wordwrap_length{80};
 
   void OnPosChanged(const QtRoundedRectItem * const item) noexcept;
   void OnTextChanged(const QtRoundedRectItem * const item) noexcept;

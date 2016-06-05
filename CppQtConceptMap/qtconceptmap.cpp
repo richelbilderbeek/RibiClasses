@@ -823,7 +823,8 @@ void ribi::cmap::QtConceptMap::OnNodeKeyDownPressed(QtNode* const item, const in
     set_my_custom_vertex(node, vd, m_conceptmap);
     //Update the QtNode
     item->GetNode().SetConcept(d.GetConcept());
-    item->SetText( { d.GetConcept().GetName() } );
+    //Set the word-wrapped text
+    item->SetText(Wordwrap(d.GetConcept().GetName(), QtNode::GetWordWrapLength()));
   }
   else if (m_mode == Mode::rate && key == Qt::Key_F1)
   {
