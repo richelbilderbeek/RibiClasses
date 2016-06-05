@@ -630,16 +630,11 @@ void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event) noexcept
     {
       const auto items = scene()->selectedItems();
       if (items.size() != 1) {
-        qDebug() << "Must select one item, selected " << items.size() << " items";
         break;
       }
       if (QtNode * const qtnode = dynamic_cast<QtNode*>(items.front()))
       {
         OnNodeKeyDownPressed(qtnode, event->key());
-      }
-      else
-      {
-        qDebug() << "Must select one QtNode";
       }
     }
     break;
@@ -835,10 +830,6 @@ void ribi::cmap::QtConceptMap::OnNodeKeyDownPressed(QtNode* const item, const in
     QtScopedDisable<QtConceptMap> disable(this);
     const auto vd = FindNode(item->GetNode(), m_conceptmap);
     const auto subgraph = create_direct_neighbour_custom_and_selectable_edges_and_vertices_subgraph(vd, m_conceptmap);
-    SaveSummaryToImage(m_conceptmap, "test_concept_map.png");
-    SaveSummaryToImage(subgraph, "test_subgraph.png");
-    qDebug() << "graph nodes: " << boost::num_vertices(m_conceptmap) << ", subgraph nodes: " << boost::num_vertices(subgraph);
-    qDebug() << "graph edges: " << boost::num_edges(m_conceptmap) << ", subgraph edgs: " << boost::num_edges(subgraph);
     ribi::cmap::QtRateConceptDialog d(subgraph);
     d.exec();
     if (d.GetOkClicked())
