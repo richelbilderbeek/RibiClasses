@@ -810,6 +810,7 @@ void ribi::cmap::QtConceptMap::OnNodeKeyDownPressed(QtNode* const item, const in
   assert(item);
   if (m_mode == Mode::edit && key == Qt::Key_F2)
   {
+    //Edit concept
     QtScopedDisable<QtConceptMap> disable(this);
     QtConceptMapConceptEditDialog d(item->GetNode().GetConcept());
     d.exec();
@@ -826,8 +827,7 @@ void ribi::cmap::QtConceptMap::OnNodeKeyDownPressed(QtNode* const item, const in
   }
   else if (m_mode == Mode::rate && key == Qt::Key_F1)
   {
-    ///The widget requested for a rating of the already supplied sub concept map,
-    ///with the focal concept item as the central node
+    //Rate concept
     QtScopedDisable<QtConceptMap> disable(this);
     const auto vd = FindNode(item->GetNode(), m_conceptmap);
     const auto subgraph = create_direct_neighbour_custom_and_selectable_edges_and_vertices_subgraph(vd, m_conceptmap);
@@ -850,8 +850,8 @@ void ribi::cmap::QtConceptMap::OnNodeKeyDownPressed(QtNode* const item, const in
   }
   else if (m_mode == Mode::rate && key == Qt::Key_F2)
   {
-    ///The widget requested for a rating of the already supplied sub concept map,
-    ///with the focal concept item as the central node
+    //Rate examples
+    if (item->GetNode().GetConcept().GetExamples().Get().empty()) return;
     QtScopedDisable<QtConceptMap> disable(this);
     ribi::cmap::QtRateExamplesDialogNewName d(item->GetNode().GetConcept());
     d.exec();
