@@ -63,6 +63,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "qtconceptmapcommandcreatenewedge.h"
 #include "qtconceptmapcommandcreatenewnode.h"
 #include "qtconceptmapcommandselectrandomnode.h"
+#include "qtconceptmaprateexamplesdialognewname.h"
 #include "qtconceptmapcenternode.h"
 #include "qtconceptmapconcepteditdialog.h"
 #include "qtconceptmapqtedge.h"
@@ -847,6 +848,24 @@ void ribi::cmap::QtConceptMap::OnNodeKeyDownPressed(QtNode* const item, const in
       item->GetNode().SetConcept(node.GetConcept());
     }
   }
+  else if (m_mode == Mode::rate && key == Qt::Key_F2)
+  {
+    ///The widget requested for a rating of the already supplied sub concept map,
+    ///with the focal concept item as the central node
+    QtScopedDisable<QtConceptMap> disable(this);
+    ribi::cmap::QtRateExamplesDialogNewName d(item->GetNode().GetConcept());
+    d.exec();
+    //Find the original Node
+    const auto vd = FindNode(item->GetNode(), m_conceptmap);
+    //Update the node here
+    auto node = item->GetNode();
+    node.GetConcept().SetExamples(d.GetRatedExamples());
+    //Update the node in the concept map
+    set_my_custom_vertex(node, vd, m_conceptmap);
+    //Update the QtNode
+    item->GetNode().GetConcept().SetExamples(d.GetRatedExamples());
+  }
+
   this->show();
   this->setFocus();
   this->scene()->setFocusItem(item);
