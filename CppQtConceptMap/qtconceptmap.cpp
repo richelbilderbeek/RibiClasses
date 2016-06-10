@@ -717,9 +717,13 @@ void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event) noexcept
 
 void ribi::cmap::QtConceptMap::mouseDoubleClickEvent(QMouseEvent *event)
 {
+  const QPointF pos = mapToScene(event->pos());
+
+  //Do not create new nodes when double-clicking on an existing one
+  if (this->scene()->itemAt(pos, QTransform())) return;
+
   //Create new node at the mouse cursor its position
   try {
-    const QPointF pos = mapToScene(event->pos());
     this->DoCommand(
       new CommandCreateNewNode(
         m_conceptmap,
