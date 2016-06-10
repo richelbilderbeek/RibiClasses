@@ -83,7 +83,7 @@ public:
 
   void SetConceptMap(const ConceptMap& conceptmap);
 
-  void SetMode(const Mode mode) noexcept { m_mode = mode; }
+  void SetMode(const Mode mode) noexcept;
 
   void Undo() noexcept;
 

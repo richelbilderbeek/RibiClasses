@@ -847,6 +847,24 @@ void ribi::cmap::QtConceptMap::OnNodeKeyDownPressed(QtNode* const item, const in
       set_my_custom_vertex(node, vd, m_conceptmap);
       //Update the QtNode
       item->GetNode().SetConcept(node.GetConcept());
+      const int n_rated
+        = (node.GetConcept().GetRatingComplexity()   != -1 ? 1 : 0)
+        + (node.GetConcept().GetRatingConcreteness() != -1 ? 1 : 0)
+        + (node.GetConcept().GetRatingSpecificity()  != -1 ? 1 : 0);
+      switch (n_rated)
+      {
+        case 0:
+          item->setBrush(QtBrushFactory().CreateRedGradientBrush());
+          break;
+        case 1:
+        case 2:
+          item->setBrush(QtBrushFactory().CreateYellowGradientBrush());
+          break;
+        case 3:
+          item->setBrush(QtBrushFactory().CreateGreenGradientBrush());
+          break;
+        default: assert(!"Should not get here");
+      }
     }
   }
   else if (m_mode == Mode::rate && key == Qt::Key_F2)
@@ -1102,6 +1120,44 @@ void ribi::cmap::QtConceptMap::SetConceptMap(const ConceptMap& conceptmap)
   assert(GetConceptMap() == conceptmap);
 }
 
+void ribi::cmap::QtConceptMap::SetMode(const ribi::cmap::QtConceptMap::Mode mode) noexcept
+{
+  if (m_mode == mode) return;
+  m_mode = mode;
+
+  //Set the colors of the qtnodes dependent on the rating progress
+  if (m_mode == Mode::rate)
+  {
+    auto qtnodes = GetQtNodes(GetScene());
+    for (auto qtnode: qtnodes)
+    {
+      const auto node = qtnode->GetNode();
+      if (node.IsCenterNode())
+      {
+        qtnode->setBrush(QtBrushFactory().CreateGoldGradientBrush());
+        continue;
+      }
+      const int n_rated
+        = (node.GetConcept().GetRatingComplexity()   != -1 ? 1 : 0)
+        + (node.GetConcept().GetRatingConcreteness() != -1 ? 1 : 0)
+        + (node.GetConcept().GetRatingSpecificity()  != -1 ? 1 : 0);
+      switch (n_rated)
+      {
+        case 0:
+          qtnode->setBrush(QtBrushFactory().CreateRedGradientBrush());
+          break;
+        case 1:
+        case 2:
+          qtnode->setBrush(QtBrushFactory().CreateYellowGradientBrush());
+          break;
+        case 3:
+          qtnode->setBrush(QtBrushFactory().CreateGreenGradientBrush());
+          break;
+        default: assert(!"Should not get here");
+      }
+    }
+  }
+}
 void ribi::cmap::QtConceptMap::Undo() noexcept
 {
   assert(m_undo.count() > 0);

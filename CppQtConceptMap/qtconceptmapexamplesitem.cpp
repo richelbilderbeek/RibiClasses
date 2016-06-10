@@ -57,7 +57,7 @@ ribi::cmap::QtExamplesItem::QtExamplesItem(
     m_qtnode{nullptr}
 {
   this->setPen(QPen(QColor(255,0,0)));
-  this->setBrush(QtBrushFactory::CreateWhiteGradientBrush());
+  this->setBrush(QtBrushFactory().CreateWhiteGradientBrush());
   this->setFlags(0);
   this->setZValue(2.0);
   this->setVisible(false);

@@ -34,29 +34,31 @@ namespace cmap {
 ///Class for holding some QBrush instances
 struct QtBrushFactory
 {
+  QtBrushFactory() {}
+
   ///Obtain a brush its name
-  static std::string BrushToStr(const QBrush& brush);
+  std::string BrushToStr(const QBrush& brush);
 
   ///Blue brush, to be used in all derived classes for uniform coloring
-  static QBrush CreateBlueGradientBrush() noexcept;
+  QBrush CreateBlueGradientBrush() noexcept;
 
   ///Gold brush, to be used in all derived classes for uniform coloring
-  static QBrush CreateGoldGradientBrush() noexcept;
+  QBrush CreateGoldGradientBrush() noexcept;
 
   ///Gray brush, to be used in all derived classes for uniform coloring
-  static QBrush CreateGrayGradientBrush() noexcept;
+  QBrush CreateGrayGradientBrush() noexcept;
 
   ///Green brush, to be used in all derived classes for uniform coloring
-  static QBrush CreateGreenGradientBrush() noexcept;
+  QBrush CreateGreenGradientBrush() noexcept;
 
   ///Red brush, to be used in all derived classes for uniform coloring
-  static QBrush CreateRedGradientBrush() noexcept;
+  QBrush CreateRedGradientBrush() noexcept;
 
   ///Yellow brush, to be used in all derived classes for uniform coloring
-  static QBrush CreateYellowGradientBrush() noexcept;
+  QBrush CreateYellowGradientBrush() noexcept;
 
   ///Near-white brush, to be used in all derived classes for uniform coloring
-  static QBrush CreateWhiteGradientBrush() noexcept;
+  QBrush CreateWhiteGradientBrush() noexcept;
 
   private:
   ///The bottom coordinat of a gradient
