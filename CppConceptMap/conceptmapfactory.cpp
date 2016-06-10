@@ -27,6 +27,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include <boost/lexical_cast.hpp>
 
+#include "add_custom_and_selectable_edge_between_vertices.h"
 #include "conceptmapcenternodefactory.h"
 #include "container.h"
 #include "conceptmapconcept.h"
@@ -34,6 +35,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmap.h"
 #include "conceptmaphelper.h"
 #include "conceptmapexamplefactory.h"
+#include "add_custom_and_selectable_vertex.h"
 #include "conceptmapedge.h"
 #include "conceptmapedgefactory.h"
 #include "conceptmapnode.h"
@@ -50,27 +52,29 @@ ribi::cmap::ConceptMapFactory::ConceptMapFactory() noexcept
 
 }
 
-ribi::cmap::VertexDescriptor ribi::cmap::ConceptMapFactory::AddVertex(
+ribi::cmap::VertexDescriptor ribi::cmap::AddVertex(
   const Node& node, Graph& g
-) const noexcept
+) noexcept
 {
-  const auto vd = boost::add_vertex(g);
-  const auto pmap = get(boost::vertex_custom_type, g);
-  put(pmap, vd, node);
-  return vd;
+  return add_custom_and_selectable_vertex(node, false, g);
+  //const auto vd = boost::add_vertex(g);
+  //const auto pmap = get(boost::vertex_custom_type, g);
+  //put(pmap, vd, node);
+  //return vd;
 }
 
-void ribi::cmap::ConceptMapFactory::AddEdge(
+void ribi::cmap::AddEdge(
   const Edge& edge,
   const VertexDescriptor& vd_from,
   const VertexDescriptor& vd_to,
   Graph& g
-) const noexcept
+) noexcept
 {
-  const auto ed = boost::add_edge(vd_from, vd_to, g);
-  assert(ed.second);
-  const auto pmap = get(boost::edge_custom_type, g);
-  put(pmap, ed.first, edge);
+  add_custom_and_selectable_edge_between_vertices(edge, false, vd_from, vd_to, g);
+  //const auto ed = boost::add_edge(vd_from, vd_to, g);
+  //assert(ed.second);
+  //const auto pmap = get(boost::edge_custom_type, g);
+  //put(pmap, ed.first, edge);
 }
 
 std::vector<ribi::cmap::Graph> ribi::cmap::ConceptMapFactory::GetNastyTests() const noexcept

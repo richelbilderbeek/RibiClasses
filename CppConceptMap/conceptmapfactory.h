@@ -56,15 +56,16 @@ public:
 
   private:
 
-  VertexDescriptor AddVertex(const Node& node, Graph& g) const noexcept;
-
-  void AddEdge(
-    const Edge& edge,
-    const VertexDescriptor& vd_from,
-    const VertexDescriptor& vd_to,
-    Graph& g
-  ) const noexcept;
 };
+
+void AddEdge(
+  const Edge& edge,
+  const VertexDescriptor& vd_from,
+  const VertexDescriptor& vd_to,
+  Graph& g
+) noexcept;
+
+VertexDescriptor AddVertex(const Node& node, Graph& g) noexcept;
 
 } //~namespace cmap
 } //~namespace ribi

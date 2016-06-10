@@ -25,9 +25,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "ribi_random.h"
 
 #include <cassert>
-
-#include <boost/random.hpp>
-
+#include <random>
 
 #include "trace.h"
 
