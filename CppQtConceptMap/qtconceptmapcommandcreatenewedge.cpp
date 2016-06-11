@@ -73,24 +73,33 @@ ribi::cmap::CommandCreateNewEdgeBetweenTwoSelectedNodes::CommandCreateNewEdgeBet
   QtNode * const qtto = FindQtNode(to.GetId(), scene);
   const auto edge_map = get(boost::edge_custom_type, m_after);
   const Edge edge = get(edge_map, ed);
-  m_qtedge = new QtEdge(edge, qtfrom,qtto);
+  m_qtedge = new QtEdge(edge, qtfrom, qtto);
+  //m_qtedge has added a QtNode itself. Store it
+  m_qtnode = m_qtedge->GetQtNode();
 
 }
 
 void ribi::cmap::CommandCreateNewEdgeBetweenTwoSelectedNodes::redo()
 {
   m_conceptmap = m_after;
+  m_qtedge->setFocus();
   m_qtedge->SetSelected(true);
   m_qtedge->GetFrom()->SetSelected(false);
   m_qtedge->GetTo()->SetSelected(false);
   m_scene->addItem(m_qtedge);
+  m_scene->addItem(m_qtnode);
+  m_qtnode->setFocus();
+  m_qtnode->SetSelected(true);
 }
 
 void ribi::cmap::CommandCreateNewEdgeBetweenTwoSelectedNodes::undo()
 {
   m_conceptmap = m_before;
   m_qtedge->SetSelected(false);
-  m_qtedge->GetFrom()->SetSelected(true);
+  m_qtnode->SetSelected(false);
+  m_qtedge->GetFrom()->SetSelected(false);
   m_qtedge->GetTo()->SetSelected(true);
+  m_qtedge->GetTo()->setFocus();
   m_scene->removeItem(m_qtedge);
+  m_scene->removeItem(m_qtnode);
 }

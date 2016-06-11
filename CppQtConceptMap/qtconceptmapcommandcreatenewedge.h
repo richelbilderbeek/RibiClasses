@@ -32,6 +32,7 @@ namespace ribi {
 namespace cmap {
 
 struct QtEdge;
+struct QtNode;
 struct QtTool;
 
 class CommandCreateNewEdgeBetweenTwoSelectedNodes final : public Command
@@ -57,6 +58,7 @@ class CommandCreateNewEdgeBetweenTwoSelectedNodes final : public Command
   QGraphicsScene * const m_scene;
   QtTool * const m_tool_item;
   QtEdge * m_qtedge; //The QtEdge being added or removed
+  QtNode * m_qtnode; //The QtNode being at the center of m_qtedge
 };
 
 } //~namespace cmap
