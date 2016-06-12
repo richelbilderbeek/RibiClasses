@@ -140,6 +140,8 @@ ribi::cmap::QtConceptMap::QtConceptMap(QWidget* parent)
   //Add QtTool
   assert(!m_tools->scene());
   this->scene()->addItem(m_tools);
+  //Responds when selectionChanged is triggered
+
 
   assert(Collect<QtNode>(scene()).empty());
 
@@ -169,14 +171,9 @@ ribi::cmap::QtConceptMap::QtConceptMap(QWidget* parent)
 ribi::cmap::QtConceptMap::~QtConceptMap()
 {
   delete m_examples_item;
-  m_examples_item = nullptr;
-
   delete m_tools;
-  m_tools = nullptr;
   if (m_highlighter) m_highlighter->SetItem(nullptr); //Do this before destroying items
   delete m_arrow;
-  m_arrow = nullptr;
-
 }
 
 void ribi::cmap::QtConceptMap::HideExamplesItem() noexcept
@@ -187,7 +184,7 @@ void ribi::cmap::QtConceptMap::HideExamplesItem() noexcept
 void ribi::cmap::QtConceptMap::RemoveConceptMap()
 {
   assert(m_arrow);
-  m_arrow->hide();
+  m_arrow->hide();  
   assert(m_examples_item);
   m_examples_item->hide();
   if (m_highlighter) m_highlighter->SetItem(nullptr); //Do this before destroying items
@@ -756,6 +753,7 @@ void ribi::cmap::QtConceptMap::mouseMoveEvent(QMouseEvent * event)
     assert(m_highlighter);
     m_highlighter->SetItem(nullptr); //item_below is allowed to be nullptr
   }
+  m_arrow->update();
   QtKeyboardFriendlyGraphicsView::mouseMoveEvent(event);
 }
 
@@ -781,12 +779,12 @@ void ribi::cmap::QtConceptMap::mousePressEvent(QMouseEvent *event)
         );
         DoCommand(command);
         UpdateConceptMap();
+        m_arrow->hide();
+        assert(m_highlighter);
+        m_highlighter->SetItem(nullptr);
       }
       catch (std::logic_error&) { return; }
     }
-    m_arrow->hide();
-    assert(m_highlighter);
-    m_highlighter->SetItem(nullptr);
   }
 
   QtKeyboardFriendlyGraphicsView::mousePressEvent(event);
@@ -899,6 +897,13 @@ void ribi::cmap::QtConceptMap::OnNodeKeyDownPressed(QtNode* const item, const in
 
 void ribi::cmap::QtConceptMap::onSelectionChanged()
 {
+  if (m_tools->isSelected())
+  {
+    assert(m_tools->GetBuddyItem());
+    m_arrow->Start(m_tools->GetBuddyItem(), mapToScene(QCursor::pos()));
+    m_arrow->setVisible(true);
+  }
+
   Graph& g = m_conceptmap;
 
   //Selectness of vertices
@@ -928,6 +933,7 @@ void ribi::cmap::QtConceptMap::onSelectionChanged()
 
 void ribi::cmap::QtConceptMap::OnToolsClicked()
 {
+  assert(!"Not used?");
   const QPointF cursor_pos_approx(
     m_tools->GetBuddyItem()->GetCenterX(),
     m_tools->GetBuddyItem()->GetCenterY() - 32.0
@@ -938,137 +944,6 @@ void ribi::cmap::QtConceptMap::OnToolsClicked()
   );
   m_arrow->update();
   this->scene()->update();
-}
-
-
-
-void ribi::cmap::QtConceptMap::RepositionItems()
-{
-  assert(!"Not used");
-
-  {
-    //The ray of the upcoming circle of nodes, is the larger of
-    //(1) half of the diagonal of the focal question (e.g. for short concepts)
-    //(2) calculated from the circumference by adding the nodes' length
-    const std::vector<QtNode *> qtnode_concepts_unsorted = Collect<QtNode>(scene());
-
-    if (qtnode_concepts_unsorted.empty()) return;
-
-    const std::vector<QtNode *> qtnode_concepts = Sort(qtnode_concepts_unsorted);
-    assert(!qtnode_concepts.empty());
-    assert(!qtnode_concepts.empty());
-    assert(qtnode_concepts[0]);
-    const QtNode * const qtcenter_node
-      = dynamic_cast<const QtNode *>(qtnode_concepts[0]);
-    assert(qtcenter_node);
-    //assert(qtcenter_node->GetOuterRect(). GetOuterX() > -0.5);
-    //assert(qtcenter_node->GetOuterX() <  0.5);
-    //assert(qtcenter_node->GetOuterY() > -0.5);
-    //assert(qtcenter_node->GetOuterY() <  0.5);
-
-    const double r1
-      = 0.5 * ribi::cmap::GetDistance(
-        qtcenter_node->boundingRect().width(),
-        qtcenter_node->boundingRect().height()
-      );
-    const double r3 = 50.0;
-    const double r = std::max(r1,r3);
-    assert(r > 10.0);
-    const int n_nodes = qtnode_concepts.size();
-    for (int i = 1; i!=n_nodes; ++i) //+1 to skip center node
-    {
-      //Added +0 (instead of -1) to n_nodes, to prevent, in a setup with two concepts and
-      //one edge, the edge to overlap the central question
-      const double pi = boost::math::constants::pi<double>();
-      const double angle
-        = 2.0 * pi * boost::numeric_cast<double>(i)
-        / boost::numeric_cast<double>(n_nodes - 1);
-      const double x =  std::cos(angle) * r;
-      const double y = -std::sin(angle) * r;
-      QtNode * const qtnode = qtnode_concepts[i];
-      qtnode->GetNode().SetPos(x,y);
-      //qtnode->setPos(x,y);
-      #ifndef NDEBUG
-      //const double epsilon = 0.000001;
-      #endif
-      //assert(std::abs(x - qtnode->GetOuterX()) < epsilon);
-      //assert(std::abs(x - qtnode->GetNode().GetX()) < epsilon);
-      //assert(std::abs(y - qtnode->GetOuterY()) < epsilon);
-      //assert(std::abs(y - qtnode->GetNode().GetY()) < epsilon);
-
-    }
-  }
-
-  {
-    //Put the edge concepts in the middle of the nodes
-    const std::vector<QtEdge *> qtedge_concepts = Collect<QtEdge>(scene());
-    std::for_each(qtedge_concepts.begin(), qtedge_concepts.end(),
-      [](QtEdge * const qtedge)
-      {
-        const QPointF p((qtedge->GetFrom()->GetCenterPos() + qtedge->GetTo()->GetCenterPos()) / 2.0);
-        const double new_x = p.x();
-        const double new_y = p.y();
-        qtedge->GetEdge().GetNode().SetX(new_x);
-        qtedge->GetEdge().GetNode().SetY(new_y);
-      }
-    );
-  }
-
-  //Put the nodes around the focal question in their improved position
-  //If there is no focal node, the non-focal nodes are put around an empty spot
-  for (int i=0; i!=10; ++i) //NOTE: maybe replace by while (1)
-  {
-    bool done = true;
-    const std::vector<QtNode *> qtnodes = Sort(Collect<QtNode>(scene()));
-    assert(!qtnodes.empty());
-    assert(qtnodes[0]);
-    //assert(IsCenterNode(qtnodes[0]));
-    const std::vector<QtEdge* > qtedges = Collect<QtEdge>(scene());
-
-    //First node
-    //const bool is_first_node_center_node {
-    //  boost::dynamic_pointer_cast<QtCenterNode>(qtnodes[0])
-    //};
-    const QtNode * const first_node { qtnodes[0] };
-    assert(first_node);
-
-    std::vector<QGraphicsItem*> nodes_and_edges;
-    std::copy(qtnodes.begin(),qtnodes.end(),std::back_inserter(nodes_and_edges));
-    std::copy(qtedges.begin(),qtedges.end(),std::back_inserter(nodes_and_edges));
-
-    //Move the nodes away from the center
-    std::for_each(
-      nodes_and_edges.begin() + 1, //+1 to skip the center node at [0]
-      nodes_and_edges.end(),
-      [first_node,&done](QGraphicsItem* const node_or_edge)
-      {
-        if (first_node->boundingRect().intersects(
-          node_or_edge->boundingRect().translated(-node_or_edge->pos())))
-        {
-          const double cur_x = node_or_edge->x();
-          const double cur_y = node_or_edge->y();
-          const double new_x = cur_x + (node_or_edge->x() < first_node->x() ? -1.0 : 1.0);
-          const double new_y = cur_y + (node_or_edge->y() < first_node->y() ? -1.0 : 1.0);
-          if (QtNode * const qtnode = dynamic_cast<QtNode *>(node_or_edge))
-          {
-            qtnode->GetNode().SetX(new_x);
-            qtnode->GetNode().SetY(new_y);
-          }
-          else
-          {
-            QtEdge * const qtedge = dynamic_cast<QtEdge *>(node_or_edge);
-            assert(qtedge && "Every item is either a Qt node or Qt edge");
-            qtedge->GetEdge().GetNode().SetX(new_x);
-            qtedge->GetEdge().GetNode().SetY(new_y);
-            //node->setPos(QPointF(new_x,new_y));
-          }
-          done = false;
-        }
-      }
-    );
-
-    if (done) break;
-  }
 }
 
 void ribi::cmap::QtConceptMap::SetConceptMap(const ConceptMap& conceptmap)

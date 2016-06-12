@@ -112,31 +112,31 @@ protected:
   ///Check if this item is the center node
   static bool IsQtCenterNode(const QGraphicsItem* const item);
 
-  ///All items from a ConceptMap are put in at the center and need to be repositioned
-  void RepositionItems();
-
   ///Set the rectangle with text showing the examples
   void SetExamplesItem(QtExamplesItem * const item);
 
 private:
 
   ///The arrow used to create a new arrow
-  ///Is nullptr when not active
-  QtNewArrow * m_arrow;
+  ///Is hidden when not active
+  ///Must be a pointer, as it will be owned by QGraphicsScene
+  QtNewArrow * const m_arrow;
 
   ///The concept map to work on, the Model
   ConceptMap m_conceptmap;
 
   ///The item showing the examples
-  QtExamplesItem * m_examples_item;
+  ///Must be a pointer, as it will be owned by QGraphicsScene
+  QtExamplesItem * const m_examples_item;
 
   ///The item highlighter, used when creating a new relation
+  ///Must be a pointer, as it will be owned by QGraphicsScene
   QtItemHighlighter * const m_highlighter;
 
   Mode m_mode;
 
   ///The item showing the tools
-  QtTool * m_tools;
+  QtTool * const m_tools;
 
   QUndoStack m_undo;
 

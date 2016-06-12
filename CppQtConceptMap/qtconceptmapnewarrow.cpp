@@ -29,6 +29,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 
 #include <QFont>
 #include <QPainter>
+#include <QDebug>
 
 #include "geometry.h"
 #include "qtconceptmapqtnode.h"
@@ -63,16 +64,22 @@ void ribi::cmap::QtNewArrow::Start(
 )
 {
   assert(from);
+  m_from = from;
   this->SetTailPos(from->GetCenterX(), from->GetCenterY());
   this->SetHasTail(false);
   this->SetHeadPos(current_to.x(), current_to.y());
-  this->SetHasHead(false);
+  this->SetHasHead(true);
   this->show();
 }
 
 void ribi::cmap::QtNewArrow::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
-  if (!m_from) return;
+  if (!m_from)
+  {
+    //TODO: replace this by 'assert(m_from)'
+    qDebug() << "QtNewArrow::paint: needs m_from";
+    return;
+  }
   typedef boost::geometry::model::d2::point_xy<double> Point;
   typedef boost::geometry::model::linestring<Point> Line;
   typedef boost::geometry::model::box<Point> Rect;

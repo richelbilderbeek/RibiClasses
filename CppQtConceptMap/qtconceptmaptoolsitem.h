@@ -63,6 +63,7 @@ struct QtTool : public QGraphicsPixmapItem
   ///item cannot be const, as the user might want to modify it
   void SetBuddyItem(const QtNode * const item);
 
+
   ///Signalled when a tool is clicked
   //boost::signals2::signal<void ()> m_signal_clicked;
 
