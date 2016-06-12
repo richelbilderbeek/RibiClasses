@@ -146,7 +146,7 @@ private:
   ///Called when an Edge gets deleted from the ConceptMap
   void DeleteEdge(const Edge& edge);
 
-  ///Called when a Node gets deleted from the ConceptMap
+  ///Called when a Node gets deleted from theConceptMap
   //void DeleteNode(const Node& node);
 
 

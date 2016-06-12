@@ -193,116 +193,6 @@ void ribi::cmap::QtConceptMap::RemoveConceptMap()
   assert(!m_arrow->isVisible());
 }
 
-#ifdef NOT_NOW_20151230
-void ribi::cmap::QtConceptMap::DeleteEdge(const Edge& edge)
-{
-  //Already deleted
-  if (!GetQtEdge(edge)) { return; }
-
-  const auto qtedge = GetQtEdge(edge);
-
-  assert(qtedge->scene() == this->GetScene());
-  const auto qtfrom = qtedge->GetFrom();
-  const auto qtto = qtedge->GetFrom();
-  const auto from = qtfrom->GetNode();
-  const auto to = qtto->GetNode();
-
-  //Delete the QtNode
-  DeleteQtEdge(qtedge);
-
-  if (this->GetConceptMap().HasNode(from))
-  {
-    const_cast<QtNode*>(qtfrom)->SetSelected(true);
-    const_cast<QtNode*>(qtfrom)->setFocus();
-  }
-  else if (this->GetConceptMap().HasNode(to))
-  {
-    const_cast<QtNode*>(qtto)->SetSelected(true);
-    const_cast<QtNode*>(qtto)->setFocus();
-  }
-  else if (!this->GetQtNodes().empty())
-  {
-    this->GetQtNodes().front()->SetSelected(true);
-    this->GetQtNodes().front()->setFocus();
-  }
-  else
-  {
-    this->m_tools->hide();
-  }
-}
-
-void ribi::cmap::QtConceptMap::DeleteQtEdge(const QtEdge * const qtedge)
-{
-  assert(qtedge);
-  if (GetVerbosity()) { TRACE("Start of DeleteQtEdge"); }
-
-  if (GetVerbosity()) { TRACE("Does the ConceptMap still have the Edge?"); }
-  if (GetConceptMap().HasEdge(qtedge->GetEdge()))
-  {
-    if (GetVerbosity()) { TRACE("Yes, delete the Edge from the ConceptMap"); }
-    GetConceptMap().DeleteEdge(qtedge->GetEdge());
-    return;
-  }
-  else
-  {
-    if (GetVerbosity()) { TRACE("No, the Edge is already absent int the ConceptMap"); }
-  }
-
-  if (GetVerbosity()) { TRACE("Set QtEdge to be not selected"); }
-  const_cast<QtEdge*>(qtedge)->SetSelected(false); //Remove const instead of using const-correct std::find on GetQtNodes
-
-  if (GetVerbosity()) { TRACE("Is the QtEdge still present in a QScene?"); }
-  if (qtedge->scene())
-  {
-    if (GetVerbosity()) { TRACE("Yes, QtEdge is still present in a QScene"); }
-    assert(qtedge->scene() == GetScene());
-    if (GetVerbosity()) { TRACE("Remove QtEdge from QScene"); }
-    this->scene()->removeItem(const_cast<QtEdge*>(qtedge));
-
-    if (qtedge->GetQtNode()->scene())
-    {
-      if (GetVerbosity()) { TRACE("Remove QtEdge its QtNode from QScene"); }
-      this->scene()->removeItem(const_cast<QtEdge*>(qtedge)->GetQtNode().get());
-    }
-    if (qtedge->GetArrow()->scene())
-    {
-      if (GetVerbosity()) { TRACE("Remove QtEdge its QtQuadBezierArrow from QScene"); }
-      this->scene()->removeItem(const_cast<QtEdge*>(qtedge)->GetArrow().get());
-    }
-  }
-}
-
-void ribi::cmap::QtConceptMap::DeleteQtNode(const QtNode * const qtnode)
-{
-  assert(qtnode);
-  //Delete the edges connected to this node
-  {
-    const std::vector<QtEdge *> qtedges = GetQtEdges();
-    const std::size_t sz = qtedges.size();
-    for (std::size_t i=0; i!=sz; ++i)
-    {
-      QtEdge * const qtedge = qtedges[i];
-      assert(qtedge);
-      if (*qtedge->GetFrom() == *qtnode || *qtedge->GetTo() == *qtnode)
-      {
-        DeleteQtEdge(qtedge);
-      }
-    }
-  }
-
-  //Remove node from model
-  const_cast<QtNode*>(qtnode)->SetSelected(false); //Remove const instead of using const-correct std::find on GetQtNodes
-  GetConceptMap().DeleteNode(qtnode->GetNode());
-
-  //Remove node from view
-  if (qtnode->scene())
-  {
-    assert(qtnode->scene() == GetScene());
-    this->scene()->removeItem(const_cast<QtNode*>(qtnode));
-  }
-}
-#endif // NOT_NOW_20151230
-
 int ribi::cmap::CountQtEdges(const QGraphicsScene * const scene) noexcept
 {
   int cnt{0};
@@ -796,7 +686,7 @@ void ribi::cmap::QtConceptMap::onFocusItemChanged(
   QGraphicsItem * newFocus, QGraphicsItem */*oldFocus*/, Qt::FocusReason reason
 )
 {
-  if (const QtNode * const qtnode = dynamic_cast<const QtNode*>(newFocus)) {
+  if (QtNode * const qtnode = dynamic_cast<QtNode*>(newFocus)) {
     m_tools->SetBuddyItem(qtnode);
     onSelectionChanged();
   }

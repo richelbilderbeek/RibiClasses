@@ -56,16 +56,11 @@ struct QtTool : public QGraphicsPixmapItem
 
   ///Get the item the tools item floats above
   ///Return type cannot be const, as the user might want to modify it
-  const QtNode * GetBuddyItem() const;
-        QtNode * GetBuddyItem();
+  QtNode * GetBuddyItem() const { return m_item; }
 
   ///Set the position from the widget it floats above
   ///item cannot be const, as the user might want to modify it
-  void SetBuddyItem(const QtNode * const item);
-
-
-  ///Signalled when a tool is clicked
-  //boost::signals2::signal<void ()> m_signal_clicked;
+  void SetBuddyItem(QtNode * const item);
 
   protected:
   void hoverMoveEvent(QGraphicsSceneHoverEvent *event);
@@ -77,8 +72,7 @@ struct QtTool : public QGraphicsPixmapItem
   void setPos(qreal ax, qreal ay) { QGraphicsPixmapItem::setPos(ax,ay); }
 
   ///The item the tools item floats above
-  ///m_item cannot be const, as the user might want to modify it
-  const QtNode * m_item;
+  QtNode * m_item;
 
   void setVisible(bool visible) { QGraphicsPixmapItem::setVisible(visible); }
 };

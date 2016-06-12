@@ -74,12 +74,7 @@ void ribi::cmap::QtNewArrow::Start(
 
 void ribi::cmap::QtNewArrow::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
-  if (!m_from)
-  {
-    //TODO: replace this by 'assert(m_from)'
-    qDebug() << "QtNewArrow::paint: needs m_from";
-    return;
-  }
+  assert(m_from);
   typedef boost::geometry::model::d2::point_xy<double> Point;
   typedef boost::geometry::model::linestring<Point> Line;
   typedef boost::geometry::model::box<Point> Rect;

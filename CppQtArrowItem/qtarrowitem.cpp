@@ -159,7 +159,6 @@ void ribi::QtArrowItem::paint(QPainter* painter, const QStyleOptionGraphicsItem 
 
   //The angle from tail to head
   double angle{Geometry().GetAngleClockScreen(line().dx(),line().dy())};
-  if (line().dy() >= 0.0) angle = (1.0 * pi) + angle;
   const double sz{10.0}; //pixels
   if (m_tail)
   {
@@ -178,14 +177,18 @@ void ribi::QtArrowItem::paint(QPainter* painter, const QStyleOptionGraphicsItem 
   {
     const QPointF p0 = this->line().p2();
 
-    const QPointF p1
-      = p0 + QPointF(
-         std::sin(angle +  0.0 + (pi * 0.1)) * sz,
-        -std::cos(angle +  0.0 + (pi * 0.1)) * sz);
-    const QPointF p2
-      = p0 + QPointF(
-         std::sin(angle +  0.0 - (pi * 0.1)) * sz,
-        -std::cos(angle +  0.0 - (pi * 0.1)) * sz);
+    const QPointF p1{
+      p0 + QPointF(
+         std::sin(angle + pi + (pi * 0.1)) * sz,
+        -std::cos(angle + pi + (pi * 0.1)) * sz
+      )
+    };
+    const QPointF p2{
+      p0 + QPointF(
+         std::sin(angle + pi - (pi * 0.1)) * sz,
+        -std::cos(angle + pi - (pi * 0.1)) * sz
+      )
+    };
 
     painter->drawPolygon(QPolygonF() << p0 << p1 << p2);
   }

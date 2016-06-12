@@ -55,22 +55,6 @@ ribi::cmap::QtTool::QtTool()
   this->setZValue(3.0);
 }
 
-
-ribi::cmap::QtNode * ribi::cmap::QtTool::GetBuddyItem()
-{
-  //Calls the const version of this member function
-  //To avoid duplication in const and non-const member functions [1]
-  //[1] Scott Meyers. Effective C++ (3rd edition). ISBN: 0-321-33487-6.
-  //    Item 3, paragraph 'Avoid duplication in const and non-const member functions'
-  return const_cast<QtNode * >(const_cast<const QtTool *>(this)->GetBuddyItem());
-}
-
-const ribi::cmap::QtNode * ribi::cmap::QtTool::GetBuddyItem() const
-{
-  return m_item;
-}
-
-
 void ribi::cmap::QtTool::hoverMoveEvent(QGraphicsSceneHoverEvent *)
 {
   this->setCursor(QCursor(Qt::PointingHandCursor));
@@ -79,7 +63,6 @@ void ribi::cmap::QtTool::hoverMoveEvent(QGraphicsSceneHoverEvent *)
 void ribi::cmap::QtTool::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
   QGraphicsPixmapItem::mousePressEvent(event);
-  //m_signal_clicked();
 }
 
 void ribi::cmap::QtTool::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
@@ -89,21 +72,10 @@ void ribi::cmap::QtTool::paint(QPainter* painter, const QStyleOptionGraphicsItem
     m_item->GetCenterX(),
     m_item->GetCenterY() - (m_item->GetOuterHeight() / 2.0) - 16.0
   );
-
   QGraphicsPixmapItem::paint(painter,option,widget);
-
-  if (this->isSelected() || this->hasFocus())
-  {
-    QPen pen;
-    pen.setColor(QColor(255,0,0));
-    painter->setPen(pen);
-    //No idea why these relative coordinats are best
-    //I'd expect no adjustment to look best...
-    painter->drawRect(this->boundingRect().adjusted(0.0,0.0,-2.0,-2.0));
-  }
 }
 
-void ribi::cmap::QtTool::SetBuddyItem(const QtNode * const item)
+void ribi::cmap::QtTool::SetBuddyItem(QtNode * const item)
 {
   if (item != m_item)
   {
