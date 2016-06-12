@@ -58,6 +58,8 @@ ribi::cmap::QtEdgeDialog::QtEdgeDialog(
     m_qtnodedialog_to{new QtNodeDialog}
 {
   ui->setupUi(this);
+  setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint); //Remove help
+
   {
     assert(ui->groupBox->layout());
     const auto my_layout = ui->groupBox->layout();

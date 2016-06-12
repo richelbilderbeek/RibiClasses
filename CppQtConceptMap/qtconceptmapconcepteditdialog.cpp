@@ -164,8 +164,8 @@ void ribi::cmap::QtConceptMapConceptEditDialog::on_button_ok_clicked()
   for (int i=0; i!=n_items; ++i)
   {
     const QListWidgetItem * const item = ui->list_examples->item(i);
-    const QtConceptMapListWidgetItem * const pvdb_item = dynamic_cast<const QtConceptMapListWidgetItem *>(item);
-    const Competency competency = pvdb_item ? pvdb_item->m_competency : Competency::uninitialized;
+    const QtConceptMapListWidgetItem * const braw_item = dynamic_cast<const QtConceptMapListWidgetItem *>(item);
+    const Competency competency = braw_item ? braw_item->m_competency : Competency::uninitialized;
     Example p(
       item->text().toStdString(),
       competency
@@ -193,8 +193,8 @@ const ribi::cmap::Concept ribi::cmap::QtConceptMapConceptEditDialog::WriteToConc
   for (int i=0; i!=n_items; ++i)
   {
     const QListWidgetItem * const item = ui->list_examples->item(i);
-    const QtConceptMapListWidgetItem * const pvdb_item = dynamic_cast<const QtConceptMapListWidgetItem *>(item);
-    const Competency competency = pvdb_item ? pvdb_item->m_competency : cmap::Competency::uninitialized;
+    const QtConceptMapListWidgetItem * const braw_item = dynamic_cast<const QtConceptMapListWidgetItem *>(item);
+    const Competency competency = braw_item ? braw_item->m_competency : cmap::Competency::uninitialized;
     boost::shared_ptr<Example> p(
       cmap::ExampleFactory().Create(
         item->text().toStdString(),
