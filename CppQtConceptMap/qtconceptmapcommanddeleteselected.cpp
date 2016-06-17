@@ -146,6 +146,7 @@ ribi::cmap::CommandDeleteSelected::CommandDeleteSelected(
       if (qtedge->isSelected())
       {
         m_qtedges_removed.emplace_back(qtedge);
+        m_qtnodes_removed.emplace_back(qtedge->GetQtNode()); //Also the QtNodes at the center of a QtEdge
         continue;
       }
       //Is connected to a deleted QtNode
@@ -160,6 +161,7 @@ ribi::cmap::CommandDeleteSelected::CommandDeleteSelected(
       if (j != std::end(m_qtnodes_removed))
       {
         m_qtedges_removed.emplace_back(qtedge);
+        m_qtnodes_removed.emplace_back(qtedge->GetQtNode()); //Also the QtNodes at the center of a QtEdge
       }
     }
   }
