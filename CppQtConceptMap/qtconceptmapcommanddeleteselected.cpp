@@ -189,6 +189,7 @@ void ribi::cmap::CommandDeleteSelected::undo()
   }
   for (const auto qtedge: m_qtedges_removed) {
     m_scene->addItem(qtedge);
+    qtedge->setZValue(-1.0);
   }
   for (auto item: m_selected_before) { item->setSelected(true); }
 
