@@ -65,7 +65,7 @@ std::vector<std::string> ribi::QtLabeledQuadBezierArrowItem::GetVersionHistory()
 
 void ribi::QtLabeledQuadBezierArrowItem::keyPressEvent(QKeyEvent *event) noexcept
 {
-  QtRoundedEditRectItem::keyPressEvent(event);
+  QtRoundedRectItem::keyPressEvent(event);
   m_arrow->keyPressEvent(event);
 }
 

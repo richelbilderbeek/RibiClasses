@@ -62,29 +62,6 @@ ribi::QtRoundedEditRectItem::QtRoundedEditRectItem(
     | QGraphicsItem::ItemIsSelectable
   );
 
-//  this->m_signal_contour_pen_changed.connect(
-//    boost::bind(&ribi::QtRoundedEditRectItem::OnBaseChanged,this,boost::lambda::_1)
-//  );
-//  this->m_signal_focus_pen_changed.connect(
-//    boost::bind(&ribi::QtRoundedEditRectItem::OnBaseChanged,this,boost::lambda::_1)
-//  );
-//  this->m_signal_pos_changed.connect(
-//    boost::bind(&ribi::QtRoundedEditRectItem::OnBaseChanged,this,boost::lambda::_1)
-//  );
-//  this->m_signal_radius_x_changed.connect(
-//    boost::bind(&ribi::QtRoundedEditRectItem::OnBaseChanged,this,boost::lambda::_1)
-//  );
-//  this->m_signal_radius_y_changed.connect(
-//    boost::bind(&ribi::QtRoundedEditRectItem::OnBaseChanged,this,boost::lambda::_1)
-//  );
-//  this->m_signal_width_changed.connect(
-//    boost::bind(&ribi::QtRoundedEditRectItem::OnBaseChanged,this,boost::lambda::_1)
-//  );
-//  this->m_signal_height_changed.connect(
-//    boost::bind(&ribi::QtRoundedEditRectItem::OnBaseChanged,this,boost::lambda::_1)
-//  );
-
-
   ///Obtain a white background
   this->setBrush(QBrush(QColor(255,255,255)));
 
@@ -214,22 +191,6 @@ std::vector<std::string> ribi::QtRoundedEditRectItem::GetVersionHistory() noexce
   };
 }
 
-void ribi::QtRoundedEditRectItem::keyPressEvent(QKeyEvent* event) noexcept
-{
-  switch (event->key())
-  {
-    case Qt::Key_F2:
-    //m_signal_item_requests_edit(this);
-    break;
-  }
-  QtRoundedRectItem::keyPressEvent(event);
-}
-
-void ribi::QtRoundedEditRectItem::OnBaseChanged(QtRoundedRectItem * const) noexcept
-{
-  //m_signal_base_changed(this);
-}
-
 void ribi::QtRoundedEditRectItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) noexcept
 {
   //Draws the rounded rectangle
@@ -248,7 +209,6 @@ void ribi::QtRoundedEditRectItem::paint(QPainter* painter, const QStyleOptionGra
 
     // (1) a padded text rectangle at the right location
     const QRectF padded_rect = GetPaddedTextRectAtLine(s,m_font,i,sz);
-    //TRACE(Geometry().ToStr(padded_rect));
 
     // (2) an (ordinary) text rectangle (where the text will be drawn), at the right location
     const QRectF text_rect(
@@ -274,8 +234,6 @@ void ribi::QtRoundedEditRectItem::SetFont(const QFont& font) noexcept
   {
     m_font = font;
     this->update();
-    //m_signal_request_scene_update();
-    //m_signal_font_changed(this);
   }
 }
 #pragma GCC diagnostic pop
@@ -296,26 +254,13 @@ void ribi::QtRoundedEditRectItem::SetPadding(const Padding& padding) noexcept
     );
 
     this->update();
-    //m_signal_request_scene_update();
-    //m_signal_padding_changed(this);
   }
 }
 
 void ribi::QtRoundedEditRectItem::SetText(const std::vector<std::string>& text) noexcept
 {
-  const bool verbose{false};
-
   if (text != m_text)
   {
-    if (verbose)
-    {
-      std::stringstream s;
-      s << "Text will change from '" << Container().Concatenate(m_text)
-        << "' to '" << Container().Concatenate(text)
-        << "'"
-      ;
-      TRACE(s.str());
-    }
     m_text = text;
 
     //Adapt the size
@@ -326,20 +271,7 @@ void ribi::QtRoundedEditRectItem::SetText(const std::vector<std::string>& text) 
     this->SetInnerHeight(
       text_rect.height() + m_padding.top + m_padding.bottom
     );
-
-    //m_signal_text_changed(this);
     this->update();
-  }
-  else
-  {
-    if (verbose)
-    {
-      std::stringstream s;
-      s << "Text will remain '" << Container().ToStr(m_text)
-        << "'"
-      ;
-      TRACE(s.str());
-    }
   }
 }
 
@@ -349,6 +281,5 @@ void ribi::QtRoundedEditRectItem::SetTextPen(const QPen& pen) noexcept
   {
     m_text_pen = pen;
     this->update();
-    //m_signal_text_pen_changed(this);
   }
 }

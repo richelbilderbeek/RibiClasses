@@ -854,6 +854,7 @@ void ribi::cmap::QtConceptMap::SetConceptMap(const ConceptMap& conceptmap)
   const auto vip = vertices(m_conceptmap);
   for(auto i=vip.first; i!=vip.second; ++i)
   {
+    assert(boost::num_vertices(m_conceptmap));
     const auto pmap = get(boost::vertex_custom_type, m_conceptmap);
     const Node node = get(pmap, *i);
     const bool is_focal_node{i == vip.first};
@@ -867,6 +868,7 @@ void ribi::cmap::QtConceptMap::SetConceptMap(const ConceptMap& conceptmap)
   const auto eip = edges(m_conceptmap);
   for(auto i = eip.first; i != eip.second; ++i)
   {
+    assert(boost::num_edges(m_conceptmap));
     const VertexDescriptor vd_from = boost::source(*i, m_conceptmap);
     const VertexDescriptor vd_to = boost::target(*i, m_conceptmap);
     assert(vd_from != vd_to);

@@ -147,17 +147,7 @@ class QtRoundedEditRectItem : public QtRoundedRectItem
   ///Set the pen by which the text is drawn
   void SetTextPen(const QPen& pen) noexcept;
 
-  ///Called when the user wants to edit the text
-  //boost::signals2::signal<void(QtRoundedEditRectItem*)> m_signal_item_requests_edit;
-
-  //boost::signals2::signal<void(QtRoundedEditRectItem*)> m_signal_base_changed;
-  //boost::signals2::signal<void(QtRoundedEditRectItem*)> m_signal_font_changed;
-  //boost::signals2::signal<void(QtRoundedEditRectItem*)> m_signal_padding_changed;
-  //boost::signals2::signal<void(QtRoundedEditRectItem*)> m_signal_text_changed;
-  //boost::signals2::signal<void(QtRoundedEditRectItem*)> m_signal_text_pen_changed;
-
 protected:
-  virtual void keyPressEvent(QKeyEvent* event) noexcept;
   virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) noexcept;
 
 private:
@@ -176,14 +166,7 @@ private:
 
   ///The pen by which the text is drawn
   QPen m_text_pen;
-
-
-
-  ///Called whenever a base class item is changed
-  void OnBaseChanged(QtRoundedRectItem * const) noexcept;
 };
-
-//std::ostream& operator<<(std::ostream& os, const QtRoundedEditRectItem&) noexcept;
 
 } //~namespace ribi
 
