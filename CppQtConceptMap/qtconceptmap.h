@@ -97,10 +97,7 @@ public slots:
 protected:
 
   ///Delete a QtEdge
-  void DeleteQtEdge(const QtEdge * const edge);
-
-  ///Delete a Node
-  //void DeleteQtNode(const QtNode * const node);
+  //void DeleteQtEdge(const QtEdge * const edge);
 
   ///Obtain the center node, if there is any
   QtNode * GetCenterNode()       noexcept;
@@ -108,9 +105,6 @@ protected:
   ///Obtain the first QtNode under the cursor
   ///Returns nullptr if none is present
   QtNode* GetItemBelowCursor(const QPointF& pos) const;
-
-  ///Check if this item is the center node
-  static bool IsQtCenterNode(const QGraphicsItem* const item);
 
   ///Set the rectangle with text showing the examples
   void SetExamplesItem(QtExamplesItem * const item);
@@ -204,8 +198,17 @@ std::vector<QtEdge*> GetQtEdges(
   const QGraphicsScene * const scene
 ) noexcept;
 
+
 std::vector<QtNode *> GetQtNodes(const QGraphicsScene * const scene) noexcept;
 
+///Check if this item is the center node
+bool IsQtCenterNode(const QGraphicsItem* const item);
+
+///Is this QtNode in the center on a QtEdge?
+bool IsOnEdge(
+  const QtNode * const qtnode,
+  const QGraphicsScene * const scene
+) noexcept;
 
 
 } //~namespace cmap

@@ -45,16 +45,13 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 
 ribi::cmap::QtNode::QtNode(const Node& node)
   : QtRoundedEditRectItem(),
-    //m_signal_base_changed{},
-    //m_signal_key_down_pressed{},
-    //m_signal_node_changed{},
     m_node{node},
     m_show_bounding_rect{false}
 {
   //Allow mouse tracking
   this->setAcceptHoverEvents(true);
 
-  this->SetPadding(Base::Padding(1.0,6.0,1.0,2.0));
+  this->SetPadding(QtRoundedEditRectItem::Padding(1.0,6.0,1.0,2.0));
 
   this->setAcceptHoverEvents(true);
   this->setFlags(
@@ -108,8 +105,7 @@ void ribi::cmap::QtNode::hoverMoveEvent(QGraphicsSceneHoverEvent*) noexcept
 
 void ribi::cmap::QtNode::keyPressEvent(QKeyEvent *event) noexcept
 {
-  //m_signal_key_down_pressed(this,event->key());
-  Base::keyPressEvent(event);
+  QtRoundedEditRectItem::keyPressEvent(event);
 }
 
 
@@ -178,7 +174,7 @@ void ribi::cmap::QtNode::paint(
   QPainter* painter, const QStyleOptionGraphicsItem* item, QWidget* widget
 ) noexcept
 {
-  Base::paint(painter,item,widget);
+  QtRoundedEditRectItem::paint(painter,item,widget);
 
   if (!GetNode().GetConcept().GetExamples().Get().empty())
   {

@@ -379,7 +379,7 @@ ribi::cmap::QtNode * ribi::cmap::QtConceptMap::GetCenterNode() noexcept
   const int n_centernodes{
     static_cast<int>(
       std::count_if(v.begin(),v.end(),
-        [this](const QGraphicsItem * const item) { return this->IsQtCenterNode(item); }
+        [this](const QGraphicsItem * const item) { return IsQtCenterNode(item); }
       )
     )
   };
@@ -387,7 +387,7 @@ ribi::cmap::QtNode * ribi::cmap::QtConceptMap::GetCenterNode() noexcept
   if (n_centernodes == 0) return nullptr;
   assert(n_centernodes == 1);
   const auto iter = std::find_if(v.begin(),v.end(),
-    [this](const QGraphicsItem * const item) { return this->IsQtCenterNode(item); } );
+    [this](const QGraphicsItem * const item) { return IsQtCenterNode(item); } );
   assert(iter != v.end());
   QtNode * const center_node = dynamic_cast<QtNode*>(*iter);
   assert(center_node);
@@ -500,11 +500,26 @@ std::vector<std::string> ribi::cmap::QtConceptMap::GetVersionHistory() noexcept
 }
 
 
-bool ribi::cmap::QtConceptMap::IsQtCenterNode(const QGraphicsItem* const item)
+bool ribi::cmap::IsQtCenterNode(const QGraphicsItem* const item)
 {
   const QtCenterNode * const qtnode = dynamic_cast<const QtCenterNode*>(item);
   assert(!qtnode || IsCenterNode(qtnode->GetNode()));
   return qtnode;
+}
+
+bool ribi::cmap::IsOnEdge(
+  const QtNode * const qtnode,
+  const QGraphicsScene * const scene
+) noexcept
+{
+  for (const auto item: scene->items())
+  {
+    if (const QtEdge* qtedge = dynamic_cast<const QtEdge*>(item))
+    {
+      if (qtedge->GetQtNode() == qtnode) return true;
+    }
+  }
+  return false;
 }
 
 void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event) noexcept
@@ -687,8 +702,16 @@ void ribi::cmap::QtConceptMap::onFocusItemChanged(
 )
 {
   if (QtNode * const qtnode = dynamic_cast<QtNode*>(newFocus)) {
-    m_tools->SetBuddyItem(qtnode);
-    onSelectionChanged();
+    if (!IsOnEdge(qtnode, this->scene()))
+    {
+      m_tools->SetBuddyItem(qtnode);
+      onSelectionChanged();
+    }
+    else
+    {
+      m_tools->SetBuddyItem(nullptr);
+      onSelectionChanged();
+    }
   }
   if (newFocus == m_tools && !m_arrow->isVisible() && m_tools->GetBuddyItem() && reason == Qt::MouseFocusReason) {
     m_arrow->Start(

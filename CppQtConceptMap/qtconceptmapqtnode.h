@@ -37,14 +37,13 @@ namespace cmap {
 ///QtNode displays a Node as a QtConceptMapElement
 struct QtNode : public QtRoundedEditRectItem
 {
-  typedef QtRoundedEditRectItem Base;
   virtual ~QtNode() noexcept;
 
   ///Node cannot be const as it contains a Concept that the user might want to edit
   ///concept_item contains the Stategy to display (and respond to the concept)
   explicit QtNode(const Node& node);
 
-  virtual QRectF boundingRect() const { return Base::boundingRect(); }
+  //virtual QRectF boundingRect() const { return QtRoundedEditRectItem::boundingRect(); }
 
   void DisableAll();
   void EnableAll();
@@ -57,15 +56,6 @@ struct QtNode : public QtRoundedEditRectItem
   void SetNode(const Node& node) noexcept;
 
   std::string ToStr() const noexcept;
-
-  ///m_signal_request_rate_node is emitted due to a m_signal_request_rate_node
-  ///of the Node its QtRateConceptItem
-  //boost::signals2::signal<void (QtNode *)> m_signal_display_changed;
-  //mutable boost::signals2::signal<void (QtNode *)> m_signal_base_changed;
-
-  ///The QtNode is selected or unselected
-  //mutable boost::signals2::signal<void (QtNode *,const int key)> m_signal_key_down_pressed;
-  //mutable boost::signals2::signal<void (QtNode *)> m_signal_node_changed;
 
   virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem *, QWidget *) noexcept final;
 
