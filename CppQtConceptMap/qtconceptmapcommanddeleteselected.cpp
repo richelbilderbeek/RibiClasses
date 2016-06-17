@@ -48,6 +48,7 @@ ribi::cmap::CommandDeleteSelected::CommandDeleteSelected(
     m_tool_item_old_buddy{tool_item->GetBuddyItem()}
 {
   setText("delete selected nodes and edges");
+  assert(m_scene);
 
   //Count the number of vertices and edges selected
   {
@@ -140,6 +141,7 @@ ribi::cmap::CommandDeleteSelected::CommandDeleteSelected(
   //Find the edges connected to deleted nodes
   for (const auto i: m_scene->items())
   {
+    assert(i->scene());
     if (QtEdge* qtedge = dynamic_cast<QtEdge*>(i))
     {
       //Is selected itself
@@ -171,11 +173,17 @@ ribi::cmap::CommandDeleteSelected::CommandDeleteSelected(
 void ribi::cmap::CommandDeleteSelected::redo()
 {
   m_conceptmap = m_conceptmap_after;
-  for (const auto qtedge: m_qtedges_removed) {
+  for (const auto qtedge: m_qtedges_removed)
+  {
+    std::clog << __func__ << " - " << __LINE__ << '\n';
     m_scene->removeItem(qtedge);
+    assert(!qtedge->scene());
   }
-  for (const auto qtnode: m_qtnodes_removed) {
+  for (const auto qtnode: m_qtnodes_removed)
+  {
+    std::clog << __func__ << " - " << __LINE__ << '\n';
     m_scene->removeItem(qtnode);
+    assert(!qtnode->scene());
   }
   for (auto item: m_selected_before) { item->setSelected(false); }
   m_tool_item->SetBuddyItem(nullptr);
@@ -184,12 +192,20 @@ void ribi::cmap::CommandDeleteSelected::redo()
 void ribi::cmap::CommandDeleteSelected::undo()
 {
   m_conceptmap = m_conceptmap_before;
-  for (const auto qtnode: m_qtnodes_removed) {
+  for (const auto qtnode: m_qtnodes_removed)
+  {
+    std::clog << __func__ << " - " << __LINE__ << '\n';
     m_scene->addItem(qtnode);
+    QtNode * q;
+
+    assert(qtnode->scene());
   }
-  for (const auto qtedge: m_qtedges_removed) {
+  for (const auto qtedge: m_qtedges_removed)
+  {
+    std::clog << __func__ << " - " << __LINE__ << '\n';
     m_scene->addItem(qtedge);
     qtedge->setZValue(-1.0);
+    assert(qtedge->scene());
   }
   for (auto item: m_selected_before) { item->setSelected(true); }
 
