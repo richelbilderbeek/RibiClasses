@@ -62,6 +62,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "qtconceptmapbrushfactory.h"
 #include "qtconceptmapcommandcreatenewedge.h"
 #include "qtconceptmapcommandcreatenewnode.h"
+#include "qtconceptmapcommandtogglearrowhead.h"
 #include "qtconceptmapcommandselectrandomnode.h"
 #include "qtconceptmaprateexamplesdialognewname.h"
 #include "qtconceptmapcenternode.h"
@@ -357,6 +358,21 @@ ribi::cmap::QtEdge * ribi::cmap::FindQtEdge(
   return * iter;
 }
 
+ribi::cmap::QtEdge * ribi::cmap::FindQtEdge(
+  const QtNode * const qtnode,
+  const QGraphicsScene * const scene
+) noexcept
+{
+  for (const auto item: scene->items())
+  {
+    if (QtEdge* const qtedge = dynamic_cast<QtEdge*>(item))
+    {
+      if (qtedge->GetQtNode() == qtnode) return qtedge;
+    }
+  }
+  return nullptr;
+}
+
 ribi::cmap::QtNode * ribi::cmap::FindQtNode(
   const int node_id, const QGraphicsScene * const scene) noexcept
 {
@@ -512,14 +528,7 @@ bool ribi::cmap::IsOnEdge(
   const QGraphicsScene * const scene
 ) noexcept
 {
-  for (const auto item: scene->items())
-  {
-    if (const QtEdge* qtedge = dynamic_cast<const QtEdge*>(item))
-    {
-      if (qtedge->GetQtNode() == qtnode) return true;
-    }
-  }
-  return false;
+  return FindQtEdge(qtnode, scene);
 }
 
 void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event) noexcept
@@ -548,7 +557,7 @@ void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event) noexcept
       try
       {
 
-        DoCommand(new CommandDeleteSelected(m_conceptmap,scene(),m_tools));
+        DoCommand(new CommandDeleteSelected(m_conceptmap, scene(), m_tools));
       }
       catch (std::logic_error& e)
       {
@@ -582,6 +591,14 @@ void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event) noexcept
       {
         if (GetVerbosity()) { TRACE("Pressing CTRL-E"); }
         try { this->DoCommand(new CommandCreateNewEdgeBetweenTwoSelectedNodes(GetConceptMap(),scene(),m_tools)); }
+        catch (std::logic_error& ) {}
+      }
+      return;
+    case Qt::Key_H:
+      if (event->modifiers() & Qt::ControlModifier)
+      {
+        if (GetVerbosity()) { TRACE("Pressing CTRL-H"); }
+        try { this->DoCommand(new CommandToggleArrowHead(GetConceptMap(), scene())); }
         catch (std::logic_error& ) {}
       }
       return;

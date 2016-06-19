@@ -188,6 +188,13 @@ QtEdge * FindQtEdge(
   const QGraphicsScene * const scene
 ) noexcept;
 
+///Find the edge this QtNode is in the center of
+///Returns nullptr if the QtNode is not on a QtEdge
+QtEdge * FindQtEdge(
+  const QtNode * const qtnode,
+  const QGraphicsScene * const scene
+) noexcept;
+
 QtNode * FindQtNode(const int node_id, const QGraphicsScene * const scene) noexcept;
 
 std::vector<QtEdge *> GetQtEdges(const QGraphicsScene * const scene) noexcept;

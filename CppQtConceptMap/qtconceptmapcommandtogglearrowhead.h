@@ -1,0 +1,43 @@
+#ifndef QTCONCEPTMAPCOMMANDTOGGLEARROWHEAD_H
+#define QTCONCEPTMAPCOMMANDTOGGLEARROWHEAD_H
+
+#include "conceptmap.h"
+#include "conceptmapnode.h"
+#include "conceptmapedge.h"
+#include "qtconceptmapcommand.h"
+
+struct QGraphicsScene;
+
+namespace ribi {
+namespace cmap {
+
+struct QtEdge;
+struct QtNode;
+
+class CommandToggleArrowHead final : public Command
+{
+  public:
+
+  CommandToggleArrowHead(
+    ConceptMap& conceptmap,
+    QGraphicsScene * const scene
+  );
+  CommandToggleArrowHead(const CommandToggleArrowHead&) = delete;
+  CommandToggleArrowHead& operator=(const CommandToggleArrowHead&) = delete;
+
+  void redo() override;
+  void undo() override;
+
+  private:
+  ConceptMap& m_conceptmap;
+  ConceptMap m_after;
+  const ConceptMap m_before;
+  QGraphicsScene * const m_scene;
+  QtEdge * m_qtedge; //The QtEdge with the arrow head
+};
+
+} //~namespace cmap
+} //~namespace ribi
+
+
+#endif // QTCONCEPTMAPCOMMANDTOGGLEARROWHEAD_H

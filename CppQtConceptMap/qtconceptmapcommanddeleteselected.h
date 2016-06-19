@@ -64,8 +64,6 @@ class CommandDeleteSelected final : public Command
   const QList<QGraphicsItem *> m_selected_before;
   QtTool * const m_tool_item;
   QtNode * const m_tool_item_old_buddy;
-  //const double m_x;
-  //const double m_y;
 };
 
 } //~namespace cmap

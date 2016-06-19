@@ -43,7 +43,7 @@ void DecodeEdge(Edge& g) noexcept;
 void DecodeNode(Node& g) noexcept;
 ConceptMap DotToConceptMap(const std::string& s);
 VertexDescriptor FindCenterNode(const ConceptMap& c);
-EdgeDescriptor FindEdge(const Edge& e, const ConceptMap& g) noexcept;
+EdgeDescriptor find_first_custom_edge_with_my_edge(const Edge& e, const ConceptMap& g) noexcept;
 VertexDescriptor FindNode(const Node& e, const ConceptMap& g) noexcept;
 Node GetCenterNode(const ConceptMap& c);
 Edge GetEdge(const EdgeDescriptor vd, const ConceptMap& c) noexcept;

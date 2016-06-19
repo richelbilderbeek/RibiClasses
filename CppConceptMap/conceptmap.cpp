@@ -125,12 +125,12 @@ ribi::cmap::VertexDescriptor ribi::cmap::FindCenterNode(const ConceptMap& g)
   return *i;
 }
 
-ribi::cmap::EdgeDescriptor ribi::cmap::FindEdge(
+ribi::cmap::EdgeDescriptor ribi::cmap::find_first_custom_edge_with_my_edge(
   const Edge& edge,
   const ConceptMap& g
 ) noexcept
 {
-  return find_first_custom_edge_with_my_edge(edge, g);
+  return ::find_first_custom_edge_with_my_edge(edge, g);
 }
 
 ribi::cmap::VertexDescriptor ribi::cmap::FindNode(
@@ -196,7 +196,7 @@ ribi::cmap::Node ribi::cmap::GetFirstNode(const ConceptMap& c)
 
 ribi::cmap::Node ribi::cmap::GetFrom(const Edge& edge, const ConceptMap& c) noexcept
 {
-  return GetFrom(FindEdge(edge, c), c);
+  return GetFrom(find_first_custom_edge_with_my_edge(edge, c), c);
 }
 
 ribi::cmap::Node ribi::cmap::GetFrom(const EdgeDescriptor ed, const ConceptMap& c) noexcept
@@ -240,7 +240,7 @@ std::vector<ribi::cmap::Node> ribi::cmap::GetSortedNodes(const ConceptMap& c) no
 
 ribi::cmap::Node ribi::cmap::GetTo(const Edge& edge, const ConceptMap& c) noexcept
 {
-  return GetTo(FindEdge(edge, c), c);
+  return GetTo(find_first_custom_edge_with_my_edge(edge, c), c);
 }
 
 ribi::cmap::Node ribi::cmap::GetTo(const EdgeDescriptor ed, const ConceptMap& c) noexcept
