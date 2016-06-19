@@ -56,6 +56,7 @@ class CommandDeleteSelected final : public Command
   ConceptMap& m_conceptmap;
   ConceptMap m_conceptmap_after;
   const ConceptMap m_conceptmap_before;
+  QGraphicsItem * const m_focus_item_before;
   std::vector<QtEdge *> m_qtedges_removed;
   std::vector<QtNode *> m_qtnodes_removed;
 

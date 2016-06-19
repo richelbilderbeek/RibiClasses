@@ -40,6 +40,7 @@ ribi::cmap::CommandDeleteSelected::CommandDeleteSelected(
   : m_conceptmap(conceptmap),
     m_conceptmap_after(conceptmap),
     m_conceptmap_before(conceptmap),
+    m_focus_item_before{scene->focusItem()},
     m_qtedges_removed{},
     m_qtnodes_removed{},
     m_scene(scene),
@@ -49,6 +50,7 @@ ribi::cmap::CommandDeleteSelected::CommandDeleteSelected(
 {
   setText("delete selected nodes and edges");
   assert(m_scene);
+
 
   //Count the number of vertices and edges selected
   {
@@ -210,4 +212,5 @@ void ribi::cmap::CommandDeleteSelected::undo()
   for (auto item: m_selected_before) { item->setSelected(true); }
 
   m_tool_item->SetBuddyItem(m_tool_item_old_buddy);
+  m_scene->setFocusItem(m_focus_item_before);
 }
