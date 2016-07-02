@@ -197,19 +197,17 @@ bool ribi::cmap::QtEdge::isSelected() const
 
 void ribi::cmap::QtEdge::keyPressEvent(QKeyEvent *event) noexcept
 {
-  assert(m_arrow);
-  //m_signal_key_down_pressed(this,event->key());
-  /*
-  if (m_arrow->isEnabled())
+  //Don't forward the keyPressEvent!
+  //These are handled by Commands in the QtConceptMap
+  if (1 == 2)
   {
+    assert(m_arrow);
     m_arrow->keyPressEvent(event);
-    m_edge.SetHeadArrow( m_arrow->HasHead() );
-    m_edge.SetTailArrow( m_arrow->HasTail() );
-
+    m_edge.SetHeadArrow(m_arrow->HasHead());
+    m_edge.SetTailArrow(m_arrow->HasTail());
     assert(m_edge.HasHeadArrow() == m_arrow->HasHead());
     assert(m_edge.HasTailArrow() == m_arrow->HasTail());
   }
-  */
   QGraphicsItem::keyPressEvent(event);
 }
 

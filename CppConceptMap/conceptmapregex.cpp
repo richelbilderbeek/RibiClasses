@@ -72,9 +72,14 @@ std::string ribi::cmap::Regex::GetRegexFrom() const noexcept
   return "(<from>.*?</from>)";
 }
 
-std::string ribi::cmap::Regex::GetRegexHeadArrow() const noexcept
+std::string ribi::cmap::Regex::GetRegexHasHead() const noexcept
 {
-  return "(<head_arrow>.*?</head_arrow>)";
+  return "(<has_head>.*?</has_head>)";
+}
+
+std::string ribi::cmap::Regex::GetRegexHasTail() const noexcept
+{
+  return "(<has_tail>.*?</has_tail>)";
 }
 
 std::string ribi::cmap::Regex::GetRegexIsCenterNode() const noexcept
@@ -112,17 +117,11 @@ std::string ribi::cmap::Regex::GetRegexNodes() const noexcept
   return "(<nodes>.*?</nodes>)";
 }
 
-
-
 std::string ribi::cmap::Regex::GetRegexSpecificity() const noexcept
 {
   return "(<specificity>.*?</specificity>)";
 }
 
-std::string ribi::cmap::Regex::GetRegexTailArrow() const noexcept
-{
-  return "(<tail_arrow>.*?</tail_arrow>)";
-}
 
 std::string ribi::cmap::Regex::GetRegexText() const noexcept
 {

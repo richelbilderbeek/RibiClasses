@@ -103,10 +103,11 @@ struct QtEdge : public QGraphicsItem
 
   std::string ToStr() const noexcept;
 
+  void keyPressEvent(QKeyEvent *event) noexcept override final;
+
 protected:
   void focusInEvent(QFocusEvent *event) noexcept override final;
   void focusOutEvent(QFocusEvent *event) noexcept override final;
-  void keyPressEvent(QKeyEvent *event) noexcept override final;
   void mousePressEvent(QGraphicsSceneMouseEvent *event) noexcept override final;
   void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) noexcept override final;
   QPainterPath shape() const noexcept override final;

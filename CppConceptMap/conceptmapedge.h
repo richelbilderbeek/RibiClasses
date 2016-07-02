@@ -40,7 +40,14 @@ struct EdgeFactory;
 /// at the center of the Edge is a Node
 struct Edge
 {
-  explicit Edge(const Node& node = Node());
+  ///@param node a Node
+  ///@param has_head_arrow does the edge have an arrow at its head/target
+  ///@param has_tail_arrow does the edge have an arrow at its tail/source
+  explicit Edge(
+    const Node& node = Node(),
+    const bool has_head_arrow = false,
+    const bool has_tail_arrow = false
+  );
 
   ~Edge() noexcept;
 

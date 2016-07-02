@@ -1,4 +1,4 @@
-//---------------------------------------------------------------------------
+ //---------------------------------------------------------------------------
 /*
 QtConceptMap, Qt classes for display and interaction with ConceptMap
 Copyright (C) 2013-2016 Richel Bilderbeek
@@ -67,8 +67,8 @@ public:
   ///Obtain the QGraphicsScene
   QGraphicsScene* GetScene() const noexcept;
 
-  std::vector<const QtEdge *> GetSelectedQtEdges() const noexcept;
-  std::vector<const QtNode *> GetSelectedQtNodes() const noexcept;
+  std::vector<QtEdge *> GetSelectedQtEdges() const noexcept;
+  std::vector<QtNode *> GetSelectedQtNodes() const noexcept;
 
   const QUndoStack& GetUndo() const noexcept { return m_undo; }
         QUndoStack& GetUndo()       noexcept { return m_undo; }
@@ -166,6 +166,7 @@ private slots:
   void onSelectionChanged();
 };
 
+///Counts the QtNodes that are Nodes, i.e. are not on an edge
 int CountQtNodes(const QGraphicsScene * const scene) noexcept;
 int CountQtEdges(const QGraphicsScene * const scene) noexcept;
 int CountSelectedQtNodes(const QGraphicsScene * const scene) noexcept;

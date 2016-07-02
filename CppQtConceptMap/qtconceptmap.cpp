@@ -209,8 +209,8 @@ int ribi::cmap::CountQtNodes(const QGraphicsScene * const scene) noexcept
 {
   int cnt{0};
   for (auto item: scene->items()) {
-    if (dynamic_cast<QtNode*>(item)) {
-      ++cnt;
+    if (const QtNode* const qtnode = dynamic_cast<QtNode*>(item)) {
+      if (!IsOnEdge(qtnode, scene)) ++cnt;
     }
   }
   return cnt;
@@ -235,6 +235,7 @@ int ribi::cmap::CountSelectedQtNodes(const QGraphicsScene * const scene) noexcep
   for (auto item: scene->items()) {
     if (dynamic_cast<QtNode*>(item)
       && dynamic_cast<QtNode*>(item)->isSelected()
+      && !IsOnEdge(dynamic_cast<QtNode*>(item), scene)
     ) {
       ++cnt;
     }
@@ -475,28 +476,28 @@ QGraphicsScene* ribi::cmap::QtConceptMap::GetScene() const noexcept
   return scene();
 }
 
-std::vector<const ribi::cmap::QtEdge *> ribi::cmap::QtConceptMap::GetSelectedQtEdges() const noexcept
+std::vector<ribi::cmap::QtEdge *> ribi::cmap::QtConceptMap::GetSelectedQtEdges() const noexcept
 {
-  std::vector<const ribi::cmap::QtEdge *> selected;
+  std::vector<ribi::cmap::QtEdge *> selected;
   const auto qtedges = GetQtEdges(GetScene());
   std::copy_if(
     std::begin(qtedges),
     std::end(qtedges),
     std::back_inserter(selected),
-    [](const QtEdge* const qtedge) { return qtedge->isSelected() || qtedge->GetQtNode()->isSelected(); }
+    [](QtEdge* const qtedge) { return qtedge->isSelected() || qtedge->GetQtNode()->isSelected(); }
   );
   return selected;
 }
 
-std::vector<const ribi::cmap::QtNode *> ribi::cmap::QtConceptMap::GetSelectedQtNodes() const noexcept
+std::vector<ribi::cmap::QtNode *> ribi::cmap::QtConceptMap::GetSelectedQtNodes() const noexcept
 {
-  std::vector<const ribi::cmap::QtNode *> selected;
+  std::vector<ribi::cmap::QtNode *> selected;
   const auto qtnodes = GetQtNodes(GetScene());
   std::copy_if(
     std::begin(qtnodes),
     std::end(qtnodes),
     std::back_inserter(selected),
-    [](const QtNode* const qtnode) { return qtnode->isSelected(); }
+    [](QtNode* const qtnode) { return qtnode->isSelected(); }
   );
   return selected;
 }
@@ -630,6 +631,10 @@ void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event) noexcept
 
   }
 
+  for (auto qtedge: this->GetSelectedQtEdges()) {
+    qtedge->keyPressEvent(event);
+    qtedge->update();
+  }
   QtKeyboardFriendlyGraphicsView::keyPressEvent(event);
   UpdateConceptMap();
 }

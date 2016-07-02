@@ -30,7 +30,8 @@ struct Regex
   std::string GetRegexExample() const noexcept;
   std::string GetRegexExamples() const noexcept;
   std::string GetRegexFrom() const noexcept;
-  std::string GetRegexHeadArrow() const noexcept;
+  std::string GetRegexHasHead() const noexcept;
+  std::string GetRegexHasTail() const noexcept;
   std::string GetRegexIsCenterNode() const noexcept;
   std::string GetRegexIsComplex() const noexcept;
   std::string GetRegexIsConcrete() const noexcept;
@@ -39,7 +40,6 @@ struct Regex
   std::string GetRegexNode() const noexcept;
   std::string GetRegexNodes() const noexcept;
   std::string GetRegexSpecificity() const noexcept;
-  std::string GetRegexTailArrow() const noexcept;
   std::string GetRegexText() const noexcept;
   std::string GetRegexTo() const noexcept;
   std::string GetRegexX() const noexcept;
