@@ -466,6 +466,21 @@ void ribi::cmap::qtconceptmap_test::setting_concept_maps_edges_qtedges_nodes_qtn
   }
 }
 
+void ribi::cmap::qtconceptmap_test::create_one_edge_with_head_keyboard()
+{
+  QtConceptMap m;
+  QTest::keyClick(&m, Qt::Key_N, Qt::ControlModifier, 100);
+  QTest::keyClick(&m, Qt::Key_N, Qt::ControlModifier, 100);
+  QTest::keyClick(&m, Qt::Key_E, Qt::ControlModifier, 100);
+  QTest::keyClick(&m, Qt::Key_H, Qt::NoModifier, 100);
+  QVERIFY(DoubleCheckEdgesAndNodes(m,0,2));
+  QVERIFY(DoubleCheckSelectedEdgesAndNodes(m,0,0));
+  const auto qtedges = GetQtEdges(m.GetScene());
+  QVERIFY(qtedges.size() == 1);
+  const auto qtedge = qtedges.back();
+  QVERIFY(qtedge->GetEdge().HasHeadArrow());
+
+}
 
 
 void ribi::cmap::qtconceptmap_test::all_tests()
