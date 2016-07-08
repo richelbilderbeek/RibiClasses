@@ -7,30 +7,29 @@
 #include <QMouseEvent>
 #include <boost/graph/isomorphism.hpp>
 
+#include "conceptmapedgefactory.h"
+#include "conceptmapedge.h"
+#include "conceptmapfactory.h"
+#include "conceptmap.h"
+#include "conceptmapnodefactory.h"
+#include "conceptmapnode.h"
 #include "counter.h"
 #include "qtconceptmapcollect.h"
-#include "conceptmapfactory.h"
-
 #include "qtconceptmapcommandaddselectedrandom.h"
 #include "qtconceptmapcommandcreatenewedge.h"
 #include "qtconceptmapcommandcreatenewnode.h"
 #include "qtconceptmapcommanddeleteselected.h"
-#include "qtconceptmapqtnode.h"
+#include "qtconceptmapcommandtogglearrowhead.h"
 #include "qtconceptmapcommandunselectrandom.h"
 #include "qtconceptmapexamplesitem.h"
-#include "conceptmap.h"
-#include "conceptmapedge.h"
-#include "conceptmapedgefactory.h"
-#include "conceptmapnode.h"
+#include "qtconceptmap.h"
 #include "qtconceptmapqtnode.h"
-#include "conceptmapnodefactory.h"
+#include "qtconceptmapqtnode.h"
 #include "ribi_system.h"
-
 #include "trace.h"
 
 void ribi::cmap::qtconceptmap_test::create_one_edge_command()
 {
-  if ("Solve issue #9") return;
   //When there are two selected nodes, an edge can be created
   //After adding the edges, only the edge will be selected
   //The edge its center concept will be between the two nodes
@@ -139,7 +138,7 @@ void ribi::cmap::qtconceptmap_test::create_one_node_command()
   );
   QVERIFY(DoubleCheckEdgesAndNodes(m,0,1));
   QVERIFY(DoubleCheckSelectedEdgesAndNodes(m,0,1));
-  const auto v = m.GetSelectedQtNodes();
+  const auto v = GetSelectedQtNodes(*m.GetScene());
   QVERIFY(v.size() == 1);
   const auto n = v[0];
   QVERIFY(n);
@@ -266,6 +265,7 @@ void ribi::cmap::qtconceptmap_test::delete_one_edge_by_node_keyboard()
 
 void ribi::cmap::qtconceptmap_test::delete_one_edge_command()
 {
+  //WARNING
   QtConceptMap m;
   QVERIFY(DoubleCheckSelectedEdgesAndNodes(m,0,0));
   const int n{2};
@@ -303,6 +303,7 @@ void ribi::cmap::qtconceptmap_test::delete_one_edge_command()
 
 void ribi::cmap::qtconceptmap_test::delete_one_edge_keyboard()
 {
+  //WARNING
   QtConceptMap m;
   QTest::keyClick(&m, Qt::Key_N, Qt::ControlModifier, 100);
   QTest::keyClick(&m, Qt::Key_N, Qt::ControlModifier, 100);
@@ -352,7 +353,6 @@ void ribi::cmap::qtconceptmap_test::delete_one_node_keyboard()
 
 void ribi::cmap::qtconceptmap_test::delete_two_nodes_command()
 {
-  if ("Fix issue #11") return;
   QtConceptMap m;
   QVERIFY(DoubleCheckEdgesAndNodes(m,0,0));
   for (int i{0}; i!=2; ++i) {
@@ -414,34 +414,38 @@ void ribi::cmap::qtconceptmap_test::is_command_put_on_undo_stack()
 
 void ribi::cmap::qtconceptmap_test::select_left_node_keyboard()
 {
-  if ("Solve issue #8") return;
+  if ("Fix issue 64") return; //#64
   QtConceptMap m;
   QTest::keyClick(&m, Qt::Key_N, Qt::ControlModifier, 100);
   QTest::keyClick(&m, Qt::Key_N, Qt::ControlModifier, 100);
   QTest::keyClick(&m, Qt::Key_E, Qt::ControlModifier, 100);
   QVERIFY(DoubleCheckEdgesAndNodes(m,1,2));
   QVERIFY(DoubleCheckSelectedEdgesAndNodes(m,1,0));
-  QTest::keyClick(&m, Qt::Key_Left, Qt::NoModifier, 100);
+  QTest::keyClick(&m, Qt::Key_Right, Qt::NoModifier, 100);
   QVERIFY(DoubleCheckEdgesAndNodes(m,1,2));
+
+  qDebug() << "se: " << GetSelectedQtEdges(*m.GetScene()).size();
+  qDebug() << "sn: "<< GetSelectedQtNodes(*m.GetScene()).size();
+  QVERIFY(GetSelectedQtNodes(*m.GetScene()).size() == 1);
+  QVERIFY(GetSelectedQtEdges(*m.GetScene()).size() == 0);
   QVERIFY(DoubleCheckSelectedEdgesAndNodes(m,0,1)); //FAILS
 }
 
 void ribi::cmap::qtconceptmap_test::select_random_node_keyboard()
 {
-  if ("Solve issue #10") return;
   QtConceptMap m;
   QTest::keyClick(&m, Qt::Key_N, Qt::ControlModifier, 100);
   QTest::keyClick(&m, Qt::Key_N, Qt::ControlModifier, 100);
 
-  QVERIFY(m.GetSelectedQtNodes().size() == 2);
+  QVERIFY(GetSelectedQtNodes(*m.GetScene()).size() == 2);
 
   std::vector<int> ids;
   for (int i=0; i!=10; ++i)
   {
     QTest::keyClick(&m, Qt::Key_Space, Qt::NoModifier, 100);
-    QVERIFY(m.GetSelectedQtNodes().size() == 1);
-    assert(m.GetSelectedQtNodes().size() == 1);
-    ids.push_back(m.GetSelectedQtNodes()[0]->GetNode().GetId());
+    QVERIFY(GetSelectedQtNodes(*m.GetScene()).size() == 1);
+    assert(GetSelectedQtNodes(*m.GetScene()).size() == 1);
+    ids.push_back(GetSelectedQtNodes(*m.GetScene())[0]->GetNode().GetId());
   }
   //Test if there are two IDs, both occuring multiple times
   QVERIFY(std::count(std::begin(ids),std::end(ids),ids[0])
@@ -466,20 +470,100 @@ void ribi::cmap::qtconceptmap_test::setting_concept_maps_edges_qtedges_nodes_qtn
   }
 }
 
+void ribi::cmap::qtconceptmap_test::create_one_edge_with_head_command()
+{
+  //When there are two selected nodes, an edge can be created
+  //After adding the edges, only the edge will be selected
+  //The edge its center concept will be between the two nodes
+  QtConceptMap m;
+  m.show();
+  QVERIFY(DoubleCheckSelectedEdgesAndNodes(m,0,0));
+  try
+  {
+    const int n{2};
+    for (int i=0; i!=n; ++i) {
+      m.DoCommand(
+        new CommandCreateNewNode(
+          m.GetConceptMap(),
+          m.GetScene(),
+          m.GetQtToolItem(),
+          0.0,
+          0.0
+        )
+      );
+    }
+    QVERIFY(DoubleCheckSelectedEdgesAndNodes(m,0,2));
+  }
+  catch (std::exception& e)
+  {
+    qDebug() << __func__ << ": caught exception " << e.what();
+    QVERIFY(!"Should not get here");
+  }
+
+  try
+  {
+    m.DoCommand(
+      new CommandCreateNewEdgeBetweenTwoSelectedNodes(
+        m.GetConceptMap(),
+        m.GetScene(),
+        m.GetQtToolItem()
+      )
+    );
+    QVERIFY(DoubleCheckEdgesAndNodes(m,1,2));
+    QVERIFY(DoubleCheckSelectedEdgesAndNodes(m,1,0));
+  }
+  catch (std::exception& e)
+  {
+    qDebug() << __func__ << ": caught exception " << e.what();
+    QVERIFY(!"Should not get here");
+  }
+
+  //Preconditions
+  QVERIFY(DoubleCheckEdgesAndNodes(m,1,2));
+  QVERIFY(DoubleCheckSelectedEdgesAndNodes(m,1,0));
+  const auto qtedges = GetQtEdges(m.GetScene());
+  QVERIFY(qtedges.size() == 1);
+  const auto qtedge = qtedges.back();
+  QVERIFY(!qtedge->GetEdge().HasHeadArrow());
+
+  try
+  {
+    m.DoCommand(
+      new CommandToggleArrowHead(
+        m.GetConceptMap(),
+        m.GetScene()
+      )
+    );
+
+    //Postconditions
+    QVERIFY(DoubleCheckEdgesAndNodes(m,1,2));
+    QVERIFY(DoubleCheckSelectedEdgesAndNodes(m,1,0));
+    const auto qtedges = GetQtEdges(m.GetScene());
+    QVERIFY(qtedges.size() == 1);
+    const auto qtedge = qtedges.back();
+    QVERIFY(qtedge->GetEdge().HasHeadArrow());
+
+  }
+  catch (std::exception& e)
+  {
+    qDebug() << __func__ << ": caught exception " << e.what();
+    QVERIFY(!"Should not get here");
+  }
+}
+
 void ribi::cmap::qtconceptmap_test::create_one_edge_with_head_keyboard()
 {
   QtConceptMap m;
   QTest::keyClick(&m, Qt::Key_N, Qt::ControlModifier, 100);
   QTest::keyClick(&m, Qt::Key_N, Qt::ControlModifier, 100);
   QTest::keyClick(&m, Qt::Key_E, Qt::ControlModifier, 100);
-  QTest::keyClick(&m, Qt::Key_H, Qt::NoModifier, 100);
-  QVERIFY(DoubleCheckEdgesAndNodes(m,0,2));
-  QVERIFY(DoubleCheckSelectedEdgesAndNodes(m,0,0));
+  QTest::keyClick(&m, Qt::Key_H, Qt::ControlModifier, 100);
+  QVERIFY(DoubleCheckEdgesAndNodes(m,1,2));
+  QVERIFY(DoubleCheckSelectedEdgesAndNodes(m,1,0));
   const auto qtedges = GetQtEdges(m.GetScene());
   QVERIFY(qtedges.size() == 1);
   const auto qtedge = qtedges.back();
   QVERIFY(qtedge->GetEdge().HasHeadArrow());
-
 }
 
 

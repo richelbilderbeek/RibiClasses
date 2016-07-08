@@ -178,7 +178,11 @@ ribi::cmap::Edge ribi::cmap::XmlToEdge(
 
 bool ribi::cmap::operator==(const ribi::cmap::Edge& lhs, const ribi::cmap::Edge& rhs)
 {
-  return lhs.GetNode() == rhs.GetNode();
+  return lhs.GetNode() == rhs.GetNode()
+    && lhs.HasHeadArrow() == rhs.HasHeadArrow()
+    && lhs.HasTailArrow() == rhs.HasTailArrow()
+  ;
+  //Note: does not check for ID
 }
 
 bool ribi::cmap::operator!=(const cmap::Edge& lhs, const cmap::Edge& rhs)

@@ -62,9 +62,16 @@ void ribi::cmap::CommandToggleArrowHead::redo()
 {
   const auto ed = find_first_custom_edge_with_my_edge(m_qtedge->GetEdge(), m_conceptmap);
   Edge edge = get_my_custom_edge(ed, m_conceptmap);
-  edge.SetHeadArrow(!edge.HasHeadArrow());
+  const auto old_has_head = edge.HasHeadArrow();
+  const auto new_has_head = !old_has_head;
+  edge.SetHeadArrow(new_has_head);
+  assert(edge.HasHeadArrow() == new_has_head);
+
   set_my_custom_edge(edge, ed, m_conceptmap);
   m_qtedge->SetEdge(edge);
+
+  assert(new_has_head == get_my_custom_edge(find_first_custom_edge_with_my_edge(m_qtedge->GetEdge(), m_conceptmap), m_conceptmap).HasHeadArrow());
+  assert(m_qtedge->GetEdge().HasHeadArrow() == new_has_head);
 }
 
 void ribi::cmap::CommandToggleArrowHead::undo()

@@ -377,6 +377,8 @@ void ribi::cmap::QtEdge::SetEdge(const Edge& edge) noexcept
   m_qtnode->SetCenterX(m_edge.GetNode().GetX());
   m_qtnode->SetCenterY(m_edge.GetNode().GetY());
   m_qtnode->SetText( { m_edge.GetNode().GetConcept().GetName() } );
+  m_arrow->SetHasHead(m_edge.HasHeadArrow());
+  m_arrow->SetHasTail(m_edge.HasTailArrow());
 
   assert(edge ==  m_edge);
 }

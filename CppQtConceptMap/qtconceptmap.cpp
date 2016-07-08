@@ -476,10 +476,10 @@ QGraphicsScene* ribi::cmap::QtConceptMap::GetScene() const noexcept
   return scene();
 }
 
-std::vector<ribi::cmap::QtEdge *> ribi::cmap::QtConceptMap::GetSelectedQtEdges() const noexcept
+std::vector<ribi::cmap::QtEdge *> ribi::cmap::GetSelectedQtEdges(const QGraphicsScene& scene) noexcept
 {
   std::vector<ribi::cmap::QtEdge *> selected;
-  const auto qtedges = GetQtEdges(GetScene());
+  const auto qtedges = GetQtEdges(&scene);
   std::copy_if(
     std::begin(qtedges),
     std::end(qtedges),
@@ -489,10 +489,10 @@ std::vector<ribi::cmap::QtEdge *> ribi::cmap::QtConceptMap::GetSelectedQtEdges()
   return selected;
 }
 
-std::vector<ribi::cmap::QtNode *> ribi::cmap::QtConceptMap::GetSelectedQtNodes() const noexcept
+std::vector<ribi::cmap::QtNode *> ribi::cmap::GetSelectedQtNodes(const QGraphicsScene& scene) noexcept
 {
   std::vector<ribi::cmap::QtNode *> selected;
-  const auto qtnodes = GetQtNodes(GetScene());
+  const auto qtnodes = GetQtNodes(&scene);
   std::copy_if(
     std::begin(qtnodes),
     std::end(qtnodes),
@@ -631,7 +631,7 @@ void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event) noexcept
 
   }
 
-  for (auto qtedge: this->GetSelectedQtEdges()) {
+  for (auto qtedge: GetSelectedQtEdges(*GetScene())) {
     qtedge->keyPressEvent(event);
     qtedge->update();
   }

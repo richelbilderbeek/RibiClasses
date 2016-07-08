@@ -67,9 +67,6 @@ public:
   ///Obtain the QGraphicsScene
   QGraphicsScene* GetScene() const noexcept;
 
-  std::vector<QtEdge *> GetSelectedQtEdges() const noexcept;
-  std::vector<QtNode *> GetSelectedQtNodes() const noexcept;
-
   const QUndoStack& GetUndo() const noexcept { return m_undo; }
         QUndoStack& GetUndo()       noexcept { return m_undo; }
 
@@ -208,6 +205,9 @@ std::vector<QtEdge*> GetQtEdges(
 
 
 std::vector<QtNode *> GetQtNodes(const QGraphicsScene * const scene) noexcept;
+
+std::vector<QtEdge *> GetSelectedQtEdges(const QGraphicsScene& scene) noexcept;
+std::vector<QtNode *> GetSelectedQtNodes(const QGraphicsScene& scene) noexcept;
 
 ///Check if this item is the center node
 bool IsQtCenterNode(const QGraphicsItem* const item);
