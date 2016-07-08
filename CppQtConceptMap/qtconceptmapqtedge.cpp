@@ -322,6 +322,7 @@ void ribi::cmap::QtEdge::paint(QPainter* painter, const QStyleOptionGraphicsItem
   assert(this->m_arrow->scene());
   assert(this->m_qtnode->scene());
   assert(this->m_from->scene());
+  m_arrow->setSelected(this->isSelected());
 
   if (m_arrow->isVisible())
   {
