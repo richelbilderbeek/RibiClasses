@@ -21,6 +21,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #ifndef QTKEYBOARDFRIENDLYGRAPHICSVIEW_H
 #define QTKEYBOARDFRIENDLYGRAPHICSVIEW_H
 
+#include <random>
 #include <QGraphicsView>
 
 struct QGraphicsItem;
