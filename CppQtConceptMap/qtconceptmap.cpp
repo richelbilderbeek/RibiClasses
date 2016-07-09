@@ -689,8 +689,10 @@ void ribi::cmap::QtConceptMap::mousePressEvent(QMouseEvent *event)
   if (GetVerbosity()) { TRACE_FUNC(); }
   UpdateConceptMap();
   assert(m_highlighter);
+  assert(!m_arrow->isSelected());
   if (m_arrow->isVisible())
   {
+    assert(!m_arrow->isSelected());
     if (m_highlighter->GetItem() && m_arrow->GetFrom() != m_highlighter->GetItem())
     {
       //The command needs to find the two selected vertices
@@ -712,11 +714,14 @@ void ribi::cmap::QtConceptMap::mousePressEvent(QMouseEvent *event)
       }
       catch (std::logic_error&) { return; }
     }
+    assert(!m_arrow->isSelected());
   }
 
+  assert(!m_arrow->isSelected());
   QtKeyboardFriendlyGraphicsView::mousePressEvent(event);
-
+  assert(!m_arrow->isSelected());
   UpdateExamplesItem();
+  assert(!m_arrow->isSelected());
 }
 
 void ribi::cmap::QtConceptMap::onFocusItemChanged(
