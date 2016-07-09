@@ -728,20 +728,28 @@ void ribi::cmap::QtConceptMap::onFocusItemChanged(
   QGraphicsItem * newFocus, QGraphicsItem */*oldFocus*/, Qt::FocusReason reason
 )
 {
+  //Focus on QtNode
   if (QtNode * const qtnode = dynamic_cast<QtNode*>(newFocus)) {
     if (!IsOnEdge(qtnode, this->scene()))
     {
       m_tools->SetBuddyItem(qtnode);
       onSelectionChanged();
+      m_arrow->hide();
     }
     else
     {
       m_tools->SetBuddyItem(nullptr);
       onSelectionChanged();
     }
+    return;
   }
+  //Focus on m_tools
   if (newFocus == m_tools && !m_arrow->isVisible() && m_tools->GetBuddyItem() && reason == Qt::MouseFocusReason) {
     m_arrow->Start(m_tools->GetBuddyItem()); //Also sets visibility
+    m_tools->setSelected(false);
+    m_tools->GetBuddyItem()->SetSelected(true); //Will tigger onSelectionChanged and hide the arrow
+    m_tools->GetBuddyItem()->setFocus();
+    m_arrow->setVisible(true);
   }
 }
 
@@ -835,18 +843,6 @@ void ribi::cmap::QtConceptMap::OnNodeKeyDownPressed(QtNode* const item, const in
 
 void ribi::cmap::QtConceptMap::onSelectionChanged()
 {
-  /*
-  if (m_tools->isSelected())
-  {
-    assert(m_tools->GetBuddyItem());
-    m_arrow->Start(
-      m_tools->GetBuddyItem(),
-      mapToScene(QCursor::pos())
-    );
-    m_arrow->setVisible(true);
-  }
-  */
-
   Graph& g = m_conceptmap;
 
   //Selectness of vertices
