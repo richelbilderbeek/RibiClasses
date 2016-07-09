@@ -109,7 +109,7 @@ std::string ribi::Random::RandomImpl::GetString(const int length) noexcept
   std::string s;
   s.resize(length);
   std::generate(std::begin(s),std::end(s),
-   [this](){ return this->GetChar(); }
+    [this](){ return this->GetChar(); }
   );
   return s;
 }

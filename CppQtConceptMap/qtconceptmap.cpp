@@ -737,7 +737,11 @@ void ribi::cmap::QtConceptMap::onFocusItemChanged(
   }
   if (newFocus == m_tools && !m_arrow->isVisible() && m_tools->GetBuddyItem() && reason == Qt::MouseFocusReason) {
     m_arrow->Start(
-      m_tools->GetBuddyItem(),m_tools->GetBuddyItem()->GetCenterPos()
+      m_tools->GetBuddyItem(),
+      mapToScene(
+        m_tools->GetBuddyItem()->GetCenterPos().x(),
+        m_tools->GetBuddyItem()->GetCenterPos().y()
+      )
     ); //Also sets visibility
   }
 }
@@ -864,21 +868,6 @@ void ribi::cmap::QtConceptMap::onSelectionChanged()
     }
   );
   scene()->update();
-}
-
-void ribi::cmap::QtConceptMap::OnToolsClicked()
-{
-  assert(!"Not used?");
-  const QPointF cursor_pos_approx(
-    m_tools->GetBuddyItem()->GetCenterX(),
-    m_tools->GetBuddyItem()->GetCenterY() - 32.0
-    - m_tools->GetBuddyItem()->GetRadiusY()
-  );
-  m_arrow->Start(
-    m_tools->GetBuddyItem(),cursor_pos_approx
-  );
-  m_arrow->update();
-  this->scene()->update();
 }
 
 void ribi::cmap::QtConceptMap::SetConceptMap(const ConceptMap& conceptmap)
