@@ -2,6 +2,7 @@
 #include "qtconceptmapqtnodedialog.h"
 
 
+#include <cmath>
 #include <sstream>
 
 #include <boost/lambda/lambda.hpp>

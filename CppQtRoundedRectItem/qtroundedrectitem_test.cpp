@@ -1,7 +1,7 @@
 #include "qtroundedrectitem_test.h"
 #include "qtroundedrectitem.h"
 
-
+#include <cmath>
 #include <QCoreApplication>
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsScene>

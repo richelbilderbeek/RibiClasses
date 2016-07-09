@@ -3,6 +3,7 @@
 #include "qtconceptmap.h"
 
 #include <chrono>
+#include <cmath>
 #include <QApplication>
 #include <QMouseEvent>
 #include <boost/graph/isomorphism.hpp>
