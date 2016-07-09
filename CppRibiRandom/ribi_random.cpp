@@ -24,6 +24,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
 #include "ribi_random.h"
 
+#include <algorithm>
 #include <cassert>
 #include <random>
 
