@@ -80,9 +80,13 @@ public:
     const ribi::cmap::Edge edge = get(m_my_custom_edge_map, ed);
     out << "[label=\""
       << edge //Can be Graphviz unfriendly
-      << "\", regular=\""
-      << get(m_is_selected_map, ed)
-      << "\", ";
+      << "\", "
+    ;
+
+    if (get(m_is_selected_map, ed))
+    {
+      out << "style = \"dashed\", ";
+    }
 
     const bool has_head{edge.HasHeadArrow()};
     const bool has_tail{edge.HasTailArrow()};

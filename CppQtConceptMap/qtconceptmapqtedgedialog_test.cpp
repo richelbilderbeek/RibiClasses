@@ -1,3 +1,4 @@
+#include <cmath>
 #include "qtconceptmapqtedgedialog_test.h"
 #include "qtconceptmapqtedgedialog.h"
 #include "qtconceptmapqtnodefactory.h"
