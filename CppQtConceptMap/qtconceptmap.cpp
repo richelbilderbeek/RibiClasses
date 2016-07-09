@@ -736,13 +736,7 @@ void ribi::cmap::QtConceptMap::onFocusItemChanged(
     }
   }
   if (newFocus == m_tools && !m_arrow->isVisible() && m_tools->GetBuddyItem() && reason == Qt::MouseFocusReason) {
-    m_arrow->Start(
-      m_tools->GetBuddyItem(),
-      mapToScene(
-        m_tools->GetBuddyItem()->GetCenterPos().x(),
-        m_tools->GetBuddyItem()->GetCenterPos().y()
-      )
-    ); //Also sets visibility
+    m_arrow->Start(m_tools->GetBuddyItem()); //Also sets visibility
   }
 }
 
@@ -836,12 +830,17 @@ void ribi::cmap::QtConceptMap::OnNodeKeyDownPressed(QtNode* const item, const in
 
 void ribi::cmap::QtConceptMap::onSelectionChanged()
 {
+  /*
   if (m_tools->isSelected())
   {
     assert(m_tools->GetBuddyItem());
-    m_arrow->Start(m_tools->GetBuddyItem(), mapToScene(QCursor::pos()));
+    m_arrow->Start(
+      m_tools->GetBuddyItem(),
+      mapToScene(QCursor::pos())
+    );
     m_arrow->setVisible(true);
   }
+  */
 
   Graph& g = m_conceptmap;
 

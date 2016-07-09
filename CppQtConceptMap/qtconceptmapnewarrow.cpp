@@ -58,16 +58,13 @@ ribi::cmap::QtNewArrow::QtNewArrow()
   assert(!(this->flags() & QGraphicsItem::ItemIsMovable ));
 }
 
-void ribi::cmap::QtNewArrow::Start(
-  QtNode * const from,
-  const QPointF& current_to
-)
+void ribi::cmap::QtNewArrow::Start(QtNode * const from)
 {
   assert(from);
   m_from = from;
   this->SetTailPos(from->GetCenterX(), from->GetCenterY());
   this->SetHasTail(false);
-  this->SetHeadPos(current_to.x(), current_to.y());
+  this->SetHeadPos(from->GetCenterX() + 16, from->GetCenterY() - 16);
   this->SetHasHead(true);
   this->show();
 }

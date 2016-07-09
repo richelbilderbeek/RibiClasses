@@ -43,10 +43,7 @@ struct QtNewArrow : public QtArrowItem
   QtNewArrow();
 
   ///Set and show the arrow in itis initial condition
-  void Start(
-    QtNode * const from,
-    const QPointF& current_to
-  );
+  void Start(QtNode * const from);
 
   QtNewArrow(const QtNewArrow&) = delete;
   QtNewArrow& operator=(const QtNewArrow&) = delete;
