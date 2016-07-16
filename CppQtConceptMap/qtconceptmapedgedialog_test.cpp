@@ -2,6 +2,7 @@
 #include "qtconceptmapedgedialog.h"
 
 
+#include <cmath>
 #include <boost/bind/bind.hpp>
 #include <boost/lambda/lambda.hpp>
 

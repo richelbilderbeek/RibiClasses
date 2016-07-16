@@ -25,7 +25,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "qtconceptmapqtedge.h"
 
 #include <cassert>
-
+#include <cmath>
 #include <boost/lambda/lambda.hpp>
 
 #include <QCursor>
@@ -197,19 +197,17 @@ bool ribi::cmap::QtEdge::isSelected() const
 
 void ribi::cmap::QtEdge::keyPressEvent(QKeyEvent *event) noexcept
 {
-  assert(m_arrow);
-  //m_signal_key_down_pressed(this,event->key());
-  /*
-  if (m_arrow->isEnabled())
+  //Don't forward the keyPressEvent!
+  //These are handled by Commands in the QtConceptMap
+  if (1 == 2)
   {
+    assert(m_arrow);
     m_arrow->keyPressEvent(event);
-    m_edge.SetHeadArrow( m_arrow->HasHead() );
-    m_edge.SetTailArrow( m_arrow->HasTail() );
-
+    m_edge.SetHeadArrow(m_arrow->HasHead());
+    m_edge.SetTailArrow(m_arrow->HasTail());
     assert(m_edge.HasHeadArrow() == m_arrow->HasHead());
     assert(m_edge.HasTailArrow() == m_arrow->HasTail());
   }
-  */
   QGraphicsItem::keyPressEvent(event);
 }
 
@@ -324,6 +322,7 @@ void ribi::cmap::QtEdge::paint(QPainter* painter, const QStyleOptionGraphicsItem
   assert(this->m_arrow->scene());
   assert(this->m_qtnode->scene());
   assert(this->m_from->scene());
+  m_arrow->setSelected(this->isSelected());
 
   if (m_arrow->isVisible())
   {
@@ -379,6 +378,8 @@ void ribi::cmap::QtEdge::SetEdge(const Edge& edge) noexcept
   m_qtnode->SetCenterX(m_edge.GetNode().GetX());
   m_qtnode->SetCenterY(m_edge.GetNode().GetY());
   m_qtnode->SetText( { m_edge.GetNode().GetConcept().GetName() } );
+  m_arrow->SetHasHead(m_edge.HasHeadArrow());
+  m_arrow->SetHasTail(m_edge.HasTailArrow());
 
   assert(edge ==  m_edge);
 }

@@ -1,9 +1,12 @@
 #include "openfoammesh.h"
 
+#include <algorithm>
 #include <cassert>
+#include <cmath>
 #include <iostream>
 #include <ostream>
 #include <map>
+#include <numeric>
 
 #include "openfoamboundary.h"
 #include "openfoamboundaryfile.h"
@@ -189,7 +192,7 @@ bool ribi::foam::Mesh::AreFacesOrdered() const noexcept
           std::find(m_faces.begin(),m_faces.end(),face)
         };
         assert(iter != m_faces.end());
-        const int index = std::distance(m_faces.begin(),iter);
+        const int index{static_cast<int>(std::distance(m_faces.begin(),iter))};
         assert(index >= 0);
         assert(index < static_cast<int>(m_faces.size()));
         return index;
@@ -378,7 +381,7 @@ boost::shared_ptr<ribi::foam::BoundaryFile> ribi::foam::Mesh::CreateBoundary() c
           std::find(m_faces.begin(),m_faces.end(),face)
         };
         assert(iter != m_faces.end());
-        const int index = std::distance(m_faces.begin(),iter);
+        const int index{static_cast<int>(std::distance(m_faces.begin(),iter))};
         assert(index >= 0);
         assert(index < static_cast<int>(m_faces.size()));
         return index;
@@ -468,7 +471,7 @@ boost::shared_ptr<ribi::foam::FacesFile> ribi::foam::Mesh::CreateFaces() const n
           };
           assert(iter != m_points.end());
           const int index {
-            std::distance(m_points.begin(),iter)
+            static_cast<int>(std::distance(m_points.begin(),iter))
           };
           assert(index >= 0);
           assert(index < static_cast<int>(m_points.size()));
@@ -569,11 +572,14 @@ boost::shared_ptr<ribi::foam::NeighbourFile> ribi::foam::Mesh::CreateNeighbour()
 
     assert(std::find(m_cells.begin(),m_cells.end(),neighbour) != m_cells.end());
 
-    const int index
-      = std::distance(
-        m_cells.begin(),
-        std::find(m_cells.begin(),m_cells.end(),neighbour)
-      );
+    const int index{
+      static_cast<int>(
+        std::distance(
+          m_cells.begin(),
+          std::find(m_cells.begin(),m_cells.end(),neighbour)
+        )
+      )
+    };
 
     assert(index >= 0);
     assert(index < static_cast<int>(m_cells.size()));
@@ -607,7 +613,7 @@ boost::shared_ptr<ribi::foam::OwnerFile> ribi::foam::Mesh::CreateOwner() const n
       assert(owner);
       const auto iter = std::find(m_cells.begin(),m_cells.end(),owner);
       assert(iter != m_cells.end());
-      const int index = static_cast<int>(std::distance(m_cells.begin(),iter));
+      const int index{static_cast<int>(std::distance(m_cells.begin(),iter))};
       assert(index >= 0);
       assert(index < static_cast<int>(m_cells.size()));
       const CellIndex cell_index(index);
@@ -690,9 +696,11 @@ boost::shared_ptr<const ribi::foam::Face> ribi::foam::Mesh::FindMostSimilarFace(
 
   //Find the most similar
   const int index {
-    std::distance(
-      distances.begin(),
-      std::min_element(distances.begin(),distances.end())
+    static_cast<int>(
+      std::distance(
+        distances.begin(),
+        std::min_element(distances.begin(),distances.end())
+      )
     )
   };
 

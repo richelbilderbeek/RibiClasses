@@ -19,7 +19,7 @@ ribi::trim::TriangleMeshBuilder::TriangleMeshBuilder(
   const std::function<ribi::foam::PatchFieldType(const std::string&)> boundary_to_patch_field_type_function,
   const CreateVerticalFacesStrategy strategy,
   const bool verbose
-) : m_impl{std::make_unique<TriangleMeshBuilderImpl>(
+) : m_impl{new TriangleMeshBuilderImpl(
         cells,
         mesh_filename,
         boundary_to_patch_field_type_function,

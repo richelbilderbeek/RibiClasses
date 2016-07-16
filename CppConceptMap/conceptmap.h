@@ -21,6 +21,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #ifndef CONCEPTMAPCONCEPTMAP_H
 #define CONCEPTMAPCONCEPTMAP_H
 
+#include <random>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/graph_traits.hpp>
 #include "install_vertex_custom_type.h"

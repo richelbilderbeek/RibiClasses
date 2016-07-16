@@ -48,10 +48,12 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 int ribi::cmap::Edge::sm_ids = 0; //ID to assign
 
 ribi::cmap::Edge::Edge(
-  const Node& node
+  const Node& node,
+  const bool has_head_arrow,
+  const bool has_tail_arrow
 ) :
-    m_has_head_arrow{false},
-    m_has_tail_arrow{false},
+    m_has_head_arrow{has_head_arrow},
+    m_has_tail_arrow{has_tail_arrow},
     m_id{sm_ids++},
     m_node{node}
 {
@@ -98,6 +100,8 @@ std::string ribi::cmap::ToXml(
   std::stringstream s;
   s << "<edge>";
   s << ToXml(edge.GetNode().GetConcept());
+  s << "<has_head>" << edge.HasHeadArrow() << "</has_head>";
+  s << "<has_tail>" << edge.HasTailArrow() << "</has_tail>";
   s << "<x>" << edge.GetNode().GetX() << "</x>";
   s << "<y>" << edge.GetNode().GetY() << "</y>";
   s << "</edge>";
@@ -126,6 +130,24 @@ ribi::cmap::Edge ribi::cmap::XmlToEdge(
     assert(v.size() == 1);
     concept = XmlToConcept(v[0]);
   }
+
+  //m_has_head
+  bool has_head = false;
+  {
+    const std::vector<std::string> v
+      = Regex().GetRegexMatches(s,Regex().GetRegexHasHead());
+    assert(v.size() == 1);
+    has_head = boost::lexical_cast<bool>(StripXmlTag(v[0]));
+  }
+  //m_has_tail
+  bool has_tail = false;
+  {
+    const std::vector<std::string> v
+      = Regex().GetRegexMatches(s,Regex().GetRegexHasTail());
+    assert(v.size() == 1);
+    has_tail = boost::lexical_cast<bool>(StripXmlTag(v[0]));
+  }
+
   //m_x
   double x = 0.0;
   {
@@ -149,14 +171,18 @@ ribi::cmap::Edge ribi::cmap::XmlToEdge(
     y
   );
   Edge edge(
-    node
+    node, has_head, has_tail
   );
   return edge;
 }
 
 bool ribi::cmap::operator==(const ribi::cmap::Edge& lhs, const ribi::cmap::Edge& rhs)
 {
-  return lhs.GetNode() == rhs.GetNode();
+  return lhs.GetNode() == rhs.GetNode()
+    && lhs.HasHeadArrow() == rhs.HasHeadArrow()
+    && lhs.HasTailArrow() == rhs.HasTailArrow()
+  ;
+  //Note: does not check for ID
 }
 
 bool ribi::cmap::operator!=(const cmap::Edge& lhs, const cmap::Edge& rhs)

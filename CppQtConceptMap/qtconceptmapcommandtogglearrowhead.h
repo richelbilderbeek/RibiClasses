@@ -29,11 +29,17 @@ class CommandToggleArrowHead final : public Command
   void undo() override;
 
   private:
-  ConceptMap& m_conceptmap;
-  ConceptMap m_after;
-  const ConceptMap m_before;
+  ConceptMap& m_conceptmap; //The concept map to modify
+  ConceptMap m_cmap_after;
+  const ConceptMap m_cmap_before;
+  Edge m_edge_after;
+  const Edge m_edge_before;
   QGraphicsScene * const m_scene;
-  QtEdge * m_qtedge; //The QtEdge with the arrow head
+  QtEdge * const m_qtedge; //The QtEdge to modify
+
+
+  static Edge ExtractEdge(const ConceptMap& conceptmap, const QGraphicsScene& scene);
+  static QtEdge * ExtractQtEdge(const QGraphicsScene& scene);
 };
 
 } //~namespace cmap

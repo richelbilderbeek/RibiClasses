@@ -54,6 +54,79 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "get_my_custom_edges.h"
 #include "select_random_vertex.h"
 
+namespace ribi {
+namespace cmap {
+
+//Very similar to custom_and_selectable_vertices_writer
+template <
+  typename my_custom_edge_map,
+  typename is_selected_map
+>
+class edge_writer {
+public:
+  edge_writer(
+    my_custom_edge_map any_my_custom_edge_map,
+    is_selected_map any_is_selected_map
+  ) : m_my_custom_edge_map{any_my_custom_edge_map},
+      m_is_selected_map{any_is_selected_map}
+  {
+
+  }
+  template <class edge_descriptor>
+  void operator()(
+    std::ostream& out,
+    const edge_descriptor& ed
+  ) const noexcept {
+    const ribi::cmap::Edge edge = get(m_my_custom_edge_map, ed);
+    out << "[label=\""
+      << edge //Can be Graphviz unfriendly
+      << "\", "
+    ;
+
+    if (get(m_is_selected_map, ed))
+    {
+      out << "style = \"dashed\", ";
+    }
+
+    const bool has_head{edge.HasHeadArrow()};
+    const bool has_tail{edge.HasTailArrow()};
+    if ( has_head &&  has_tail) out << "dir = \"both\", arrowhead = \"normal\", arrowtail = \"normal\"";
+    if ( has_head && !has_tail) out << "dir = \"forward\", arrowhead = \"normal\"";
+    if (!has_head &&  has_tail) out << "dir = \"back\", arrowtail = \"normal\"";
+    out << "]";
+  }
+private:
+  my_custom_edge_map m_my_custom_edge_map;
+  is_selected_map m_is_selected_map;
+};
+
+template <
+  typename my_custom_vertex_map,
+  typename is_selected_map
+>
+inline edge_writer<
+  my_custom_vertex_map,
+  is_selected_map
+>
+make_edge_writer(
+  const my_custom_vertex_map& any_my_custom_vertex_map,
+  const is_selected_map& any_is_selected_map
+)
+{
+  return edge_writer<
+    my_custom_vertex_map,
+    is_selected_map
+  >(
+    any_my_custom_vertex_map,
+    any_is_selected_map
+  );
+}
+
+
+} //~namespace ribi
+} //~namespace cmap
+
+
 int ribi::cmap::CountCenterNodes(const ConceptMap& c) noexcept
 {
   return CountCenterNodes(GetNodes(c));
@@ -272,7 +345,22 @@ ribi::cmap::ConceptMap ribi::cmap::LoadFromFile(const std::string& dot_filename)
 
 void ribi::cmap::SaveToFile(const ConceptMap& g, const std::string& dot_filename)
 {
-  save_custom_and_selectable_edges_and_vertices_graph_to_dot(g, dot_filename);
+  //Cannot use:
+  //save_custom_and_selectable_edges_and_vertices_graph_to_dot(g, dot_filename);
+  //because we have a directed graph in which edegs have zero/one/two arrow heads
+
+  std::ofstream f(dot_filename);
+  boost::write_graphviz(f, g,
+    make_custom_and_selectable_vertices_writer(
+      get(boost::vertex_custom_type,g),
+      get(boost::vertex_is_selected,g)
+    ),
+    make_edge_writer(
+      get(boost::edge_custom_type,g),
+      get(boost::edge_is_selected,g)
+    )
+  );
+
 }
 
 void ribi::cmap::SaveToImage(const ConceptMap& g, const std::string& png_filename)
@@ -309,12 +397,20 @@ void ribi::cmap::SaveSummaryToFile(const ConceptMap& g, const std::string& dot_f
         << "\"]"
       ;
     },
-    [g](std::ostream& out, const EdgeDescriptor& vd) {
-      const auto pmap = get(boost::edge_custom_type, g);
+    [g](std::ostream& out, const EdgeDescriptor& ed) {
+      const auto edge_map = get(boost::edge_custom_type, g);
+      const auto edge = get(edge_map, ed);
       out << "[label=\""
-        << get(pmap, vd).GetNode().GetConcept().GetName()
-        << "\"]"
-      ;
+        << edge.GetNode().GetConcept().GetName()
+        << "\", "
+       ;
+
+      const bool has_head{edge.HasHeadArrow()};
+      const bool has_tail{edge.HasTailArrow()};
+      if ( has_head &&  has_tail) out << "dir = \"both\", arrowhead = \"normal\", arrowtail = \"normal\"";
+      if ( has_head && !has_tail) out << "dir = \"forward\", arrowhead = \"normal\"";
+      if (!has_head &&  has_tail) out << "dir = \"back\", arrowtail = \"normal\"";
+      out << "]";
     }
   );
 }

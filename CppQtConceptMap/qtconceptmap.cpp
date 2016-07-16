@@ -209,8 +209,8 @@ int ribi::cmap::CountQtNodes(const QGraphicsScene * const scene) noexcept
 {
   int cnt{0};
   for (auto item: scene->items()) {
-    if (dynamic_cast<QtNode*>(item)) {
-      ++cnt;
+    if (const QtNode* const qtnode = dynamic_cast<QtNode*>(item)) {
+      if (!IsOnEdge(qtnode, scene)) ++cnt;
     }
   }
   return cnt;
@@ -235,6 +235,7 @@ int ribi::cmap::CountSelectedQtNodes(const QGraphicsScene * const scene) noexcep
   for (auto item: scene->items()) {
     if (dynamic_cast<QtNode*>(item)
       && dynamic_cast<QtNode*>(item)->isSelected()
+      && !IsOnEdge(dynamic_cast<QtNode*>(item), scene)
     ) {
       ++cnt;
     }
@@ -475,28 +476,28 @@ QGraphicsScene* ribi::cmap::QtConceptMap::GetScene() const noexcept
   return scene();
 }
 
-std::vector<const ribi::cmap::QtEdge *> ribi::cmap::QtConceptMap::GetSelectedQtEdges() const noexcept
+std::vector<ribi::cmap::QtEdge *> ribi::cmap::GetSelectedQtEdges(const QGraphicsScene& scene) noexcept
 {
-  std::vector<const ribi::cmap::QtEdge *> selected;
-  const auto qtedges = GetQtEdges(GetScene());
+  std::vector<ribi::cmap::QtEdge *> selected;
+  const auto qtedges = GetQtEdges(&scene);
   std::copy_if(
     std::begin(qtedges),
     std::end(qtedges),
     std::back_inserter(selected),
-    [](const QtEdge* const qtedge) { return qtedge->isSelected() || qtedge->GetQtNode()->isSelected(); }
+    [](QtEdge* const qtedge) { return qtedge->isSelected() || qtedge->GetQtNode()->isSelected(); }
   );
   return selected;
 }
 
-std::vector<const ribi::cmap::QtNode *> ribi::cmap::QtConceptMap::GetSelectedQtNodes() const noexcept
+std::vector<ribi::cmap::QtNode *> ribi::cmap::GetSelectedQtNodes(const QGraphicsScene& scene) noexcept
 {
-  std::vector<const ribi::cmap::QtNode *> selected;
-  const auto qtnodes = GetQtNodes(GetScene());
+  std::vector<ribi::cmap::QtNode *> selected;
+  const auto qtnodes = GetQtNodes(&scene);
   std::copy_if(
     std::begin(qtnodes),
     std::end(qtnodes),
     std::back_inserter(selected),
-    [](const QtNode* const qtnode) { return qtnode->isSelected(); }
+    [](QtNode* const qtnode) { return qtnode->isSelected(); }
   );
   return selected;
 }
@@ -630,6 +631,10 @@ void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event) noexcept
 
   }
 
+  for (auto qtedge: GetSelectedQtEdges(*GetScene())) {
+    qtedge->keyPressEvent(event);
+    qtedge->update();
+  }
   QtKeyboardFriendlyGraphicsView::keyPressEvent(event);
   UpdateConceptMap();
 }
@@ -684,8 +689,10 @@ void ribi::cmap::QtConceptMap::mousePressEvent(QMouseEvent *event)
   if (GetVerbosity()) { TRACE_FUNC(); }
   UpdateConceptMap();
   assert(m_highlighter);
+  assert(!m_arrow->isSelected());
   if (m_arrow->isVisible())
   {
+    assert(!m_arrow->isSelected());
     if (m_highlighter->GetItem() && m_arrow->GetFrom() != m_highlighter->GetItem())
     {
       //The command needs to find the two selected vertices
@@ -707,33 +714,42 @@ void ribi::cmap::QtConceptMap::mousePressEvent(QMouseEvent *event)
       }
       catch (std::logic_error&) { return; }
     }
+    assert(!m_arrow->isSelected());
   }
 
+  assert(!m_arrow->isSelected());
   QtKeyboardFriendlyGraphicsView::mousePressEvent(event);
-
+  assert(!m_arrow->isSelected());
   UpdateExamplesItem();
+  assert(!m_arrow->isSelected());
 }
 
 void ribi::cmap::QtConceptMap::onFocusItemChanged(
   QGraphicsItem * newFocus, QGraphicsItem */*oldFocus*/, Qt::FocusReason reason
 )
 {
+  //Focus on QtNode
   if (QtNode * const qtnode = dynamic_cast<QtNode*>(newFocus)) {
     if (!IsOnEdge(qtnode, this->scene()))
     {
       m_tools->SetBuddyItem(qtnode);
       onSelectionChanged();
+      m_arrow->hide();
     }
     else
     {
       m_tools->SetBuddyItem(nullptr);
       onSelectionChanged();
     }
+    return;
   }
+  //Focus on m_tools
   if (newFocus == m_tools && !m_arrow->isVisible() && m_tools->GetBuddyItem() && reason == Qt::MouseFocusReason) {
-    m_arrow->Start(
-      m_tools->GetBuddyItem(),m_tools->GetBuddyItem()->GetCenterPos()
-    ); //Also sets visibility
+    m_arrow->Start(m_tools->GetBuddyItem()); //Also sets visibility
+    m_tools->setSelected(false);
+    m_tools->GetBuddyItem()->SetSelected(true); //Will tigger onSelectionChanged and hide the arrow
+    m_tools->GetBuddyItem()->setFocus();
+    m_arrow->setVisible(true);
   }
 }
 
@@ -827,13 +843,6 @@ void ribi::cmap::QtConceptMap::OnNodeKeyDownPressed(QtNode* const item, const in
 
 void ribi::cmap::QtConceptMap::onSelectionChanged()
 {
-  if (m_tools->isSelected())
-  {
-    assert(m_tools->GetBuddyItem());
-    m_arrow->Start(m_tools->GetBuddyItem(), mapToScene(QCursor::pos()));
-    m_arrow->setVisible(true);
-  }
-
   Graph& g = m_conceptmap;
 
   //Selectness of vertices
@@ -859,21 +868,6 @@ void ribi::cmap::QtConceptMap::onSelectionChanged()
     }
   );
   scene()->update();
-}
-
-void ribi::cmap::QtConceptMap::OnToolsClicked()
-{
-  assert(!"Not used?");
-  const QPointF cursor_pos_approx(
-    m_tools->GetBuddyItem()->GetCenterX(),
-    m_tools->GetBuddyItem()->GetCenterY() - 32.0
-    - m_tools->GetBuddyItem()->GetRadiusY()
-  );
-  m_arrow->Start(
-    m_tools->GetBuddyItem(),cursor_pos_approx
-  );
-  m_arrow->update();
-  this->scene()->update();
 }
 
 void ribi::cmap::QtConceptMap::SetConceptMap(const ConceptMap& conceptmap)

@@ -1,4 +1,4 @@
-//---------------------------------------------------------------------------
+ //---------------------------------------------------------------------------
 /*
 QtConceptMap, Qt classes for display and interaction with ConceptMap
 Copyright (C) 2013-2016 Richel Bilderbeek
@@ -66,9 +66,6 @@ public:
 
   ///Obtain the QGraphicsScene
   QGraphicsScene* GetScene() const noexcept;
-
-  std::vector<const QtEdge *> GetSelectedQtEdges() const noexcept;
-  std::vector<const QtNode *> GetSelectedQtNodes() const noexcept;
 
   const QUndoStack& GetUndo() const noexcept { return m_undo; }
         QUndoStack& GetUndo()       noexcept { return m_undo; }
@@ -150,9 +147,6 @@ private:
   ///Called when an item wants to be edited
   void OnNodeKeyDownPressed(QtNode* const item, const int key);
 
-  ///Called whenever the tools item is clicked
-  void OnToolsClicked();
-
   /// Writes the selecteness of the QtConceptMap
   /// to the ConceptMap
   void UpdateConceptMap();
@@ -166,6 +160,7 @@ private slots:
   void onSelectionChanged();
 };
 
+///Counts the QtNodes that are Nodes, i.e. are not on an edge
 int CountQtNodes(const QGraphicsScene * const scene) noexcept;
 int CountQtEdges(const QGraphicsScene * const scene) noexcept;
 int CountSelectedQtNodes(const QGraphicsScene * const scene) noexcept;
@@ -207,6 +202,9 @@ std::vector<QtEdge*> GetQtEdges(
 
 
 std::vector<QtNode *> GetQtNodes(const QGraphicsScene * const scene) noexcept;
+
+std::vector<QtEdge *> GetSelectedQtEdges(const QGraphicsScene& scene) noexcept;
+std::vector<QtNode *> GetSelectedQtNodes(const QGraphicsScene& scene) noexcept;
 
 ///Check if this item is the center node
 bool IsQtCenterNode(const QGraphicsItem* const item);

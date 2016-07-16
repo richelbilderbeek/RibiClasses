@@ -470,7 +470,6 @@ void ribi::QtQuadBezierArrowItem::SetFocusPen(const QPen& pen) noexcept
   {
     m_focus_pen = pen;
     this->update();
-    //m_signal_item_updated(this);
   }
 }
 
@@ -481,7 +480,6 @@ void ribi::QtQuadBezierArrowItem::SetFromPos(const QPointF& pos) noexcept
   {
     m_from->setPos(pos);
     this->update();
-    //m_signal_item_updated(this);
   }
 }
 
@@ -492,7 +490,6 @@ void ribi::QtQuadBezierArrowItem::SetHasHead(const bool has_head) noexcept
   {
     m_head = has_head;
     this->update();
-    //m_signal_item_updated(this);
   }
 }
 
@@ -502,7 +499,6 @@ void ribi::QtQuadBezierArrowItem::SetHasTail(const bool has_tail) noexcept
   {
     m_tail = has_tail;
     this->update();
-    //m_signal_item_updated(this);
   }
 }
 
@@ -514,7 +510,6 @@ void ribi::QtQuadBezierArrowItem::SetMidPos(const QPointF& pos) noexcept
   {
     m_mid->setPos(pos);
     this->update();
-    //m_signal_item_updated(this);
   }
 }
 
