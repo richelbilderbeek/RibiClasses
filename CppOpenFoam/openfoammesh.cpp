@@ -1,9 +1,12 @@
 #include "openfoammesh.h"
 
+#include <algorithm>
 #include <cassert>
+#include <cmath>
 #include <iostream>
 #include <ostream>
 #include <map>
+#include <numeric>
 
 #include "openfoamboundary.h"
 #include "openfoamboundaryfile.h"
