@@ -147,9 +147,6 @@ private:
   ///Called when an item wants to be edited
   void OnNodeKeyDownPressed(QtNode* const item, const int key);
 
-  ///Called whenever the tools item is clicked
-  void OnToolsClicked();
-
   /// Writes the selecteness of the QtConceptMap
   /// to the ConceptMap
   void UpdateConceptMap();

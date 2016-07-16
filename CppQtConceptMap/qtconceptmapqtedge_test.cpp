@@ -1,5 +1,6 @@
 #include "qtconceptmapqtedge_test.h"
 
+#include <cmath>
 #include <boost/lambda/lambda.hpp>
 
 #include "qtconceptmapqtedge.h"

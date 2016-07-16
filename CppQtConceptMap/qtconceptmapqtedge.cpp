@@ -25,7 +25,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "qtconceptmapqtedge.h"
 
 #include <cassert>
-
+#include <cmath>
 #include <boost/lambda/lambda.hpp>
 
 #include <QCursor>

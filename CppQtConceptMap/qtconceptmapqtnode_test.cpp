@@ -2,6 +2,7 @@
 #include "qtconceptmapqtnode.h"
 
 #include <climits>
+#include <cmath>
 
 #include <boost/lambda/lambda.hpp>
 #include <boost/signals2.hpp>

@@ -1,5 +1,6 @@
 #include "qtroundedrectitemdialog_test.h"
 
+#include <cmath>
 #include "qtroundedrectitem.h"
 #include "qtroundedrectitemdialog.h"
 #include "ui_qtroundedrectitemdialog.h"

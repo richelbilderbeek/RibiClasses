@@ -25,6 +25,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "qtconceptmapqtnodedialog.h"
 
 #include <cassert>
+#include <cmath>
 #include <sstream>
 
 #include <boost/lambda/lambda.hpp>

@@ -15,6 +15,8 @@ private slots:
   void create_one_edge_keyboard();
   void create_one_edge_with_head_command();
   void create_one_edge_with_head_keyboard();
+  void create_one_edge_with_head_and_undo_keyboard();
+  void create_one_edge_with_head_and_toggle_keyboard();
   void create_one_node_and_undo_command();
   void create_one_node_and_undo_keyboard();
   void create_one_node_command();

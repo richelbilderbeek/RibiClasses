@@ -50,30 +50,33 @@ ribi::cmap::QtNewArrow::QtNewArrow()
   //A new arrow must not be moveable
   this->setFlag(QGraphicsItem::ItemIsSelectable,false);
   this->setFlag(QGraphicsItem::ItemIsMovable,false);
+  this->setFlag(QGraphicsItem::ItemIsFocusable,false);
 
   //Reject enterHoverEvents
   this->setAcceptHoverEvents(false);
 
   assert(!(this->flags() & QGraphicsItem::ItemIsSelectable));
-  assert(!(this->flags() & QGraphicsItem::ItemIsMovable ));
+  assert(!(this->flags() & QGraphicsItem::ItemIsMovable));
+  assert(!(this->flags() & QGraphicsItem::ItemIsFocusable));
+  assert(!this->isSelected());
 }
 
-void ribi::cmap::QtNewArrow::Start(
-  QtNode * const from,
-  const QPointF& current_to
-)
+void ribi::cmap::QtNewArrow::Start(QtNode * const from)
 {
   assert(from);
   m_from = from;
   this->SetTailPos(from->GetCenterX(), from->GetCenterY());
   this->SetHasTail(false);
-  this->SetHeadPos(current_to.x(), current_to.y());
+  this->SetHeadPos(from->GetCenterX() + 16, from->GetCenterY() - 16);
   this->SetHasHead(true);
   this->show();
+  assert(!this->isSelected());
 }
 
 void ribi::cmap::QtNewArrow::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
+  assert(!this->isSelected());
+  assert(!this->hasFocus());
   assert(m_from);
   typedef boost::geometry::model::d2::point_xy<double> Point;
   typedef boost::geometry::model::linestring<Point> Line;
@@ -105,4 +108,6 @@ void ribi::cmap::QtNewArrow::paint(QPainter* painter, const QStyleOptionGraphics
   const QPointF p2 = this->line().p2();
   this->setLine(QLineF(QPointF(p1[0].x(),p1[0].y()),p2));
   QtArrowItem::paint(painter,option,widget);
+  assert(!this->isSelected());
+  assert(!this->hasFocus());
 }

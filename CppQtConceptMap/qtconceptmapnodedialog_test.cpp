@@ -1,7 +1,7 @@
 #include "qtconceptmapnodedialog_test.h"
 #include "qtconceptmapnodedialog.h"
 
-
+#include <cmath>
 #include <boost/bind/bind.hpp>
 #include <boost/lambda/lambda.hpp>
 

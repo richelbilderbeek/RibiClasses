@@ -1,5 +1,6 @@
 #include "qtquadbezierarrowdialog_test.h"
 
+#include <cmath>
 #include <QGraphicsSimpleTextItem>
 #include "qtquadbezierarrowdialog.h"
 #include "qtquadbezierarrowitem.h"

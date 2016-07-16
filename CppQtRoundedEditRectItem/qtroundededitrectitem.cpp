@@ -25,7 +25,8 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "qtroundededitrectitem.h"
 
 #include <cassert>
-
+#include <algorithm>
+#include <numeric>
 #include <boost/lambda/lambda.hpp>
 
 #include <QFontMetrics>
