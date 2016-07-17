@@ -108,9 +108,9 @@ boost::geometry::model::point<double,3,boost::geometry::cs::cartesian> ribi::tri
   using boost::geometry::get;
   
   const Coordinat3D sum(
-    std::accumulate(m_points.begin(),m_points.end(),
+    std::accumulate(std::begin(m_points),std::end(m_points),
       Geometry().CreatePoint(0.0,0.0,0.0),
-      [](const Coordinat3D& init, const boost::shared_ptr<const Point>& point)
+      [](const Coordinat3D& init, const boost::shared_ptr<Point>& point)
       {
         assert(point);
         return init + point->GetCoordinat3D();
