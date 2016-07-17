@@ -23,6 +23,9 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 
 #include "conceptmapfwd.h"
 
+struct QGraphicsItem;
+struct QGraphicsScene;
+
 namespace ribi {
 
 struct QtQuadBezierArrowItem;

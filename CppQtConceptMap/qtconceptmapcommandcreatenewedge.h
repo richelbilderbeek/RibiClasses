@@ -26,6 +26,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmapedge.h"
 #include "qtconceptmapcommand.h"
 
+struct QGraphicsItem;
 struct QGraphicsScene;
 
 namespace ribi {
@@ -56,6 +57,7 @@ class CommandCreateNewEdgeBetweenTwoSelectedNodes final : public Command
   ConceptMap m_after;
   const ConceptMap m_before;
   QGraphicsScene * const m_scene;
+  const QList<QGraphicsItem *> m_selected_before;
   QtTool * const m_tool_item;
   QtEdge * m_qtedge; //The QtEdge being added or removed
   QtNode * m_qtnode; //The QtNode being at the center of m_qtedge

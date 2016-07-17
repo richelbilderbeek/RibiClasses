@@ -36,10 +36,6 @@ class CommandToggleArrowHead final : public Command
   const Edge m_edge_before;
   QGraphicsScene * const m_scene;
   QtEdge * const m_qtedge; //The QtEdge to modify
-
-
-  static Edge ExtractEdge(const ConceptMap& conceptmap, const QGraphicsScene& scene);
-  static QtEdge * ExtractQtEdge(const QGraphicsScene& scene);
 };
 
 } //~namespace cmap

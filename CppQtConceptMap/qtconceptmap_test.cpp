@@ -24,6 +24,7 @@
 #include "qtconceptmapcommandunselectrandom.h"
 #include "qtconceptmapexamplesitem.h"
 #include "qtconceptmap.h"
+#include "qtconceptmaphelper.h"
 #include "qtconceptmapqtnode.h"
 #include "qtconceptmapqtnode.h"
 #include "ribi_system.h"
@@ -84,6 +85,24 @@ void ribi::cmap::qtconceptmap_test::create_one_edge_keyboard()
   QTest::keyClick(&m, Qt::Key_N, Qt::ControlModifier, 100);
   QTest::keyClick(&m, Qt::Key_N, Qt::ControlModifier, 100);
   QTest::keyClick(&m, Qt::Key_E, Qt::ControlModifier, 100);
+  QVERIFY(DoubleCheckEdgesAndNodes(m,1,2));
+  QVERIFY(DoubleCheckSelectedEdgesAndNodes(m,1,0));
+}
+
+void ribi::cmap::qtconceptmap_test::create_one_edge_keyboard_and_undo()
+{
+  QtConceptMap m;
+  QTest::keyClick(&m, Qt::Key_N, Qt::ControlModifier, 100);
+  QTest::keyClick(&m, Qt::Key_N, Qt::ControlModifier, 100);
+  QTest::keyClick(&m, Qt::Key_E, Qt::ControlModifier, 100);
+  QVERIFY(DoubleCheckEdgesAndNodes(m,1,2));
+  QVERIFY(DoubleCheckSelectedEdgesAndNodes(m,1,0));
+  //Undo
+  QTest::keyClick(&m, Qt::Key_Z, Qt::ControlModifier, 100);
+  QVERIFY(DoubleCheckEdgesAndNodes(m,0,2));
+  QVERIFY(DoubleCheckSelectedEdgesAndNodes(m,0,2));
+  //Redo
+  QTest::keyClick(&m, Qt::Key_Z, Qt::ControlModifier | Qt::ShiftModifier, 100);
   QVERIFY(DoubleCheckEdgesAndNodes(m,1,2));
   QVERIFY(DoubleCheckSelectedEdgesAndNodes(m,1,0));
 }

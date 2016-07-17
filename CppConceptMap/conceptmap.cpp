@@ -201,7 +201,7 @@ ribi::cmap::VertexDescriptor ribi::cmap::FindCenterNode(const ConceptMap& g)
 ribi::cmap::EdgeDescriptor ribi::cmap::find_first_custom_edge_with_my_edge(
   const Edge& edge,
   const ConceptMap& g
-) noexcept
+)
 {
   return ::find_first_custom_edge_with_my_edge(edge, g);
 }

@@ -28,6 +28,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmapedgefactory.h"
 #include "conceptmapnode.h"
 #include "qtconceptmapqtnode.h"
+#include "qtconceptmaphelper.h"
 #include "trace.h"
 #include "count_vertices_with_selectedness.h"
 #include "add_edge_between_selected_vertices.h"
@@ -44,6 +45,7 @@ ribi::cmap::CommandCreateNewEdgeBetweenTwoSelectedNodes::CommandCreateNewEdgeBet
     m_after{conceptmap},
     m_before{conceptmap},
     m_scene{scene},
+    m_selected_before{scene->selectedItems()},
     m_tool_item{tool_item},
     m_qtedge{nullptr}
 {
@@ -102,4 +104,5 @@ void ribi::cmap::CommandCreateNewEdgeBetweenTwoSelectedNodes::undo()
   m_qtedge->GetTo()->setFocus();
   m_scene->removeItem(m_qtedge);
   m_scene->removeItem(m_qtnode);
+  for (auto item: m_selected_before) { item->setSelected(true); }
 }

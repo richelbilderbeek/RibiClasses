@@ -18,6 +18,7 @@
 #include <QGraphicsScene>
 #include "qtconceptmap.h"
 #include "qtconceptmaptoolsitem.h"
+#include "qtconceptmaphelper.h"
 
 ribi::cmap::CommandToggleArrowHead::CommandToggleArrowHead(
   ConceptMap& conceptmap,
@@ -25,10 +26,10 @@ ribi::cmap::CommandToggleArrowHead::CommandToggleArrowHead(
 ) : m_conceptmap(conceptmap),
     m_cmap_after{conceptmap},
     m_cmap_before{conceptmap},
-    m_edge_after{ExtractEdge(conceptmap,*scene)},
-    m_edge_before{ExtractEdge(conceptmap,*scene)},
+    m_edge_after{ExtractTheOneSelectedEdge(conceptmap,*scene)},
+    m_edge_before{ExtractTheOneSelectedEdge(conceptmap,*scene)},
     m_scene{scene},
-    m_qtedge{ExtractQtEdge(*scene)}
+    m_qtedge{ExtractTheOneSelectedQtEdge(*scene)}
 {
   this->setText("Toggle arrow head");
 
@@ -44,52 +45,6 @@ ribi::cmap::CommandToggleArrowHead::CommandToggleArrowHead(
     const auto ed = find_first_custom_edge_with_my_edge(m_edge_before, m_cmap_after);
     set_my_custom_edge(m_edge_after, ed, m_cmap_after);
   }
-}
-
-ribi::cmap::Edge ribi::cmap::CommandToggleArrowHead::ExtractEdge(
-  const ConceptMap& conceptmap, const QGraphicsScene& scene
-)
-{
-  const auto qtedge = ExtractQtEdge(scene);
-  const auto ed = find_first_custom_edge_with_my_edge(qtedge->GetEdge(), conceptmap);
-  const Edge edge = get_my_custom_edge(ed, conceptmap);
-  assert(edge == qtedge->GetEdge());
-  return edge;
-}
-
-ribi::cmap::QtEdge * ribi::cmap::CommandToggleArrowHead::ExtractQtEdge(const QGraphicsScene& scene)
-{
-  if (scene.selectedItems().size() != 1)
-  {
-    std::stringstream msg;
-    msg << __func__ << ": "
-      << "Must have one selected item, instead of "
-      << scene.selectedItems().size() << " items"
-    ;
-    throw std::invalid_argument(msg.str());
-  }
-  auto item = scene.selectedItems().front();
-
-  //Is it an edge?
-  if (QtEdge * const qtedge = dynamic_cast<QtEdge*>(item))
-  {
-    return qtedge;
-  }
-
-  //Or is it the node on an edge?
-  else if (QtNode * const qtnode = dynamic_cast<QtNode*>(item))
-  {
-    QtEdge * const qtedge = FindQtEdge(qtnode, &scene);
-    if (qtedge) return qtedge;
-  }
-
-  //Nope, it cannot be found
-  std::stringstream msg;
-  msg << __func__ << ": "
-    << "The selected item must be a QtEdge, "
-    << "or a QtNode on a QtEdge"
-  ;
-  throw std::invalid_argument(msg.str());
 }
 
 void ribi::cmap::CommandToggleArrowHead::redo()
