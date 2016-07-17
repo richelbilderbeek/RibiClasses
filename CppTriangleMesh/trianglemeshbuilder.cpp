@@ -4,7 +4,7 @@
 #include "trianglemeshbuilder.h"
 
 #include <cassert>
-
+#include <vector>
 #include <boost/make_shared.hpp>
 
 #include "testtimer.h"
