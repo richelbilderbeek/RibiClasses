@@ -755,11 +755,13 @@ void ribi::trim::CellsCreator::Test() noexcept
       //Find the one/two Faces that have a neighbour
       {
         const int n_faces_with_neighbour {
-          std::count_if(faces_1.begin(),faces_1.end(),
-            [](const boost::shared_ptr<Face> face)
-            {
-              return face->GetNeighbour().get();
-            }
+          static_cast<int>(
+            std::count_if(faces_1.begin(),faces_1.end(),
+              [](const boost::shared_ptr<Face> face)
+              {
+                return face->GetNeighbour().get();
+              }
+            )
           )
         };
         assert(
@@ -771,11 +773,13 @@ void ribi::trim::CellsCreator::Test() noexcept
       }
       {
         const int n_faces_with_neighbour {
-          std::count_if(faces_2.begin(),faces_2.end(),
-            [](const boost::shared_ptr<Face> face)
-            {
-              return face->GetNeighbour().get();
-            }
+          static_cast<int>(
+            std::count_if(faces_2.begin(),faces_2.end(),
+              [](const boost::shared_ptr<Face> face)
+              {
+                return face->GetNeighbour().get();
+              }
+            )
           )
         };
         assert(

@@ -188,13 +188,15 @@ void ribi::trim::Cell::Test() noexcept
     );
 
     const int n_faces_with_neighbours {
-      std::count_if(faces.begin(),faces.end(),
-        [](const boost::shared_ptr<Face> face)
-        {
-          assert(face);
-          assert(face->GetConstOwner());
-          return face->GetNeighbour().get();
-        }
+      static_cast<int>(
+        std::count_if(faces.begin(),faces.end(),
+          [](const boost::shared_ptr<Face> face)
+          {
+            assert(face);
+            assert(face->GetConstOwner());
+            return face->GetNeighbour().get();
+          }
+        )
       )
     };
     assert(n_faces_with_neighbours == 1 || n_faces_with_neighbours == 2);

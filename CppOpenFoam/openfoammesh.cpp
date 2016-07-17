@@ -813,13 +813,15 @@ void ribi::foam::Mesh::Test() noexcept
         mesh.GetFaces()
       };
       const int n_internal {
-        std::count_if(mesh_faces.begin(),mesh_faces.end(),
-          [](const boost::shared_ptr<const Face> face)
-          {
-            assert(face);
-            assert(face->GetOwner());
-            return face->GetNeighbour(); //internal faces have a neighbour
-          }
+        static_cast<int>(
+          std::count_if(mesh_faces.begin(),mesh_faces.end(),
+            [](const boost::shared_ptr<const Face> face)
+            {
+              assert(face);
+              assert(face->GetOwner());
+              return face->GetNeighbour(); //internal faces have a neighbour
+            }
+          )
         )
       };
       assert(n_internal == n_internal_mesh_faces_expected[mesh_index]

@@ -1,7 +1,9 @@
 #include "trianglemeshface.h"
 
 #include <algorithm>
+#include <cmath>
 #include <fstream>
+#include <numeric>
 #include <set>
 
 #pragma GCC diagnostic push
