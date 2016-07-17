@@ -40,8 +40,12 @@ SOURCES += \
     $$PWD/qtconceptmapcommandselectrandomitem.cpp \
     $$PWD/qtconceptmapcommandselectrandomnode.cpp \
     $$PWD/qtconceptmapcommanddeleteselected.cpp \
+<<<<<<< HEAD
     ../RibiClasses/CppQtConceptMap/qtconceptmapcommandtogglearrowhead.cpp \
     ../RibiClasses/CppQtConceptMap/qtconceptmaphelper.cpp
+=======
+    $$PWD/qtconceptmapcommandtogglearrowhead.cpp
+>>>>>>> 4a7f67dbd7352f711757b15f93f9b27b17559104
 
 HEADERS += \
     $$PWD/qtconceptmapbrushfactory.h \
@@ -80,8 +84,12 @@ HEADERS += \
     $$PWD/qtconceptmapcommandselectrandomitem.h \
     $$PWD/qtconceptmapcommandselectrandomnode.h \
     $$PWD/qtconceptmapcommanddeleteselected.h \
+<<<<<<< HEAD
     ../RibiClasses/CppQtConceptMap/qtconceptmapcommandtogglearrowhead.h \
     ../RibiClasses/CppQtConceptMap/qtconceptmaphelper.h
+=======
+    $$PWD/qtconceptmapcommandtogglearrowhead.h
+>>>>>>> 4a7f67dbd7352f711757b15f93f9b27b17559104
 
 FORMS += \
     $$PWD/qtconceptmapconceptdialog.ui \
