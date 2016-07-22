@@ -38,16 +38,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "trace.h"
 #pragma GCC diagnostic pop
 
-double ribi::cmap::GetDistance(const double delta_x, const double delta_y)
-{
-  return std::sqrt( (delta_x * delta_x) + (delta_y * delta_y) );
-}
-
-double ribi::cmap::GetDistance(const double x1, const double y1, const double x2, const double y2)
-{
-  return GetDistance(x1-x2,y1-y2);
-}
-
 std::vector<std::string> ribi::cmap::SafeFileToVector(const std::string& filename) noexcept
 {
   std::vector<std::string> v = ribi::FileIo().FileToVector(filename);
