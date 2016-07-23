@@ -141,7 +141,7 @@ const std::vector<std::vector<T> > GetCombinations(const std::vector<T>& v)
 ///SafeFileToVector calls FileToVector and
 ///removes an empty trailing line that can be created under
 ///the Windows operating system, due to different line endings
-std::vector<std::string> SafeFileToVector(const std::string& filename) noexcept;
+std::vector<std::string> SafeFileToVector(const std::string& filename);
 
 ///Undo a Wordwrap
 std::string Unwordwrap(const std::vector<std::string>& v) noexcept;

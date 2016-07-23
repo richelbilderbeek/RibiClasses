@@ -38,8 +38,18 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "trace.h"
 #pragma GCC diagnostic pop
 
-std::vector<std::string> ribi::cmap::SafeFileToVector(const std::string& filename) noexcept
+std::vector<std::string> ribi::cmap::SafeFileToVector(const std::string& filename)
 {
+  if(!ribi::is_regular_file(filename))
+  {
+    std::stringstream msg;
+    msg << __func__ << ": "
+      << "can only convert existing files, "
+      << "filename supplied: '"
+      << filename << "' was not found"
+    ;
+    throw std::invalid_argument(msg.str());
+  }
   std::vector<std::string> v = ribi::FileIo().FileToVector(filename);
   if (!v.empty() && v.back().empty()) v.pop_back();
   return v;
