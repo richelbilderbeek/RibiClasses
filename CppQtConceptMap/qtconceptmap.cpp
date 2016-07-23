@@ -67,6 +67,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "qtconceptmapcommandselectrandomnode.h"
 #include "qtconceptmaprateexamplesdialognewname.h"
 #include "qtconceptmapcenternode.h"
+#include "has_custom_edge_with_my_edge.h"
 #include "qtconceptmapconcepteditdialog.h"
 #include "qtconceptmapqtedge.h"
 #include "qtconceptmapqtnode.h"
@@ -189,6 +190,8 @@ void ribi::cmap::QtConceptMap::CheckInvariants() const noexcept
   try
   {
     const auto qtedge = ExtractTheOneSelectedQtEdge(*GetScene());
+    //The QtEdge its edge must be in the concept map
+    assert(has_custom_edge_with_my_edge(qtedge->GetEdge(), GetConceptMap()));
     const auto edge = ExtractTheOneSelectedEdge(this->GetConceptMap(), *GetScene());
     assert(qtedge->GetEdge() == edge);
   }
@@ -366,12 +369,22 @@ void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event) noexcept
         catch (std::logic_error& ) {}
       }
       return;
+    case Qt::Key_T:
+      //TODO: make tail specific function
     case Qt::Key_H:
       if (event->modifiers() & Qt::ControlModifier)
       {
         if (GetVerbosity()) { TRACE("Pressing CTRL-H"); }
-        try { this->DoCommand(new CommandToggleArrowHead(GetConceptMap(), scene())); }
-        catch (std::logic_error& ) {}
+        try
+        {
+          const auto cmd = new CommandToggleArrowHead(GetConceptMap(), scene());
+          this->DoCommand(cmd);
+        }
+        catch (std::logic_error& e)
+        {
+          qDebug() << e.what();
+
+        }
       }
       return;
     case Qt::Key_N:

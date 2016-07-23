@@ -9,6 +9,8 @@
 #include "count_vertices_with_selectedness.h"
 #include "get_my_custom_edge.h"
 #include "count_edges_with_selectedness.h"
+#include "find_first_custom_edge_with_my_edge.h"
+#include "has_custom_edge_with_my_edge.h"
 
 int ribi::cmap::CountQtEdges(const QGraphicsScene * const scene) noexcept
 {
@@ -135,7 +137,8 @@ ribi::cmap::Edge ribi::cmap::ExtractTheOneSelectedEdge(
 )
 {
   const auto qtedge = ExtractTheOneSelectedQtEdge(scene);
-  const auto ed = find_first_custom_edge_with_my_edge(qtedge->GetEdge(), conceptmap);
+  assert(has_custom_edge_with_my_edge(qtedge->GetEdge(), conceptmap));
+  const auto ed = ::find_first_custom_edge_with_my_edge(qtedge->GetEdge(), conceptmap);
   const Edge edge = get_my_custom_edge(ed, conceptmap);
   assert(edge == qtedge->GetEdge());
   return edge;
