@@ -186,6 +186,18 @@ void ribi::cmap::QtEdge::focusOutEvent(QFocusEvent* e) noexcept
   assert(!hasFocus());
 }
 
+bool ribi::cmap::QtEdge::HasHeadArrow() noexcept
+{
+  assert(m_arrow);
+  return m_arrow->HasHead();
+}
+
+bool ribi::cmap::QtEdge::HasTailArrow() noexcept
+{
+  assert(m_arrow);
+  return m_arrow->HasTail();
+}
+
 bool ribi::cmap::QtEdge::isSelected() const
 {
   return GetQtNode()->isSelected();
@@ -383,19 +395,20 @@ void ribi::cmap::QtEdge::SetEdge(const Edge& edge) noexcept
 void ribi::cmap::QtEdge::SetHasHeadArrow(const bool has_head_arrow) noexcept
 {
   assert(m_arrow);
+  this->GetEdge().SetHeadArrow(has_head_arrow);
   this->m_arrow->SetHasHead(has_head_arrow);
 }
 
 void ribi::cmap::QtEdge::SetHasTailArrow(const bool has_tail_arrow) noexcept
 {
   assert(m_arrow);
+  this->GetEdge().SetTailArrow(has_tail_arrow);
   this->m_arrow->SetHasTail(has_tail_arrow);
 }
 
 void ribi::cmap::QtEdge::SetSelected(bool selected)
 {
   this->GetQtNode()->SetSelected(selected);
-  //m_signal_selected_changed(this);
 }
 
 QPainterPath ribi::cmap::QtEdge::shape() const noexcept

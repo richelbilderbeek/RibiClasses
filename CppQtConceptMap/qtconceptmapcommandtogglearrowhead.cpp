@@ -41,12 +41,18 @@ void ribi::cmap::CommandToggleArrowHead::redo()
   );
   auto current_edge = get_my_custom_edge(ed, m_conceptmap);
 
+  const auto has_arrow_old = current_edge.HasHeadArrow();
+  const auto has_arrow_new = !has_arrow_old;
+
   //Add an arrow and put it back in the concept map
-  current_edge.SetHeadArrow(!current_edge.HasHeadArrow());
+  current_edge.SetHeadArrow(has_arrow_new);
   ::set_my_custom_edge(current_edge, ed, m_conceptmap);
 
   //Put the current arrow head in the QtEdge
-  m_qtedge->SetHasHeadArrow(current_edge.HasHeadArrow());
+  m_qtedge->SetHasHeadArrow(has_arrow_new);
+
+  assert(m_qtedge->HasHeadArrow() == current_edge.HasHeadArrow());
+  assert(m_qtedge->HasHeadArrow() == m_qtedge->GetEdge().HasHeadArrow());
 }
 
 void ribi::cmap::CommandToggleArrowHead::undo()
