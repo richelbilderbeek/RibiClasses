@@ -16,7 +16,10 @@ void ribi::qthideandshowdialog_test::parent_can_show_child()
   parent.show();
   QVERIFY(parent.isVisible());
   QVERIFY(!kid.isVisible());
-  QTimer::singleShot(1000, Qt::CoarseTimer, &kid, SLOT(close()));
+  QTimer * const timer{new QTimer};
+  timer->setInterval(1000);
+  QObject::connect(timer, SIGNAL(timeout()), &kid, SLOT(close()));
+  timer->start();
   parent.ShowChild(&kid);
 
   //Close
