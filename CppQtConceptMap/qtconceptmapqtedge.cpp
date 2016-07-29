@@ -49,11 +49,7 @@ ribi::cmap::QtEdge::QtEdge(
     QtNode * const from,
     QtNode * const to
 )
-  : //m_signal_base_changed{},
-    //m_signal_edge_changed{},
-    //m_signal_selected_changed{},
-    //m_signal_key_down_pressed{},
-    m_arrow{nullptr}, //Will be initialized below
+  : m_arrow{nullptr}, //Will be initialized below
     m_edge{edge},
     m_from{from},
     m_qtnode{new QtNode(edge.GetNode())},

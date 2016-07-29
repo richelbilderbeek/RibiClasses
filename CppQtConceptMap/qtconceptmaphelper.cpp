@@ -136,11 +136,20 @@ ribi::cmap::Edge ribi::cmap::ExtractTheOneSelectedEdge(
   const ConceptMap& conceptmap, const QGraphicsScene& scene
 )
 {
+  //Must check on ID here, as QtEdge and its Edge may mismatch, due to the positions at the endpoint
   const auto qtedge = ExtractTheOneSelectedQtEdge(scene);
-  assert(has_custom_edge_with_my_edge(qtedge->GetEdge(), conceptmap));
-  const auto ed = ::find_first_custom_edge_with_my_edge(qtedge->GetEdge(), conceptmap);
+  assert(
+    has_custom_edge_with_my_edge(
+      qtedge->GetEdge(), conceptmap,
+      [](const Edge& lhs, const Edge& rhs) { return lhs.GetId() == rhs.GetId(); }
+    )
+  );
+  const auto ed = ::find_first_custom_edge_with_my_edge(
+    qtedge->GetEdge(), conceptmap,
+    [](const Edge& lhs, const Edge& rhs) { return lhs.GetId() == rhs.GetId(); }
+  );
   const Edge edge = get_my_custom_edge(ed, conceptmap);
-  assert(edge == qtedge->GetEdge());
+  assert(edge.GetId() == qtedge->GetEdge().GetId());
   return edge;
 }
 

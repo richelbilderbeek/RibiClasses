@@ -41,44 +41,45 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "fuzzy_equal_to.h"
 #include "qtconceptmapcollect.h"
 
-#include "container.h"
 #include "conceptmapconceptfactory.h"
 #include "conceptmapconcept.h"
-#include "create_direct_neighbour_custom_and_selectable_edges_and_vertices_subgraph.h"
-#include "qtconceptmaphelper.h"
-#include "get_my_custom_vertex.h"
-#include "set_my_custom_vertex.h"
+#include "conceptmapedgefactory.h"
+#include "conceptmapedge.h"
 #include "conceptmapfactory.h"
 #include "conceptmap.h"
-#include "conceptmapedgefactory.h"
-#include "count_edges_with_selectedness.h"
-#include "conceptmapedge.h"
 #include "conceptmaphelper.h"
 #include "conceptmapnodefactory.h"
 #include "conceptmapnode.h"
-#include "qtconceptmaprateconceptdialognewname.h"
-#include "qtconceptmapcommanddeleteselected.h"
+#include "container.h"
+#include "count_edges_with_selectedness.h"
+#include "count_vertices_with_selectedness.h"
+#include "create_direct_neighbour_custom_and_selectable_edges_and_vertices_subgraph.h"
+#include "find_first_custom_vertex_with_my_vertex.h"
+#include "get_my_custom_vertex.h"
+#include "has_custom_edge_with_my_edge.h"
 #include "qtarrowitem.h"
-#include "qtconceptmapdisplaystrategy.h"
 #include "qtconceptmapbrushfactory.h"
+#include "qtconceptmapcenternode.h"
 #include "qtconceptmapcommandcreatenewedge.h"
 #include "qtconceptmapcommandcreatenewnode.h"
-#include "qtconceptmapcommandtogglearrowhead.h"
+#include "qtconceptmapcommanddeleteselected.h"
 #include "qtconceptmapcommandselectrandomnode.h"
-#include "qtconceptmaprateexamplesdialognewname.h"
-#include "qtconceptmapcenternode.h"
-#include "has_custom_edge_with_my_edge.h"
+#include "qtconceptmapcommandtogglearrowhead.h"
 #include "qtconceptmapconcepteditdialog.h"
-#include "qtconceptmapqtedge.h"
-#include "qtconceptmapqtnode.h"
+#include "qtconceptmapdisplaystrategy.h"
 #include "qtconceptmapexamplesitem.h"
+#include "qtconceptmaphelper.h"
 #include "qtconceptmapitemhighlighter.h"
 #include "qtconceptmapnewarrow.h"
-#include "count_vertices_with_selectedness.h"
+#include "qtconceptmapqtedge.h"
 #include "qtconceptmapqtnode.h"
+#include "qtconceptmapqtnode.h"
+#include "qtconceptmaprateconceptdialognewname.h"
+#include "qtconceptmaprateexamplesdialognewname.h"
 #include "qtconceptmaptoolsitem.h"
 #include "qtquadbezierarrowitem.h"
 #include "qtscopeddisable.h"
+#include "set_my_custom_vertex.h"
 #include "trace.h"
 #include "xml.h"
 
@@ -191,9 +192,14 @@ void ribi::cmap::QtConceptMap::CheckInvariants() const noexcept
   {
     const auto qtedge = ExtractTheOneSelectedQtEdge(*GetScene());
     //The QtEdge its edge must be in the concept map
-    assert(has_custom_edge_with_my_edge(qtedge->GetEdge(), GetConceptMap()));
+    //Can only compare IDs, as QtEdge::GetEdge() and its equivalent in the concept map may mismatch
+    assert(
+      has_custom_edge_with_my_edge(
+        qtedge->GetEdge(), GetConceptMap(), [](const Edge& lhs, const Edge& rhs) { return lhs.GetId() == rhs.GetId(); }
+      )
+    );
     const auto edge = ExtractTheOneSelectedEdge(this->GetConceptMap(), *GetScene());
-    assert(qtedge->GetEdge() == edge);
+    assert(qtedge->GetEdge().GetId() == edge.GetId());
   }
   catch (...) {} //No problem
 
@@ -553,7 +559,7 @@ void ribi::cmap::QtConceptMap::OnNodeKeyDownPressed(QtNode* const item, const in
     QtConceptMapConceptEditDialog d(item->GetNode().GetConcept());
     d.exec();
     //Find the original Node
-    const auto vd = FindNode(item->GetNode(), m_conceptmap);
+    const auto vd = ::find_first_custom_vertex_with_my_vertex(item->GetNode(), m_conceptmap);
     //Update the node here
     auto node = item->GetNode();
     node.SetConcept(d.GetConcept());
@@ -568,7 +574,7 @@ void ribi::cmap::QtConceptMap::OnNodeKeyDownPressed(QtNode* const item, const in
   {
     //Rate concept
     QtScopedDisable<QtConceptMap> disable(this);
-    const auto vd = FindNode(item->GetNode(), m_conceptmap);
+    const auto vd = ::find_first_custom_vertex_with_my_vertex(item->GetNode(), m_conceptmap);
     const auto subgraph = create_direct_neighbour_custom_and_selectable_edges_and_vertices_subgraph(vd, m_conceptmap);
     ribi::cmap::QtRateConceptDialog d(subgraph);
     d.exec();
@@ -613,7 +619,7 @@ void ribi::cmap::QtConceptMap::OnNodeKeyDownPressed(QtNode* const item, const in
     ribi::cmap::QtRateExamplesDialogNewName d(item->GetNode().GetConcept());
     d.exec();
     //Find the original Node
-    const auto vd = FindNode(item->GetNode(), m_conceptmap);
+    const auto vd = ::find_first_custom_vertex_with_my_vertex(item->GetNode(), m_conceptmap);
     //Update the node here
     auto node = item->GetNode();
     node.GetConcept().SetExamples(d.GetRatedExamples());

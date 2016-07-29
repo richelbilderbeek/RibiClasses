@@ -47,20 +47,21 @@ class CommandCreateNewEdgeBetweenTwoSelectedNodes final : public Command
   );
   CommandCreateNewEdgeBetweenTwoSelectedNodes(const CommandCreateNewEdgeBetweenTwoSelectedNodes&) = delete;
   CommandCreateNewEdgeBetweenTwoSelectedNodes& operator=(const CommandCreateNewEdgeBetweenTwoSelectedNodes&) = delete;
-  ~CommandCreateNewEdgeBetweenTwoSelectedNodes() noexcept {}
+  ~CommandCreateNewEdgeBetweenTwoSelectedNodes() noexcept;
 
   void redo() override;
   void undo() override;
 
   private:
   ConceptMap& m_conceptmap;
+  Edge m_added_edge; //The Edge being added or removed
+  QtEdge * m_added_qtedge; //The QtEdge being added or removed
+  QtNode * m_added_qtnode; //The QtNode being at the center of m_qtedge
   ConceptMap m_after;
   const ConceptMap m_before;
   QGraphicsScene * const m_scene;
   const QList<QGraphicsItem *> m_selected_before;
   QtTool * const m_tool_item;
-  QtEdge * m_qtedge; //The QtEdge being added or removed
-  QtNode * m_qtnode; //The QtNode being at the center of m_qtedge
 };
 
 } //~namespace cmap

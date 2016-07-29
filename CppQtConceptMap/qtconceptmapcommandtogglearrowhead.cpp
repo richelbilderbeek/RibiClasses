@@ -15,6 +15,7 @@
 #include "count_vertices_with_selectedness.h"
 #include "add_edge_between_selected_vertices.h"
 #include <boost/graph/isomorphism.hpp>
+#include "find_first_custom_edge_with_my_edge.h"
 #include <QGraphicsScene>
 #include "qtconceptmap.h"
 #include "qtconceptmaptoolsitem.h"
@@ -42,7 +43,10 @@ ribi::cmap::CommandToggleArrowHead::CommandToggleArrowHead(
 
   //Create concept map 'm_after'
   {
-    const auto ed = find_first_custom_edge_with_my_edge(m_edge_before, m_cmap_after);
+    const auto ed = ::find_first_custom_edge_with_my_edge(
+      m_edge_before, m_cmap_after,
+      [](const Edge& lhs, const Edge& rhs) { return lhs.GetId() == rhs.GetId(); }
+    );
     set_my_custom_edge(m_edge_after, ed, m_cmap_after);
   }
 }
