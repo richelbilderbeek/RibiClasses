@@ -10,10 +10,13 @@
 #include "qtconceptmapnodedialog_test.h"
 #include "qtconceptmapqtedgedialog_test.h"
 #include "qtconceptmapqtedge_test.h"
+#include "qtdisplaypositem_test.h"
 #include "qtconceptmapqtnodedialog_test.h"
 #include "qtconceptmapqtnodefactory_test.h"
 #include "qtconceptmaprateconcepttallydialognewname_test.h"
 #include "qtconceptmaprateexamplesdialognewname_test.h"
+#include "qthideandshowdialog_test.h"
+#include "qtscopeddisable_test.h"
 #include "qtconceptmapqtnode_test.h"
 #include "qtconceptmap_test.h"
 #include "qtquadbezierarrowdialog_test.h"
@@ -41,12 +44,16 @@ int main(int argc, char *argv[])
   { ribi::cmap::qtconceptmaprateexamplesdialognewname_test t; error |= QTest::qExec(&t, argc, argv); }
   { ribi::cmap::qtconceptmapqtnode_test t; error |= QTest::qExec(&t, argc, argv); }
   { ribi::cmap::qtconceptmap_test t; error |= QTest::qExec(&t, argc, argv); }
+  { ribi::qtdisplaypositem_test t; error |= QTest::qExec(&t, argc, argv); }
+  { ribi::qthideandshowdialog_test t; error |= QTest::qExec(&t, argc, argv); }
+  { ribi::qtkeyboardfriendlygraphicsview_test t; error |= QTest::qExec(&t, argc, argv); }
   { ribi::qtquadbezierarrowdialog_test t; error |= QTest::qExec(&t, argc, argv); }
   { ribi::qtquadbezierarrowitem_test t; error |= QTest::qExec(&t, argc, argv); }
   { ribi::qtroundededitrectitem_test t; error |= QTest::qExec(&t, argc, argv); }
-  { ribi::qtroundedrectitem_test t; error |= QTest::qExec(&t, argc, argv); }
   { ribi::qtroundedrectitemdialog_test t; error |= QTest::qExec(&t, argc, argv); }
-  { ribi::qtkeyboardfriendlygraphicsview_test t; error |= QTest::qExec(&t, argc, argv); }
+  { ribi::qtroundedrectitem_test t; error |= QTest::qExec(&t, argc, argv); }
+  { ribi::qtscopeddisable_test t; error |= QTest::qExec(&t, argc, argv); }
+
 
   if (error == 0) { std::cout << "Pass\n"; }
   if (error != 0) { std::cout << "Fail\n"; }

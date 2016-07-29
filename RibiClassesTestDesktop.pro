@@ -32,7 +32,10 @@ include(../RibiClasses/CppQtConceptMap/CppQtConceptMap.pri)
 include(../RibiClasses/CppQtConceptMap/CppQtConceptMapTest.pri)
 
 include(../RibiClasses/CppQtDisplayPosItem/CppQtDisplayPosItem.pri)
+include(../RibiClasses/CppQtDisplayPosItem/CppQtDisplayPosItemTest.pri)
+
 include(../RibiClasses/CppQtHideAndShowDialog/CppQtHideAndShowDialog.pri)
+include(../RibiClasses/CppQtHideAndShowDialog/CppQtHideAndShowDialogTest.pri)
 
 include(../RibiClasses/CppQtGraphics/CppQtGraphics.pri)
 include(../RibiClasses/CppQtGraphics/CppQtGraphicsTest.pri)
@@ -53,6 +56,7 @@ include(../RibiClasses/CppQtRoundedRectItem/CppQtRoundedRectItem.pri)
 include(../RibiClasses/CppQtRoundedRectItem/CppQtRoundedRectItemTest.pri)
 
 include(../RibiClasses/CppQtScopedDisable/CppQtScopedDisable.pri)
+include(../RibiClasses/CppQtScopedDisable/CppQtScopedDisableTest.pri)
 
 SOURCES += \
     qtmain_test_desktop.cpp
