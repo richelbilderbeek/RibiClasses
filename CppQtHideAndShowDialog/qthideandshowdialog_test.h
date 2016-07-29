@@ -11,6 +11,7 @@ class qthideandshowdialog_test : public QObject
 
 private slots:
   void default_construct();
+  void parent_can_show_child();
 };
 
 } //~namespace ribi
