@@ -30,9 +30,6 @@ class CommandToggleArrowHead final : public Command
 
   private:
   ConceptMap& m_conceptmap; //The concept map to modify
-  ConceptMap m_cmap_after;
-  const ConceptMap m_cmap_before;
-  Edge m_edge_after;
   const Edge m_edge_before;
   QGraphicsScene * const m_scene;
   QtEdge * const m_qtedge; //The QtEdge to modify

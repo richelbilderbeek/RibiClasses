@@ -25,40 +25,31 @@ ribi::cmap::CommandToggleArrowHead::CommandToggleArrowHead(
   ConceptMap& conceptmap,
   QGraphicsScene * const scene
 ) : m_conceptmap(conceptmap),
-    m_cmap_after{conceptmap},
-    m_cmap_before{conceptmap},
-    m_edge_after{ExtractTheOneSelectedEdge(conceptmap,*scene)},
     m_edge_before{ExtractTheOneSelectedEdge(conceptmap,*scene)},
     m_scene{scene},
     m_qtedge{ExtractTheOneSelectedQtEdge(*scene)}
 {
   this->setText("Toggle arrow head");
-
-  //Create 'm_edge_after'
-  {
-    const auto old_has_head = m_edge_after.HasHeadArrow();
-    const auto new_has_head = !old_has_head;
-    m_edge_after.SetHeadArrow(new_has_head);
-  }
-
-  //Create concept map 'm_after'
-  {
-    const auto ed = ::find_first_custom_edge_with_my_edge(
-      m_edge_before, m_cmap_after,
-      [](const Edge& lhs, const Edge& rhs) { return lhs.GetId() == rhs.GetId(); }
-    );
-    set_my_custom_edge(m_edge_after, ed, m_cmap_after);
-  }
 }
 
 void ribi::cmap::CommandToggleArrowHead::redo()
 {
-  m_conceptmap = m_cmap_after;
-  m_qtedge->SetEdge(m_edge_after);
+  //Find the edge with the desired ID
+  const auto ed = ::find_first_custom_edge_with_my_edge(
+    m_edge_before, m_conceptmap,
+    [](const Edge& lhs, const Edge& rhs) { return lhs.GetId() == rhs.GetId(); }
+  );
+  auto current_edge = get_my_custom_edge(ed, m_conceptmap);
+
+  //Add an arrow and put it back in the concept map
+  current_edge.SetHeadArrow(!current_edge.HasHeadArrow());
+  ::set_my_custom_edge(current_edge, ed, m_conceptmap);
+
+  //Put the current arrow head in the QtEdge
+  m_qtedge->SetHasHeadArrow(current_edge.HasHeadArrow());
 }
 
 void ribi::cmap::CommandToggleArrowHead::undo()
 {
-  m_conceptmap = m_cmap_before;
-  m_qtedge->SetEdge(m_edge_before);
+  redo();
 }
