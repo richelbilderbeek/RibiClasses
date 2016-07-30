@@ -162,9 +162,6 @@ struct QtQuadBezierArrowItem : public QGraphicsItem
   ///In this example, it is redefined to ease selecting those thin lines
   QPainterPath shape() const noexcept override final;
 
-  ///Emitted when the item has called
-  //boost::signals2::signal<void(const QtQuadBezierArrowItem*)> m_signal_item_updated;
-
   protected:
   ///Change the cursor when the user moves the mouse cursor in the bounding rectangle
   void hoverEnterEvent(QGraphicsSceneHoverEvent *event) noexcept override final;
