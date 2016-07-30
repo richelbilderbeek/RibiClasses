@@ -65,6 +65,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "qtconceptmapcommanddeleteselected.h"
 #include "qtconceptmapcommandselectrandomnode.h"
 #include "qtconceptmapcommandtogglearrowhead.h"
+#include "qtconceptmapcommandtogglearrowtail.h"
 #include "qtconceptmapconcepteditdialog.h"
 #include "qtconceptmapdisplaystrategy.h"
 #include "qtconceptmapexamplesitem.h"
@@ -229,7 +230,6 @@ void ribi::cmap::QtConceptMap::RemoveConceptMap()
 void ribi::cmap::QtConceptMap::DoCommand(Command * const command) noexcept
 {
   CheckInvariants();
-  qDebug() << "Command: " << command->text();
 
   m_undo.push(command);
   this->UpdateConceptMap();
@@ -311,7 +311,6 @@ std::vector<std::string> ribi::cmap::QtConceptMap::GetVersionHistory() noexcept
 
 void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event) noexcept
 {
-  qDebug() << QKeySequence(event->modifiers() + event->key()).toString(QKeySequence::PortableText);
   CheckInvariants();
   UpdateConceptMap();
   CheckInvariants();
@@ -376,7 +375,17 @@ void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event) noexcept
       }
       return;
     case Qt::Key_T:
-      //TODO: make tail specific function
+      if (event->modifiers() & Qt::ControlModifier)
+      {
+        if (GetVerbosity()) { TRACE("Pressing CTRL-T"); }
+        try
+        {
+          const auto cmd = new CommandToggleArrowTail(GetConceptMap(), scene());
+          this->DoCommand(cmd);
+        }
+        catch (std::logic_error& e) {}
+      }
+      return;
     case Qt::Key_H:
       if (event->modifiers() & Qt::ControlModifier)
       {
@@ -386,11 +395,7 @@ void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event) noexcept
           const auto cmd = new CommandToggleArrowHead(GetConceptMap(), scene());
           this->DoCommand(cmd);
         }
-        catch (std::logic_error& e)
-        {
-          qDebug() << e.what();
-
-        }
+        catch (std::logic_error& e) {}
       }
       return;
     case Qt::Key_N:
