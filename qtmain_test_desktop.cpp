@@ -20,6 +20,7 @@
 #include "qtconceptmapqtnode_test.h"
 #include "qtconceptmap_test.h"
 #include "qtgraphics_test.h"
+#include "qtimage_test.h"
 #include "qtquadbezierarrowdialog_test.h"
 #include "qtquadbezierarrowitem_test.h"
 #include "qtroundededitrectitem_test.h"
