@@ -387,8 +387,6 @@ void ribi::QtQuadBezierArrowItem::paint(QPainter* painter, const QStyleOptionGra
     }
     if (m_head)
     {
-      //The angle from midpoint to head
-      //Thanks goes out to Toine van den Bogaart and Theo van den Bogaart for being happy to help with the math
       const double pi{boost::math::constants::pi<double>()};
       const double dx{p_end_head.x() - p_beyond.x()};
       const double dy{(p_end_head.y() - p_beyond.y())};

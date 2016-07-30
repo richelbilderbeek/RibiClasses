@@ -19,6 +19,7 @@
 #include "qtscopeddisable_test.h"
 #include "qtconceptmapqtnode_test.h"
 #include "qtconceptmap_test.h"
+#include "qtgraphics_test.h"
 #include "qtquadbezierarrowdialog_test.h"
 #include "qtquadbezierarrowitem_test.h"
 #include "qtroundededitrectitem_test.h"
@@ -45,7 +46,9 @@ int main(int argc, char *argv[])
   { ribi::cmap::qtconceptmapqtnode_test t; error |= QTest::qExec(&t, argc, argv); }
   { ribi::cmap::qtconceptmap_test t; error |= QTest::qExec(&t, argc, argv); }
   { ribi::qtdisplaypositem_test t; error |= QTest::qExec(&t, argc, argv); }
+  { ribi::qtgraphics_test t; error |= QTest::qExec(&t, argc, argv); }
   { ribi::qthideandshowdialog_test t; error |= QTest::qExec(&t, argc, argv); }
+  { ribi::qtimage_test t; error |= QTest::qExec(&t, argc, argv); }
   { ribi::qtkeyboardfriendlygraphicsview_test t; error |= QTest::qExec(&t, argc, argv); }
   { ribi::qtquadbezierarrowdialog_test t; error |= QTest::qExec(&t, argc, argv); }
   { ribi::qtquadbezierarrowitem_test t; error |= QTest::qExec(&t, argc, argv); }
