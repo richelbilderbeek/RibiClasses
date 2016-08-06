@@ -138,7 +138,7 @@ private:
   //void DeleteEdge(const Edge& edge);
 
   ///Called when an item wants to be edited
-  //void OnEdgeKeyDownPressed(QtEdge * const item, const int key);
+  void OnEdgeKeyDownPressed(QtEdge * const item, const int key);
 
   ///Called when an item wants to be edited
   void OnNodeKeyDownPressed(QtNode* const item, const int key);

@@ -564,6 +564,7 @@ void ribi::cmap::QtConceptMap::OnNodeKeyDownPressed(QtNode* const item, const in
     QtConceptMapConceptEditDialog d(item->GetNode().GetConcept());
     d.exec();
     //Find the original Node
+    assert(::has_custom_vertex_with_my_vertex(item->GetNode(), m_conceptmap));
     const auto vd = ::find_first_custom_vertex_with_my_vertex(item->GetNode(), m_conceptmap);
     //Update the node here
     auto node = item->GetNode();
