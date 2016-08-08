@@ -336,7 +336,6 @@ void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event) noexcept
       if (GetVerbosity()) { TRACE("Pressing delete"); }
       try
       {
-
         DoCommand(new CommandDeleteSelected(m_conceptmap, scene(), m_tools));
       }
       catch (std::logic_error& e)
@@ -556,6 +555,7 @@ void ribi::cmap::QtConceptMap::onFocusItemChanged(
 
 void ribi::cmap::QtConceptMap::OnNodeKeyDownPressed(QtNode* const item, const int key)
 {
+  //Note: item can also be the QtNode on a QtEdge
   assert(item);
   if (m_mode == Mode::edit && key == Qt::Key_F2)
   {
@@ -563,18 +563,39 @@ void ribi::cmap::QtConceptMap::OnNodeKeyDownPressed(QtNode* const item, const in
     QtScopedDisable<QtConceptMap> disable(this);
     QtConceptMapConceptEditDialog d(item->GetNode().GetConcept());
     d.exec();
-    //Find the original Node
-    assert(::has_custom_vertex_with_my_vertex(item->GetNode(), m_conceptmap));
-    const auto vd = ::find_first_custom_vertex_with_my_vertex(item->GetNode(), m_conceptmap);
-    //Update the node here
-    auto node = item->GetNode();
-    node.SetConcept(d.GetConcept());
-    //Update the node in the concept map
-    set_my_custom_vertex(node, vd, m_conceptmap);
+    //Find the original Node or Edge
+    if (::has_custom_vertex_with_my_vertex(item->GetNode(), m_conceptmap))
+    {
+      assert(::has_custom_vertex_with_my_vertex(item->GetNode(), m_conceptmap));
+      const auto vd = ::find_first_custom_vertex_with_my_vertex(item->GetNode(), m_conceptmap);
+      //Update the node here
+      auto node = item->GetNode();
+      node.SetConcept(d.GetConcept());
+      //Update the node in the concept map
+      set_my_custom_vertex(node, vd, m_conceptmap);
+    }
+    else
+    {
+      //It is a node on an edge
+      //Find the first (and hopefully only) edge with the node on it
+      auto node = item->GetNode();
+      const auto ed = ::find_first_custom_edge_with_my_edge(
+        m_conceptmap, 
+        [node](const auto& e) { return e.GetNode() == node; }
+      );
+      //Get hold of the Edge
+      Edge edge = ::get_edge(ed, m_concept_map);
+      //Update the Edge here
+      node.SetConcept(d.GetConcept());
+      edge.SetNode(node);
+      //Update the node in the concept map
+      set_my_custom_edge(edge, ed, m_conceptmap);
+    }
     //Update the QtNode
     item->GetNode().SetConcept(d.GetConcept());
     //Set the word-wrapped text
     item->SetText(Wordwrap(d.GetConcept().GetName(), QtNode::GetWordWrapLength()));
+
   }
   else if (m_mode == Mode::rate && key == Qt::Key_F1)
   {
@@ -641,6 +662,7 @@ void ribi::cmap::QtConceptMap::OnNodeKeyDownPressed(QtNode* const item, const in
   item->SetSelected(true);
   this->scene()->update();
 }
+
 
 
 void ribi::cmap::QtConceptMap::onSelectionChanged()

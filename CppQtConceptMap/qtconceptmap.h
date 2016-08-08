@@ -97,7 +97,7 @@ protected:
   //void DeleteQtEdge(const QtEdge * const edge);
 
   ///Obtain the center node, if there is any
-  QtNode * GetCenterNode()       noexcept;
+  QtNode * GetCenterNode() noexcept;
 
   ///Obtain the first QtNode under the cursor
   ///Returns nullptr if none is present
