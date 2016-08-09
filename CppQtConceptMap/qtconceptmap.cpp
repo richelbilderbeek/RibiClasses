@@ -53,6 +53,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "container.h"
 #include "count_edges_with_selectedness.h"
 #include "count_vertices_with_selectedness.h"
+#include "find_first_custom_edge_with_my_edge.h"
 #include "create_direct_neighbour_custom_and_selectable_edges_and_vertices_subgraph.h"
 #include "find_first_custom_vertex_with_my_vertex.h"
 #include "get_my_custom_vertex.h"
@@ -581,7 +582,7 @@ void ribi::cmap::QtConceptMap::OnNodeKeyDownPressed(QtNode* const item, const in
       auto node = item->GetNode();
       const auto ed = ::find_first_custom_edge_with_my_edge(
         m_conceptmap, 
-        [node](const auto& e) { return e.GetNode() == node; }
+        [node](const Edge& e) { return e.GetNode() == node; }
       );
       //Get hold of the Edge
       Edge edge = ::get_edge(ed, m_concept_map);
