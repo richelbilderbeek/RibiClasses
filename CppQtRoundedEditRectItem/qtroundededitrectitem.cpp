@@ -47,11 +47,6 @@ ribi::QtRoundedEditRectItem::QtRoundedEditRectItem(
   const QFont& font,
   QGraphicsItem* parent)
   : QtRoundedRectItem(parent),
-    //m_signal_base_changed{},
-    //m_signal_font_changed{},
-    //m_signal_padding_changed{},
-    //m_signal_text_changed{},
-    //m_signal_text_pen_changed{},
     m_font(font),
     m_padding(padding),
     m_text( {""} ), //Empty std::vector<std::string>, as m_text must be set by SetText

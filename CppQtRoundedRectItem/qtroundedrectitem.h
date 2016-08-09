@@ -134,9 +134,6 @@ class QtRoundedRectItem : public QGraphicsRectItem
   void SetRadiusX(const double radius_x) noexcept;
   void SetRadiusY(const double radius_y) noexcept;
 
-  ///Call setSelected and emits m_signal_selected_changed
-  void SetSelected(bool selected) noexcept;
-
 protected:
 
   virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) noexcept override;
@@ -168,8 +165,6 @@ protected:
   void setRect(const double,const double,const double,const double) = delete;
   void setRect(const QRectF&) = delete;
 
-  ///To make it private, use SetSelected instead
-  void setSelected(bool selected) = delete;
 };
 
 std::ostream& operator<<(std::ostream& os,const QtRoundedRectItem& item) noexcept;

@@ -51,9 +51,6 @@ struct QtKeyboardFriendlyGraphicsView : public QGraphicsView
 
   void SetVerbosity(const bool verbosity) noexcept { m_verbose = verbosity; }
 
-  ///Signals which QGraphicsItem has been moved by setPos
-  //boost::signals2::signal<void (QGraphicsItem*)> m_signal_update;
-
   private:
 
   ///The RNG engine. When a user presses space, a random item is chosen

@@ -82,13 +82,9 @@ struct QtPathArrowItem : public QGraphicsItem
   ///Set if the arrow has a point at the tail
   void SetHasTail(const bool has_tail) noexcept { m_tail = has_tail; }
 
-  ///Signal to request a scene update, because this item has moved/changed
-  //boost::signals2::signal<void (This*)> m_signal_item_requests_scene_update;
-
 protected:
   QRectF boundingRect() const;
   void hoverEnterEvent(QGraphicsSceneHoverEvent *);
-  virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
   virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
   void paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *);
   QPainterPath shape() const;

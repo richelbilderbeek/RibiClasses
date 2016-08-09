@@ -104,7 +104,7 @@ std::vector<std::string> ribi::QtRoundedRectItem::GetVersionHistory() noexcept
     "2012-12-13: version 1.0: initial version",
     "2012-12-19: version 1.1: added use of pen, brush and focus-indicating pen",
     "2012-12-22: version 1.2: correctly uses the focus and regular pen, added contour pen",
-    "2014-06-14: version 1.3: removed superfluous signal m_signal_item_has_updated",
+    "2014-06-14: version 1.3: removed superfluous signal",
     "2014-06-14: version 1.4: fixed issue #219",
     "2014-06-16: version 1.5: disallow setRect and setPos (use SetRoundedRect and SetPos instead), cooperation with QtRoundedRectItemDialog",
     "2014-06-22: version 1.6: allow setting the inner and outer rectangle",
@@ -302,11 +302,6 @@ void ribi::QtRoundedRectItem::SetRadiusY(const double radius_y) noexcept
 {
   m_radius_y = radius_y;
   assert(radius_y == GetRadiusY());
-}
-
-void ribi::QtRoundedRectItem::SetSelected(bool selected) noexcept
-{
-  QGraphicsRectItem::setSelected(selected);
 }
 
 bool ribi::operator==(const QtRoundedRectItem& lhs, const QtRoundedRectItem& rhs) noexcept

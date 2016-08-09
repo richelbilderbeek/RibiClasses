@@ -59,7 +59,6 @@ ribi::QtQuadBezierArrowItem::QtQuadBezierArrowItem(
   QGraphicsItem* parent
 ) noexcept
   : QGraphicsItem(parent),
-    //m_signal_item_updated{},
     m_focus_pen{QPen(Qt::DashLine)},
     m_from{from},
     m_head{head},
@@ -488,7 +487,6 @@ void ribi::QtQuadBezierArrowItem::SetPen(const QPen& pen) noexcept
   {
     m_pen = pen;
     this->update();
-    //m_signal_item_updated(this);
   }
 }
 
@@ -500,7 +498,6 @@ void ribi::QtQuadBezierArrowItem::SetToPos(const QPointF& pos) noexcept
   {
     m_to->setPos(pos);
     this->update();
-    //m_signal_item_updated(this);
   }
 }
 
