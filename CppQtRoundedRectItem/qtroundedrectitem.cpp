@@ -35,14 +35,6 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 
 ribi::QtRoundedRectItem::QtRoundedRectItem(QGraphicsItem *parent)
  : QGraphicsRectItem(parent),
-   //m_signal_contour_pen_changed{},
-   //m_signal_focus_pen_changed{},
-   //m_signal_height_changed{},
-   //m_signal_pos_changed{},
-   //m_signal_radius_x_changed{},
-   //m_signal_radius_y_changed{},
-   //m_signal_selected_changed{},
-   //m_signal_width_changed{},
    m_contour_pen(QPen(QColor(0,0,0),0.0)),
    m_focus_pen(QPen(QColor(0,0,0),0.0,Qt::DashLine)),
    m_radius_x(4.0),
@@ -65,21 +57,6 @@ ribi::QtRoundedRectItem::QtRoundedRectItem(QGraphicsItem *parent)
 ribi::QtRoundedRectItem::~QtRoundedRectItem() noexcept
 {
   //OK
-}
-
-void ribi::QtRoundedRectItem::dragEnterEvent(QGraphicsSceneDragDropEvent *) noexcept
-{
-  //this->m_signal_pos_changed(this);
-}
-
-void ribi::QtRoundedRectItem::dragLeaveEvent(QGraphicsSceneDragDropEvent *) noexcept
-{
-  //this->m_signal_pos_changed(this);
-}
-
-void ribi::QtRoundedRectItem::dragMoveEvent(QGraphicsSceneDragDropEvent *) noexcept
-{
-  //this->m_signal_pos_changed(this);
 }
 
 double ribi::QtRoundedRectItem::GetInnerHeight() const noexcept
@@ -144,7 +121,6 @@ void ribi::QtRoundedRectItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) no
   QGraphicsRectItem::mouseMoveEvent(event);
   this->update();
   this->scene()->update();
-  //m_signal_pos_changed(this);
 }
 
 void ribi::QtRoundedRectItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *) noexcept
@@ -201,7 +177,6 @@ void ribi::QtRoundedRectItem::SetCenterY(const double y) noexcept
       y
     );
     this->update();
-    //m_signal_pos_changed(this);
   }
 }
 
@@ -221,7 +196,6 @@ void ribi::QtRoundedRectItem::SetContourPen(const QPen& pen) noexcept
     this->SetInnerWidth(width);
 
     this->update();
-    //m_signal_contour_pen_changed(this);
   }
   #ifndef NDEBUG
   else
@@ -250,7 +224,6 @@ void ribi::QtRoundedRectItem::SetFocusPen(const QPen& pen) noexcept
     this->SetInnerWidth(width);
 
     this->update();
-    //m_signal_focus_pen_changed(this);
   }
   #ifndef NDEBUG
   else
@@ -299,7 +272,6 @@ void ribi::QtRoundedRectItem::SetOuterHeight(const double height) noexcept
       )
     );
     this->update();
-    //m_signal_height_changed(this);
   }
 }
 
@@ -316,36 +288,25 @@ void ribi::QtRoundedRectItem::SetOuterWidth(const double width) noexcept
       )
     );
     this->update();
-    //m_signal_width_changed(this);
   }
 }
 
 void ribi::QtRoundedRectItem::SetRadiusX(const double radius_x) noexcept
 {
-  if (m_radius_x != radius_x)
-  {
-    m_radius_x = radius_x;
-    this->update();
-    //m_signal_radius_x_changed(this);
-  }
+  m_radius_x = radius_x;
+  this->update();
   assert(radius_x == GetRadiusX());
 }
 
 void ribi::QtRoundedRectItem::SetRadiusY(const double radius_y) noexcept
 {
-  if (m_radius_y != radius_y)
-  {
-    m_radius_y = radius_y;
-    this->update();
-    //m_signal_radius_y_changed(this);
-  }
+  m_radius_y = radius_y;
   assert(radius_y == GetRadiusY());
 }
 
 void ribi::QtRoundedRectItem::SetSelected(bool selected) noexcept
 {
   QGraphicsRectItem::setSelected(selected);
-  //m_signal_selected_changed(this);
 }
 
 bool ribi::operator==(const QtRoundedRectItem& lhs, const QtRoundedRectItem& rhs) noexcept

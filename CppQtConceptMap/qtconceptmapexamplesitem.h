@@ -44,10 +44,6 @@ struct QtExamplesItem : public QtRoundedEditRectItem
   ///If the concept is nullptr, this item hides
   void SetBuddyItem(const QGraphicsItem* const item);
 
-  ///Request update of QGraphicsScene, because this item has changed
-  //mutable boost::signals2::signal<void() > m_signal_request_scene_update;
-  ///The competency, as might be judged by an assessor
-
 protected:
 
   void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) noexcept;

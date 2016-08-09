@@ -53,9 +53,6 @@ public:
   const Examples& GetExamples() const noexcept { return m_examples; }
         Examples& GetExamples()       noexcept { return m_examples; }
 
-  ///Something of one of the examples was changed
-  //mutable boost::signals2::signal<void(QtExamplesDialog*)> m_signal_qtexamplesdialog_changed;
-
   static int GetMinimumHeight(const Examples& examples) noexcept;
 
 private:

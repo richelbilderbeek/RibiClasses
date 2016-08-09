@@ -32,12 +32,12 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 
 ribi::QtDisplayPosItem::QtDisplayPosItem(QGraphicsItem *parent)
  : QGraphicsSimpleTextItem(parent)
-   //m_signal_request_scene_update{}
 {
   this->setFlags(
       QGraphicsItem::ItemIsFocusable
     | QGraphicsItem::ItemIsMovable
-    | QGraphicsItem::ItemIsSelectable);
+    | QGraphicsItem::ItemIsSelectable
+  );
   this->update();
 }
 
@@ -60,7 +60,6 @@ std::vector<std::string> ribi::QtDisplayPosItem::GetVersionHistory() noexcept
 #pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
 void ribi::QtDisplayPosItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-  //m_signal_request_scene_update();
   QGraphicsSimpleTextItem::mouseMoveEvent(event);
 }
 #pragma GCC diagnostic pop

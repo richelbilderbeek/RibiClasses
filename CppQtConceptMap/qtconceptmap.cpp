@@ -125,7 +125,7 @@ ribi::cmap::QtConceptMap::QtConceptMap(QWidget* parent)
     m_conceptmap{},
     m_examples_item(new QtExamplesItem),
     m_highlighter{new QtItemHighlighter},
-    m_mode{Mode::edit},
+    m_mode{Mode::uninitialzed},
     m_tools{new QtTool}
 {
   #ifndef NDEBUG
@@ -757,9 +757,29 @@ void ribi::cmap::QtConceptMap::SetMode(const ribi::cmap::QtConceptMap::Mode mode
 {
   if (m_mode == mode) return;
   m_mode = mode;
-
+  if (m_mode == Mode::edit)
+  {
+    //Color all nodes (including those on the edges)
+    auto qtnodes = GetQtNodes(GetScene());
+    for (auto qtnode: qtnodes)
+    {
+      const auto node = qtnode->GetNode();
+      if (node.IsCenterNode())
+      {
+        qtnode->setBrush(QtBrushFactory().CreateGoldGradientBrush());
+        continue;
+      }
+      qtnode->setBrush(QtBrushFactory().CreateGrayGradientBrush());
+    }
+    //Color all nodes (including those on the edges)
+    auto qtedges = GetQtEdges(GetScene());
+    for (auto qtedge: qtedges)
+    {
+      qtedge->GetQtNode()->setBrush(QtBrushFactory().CreateBlueGradientBrush());
+    }
+  }
   //Set the colors of the qtnodes dependent on the rating progress
-  if (m_mode == Mode::rate)
+  else if (m_mode == Mode::rate)
   {
     auto qtnodes = GetQtNodes(GetScene());
     for (auto qtnode: qtnodes)
@@ -789,6 +809,13 @@ void ribi::cmap::QtConceptMap::SetMode(const ribi::cmap::QtConceptMap::Mode mode
         default: assert(!"Should not get here");
       }
     }
+  }
+  else
+  {
+    assert(m_mode == Mode::uninitialzed);
+    std::stringstream msg;
+    msg << __func__ << ": cannot set uninitialized mode";
+    throw std::invalid_argument(msg.str());
   }
 }
 void ribi::cmap::QtConceptMap::Undo() noexcept

@@ -38,6 +38,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmapedge.h"
 #include "conceptmapnode.h"
 #include "container.h"
+#include "qtconceptmapbrushfactory.h"
 #include "qtconceptmapqtnode.h"
 #include "qtconceptmapcenternode.h"
 #include "qtquadbezierarrowitem.h"
@@ -227,13 +228,11 @@ void ribi::cmap::QtEdge::mousePressEvent(QGraphicsSceneMouseEvent *event) noexce
     {
       this->SetHasTailArrow( !m_arrow->HasTail() );
       //this->update(); //Don't!
-      //m_signal_item_updated(this); //Don't!
     }
     else if ((event->pos() - this->m_arrow->GetHead() + m_qtnode->GetCenterPos()).manhattanLength() < 20.0)
     {
       this->SetHasHeadArrow( !m_arrow->HasHead() );
       //this->update(); //Don't!
-      //m_signal_item_updated(this); //Don't!
     }
   }
 

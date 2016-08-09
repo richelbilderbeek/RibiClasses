@@ -42,7 +42,7 @@ public:
   ///The mode of the concept map:
   /// * edit: the concept map is edited by the student
   /// * rate: the edited concept map is rated by the assessor
-  enum class Mode { edit, rate };
+  enum class Mode { uninitialzed, edit, rate };
 
   explicit QtConceptMap(QWidget* parent = 0);
   QtConceptMap(const QtConceptMap&) = delete;

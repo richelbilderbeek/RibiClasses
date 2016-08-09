@@ -74,12 +74,6 @@ private:
   bool m_show_bounding_rect;
 
   static const int m_wordwrap_length{80};
-
-  void OnPosChanged(const QtRoundedRectItem * const item) noexcept;
-  void OnTextChanged(const QtRoundedRectItem * const item) noexcept;
-  void OnXchanged(Node * const node) noexcept;
-  void OnYchanged(Node * const node) noexcept;
-  void OnConceptChanged(Node * const node) noexcept;
 };
 
 std::ostream& operator<<(std::ostream& os, const QtNode& qtnode) noexcept;

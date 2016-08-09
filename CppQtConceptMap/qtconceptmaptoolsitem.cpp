@@ -33,8 +33,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic pop
 
 ribi::cmap::QtTool::QtTool()
-  : //m_signal_clicked(),
-    m_item(nullptr)
+  : m_item(nullptr)
 {
   this->setPixmap(QPixmap(":/CppQtConceptMap/images/CppQtConceptMapArrow14x14.png"));
 

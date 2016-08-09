@@ -123,85 +123,9 @@ void ribi::cmap::QtQtEdgeDialog::OnQtRoundedRectItemChanged(QtEdge * const qtedg
 
 void ribi::cmap::QtQtEdgeDialog::SetQtEdge(const boost::shared_ptr<QtEdge>& qtedge) noexcept
 {
-  const bool verbose{false};
-
-  if (m_qtedge == qtedge)
-  {
-    return;
-  }
-
-  if (verbose)
-  {
-    std::stringstream s;
-    s << "Setting edge '" << qtedge->ToStr() << "'\n";
-  }
-
-
-  bool qtroundededitrectitem_changed{true};
-  bool edge_changed{true};
-
-  if (m_qtedge && qtedge)
-  {
-    const auto qtroundededitrectitem_after = qtedge.get();
-    const auto edge_after = qtedge->GetEdge();
-
-    const auto qtroundededitrectitem_before = m_qtedge.get();
-    const auto edge_before = m_qtedge->GetEdge();
-
-    qtroundededitrectitem_changed = qtroundededitrectitem_before != qtroundededitrectitem_after;
-    edge_changed = edge_before != edge_after;
-
-
-    if (verbose)
-    {
-      if (qtroundededitrectitem_changed)
-      {
-        std::stringstream s;
-        s
-          << "DisplayStrategy will change from "
-          << qtroundededitrectitem_before->ToStr()
-          << " to "
-          << qtroundededitrectitem_after->ToStr()
-          << '\n'
-        ;
-        TRACE(s.str());
-      }
-      if (edge_changed)
-      {
-        std::stringstream s;
-        s << "QtEdge will change from " << (edge_before)
-          << " to " << (edge_after) << '\n';
-        TRACE(s.str());
-      }
-    }
-  }
-
-  if (m_qtedge)
-  {
-    //Disconnect old
-    //m_qtedge->m_signal_base_changed.disconnect(
-    //  boost::bind(&ribi::cmap::QtQtEdgeDialog::OnQtRoundedRectItemChanged,this,boost::lambda::_1)
-    //);
-  }
-
-  //Replace by the new
   m_qtedge = qtedge;
 
   if (!m_qtedge) return;
-
-  //m_qtedge->m_signal_base_changed.connect(
-  //  boost::bind(&ribi::cmap::QtQtEdgeDialog::OnQtRoundedRectItemChanged,this,boost::lambda::_1)
-  //);
-
-  //Emit everything that has changed
-  //if (qtroundededitrectitem_changed)
-  {
-    //m_qtedge->m_signal_base_changed(m_qtedge.get());
-  }
-  //if (edge_changed)
-  {
-    //m_qtedge->m_signal_edge_changed(m_qtedge.get());
-  }
 
   this->setMinimumHeight(
     this->GetMinimumHeight(

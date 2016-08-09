@@ -44,7 +44,6 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 
 ribi::cmap::QtExamplesDialog::QtExamplesDialog(QWidget *parent)
   : QtHideAndShowDialog(parent),
-    //m_signal_qtexamplesdialog_changed{},
     ui(new Ui::QtExamplesDialog),
     m_dialogs{},
     m_examples{}
@@ -146,36 +145,7 @@ void ribi::cmap::QtExamplesDialog::OnExamplesChanged(Examples& examples) noexcep
 
 void ribi::cmap::QtExamplesDialog::SetExamples(const Examples& examples)
 {
-  //const bool verbose{false};
-
-  if (m_examples == examples) return;
-
-  //bool examples_changed = true;
-  {
-    //examples_changed = m_examples != examples;
-
-    //Disconnect m_examples
-    //m_examples->m_signal_examples_changed.disconnect(
-    //  boost::bind(&ribi::cmap::QtExamplesDialog::OnExamplesChanged,this,boost::lambda::_1)
-    //);
-  }
-
-  //Replace m_example by the new one
   m_examples = examples;
-
-  //m_examples->m_signal_examples_changed.connect(
-  //  boost::bind(&ribi::cmap::QtExamplesDialog::OnExamplesChanged,this,boost::lambda::_1)
-  //);
-  //Emit that everything has changed
-  //if (examples_changed)
-  {
-    //For those interested in m_examples
-    //m_examples->m_signal_examples_changed(m_examples.get());
-
-    //For those interested in this dialog
-    //m_signal_qtexamplesdialog_changed(this);
-  }
-
   assert( m_examples ==  examples);
   this->setMinimumHeight(GetMinimumHeight(m_examples));
 }

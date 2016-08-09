@@ -158,89 +158,8 @@ void ribi::cmap::QtQtNodeDialog::OnQtRoundedRectItemChanged(QtNode * const qtnod
 
 void ribi::cmap::QtQtNodeDialog::SetQtNode(const boost::shared_ptr<QtNode>& qtnode) noexcept
 {
-  const bool verbose{false};
-
   assert(qtnode);
-
-  if (m_qtnode == qtnode)
-  {
-    return;
-  }
-
-  if (verbose)
-  {
-    std::stringstream s;
-    s << "Setting node '" << qtnode->ToStr() << "'\n";
-  }
-
-  const auto qtroundededitrectitem_after = qtnode.get();
-  const Node node_after = qtnode->GetNode();
-
-  bool qtroundededitrectitem_changed = true;
-  bool node_changed = true;
-
-  if (m_qtnode)
-  {
-    const auto qtroundededitrectitem_before = m_qtnode.get();
-    const Node node_before = m_qtnode->GetNode();
-
-    qtroundededitrectitem_changed = qtroundededitrectitem_before != qtroundededitrectitem_after;
-    node_changed = node_before != node_after;
-
-
-    if (verbose)
-    {
-      if (qtroundededitrectitem_changed)
-      {
-        std::stringstream s;
-        s
-          << "DisplayStrategy will change from "
-          << qtroundededitrectitem_before->ToStr()
-          << " to "
-          << qtroundededitrectitem_after->ToStr()
-          << '\n'
-        ;
-        TRACE(s.str());
-      }
-      if (node_changed)
-      {
-        std::stringstream s;
-        s << "QtNode will change from " << node_before
-          << " to " << node_after << '\n'
-         ;
-        TRACE(s.str());
-      }
-    }
-    //Disconnect m_concept
-//    m_qtnode->m_signal_base_changed.disconnect(
-//      boost::bind(&ribi::cmap::QtQtNodeDialog::OnQtRoundedRectItemChanged,this,boost::lambda::_1)
-//    );
-//    m_qtnode->m_signal_node_changed.disconnect(
-//      boost::bind(&ribi::cmap::QtQtNodeDialog::OnNodeChanged,this,boost::lambda::_1)
-//    );
-  }
-
-  //Replace m_example by the new one
   m_qtnode = qtnode;
-
-  assert(m_qtnode->GetNode() == node_after);
-
-//  m_qtnode->m_signal_base_changed.connect(
-//    boost::bind(&ribi::cmap::QtQtNodeDialog::OnQtRoundedRectItemChanged,this,boost::lambda::_1)
-//  );
-//  m_qtnode->m_signal_node_changed.connect(
-//    boost::bind(&ribi::cmap::QtQtNodeDialog::OnNodeChanged,this,boost::lambda::_1)
-//  );
-
-  //Emit everything that has changed
-//  if (qtroundededitrectitem_changed)
-//  {
-//    m_qtnode->m_signal_base_changed(m_qtnode.get());
-//  }
-//  if (node_changed)
-//  {
-//    m_qtnode->m_signal_node_changed(m_qtnode.get());
-//  }
 
   this->setMinimumHeight(
     this->GetMinimumHeight(

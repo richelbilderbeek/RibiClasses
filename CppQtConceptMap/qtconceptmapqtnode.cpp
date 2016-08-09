@@ -83,14 +83,12 @@ void ribi::cmap::QtNode::EnableAll()
 void ribi::cmap::QtNode::focusInEvent(QFocusEvent* e) noexcept
 {
   QtRoundedEditRectItem::focusInEvent(e);
-  //this->m_signal_selected_changed(this);
   assert(hasFocus());
 }
 
 void ribi::cmap::QtNode::focusOutEvent(QFocusEvent* e) noexcept
 {
   QtRoundedEditRectItem::focusOutEvent(e);
-  //this->m_signal_selected_changed(this);
   assert(!hasFocus());
 }
 
@@ -106,68 +104,6 @@ void ribi::cmap::QtNode::hoverMoveEvent(QGraphicsSceneHoverEvent*) noexcept
 void ribi::cmap::QtNode::keyPressEvent(QKeyEvent *event) noexcept
 {
   QtRoundedEditRectItem::keyPressEvent(event);
-}
-
-
-void ribi::cmap::QtNode::OnConceptChanged(Node * const node) noexcept
-{
-  assert(!"Am I used?");
-  //Node changed, sync QtRoundedRectItem
-  assert(node);
-  assert(*node == m_node);
-  const std::string new_str = node->GetConcept().GetName();
-  const std::vector<std::string> new_text{new_str};
-  assert(new_text.size() == 1);
-  this->SetText(new_text);
-  assert(GetText() == new_text);
-}
-
-void ribi::cmap::QtNode::OnPosChanged(const QtRoundedRectItem * const item) noexcept
-{
-  assert(!"Am I used?");
-  //QtRoundedRectItem changed, sync Node
-  assert(item);
-  const auto new_pos = item->GetCenterPos();
-  m_node.SetPos(new_pos.x(),new_pos.y());
-}
-
-void ribi::cmap::QtNode::OnTextChanged(const QtRoundedRectItem * const
-#ifndef NDEBUG
-  item
-#endif
-) noexcept
-{
-  assert(!"Am I used?");
-  //QtRoundedRectItem changed, sync Node
-  assert(item);
-  assert(item == this);
-  const std::vector<std::string> new_text{GetText()};
-  assert((new_text.size() == 1 || new_text.size() != 1)
-    && "new_text can be of any number of lines, as QtRoundedEditRect supports this"
-  );
-  const std::string s{Container().Concatenate(new_text)};
-  assert(std::count(std::begin(s),std::end(s),'\n') ==  0 && "Keep it single-line");
-  m_node.GetConcept().SetName(s);
-}
-
-
-void ribi::cmap::QtNode::OnXchanged(Node * const node) noexcept
-{
-  assert(!"Am I used?");
-  const bool verbose{false};
-  if (verbose) { TRACE("Slot ribi::cmap::QtNode::OnXchanged"); }
-
-  //Node changed, sync QtRoundedRectItem
-  assert(node);
-  SetCenterX(node->GetX());
-}
-
-void ribi::cmap::QtNode::OnYchanged(Node * const node) noexcept
-{
-  assert(!"Am I used?");
-  //Node changed, sync QtRoundedRectItem
-  assert(node);
-  SetCenterY(node->GetY());
 }
 
 void ribi::cmap::QtNode::paint(

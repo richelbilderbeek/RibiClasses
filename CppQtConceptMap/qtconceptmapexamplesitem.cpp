@@ -51,7 +51,6 @@ ribi::cmap::QtExamplesItem::QtExamplesItem(
       QFont("monospace",9),
       parent
     ),
-    //m_signal_request_scene_update{},
     m_item{nullptr},
     m_qtedge{nullptr},
     m_qtnode{nullptr}
@@ -67,7 +66,6 @@ ribi::cmap::QtExamplesItem::QtExamplesItem(
 void ribi::cmap::QtExamplesItem::OnItemUpdated()
 {
   this->update();
-  //this->m_signal_request_scene_update();
 }
 
 void ribi::cmap::QtExamplesItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) noexcept

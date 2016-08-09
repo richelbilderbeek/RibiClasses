@@ -137,23 +137,8 @@ class QtRoundedRectItem : public QGraphicsRectItem
   ///Call setSelected and emits m_signal_selected_changed
   void SetSelected(bool selected) noexcept;
 
-  //mutable boost::signals2::signal<void (QtRoundedRectItem*)> m_signal_contour_pen_changed;
-  //mutable boost::signals2::signal<void (QtRoundedRectItem*)> m_signal_focus_pen_changed;
-  //mutable boost::signals2::signal<void (QtRoundedRectItem*)> m_signal_height_changed;
-  //mutable boost::signals2::signal<void (QtRoundedRectItem*)> m_signal_pos_changed;
-  //mutable boost::signals2::signal<void (QtRoundedRectItem*)> m_signal_radius_x_changed;
-  //mutable boost::signals2::signal<void (QtRoundedRectItem*)> m_signal_radius_y_changed;
-  //mutable boost::signals2::signal<void (QtRoundedRectItem*)> m_signal_selected_changed;
-  //mutable boost::signals2::signal<void (QtRoundedRectItem*)> m_signal_width_changed;
-
-  ///Signal emitted when this item has moved
-  //mutable boost::signals2::signal<void ()> m_signal_request_scene_update;
-
 protected:
 
-  virtual void dragEnterEvent(QGraphicsSceneDragDropEvent *event) noexcept override;
-  virtual void dragLeaveEvent(QGraphicsSceneDragDropEvent *event) noexcept override;
-  virtual void dragMoveEvent(QGraphicsSceneDragDropEvent *event) noexcept override;
   virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) noexcept override;
   virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) noexcept override;
 

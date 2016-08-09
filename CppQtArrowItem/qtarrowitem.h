@@ -83,9 +83,6 @@ struct QtArrowItem : public QGraphicsLineItem
   ///Set the position of the tail
   void SetTailPos(const double x, const double y) noexcept;
 
-  ///Signal emitted when this item has changed and the scene needs to be updated
-  //boost::signals2::signal<void (This*)> m_signal_item_requests_scene_update;
-
 protected:
 
   QRectF boundingRect() const;
