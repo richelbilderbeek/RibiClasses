@@ -348,6 +348,7 @@ void ribi::cmap::QtRateConceptTallyDialog::keyPressEvent(QKeyEvent * event)
 
 void ribi::cmap::QtRateConceptTallyDialog::OnCellChanged(int row_index, int col)
 {
+  assert(!"Am I called?");
   assert(row_index >= 0);
   assert(row_index < static_cast<int>(m_data.size()));
   assert(col >= 0);

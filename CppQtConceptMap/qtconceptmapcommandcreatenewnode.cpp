@@ -80,7 +80,7 @@ void ribi::cmap::CommandCreateNewNode::redo()
 {
   m_conceptmap = m_conceptmap_after;
   m_scene->addItem(m_qtnode);
-  m_qtnode->SetSelected(true); //Additively select node
+  m_qtnode->setSelected(true); //Additively select node
   m_qtnode->setFocus();
   m_tool_item->SetBuddyItem(m_qtnode);
 }

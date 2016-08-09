@@ -193,6 +193,7 @@ void ribi::cmap::QtConceptDialog::SetConcept(const Concept& concept) noexcept
 
 void ribi::cmap::QtConceptDialog::OnExamplesChanged(Concept& concept) noexcept
 {
+  assert(!"Am I called?");
   const bool verbose{false};
 
   const auto examples_before = m_qtexamplesdialog->GetExamples();
@@ -216,16 +217,19 @@ void ribi::cmap::QtConceptDialog::OnExamplesChanged(Concept& concept) noexcept
 
 void ribi::cmap::QtConceptDialog::OnIsComplexChanged(Concept& concept) noexcept
 {
+  assert(!"Am I called?");
   ui->box_is_complex->setChecked(concept.GetIsComplex());
 }
 
 void ribi::cmap::QtConceptDialog::OnNameChanged(Concept& concept) noexcept
 {
+  assert(!"Am I called?");
   ui->edit_name->setText(concept.GetName().c_str());
 }
 
 void ribi::cmap::QtConceptDialog::OnRatingComplexityChanged(Concept& concept) noexcept
 {
+  assert(!"Am I called?");
   ui->box_rating_complexity->setValue(
     concept.GetRatingComplexity()
   );
@@ -233,6 +237,7 @@ void ribi::cmap::QtConceptDialog::OnRatingComplexityChanged(Concept& concept) no
 
 void ribi::cmap::QtConceptDialog::OnRatingConcretenessChanged(Concept& concept) noexcept
 {
+  assert(!"Am I called?");
   ui->box_rating_concreteness->setValue(
     concept.GetRatingConcreteness()
   );
@@ -240,6 +245,7 @@ void ribi::cmap::QtConceptDialog::OnRatingConcretenessChanged(Concept& concept) 
 
 void ribi::cmap::QtConceptDialog::OnRatingSpecificityChanged(Concept& concept) noexcept
 {
+  assert(!"Am I called?");
   ui->box_rating_specificity->setValue(
     concept.GetRatingSpecificity()
   );

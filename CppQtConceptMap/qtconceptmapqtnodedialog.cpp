@@ -120,6 +120,7 @@ void ribi::cmap::QtQtNodeDialog::OnNodeChanged(QtNode * const
 #endif // NDEBUG
 ) noexcept
 {
+  assert(!"Am I called?");
   assert( qtnode ==  m_qtnode.get());
   assert(*qtnode == *m_qtnode);
   m_qtroundededitrectitem_dialog->SetItem(m_qtnode);
@@ -127,6 +128,7 @@ void ribi::cmap::QtQtNodeDialog::OnNodeChanged(QtNode * const
 
 void ribi::cmap::QtQtNodeDialog::OnQtRoundedRectItemChanged(QtNode * const qtnode) noexcept
 {
+  assert(!"Am I called?");
   //Emit
   m_qtnodedialog->SetNode(qtnode->GetNode());
 

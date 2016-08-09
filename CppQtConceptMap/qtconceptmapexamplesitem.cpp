@@ -65,6 +65,7 @@ ribi::cmap::QtExamplesItem::QtExamplesItem(
 
 void ribi::cmap::QtExamplesItem::OnItemUpdated()
 {
+  assert(!"Am I called?");
   this->update();
 }
 

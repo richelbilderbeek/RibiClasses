@@ -104,12 +104,12 @@ void ribi::cmap::CommandCreateNewEdgeBetweenTwoSelectedNodes::redo()
   m_conceptmap = m_after;
   m_added_qtedge->setFocus();
   m_added_qtedge->SetSelected(true);
-  m_added_qtedge->GetFrom()->SetSelected(false);
-  m_added_qtedge->GetTo()->SetSelected(false);
+  m_added_qtedge->GetFrom()->setSelected(false);
+  m_added_qtedge->GetTo()->setSelected(false);
   m_scene->addItem(m_added_qtedge);
   m_scene->addItem(m_added_qtnode);
   m_added_qtnode->setFocus();
-  m_added_qtnode->SetSelected(true);
+  m_added_qtnode->setSelected(true);
 
   // Cannot write this:
   //   assert(m_added_qtedge->GetEdge() == m_added_edge);
@@ -124,9 +124,9 @@ void ribi::cmap::CommandCreateNewEdgeBetweenTwoSelectedNodes::undo()
 {
   m_conceptmap = m_before;
   m_added_qtedge->SetSelected(false);
-  m_added_qtnode->SetSelected(false);
-  m_added_qtedge->GetFrom()->SetSelected(false);
-  m_added_qtedge->GetTo()->SetSelected(true);
+  m_added_qtnode->setSelected(false);
+  m_added_qtedge->GetFrom()->setSelected(false);
+  m_added_qtedge->GetTo()->setSelected(true);
   m_added_qtedge->GetTo()->setFocus();
   m_scene->removeItem(m_added_qtedge);
   m_scene->removeItem(m_added_qtnode);

@@ -147,16 +147,19 @@ void ribi::QtRoundedRectItemDialog::keyPressEvent(QKeyEvent * event)
 
 void ribi::QtRoundedRectItemDialog::OnContourPenChanged(QtRoundedRectItem * const qtitem) noexcept
 {
+  assert(!"Am I called?");
   ui->box_contour_pen_width->setValue(qtitem->GetContourPen().widthF());
 }
 
 void ribi::QtRoundedRectItemDialog::OnFocusPenChanged(QtRoundedRectItem * const qtitem) noexcept
 {
+  assert(!"Am I called?");
   ui->box_focus_pen_width->setValue(qtitem->GetFocusPen().widthF());
 }
 
 void ribi::QtRoundedRectItemDialog::OnPosChanged(QtRoundedRectItem * const qtitem) noexcept
 {
+  assert(!"Am I called?");
   const double new_x = qtitem->GetCenterPos().x();
   const double new_y = qtitem->GetCenterPos().y();
   ui->box_x->setValue(new_x);
@@ -165,16 +168,19 @@ void ribi::QtRoundedRectItemDialog::OnPosChanged(QtRoundedRectItem * const qtite
 
 void ribi::QtRoundedRectItemDialog::OnRadiusXchanged(QtRoundedRectItem * const qtitem) noexcept
 {
+  assert(!"Am I called?");
   ui->box_radius_x->setValue(qtitem->GetRadiusX());
 }
 
 void ribi::QtRoundedRectItemDialog::OnRadiusYchanged(QtRoundedRectItem * const qtitem) noexcept
 {
+  assert(!"Am I called?");
   ui->box_radius_y->setValue(qtitem->GetRadiusY());
 }
 
 void ribi::QtRoundedRectItemDialog::OnWidthChanged(QtRoundedRectItem * const qtitem) noexcept
 {
+  assert(!"Am I called?");
   const double new_width = qtitem->GetInnerWidth();
   ui->box_width->setValue(new_width);
   const double new_width_including_pen = qtitem->GetOuterWidth();
@@ -183,6 +189,7 @@ void ribi::QtRoundedRectItemDialog::OnWidthChanged(QtRoundedRectItem * const qti
 
 void ribi::QtRoundedRectItemDialog::OnHeightChanged(QtRoundedRectItem * const qtitem) noexcept
 {
+  assert(!"Am I called?");
   const double new_height = qtitem->GetInnerHeight();
   ui->box_height->setValue(new_height);
   const double new_height_including_pen = qtitem->GetOuterHeight();

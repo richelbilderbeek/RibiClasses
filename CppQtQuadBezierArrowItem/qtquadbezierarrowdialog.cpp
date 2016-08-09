@@ -111,6 +111,7 @@ void ribi::QtQuadBezierArrowDialog::on_box_to_y_valueChanged(double arg1)
 
 void ribi::QtQuadBezierArrowDialog::OnItemUpdated(const QtQuadBezierArrowItem * const item) noexcept
 {
+  assert(!"Am I called?");
   ui->box_focus_pen_width->setValue(item->GetFocusPen().widthF());
   ui->box_from_x->setValue(item->GetFromItem()->x());
   ui->box_from_y->setValue(item->GetFromItem()->y());

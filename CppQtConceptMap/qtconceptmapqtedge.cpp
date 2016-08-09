@@ -259,6 +259,7 @@ void ribi::cmap::QtEdge::mousePressEvent(QGraphicsSceneMouseEvent *event) noexce
 
 void ribi::cmap::QtEdge::OnConceptChanged(Node * const node) noexcept
 {
+  assert(!"Am I called?");
   //Node changed, sync QtRoundedRectItem
   assert(node);
   assert(*node == m_edge.GetNode());
@@ -271,12 +272,14 @@ void ribi::cmap::QtEdge::OnConceptChanged(Node * const node) noexcept
 
 void ribi::cmap::QtEdge::OnEdgeChanged(const Edge& edge) noexcept
 {
+  assert(!"Am I called?");
   OnNodeChanged(edge);
 }
 
 
 void ribi::cmap::QtEdge::OnNodeChanged(const Edge& edge) noexcept
 {
+  assert(!"Am I called?");
   m_qtnode->SetCenterX(edge.GetNode().GetX());
   m_qtnode->SetCenterY(edge.GetNode().GetY());
   m_qtnode->SetText( { edge.GetNode().GetConcept().GetName() } );
@@ -286,6 +289,7 @@ void ribi::cmap::QtEdge::OnNodeChanged(const Edge& edge) noexcept
 
 void ribi::cmap::QtEdge::OnNodePosChanged(QtRoundedRectItem * const node) noexcept
 {
+  assert(!"Am I called?");
   this->m_qtnode->SetCenterX(node->x());
   this->m_qtnode->SetCenterY(node->y());
   this->m_qtnode->update();
@@ -294,6 +298,7 @@ void ribi::cmap::QtEdge::OnNodePosChanged(QtRoundedRectItem * const node) noexce
 
 void ribi::cmap::QtEdge::OnTextChanged(QtRoundedEditRectItem* item) noexcept
 {
+  assert(!"Am I called?");
   const auto new_name = item->GetText()[0];
   const auto old_name = GetEdge().GetNode().GetConcept().GetName();
   if (old_name != new_name)
@@ -305,11 +310,13 @@ void ribi::cmap::QtEdge::OnTextChanged(QtRoundedEditRectItem* item) noexcept
 
 void ribi::cmap::QtEdge::OnMustUpdateScene()
 {
+  assert(!"Am I called?");
   if (scene()) { scene()->update(); }
 }
 
 void ribi::cmap::QtEdge::OnRequestSceneUpdate()
 {
+  assert(!"Am I called?");
   if (scene()) { scene()->update(); }
 }
 
@@ -407,7 +414,7 @@ void ribi::cmap::QtEdge::SetHasTailArrow(const bool has_tail_arrow) noexcept
 
 void ribi::cmap::QtEdge::SetSelected(bool selected)
 {
-  this->GetQtNode()->SetSelected(selected);
+  this->GetQtNode()->setSelected(selected);
 }
 
 QPainterPath ribi::cmap::QtEdge::shape() const noexcept

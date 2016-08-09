@@ -122,6 +122,7 @@ qtitem
 #endif // NDEBUG
 ) noexcept
 {
+  assert(!"Am I called?");
   assert(m_item.get() == qtitem);
   //boost::shared_ptr<QtRoundedRectItem> base(m_item);
   m_dialog->SetItem(m_item);
@@ -129,6 +130,7 @@ qtitem
 
 void ribi::QtRoundedEditRectItemDialog::OnFontChanged(QtRoundedEditRectItem * const qtitem) noexcept
 {
+  assert(!"Am I called?");
   ui->label_font->setText(
     qtitem->GetFont().toString()
   );
@@ -136,6 +138,7 @@ void ribi::QtRoundedEditRectItemDialog::OnFontChanged(QtRoundedEditRectItem * co
 
 void ribi::QtRoundedEditRectItemDialog::OnPaddingChanged(QtRoundedEditRectItem * const qtitem) noexcept
 {
+  assert(!"Am I called?");
   ui->box_padding_bottom->setValue(qtitem->GetPadding().bottom);
   ui->box_padding_left->setValue(qtitem->GetPadding().left);
   ui->box_padding_right->setValue(qtitem->GetPadding().right);
@@ -144,12 +147,14 @@ void ribi::QtRoundedEditRectItemDialog::OnPaddingChanged(QtRoundedEditRectItem *
 
 void ribi::QtRoundedEditRectItemDialog::OnTextChanged(QtRoundedEditRectItem * const qtitem) noexcept
 {
+  assert(!"Am I called?");
   const std::string s{Container().Concatenate(qtitem->GetText(),"\n")};
   ui->text->setPlainText(s.c_str());
 }
 
 void ribi::QtRoundedEditRectItemDialog::OnTextPenChanged(QtRoundedEditRectItem * const qtitem) noexcept
 {
+  assert(!"Am I called?");
   std::stringstream s;
   s << "Text pen: " << qtitem->GetTextPen().widthF();
   ui->label_text_pen->setText(s.str().c_str());

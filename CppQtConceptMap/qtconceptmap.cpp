@@ -499,8 +499,8 @@ void ribi::cmap::QtConceptMap::mousePressEvent(QMouseEvent *event)
     {
       //The command needs to find the two selected vertices
       for (auto& i: scene()->selectedItems()) { i->setSelected(false); }
-      m_highlighter->GetItem()->SetSelected(true);
-      m_arrow->GetFrom()->SetSelected(true);
+      m_highlighter->GetItem()->setSelected(true);
+      m_arrow->GetFrom()->setSelected(true);
       try
       {
         const auto command = new CommandCreateNewEdgeBetweenTwoSelectedNodes(
@@ -549,7 +549,7 @@ void ribi::cmap::QtConceptMap::onFocusItemChanged(
   if (newFocus == m_tools && !m_arrow->isVisible() && m_tools->GetBuddyItem() && reason == Qt::MouseFocusReason) {
     m_arrow->Start(m_tools->GetBuddyItem()); //Also sets visibility
     m_tools->setSelected(false);
-    m_tools->GetBuddyItem()->SetSelected(true); //Will tigger onSelectionChanged and hide the arrow
+    m_tools->GetBuddyItem()->setSelected(true); //Will tigger onSelectionChanged and hide the arrow
     m_tools->GetBuddyItem()->setFocus();
     m_arrow->setVisible(true);
   }
@@ -661,7 +661,7 @@ void ribi::cmap::QtConceptMap::OnNodeKeyDownPressed(QtNode* const item, const in
   this->show();
   this->setFocus();
   this->scene()->setFocusItem(item);
-  item->SetSelected(true);
+  item->setSelected(true);
   this->scene()->update();
 }
 

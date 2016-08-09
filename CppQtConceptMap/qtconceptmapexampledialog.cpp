@@ -170,6 +170,7 @@ void ribi::cmap::QtExampleDialog::SetExample(const Example& example)
 
 void ribi::cmap::QtExampleDialog::OnCompetencyChanged(const Example& example)
 {
+  assert(!"Am I called?");
   const bool verbose{false};
   const int index_before = ui->box_competency->currentIndex();
   const int index_after = Competencies().ToIndex(example.GetCompetency());
@@ -189,21 +190,25 @@ void ribi::cmap::QtExampleDialog::OnCompetencyChanged(const Example& example)
 
 void ribi::cmap::QtExampleDialog::OnIsComplexChanged(const Example& example)
 {
+  assert(!"Am I called?");
   ui->box_is_complex->setChecked(example.GetIsComplex());
 }
 
 void ribi::cmap::QtExampleDialog::OnIsConcreteChanged(const Example& example)
 {
+  assert(!"Am I called?");
   ui->box_is_concrete->setChecked(example.GetIsConcrete());
 }
 
 void ribi::cmap::QtExampleDialog::OnIsSpecificChanged(const Example& example)
 {
+  assert(!"Am I called?");
   ui->box_is_specific->setChecked(example.GetIsSpecific());
 }
 
 void ribi::cmap::QtExampleDialog::OnTextChanged(const Example& example)
 {
+  assert(!"Am I called?");
   ui->edit_text->setText(example.GetText().c_str());
 }
 
