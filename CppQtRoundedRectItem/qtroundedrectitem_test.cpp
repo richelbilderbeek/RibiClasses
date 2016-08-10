@@ -141,7 +141,7 @@ void ribi::qtroundedrectitem_test::all_tests()
   {
     QGraphicsScene scene;
     scene.addItem(&i);
-    i.SetSelected(false);
+    i.setSelected(false);
     i.clearFocus();
     QVERIFY(!i.hasFocus() && !i.isSelected()
       && "Assume no focus, otherwise this test has no use");
@@ -158,7 +158,7 @@ void ribi::qtroundedrectitem_test::all_tests()
   {
     QGraphicsScene scene;
     scene.addItem(&i);
-    i.SetSelected(false);
+    i.setSelected(false);
     i.clearFocus();
     QVERIFY(!i.hasFocus() && !i.isSelected()
       && "Assume no focus, otherwise this test has no use");
