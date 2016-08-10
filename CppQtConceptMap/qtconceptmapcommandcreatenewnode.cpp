@@ -79,7 +79,9 @@ ribi::cmap::CommandCreateNewNode::CommandCreateNewNode(
 void ribi::cmap::CommandCreateNewNode::redo()
 {
   m_conceptmap = m_conceptmap_after;
+  assert(!m_qtnode->scene());
   m_scene->addItem(m_qtnode);
+  assert(m_qtnode->scene());
   m_qtnode->setSelected(true); //Additively select node
   m_qtnode->setFocus();
   m_tool_item->SetBuddyItem(m_qtnode);
@@ -88,6 +90,8 @@ void ribi::cmap::CommandCreateNewNode::redo()
 void ribi::cmap::CommandCreateNewNode::undo()
 {
   m_conceptmap = m_conceptmap_before;
+  assert(m_qtnode->scene());
   m_scene->removeItem(m_qtnode);
+  assert(!m_qtnode->scene());
   m_tool_item->SetBuddyItem(m_tool_item_old_buddy);
 }

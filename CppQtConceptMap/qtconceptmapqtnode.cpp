@@ -110,6 +110,7 @@ void ribi::cmap::QtNode::paint(
   QPainter* painter, const QStyleOptionGraphicsItem* item, QWidget* widget
 ) noexcept
 {
+  assert(painter);
   QtRoundedEditRectItem::paint(painter,item,widget);
 
   if (!GetNode().GetConcept().GetExamples().Get().empty())

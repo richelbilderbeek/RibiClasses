@@ -137,16 +137,21 @@ ribi::cmap::QtConceptMap::QtConceptMap(QWidget* parent)
   //Add QtNewArrow
   assert(!m_arrow->scene());
   scene()->addItem(m_arrow); //Add the QtNewArrow so it has a parent
+  assert(m_arrow->scene());
+
   m_arrow->hide();
   assert(!m_arrow->isVisible());
 
   //Add QtExamplesItem
   assert(!m_examples_item->scene());
   scene()->addItem(m_examples_item); //Add the examples so it has a parent
+  assert(m_examples_item->scene());
 
   //Add QtTool
   assert(!m_tools->scene());
   this->scene()->addItem(m_tools);
+  assert(m_tools->scene());
+
   //Responds when selectionChanged is triggered
 
 
@@ -721,7 +726,9 @@ void ribi::cmap::QtConceptMap::SetConceptMap(const ConceptMap& conceptmap)
     QtNode * const qtnode{new QtNode(node)};
     if (is_focal_node) { qtnode->setFlags(0); }
     assert(qtnode);
+    assert(!qtnode->scene());
     scene()->addItem(qtnode);
+    assert(qtnode->scene());
     assert(FindQtNode(node.GetId(), scene()));
   }
   //Add the Edges
@@ -746,7 +753,10 @@ void ribi::cmap::QtConceptMap::SetConceptMap(const ConceptMap& conceptmap)
     {
       qtedge->GetQtNode()->setVisible(false);
     }
+
+    assert(!qtedge->scene());
     scene()->addItem(qtedge);
+    assert(qtedge->scene());
   }
   assert(GetConceptMap() == conceptmap);
 

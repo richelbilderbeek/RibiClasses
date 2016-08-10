@@ -106,8 +106,15 @@ void ribi::cmap::CommandCreateNewEdgeBetweenTwoSelectedNodes::redo()
   m_added_qtedge->SetSelected(true);
   m_added_qtedge->GetFrom()->setSelected(false);
   m_added_qtedge->GetTo()->setSelected(false);
+
+  assert(!m_added_qtedge->scene());
   m_scene->addItem(m_added_qtedge);
+  assert(m_added_qtedge->scene() == m_scene);
+
+  assert(!m_added_qtnode->scene());
   m_scene->addItem(m_added_qtnode);
+  assert(m_added_qtnode->scene() == m_scene);
+
   m_added_qtnode->setFocus();
   m_added_qtnode->setSelected(true);
 
@@ -128,8 +135,12 @@ void ribi::cmap::CommandCreateNewEdgeBetweenTwoSelectedNodes::undo()
   m_added_qtedge->GetFrom()->setSelected(false);
   m_added_qtedge->GetTo()->setSelected(true);
   m_added_qtedge->GetTo()->setFocus();
+  assert(m_added_qtedge->scene() == m_scene);
+  assert(m_added_qtnode->scene() == m_scene);
   m_scene->removeItem(m_added_qtedge);
   m_scene->removeItem(m_added_qtnode);
+  assert(!m_added_qtedge->scene());
+  assert(!m_added_qtnode->scene());
   for (auto item: m_selected_before) { item->setSelected(true); }
 
   // Cannot write this:

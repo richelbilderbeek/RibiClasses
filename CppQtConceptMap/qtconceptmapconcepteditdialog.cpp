@@ -136,7 +136,8 @@ void ribi::cmap::QtConceptMapConceptEditDialog::on_button_add_clicked()
         | Qt::ItemIsEnabled
         | Qt::ItemIsEditable
         | Qt::ItemIsDragEnabled
-        | Qt::ItemIsDropEnabled);
+        | Qt::ItemIsDropEnabled
+    );
     ui->list_examples->addItem(item);
   }
   ui->edit_text->clear();

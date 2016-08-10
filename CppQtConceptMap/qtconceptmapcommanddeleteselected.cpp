@@ -177,13 +177,15 @@ void ribi::cmap::CommandDeleteSelected::redo()
   m_conceptmap = m_conceptmap_after;
   for (const auto qtedge: m_qtedges_removed)
   {
-    std::clog << __func__ << " - " << __LINE__ << '\n';
+    //qDebug() << __func__ << " - " << __LINE__ << '\n';
+    assert(qtedge->scene());
     m_scene->removeItem(qtedge);
     assert(!qtedge->scene());
   }
   for (const auto qtnode: m_qtnodes_removed)
   {
-    std::clog << __func__ << " - " << __LINE__ << '\n';
+    //qDebug() << __func__ << " - " << __LINE__ << '\n';
+    assert(qtnode->scene());
     m_scene->removeItem(qtnode);
     assert(!qtnode->scene());
   }
@@ -196,16 +198,23 @@ void ribi::cmap::CommandDeleteSelected::undo()
   m_conceptmap = m_conceptmap_before;
   for (const auto qtnode: m_qtnodes_removed)
   {
-    std::clog << __func__ << " - " << __LINE__ << '\n';
+    //qDebug() << __func__ << " - " << __LINE__ << '\n';
+    assert(qtnode);
+    assert(!qtnode->scene());
     m_scene->addItem(qtnode);
+    assert(!qtnode->scene());
     QtNode * q;
 
     assert(qtnode->scene());
   }
   for (const auto qtedge: m_qtedges_removed)
   {
-    std::clog << __func__ << " - " << __LINE__ << '\n';
+    //qDebug() << __func__ << " - " << __LINE__ << '\n';
+    assert(qtedge);
+    assert(!qtedge->scene());
     m_scene->addItem(qtedge);
+    assert(!qtedge->scene());
+
     qtedge->setZValue(-1.0);
     assert(qtedge->scene());
   }

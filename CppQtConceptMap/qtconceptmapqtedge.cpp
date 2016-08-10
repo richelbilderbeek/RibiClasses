@@ -324,18 +324,27 @@ void ribi::cmap::QtEdge::OnRequestSceneUpdate()
 void ribi::cmap::QtEdge::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) noexcept
 {
   assert(this->scene());
+  assert(this->m_from->scene());
+  assert(this->m_to->scene());
+  assert(this->scene() == m_from->scene());
+  assert(this->scene() == m_to->scene());
+
+  assert(m_arrow);
   if (!this->m_arrow->scene())
   {
     this->scene()->addItem(m_arrow); //Must remain
-
   }
+  assert(this->m_arrow->scene());
+  assert(this->scene() == this->m_arrow->scene());
+
+  assert(m_qtnode);
   if (!this->m_qtnode->scene())
   {
     this->scene()->addItem(m_qtnode); //Must remain
   }
-  assert(this->m_arrow->scene());
   assert(this->m_qtnode->scene());
-  assert(this->m_from->scene());
+  assert(this->scene() == this->m_qtnode->scene());
+
   m_arrow->setSelected(this->isSelected());
 
   if (m_arrow->isVisible())
@@ -419,6 +428,8 @@ void ribi::cmap::QtEdge::SetSelected(bool selected)
 
 QPainterPath ribi::cmap::QtEdge::shape() const noexcept
 {
+  assert(m_qtnode);
+  assert(m_arrow);
   return m_qtnode->shape().translated(m_qtnode->GetCenterPos())
     .united(m_arrow->shape())
   ;

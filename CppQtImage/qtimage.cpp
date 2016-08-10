@@ -61,7 +61,9 @@ QImage ribi::QtImage::Paint(const QGraphicsItem& item) noexcept
   else
   {
     QGraphicsScene scene;
+    assert(!item.scene());
     scene.addItem(&const_cast<QGraphicsItem&>(item)); //Temporarily add the item, won't modify it
+    assert(item.scene());
 
     const QSize old_size{scene.sceneRect().size().toSize()};
     //Rescaled by a factor two to fix BUG_260
@@ -71,7 +73,9 @@ QImage ribi::QtImage::Paint(const QGraphicsItem& item) noexcept
     image.fill(Qt::transparent);
     QPainter painter(&image);
     scene.render(&painter);
+    assert(item.scene());
     scene.removeItem(&const_cast<QGraphicsItem&>(item)); //Prevent item being deleted
+    assert(!item.scene());
     return image;
   }
 }
