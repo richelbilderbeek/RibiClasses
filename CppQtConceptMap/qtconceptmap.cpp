@@ -194,7 +194,6 @@ void ribi::cmap::QtConceptMap::CheckInvariants() const noexcept
 {
   #ifndef NDEBUG
 
-
   //If there is one QtEdge selected, its Edge must be able to been found
   try
   {

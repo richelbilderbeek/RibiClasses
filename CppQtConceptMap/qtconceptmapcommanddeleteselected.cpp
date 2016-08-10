@@ -170,6 +170,15 @@ ribi::cmap::CommandDeleteSelected::CommandDeleteSelected(
     }
   }
 
+  //Items must be in scene before deletion
+  for (const auto qtedge: m_qtedges_removed)
+  {
+    assert(qtedge->scene());
+  }
+  for (const auto qtnode: m_qtnodes_removed)
+  {
+    assert(qtnode->scene());
+  }
 }
 
 void ribi::cmap::CommandDeleteSelected::redo()
@@ -202,9 +211,6 @@ void ribi::cmap::CommandDeleteSelected::undo()
     assert(qtnode);
     assert(!qtnode->scene());
     m_scene->addItem(qtnode);
-    assert(!qtnode->scene());
-    QtNode * q;
-
     assert(qtnode->scene());
   }
   for (const auto qtedge: m_qtedges_removed)
@@ -213,10 +219,9 @@ void ribi::cmap::CommandDeleteSelected::undo()
     assert(qtedge);
     assert(!qtedge->scene());
     m_scene->addItem(qtedge);
-    assert(!qtedge->scene());
+    assert(qtedge->scene());
 
     qtedge->setZValue(-1.0);
-    assert(qtedge->scene());
   }
   for (auto item: m_selected_before) { item->setSelected(true); }
 
