@@ -134,9 +134,11 @@ ribi::cmap::CommandDeleteSelected::CommandDeleteSelected(
   {
     if (QtNode* qtnode = dynamic_cast<QtNode*>(i))
     {
-      if (qtnode->isSelected())
+      //Only delete selected non-Edge nodes
+      if (qtnode->isSelected() && !qtnode->parentItem())
       {
-        m_qtnodes_removed.emplace_back(qtnode);
+        //m_qtnodes_removed.emplace_back(qtnode);
+        m_qtnodes_removed.insert(qtnode);
       }
     }
   }
@@ -149,8 +151,10 @@ ribi::cmap::CommandDeleteSelected::CommandDeleteSelected(
       //Is selected itself
       if (qtedge->isSelected())
       {
-        m_qtedges_removed.emplace_back(qtedge);
-        m_qtnodes_removed.emplace_back(qtedge->GetQtNode()); //Also the QtNodes at the center of a QtEdge
+        //m_qtedges_removed.emplace_back(qtedge);
+        //m_qtnodes_removed.emplace_back(qtedge->GetQtNode()); //Also the QtNodes at the center of a QtEdge
+        m_qtedges_removed.insert(qtedge);
+        //NO m_qtnodes_removed.insert(qtedge->GetQtNode()); //Also the QtNodes at the center of a QtEdge
         continue;
       }
       //Is connected to a deleted QtNode
@@ -164,8 +168,10 @@ ribi::cmap::CommandDeleteSelected::CommandDeleteSelected(
       );
       if (j != std::end(m_qtnodes_removed))
       {
-        m_qtedges_removed.emplace_back(qtedge);
-        m_qtnodes_removed.emplace_back(qtedge->GetQtNode()); //Also the QtNodes at the center of a QtEdge
+        m_qtedges_removed.insert(qtedge);
+        //NO m_qtnodes_removed.insert(qtedge->GetQtNode()); //Also the QtNodes at the center of a QtEdge
+        //m_qtedges_removed.emplace_back(qtedge);
+        //m_qtnodes_removed.emplace_back(qtedge->GetQtNode()); //Also the QtNodes at the center of a QtEdge
       }
     }
   }
@@ -188,18 +194,19 @@ void ribi::cmap::CommandDeleteSelected::redo()
   for (const auto qtnode: m_qtnodes_removed)
   {
     assert(qtnode->scene());
+    assert(!qtnode->parentItem()); //Just to measure
+    assert(!qtnode->parentObject()); //Just to measure
+    assert(!qtnode->parentWidget()); //Just to measure
   }
 
   for (const auto qtedge: m_qtedges_removed)
   {
-    //qDebug() << __func__ << " - " << __LINE__ << '\n';
     assert(qtedge->scene());
     m_scene->removeItem(qtedge);
     assert(!qtedge->scene());
   }
   for (const auto qtnode: m_qtnodes_removed)
   {
-    //qDebug() << __func__ << " - " << __LINE__ << '\n';
     assert(qtnode->scene());
     m_scene->removeItem(qtnode);
     assert(!qtnode->scene());
@@ -213,7 +220,6 @@ void ribi::cmap::CommandDeleteSelected::undo()
   m_conceptmap = m_conceptmap_before;
   for (const auto qtnode: m_qtnodes_removed)
   {
-    //qDebug() << __func__ << " - " << __LINE__ << '\n';
     assert(qtnode);
     assert(!qtnode->scene());
     m_scene->addItem(qtnode);
@@ -221,7 +227,6 @@ void ribi::cmap::CommandDeleteSelected::undo()
   }
   for (const auto qtedge: m_qtedges_removed)
   {
-    //qDebug() << __func__ << " - " << __LINE__ << '\n';
     assert(qtedge);
     assert(!qtedge->scene());
     m_scene->addItem(qtedge);

@@ -31,6 +31,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "qtconceptmapcommand.h"
 #include <QGraphicsScene>
 #include "qtconceptmaptoolsitem.h"
+#include <set>
 #pragma GCC diagnostic pop
 
 namespace ribi {
@@ -57,8 +58,8 @@ class CommandDeleteSelected final : public Command
   ConceptMap m_conceptmap_after;
   const ConceptMap m_conceptmap_before;
   QGraphicsItem * const m_focus_item_before;
-  std::vector<QtEdge *> m_qtedges_removed;
-  std::vector<QtNode *> m_qtnodes_removed;
+  std::set<QtEdge *> m_qtedges_removed;
+  std::set<QtNode *> m_qtnodes_removed;
 
   QGraphicsScene * const m_scene;
   const QList<QGraphicsItem *> m_selected_before;

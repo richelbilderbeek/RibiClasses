@@ -31,6 +31,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "qtconceptmaphelper.h"
 #include "trace.h"
 #include "count_vertices_with_selectedness.h"
+#include "qtquadbezierarrowitem.h"
 #include "add_edge_between_selected_vertices.h"
 #include <boost/graph/isomorphism.hpp>
 #include <QGraphicsScene>
@@ -108,12 +109,14 @@ void ribi::cmap::CommandCreateNewEdgeBetweenTwoSelectedNodes::redo()
   m_added_qtedge->GetTo()->setSelected(false);
 
   assert(!m_added_qtedge->scene());
-  m_scene->addItem(m_added_qtedge);
-  assert(m_added_qtedge->scene() == m_scene);
-
   assert(!m_added_qtnode->scene());
-  m_scene->addItem(m_added_qtnode);
+  assert(!m_added_qtedge->GetArrow()->scene());
+  m_scene->addItem(m_added_qtedge);
+  //m_scene->addItem(m_added_qtnode); // Get these for free by adding QtEdge
+  //m_scene->addItem(m_added_qtedge->GetArrow()); // Get these for free by adding QtEdge
+  assert(m_added_qtedge->scene() == m_scene);
   assert(m_added_qtnode->scene() == m_scene);
+  assert(m_added_qtedge->GetArrow()->scene() == m_scene);
 
   m_added_qtnode->setFocus();
   m_added_qtnode->setSelected(true);
@@ -135,12 +138,17 @@ void ribi::cmap::CommandCreateNewEdgeBetweenTwoSelectedNodes::undo()
   m_added_qtedge->GetFrom()->setSelected(false);
   m_added_qtedge->GetTo()->setSelected(true);
   m_added_qtedge->GetTo()->setFocus();
+
   assert(m_added_qtedge->scene() == m_scene);
   assert(m_added_qtnode->scene() == m_scene);
+  assert(m_added_qtedge->GetArrow()->scene() == m_scene);
   m_scene->removeItem(m_added_qtedge);
-  m_scene->removeItem(m_added_qtnode);
+  //m_scene->removeItem(m_added_qtnode); //Get these for free
+  //m_scene->removeItem(m_added_qtedge->GetArrow()); //Get these for free
   assert(!m_added_qtedge->scene());
   assert(!m_added_qtnode->scene());
+  assert(!m_added_qtedge->GetArrow()->scene());
+
   for (auto item: m_selected_before) { item->setSelected(true); }
 
   // Cannot write this:

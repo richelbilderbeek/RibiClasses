@@ -43,8 +43,8 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "qtitemdisplaystrategy.h"
 #include "trace.h"
 
-ribi::cmap::QtNode::QtNode(const Node& node)
-  : QtRoundedEditRectItem(),
+ribi::cmap::QtNode::QtNode(const Node& node, QGraphicsItem* parent)
+  : QtRoundedEditRectItem( { "..." }, ribi::QtRoundedEditRectItem::Padding(), QFont("monospace",9), parent),
     m_node{node},
     m_show_bounding_rect{false}
 {

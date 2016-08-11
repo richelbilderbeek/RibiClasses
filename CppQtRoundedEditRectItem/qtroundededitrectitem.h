@@ -40,7 +40,6 @@ class QtRoundedEditRectItem : public QtRoundedRectItem
   typedef QtRoundedRectItem Base;
   typedef QtRoundedEditRectItemPadding Padding;
 
-
   explicit QtRoundedEditRectItem(
     const std::vector<std::string>& text = { "..." },
     const Padding& padding = Padding(),

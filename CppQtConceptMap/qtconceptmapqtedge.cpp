@@ -53,7 +53,7 @@ ribi::cmap::QtEdge::QtEdge(
   : m_arrow{nullptr}, //Will be initialized below
     m_edge{edge},
     m_from{from},
-    m_qtnode{new QtNode(edge.GetNode())},
+    m_qtnode{new QtNode(edge.GetNode(), this)}, //parent
     m_show_bounding_rect{false},
     m_to{to}
 {
@@ -69,7 +69,7 @@ ribi::cmap::QtEdge::QtEdge(
     this->GetQtNode(),
     false, //edge.HasHeadArrow(),
     to,
-    this //parent
+    this // parent
   );
 
   //QtEdge is just the glue between a collection of things
@@ -329,18 +329,10 @@ void ribi::cmap::QtEdge::paint(QPainter* painter, const QStyleOptionGraphicsItem
   assert(this->scene() == m_to->scene());
 
   assert(m_arrow);
-  //if (!this->m_arrow->scene())
-  //{
-  //  this->scene()->addItem(m_arrow); //Must remain
-  //}
   assert(this->m_arrow->scene());
   assert(this->scene() == this->m_arrow->scene());
 
   assert(m_qtnode);
-  //if (!this->m_qtnode->scene())
-  //{
-  //  this->scene()->addItem(m_qtnode); //Must remain
-  //}
   assert(this->m_qtnode->scene());
   assert(this->scene() == this->m_qtnode->scene());
 

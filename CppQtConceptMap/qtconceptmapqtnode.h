@@ -41,7 +41,7 @@ struct QtNode : public QtRoundedEditRectItem
 
   ///Node cannot be const as it contains a Concept that the user might want to edit
   ///concept_item contains the Stategy to display (and respond to the concept)
-  explicit QtNode(const Node& node);
+  explicit QtNode(const Node& node, QGraphicsItem* parent = 0);
 
   //virtual QRectF boundingRect() const { return QtRoundedEditRectItem::boundingRect(); }
 
