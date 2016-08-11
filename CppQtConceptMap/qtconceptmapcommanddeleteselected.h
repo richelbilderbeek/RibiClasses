@@ -65,6 +65,10 @@ class CommandDeleteSelected final : public Command
   const QList<QGraphicsItem *> m_selected_before;
   QtTool * const m_tool_item;
   QtNode * const m_tool_item_old_buddy;
+
+  ///All items in m_qtedges_removed and m_qtnodes_removed must all have
+  /// either (1) no scene, or (2) the same scene
+  bool AllHaveSameScene() const noexcept;
 };
 
 } //~namespace cmap
