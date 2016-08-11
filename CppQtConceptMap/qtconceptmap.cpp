@@ -755,6 +755,8 @@ void ribi::cmap::QtConceptMap::SetConceptMap(const ConceptMap& conceptmap)
 
     assert(!qtedge->scene());
     scene()->addItem(qtedge);
+    scene()->addItem(qtedge->GetQtNode());
+    scene()->addItem(qtedge->GetArrow());
     assert(qtedge->scene());
   }
   assert(GetConceptMap() == conceptmap);

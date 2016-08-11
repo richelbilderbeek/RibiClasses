@@ -116,7 +116,6 @@ ribi::cmap::QtEdge::QtEdge(
   m_qtnode->SetCenterY(m_edge.GetNode().GetY());
   m_qtnode->SetText( { m_edge.GetNode().GetConcept().GetName() } );
   assert(std::abs(m_edge.GetNode().GetY() - m_qtnode->GetCenterY()) < 2.0);
-
 }
 
 ribi::cmap::QtEdge::~QtEdge() noexcept
@@ -330,18 +329,18 @@ void ribi::cmap::QtEdge::paint(QPainter* painter, const QStyleOptionGraphicsItem
   assert(this->scene() == m_to->scene());
 
   assert(m_arrow);
-  if (!this->m_arrow->scene())
-  {
-    this->scene()->addItem(m_arrow); //Must remain
-  }
+  //if (!this->m_arrow->scene())
+  //{
+  //  this->scene()->addItem(m_arrow); //Must remain
+  //}
   assert(this->m_arrow->scene());
   assert(this->scene() == this->m_arrow->scene());
 
   assert(m_qtnode);
-  if (!this->m_qtnode->scene())
-  {
-    this->scene()->addItem(m_qtnode); //Must remain
-  }
+  //if (!this->m_qtnode->scene())
+  //{
+  //  this->scene()->addItem(m_qtnode); //Must remain
+  //}
   assert(this->m_qtnode->scene());
   assert(this->scene() == this->m_qtnode->scene());
 

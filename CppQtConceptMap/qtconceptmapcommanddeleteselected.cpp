@@ -184,6 +184,12 @@ ribi::cmap::CommandDeleteSelected::CommandDeleteSelected(
 void ribi::cmap::CommandDeleteSelected::redo()
 {
   m_conceptmap = m_conceptmap_after;
+
+  for (const auto qtnode: m_qtnodes_removed)
+  {
+    assert(qtnode->scene());
+  }
+
   for (const auto qtedge: m_qtedges_removed)
   {
     //qDebug() << __func__ << " - " << __LINE__ << '\n';
