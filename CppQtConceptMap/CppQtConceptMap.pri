@@ -40,7 +40,8 @@ HEADERS += \
     $$PWD/qtconceptmapcommanddeleteselected.h \
     $$PWD/qtconceptmaphelper.h \
     $$PWD/qtconceptmapcommandtogglearrowhead.h \
-    $$PWD/qtconceptmapcommandtogglearrowtail.h
+    $$PWD/qtconceptmapcommandtogglearrowtail.h \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapmode.h
 
 SOURCES += \
     $$PWD/qtconceptmapbrating.cpp \
@@ -79,7 +80,8 @@ SOURCES += \
     $$PWD/qtconceptmapcommanddeleteselected.cpp \
     $$PWD/qtconceptmaphelper.cpp \
     $$PWD/qtconceptmapcommandtogglearrowhead.cpp \
-    $$PWD/qtconceptmapcommandtogglearrowtail.cpp
+    $$PWD/qtconceptmapcommandtogglearrowtail.cpp \
+    ../RibiClasses/CppQtConceptMap/qtconceptmapmode.cpp
 
 FORMS += \
     $$PWD/qtconceptmapconceptdialog.ui \

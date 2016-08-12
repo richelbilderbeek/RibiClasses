@@ -21,9 +21,11 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #ifndef QTCONCEPTMAPCONCEPTMAP_H
 #define QTCONCEPTMAPCONCEPTMAP_H
 
+#include <functional>
 #include <QUndoStack>
 #include "qtkeyboardfriendlygraphicsview.h"
 #include "qtconceptmapfwd.h"
+#include "qtconceptmapmode.h"
 #include "qtconceptmapqtedge.h"
 #include "conceptmap.h"
 
@@ -39,10 +41,6 @@ class QtConceptMap : public ribi::QtKeyboardFriendlyGraphicsView
   Q_OBJECT
 
 public:
-  ///The mode of the concept map:
-  /// * edit: the concept map is edited by the student
-  /// * rate: the edited concept map is rated by the assessor
-  enum class Mode { uninitialzed, edit, rate };
 
   explicit QtConceptMap(QWidget* parent = 0);
   QtConceptMap(const QtConceptMap&) = delete;
@@ -133,6 +131,9 @@ private:
 
   ///Checks if the QtConceptMap is in a valid state
   void CheckInvariants() const noexcept;
+
+  ///The function how a QtEdge determines it is colored
+  std::function<QBrush(const QtEdge&)> GetEdgeBrushFunction(const Mode mode);
 
   ///Called when an item wants to be edited
   void OnEdgeKeyDownPressed(QtEdge * const item, const int key);

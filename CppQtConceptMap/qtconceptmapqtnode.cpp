@@ -37,6 +37,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmapnode.h"
 #include "container.h"
 #include "qtconceptmapbrushfactory.h"
+#include "qtconceptmaphelper.h"
 #include "qtconceptmapeditstrategy.h"
 #include "qtconceptmapqtnodefactory.h"
 #include "qtconceptmapratestrategy.h"
@@ -45,6 +46,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 
 ribi::cmap::QtNode::QtNode(const Node& node, QGraphicsItem* parent)
   : QtRoundedEditRectItem( { "..." }, ribi::QtRoundedEditRectItem::Padding(), QFont("monospace",9), parent),
+    m_brush_function{GetQtNodeBrushFunctionUninitialized()},
     m_node{node},
     m_show_bounding_rect{false}
 {
@@ -112,6 +114,10 @@ void ribi::cmap::QtNode::paint(
 {
   assert(this->scene());
   assert(painter);
+
+  //Set the brush of this QtNode
+  this->setBrush(m_brush_function(*this));
+
   QtRoundedEditRectItem::paint(painter,item,widget);
 
   if (!GetNode().GetConcept().GetExamples().Get().empty())

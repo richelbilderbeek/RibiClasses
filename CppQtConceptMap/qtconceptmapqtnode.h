@@ -53,6 +53,9 @@ struct QtNode : public QtRoundedEditRectItem
 
   static int GetWordWrapLength() noexcept { return m_wordwrap_length; }
 
+  ///Sets the function that determines the brush of the QtNode
+  void SetBrushFunction(const std::function<QBrush(const ribi::cmap::QtNode&)>& f) noexcept { m_brush_function = f; }
+
   void SetNode(const Node& node) noexcept;
 
   std::string ToStr() const noexcept;
@@ -67,6 +70,9 @@ protected:
   void hoverMoveEvent(QGraphicsSceneHoverEvent *event) noexcept final;
 
 private:
+
+  ///The function that determines this QtNode its brush
+  std::function<QBrush(const ribi::cmap::QtNode&)> m_brush_function;
 
   ///The node being edited, or displayed and not changed, or rated
   Node m_node;

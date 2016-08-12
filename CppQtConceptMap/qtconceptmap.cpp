@@ -247,6 +247,7 @@ void ribi::cmap::QtConceptMap::CheckInvariants() const noexcept
   #endif
 }
 
+
 void ribi::cmap::QtConceptMap::HideExamplesItem() noexcept
 {
   m_examples_item->hide();
@@ -834,69 +835,14 @@ void ribi::cmap::QtConceptMap::SetConceptMap(const ConceptMap& conceptmap)
   CheckInvariants();
 }
 
-void ribi::cmap::QtConceptMap::SetMode(const ribi::cmap::QtConceptMap::Mode mode) noexcept
+void ribi::cmap::QtConceptMap::SetMode(const ribi::cmap::Mode mode) noexcept
 {
-  if (m_mode == mode) return;
   m_mode = mode;
-  if (m_mode == Mode::edit)
+  auto qtnodes = GetQtNodes(GetScene());
+  for (auto qtnode: qtnodes)
   {
-    //Color all nodes (including those on the edges)
-    auto qtnodes = GetQtNodes(GetScene());
-    for (auto qtnode: qtnodes)
-    {
-      const auto node = qtnode->GetNode();
-      if (node.IsCenterNode())
-      {
-        qtnode->setBrush(QtBrushFactory().CreateGoldGradientBrush());
-        continue;
-      }
-      qtnode->setBrush(QtBrushFactory().CreateGrayGradientBrush());
-    }
-    //Color all nodes (including those on the edges)
-    auto qtedges = GetQtEdges(GetScene());
-    for (auto qtedge: qtedges)
-    {
-      qtedge->GetQtNode()->setBrush(QtBrushFactory().CreateBlueGradientBrush());
-    }
-  }
-  //Set the colors of the qtnodes dependent on the rating progress
-  else if (m_mode == Mode::rate)
-  {
-    auto qtnodes = GetQtNodes(GetScene());
-    for (auto qtnode: qtnodes)
-    {
-      const auto node = qtnode->GetNode();
-      if (node.IsCenterNode())
-      {
-        qtnode->setBrush(QtBrushFactory().CreateGoldGradientBrush());
-        continue;
-      }
-      const int n_rated
-        = (node.GetConcept().GetRatingComplexity()   != -1 ? 1 : 0)
-        + (node.GetConcept().GetRatingConcreteness() != -1 ? 1 : 0)
-        + (node.GetConcept().GetRatingSpecificity()  != -1 ? 1 : 0);
-      switch (n_rated)
-      {
-        case 0:
-          qtnode->setBrush(QtBrushFactory().CreateRedGradientBrush());
-          break;
-        case 1:
-        case 2:
-          qtnode->setBrush(QtBrushFactory().CreateYellowGradientBrush());
-          break;
-        case 3:
-          qtnode->setBrush(QtBrushFactory().CreateGreenGradientBrush());
-          break;
-        default: assert(!"Should not get here");
-      }
-    }
-  }
-  else
-  {
-    assert(m_mode == Mode::uninitialzed);
-    std::stringstream msg;
-    msg << __func__ << ": cannot set uninitialized mode";
-    throw std::invalid_argument(msg.str());
+    const auto f = GetQtNodeBrushFunction(m_mode);
+    qtnode->SetBrushFunction(f);
   }
 }
 void ribi::cmap::QtConceptMap::Undo() noexcept

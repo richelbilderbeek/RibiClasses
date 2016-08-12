@@ -2,7 +2,9 @@
 #define QTCONCEPTMAPHELPER_H
 
 #include <vector>
+#include <QBrush>
 #include "qtconceptmapfwd.h"
+#include "qtconceptmapmode.h"
 #include "conceptmap.h"
 
 namespace ribi {
@@ -54,6 +56,17 @@ std::vector<QtEdge*> GetQtEdges(
   const QGraphicsScene * const scene
 ) noexcept;
 
+///The function how a QtNode determines it is colored
+std::function<QBrush(const QtNode&)> GetQtNodeBrushFunction(const Mode mode);
+
+///The function how a QtNode in Mode::Edit determines it is colored
+std::function<QBrush(const QtNode&)> GetQtNodeBrushFunctionEdit() noexcept;
+
+///The function how a QtNode in Mode::Rate determines it is colored
+std::function<QBrush(const QtNode&)> GetQtNodeBrushFunctionRate() noexcept;
+
+///The function how a QtNode in Mode::Unitialized determines it is colored
+std::function<QBrush(const QtNode&)> GetQtNodeBrushFunctionUninitialized() noexcept;
 
 std::vector<QtNode *> GetQtNodes(const QGraphicsScene * const scene) noexcept;
 

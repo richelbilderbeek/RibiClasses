@@ -1,6 +1,7 @@
 #include "qtconceptmaphelper.h"
 #include <QGraphicsScene>
 #include "conceptmap.h"
+#include "qtconceptmapbrushfactory.h"
 #include "qtconceptmap.h"
 #include "qtconceptmapqtedge.h"
 #include "qtconceptmapcenternode.h"
@@ -276,6 +277,74 @@ std::vector<ribi::cmap::QtEdge *> ribi::cmap::GetQtEdges(
 ) noexcept
 {
   return Collect<QtEdge>(scene);
+}
+
+std::function<QBrush(const ribi::cmap::QtNode&)> ribi::cmap::GetQtNodeBrushFunction(const Mode mode)
+{
+  switch (mode)
+  {
+    case Mode::edit: return GetQtNodeBrushFunctionEdit();
+    case Mode::rate: return GetQtNodeBrushFunctionRate();
+    case Mode::uninitialzed: return GetQtNodeBrushFunctionUninitialized();
+    default: assert(!"Should not get here");
+  }
+  throw std::logic_error("ribi::cmap::QtConceptMap::GetNodeBrushFunction: unimplemented mode");
+}
+
+std::function<QBrush(const ribi::cmap::QtNode&)> ribi::cmap::GetQtNodeBrushFunctionEdit() noexcept
+{
+  return [](const QtNode& qtnode)
+  {
+    //Gold if center node
+    //Gray if solitary node
+    //Blue if relation node
+    const auto node = qtnode.GetNode();
+    if (node.IsCenterNode())
+    {
+      return QtBrushFactory().CreateGoldGradientBrush();
+    }
+    if (!qtnode.parentItem())
+    {
+      return QtBrushFactory().CreateGrayGradientBrush();
+    }
+    assert(qtnode.parentItem());
+    return QtBrushFactory().CreateBlueGradientBrush();
+  };
+}
+
+std::function<QBrush(const ribi::cmap::QtNode&)> ribi::cmap::GetQtNodeBrushFunctionRate() noexcept
+{
+  return [](const QtNode& qtnode)
+  {
+    const auto node = qtnode.GetNode();
+    if (node.IsCenterNode())
+    {
+      return QtBrushFactory().CreateGoldGradientBrush();
+    }
+    const int n_rated
+      = (node.GetConcept().GetRatingComplexity()   != -1 ? 1 : 0)
+      + (node.GetConcept().GetRatingConcreteness() != -1 ? 1 : 0)
+      + (node.GetConcept().GetRatingSpecificity()  != -1 ? 1 : 0);
+    switch (n_rated)
+    {
+      case 0: return QtBrushFactory().CreateRedGradientBrush();
+      case 1:
+      case 2:
+        return QtBrushFactory().CreateYellowGradientBrush();
+      case 3:
+        return QtBrushFactory().CreateGreenGradientBrush();
+      default: assert(!"Should not get here");
+    }
+    throw std::logic_error("GetNodeBrushFunction: unimplemented rating");
+  };
+}
+
+std::function<QBrush(const ribi::cmap::QtNode&)> ribi::cmap::GetQtNodeBrushFunctionUninitialized() noexcept
+{
+  return [](const QtNode&)
+  {
+    return QtBrushFactory().CreateWhiteGradientBrush();
+  };
 }
 
 std::vector<ribi::cmap::QtNode *> ribi::cmap::GetQtNodes(
