@@ -271,7 +271,13 @@ void ribi::cmap::QtConceptMap::DoCommand(Command * const command) noexcept
   CheckInvariants();
 
   m_undo.push(command);
+
+  CheckInvariants();
+
   this->UpdateConceptMap();
+
+  CheckInvariants();
+
   qApp->processEvents();
 
   CheckInvariants();
@@ -511,8 +517,13 @@ void ribi::cmap::QtConceptMap::mouseMoveEvent(QMouseEvent * event)
     //Move the item under the arrow
     QtNode* const item_below = GetItemBelowCursor(mapToScene(event->pos()));
 
-    assert(m_highlighter);
-    m_highlighter->SetItem(item_below); //item_below is allowed to be nullptr
+    //If there is no item, set nullptr to be highlighted
+    //Alse, only highlight solitary QtNodes, not the QtNodes on the QtEdges
+    if (!item_below || (item_below && !item_below->parentItem()))
+    {
+      assert(m_highlighter);
+      m_highlighter->SetItem(item_below); //item_below is allowed to be nullptr
+    }
   }
   else
   {

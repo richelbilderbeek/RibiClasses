@@ -126,8 +126,9 @@ ribi::cmap::QtEdge::~QtEdge() noexcept
 
 QRectF ribi::cmap::QtEdge::boundingRect() const
 {
-
-
+  assert(this->scene());
+  assert(m_qtnode->scene());
+  assert(m_arrow->scene());
   return m_qtnode->boundingRect().translated(m_qtnode->GetCenterPos())
     .united(m_arrow->boundingRect())
   ;

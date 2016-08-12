@@ -97,6 +97,7 @@ ribi::QtQuadBezierArrowItem::QtQuadBezierArrowItem(
 
 QRectF ribi::QtQuadBezierArrowItem::boundingRect() const
 {
+  assert(this->scene());
   return shape().boundingRect();
 }
 
