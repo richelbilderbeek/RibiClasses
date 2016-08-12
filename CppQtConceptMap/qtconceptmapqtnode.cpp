@@ -110,6 +110,7 @@ void ribi::cmap::QtNode::paint(
   QPainter* painter, const QStyleOptionGraphicsItem* item, QWidget* widget
 ) noexcept
 {
+  assert(this->scene());
   assert(painter);
   QtRoundedEditRectItem::paint(painter,item,widget);
 
@@ -125,28 +126,6 @@ void ribi::cmap::QtNode::paint(
     );
   }
 
-  //Check if item can move (as the center node cannot)
-  #define BRAINWEAVER_MOVE_ITEMS_ON_COLLISION
-  #ifdef BRAINWEAVER_MOVE_ITEMS_ON_COLLISION
-  if (this->flags() & QGraphicsItem::ItemIsMovable)
-  {
-    //Item can move, check for collision
-    const QList<QGraphicsItem*> others = collidingItems();
-    std::for_each(others.begin(),others.end(),
-      [this](const QGraphicsItem* const other_item)
-      {
-        assert(other_item);
-        if (const QtNode* const other_node = dynamic_cast<const QtNode*>(other_item))
-        {
-          const double dx = x() - other_node->x() > 0.0 ? 1.0 : -1.0;
-          const double dy = y() - other_node->y() > 0.0 ? 1.0 : -1.0;
-          //assert(this->flags() & QGraphicsItem::ItemIsMovable); //Not true for center node
-          this->SetCenterPos( this->x()  + dx, this->y()  + dy);
-        }
-      }
-    );
-  }
-  #endif
   if (m_show_bounding_rect)
   {
     const QPen prev_pen = painter->pen();

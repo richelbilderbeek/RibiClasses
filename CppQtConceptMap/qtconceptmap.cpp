@@ -180,6 +180,12 @@ ribi::cmap::QtConceptMap::QtConceptMap(QWidget* parent)
   m_examples_item->SetCenterPos(123,456); //Irrelevant where
 
   CheckInvariants();
+
+  {
+    QTimer * const timer{new QTimer(this)};
+    QObject::connect(timer, SIGNAL(timeout()), this, SLOT(onCheckCollision()));
+    timer->start(10);
+  }
 }
 
 ribi::cmap::QtConceptMap::~QtConceptMap()
@@ -210,6 +216,33 @@ void ribi::cmap::QtConceptMap::CheckInvariants() const noexcept
   }
   catch (...) {} //No problem
 
+  //All QtNodes must have a scene
+  {
+    const auto qtnodes = GetQtNodes(scene());
+    for (const auto qtnode: qtnodes)
+    {
+      assert(qtnode);
+      assert(qtnode->scene());
+    }
+  }
+
+  //All QtEdges, their QtNodes and Arrows must have a scene
+  {
+    const auto qtedges = GetQtEdges(scene());
+    for (const auto qtedge: qtedges)
+    {
+      assert(qtedge);
+      assert(qtedge->scene());
+      assert(qtedge->GetArrow());
+      assert(qtedge->GetArrow()->scene());
+      assert(qtedge->GetQtNode());
+      assert(qtedge->GetQtNode()->scene());
+      assert(qtedge->GetFrom());
+      assert(qtedge->GetFrom()->scene());
+      assert(qtedge->GetTo());
+      assert(qtedge->GetTo()->scene());
+    }
+  }
 
   #endif
 }
@@ -528,6 +561,28 @@ void ribi::cmap::QtConceptMap::mousePressEvent(QMouseEvent *event)
   assert(!m_arrow->isSelected());
   UpdateExamplesItem();
   assert(!m_arrow->isSelected());
+}
+
+void ribi::cmap::QtConceptMap::onCheckCollision()
+{
+  const auto items = this->scene()->items();
+  for (const auto item: items)
+  {
+    if (!(item->flags() & QGraphicsItem::ItemIsMovable)) continue;
+    QtNode* const node = dynamic_cast<QtNode*>(item);
+    if (!node) continue;
+    const auto others = item->collidingItems();
+    for (const auto other: others)
+    {
+      if (!(other->flags() & QGraphicsItem::ItemIsMovable)) continue;
+      const QtNode* const other_node = dynamic_cast<const QtNode*>(other);
+      if (!other_node) continue;
+      const double dx = node->x() - other_node->x() > 0.0 ? 1.0 : -1.0;
+      const double dy = node->y() - other_node->y() > 0.0 ? 1.0 : -1.0;
+      node->SetCenterPos(node->x()  + dx, node->y()  + dy);
+
+    }
+  }
 }
 
 void ribi::cmap::QtConceptMap::onFocusItemChanged(

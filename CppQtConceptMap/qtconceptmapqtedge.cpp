@@ -29,6 +29,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include <boost/lambda/lambda.hpp>
 
 #include <QCursor>
+#include <QDebug>
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsScene>
 #include <QKeyEvent>
@@ -419,6 +420,9 @@ void ribi::cmap::QtEdge::SetSelected(bool selected)
 
 QPainterPath ribi::cmap::QtEdge::shape() const noexcept
 {
+  assert(this->scene());
+  assert(m_qtnode->scene());
+  assert(m_arrow->scene());
   assert(m_qtnode);
   assert(m_arrow);
   return m_qtnode->shape().translated(m_qtnode->GetCenterPos())

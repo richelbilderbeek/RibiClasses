@@ -37,9 +37,9 @@ namespace cmap {
 struct Edge;
 struct Node;
 
-///The QtEdge is a QtConceptMapElement that
+///The QtEdge is a QGraphicsItem that
 ///draws a curve underneath itself, between head and tail arrowhead
-///concept_item is the Strategy for displaying the ConceptItem
+///It parents an arrow and a QtNode.
 struct QtEdge : public QGraphicsItem
 {
   using Base = QGraphicsItem;

@@ -76,19 +76,19 @@ struct QtQuadBezierArrowItem : public QGraphicsItem
   ///Get the item where the arrow originates from
   ///(would the arrow and tail heads not be reversible)
   ///Use the specific GetFrom* member functions to modify this item
-  const QGraphicsItem* GetFromItem() const noexcept { return m_from; }
-  double GetFromX() const noexcept { return m_from->x(); }
-  double GetFromY() const noexcept { return m_from->y(); }
+  const QGraphicsItem* GetFromItem() const noexcept;
+  double GetFromX() const noexcept { return GetFromItem()->x(); }
+  double GetFromY() const noexcept { return GetFromItem()->y(); }
 
   ///Obtain the head point of the arrow, on the edge of the rectangle m_from
   QPointF GetHead() const noexcept;
 
   ///Get the item where the arrow pass through in the middle
   ///Use the specific GetMid* member functions to modify this item
-  const QGraphicsItem* GetMidItem() const noexcept { return m_mid; }
-        QGraphicsItem* GetMidItem()       noexcept { return m_mid; }
-  double GetMidX() const noexcept { return m_mid->x(); }
-  double GetMidY() const noexcept { return m_mid->y(); }
+  const QGraphicsItem* GetMidItem() const noexcept;
+        QGraphicsItem* GetMidItem()       noexcept;
+  double GetMidX() const noexcept { return GetMidItem()->x(); }
+  double GetMidY() const noexcept { return GetMidItem()->y(); }
 
   ///Get the QPen used to draw a regular, non-focused, arrow
   const QPen& GetPen() const noexcept { return m_pen; }
@@ -99,9 +99,9 @@ struct QtQuadBezierArrowItem : public QGraphicsItem
   ///Get the item where the arrow points to
   ///(would the arrow and tail heads not be reversible)
   ///Use the specific GetTo* member functions to modify this item
-  const QGraphicsItem* GetToItem() const noexcept { return m_to; }
-  double GetToX() const noexcept { return m_to->x(); }
-  double GetToY() const noexcept { return m_to->y(); }
+  const QGraphicsItem* GetToItem() const noexcept;
+  double GetToX() const noexcept { return GetToItem()->x(); }
+  double GetToY() const noexcept { return GetToItem()->y(); }
 
   ///Obtain the version of this class
   static std::string GetVersion() noexcept;

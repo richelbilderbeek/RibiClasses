@@ -121,6 +121,12 @@ QPointF ribi::QtQuadBezierArrowItem::GetCenter() const noexcept
   return center;
 }
 
+const QGraphicsItem* ribi::QtQuadBezierArrowItem::GetFromItem() const noexcept
+{
+  assert(m_from);
+  return m_from;
+}
+
 QPointF ribi::QtQuadBezierArrowItem::GetHead() const noexcept
 {
   typedef boost::geometry::model::d2::point_xy<double> Point;
@@ -175,6 +181,18 @@ QPointF ribi::QtQuadBezierArrowItem::GetHead() const noexcept
       return QPointF(p_head_end[1].x(),p_head_end[1].y());
     }
   }
+}
+
+const QGraphicsItem* ribi::QtQuadBezierArrowItem::GetMidItem() const noexcept
+{
+  assert(m_mid);
+  return m_mid;
+}
+
+QGraphicsItem* ribi::QtQuadBezierArrowItem::GetMidItem() noexcept
+{
+  assert(m_mid);
+  return m_mid;
 }
 
 QPointF ribi::QtQuadBezierArrowItem::GetTail() const noexcept
@@ -238,6 +256,12 @@ QPointF ribi::QtQuadBezierArrowItem::GetTail() const noexcept
       return QPointF(p_tail_end[1].x(),p_tail_end[1].y());
     }
   }
+}
+
+const QGraphicsItem* ribi::QtQuadBezierArrowItem::GetToItem() const noexcept
+{
+  assert(m_to);
+  return m_to;
 }
 
 std::string ribi::QtQuadBezierArrowItem::GetVersion() noexcept
@@ -503,6 +527,7 @@ void ribi::QtQuadBezierArrowItem::SetToPos(const QPointF& pos) noexcept
 
 QPainterPath ribi::QtQuadBezierArrowItem::shape() const noexcept
 {
+  assert(this->scene());
   const QPointF p_end_tail = GetHead();
   const QPointF p_end_head = GetTail();
 

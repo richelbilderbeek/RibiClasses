@@ -220,6 +220,7 @@ void ribi::QtArrowItem::SetTailPos(const double x, const double y) noexcept
 
 QPainterPath ribi::QtArrowItem::shape() const
 {
+  assert(this->scene());
   //Thanks to norobro for posting this code at
   //http://www.qtcentre.org/threads/49201-Increase-margin-for-detecting-tooltip-events-of-QGraphicsLineItem
   QPainterPath path;

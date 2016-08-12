@@ -134,9 +134,6 @@ private:
   ///Checks if the QtConceptMap is in a valid state
   void CheckInvariants() const noexcept;
 
-  ///Called when an Edge gets deleted from the ConceptMap
-  //void DeleteEdge(const Edge& edge);
-
   ///Called when an item wants to be edited
   void OnEdgeKeyDownPressed(QtEdge * const item, const int key);
 
@@ -155,6 +152,8 @@ private:
 
 private slots:
 
+  ///A timed event to check for collisions
+  void onCheckCollision();
   void onFocusItemChanged(QGraphicsItem*,QGraphicsItem*,Qt::FocusReason);
   void onSelectionChanged();
 };
