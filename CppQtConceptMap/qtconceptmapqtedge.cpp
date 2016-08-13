@@ -77,7 +77,6 @@ ribi::cmap::QtEdge::QtEdge(
   //this->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsFocusable);
 
   this->m_arrow->setFlags(0);
-  m_arrow->setZValue(m_qtnode->zValue() - 1.0);
 
   #define BELIEF_THAT_QTEDGE_SHOULD_NOT_BE_SELECTABLE
   #ifdef  BELIEF_THAT_QTEDGE_SHOULD_NOT_BE_SELECTABLE
@@ -117,6 +116,11 @@ ribi::cmap::QtEdge::QtEdge(
   m_qtnode->SetCenterY(m_edge.GetNode().GetY());
   m_qtnode->SetText( { m_edge.GetNode().GetConcept().GetName() } );
   assert(std::abs(m_edge.GetNode().GetY() - m_qtnode->GetCenterY()) < 2.0);
+
+  //Set Z values
+  this->setZValue(-1.0);
+  m_arrow->setZValue(-1.0);
+  m_qtnode->setZValue(1.0);
 }
 
 ribi::cmap::QtEdge::~QtEdge() noexcept

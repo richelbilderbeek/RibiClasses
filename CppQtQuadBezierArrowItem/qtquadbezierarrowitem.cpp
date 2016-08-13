@@ -86,8 +86,7 @@ ribi::QtQuadBezierArrowItem::QtQuadBezierArrowItem(
   this->setAcceptHoverEvents(true);
 
   //Put this arrow item under the source and target node
-  this->setZValue(std::min(from->zValue(),zValue()) - 1.0);
-  this->setZValue(std::min(to->zValue(),zValue()) - 1.0);
+  this->setZValue(std::min(from->zValue(),to->zValue()) - 1.0);
   //Put the center item above the arrow
   if (mid)
   {

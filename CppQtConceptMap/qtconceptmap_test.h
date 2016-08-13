@@ -12,6 +12,7 @@ class qtconceptmap_test : public QObject
 
 private slots:
   void create_one_edge_command();
+  void create_one_edge_command_and_check_z_order();
   void create_one_edge_keyboard();
   void create_one_edge_keyboard_and_undo();
   void create_one_edge_with_head_command();

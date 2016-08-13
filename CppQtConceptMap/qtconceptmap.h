@@ -36,6 +36,11 @@ namespace cmap {
 ///It does not offer UI interaction with the user
 ///QtConceptMap does offer UI interaction
 //Cannot mark it as a final class, because that would break Qt4 compatibility
+///The Z values of its objects are set as such:
+///  3: QtTool
+///  2: QtNewArrow
+///  0: QtNodes
+/// -1: QtEdges
 class QtConceptMap : public ribi::QtKeyboardFriendlyGraphicsView
 {
   Q_OBJECT

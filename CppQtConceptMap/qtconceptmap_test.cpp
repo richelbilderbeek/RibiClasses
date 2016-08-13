@@ -81,6 +81,43 @@ void ribi::cmap::qtconceptmap_test::create_one_edge_command()
   }
 }
 
+void ribi::cmap::qtconceptmap_test::create_one_edge_command_and_check_z_order()
+{
+  QtConceptMap m;
+  m.show();
+  //Create two nodes
+  for (int i=0; i!=2; ++i) {
+    m.DoCommand(
+      new CommandCreateNewNode(
+        m.GetConceptMap(),
+        Mode::uninitialized,
+        m.GetScene(),
+        m.GetQtToolItem(),
+        0.0,
+        0.0
+      )
+    );
+  }
+  //Create edge between nodes
+  m.DoCommand(
+    new CommandCreateNewEdgeBetweenTwoSelectedNodes(
+      m.GetConceptMap(),
+      Mode::uninitialized,
+      m.GetScene(),
+      m.GetQtToolItem()
+    )
+  );
+  const auto qtnodes = GetQtNodesNotOnEdge(m.GetScene());
+  const auto qtedges = GetQtEdges(m.GetScene());
+  assert(qtnodes.size() == 2);
+  assert(qtedges.size() == 1);
+  const auto qtnode1 = qtnodes[0];
+  const auto qtnode2 = qtnodes[1];
+  const auto qtedge  = qtedges[0];
+  QVERIFY(qtnode1->zValue() > qtedge->zValue());
+  QVERIFY(qtnode2->zValue() > qtedge->zValue());
+}
+
 void ribi::cmap::qtconceptmap_test::create_one_edge_keyboard()
 {
   QtConceptMap m;

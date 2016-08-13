@@ -354,6 +354,22 @@ std::vector<ribi::cmap::QtNode *> ribi::cmap::GetQtNodes(
   return Collect<QtNode>(scene);
 }
 
+std::vector<ribi::cmap::QtNode *> ribi::cmap::GetQtNodesNotOnEdge(const QGraphicsScene * const scene) noexcept
+{
+  const auto qtnodes_all = GetQtNodes(scene);
+  std::vector<QtNode*> qtnodes;
+  std::copy_if(std::begin(qtnodes_all), std::end(qtnodes_all),
+    std::back_inserter(qtnodes),
+    [](const QtNode* const qtnode)
+    {
+      //Solitary QtNodes have no parent
+      return !qtnode->parentItem();
+    }
+  );
+  return qtnodes;
+}
+
+
 std::vector<ribi::cmap::QtEdge *> ribi::cmap::GetSelectedQtEdges(const QGraphicsScene& scene) noexcept
 {
   std::vector<ribi::cmap::QtEdge *> selected;

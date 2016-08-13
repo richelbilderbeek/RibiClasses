@@ -68,7 +68,11 @@ std::function<QBrush(const QtNode&)> GetQtNodeBrushFunctionRate() noexcept;
 ///The function how a QtNode in Mode::Unitialized determines it is colored
 std::function<QBrush(const QtNode&)> GetQtNodeBrushFunctionUninitialized() noexcept;
 
+///Get all the QtNodes, also those that are part of a QtEdge
 std::vector<QtNode *> GetQtNodes(const QGraphicsScene * const scene) noexcept;
+
+///Get all the 'standalone' QtNodes; QtNodes that QtEdge can connect to;
+std::vector<QtNode *> GetQtNodesNotOnEdge(const QGraphicsScene * const scene) noexcept;
 
 std::vector<QtEdge *> GetSelectedQtEdges(const QGraphicsScene& scene) noexcept;
 std::vector<QtNode *> GetSelectedQtNodes(const QGraphicsScene& scene) noexcept;

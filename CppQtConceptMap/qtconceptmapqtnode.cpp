@@ -63,6 +63,7 @@ ribi::cmap::QtNode::QtNode(const Node& node, QGraphicsItem* parent)
   );
 
   SetNode(node);
+  this->setZValue(0.0);
 }
 
 ribi::cmap::QtNode::~QtNode() noexcept

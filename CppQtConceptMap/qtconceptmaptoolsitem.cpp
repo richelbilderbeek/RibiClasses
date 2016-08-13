@@ -51,7 +51,7 @@ ribi::cmap::QtTool::QtTool()
 
   this->setVisible(false);
 
-  this->setZValue(3.0);
+  this->setZValue(2.0);
 }
 
 void ribi::cmap::QtTool::hoverMoveEvent(QGraphicsSceneHoverEvent *)
