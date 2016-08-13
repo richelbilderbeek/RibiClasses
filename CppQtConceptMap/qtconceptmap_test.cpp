@@ -482,7 +482,7 @@ void ribi::cmap::qtconceptmap_test::is_command_put_on_undo_stack()
 
 void ribi::cmap::qtconceptmap_test::select_left_node_keyboard()
 {
-  if ("Fix issue 64") return; //#64
+  if ("skip issue 82") return; // https://github.com/richelbilderbeek/Brainweaver/issues/82
   QtConceptMap m;
   QTest::keyClick(&m, Qt::Key_N, Qt::ControlModifier, 100);
   QTest::keyClick(&m, Qt::Key_N, Qt::ControlModifier, 100);
