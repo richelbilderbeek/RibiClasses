@@ -25,6 +25,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmapnode.h"
 #include "conceptmapedge.h"
 #include "qtconceptmapcommand.h"
+#include "qtconceptmapmode.h"
 
 struct QGraphicsItem;
 struct QGraphicsScene;
@@ -42,6 +43,7 @@ class CommandCreateNewEdgeBetweenTwoSelectedNodes final : public Command
 
   CommandCreateNewEdgeBetweenTwoSelectedNodes(
     ConceptMap& conceptmap,
+    const Mode mode,
     QGraphicsScene * const scene,
     QtTool * const tool_item
   );
@@ -59,6 +61,7 @@ class CommandCreateNewEdgeBetweenTwoSelectedNodes final : public Command
   QtNode * m_added_qtnode; //The QtNode being at the center of m_qtedge
   ConceptMap m_after;
   const ConceptMap m_before;
+  const Mode m_mode;
   QGraphicsScene * const m_scene;
   const QList<QGraphicsItem *> m_selected_before;
   QtTool * const m_tool_item;

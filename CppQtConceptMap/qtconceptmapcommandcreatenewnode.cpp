@@ -26,9 +26,11 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "conceptmap.h"
 #include "conceptmapnode.h"
 #include "qtconceptmapqtnode.h"
+#include "qtconceptmaphelper.h"
 
 ribi::cmap::CommandCreateNewNode::CommandCreateNewNode(
   ConceptMap& conceptmap,
+  const Mode mode,
   QGraphicsScene * const scene,
   QtTool * const tool_item,
   const double x,
@@ -37,6 +39,7 @@ ribi::cmap::CommandCreateNewNode::CommandCreateNewNode(
   : m_conceptmap(conceptmap),
     m_conceptmap_after{conceptmap},
     m_conceptmap_before{conceptmap},
+    m_mode{mode},
     m_qtnode{nullptr},
     m_scene(scene),
     m_tool_item{tool_item},
@@ -84,6 +87,7 @@ void ribi::cmap::CommandCreateNewNode::redo()
   assert(m_qtnode->scene());
   m_qtnode->setSelected(true); //Additively select node
   m_qtnode->setFocus();
+  m_qtnode->SetBrushFunction(GetQtNodeBrushFunction(m_mode));
   m_tool_item->SetBuddyItem(m_qtnode);
 }
 

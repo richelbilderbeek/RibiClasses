@@ -36,10 +36,12 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <boost/graph/isomorphism.hpp>
 #include <QGraphicsScene>
 #include "qtconceptmap.h"
+#include "qtconceptmaphelper.h"
 #include "qtconceptmaptoolsitem.h"
 
 ribi::cmap::CommandCreateNewEdgeBetweenTwoSelectedNodes::CommandCreateNewEdgeBetweenTwoSelectedNodes(
   ConceptMap& conceptmap,
+  const Mode mode,
   QGraphicsScene * const scene,
   QtTool * const tool_item
 ) : m_conceptmap(conceptmap),
@@ -48,6 +50,7 @@ ribi::cmap::CommandCreateNewEdgeBetweenTwoSelectedNodes::CommandCreateNewEdgeBet
     m_added_qtnode{nullptr},
     m_after{conceptmap},
     m_before{conceptmap},
+    m_mode{mode},
     m_scene{scene},
     m_selected_before{scene->selectedItems()},
     m_tool_item{tool_item}
@@ -120,6 +123,7 @@ void ribi::cmap::CommandCreateNewEdgeBetweenTwoSelectedNodes::redo()
 
   m_added_qtnode->setFocus();
   m_added_qtnode->setSelected(true);
+  m_added_qtnode->SetBrushFunction(GetQtNodeBrushFunction(m_mode));
 
   // Cannot write this:
   //   assert(m_added_qtedge->GetEdge() == m_added_edge);

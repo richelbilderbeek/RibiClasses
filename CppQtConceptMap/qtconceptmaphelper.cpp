@@ -285,7 +285,7 @@ std::function<QBrush(const ribi::cmap::QtNode&)> ribi::cmap::GetQtNodeBrushFunct
   {
     case Mode::edit: return GetQtNodeBrushFunctionEdit();
     case Mode::rate: return GetQtNodeBrushFunctionRate();
-    case Mode::uninitialzed: return GetQtNodeBrushFunctionUninitialized();
+    case Mode::uninitialized: return GetQtNodeBrushFunctionUninitialized();
     default: assert(!"Should not get here");
   }
   throw std::logic_error("ribi::cmap::QtConceptMap::GetNodeBrushFunction: unimplemented mode");

@@ -125,7 +125,7 @@ ribi::cmap::QtConceptMap::QtConceptMap(QWidget* parent)
     m_conceptmap{},
     m_examples_item(new QtExamplesItem),
     m_highlighter{new QtItemHighlighter},
-    m_mode{Mode::uninitialzed},
+    m_mode{Mode::uninitialized},
     m_tools{new QtTool}
 {
   #ifndef NDEBUG
@@ -415,7 +415,7 @@ void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event) noexcept
       if (event->modifiers() & Qt::ControlModifier)
       {
         if (GetVerbosity()) { TRACE("Pressing CTRL-E"); }
-        try { this->DoCommand(new CommandCreateNewEdgeBetweenTwoSelectedNodes(GetConceptMap(),scene(),m_tools)); }
+        try { this->DoCommand(new CommandCreateNewEdgeBetweenTwoSelectedNodes(GetConceptMap(),m_mode,scene(),m_tools)); }
         catch (std::logic_error& ) {}
       }
       return;
@@ -447,7 +447,7 @@ void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event) noexcept
       if (event->modifiers() & Qt::ControlModifier)
       {
         if (GetVerbosity()) { TRACE("Pressing CTRL-N"); }
-        try { this->DoCommand(new CommandCreateNewNode(m_conceptmap,scene(),m_tools,0.0,0.0)); }
+        try { this->DoCommand(new CommandCreateNewNode(m_conceptmap,m_mode,scene(),m_tools,0.0,0.0)); }
         catch (std::logic_error& ) {}
       }
       return;
@@ -495,6 +495,7 @@ void ribi::cmap::QtConceptMap::mouseDoubleClickEvent(QMouseEvent *event)
     this->DoCommand(
       new CommandCreateNewNode(
         m_conceptmap,
+        m_mode,
         scene(),
         m_tools,
         pos.x(),
@@ -554,6 +555,7 @@ void ribi::cmap::QtConceptMap::mousePressEvent(QMouseEvent *event)
       {
         const auto command = new CommandCreateNewEdgeBetweenTwoSelectedNodes(
           m_conceptmap,
+          m_mode,
           scene(),
           m_tools
         );

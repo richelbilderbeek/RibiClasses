@@ -32,6 +32,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <QGraphicsScene>
 #include "qtconceptmaptoolsitem.h"
 #include "qtconceptmapcommand.h"
+#include "qtconceptmapmode.h"
 #pragma GCC diagnostic pop
 
 namespace ribi {
@@ -45,6 +46,7 @@ class CommandCreateNewNode final : public Command
 
   CommandCreateNewNode(
     ConceptMap& conceptmap,
+    const Mode mode,
     QGraphicsScene * const scene,
     QtTool * const tool_item,
     const double x,
@@ -61,6 +63,7 @@ class CommandCreateNewNode final : public Command
   ConceptMap& m_conceptmap;
   ConceptMap m_conceptmap_after;
   const ConceptMap m_conceptmap_before;
+  const Mode m_mode;
   QtNode * m_qtnode;
   QGraphicsScene * const m_scene;
   QtTool * const m_tool_item;

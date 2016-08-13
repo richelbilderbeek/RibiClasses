@@ -144,6 +144,12 @@ void ribi::cmap::QtNode::paint(
   }
 }
 
+void ribi::cmap::QtNode::SetBrushFunction(const std::function<QBrush(const ribi::cmap::QtNode&)>& f) noexcept
+{
+  m_brush_function = f;
+  this->update();
+}
+
 void ribi::cmap::QtNode::SetNode(const Node& node) noexcept
 {
   m_node = node;

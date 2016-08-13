@@ -45,6 +45,7 @@ void ribi::cmap::qtconceptmap_test::create_one_edge_command()
       m.DoCommand(
         new CommandCreateNewNode(
           m.GetConceptMap(),
+          Mode::uninitialized,
           m.GetScene(),
           m.GetQtToolItem(),
           0.0,
@@ -65,6 +66,7 @@ void ribi::cmap::qtconceptmap_test::create_one_edge_command()
     m.DoCommand(
       new CommandCreateNewEdgeBetweenTwoSelectedNodes(
         m.GetConceptMap(),
+        Mode::uninitialized,
         m.GetScene(),
         m.GetQtToolItem()
       )
@@ -115,6 +117,7 @@ void ribi::cmap::qtconceptmap_test::create_one_node_and_undo_command()
   m.DoCommand(
     new CommandCreateNewNode(
       m.GetConceptMap(),
+      Mode::uninitialized,
       m.GetScene(),
       m.GetQtToolItem(),
       0.0,
@@ -150,6 +153,7 @@ void ribi::cmap::qtconceptmap_test::create_one_node_command()
   m.DoCommand(
     new CommandCreateNewNode(
       m.GetConceptMap(),
+      Mode::uninitialized,
       m.GetScene(),
       m.GetQtToolItem(),
       x,
@@ -204,6 +208,7 @@ void ribi::cmap::qtconceptmap_test::create_ten_nodes_and_undo_command()
     m.DoCommand(
       new CommandCreateNewNode(
         m.GetConceptMap(),
+        Mode::uninitialized,
         m.GetScene(),
         m.GetQtToolItem(),
         0.0,
@@ -229,6 +234,7 @@ void ribi::cmap::qtconceptmap_test::create_two_nodes_command()
     m.DoCommand(
       new CommandCreateNewNode(
         m.GetConceptMap(),
+        Mode::uninitialized,
         m.GetScene(),
         m.GetQtToolItem(),
         0.0,
@@ -293,6 +299,7 @@ void ribi::cmap::qtconceptmap_test::delete_one_edge_command()
     m.DoCommand(
       new CommandCreateNewNode(
         m.GetConceptMap(),
+        Mode::uninitialized,
         m.GetScene(),
         m.GetQtToolItem(),
         0.0,
@@ -304,6 +311,7 @@ void ribi::cmap::qtconceptmap_test::delete_one_edge_command()
   m.DoCommand(
     new CommandCreateNewEdgeBetweenTwoSelectedNodes(
       m.GetConceptMap(),
+      Mode::uninitialized,
       m.GetScene(),
       m.GetQtToolItem()
     )
@@ -340,6 +348,7 @@ void ribi::cmap::qtconceptmap_test::delete_one_node_command()
   m.DoCommand(
     new CommandCreateNewNode(
       m.GetConceptMap(),
+      Mode::uninitialized,
       m.GetScene(),
       m.GetQtToolItem(),
       0.0,
@@ -379,6 +388,7 @@ void ribi::cmap::qtconceptmap_test::delete_two_nodes_command()
     m.DoCommand(
       new CommandCreateNewNode(
         m.GetConceptMap(),
+        Mode::uninitialized,
         m.GetScene(),
         m.GetQtToolItem(),
         0.0,
@@ -421,6 +431,7 @@ void ribi::cmap::qtconceptmap_test::is_command_put_on_undo_stack()
   CommandCreateNewNode * const command {
     new CommandCreateNewNode(
       m.GetConceptMap(),
+      Mode::uninitialized,
       m.GetScene(),
       m.GetQtToolItem(),
       0.0,
@@ -505,6 +516,7 @@ void ribi::cmap::qtconceptmap_test::create_one_edge_with_head_command()
       m.DoCommand(
         new CommandCreateNewNode(
           m.GetConceptMap(),
+          Mode::uninitialized,
           m.GetScene(),
           m.GetQtToolItem(),
           0.0,
@@ -525,6 +537,7 @@ void ribi::cmap::qtconceptmap_test::create_one_edge_with_head_command()
     m.DoCommand(
       new CommandCreateNewEdgeBetweenTwoSelectedNodes(
         m.GetConceptMap(),
+        Mode::uninitialized,
         m.GetScene(),
         m.GetQtToolItem()
       )

@@ -7,7 +7,7 @@ namespace cmap {
 ///The mode of the concept map:
 /// * edit: the concept map is edited by the student
 /// * rate: the edited concept map is rated by the assessor
-enum class Mode { uninitialzed, edit, rate };
+enum class Mode { uninitialized, edit, rate };
 
 } //~namespace cmap
 } //~namespace ribi
