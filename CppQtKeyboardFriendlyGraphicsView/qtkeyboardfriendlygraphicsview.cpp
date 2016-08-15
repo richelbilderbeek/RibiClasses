@@ -228,7 +228,7 @@ QGraphicsItem * ribi::QtKeyboardFriendlyGraphicsView::GetClosestNonselectedItem(
 
 std::string ribi::QtKeyboardFriendlyGraphicsView::GetVersion() noexcept
 {
-  return "1.3";
+  return "1.4";
 }
 
 std::vector<std::string> ribi::QtKeyboardFriendlyGraphicsView::GetVersionHistory() noexcept
@@ -237,11 +237,12 @@ std::vector<std::string> ribi::QtKeyboardFriendlyGraphicsView::GetVersionHistory
     "2012-12-13: version 1.0: initial version",
     "2012-12-31: version 1.1: improved moving focus",
     "2015-08-24: version 1.2: move item with CTRL, add selected with SHIFT, can move multiple items",
-    "2015-09-18: version 1.3: added verbosity"
+    "2015-09-18: version 1.3: added verbosity",
+    "2015-08-16: version 1.4: keyPressEvent may throw"
   };
 }
 
-void ribi::QtKeyboardFriendlyGraphicsView::keyPressEvent(QKeyEvent *event) noexcept
+void ribi::QtKeyboardFriendlyGraphicsView::keyPressEvent(QKeyEvent *event)
 {
   if (event->modifiers() & Qt::ControlModifier) {
     if (m_verbose) { std::clog << "Key event using CTRL" << std::endl; }

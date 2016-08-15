@@ -31,6 +31,10 @@ int main(int argc, char *argv[])
 {
   QApplication a(argc, argv);
   int error = 0;
+  //I am most interested in:
+  { ribi::qthideandshowdialog_test t; error |= QTest::qExec(&t, argc, argv); }
+
+  //These are all tests in alphabetical order
   { ribi::grabber_test t; error |= QTest::qExec(&t, argc, argv); }
   { ribi::qtarrowitem_test t; error |= QTest::qExec(&t, argc, argv); }
   { ribi::cmap::qtconceptmapcompetency_test t; error |= QTest::qExec(&t, argc, argv); }

@@ -12,6 +12,10 @@ class qthideandshowdialog_test : public QObject
 private slots:
   void default_construct();
   void parent_can_show_child();
+  void parent_can_show_potentially_throwing_child();
+
+  ///From https://github.com/richelbilderbeek/Brainweaver/issues/84
+  void destroy_cleanly_upon_exception_in_derived_class();
 };
 
 } //~namespace ribi

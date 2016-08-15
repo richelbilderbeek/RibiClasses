@@ -89,7 +89,7 @@ public:
 
 public slots:
 
-  void keyPressEvent(QKeyEvent* event) noexcept;
+  void keyPressEvent(QKeyEvent* event);
   void mouseMoveEvent(QMouseEvent * event);
   void mouseDoubleClickEvent(QMouseEvent *event);
   void mousePressEvent(QMouseEvent *event);

@@ -39,10 +39,10 @@ ribi::QtHideAndShowDialog::QtHideAndShowDialog(QWidget* parent) noexcept
 
 }
 
-//ribi::QtHideAndShowDialog::~QtHideAndShowDialog() noexcept
-//{
-//
-//}
+ribi::QtHideAndShowDialog::~QtHideAndShowDialog()
+{
+
+}
 
 void ribi::QtHideAndShowDialog::close_child()
 {
@@ -107,6 +107,7 @@ void ribi::QtHideAndShowDialog::ShowChild(QtHideAndShowDialog * const dialog)
   while (m_show_child)
   {
     dialog->exec();
+    qApp->processEvents();
   }
   this->show();
 }

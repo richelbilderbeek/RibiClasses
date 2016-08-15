@@ -343,19 +343,20 @@ QGraphicsScene* ribi::cmap::QtConceptMap::GetScene() const noexcept
 
 std::string ribi::cmap::QtConceptMap::GetVersion() noexcept
 {
-  return "2.0";
+  return "3.0";
 }
 
 std::vector<std::string> ribi::cmap::QtConceptMap::GetVersionHistory() noexcept
 {
   return {
-    "2012-xx-xx: version 1.0: initial version"
-    "2013-12-03: version 1.1: start of versioning"
-    "2015-08-12: version 2.0: merge with QtConceptMap"
+    "2012-xx-xx: version 1.0: initial version",
+    "2013-12-03: version 1.1: start of versioning",
+    "2015-08-12: version 2.0: merge with QtConceptMap",
+    "2016-08-15: version 3.0: added undo functionality",
   };
 }
 
-void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event) noexcept
+void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event)
 {
   CheckInvariants();
   UpdateConceptMap();
@@ -376,6 +377,12 @@ void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event) noexcept
       }
     }
     break;
+    #ifndef NDEBUG
+    case Qt::Key_F9:
+    {
+      throw std::runtime_error("Exception forced by user");
+    }
+    #endif
     case Qt::Key_Delete:
     {
       UpdateConceptMap();

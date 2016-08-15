@@ -47,7 +47,7 @@ struct QtKeyboardFriendlyGraphicsView : public QGraphicsView
   static std::vector<std::string> GetVersionHistory() noexcept;
 
   ///Respond to a key press
-  virtual void keyPressEvent(QKeyEvent *event) noexcept;
+  virtual void keyPressEvent(QKeyEvent *event);
 
   void SetVerbosity(const bool verbosity) noexcept { m_verbose = verbosity; }
 
