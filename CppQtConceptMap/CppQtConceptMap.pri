@@ -41,7 +41,7 @@ HEADERS += \
     $$PWD/qtconceptmaphelper.h \
     $$PWD/qtconceptmapcommandtogglearrowhead.h \
     $$PWD/qtconceptmapcommandtogglearrowtail.h \
-    ../RibiClasses/CppQtConceptMap/qtconceptmapmode.h
+    $$PWD/qtconceptmapmode.h
 
 SOURCES += \
     $$PWD/qtconceptmapbrating.cpp \
@@ -81,7 +81,7 @@ SOURCES += \
     $$PWD/qtconceptmaphelper.cpp \
     $$PWD/qtconceptmapcommandtogglearrowhead.cpp \
     $$PWD/qtconceptmapcommandtogglearrowtail.cpp \
-    ../RibiClasses/CppQtConceptMap/qtconceptmapmode.cpp
+    $$PWD/qtconceptmapmode.cpp
 
 FORMS += \
     $$PWD/qtconceptmapconceptdialog.ui \
