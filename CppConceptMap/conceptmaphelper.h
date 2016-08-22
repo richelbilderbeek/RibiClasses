@@ -22,6 +22,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #define CONCEPTMAPHELPER_H
 
 #include <array>
+#include <memory>
 #include <vector>
 #include <string>
 #include <sstream>
@@ -32,11 +33,12 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
 #include <boost/array.hpp>
 #include <boost/numeric/conversion/cast.hpp>
-#include <boost/shared_ptr.hpp>
+//#include <boost/shared_ptr.hpp>
 #pragma GCC diagnostic pop
 
 namespace ribi {
 
+/*
 ///Help adding constness a bit
 template <class T>
 std::vector<boost::shared_ptr<const T> > AddConst(
@@ -83,7 +85,7 @@ std::vector<boost::shared_ptr<T> > RemoveConst(
     std::back_inserter(w),
     [](boost::shared_ptr<const T>& edge)
     {
-      return boost::const_pointer_cast<T>(edge);
+      return std::const_pointer_cast<T>(edge);
     }
   );
   return w;
@@ -107,6 +109,7 @@ bool CompareOnAddress(
   return lhs.get() < rhs.get();
 }
 
+*/
 
 namespace cmap {
 

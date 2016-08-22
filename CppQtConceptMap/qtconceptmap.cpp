@@ -364,19 +364,8 @@ void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event)
 
   switch (event->key())
   {
-    case Qt::Key_F1:
-    case Qt::Key_F2:
-    {
-      const auto items = scene()->selectedItems();
-      if (items.size() != 1) {
-        break;
-      }
-      if (QtNode * const qtnode = dynamic_cast<QtNode*>(items.front()))
-      {
-        OnNodeKeyDownPressed(qtnode, event->key());
-      }
-    }
-    break;
+    case Qt::Key_F1: keyPressEventF1(); break;
+    case Qt::Key_F2: keyPressEventF1(); break;
     #ifndef NDEBUG
     case Qt::Key_F9:
     {
@@ -397,6 +386,15 @@ void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event)
       }
     }
     return;
+    case Qt::Key_F4:
+    {
+      if (event->modifiers() & Qt::AltModifier)
+      {
+        if (GetVerbosity()) { TRACE("Pressing Alt-F4"); }
+        event->setAccepted(false); //Signal to dialog to close
+        return;
+      }
+    }
     case Qt::Key_Escape:
     {
       if (GetVerbosity()) { TRACE("Pressing Escape"); }
@@ -408,6 +406,8 @@ void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event)
         assert(!m_arrow->isVisible());
         return;
       }
+      event->setAccepted(false); //Signal to dialog to close
+      return;
     }
     break;
     case Qt::Key_Equal:
@@ -486,6 +486,26 @@ void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event)
   UpdateConceptMap();
 
   CheckInvariants();
+}
+
+void ribi::cmap::QtConceptMap::keyPressEventF1()
+{
+  const auto items = scene()->selectedItems();
+  if (items.size() != 1) return;
+  if (QtNode * const qtnode = dynamic_cast<QtNode*>(items.front()))
+  {
+    OnNodeKeyDownPressed(qtnode, Qt::Key_F1);
+  }
+}
+
+void ribi::cmap::QtConceptMap::keyPressEventF2()
+{
+  const auto items = scene()->selectedItems();
+  if (items.size() != 1) return;
+  if (QtNode * const qtnode = dynamic_cast<QtNode*>(items.front()))
+  {
+    OnNodeKeyDownPressed(qtnode, Qt::Key_F2);
+  }
 }
 
 void ribi::cmap::QtConceptMap::mouseDoubleClickEvent(QMouseEvent *event)
@@ -776,6 +796,7 @@ void ribi::cmap::QtConceptMap::onSelectionChanged()
   scene()->update();
 }
 
+
 void ribi::cmap::QtConceptMap::SetConceptMap(const ConceptMap& conceptmap)
 {
   RemoveConceptMap();
@@ -880,4 +901,17 @@ void ribi::cmap::QtConceptMap::UpdateExamplesItem()
       m_examples_item->SetBuddyItem(selected_qtnode); //Handles visibility
     }
   }
+}
+
+void ribi::cmap::QtConceptMap::wheelEvent(QWheelEvent *event)
+{
+  if (event->delta() > 0)
+  {
+    this->scale(1.1,1.1);
+  }
+  else if (event->delta() < 0)
+  {
+    this->scale(0.9,0.9);
+  }
+
 }

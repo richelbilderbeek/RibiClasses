@@ -93,6 +93,7 @@ public slots:
   void mouseMoveEvent(QMouseEvent * event);
   void mouseDoubleClickEvent(QMouseEvent *event);
   void mousePressEvent(QMouseEvent *event);
+  void wheelEvent(QWheelEvent *event);
 
 protected:
 
@@ -139,6 +140,9 @@ private:
 
   ///The function how a QtEdge determines it is colored
   std::function<QBrush(const QtEdge&)> GetEdgeBrushFunction(const Mode mode);
+
+  void keyPressEventF1();
+  void keyPressEventF2();
 
   ///Called when an item wants to be edited
   void OnEdgeKeyDownPressed(QtEdge * const item, const int key);
