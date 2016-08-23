@@ -286,30 +286,6 @@ void ribi::cmap::QtConceptMap::DoCommand(Command * const command) noexcept
 
 
 
-ribi::cmap::QtNode * ribi::cmap::QtConceptMap::GetCenterNode() noexcept
-{
-  assert(scene());
-  assert(!scene()->items().isEmpty());
-  assert(scene()->items()[0]);
-  QList<QGraphicsItem *> v = scene()->items();
-  const int n_centernodes{
-    static_cast<int>(
-      std::count_if(v.begin(),v.end(),
-        [this](const QGraphicsItem * const item) { return IsQtCenterNode(item); }
-      )
-    )
-  };
-  assert(n_centernodes == 0 || n_centernodes == 1);
-  if (n_centernodes == 0) return nullptr;
-  assert(n_centernodes == 1);
-  const auto iter = std::find_if(v.begin(),v.end(),
-    [this](const QGraphicsItem * const item) { return IsQtCenterNode(item); } );
-  assert(iter != v.end());
-  QtNode * const center_node = dynamic_cast<QtNode*>(*iter);
-  assert(center_node);
-  assert(IsQtCenterNode(center_node));
-  return center_node;
-}
 
 ribi::cmap::QtNode* ribi::cmap::QtConceptMap::GetItemBelowCursor(const QPointF& pos) const
 {
@@ -362,120 +338,26 @@ void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event)
   UpdateConceptMap();
   CheckInvariants();
 
+
   switch (event->key())
   {
     case Qt::Key_F1: keyPressEventF1(); break;
-    case Qt::Key_F2: keyPressEventF1(); break;
+    case Qt::Key_F2: keyPressEventF2(); break;
+    case Qt::Key_F4: keyPressEventF4(event); break;
+    case Qt::Key_Delete: keyPressEventDelete(); break;
     #ifndef NDEBUG
-    case Qt::Key_F9:
-    {
-      throw std::runtime_error("Exception forced by user");
-    }
+    case Qt::Key_F8: MessUp(*scene()); break;
+    case Qt::Key_F9: std::exit(1); //Cause a deliberate hard crash
     #endif
-    case Qt::Key_Delete:
-    {
-      UpdateConceptMap();
-      if (GetVerbosity()) { TRACE("Pressing delete"); }
-      try
-      {
-        DoCommand(new CommandDeleteSelected(m_conceptmap, scene(), m_tools));
-      }
-      catch (std::logic_error& e)
-      {
-        if (GetVerbosity()) { TRACE(e.what()); }
-      }
-    }
-    return;
-    case Qt::Key_F4:
-    {
-      if (event->modifiers() & Qt::AltModifier)
-      {
-        if (GetVerbosity()) { TRACE("Pressing Alt-F4"); }
-        event->setAccepted(false); //Signal to dialog to close
-        return;
-      }
-    }
-    case Qt::Key_Escape:
-    {
-      if (GetVerbosity()) { TRACE("Pressing Escape"); }
-      //Only remove the 'new arrow' if present
-      if (m_arrow->isVisible())
-      {
-        if (GetVerbosity()) { TRACE("Remove the new arrow"); }
-        m_arrow->hide();
-        assert(!m_arrow->isVisible());
-        return;
-      }
-      event->setAccepted(false); //Signal to dialog to close
-      return;
-    }
-    break;
-    case Qt::Key_Equal:
-      if (GetVerbosity()) { TRACE("Pressing Qt::Key_Equal"); }
-      this->scale(1.1,1.1);
-      break;
-    case Qt::Key_Minus:
-      if (GetVerbosity()) { TRACE("Pressing Qt::Key_Minus"); }
-      this->scale(0.9,0.9);
-      break;
-    case Qt::Key_E:
-      if (event->modifiers() & Qt::ControlModifier)
-      {
-        if (GetVerbosity()) { TRACE("Pressing CTRL-E"); }
-        try { this->DoCommand(new CommandCreateNewEdgeBetweenTwoSelectedNodes(GetConceptMap(),m_mode,scene(),m_tools)); }
-        catch (std::logic_error& ) {}
-      }
-      return;
-    case Qt::Key_T:
-      if (event->modifiers() & Qt::ControlModifier)
-      {
-        if (GetVerbosity()) { TRACE("Pressing CTRL-T"); }
-        try
-        {
-          const auto cmd = new CommandToggleArrowTail(GetConceptMap(), scene());
-          this->DoCommand(cmd);
-        }
-        catch (std::logic_error& e) {}
-      }
-      return;
-    case Qt::Key_H:
-      if (event->modifiers() & Qt::ControlModifier)
-      {
-        if (GetVerbosity()) { TRACE("Pressing CTRL-H"); }
-        try
-        {
-          const auto cmd = new CommandToggleArrowHead(GetConceptMap(), scene());
-          this->DoCommand(cmd);
-        }
-        catch (std::logic_error& e) {}
-      }
-      return;
-    case Qt::Key_N:
-      if (event->modifiers() & Qt::ControlModifier)
-      {
-        if (GetVerbosity()) { TRACE("Pressing CTRL-N"); }
-        try { this->DoCommand(new CommandCreateNewNode(m_conceptmap,m_mode,scene(),m_tools,0.0,0.0)); }
-        catch (std::logic_error& ) {}
-      }
-      return;
-    case Qt::Key_Z:
-      if (event->modifiers() & Qt::ControlModifier)
-      {
-        if (event->modifiers() & Qt::ShiftModifier)
-        {
-          this->m_undo.redo();
-        }
-        else
-        {
-          this->m_undo.undo();
-        }
-      }
-      return;
-    case Qt::Key_Question:
-      if (GetVerbosity()) { TRACE("Pressing Qt::Key_Question"); }
-      UpdateConceptMap();
-      break;
-
+    case Qt::Key_Escape: keyPressEventEscape(event); break;
+    case Qt::Key_Equal: this->scale(1.1,1.1); break;
+    case Qt::Key_Minus: this->scale(0.9,0.9); break;
+    case Qt::Key_E: keyPressEventE(event); break;
+    case Qt::Key_H: keyPressEventH(event); break;
+    case Qt::Key_N: keyPressEventN(event); break;
+    case Qt::Key_T: keyPressEventT(event); break;
+    case Qt::Key_Z: keyPressEventZ(event); break;
+    case Qt::Key_Question: keyPressEventQuestion(event); break;
   }
 
   for (auto qtedge: GetSelectedQtEdges(*GetScene())) {
@@ -488,24 +370,142 @@ void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event)
   CheckInvariants();
 }
 
-void ribi::cmap::QtConceptMap::keyPressEventF1()
+void ribi::cmap::QtConceptMap::keyPressEventDelete() noexcept
 {
-  const auto items = scene()->selectedItems();
-  if (items.size() != 1) return;
-  if (QtNode * const qtnode = dynamic_cast<QtNode*>(items.front()))
+  if (GetVerbosity()) { TRACE("Pressing delete"); }
+  try
   {
-    OnNodeKeyDownPressed(qtnode, Qt::Key_F1);
+    DoCommand(new CommandDeleteSelected(m_conceptmap, scene(), m_tools));
+  }
+  catch (std::exception& e) { if (GetVerbosity()) { TRACE(e.what()); } }
+}
+
+void ribi::cmap::QtConceptMap::keyPressEventE(QKeyEvent *event) noexcept
+{
+  if (event->modifiers() & Qt::ControlModifier)
+  {
+    if (GetVerbosity()) { TRACE("Pressing CTRL-E"); }
+    try { this->DoCommand(new CommandCreateNewEdgeBetweenTwoSelectedNodes(GetConceptMap(),m_mode,scene(),m_tools)); }
+    catch (std::exception& e) { if (GetVerbosity()) { TRACE(e.what()); } }
   }
 }
 
-void ribi::cmap::QtConceptMap::keyPressEventF2()
+void ribi::cmap::QtConceptMap::keyPressEventEscape(QKeyEvent *event) noexcept
 {
-  const auto items = scene()->selectedItems();
-  if (items.size() != 1) return;
-  if (QtNode * const qtnode = dynamic_cast<QtNode*>(items.front()))
+  if (GetVerbosity()) { TRACE("Pressing Escape"); }
+  //Only remove the 'new arrow' if present
+  if (m_arrow->isVisible())
   {
-    OnNodeKeyDownPressed(qtnode, Qt::Key_F2);
+    if (GetVerbosity()) { TRACE("Remove the new arrow"); }
+    m_arrow->hide();
+    assert(!m_arrow->isVisible());
+    return;
   }
+  else
+  {
+    event->setAccepted(false); //Signal to dialog to close
+  }
+}
+
+void ribi::cmap::QtConceptMap::keyPressEventF1() noexcept
+{
+  try
+  {
+    const auto items = scene()->selectedItems();
+    if (items.size() != 1) return;
+    if (QtNode * const qtnode = dynamic_cast<QtNode*>(items.front()))
+    {
+      OnNodeKeyDownPressed(qtnode, Qt::Key_F1);
+    }
+  }
+  catch (std::exception& e) { if (GetVerbosity()) { TRACE(e.what()); } }
+}
+
+void ribi::cmap::QtConceptMap::keyPressEventF2() noexcept
+{
+  try
+  {
+    const auto items = scene()->selectedItems();
+    if (items.size() != 1) return;
+    if (QtNode * const qtnode = dynamic_cast<QtNode*>(items.front()))
+    {
+      OnNodeKeyDownPressed(qtnode, Qt::Key_F2);
+    }
+  }
+  catch (std::exception& e) { if (GetVerbosity()) { TRACE(e.what()); } }
+}
+
+void ribi::cmap::QtConceptMap::keyPressEventF4(QKeyEvent *event) noexcept
+{
+  if (event->modifiers() & Qt::AltModifier)
+  {
+    if (GetVerbosity()) { TRACE("Pressing Alt-F4"); }
+    event->setAccepted(false); //Signal to dialog to close
+  }
+}
+
+
+void ribi::cmap::QtConceptMap::keyPressEventH(QKeyEvent *event) noexcept
+{
+  if (event->modifiers() & Qt::ControlModifier)
+  {
+    if (GetVerbosity()) { TRACE("Pressing CTRL-H"); }
+    try
+    {
+      const auto cmd = new CommandToggleArrowHead(GetConceptMap(), scene());
+      this->DoCommand(cmd);
+    }
+    catch (std::exception& e) { if (GetVerbosity()) { TRACE(e.what()); } }
+  }
+}
+
+void ribi::cmap::QtConceptMap::keyPressEventN(QKeyEvent *event) noexcept
+{
+  if (event->modifiers() & Qt::ControlModifier)
+  {
+    if (GetVerbosity()) { TRACE("Pressing CTRL-N"); }
+    try { this->DoCommand(new CommandCreateNewNode(m_conceptmap,m_mode,scene(),m_tools,0.0,0.0)); }
+    catch (std::exception& e) { if (GetVerbosity()) { TRACE(e.what()); } }
+  }
+}
+
+void ribi::cmap::QtConceptMap::keyPressEventQuestion(QKeyEvent *) noexcept
+{
+  if (GetVerbosity()) { TRACE("Pressing Qt::Key_Question"); }
+  UpdateConceptMap();
+}
+
+void ribi::cmap::QtConceptMap::keyPressEventT(QKeyEvent *event) noexcept
+{
+  if (event->modifiers() & Qt::ControlModifier)
+  {
+    if (GetVerbosity()) { TRACE("Pressing CTRL-T"); }
+    try
+    {
+      const auto cmd = new CommandToggleArrowTail(GetConceptMap(), scene());
+      this->DoCommand(cmd);
+    }
+    catch (std::exception& e) { if (GetVerbosity()) { TRACE(e.what()); } }
+  }
+}
+
+void ribi::cmap::QtConceptMap::keyPressEventZ(QKeyEvent *event) noexcept
+{
+  try
+  {
+    if (event->modifiers() & Qt::ControlModifier)
+    {
+      if (event->modifiers() & Qt::ShiftModifier)
+      {
+        this->m_undo.redo();
+      }
+      else
+      {
+        this->m_undo.undo();
+      }
+    }
+  }
+  catch (std::exception& e) { if (GetVerbosity()) { TRACE(e.what()); } }
 }
 
 void ribi::cmap::QtConceptMap::mouseDoubleClickEvent(QMouseEvent *event)

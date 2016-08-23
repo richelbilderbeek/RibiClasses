@@ -326,7 +326,7 @@ void ribi::cmap::QtEdge::OnRequestSceneUpdate()
 }
 
 
-void ribi::cmap::QtEdge::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) noexcept
+void ribi::cmap::QtEdge::paint(QPainter* painter, const QStyleOptionGraphicsItem* /*option*/, QWidget* /*widget*/) noexcept
 {
   assert(this->scene());
   assert(this->m_from->scene());
@@ -341,32 +341,6 @@ void ribi::cmap::QtEdge::paint(QPainter* painter, const QStyleOptionGraphicsItem
   assert(m_qtnode);
   assert(this->m_qtnode->scene());
   assert(this->scene() == this->m_qtnode->scene());
-
-  m_arrow->setSelected(this->isSelected());
-
-  if (m_arrow->isVisible())
-  {
-    //Translate
-    //painter->translate(m_qtnode->GetCenterPos());
-
-    //Paint
-    m_arrow->paint(painter,option,widget);
-
-    //Untranslate
-    //painter->translate(-m_qtnode->GetCenterPos());
-  }
-
-  if (m_qtnode->isVisible())
-  {
-    //Translate
-    painter->translate(m_qtnode->GetCenterPos());
-
-    //Paint
-    m_qtnode->paint(painter,option,widget);
-
-    //Untranslate
-    painter->translate(-m_qtnode->GetCenterPos());
-  }
 
   const QPen pen{
     this->hasFocus() || this->isSelected()
@@ -390,8 +364,6 @@ void ribi::cmap::QtEdge::paint(QPainter* painter, const QStyleOptionGraphicsItem
 
 void ribi::cmap::QtEdge::SetEdge(const Edge& edge) noexcept
 {
-  if (m_edge == edge) { return; }
-
   m_edge = edge;
 
   //Sync
@@ -401,7 +373,7 @@ void ribi::cmap::QtEdge::SetEdge(const Edge& edge) noexcept
   m_arrow->SetHasHead(m_edge.HasHeadArrow());
   m_arrow->SetHasTail(m_edge.HasTailArrow());
 
-  assert(edge ==  m_edge);
+  assert(edge == m_edge);
 }
 
 void ribi::cmap::QtEdge::SetHasHeadArrow(const bool has_head_arrow) noexcept

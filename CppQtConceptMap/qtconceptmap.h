@@ -35,7 +35,7 @@ namespace cmap {
 ///QtConceptMap displays a ConceptMap
 ///It does not offer UI interaction with the user
 ///QtConceptMap does offer UI interaction
-//Cannot mark it as a final class, because that would break Qt4 compatibility
+///Cannot mark it as a final class, because that would break Qt4 compatibility
 ///The Z values of its objects are set as such:
 ///  3: QtTool
 ///  2: QtNewArrow
@@ -78,9 +78,6 @@ public:
 
   void HideExamplesItem() noexcept;
 
-  [[deprecated("Replaced by HideExamplesItem, which correctly described the member function")]]
-  void RemoveExamplesItem() noexcept = delete;
-
   void SetConceptMap(const ConceptMap& conceptmap);
 
   void SetMode(const Mode mode) noexcept;
@@ -97,11 +94,6 @@ public slots:
 
 protected:
 
-  ///Delete a QtEdge
-  //void DeleteQtEdge(const QtEdge * const edge);
-
-  ///Obtain the center node, if there is any
-  QtNode * GetCenterNode() noexcept;
 
   ///Obtain the first QtNode under the cursor
   ///Returns nullptr if none is present
@@ -128,6 +120,8 @@ private:
   ///Must be a pointer, as it will be owned by QGraphicsScene
   QtItemHighlighter * const m_highlighter;
 
+  ///The type of concept map: plain (best for printing),
+  /// edit (modify the graph) or rate (only grade the existing nodes)
   Mode m_mode;
 
   ///The item showing the tools
@@ -141,8 +135,17 @@ private:
   ///The function how a QtEdge determines it is colored
   std::function<QBrush(const QtEdge&)> GetEdgeBrushFunction(const Mode mode);
 
-  void keyPressEventF1();
-  void keyPressEventF2();
+  void keyPressEventDelete() noexcept;
+  void keyPressEventE(QKeyEvent *event) noexcept;
+  void keyPressEventEscape(QKeyEvent *event) noexcept;
+  void keyPressEventF1() noexcept;
+  void keyPressEventF2() noexcept;
+  void keyPressEventF4(QKeyEvent *event) noexcept;
+  void keyPressEventH(QKeyEvent *event) noexcept;
+  void keyPressEventN(QKeyEvent *event) noexcept;
+  void keyPressEventQuestion(QKeyEvent *) noexcept;
+  void keyPressEventT(QKeyEvent *event) noexcept;
+  void keyPressEventZ(QKeyEvent *event) noexcept;
 
   ///Called when an item wants to be edited
   void OnEdgeKeyDownPressed(QtEdge * const item, const int key);

@@ -1,5 +1,6 @@
 #include "qtconceptmaphelper.h"
 #include <QGraphicsScene>
+#include <QGraphicsItem>
 #include "conceptmap.h"
 #include "qtconceptmapbrushfactory.h"
 #include "qtconceptmap.h"
@@ -254,6 +255,30 @@ ribi::cmap::QtNode * ribi::cmap::FindQtNode(
   return nullptr;
 }
 
+ribi::cmap::QtNode * ribi::cmap::GetCenterNode(const QGraphicsScene& scene) noexcept
+{
+  if (scene.items().isEmpty()) return nullptr;
+  assert(scene.items()[0]);
+  QList<QGraphicsItem *> v = scene.items();
+  const int n_centernodes{
+    static_cast<int>(
+      std::count_if(v.begin(),v.end(),
+        [](const QGraphicsItem * const item) { return IsQtCenterNode(item); }
+      )
+    )
+  };
+  assert(n_centernodes == 0 || n_centernodes == 1);
+  if (n_centernodes == 0) return nullptr;
+  assert(n_centernodes == 1);
+  const auto iter = std::find_if(v.begin(),v.end(),
+    [](const QGraphicsItem * const item) { return IsQtCenterNode(item); } );
+  assert(iter != v.end());
+  QtNode * const center_node = dynamic_cast<QtNode*>(*iter);
+  assert(center_node);
+  assert(IsQtCenterNode(center_node));
+  return center_node;
+}
+
 std::vector<ribi::cmap::QtEdge*> ribi::cmap::GetQtEdges(
   const QtNode* const from,
   const QGraphicsScene * const scene
@@ -409,4 +434,15 @@ bool ribi::cmap::IsOnEdge(
 ) noexcept
 {
   return FindQtEdge(qtnode, scene);
+}
+
+void ribi::cmap::MessUp(QGraphicsScene& scene)
+{
+  for (QGraphicsItem * const item: scene.items())
+  {
+    const int dx{(std::rand() % 20) - 10};
+    const int dy{(std::rand() % 20) - 10};
+    item->moveBy(dx, dy);
+  }
+
 }

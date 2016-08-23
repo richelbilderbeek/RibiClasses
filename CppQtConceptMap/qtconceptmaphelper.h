@@ -48,6 +48,9 @@ QtEdge * FindQtEdge(
 
 QtNode * FindQtNode(const int node_id, const QGraphicsScene * const scene) noexcept;
 
+///Obtain the center node, if there is any
+QtNode * GetCenterNode(const QGraphicsScene& scene) noexcept;
+
 std::vector<QtEdge *> GetQtEdges(const QGraphicsScene * const scene) noexcept;
 
 ///Get all the edges connected to the concept
@@ -85,6 +88,9 @@ bool IsOnEdge(
   const QtNode * const qtnode,
   const QGraphicsScene * const scene
 ) noexcept;
+
+///Messes up the scene, by moving items, etc
+void MessUp(QGraphicsScene& scene);
 
 } //~namespace cmap
 } //~namespace ribi
