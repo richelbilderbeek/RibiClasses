@@ -134,16 +134,6 @@ private:
   ///The node item the arrow targets
   QtNode * const m_to;
 
-  ///Called whenever the edge changes
-  void OnEdgeChanged(const Edge &edge) noexcept;
-  void OnConceptChanged(Node * const node) noexcept;
-  void OnNodeChanged(const Edge& edge) noexcept;
-  void OnNodePosChanged(QtRoundedRectItem * const node) noexcept;
-  void OnTextChanged(QtRoundedEditRectItem* item) noexcept;
-
-  void OnMustUpdateScene();
-  void OnRequestSceneUpdate();
-
   void setSelected(bool selected) = delete;
 };
 
