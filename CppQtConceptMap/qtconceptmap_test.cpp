@@ -485,21 +485,17 @@ void ribi::cmap::qtconceptmap_test::is_command_put_on_undo_stack()
 
 void ribi::cmap::qtconceptmap_test::select_left_node_keyboard()
 {
-  if ("skip issue 82") return; // https://github.com/richelbilderbeek/Brainweaver/issues/82
   QtConceptMap m;
   QTest::keyClick(&m, Qt::Key_N, Qt::ControlModifier, 100);
   QTest::keyClick(&m, Qt::Key_N, Qt::ControlModifier, 100);
   QTest::keyClick(&m, Qt::Key_E, Qt::ControlModifier, 100);
   QVERIFY(DoubleCheckEdgesAndNodes(m,1,2));
   QVERIFY(DoubleCheckSelectedEdgesAndNodes(m,1,0));
-  QTest::keyClick(&m, Qt::Key_Right, Qt::NoModifier, 100);
+  QTest::keyClick(&m, Qt::Key_Left, Qt::NoModifier, 100);
   QVERIFY(DoubleCheckEdgesAndNodes(m,1,2));
-
-  qDebug() << "se: " << GetSelectedQtEdges(*m.GetScene()).size();
-  qDebug() << "sn: "<< GetSelectedQtNodes(*m.GetScene()).size();
-  QVERIFY(GetSelectedQtNodes(*m.GetScene()).size() == 1);
+  QVERIFY(GetSelectedQtNodesNotOnEdge(*m.GetScene()).size() == 1);
   QVERIFY(GetSelectedQtEdges(*m.GetScene()).size() == 0);
-  QVERIFY(DoubleCheckSelectedEdgesAndNodes(m,0,1)); //FAILS
+  QVERIFY(DoubleCheckSelectedEdgesAndNodes(m,0,1));
 }
 
 void ribi::cmap::qtconceptmap_test::select_random_node_keyboard()

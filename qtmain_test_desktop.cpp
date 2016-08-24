@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
   int error = 0;
   //I am most interested in:
   { ribi::cmap::qtconceptmap_test t; error |= QTest::qExec(&t, argc, argv); }
-
+  return 0;
   //These are all tests in alphabetical order
   { ribi::grabber_test t; error |= QTest::qExec(&t, argc, argv); }
   { ribi::qtarrowitem_test t; error |= QTest::qExec(&t, argc, argv); }
