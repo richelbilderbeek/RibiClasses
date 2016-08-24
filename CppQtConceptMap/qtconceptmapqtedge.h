@@ -88,8 +88,8 @@ struct QtEdge : public QGraphicsItem
   static std::string GetVersion() noexcept;
   static std::vector<std::string> GetVersionHistory() noexcept;
 
-  bool HasHeadArrow() noexcept;
-  bool HasTailArrow() noexcept;
+  bool HasHeadArrow() const noexcept;
+  bool HasTailArrow() const noexcept;
 
   bool isSelected() const;
 

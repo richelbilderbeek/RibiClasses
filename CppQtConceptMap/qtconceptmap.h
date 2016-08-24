@@ -135,7 +135,7 @@ private:
   ///The function how a QtEdge determines it is colored
   std::function<QBrush(const QtEdge&)> GetEdgeBrushFunction(const Mode mode);
 
-  void keyPressEventDelete() noexcept;
+  void keyPressEventDelete(QKeyEvent *event) noexcept;
   void keyPressEventE(QKeyEvent *event) noexcept;
   void keyPressEventEscape(QKeyEvent *event) noexcept;
   void keyPressEventF1() noexcept;

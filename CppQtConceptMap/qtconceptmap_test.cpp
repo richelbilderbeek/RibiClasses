@@ -21,6 +21,7 @@
 #include "qtconceptmapcommandcreatenewnode.h"
 #include "qtconceptmapcommanddeleteselected.h"
 #include "qtconceptmapcommandtogglearrowhead.h"
+#include "qtconceptmapcommandtogglearrowtail.h"
 #include "qtconceptmapcommandunselectrandom.h"
 #include "qtconceptmapexamplesitem.h"
 #include "qtconceptmap.h"
@@ -438,7 +439,9 @@ void ribi::cmap::qtconceptmap_test::delete_two_nodes_command()
 
   for (int i{0}; i!=2; ++i) {
     QTest::keyClick(&m, Qt::Key_Space, Qt::NoModifier, 100);
-    assert(m.scene()->selectedItems().count() == 1);
+    const int n_selected_measured{m.scene()->selectedItems().count()};
+    const int n_selected_expected{1};
+    assert(n_selected_measured == n_selected_expected);
     m.DoCommand(
       new CommandDeleteSelected(
         m.GetConceptMap(),
@@ -519,6 +522,16 @@ void ribi::cmap::qtconceptmap_test::select_random_node_keyboard()
   QVERIFY(std::count(std::begin(ids),std::end(ids),ids[0])
     != static_cast<int>(ids.size())
   ); //Good enough?
+}
+
+void ribi::cmap::qtconceptmap_test::set_concept_maps()
+{
+  for (const auto concept_map: ConceptMapFactory().GetAllTests())
+  {
+    QtConceptMap m;
+    m.SetConceptMap(concept_map);
+    m.SetConceptMap(concept_map);
+  }
 }
 
 void ribi::cmap::qtconceptmap_test::setting_concept_maps_edges_qtedges_nodes_qtnodes_must_match()
@@ -619,6 +632,13 @@ void ribi::cmap::qtconceptmap_test::create_one_edge_with_head_command()
     qDebug() << __func__ << ": caught exception " << e.what();
     QVERIFY(!"Should not get here");
   }
+  const std::string dot_filename{"create_one_edge_with_head_command.dot"};
+  SaveToFile(m.GetConceptMap(), dot_filename);
+
+  const auto concept_map_again = LoadFromFile(dot_filename);
+
+  QVERIFY(m.GetConceptMap() == concept_map_again);
+
 }
 
 void ribi::cmap::qtconceptmap_test::create_one_edge_with_head_keyboard()
@@ -716,6 +736,112 @@ void ribi::cmap::qtconceptmap_test::create_one_edge_with_head_and_undo_keyboard(
     const auto qtedge = qtedges.back();
     QVERIFY(!qtedge->GetEdge().HasHeadArrow());
   }
+}
+
+void ribi::cmap::qtconceptmap_test::create_one_edge_with_tail_command()
+{
+  //When there are two selected nodes, an edge can be created
+  //After adding the edges, only the edge will be selected
+  //The edge its center concept will be between the two nodes
+  QtConceptMap m;
+  m.show();
+  QVERIFY(DoubleCheckSelectedEdgesAndNodes(m,0,0));
+  try
+  {
+    const int n{2};
+    for (int i=0; i!=n; ++i) {
+      m.DoCommand(
+        new CommandCreateNewNode(
+          m.GetConceptMap(),
+          Mode::uninitialized,
+          m.GetScene(),
+          m.GetQtToolItem(),
+          0.0,
+          0.0
+        )
+      );
+    }
+    QVERIFY(DoubleCheckSelectedEdgesAndNodes(m,0,2));
+  }
+  catch (std::exception& e)
+  {
+    qDebug() << __func__ << ": caught exception " << e.what();
+    QVERIFY(!"Should not get here");
+  }
+
+  try
+  {
+    m.DoCommand(
+      new CommandCreateNewEdgeBetweenTwoSelectedNodes(
+        m.GetConceptMap(),
+        Mode::uninitialized,
+        m.GetScene(),
+        m.GetQtToolItem()
+      )
+    );
+    QVERIFY(DoubleCheckEdgesAndNodes(m,1,2));
+    QVERIFY(DoubleCheckSelectedEdgesAndNodes(m,1,0));
+  }
+  catch (std::exception& e)
+  {
+    qDebug() << __func__ << ": caught exception " << e.what();
+    QVERIFY(!"Should not get here");
+  }
+
+  //Preconditions
+  QVERIFY(DoubleCheckEdgesAndNodes(m,1,2));
+  QVERIFY(DoubleCheckSelectedEdgesAndNodes(m,1,0));
+  const auto qtedges = GetQtEdges(m.GetScene());
+  QVERIFY(qtedges.size() == 1);
+  const auto qtedge = qtedges.back();
+  QVERIFY(!qtedge->GetEdge().HasHeadArrow());
+
+  try
+  {
+    m.DoCommand(
+      new CommandToggleArrowTail(
+        m.GetConceptMap(),
+        m.GetScene()
+      )
+    );
+
+    //Postconditions
+    QVERIFY(DoubleCheckEdgesAndNodes(m,1,2));
+    QVERIFY(DoubleCheckSelectedEdgesAndNodes(m,1,0));
+    const auto qtedges = GetQtEdges(m.GetScene());
+    QVERIFY(qtedges.size() == 1);
+    const auto qtedge = qtedges.back();
+    QVERIFY(qtedge->GetEdge().HasTailArrow());
+
+  }
+  catch (std::exception& e)
+  {
+    qDebug() << __func__ << ": caught exception " << e.what();
+    QVERIFY(!"Should not get here");
+  }
+  const std::string dot_filename{"create_one_edge_with_head_command.dot"};
+  SaveToFile(m.GetConceptMap(), dot_filename);
+
+  const auto concept_map_again = LoadFromFile(dot_filename);
+
+  QVERIFY(m.GetConceptMap() == concept_map_again);
+
+}
+
+
+void ribi::cmap::qtconceptmap_test::create_one_edge_with_tail_keyboard()
+{
+  QtConceptMap m;
+  QTest::keyClick(&m, Qt::Key_N, Qt::ControlModifier, 100);
+  QTest::keyClick(&m, Qt::Key_N, Qt::ControlModifier, 100);
+  QTest::keyClick(&m, Qt::Key_E, Qt::ControlModifier, 100);
+  QTest::keyClick(&m, Qt::Key_T, Qt::ControlModifier, 100);
+  QVERIFY(DoubleCheckEdgesAndNodes(m,1,2));
+  QVERIFY(DoubleCheckSelectedEdgesAndNodes(m,1,0));
+  const auto qtedges = GetQtEdges(m.GetScene());
+  QVERIFY(qtedges.size() == 1);
+  const auto qtedge = qtedges.back();
+  QVERIFY(qtedge->GetEdge().HasTailArrow());
 }
 
 

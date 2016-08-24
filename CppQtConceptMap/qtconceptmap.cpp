@@ -247,7 +247,6 @@ void ribi::cmap::QtConceptMap::CheckInvariants() const noexcept
   #endif
 }
 
-
 void ribi::cmap::QtConceptMap::HideExamplesItem() noexcept
 {
   m_examples_item->hide();
@@ -263,6 +262,18 @@ void ribi::cmap::QtConceptMap::RemoveConceptMap()
   assert(m_tools);
   m_tools->SetBuddyItem(nullptr);
   assert(!m_arrow->isVisible());
+
+  for (auto qtedge: Collect<QtEdge>(scene()))
+  {
+    scene()->removeItem(qtedge);
+    delete qtedge;
+  }
+
+  for (auto qtnode: Collect<QtNode>(scene()))
+  {
+    scene()->removeItem(qtnode);
+    delete qtnode;
+  }
 }
 
 
@@ -334,17 +345,18 @@ std::vector<std::string> ribi::cmap::QtConceptMap::GetVersionHistory() noexcept
 
 void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event)
 {
+  event->setAccepted(false);
   CheckInvariants();
   UpdateConceptMap();
   CheckInvariants();
 
-
+  //Pass event
   switch (event->key())
   {
     case Qt::Key_F1: keyPressEventF1(); break;
     case Qt::Key_F2: keyPressEventF2(); break;
     case Qt::Key_F4: keyPressEventF4(event); break;
-    case Qt::Key_Delete: keyPressEventDelete(); break;
+    case Qt::Key_Delete: keyPressEventDelete(event); break;
     #ifndef NDEBUG
     case Qt::Key_F8: MessUp(*scene()); break;
     case Qt::Key_F9: std::exit(1); //Cause a deliberate hard crash
@@ -360,17 +372,26 @@ void ribi::cmap::QtConceptMap::keyPressEvent(QKeyEvent *event)
     case Qt::Key_Question: keyPressEventQuestion(event); break;
   }
 
+  //Pass event to QtEdges
   for (auto qtedge: GetSelectedQtEdges(*GetScene())) {
-    qtedge->keyPressEvent(event);
+    if (!event->isAccepted())
+    {
+      qtedge->keyPressEvent(event);
+    }
     qtedge->update();
   }
-  QtKeyboardFriendlyGraphicsView::keyPressEvent(event);
-  UpdateConceptMap();
 
+  //Pass event to base class
+  if (!event->isAccepted())
+  {
+    QtKeyboardFriendlyGraphicsView::keyPressEvent(event);
+  }
+
+  UpdateConceptMap();
   CheckInvariants();
 }
 
-void ribi::cmap::QtConceptMap::keyPressEventDelete() noexcept
+void ribi::cmap::QtConceptMap::keyPressEventDelete(QKeyEvent *event) noexcept
 {
   if (GetVerbosity()) { TRACE("Pressing delete"); }
   try
@@ -378,6 +399,7 @@ void ribi::cmap::QtConceptMap::keyPressEventDelete() noexcept
     DoCommand(new CommandDeleteSelected(m_conceptmap, scene(), m_tools));
   }
   catch (std::exception& e) { if (GetVerbosity()) { TRACE(e.what()); } }
+  event->setAccepted(true);
 }
 
 void ribi::cmap::QtConceptMap::keyPressEventE(QKeyEvent *event) noexcept
@@ -387,6 +409,7 @@ void ribi::cmap::QtConceptMap::keyPressEventE(QKeyEvent *event) noexcept
     if (GetVerbosity()) { TRACE("Pressing CTRL-E"); }
     try { this->DoCommand(new CommandCreateNewEdgeBetweenTwoSelectedNodes(GetConceptMap(),m_mode,scene(),m_tools)); }
     catch (std::exception& e) { if (GetVerbosity()) { TRACE(e.what()); } }
+    event->setAccepted(true);
   }
 }
 
@@ -456,6 +479,7 @@ void ribi::cmap::QtConceptMap::keyPressEventH(QKeyEvent *event) noexcept
       this->DoCommand(cmd);
     }
     catch (std::exception& e) { if (GetVerbosity()) { TRACE(e.what()); } }
+    event->setAccepted(true);
   }
 }
 
@@ -486,6 +510,7 @@ void ribi::cmap::QtConceptMap::keyPressEventT(QKeyEvent *event) noexcept
       this->DoCommand(cmd);
     }
     catch (std::exception& e) { if (GetVerbosity()) { TRACE(e.what()); } }
+    event->setAccepted(true);
   }
 }
 
@@ -854,8 +879,8 @@ void ribi::cmap::QtConceptMap::SetConceptMap(const ConceptMap& conceptmap)
     assert(!qtedge->GetQtNode()->scene());
     assert(!qtedge->GetArrow()->scene());
     scene()->addItem(qtedge);
-    //scene()->addItem(qtedge->GetQtNode()); //Get these for free
-    //scene()->addItem(qtedge->GetArrow()); //Get these for free
+    //scene()->addItem(qtedge->GetQtNode()); //Get these for free when adding a QtEdge
+    //scene()->addItem(qtedge->GetArrow()); //Get these for free when adding a QtEdge
     assert(qtedge->scene());
     assert(qtedge->GetQtNode()->scene());
     assert(qtedge->GetArrow()->scene());

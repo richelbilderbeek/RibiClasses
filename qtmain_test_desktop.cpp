@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
   QApplication a(argc, argv);
   int error = 0;
   //I am most interested in:
-  { ribi::qthideandshowdialog_test t; error |= QTest::qExec(&t, argc, argv); }
+  { ribi::cmap::qtconceptmap_test t; error |= QTest::qExec(&t, argc, argv); }
 
   //These are all tests in alphabetical order
   { ribi::grabber_test t; error |= QTest::qExec(&t, argc, argv); }
@@ -52,7 +52,6 @@ int main(int argc, char *argv[])
   { ribi::cmap::qtconceptmap_test t; error |= QTest::qExec(&t, argc, argv); }
   { ribi::qtdisplaypositem_test t; error |= QTest::qExec(&t, argc, argv); }
   { ribi::qtgraphics_test t; error |= QTest::qExec(&t, argc, argv); }
-  { ribi::qthideandshowdialog_test t; error |= QTest::qExec(&t, argc, argv); }
   { ribi::qtimage_test t; error |= QTest::qExec(&t, argc, argv); }
   { ribi::qtkeyboardfriendlygraphicsview_test t; error |= QTest::qExec(&t, argc, argv); }
   { ribi::qtquadbezierarrowdialog_test t; error |= QTest::qExec(&t, argc, argv); }

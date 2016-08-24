@@ -19,6 +19,10 @@ private slots:
   void create_one_edge_with_head_keyboard();
   void create_one_edge_with_head_and_undo_keyboard();
   void create_one_edge_with_head_and_toggle_keyboard();
+  void create_one_edge_with_tail_command();
+  void create_one_edge_with_tail_keyboard();
+  //void create_one_edge_with_tail_and_undo_keyboard();
+  //void create_one_edge_with_tail_and_toggle_keyboard();
   void create_one_node_and_undo_command();
   void create_one_node_and_undo_keyboard();
   void create_one_node_command();
@@ -40,6 +44,7 @@ private slots:
   void is_command_put_on_undo_stack();
   void select_left_node_keyboard();
   void select_random_node_keyboard();
+  void set_concept_maps();
   void setting_concept_maps_edges_qtedges_nodes_qtnodes_must_match();
   void all_tests();
 };

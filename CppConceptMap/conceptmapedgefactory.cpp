@@ -105,6 +105,7 @@ std::vector<ribi::cmap::Edge> ribi::cmap::EdgeFactory::GetNastyTests() const noe
   for (const auto node: NodeFactory().GetNastyTests())
   {
     Edge edge(node);
+    edge.SetHeadArrow(true);
     result.emplace_back(edge);
   }
   return result;
@@ -121,6 +122,7 @@ std::vector<ribi::cmap::Edge> ribi::cmap::EdgeFactory::GetTests() const noexcept
     {
       const auto node = NodeFactory().GetTest(i);
       Edge edge(node);
+      edge.SetHeadArrow(true);
       result.emplace_back(edge);
     }
     /*

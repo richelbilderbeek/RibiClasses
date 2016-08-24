@@ -57,6 +57,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "custom_vertex_invariant.h"
 #include "fileio.h"
 #include "install_vertex_custom_type.h"
+#include "get_my_custom_vertex.h"
+#include "set_my_custom_vertex.h"
 #include "is_custom_vertices_isomorphic.h"
 
 #include "make_custom_and_selectable_vertices_writer.h"
@@ -102,8 +104,7 @@ BOOST_AUTO_TEST_CASE(ribi_concept_map_load_node)
   BOOST_CHECK(ToXml(n) == s);
   ConceptMap g;
   const auto vd = boost::add_vertex(g);
-  const auto pmap = get(boost::vertex_custom_type, g);
-  put(pmap, vd, n);
+  set_my_custom_vertex(n, vd, g);
   const std::string d{ToDot(g)};
   const std::string dot{
     "graph G {\n"

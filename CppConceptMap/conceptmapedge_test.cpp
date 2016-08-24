@@ -39,6 +39,26 @@ BOOST_AUTO_TEST_CASE(ribi_concept_map_edge_operator_is_equal)
     BOOST_CHECK_EQUAL(edge1.GetNode().GetX(), edge2.GetNode().GetX());
     BOOST_CHECK_EQUAL(edge1, edge2);
   }
+  //Toggle head arrow
+  {
+    auto edge1 = EdgeFactory().GetTest(1);
+    const auto edge2 = EdgeFactory().GetTest(1);
+    BOOST_CHECK_EQUAL(edge1, edge2);
+    edge1.SetHeadArrow(!edge1.HasHeadArrow());
+    BOOST_CHECK_NE(edge1, edge2);
+    edge1.SetHeadArrow(!edge1.HasHeadArrow());
+    BOOST_CHECK_EQUAL(edge1, edge2);
+  }
+  //Toggle tail arrow
+  {
+    auto edge1 = EdgeFactory().GetTest(1);
+    const auto edge2 = EdgeFactory().GetTest(1);
+    BOOST_CHECK_EQUAL(edge1, edge2);
+    edge1.SetTailArrow(!edge1.HasTailArrow());
+    BOOST_CHECK_NE(edge1, edge2);
+    edge1.SetTailArrow(!edge1.HasTailArrow());
+    BOOST_CHECK_EQUAL(edge1, edge2);
+  }
 }
 
 BOOST_AUTO_TEST_CASE(ribi_concept_map_edge_operator_is_not_equal)
@@ -50,14 +70,32 @@ BOOST_AUTO_TEST_CASE(ribi_concept_map_edge_operator_is_not_equal)
 }
 
 
-BOOST_AUTO_TEST_CASE(ribi_concept_map_edge_edge_to_xml_to_edge)
+BOOST_AUTO_TEST_CASE(ribi_concept_map_edge_edge_to_xml_to_edge_easy)
 {
+  //Can all edges be converted to XML and back?
   using namespace ribi::cmap;
-  const Edge edge_before{EdgeFactory().GetTest(0)};
-  const std::string s{ToXml(edge_before)};
-  const Edge edge_after{XmlToEdge(s)};
-  BOOST_CHECK_EQUAL(ToXml(edge_before), ToXml(edge_after));
-  BOOST_CHECK_EQUAL(edge_before, edge_after);
+  const auto edges = EdgeFactory().GetTests();
+  for (const auto edge_before: edges)
+  {
+    const std::string s{ToXml(edge_before)};
+    const Edge edge_after{XmlToEdge(s)};
+    BOOST_CHECK_EQUAL(ToXml(edge_before), ToXml(edge_after));
+    BOOST_CHECK_EQUAL(edge_before, edge_after);
+  }
+}
+
+BOOST_AUTO_TEST_CASE(ribi_concept_map_edge_edge_to_xml_to_edge_nasty)
+{
+  //Can all edges be converted to XML and back?
+  using namespace ribi::cmap;
+  const auto edges = EdgeFactory().GetNastyTests();
+  for (const auto edge_before: edges)
+  {
+    const std::string s{ToXml(edge_before)};
+    const Edge edge_after{XmlToEdge(s)};
+    BOOST_CHECK_EQUAL(ToXml(edge_before), ToXml(edge_after));
+    BOOST_CHECK_EQUAL(edge_before, edge_after);
+  }
 }
 
 BOOST_AUTO_TEST_CASE(ribi_concept_map_edge_edge_stream_operator)

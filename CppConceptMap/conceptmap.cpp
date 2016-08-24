@@ -198,22 +198,6 @@ ribi::cmap::VertexDescriptor ribi::cmap::FindCenterNode(const ConceptMap& g)
   return *i;
 }
 
-ribi::cmap::EdgeDescriptor ribi::cmap::find_first_custom_edge_with_my_edge(
-  const Edge& edge,
-  const ConceptMap& g
-)
-{
-  return ::find_first_custom_edge_with_my_edge(edge, g);
-}
-
-ribi::cmap::VertexDescriptor ribi::cmap::FindNode(
-  const Node& node,
-  const ConceptMap& g
-) noexcept
-{
-  return find_first_custom_vertex_with_my_vertex(node, g);
-}
-
 ribi::cmap::Node ribi::cmap::GetCenterNode(const ConceptMap& c)
 {
   if (CountCenterNodes(c) != 1)

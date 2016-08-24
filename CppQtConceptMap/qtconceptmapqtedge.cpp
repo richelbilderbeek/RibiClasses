@@ -117,10 +117,14 @@ ribi::cmap::QtEdge::QtEdge(
   m_qtnode->SetText( { m_edge.GetNode().GetConcept().GetName() } );
   assert(std::abs(m_edge.GetNode().GetY() - m_qtnode->GetCenterY()) < 2.0);
 
+  this->SetEdge(m_edge);
+
   //Set Z values
   this->setZValue(-1.0);
   m_arrow->setZValue(-1.0);
   m_qtnode->setZValue(1.0);
+
+
 }
 
 ribi::cmap::QtEdge::~QtEdge() noexcept
@@ -192,13 +196,13 @@ void ribi::cmap::QtEdge::focusOutEvent(QFocusEvent* e) noexcept
   assert(!hasFocus());
 }
 
-bool ribi::cmap::QtEdge::HasHeadArrow() noexcept
+bool ribi::cmap::QtEdge::HasHeadArrow() const noexcept
 {
   assert(m_arrow);
   return m_arrow->HasHead();
 }
 
-bool ribi::cmap::QtEdge::HasTailArrow() noexcept
+bool ribi::cmap::QtEdge::HasTailArrow() const noexcept
 {
   assert(m_arrow);
   return m_arrow->HasTail();
@@ -306,8 +310,8 @@ void ribi::cmap::QtEdge::SetEdge(const Edge& edge) noexcept
   m_qtnode->SetCenterX(m_edge.GetNode().GetX());
   m_qtnode->SetCenterY(m_edge.GetNode().GetY());
   m_qtnode->SetText( { m_edge.GetNode().GetConcept().GetName() } );
-  m_arrow->SetHasHead(m_edge.HasHeadArrow());
-  m_arrow->SetHasTail(m_edge.HasTailArrow());
+  SetHasHeadArrow(m_edge.HasHeadArrow());
+  SetHasTailArrow(m_edge.HasTailArrow());
 
   assert(edge == m_edge);
 }
