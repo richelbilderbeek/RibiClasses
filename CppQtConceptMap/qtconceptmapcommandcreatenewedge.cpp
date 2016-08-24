@@ -132,6 +132,15 @@ void ribi::cmap::CommandCreateNewEdgeBetweenTwoSelectedNodes::redo()
   // Update the original edge
   m_added_edge = m_added_qtedge->GetEdge();
   assert(m_added_qtedge->GetEdge() == m_added_edge);
+
+  //Do not create a node on the edge if it is connected to a center node
+  if (m_added_qtedge->GetFrom()->GetNode().IsCenterNode()
+    || m_added_qtedge->GetTo()->GetNode().IsCenterNode()
+  )
+  {
+    m_added_qtedge->GetQtNode()->setVisible(false);
+  }
+
 }
 
 void ribi::cmap::CommandCreateNewEdgeBetweenTwoSelectedNodes::undo()

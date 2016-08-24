@@ -88,6 +88,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 
 #pragma GCC diagnostic pop
 
+/*
 ///Returns a sorted vector
 template <class T>
 std::vector<T> Sort(const std::vector<T>& v)
@@ -118,6 +119,7 @@ std::vector<ribi::cmap::QtNode*>
   }
   return w;
 }
+*/
 
 ribi::cmap::QtConceptMap::QtConceptMap(QWidget* parent)
   : QtKeyboardFriendlyGraphicsView(parent),
@@ -845,7 +847,14 @@ void ribi::cmap::QtConceptMap::SetConceptMap(const ConceptMap& conceptmap)
     const Node node = get(pmap, *i);
     const bool is_focal_node{i == vip.first};
     QtNode * const qtnode{new QtNode(node)};
-    if (is_focal_node) { qtnode->setFlags(0); }
+    if (is_focal_node)
+    {
+      qtnode->setFlags(
+          QGraphicsItem::ItemIsFocusable
+        // | QGraphicsItem::ItemIsMovable
+        | QGraphicsItem::ItemIsSelectable
+      );
+    }
     assert(qtnode);
     assert(!qtnode->scene());
     scene()->addItem(qtnode);

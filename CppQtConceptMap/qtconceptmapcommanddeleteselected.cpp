@@ -251,6 +251,7 @@ void ribi::cmap::CommandDeleteSelected::undo()
   {
     assert(qtnode);
     assert(!qtnode->scene());
+    assert(!m_scene->items().contains(qtnode));
     m_scene->addItem(qtnode);
     assert(qtnode->scene());
   }
@@ -258,6 +259,7 @@ void ribi::cmap::CommandDeleteSelected::undo()
   {
     assert(qtedge);
     assert(!qtedge->scene());
+    assert(!m_scene->items().contains(qtedge));
     m_scene->addItem(qtedge);
     assert(qtedge->scene());
 
