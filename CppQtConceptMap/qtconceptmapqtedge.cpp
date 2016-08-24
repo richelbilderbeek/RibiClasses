@@ -268,6 +268,10 @@ void ribi::cmap::QtEdge::mousePressEvent(QGraphicsSceneMouseEvent *event) noexce
 
 void ribi::cmap::QtEdge::paint(QPainter* painter, const QStyleOptionGraphicsItem* /*option*/, QWidget* /*widget*/) noexcept
 {
+  if (!this->scene())
+  {
+    qDebug() << "BREAK";
+  }
   assert(this->scene());
   assert(this->m_from->scene());
   assert(this->m_to->scene());

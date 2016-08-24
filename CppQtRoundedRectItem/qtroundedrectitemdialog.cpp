@@ -39,7 +39,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 ribi::QtRoundedRectItemDialog::QtRoundedRectItemDialog(QWidget *parent) :
     QtHideAndShowDialog(parent),
     ui(new Ui::QtRoundedRectItemDialog),
-    m_item()
+    m_item{}
 {
   ui->setupUi(this);
 }
