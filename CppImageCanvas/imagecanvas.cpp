@@ -23,12 +23,13 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #include "imagecanvas.h"
 
-#include <iostream>
+#include <algorithm>
 #include <cassert>
 #include <cmath>
-#include <algorithm>
 #include <functional>
+#include <iostream>
 #include <iterator>
+#include <numeric>
 #include <sstream>
 #include <boost/math/constants/constants.hpp>
 
