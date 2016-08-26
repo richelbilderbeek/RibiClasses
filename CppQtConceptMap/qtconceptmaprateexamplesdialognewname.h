@@ -40,7 +40,7 @@ namespace cmap {
 ///Allows the user to rate the examples of a concept
 class QtRateExamplesDialogNewName : public ribi::QtHideAndShowDialog
 {
-  Q_OBJECT
+  Q_OBJECT //!OCLINT
   
 public:
   explicit QtRateExamplesDialogNewName(

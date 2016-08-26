@@ -35,7 +35,7 @@ namespace cmap {
 
 class QtItemHighlighter : public QObject
 {
-  Q_OBJECT
+  Q_OBJECT //!OCLINT
 
 public:
   QtItemHighlighter(QObject *parent = 0);

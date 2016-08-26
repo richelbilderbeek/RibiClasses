@@ -39,7 +39,7 @@ namespace cmap {
 ///Displays and modifies an Example
 class QtExampleDialog : public ribi::QtHideAndShowDialog
 {
-  Q_OBJECT
+  Q_OBJECT //!OCLINT
 
 public:
   explicit QtExampleDialog(QWidget *parent = 0);

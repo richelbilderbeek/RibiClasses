@@ -38,3 +38,6 @@ temp.txt
 tmp*
 ui_*
 RibiClassesTestConsole
+*.tar.gz
+oclint-0.10.3/
+oclint.log

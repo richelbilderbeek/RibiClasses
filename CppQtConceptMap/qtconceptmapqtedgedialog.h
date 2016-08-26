@@ -21,7 +21,7 @@ namespace cmap {
 
 class QtQtEdgeDialog : public ::ribi::QtHideAndShowDialog
 {
-  Q_OBJECT
+  Q_OBJECT //!OCLINT
 
 public:
   explicit QtQtEdgeDialog(

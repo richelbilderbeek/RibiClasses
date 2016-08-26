@@ -38,7 +38,7 @@ namespace cmap {
 
 class QtRateConceptTallyDialog : public ribi::QtHideAndShowDialog
 {
-  Q_OBJECT
+  Q_OBJECT //!OCLINT
   
 public:
   ///Sub concept map is modified by this dialog

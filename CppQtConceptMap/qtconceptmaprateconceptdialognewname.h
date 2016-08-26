@@ -40,7 +40,7 @@ namespace cmap {
 ///Rate the focal concept of a sub-ConceptMap.
 class QtRateConceptDialog : public ribi::QtHideAndShowDialog
 {
-  Q_OBJECT
+  Q_OBJECT //!OCLINT
     
   public:
   ///concept is the center node

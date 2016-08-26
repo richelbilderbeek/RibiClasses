@@ -39,7 +39,7 @@ namespace cmap {
 ///Displays and modifies a Node
 class QtNodeDialog : public ribi::QtHideAndShowDialog
 {
-  Q_OBJECT
+  Q_OBJECT //!OCLINT
 
 public:
   explicit QtNodeDialog(QWidget *parent = 0);

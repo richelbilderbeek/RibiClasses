@@ -43,7 +43,7 @@ namespace cmap {
 /// -1: QtEdges
 class QtConceptMap : public ribi::QtKeyboardFriendlyGraphicsView
 {
-  Q_OBJECT
+  Q_OBJECT //!OCLINT
 
 public:
 

@@ -21,7 +21,7 @@ namespace cmap {
 
 class QtQtNodeDialog : public ::ribi::QtHideAndShowDialog
 {
-  Q_OBJECT
+  Q_OBJECT //!OCLINT
 
 public:
   explicit QtQtNodeDialog(QWidget *parent = 0);

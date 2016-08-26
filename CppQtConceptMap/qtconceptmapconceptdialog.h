@@ -40,7 +40,7 @@ namespace cmap {
 ///Displays and modifies a Concept
 class QtConceptDialog : public ribi::QtHideAndShowDialog
 {
-  Q_OBJECT
+  Q_OBJECT //!OCLINT
 
 public:
   explicit QtConceptDialog(QWidget *parent = 0);

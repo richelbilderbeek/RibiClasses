@@ -40,7 +40,7 @@ namespace cmap {
 
 class QtConceptMapConceptEditDialog : public ribi::QtHideAndShowDialog
 {
-  Q_OBJECT
+  Q_OBJECT //!OCLINT
   
 public:
   ///concept is not const as user might want to modify it

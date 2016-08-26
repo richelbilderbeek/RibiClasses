@@ -39,7 +39,7 @@ namespace cmap {
 ///Displays and modifies an Edge
 class QtEdgeDialog : public ribi::QtHideAndShowDialog
 {
-  Q_OBJECT
+  Q_OBJECT //!OCLINT
 
 public:
   explicit QtEdgeDialog(

@@ -42,7 +42,7 @@ namespace cmap {
 
 class QtConceptMapRatedConceptDialog : public QDialog
 {
-  Q_OBJECT
+  Q_OBJECT //!OCLINT
   
 public:
 
