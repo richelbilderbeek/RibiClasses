@@ -38,6 +38,76 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "trace.h"
 #pragma GCC diagnostic pop
 
+std::size_t ribi::cmap::FindLastSpaceBeforeMaxLen(
+  const std::string& s,
+  const std::size_t max_len
+)
+{
+  std::size_t len = s.find(' ');
+  assert(len != std::string::npos);
+  assert(len < s.size());
+  while (1)
+  {
+    const std::size_t new_len = s.find(' ',len + 1);
+    if (new_len > max_len || new_len == std::string::npos) break;
+    len = new_len;
+  }
+  return len;
+}
+
+std::vector<std::string> ribi::cmap::ReplaceAll(
+  std::vector<std::string> v,
+  const char from,
+  const char to
+)
+{
+  ///Replace bell characters by spaces again
+  for (std::string& s: v)
+  {
+    std::replace(std::begin(s), std::end(s), from, to);
+  }
+  return v;
+}
+
+std::string ribi::cmap::ReplaceLeadingSpaces(std::string s, const char x)
+{
+  const std::size_t sz = s.size();
+
+  for (std::size_t i=0; i!=sz; ++i)
+  {
+    if (s[i] == ' ')
+      s[i] = x;
+    else
+      break;
+  }
+  return s;
+}
+
+std::string ribi::cmap::ReplaceLeadingAndTrailingSpaces(
+  std::string s, const char x)
+{
+  return ReplaceTrailingSpaces(
+    ReplaceLeadingSpaces(s, x),
+    x
+  );
+}
+
+std::string ribi::cmap::ReplaceTrailingSpaces(std::string s, const char x)
+{
+  const std::size_t sz = s.size();
+  if (sz == 0) return s;
+
+  //i!=0, because if s[0] is a space, it is already converted to bell
+  for (std::size_t i=sz-1; i!=0; ++i)
+  {
+    if (s[i] == ' ')
+      s[i] = x;
+    else
+      break;
+  }
+  return s;
+}
+
 std::vector<std::string> ribi::cmap::SafeFileToVector(const std::string& filename)
 {
   if(!ribi::is_regular_file(filename))
@@ -64,64 +134,29 @@ std::string ribi::cmap::Unwordwrap(const std::vector<std::string>& v) noexcept
 }
 
 std::vector<std::string> ribi::cmap::Wordwrap(
-  const std::string& s_original, const std::size_t max_len) noexcept
+  std::string s, const std::size_t max_len) noexcept
 {
   if (max_len == 0)
   {
     throw std::logic_error("Cannot wordwrap for a max_len of zero");
   }
-  //std::clog << "Wordwrap \'" << s_original << '\'' << std::endl;
-  std::string s{s_original};
-  assert(s.size() == s_original.size());
 
   ///Replace multiple spaces with '\b ', where x is a char not in the string
   std::string::value_type x = '\b'; //Bell
-  {
-    const std::size_t sz = s.size();
 
-    ///Replace spaces at beginning
-    for (std::size_t i=0; i!=sz; ++i)
-    {
-      if (s[i] == ' ')
-        s[i] = x;
-      else
-        break;
-    }
-    //Replace spaces at end
-    if (sz > 0)
-    {
-      //i!=0, because if s[0] is a space, it is already converted to bell
-      for (std::size_t i=sz-1; i!=0; ++i)
-      {
-        if (s[i] == ' ')
-          s[i] = x;
-        else
-          break;
-      }
-    }
-    ///Replace "  " by "\b "
-    for (std::size_t i=0; i!=sz-1; ++i)
-    {
-      if (s[i] == ' ' && s[i+1] == ' ')
-        s[i] = x;
-      else
-        break;
-    }
-  }
+  s = ReplaceLeadingAndTrailingSpaces(s, x);
 
   std::vector<std::string> v;
 
   //Start the actual wordwrapping
-  while (!s.empty())
+  while (1)
   {
-    //Is the word short enough?
+    //Is the word short enough to be the last entry in v?
     if (s.size() < max_len)
     {
-      //Copy entire word
+      //Copy last part to v and it is done
       v.push_back(s);
-      s = {};
-      assert(s.empty());
-      continue;
+      break;
     }
     //No spaces, or space beyond max_len: cut word
     if (s.find(' ') == std::string::npos || s.find(' ') > max_len)
@@ -131,16 +166,7 @@ std::vector<std::string> ribi::cmap::Wordwrap(
       continue;
     }
     //Find last space before max_len
-    std::size_t len = s.find(' ');
-    assert(len != std::string::npos);
-    assert(len < s.size());
-    while (1)
-    {
-      const std::size_t new_len = s.find(' ',len + 1);
-      if (new_len > max_len || new_len == std::string::npos) break;
-      len = new_len;
-    }
-    assert(len + 0 < s.size());
+    const std::size_t len = FindLastSpaceBeforeMaxLen(s, max_len);
     assert(len + 1 < s.size());
     //cut s, put cut part in vector
     const std::string line = s.substr(0,len+1); //Keep space
@@ -153,12 +179,5 @@ std::vector<std::string> ribi::cmap::Wordwrap(
     s = new_s;
   }
 
-  ///Replace bell characters by spaces again
-  for (std::string& s: v)
-  {
-    std::replace(std::begin(s), std::end(s), x, ' ');
-  }
-
-  assert(Unwordwrap(v) == s_original);
-  return v;
+  return ReplaceAll(v, x, ' ');
 }

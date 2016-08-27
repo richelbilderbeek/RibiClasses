@@ -274,7 +274,7 @@ std::istream& ribi::cmap::operator>>(std::istream& is, Node& node)
     assert(c != '\0');
     if (c == ' ') continue;
     s += c;
-    break;
+    break; //!OCLINT No idea how to do this more elegantly
   }
 
   while (1)

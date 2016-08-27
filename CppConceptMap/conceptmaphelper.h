@@ -120,6 +120,7 @@ namespace cmap {
 /// {1,2  } -> { {}, {1}, {2},      {1,2}                        }
 /// {1,2,3} -> { {}, {1}, {2}, {3}, {1,2}, {1,3}, {2,3}, {1,2,3} }
 //From http://www.richelbilderbeek.nl/GetPermutations.htm
+/*
 template <class T>
 const std::vector<std::vector<T> > GetCombinations(const std::vector<T>& v)
 {
@@ -141,6 +142,29 @@ const std::vector<std::vector<T> > GetCombinations(const std::vector<T>& v)
   }
   return result;
 }
+*/
+///Find the last space before the ith position
+std::size_t FindLastSpaceBeforeMaxLen(
+  const std::string& s,
+  const std::size_t max_len
+);
+
+std::vector<std::string> ReplaceAll(
+  std::vector<std::string> v,
+  const char from,
+  const char to
+);
+
+///Starting from the start of the std::string,
+///as long as there is a space, replace it by the character desired
+std::string ReplaceLeadingSpaces(std::string s, const char x);
+
+///Does ReplaceLeadingSpaces and ReplaceTrailingSpaces
+std::string ReplaceLeadingAndTrailingSpaces(std::string s, const char x);
+
+///Starting from the end of the std::string,
+///as long as there is a space, replace it by the character desired
+std::string ReplaceTrailingSpaces(std::string s, const char x);
 
 ///SafeFileToVector calls FileToVector and
 ///removes an empty trailing line that can be created under
@@ -152,7 +176,7 @@ std::string Unwordwrap(const std::vector<std::string>& v) noexcept;
 
 ///Wordwrap the text to obtain lines of max_len characters
 ///If the string _must_ be seperable by spaces; a word can have a maximum length of max_len
-std::vector<std::string> Wordwrap(const std::string& s, const std::size_t max_len) noexcept;
+std::vector<std::string> Wordwrap(std::string s, const std::size_t max_len) noexcept;
 
 } //~namespace cmap
 } //~namespace ribi

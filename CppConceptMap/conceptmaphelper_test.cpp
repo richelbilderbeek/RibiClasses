@@ -1,4 +1,6 @@
 #include "conceptmaphelper.h"
+
+#include <vector>
 #include <boost/test/unit_test.hpp>
 
 #include "ribi_regex.h"
@@ -183,8 +185,8 @@ BOOST_AUTO_TEST_CASE(ribi_concept_map_helper_test)
     {
       for (const std::string& s: v)
       {
-        //Wordwrap calls Unwordwrap
-        Wordwrap(s,len);
+        const std::vector<std::string> v = Wordwrap(s,len);
+        BOOST_CHECK(Unwordwrap(v) == s);
       }
     }
   }

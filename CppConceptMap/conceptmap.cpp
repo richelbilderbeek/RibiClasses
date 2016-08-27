@@ -65,10 +65,10 @@ template <
 class edge_writer {
 public:
   edge_writer(
-    my_custom_edge_map any_my_custom_edge_map,
-    is_selected_map any_is_selected_map
-  ) : m_my_custom_edge_map{any_my_custom_edge_map},
-      m_is_selected_map{any_is_selected_map}
+    my_custom_edge_map mcem,
+    is_selected_map ism
+  ) : m_my_custom_edge_map{mcem},
+      m_is_selected_map{ism}
   {
 
   }
