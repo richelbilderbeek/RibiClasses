@@ -6,6 +6,8 @@
 #include <tuple>
 #include "musicfwd.h"
 
+namespace ribi {
+
 struct AbcFile
 {
   AbcFile();
@@ -49,11 +51,11 @@ struct AbcFile
   void SetTitle(const std::string& title);
 
   ///Convert the ABC file to a text with lines
-  const std::string ToStr() const;
+  std::string ToStr() const;
 
   private:
   ///The 'C' field
-  const std::string m_composer;
+  std::string m_composer;
 
   ///The 'X' field
   const int m_index;
@@ -75,5 +77,7 @@ struct AbcFile
 };
 
 std::ostream& operator<<(std::ostream& os, const AbcFile& file);
+
+} //~namespace ribi
 
 #endif // ABCFILE_H

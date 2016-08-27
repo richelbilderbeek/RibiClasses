@@ -1,18 +1,26 @@
 #!/bin/bash
 
-cpp_files=`find . | egrep ".*\.cpp$" | egrep -v "^qrc_.*\.cpp$" | egrep -v "^moc_.*\.cpp$" | egrep -v "CppQt" | egrep -v "CppWt" | egrep "^./CppA"`
-h_files=  `find . | egrep ".*\.h$"   | egrep -v "^ui_.*\.h$"    | egrep -v "CppQt" | egrep -v "CppWt" | egrep "^./CppA"`
+cpp_files=`find . | egrep ".*\.cpp$" | egrep -v "^qrc_.*\.cpp$" | egrep -v "^moc_.*\.cpp$" | egrep -v "CppQt" | egrep -v "CppWt" | egrep "^./CppCon"`
+h_files=  `find . | egrep ".*\.h$"   | egrep -v "^ui_.*\.h$"    | egrep -v "CppQt" | egrep -v "CppWt" | egrep "^./CppCon"`
 
 ./oclint-0.10.3/bin/oclint -o oclint.log \
   -disable-rule ShortVariableName \
   $cpp_files \
   $h_files \
   -- \
-  -c -std=c++11 \
+  -c -std=c++14 \
+  -I./CppDnaSequence \
+  -I./CppFastaFile \
+  -I./CppFileIo \
   -I./CppMusic \
+  -I./CppNewick \
   -I./CppPolarCoordinat \
+  -I./CppRibiRinside \
   -I./CppTestTimer \
   -I./CppTrace \
+  -I./CppUnits \
+  -I../RibiLibraries/bigint-2010.04.30 \
+  -I../RibiLibraries/rinside \
   -I/usr/include/c++/5 \
   -I/usr/include/qt5 \
   -I/usr/include/qt5/QtCore \

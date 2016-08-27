@@ -2,7 +2,7 @@
 
 #include <sstream>
 
-AbcFile::AbcFile()
+ribi::AbcFile::AbcFile()
   : m_composer(""),
     m_index(0),
     m_note(0),
@@ -14,7 +14,12 @@ AbcFile::AbcFile()
 
 }
 
-const std::string AbcFile::ToStr() const
+void ribi::AbcFile::SetComposer(const std::string& composer)
+{
+  m_composer = composer;
+}
+
+std::string ribi::AbcFile::ToStr() const
 {
   std::stringstream s;
   s << "X:" << this->GetIndex() << '\n'
@@ -22,14 +27,15 @@ const std::string AbcFile::ToStr() const
     << "C:" << this->GetComposer() << '\n'
     << "L:" << m_note_length.first << "/" << m_note_length.second << '\n'
     << "M:" << m_time_signature.first << "/" << m_time_signature.second << '\n'
-    << "T"  << std::get<0>(m_tempo) << "/" << std::get<1>(m_tempo) << "=" << std::get<2>(m_tempo) << '\n'
+    << "T"  << std::get<0>(m_tempo) << "/" << std::get<1>(m_tempo)
+      << "=" << std::get<2>(m_tempo) << '\n'
     << "V:V1 clef=treble" << '\n'
     << "V:V2 clef=bass" << '\n';
   return s.str();
 }
 
 
-std::ostream& operator<<(std::ostream& os, const AbcFile& file)
+std::ostream& ribi::operator<<(std::ostream& os, const AbcFile& file)
 {
   os << file.ToStr();
   return os;

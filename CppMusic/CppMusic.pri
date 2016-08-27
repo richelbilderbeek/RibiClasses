@@ -2,14 +2,14 @@ INCLUDEPATH += \
     ../RibiClasses/CppMusic
 
 SOURCES += \
-    ../RibiClasses/CppMusic/musicchord.cpp \
-    ../RibiClasses/CppMusic/musicnote.cpp \
-    ../RibiClasses/CppMusic/musicscale.cpp
+    $$PWD/musicchord.cpp \
+    $$PWD/musicnote.cpp \
+    $$PWD/musicscale.cpp
 
 HEADERS  += \
-    ../RibiClasses/CppMusic/musicchord.h \
-    ../RibiClasses/CppMusic/musicnote.h \
-    ../RibiClasses/CppMusic/musicscale.h
+    $$PWD/musicchord.h \
+    $$PWD/musicnote.h \
+    $$PWD/musicscale.h
 
 OTHER_FILES += \
-    ../RibiClasses/CppMusic/Licence.txt
+    $$PWD/Licence.txt

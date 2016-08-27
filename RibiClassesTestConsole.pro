@@ -13,6 +13,12 @@ include(../RibiLibraries/Apfloat.pri)
 include(../RibiLibraries/BoostAll.pri)
 include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
 
+include(../RibiClasses/CppAbcFile/CppAbcFile.pri)
+include(../RibiClasses/CppAbcFile/CppAbcFileTest.pri)
+
+include(../RibiClasses/CppBiology/CppBiology.pri)
+include(../RibiClasses/CppBiology/CppBiologyTest.pri)
+
 include(../RibiClasses/CppContainer/CppContainer.pri)
 include(../RibiClasses/CppContainer/CppContainerTest.pri)
 include(../RibiClasses/CppCounter/CppCounter.pri)
@@ -25,6 +31,9 @@ include(../RibiClasses/CppGeometry/CppGeometry.pri)
 include(../RibiClasses/CppGeometry/CppGeometryTest.pri)
 include(../RibiClasses/CppFuzzy_equal_to/CppFuzzy_equal_to.pri)
 include(../RibiClasses/CppFuzzy_equal_to/CppFuzzy_equal_toTest.pri)
+
+include(../RibiClasses/CppMusic/CppMusic.pri)
+
 include(../RibiClasses/CppPlane/CppPlane.pri)
 include(../RibiClasses/CppPlane/CppPlaneTest.pri)
 include(../RibiClasses/CppRibiRandom/CppRibiRandom.pri)
