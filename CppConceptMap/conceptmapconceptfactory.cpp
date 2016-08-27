@@ -78,36 +78,116 @@ ribi::cmap::Concept ribi::cmap::ConceptFactory::Create(
   return concept;
 }
 
+ribi::cmap::Concept ribi::cmap::ConceptFactory::Get0() const noexcept
+{
+  const Examples examples;
+  return Concept("Concept without examples", examples, false, 0, 1, 2);
+}
+
+ribi::cmap::Concept ribi::cmap::ConceptFactory::Get1() const noexcept
+{
+  return Create(
+    "Concept with one example",
+    {
+      { "Only example", cmap::Competency::profession }
+    },
+    1,
+    2,
+    0
+  );
+}
+
+ribi::cmap::Concept ribi::cmap::ConceptFactory::Get2() const noexcept
+{
+  return Create(
+    "Very long multi-line concept with four Roman examples that "
+    "also each span multiple lines, that is, eighty characters",
+    {
+      {
+        "Example I/IV, spanning multiple lines (that is, having at least "
+        "eighty characters) and is rated as Competency::misc",
+        Competency::misc
+      },
+      {
+        "Example II/IV, spanning multiple lines (that is, having at least "
+        "eighty characters) and is rated as Competency::uninitialized",
+        Competency::uninitialized
+      },
+      {
+        "Example III/IV, spanning multiple lines (that is, having at least "
+        "eighty characters) and is rated as Competency::profession",
+        Competency::profession },
+      {
+        "Example III/IV, spanning multiple lines (that is, having at least "
+        "eighty ycharacters) and is rated as "
+        "cmap::Competency::social_surroundings",
+        Competency::social_surroundings
+      }
+    }, 1, 2, 0
+  );
+}
+
+ribi::cmap::Concept ribi::cmap::ConceptFactory::GetNasty0() const noexcept
+{
+  return Concept(
+    " Concept with (n < 1) examples", Examples(), false, 0, 1, 2
+  );
+}
+
+ribi::cmap::Concept ribi::cmap::ConceptFactory::GetNasty1() const noexcept
+{
+  return Create(
+    "Concept (n > 0 && n < 2) examples ",
+    {
+      { " Only one of (n > 2) examples", cmap::Competency::profession }
+    },
+    1,
+    2,
+    0
+  );
+}
+
+ribi::cmap::Concept ribi::cmap::ConceptFactory::GetNasty2() const noexcept
+{
+  return Create(
+    " Very>long<multi-line concept with four Roman examples "
+    "that also each span multiple lines, that is, eighty characters",
+    {
+      {
+        "Example I/IV,spanning (n > 1) lines  (that is, having at least "
+        "eighty characters) and is rated as cmap::Competency::misc ",
+        cmap::Competency::misc
+      },
+      { " Example II/IV,spanning (n >= (256 >> 9) lines (that is, "
+        "having at least eighty characters) and is rated as "
+        "cmap::Competency::uninitialized",
+         cmap::Competency::uninitialized
+      },
+      {
+        "Example III/IV, spanning <<<multiple>>> lines (that is, "
+        "having at least eight characters) and is rated as "
+        "cmap::Competency::profession ",
+        cmap::Competency::profession
+      },
+      {
+        " Example III/IV, spanning multiple lines (n >= (1 << 1)) (that is, "
+        "having at least eight characters) and is rated as "
+        "cmap::Competency::social_surroundings",
+        cmap::Competency::social_surroundings
+      }
+    },
+    1,
+    2,
+    0
+  );
+}
+
 std::vector<ribi::cmap::Concept> ribi::cmap::ConceptFactory::GetNastyTests() const noexcept
 {
   std::vector<Concept> v;
-  {
-    const Examples examples;
-    const Concept p(" Concept with (n < 1) examples", examples, false, 0, 1, 2);
-    assert(p.GetRatingComplexity() >= -1);
-    assert(p.GetRatingComplexity() <=  2);
-    v.push_back(p);
-  }
-  {
-    const Concept p = Create("Concept (n > 0 && n < 2) examples ", { { " Only one of (n > 2) examples", cmap::Competency::profession } }, 1, 2, 0);
-    assert(p.GetRatingComplexity() >= -1);
-    assert(p.GetRatingComplexity() <=  2);
-    v.push_back(p);
-  }
-  {
-    const Concept p = Create(
-      " Very>long<multi-line concept with four Roman examples that also each span multiple lines, that is, eighty characters",
-      {
-        { "Example I/IV,spanning (n > 1) lines  (that is, having at least eight characters) and is rated as cmap::Competency::misc ", cmap::Competency::misc },
-        { " Example II/IV,spanning (n >= (256 >> 9) lines (that is, having at least eight characters) and is rated as cmap::Competency::uninitialized", cmap::Competency::uninitialized },
-        { "Example III/IV, spanning <<<multiple>>> lines (that is, having at least eight characters) and is rated as cmap::Competency::profession ", cmap::Competency::profession },
-        { " Example III/IV, spanning multiple lines (n >= (1 << 1)) (that is, having at least eight characters) and is rated as cmap::Competency::social_surroundings", cmap::Competency::social_surroundings }
-      }, 1, 2, 0
-    );
-    assert(p.GetRatingComplexity() >= -1);
-    assert(p.GetRatingComplexity() <=  2);
-    v.push_back(p);
-  }
+  v.push_back(GetNasty0());
+  v.push_back(GetNasty1());
+  v.push_back(GetNasty2());
   return v;
 }
 
@@ -128,63 +208,10 @@ ribi::cmap::Concept ribi::cmap::ConceptFactory::GetTest(const int i) const noexc
 
 std::array<ribi::cmap::Concept, 3> ribi::cmap::ConceptFactory::GetTests() const noexcept
 {
-  const int sz{3};
   std::array<Concept, 3> v;
-  assert(sz == static_cast<int>(v.size()));
-  int i{0};
-  {
-    const Examples examples;
-    const Concept p("Concept without examples", examples, false, 0, 1, 2);
-    assert(p.GetRatingComplexity() >= -1);
-    assert(p.GetRatingComplexity() <=  2);
-    assert(i < sz);
-    v[i++] = p;
-  }
-  {
-    const Concept p = Create("Concept with one example", { { "Only example", cmap::Competency::profession } }, 1, 2, 0);
-    assert(p.GetRatingComplexity() >= -1);
-    assert(p.GetRatingComplexity() <=  2);
-    assert(i < sz);
-    v[i++] = p;
-  }
-  /*
-  {
-    const Concept p = Create("Concept with two examples", { { "First example", cmap::Competency::organisations }, { "Second example", cmap::Competency::social_surroundings } }, 2, 0, 1);
-    assert(p);
-    assert(p.GetRatingComplexity() >= -1);
-    assert(p.GetRatingComplexity() <=  2);
-    v.push_back(p);
-  }
-  {
-    const Concept p = Create("Concept with three examples", { { "Example 1 of 3", cmap::Competency::target_audience }, { "Example 2 of 3", cmap::Competency::ti_knowledge }, { "Example 3 of 3", cmap::Competency::prof_growth } }, 0, 1, 2);
-    assert(p);
-    assert(p.GetRatingComplexity() >= -1);
-    assert(p.GetRatingComplexity() <=  2);
-    v.push_back(p);
-  }
-  {
-    const Concept p = Create("Concept with four Roman examples", { { "Example I/IV", cmap::Competency::misc }, { "Example II/IV", cmap::Competency::uninitialized }, { "Example III/IV", cmap::Competency::profession }, { "Example III/IV", cmap::Competency::social_surroundings } }, 1, 2, 0);
-    assert(p);
-    assert(p.GetRatingComplexity() >= -1);
-    assert(p.GetRatingComplexity() <=  2);
-    v.push_back(p);
-  }
-  */
-  {
-    const Concept p = Create(
-      "Very long multi-line concept with four Roman examples that also each span multiple lines, that is, eighty characters",
-      {
-        { "Example I/IV, spanning multiple lines (that is, having at least eight characters) and is rated as cmap::Competency::misc", cmap::Competency::misc },
-        { "Example II/IV, spanning multiple lines (that is, having at least eight characters) and is rated as cmap::Competency::uninitialized", cmap::Competency::uninitialized },
-        { "Example III/IV, spanning multiple lines (that is, having at least eight characters) and is rated as cmap::Competency::profession", cmap::Competency::profession },
-        { "Example III/IV, spanning multiple lines (that is, having at least eight characters) and is rated as cmap::Competency::social_surroundings", cmap::Competency::social_surroundings }
-      }, 1, 2, 0
-    );
-    assert(p.GetRatingComplexity() >= -1);
-    assert(p.GetRatingComplexity() <=  2);
-    assert(i < sz);
-    v[i++] = p;
-  }
+  v[0] = Get0();
+  v[1] = Get1();
+  v[2] = Get2();
   return v;
 }
 

@@ -38,10 +38,7 @@ public:
 
   ///Get all the other tests as one vector
   Graphs GetAllTests() const noexcept;
-  Graph GetTest(const int index) const noexcept;
-  int GetNumberOfAllTests() const noexcept { return 7; }
   Graphs GetNastyTests() const noexcept;
-
   Graph GetEmptyGraph() const noexcept { return Get0(); }
 
   ///Get the documented heteromorphous test concept maps
@@ -52,6 +49,19 @@ public:
   Graph Get4() const noexcept;
   Graph Get5() const noexcept;
   Graph Get6() const noexcept;
+  Graph Get7() const noexcept;
+
+  /// Complex rated concept map
+  Graph Get8() const noexcept;
+
+  /// Complex rated concept map with many examples
+  Graph Get9() const noexcept;
+
+  /// Complex rated concept map with many long concept names and examples
+  Graph Get10() const noexcept;
+
+  /// Complex rated concept map with all nodes connected
+  Graph Get11() const noexcept;
   Graph GetNasty0() const noexcept;
 
   private:

@@ -59,6 +59,7 @@ std::vector<Edge> GetSortedEdges(const ConceptMap& c) noexcept;
 std::vector<Node> GetSortedNodes(const ConceptMap& c) noexcept;
 bool HasCenterNode(const ConceptMap& c) noexcept;
 ConceptMap LoadFromFile(const std::string& dot_filename);
+ConceptMap RemoveFirstNode(ConceptMap g);
 void SaveToFile(const ConceptMap& g, const std::string& dot_filename);
 void SaveToImage(const ConceptMap& g, const std::string& png_filename);
 void SaveSummaryToImage(const ConceptMap& g, const std::string& png_filename);

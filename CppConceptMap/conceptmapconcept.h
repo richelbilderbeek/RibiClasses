@@ -144,8 +144,23 @@ Concept XmlToConcept(const std::string& s);
 ///Loose version of XmlToConcept
 Concept ExtractConceptFromXml(const std::string& s);
 
+///Extract a Concept its Examples from an XML
+Examples ExtractExamplesFromXml(const std::string& s);
+
+///Extract a Concept if it is complex from an XML
+bool ExtractIsComplexFromXml(const std::string& s);
+
 ///Extract a Concept its name from an XML
 std::string ExtractNameFromXml(const std::string& s);
+
+///Extract a Concept its complexity rating from XML
+int ExtractRatingComplexityFromXml(const std::string& s);
+
+///Extract a Concept its concreteness rating from XML
+int ExtractRatingConcretenessFromXml(const std::string& s);
+
+///Extract a Concept its specificity rating from XML
+int ExtractRatingSpecificityFromXml(const std::string& s);
 
 std::ostream& operator<<(std::ostream& os, const Concept& concept) noexcept;
 std::istream& operator>>(std::istream& is, Concept& concept);

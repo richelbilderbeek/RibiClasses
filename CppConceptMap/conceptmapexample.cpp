@@ -68,6 +68,46 @@ void ribi::cmap::Example::Decode() noexcept
   m_text = graphviz_decode(m_text);
 }
 
+ribi::cmap::Competency ribi::cmap::ExtractExampleCompetencyFromXml(const std::string& s)
+{
+  const std::vector<std::string> v
+    = Regex().GetRegexMatches(s,Regex().GetRegexCompetency());
+  assert(v.size() == 1);
+  return Competencies().ToType(ribi::xml::StripXmlTag(v[0]));
+}
+
+bool ribi::cmap::ExtractExampleIsComplexFromXml(const std::string& s)
+{
+  const std::vector<std::string> v
+    = Regex().GetRegexMatches(s,Regex().GetRegexIsComplex());
+  assert(v.size() == 1);
+  return boost::lexical_cast<bool>(ribi::xml::StripXmlTag(v[0]));
+}
+
+bool ribi::cmap::ExtractExampleIsConcreteFromXml(const std::string& s)
+{
+  const std::vector<std::string> v
+    = Regex().GetRegexMatches(s,Regex().GetRegexIsConcrete());
+  assert(v.size() == 1);
+  return boost::lexical_cast<bool>(ribi::xml::StripXmlTag(v[0]));
+}
+
+bool ribi::cmap::ExtractExampleIsSpecificFromXml(const std::string& s)
+{
+  const std::vector<std::string> v
+    = Regex().GetRegexMatches(s,Regex().GetRegexIsSpecific());
+  assert(v.size() == 1);
+  return boost::lexical_cast<bool>(ribi::xml::StripXmlTag(v[0]));
+}
+
+std::string ribi::cmap::ExtractExampleTextFromXml(const std::string& s)
+{
+  const std::vector<std::string> v
+    = Regex().GetRegexMatches(s,Regex().GetRegexText());
+  assert(v.size() == 1 && "GetRegexText must be present once in an Example");
+  return graphviz_decode(ribi::xml::StripXmlTag(v[0]));
+}
+
 void ribi::cmap::Example::SetCompetency(const Competency competency) noexcept
 {
   m_competency = competency;
@@ -162,57 +202,12 @@ ribi::cmap::Example ribi::cmap::XmlToExample(const std::string& s)
   assert(s.size() >= 17);
   assert(s.substr(0,9) == "<example>");
   assert(s.substr(s.size() - 10,10) == "</example>");
-
-
-  std::string text;
-  cmap::Competency competency = cmap::Competency::uninitialized;
-  bool is_complex = false;
-  bool is_concrete = false;
-  bool is_specific = false;
-
-  //competency
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexCompetency());
-    assert(v.size() == 1);
-    competency = Competencies().ToType(ribi::xml::StripXmlTag(v[0]));
-  }
-  //is_complex
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexIsComplex());
-    assert(v.size() == 1);
-    is_complex = boost::lexical_cast<bool>(ribi::xml::StripXmlTag(v[0]));
-  }
-  //is_concrete
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexIsConcrete());
-    assert(v.size() == 1);
-    is_concrete = boost::lexical_cast<bool>(ribi::xml::StripXmlTag(v[0]));
-  }
-  //is_specific
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexIsSpecific());
-    assert(v.size() == 1);
-    is_specific = boost::lexical_cast<bool>(ribi::xml::StripXmlTag(v[0]));
-  }
-  //text
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexText());
-    assert(v.size() == 1 && "GetRegexText must be present once in an Example");
-    text = ribi::xml::StripXmlTag(v[0]);
-    text = graphviz_decode(text);
-  }
-
   Example example(
-    text,
-    competency,
-    is_complex,
-    is_concrete,
-    is_specific
+    ExtractExampleTextFromXml(s),
+    ExtractExampleCompetencyFromXml(s),
+    ExtractExampleIsComplexFromXml(s),
+    ExtractExampleIsConcreteFromXml(s),
+    ExtractExampleIsSpecificFromXml(s)
   );
   assert(ToXml(example) == s);
   return example;

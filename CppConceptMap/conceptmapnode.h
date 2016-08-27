@@ -112,6 +112,11 @@ struct Node
 ///Count the number of CenterNodes
 int CountCenterNodes(const std::vector<Node>& nodes) noexcept;
 
+
+bool ExtractIsCenterNodeFromXml(const std::string& s);
+double ExtractXfromXml(const std::string& s);
+double ExtractYfromXml(const std::string& s);
+
 std::vector<Node>::const_iterator FindCenterNode(const std::vector<Node>& nodes) noexcept;
 
 ///Similar to operator==, except that GUI elements are not tested for equality

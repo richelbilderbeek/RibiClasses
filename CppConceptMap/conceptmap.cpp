@@ -90,9 +90,16 @@ public:
 
     const bool has_head{edge.HasHeadArrow()};
     const bool has_tail{edge.HasTailArrow()};
-    if ( has_head &&  has_tail) out << "dir = \"both\", arrowhead = \"normal\", arrowtail = \"normal\"";
-    if ( has_head && !has_tail) out << "dir = \"forward\", arrowhead = \"normal\"";
-    if (!has_head &&  has_tail) out << "dir = \"back\", arrowtail = \"normal\"";
+    if ( has_head &&  has_tail) {
+      out << "dir = \"both\", arrowhead = \"normal\", arrowtail = \"normal\"";
+    }
+    if ( has_head && !has_tail) {
+      out << "dir = \"forward\", arrowhead = \"normal\"";
+    }
+    if (!has_head && has_tail)
+    {
+      out << "dir = \"back\", arrowtail = \"normal\"";
+    }
     out << "]";
   }
 private:
@@ -109,16 +116,16 @@ inline edge_writer<
   is_selected_map
 >
 make_edge_writer(
-  const my_custom_vertex_map& any_my_custom_vertex_map,
-  const is_selected_map& any_is_selected_map
+  const my_custom_vertex_map& mcvm, //my_custom_vertex_map
+  const is_selected_map& ism //any_is_selected_map
 )
 {
   return edge_writer<
     my_custom_vertex_map,
     is_selected_map
   >(
-    any_my_custom_vertex_map,
-    any_is_selected_map
+    mcvm,
+    ism
   );
 }
 
@@ -132,9 +139,11 @@ int ribi::cmap::CountCenterNodes(const ConceptMap& c) noexcept
   return CountCenterNodes(GetNodes(c));
 }
 
-std::vector<ribi::cmap::ConceptMap> ribi::cmap::CreateDirectNeighbourConceptMaps(const ConceptMap& c)
+std::vector<ribi::cmap::ConceptMap>
+ribi::cmap::CreateDirectNeighbourConceptMaps(const ConceptMap& c)
 {
-  return create_all_direct_neighbour_custom_and_selectable_edges_and_vertices_subgraphs(c);
+  return
+  create_all_direct_neighbour_custom_and_selectable_edges_and_vertices_subgraphs(c);
 }
 
 void ribi::cmap::DecodeConceptMap(ConceptMap& g) noexcept
@@ -212,7 +221,8 @@ ribi::cmap::Node ribi::cmap::GetCenterNode(const ConceptMap& c)
   return GetNode(FindCenterNode(c), c);
 }
 
-ribi::cmap::Edge ribi::cmap::GetEdge(const ribi::cmap::EdgeDescriptor ed, const ribi::cmap::ConceptMap& g) noexcept
+ribi::cmap::Edge ribi::cmap::GetEdge(
+  const ribi::cmap::EdgeDescriptor ed, const ribi::cmap::ConceptMap& g) noexcept
 {
   return get_my_custom_edge(ed, g);
 }
@@ -261,7 +271,9 @@ ribi::cmap::Node ribi::cmap::GetFrom(const EdgeDescriptor ed, const ConceptMap& 
   return GetNode(boost::source(ed, c), c);
 }
 
-ribi::cmap::Node ribi::cmap::GetNode(const ribi::cmap::VertexDescriptor vd, const ribi::cmap::ConceptMap& g) noexcept
+ribi::cmap::Node ribi::cmap::GetNode(
+  const ribi::cmap::VertexDescriptor vd, const ribi::cmap::ConceptMap& g
+) noexcept
 {
   return get_my_custom_vertex(vd, g);
 }
@@ -324,6 +336,17 @@ ribi::cmap::ConceptMap ribi::cmap::LoadFromFile(const std::string& dot_filename)
     >(dot_filename)
   ;
   DecodeConceptMap(g);
+  return g;
+}
+
+ribi::cmap::ConceptMap ribi::cmap::RemoveFirstNode(ConceptMap g)
+{
+  if (!boost::num_vertices(g))
+  {
+    throw std::invalid_argument("RemoveFirstNode: need at least one node");
+  }
+  boost::clear_vertex(*vertices(g).first, g);
+  boost::remove_vertex(*vertices(g).first, g);
   return g;
 }
 
@@ -391,9 +414,18 @@ void ribi::cmap::SaveSummaryToFile(const ConceptMap& g, const std::string& dot_f
 
       const bool has_head{edge.HasHeadArrow()};
       const bool has_tail{edge.HasTailArrow()};
-      if ( has_head &&  has_tail) out << "dir = \"both\", arrowhead = \"normal\", arrowtail = \"normal\"";
-      if ( has_head && !has_tail) out << "dir = \"forward\", arrowhead = \"normal\"";
-      if (!has_head &&  has_tail) out << "dir = \"back\", arrowtail = \"normal\"";
+      if ( has_head &&  has_tail)
+      {
+        out << "dir = \"both\", arrowhead = \"normal\", arrowtail = \"normal\"";
+      }
+      if ( has_head && !has_tail)
+      {
+        out << "dir = \"forward\", arrowhead = \"normal\"";
+      }
+      if (!has_head &&  has_tail)
+      {
+        out << "dir = \"back\", arrowtail = \"normal\"";
+      }
       out << "]";
     }
   );

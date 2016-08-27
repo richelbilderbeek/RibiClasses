@@ -84,6 +84,32 @@ ribi::cmap::Concept ribi::cmap::ExtractConceptFromXml(const std::string& s)
   return XmlToConcept(v[0]);
 }
 
+ribi::cmap::Examples ribi::cmap::ExtractExamplesFromXml(const std::string& s)
+{
+  const std::vector<std::string> v
+    = Regex().GetRegexMatches(s,Regex().GetRegexExamples());
+  if (v.size() != 1)
+  {
+    std::stringstream msg;
+    msg << __func__ << ": must have one examples tag in XML";
+    throw std::invalid_argument(msg.str());
+  }
+  return XmlToExamples(v[0]);
+}
+
+bool ribi::cmap::ExtractIsComplexFromXml(const std::string& s)
+{
+  const std::vector<std::string> v
+    = Regex().GetRegexMatches(s,Regex().GetRegexConceptIsComplex());
+  if (v.size() != 1)
+  {
+    std::stringstream msg;
+    msg << __func__ << ": must have one is_complex tag in XML";
+    throw std::invalid_argument(msg.str());
+  }
+  return boost::lexical_cast<bool>(ribi::xml::StripXmlTag(v[0]));
+}
+
 std::string ribi::cmap::ExtractNameFromXml(const std::string& s)
 {
   const std::vector<std::string> v
@@ -95,6 +121,52 @@ std::string ribi::cmap::ExtractNameFromXml(const std::string& s)
     throw std::invalid_argument(msg.str());
   }
   return graphviz_decode(ribi::xml::StripXmlTag(v[0]));
+}
+
+int ribi::cmap::ExtractRatingComplexityFromXml(const std::string& s)
+{
+  const std::vector<std::string> v
+    = Regex().GetRegexMatches(s,Regex().GetRegexComplexity());
+
+  if (v.size() != 1)
+  {
+    std::stringstream msg;
+    msg << __func__ << ": must have one rating_complexity tag in XML";
+    throw std::invalid_argument(msg.str());
+  }
+
+  return boost::lexical_cast<int>(ribi::xml::StripXmlTag(v[0]));
+}
+
+int ribi::cmap::ExtractRatingConcretenessFromXml(const std::string& s)
+{
+  const std::vector<std::string> v
+    = Regex().GetRegexMatches(s,Regex().GetRegexConcreteness());
+
+  if (v.size() != 1)
+  {
+    std::stringstream msg;
+    msg << __func__ << ": must have one rating_concreteness tag in XML";
+    throw std::invalid_argument(msg.str());
+  }
+
+  return boost::lexical_cast<int>(ribi::xml::StripXmlTag(v[0]));
+
+}
+
+int ribi::cmap::ExtractRatingSpecificityFromXml(const std::string& s)
+{
+  const std::vector<std::string> v
+    = Regex().GetRegexMatches(s,Regex().GetRegexSpecificity());
+
+  if (v.size() != 1)
+  {
+    std::stringstream msg;
+    msg << __func__ << ": must have one rating_specificity tag in XML";
+    throw std::invalid_argument(msg.str());
+  }
+
+  return boost::lexical_cast<int>(ribi::xml::StripXmlTag(v[0]));
 }
 
 void ribi::cmap::Concept::SetExamples(const Examples& examples) noexcept
@@ -184,57 +256,13 @@ ribi::cmap::Concept ribi::cmap::XmlToConcept(const std::string& s)
   assert(s.size() >= 19);
   assert(s.substr(0,9) == "<concept>");
   assert(s.substr(s.size() - 10,10) == "</concept>");
-
-  Examples examples;
-  bool is_complex = false;
-  int rating_complexity    = -2; //Not even unrated (which has -1 as its value)
-  int rating_concreteness  = -2; //Not even unrated (which has -1 as its value)
-  int rating_specificity   = -2; //Not even unrated (which has -1 as its value)
-  //m_examples
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexExamples());
-    assert(v.size() == 1 && "GetRegexExamples must be present once in a Concept");
-    examples = XmlToExamples(v[0]);
-  }
-
-  //m_is_complex
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexConceptIsComplex());
-    assert(v.size() == 1 && "GetRegexIsComplex must be present once per Concept");
-    is_complex = boost::lexical_cast<bool>(ribi::xml::StripXmlTag(v[0]));
-  }
-  //m_rating_complexity
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexComplexity());
-    assert(v.size() == 1 && "GetRegexComplexity must be present once per Concept");
-    rating_complexity = boost::lexical_cast<int>(ribi::xml::StripXmlTag(v[0]));
-    assert(rating_complexity >= -1);
-    assert(rating_complexity <=  2);
-  }
-  //m_rating_concreteness
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexConcreteness());
-    assert(v.size() == 1);
-    rating_concreteness = boost::lexical_cast<int>(ribi::xml::StripXmlTag(v[0]));
-  }
-  //m_rating_specificity
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexSpecificity());
-    assert(v.size() == 1);
-    rating_specificity = boost::lexical_cast<int>(ribi::xml::StripXmlTag(v[0]));
-  }
   return Concept(
     ExtractNameFromXml(s),
-    examples,
-    is_complex,
-    rating_complexity,
-    rating_concreteness,
-    rating_specificity
+    ExtractExamplesFromXml(s),
+    ExtractIsComplexFromXml(s),
+    ExtractRatingComplexityFromXml(s),
+    ExtractRatingConcretenessFromXml(s),
+    ExtractRatingSpecificityFromXml(s)
   );
 
 }
@@ -255,30 +283,24 @@ std::istream& ribi::cmap::operator>>(std::istream& is, Concept& concept)
 
 bool ribi::cmap::operator==(const ribi::cmap::Concept& lhs, const ribi::cmap::Concept& rhs)
 {
-  const bool verbose{false};
   if (lhs.GetIsComplex() != rhs.GetIsComplex())
   {
-    if (verbose) { TRACE("Concept::IsComplex differs"); }
     return false;
   }
   if (lhs.GetName() != rhs.GetName())
   {
-    if (verbose) { TRACE("Concept::Name differs"); }
     return false;
   }
   if (lhs.GetRatingComplexity() != rhs.GetRatingComplexity())
   {
-    if (verbose) { TRACE("Concept::RatingComplexity differs"); }
     return false;
   }
   if (lhs.GetRatingConcreteness() != rhs.GetRatingConcreteness())
   {
-    if (verbose) { TRACE("Concept::RatingConcreteness differs"); }
     return false;
   }
   if (lhs.GetRatingSpecificity() != rhs.GetRatingSpecificity())
   {
-    if (verbose) { TRACE("Concept::RatingSpecificity differs"); }
     return false;
   }
   const auto lhs_examples = lhs.GetExamples();
@@ -287,11 +309,7 @@ bool ribi::cmap::operator==(const ribi::cmap::Concept& lhs, const ribi::cmap::Co
   {
     return true;
   }
-  else
-  {
-    if (verbose) { TRACE("Concept::Examples differs: content is different"); }
-    return false;
-  }
+  return false;
 }
 
 bool ribi::cmap::operator!=(const ribi::cmap::Concept& lhs, const ribi::cmap::Concept& rhs)
@@ -299,16 +317,39 @@ bool ribi::cmap::operator!=(const ribi::cmap::Concept& lhs, const ribi::cmap::Co
   return !(lhs == rhs);
 }
 
+template <class T> int to_digit(const T& a, const T& b)
+{
+  if (a < b) return 0;
+  if (a == b) return 1;
+  return 2;
+}
+
 bool ribi::cmap::operator<(const ribi::cmap::Concept& lhs, const ribi::cmap::Concept& rhs)
 {
-  if (lhs.GetName() < rhs.GetName()) return true;
-  if (lhs.GetName() > rhs.GetName()) return false;
-  if (lhs.GetExamples() < rhs.GetExamples()) return true;
-  if (lhs.GetExamples() != rhs.GetExamples()) return false;
-  assert(lhs.GetExamples() == rhs.GetExamples());
-  if (lhs.GetRatingComplexity() < rhs.GetRatingComplexity()) return true;
-  if (lhs.GetRatingComplexity() > rhs.GetRatingComplexity()) return false;
-  if (lhs.GetRatingConcreteness() < rhs.GetRatingConcreteness()) return true;
-  if (lhs.GetRatingConcreteness() > rhs.GetRatingConcreteness()) return false;
-  return lhs.GetRatingSpecificity() < rhs.GetRatingSpecificity();
+  //Convert all comparisons to a number, like ABCDE
+  //of which each digit is either 0,1 or 2
+  //Each digit stands for a comparison of:
+  //A: Name
+  //B: Examples
+  //C: GetRatingComplexity
+  //D: GetRatingConcreteness
+  //E: GetRatingSpecificity
+  //Each digit has a value of
+  // 0: lhs has less
+  // 1: equal
+  // 2: lhs has more
+  std::vector<int> digits = {
+    to_digit(lhs.GetName(), rhs.GetName()),
+    to_digit(lhs.GetExamples(), rhs.GetExamples()),
+    to_digit(lhs.GetRatingComplexity(), rhs.GetRatingComplexity()),
+    to_digit(lhs.GetRatingConcreteness(), rhs.GetRatingConcreteness()),
+    to_digit(lhs.GetRatingSpecificity(), rhs.GetRatingSpecificity())
+  };
+
+  for (const int& i: digits)
+  {
+    if (i == 0) return true;
+    if (i == 2) return false;
+  }
+  return false;
 }

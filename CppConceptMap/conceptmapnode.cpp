@@ -73,7 +73,48 @@ int ribi::cmap::CountCenterNodes(const std::vector<Node>& nodes) noexcept
   );
 }
 
-std::vector<ribi::cmap::Node>::const_iterator  ribi::cmap::FindCenterNode(const std::vector<Node>& nodes) noexcept
+bool ribi::cmap::ExtractIsCenterNodeFromXml(const std::string& s)
+{
+  const std::vector<std::string> v
+    = Regex().GetRegexMatches(s,Regex().GetRegexIsCenterNode());
+  if (v.size() != 1)
+  {
+    std::stringstream msg;
+    msg << __func__ << ": must have one center node tag in XML";
+    throw std::invalid_argument(msg.str());
+  }
+  return boost::lexical_cast<bool>(ribi::xml::StripXmlTag(v[0]));
+}
+
+double ribi::cmap::ExtractXfromXml(const std::string& s)
+{
+  const std::vector<std::string> v
+    = Regex().GetRegexMatches(s,Regex().GetRegexX());
+  if (v.size() != 1)
+  {
+    std::stringstream msg;
+    msg << __func__ << ": must have one X tag in XML";
+    throw std::invalid_argument(msg.str());
+  }
+  return boost::lexical_cast<double>(ribi::xml::StripXmlTag(v[0]));
+}
+
+double ribi::cmap::ExtractYfromXml(const std::string& s)
+{
+  const std::vector<std::string> v
+    = Regex().GetRegexMatches(s,Regex().GetRegexY());
+  if (v.size() != 1)
+  {
+    std::stringstream msg;
+    msg << __func__ << ": must have one Y tag in XML";
+    throw std::invalid_argument(msg.str());
+  }
+  return boost::lexical_cast<double>(ribi::xml::StripXmlTag(v[0]));
+}
+
+
+std::vector<ribi::cmap::Node>::const_iterator
+ribi::cmap::FindCenterNode(const std::vector<Node>& nodes) noexcept
 {
   return std::find_if(
     std::begin(nodes),std::end(nodes),
@@ -174,37 +215,11 @@ ribi::cmap::Node ribi::cmap::XmlToNode(const std::string& s)
     msg << __func__ << ": incorrect ending tag";
     throw std::logic_error(msg.str());
   }
-
-  //m_is_centernode
-  bool is_center_node = false;
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexIsCenterNode());
-    if (v.size() == 1) {
-      is_center_node = boost::lexical_cast<bool>(ribi::xml::StripXmlTag(v[0]));
-    }
-  }
-  //m_x
-  double x = 0.0;
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexX());
-    assert(v.size() == 1);
-    x = boost::lexical_cast<double>(ribi::xml::StripXmlTag(v[0]));
-  }
-  //m_y
-  double y = 0.0;
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexY());
-    assert(v.size() == 1);
-    y = boost::lexical_cast<double>(ribi::xml::StripXmlTag(v[0]));
-  }
   return Node(
     ExtractConceptFromXml(s),
-    is_center_node,
-    x,
-    y
+    ExtractIsCenterNodeFromXml(s),
+    ExtractXfromXml(s),
+    ExtractYfromXml(s)
   );
 }
 

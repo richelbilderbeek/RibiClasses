@@ -79,8 +79,8 @@ BOOST_AUTO_TEST_CASE(ribi_concept_map_is_copy_constructable)
 BOOST_AUTO_TEST_CASE(ribi_concept_map_operator_is_equal)
 {
   using namespace ribi::cmap;
-  const ConceptMap a = ConceptMapFactory().GetTest(1);
-  const ConceptMap b = ConceptMapFactory().GetTest(2);
+  const ConceptMap a = ConceptMapFactory().Get1();
+  const ConceptMap b = ConceptMapFactory().Get2();
   BOOST_CHECK(a != b);
   ConceptMap c(a);
   BOOST_CHECK(c == a);
@@ -178,7 +178,7 @@ BOOST_AUTO_TEST_CASE(ribi_concept_map_simple_dot_to_concept_map)
 BOOST_AUTO_TEST_CASE(ribi_concept_map_stream_single_object)
 {
   using namespace ribi::cmap;
-  ConceptMap a{ConceptMapFactory().GetTest(1)};
+  ConceptMap a{ConceptMapFactory().Get1()};
   std::stringstream s;
   s << a;
   ConceptMap b;
@@ -189,8 +189,8 @@ BOOST_AUTO_TEST_CASE(ribi_concept_map_stream_single_object)
 BOOST_AUTO_TEST_CASE(ribi_concept_map_stream_two_objects)
 {
   using namespace ribi::cmap;
-  const ConceptMap e = ConceptMapFactory().GetTest(1);
-  const ConceptMap f = ConceptMapFactory().GetTest(2);
+  const ConceptMap e = ConceptMapFactory().Get1();
+  const ConceptMap f = ConceptMapFactory().Get2();
   std::stringstream s;
   s << e << f;
   ConceptMap g;

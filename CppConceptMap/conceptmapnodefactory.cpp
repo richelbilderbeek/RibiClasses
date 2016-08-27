@@ -77,6 +77,36 @@ ribi::cmap::Node ribi::cmap::NodeFactory::GetTest(const int i) const noexcept
   return tests[i];
 }
 
+ribi::cmap::Node ribi::cmap::NodeFactory::GetNasty0() const noexcept
+{
+  return Node(
+    ConceptFactory().GetNasty0(),
+    false,
+    1.2,
+    3.4
+  );
+}
+
+ribi::cmap::Node ribi::cmap::NodeFactory::GetNasty1() const noexcept
+{
+  return Node(
+    ConceptFactory().GetNasty1(),
+    false,
+    -1.2,
+    3.4
+  );
+}
+
+ribi::cmap::Node ribi::cmap::NodeFactory::GetNasty2() const noexcept
+{
+  return Node(
+    ConceptFactory().GetNasty2(),
+    false,
+    -1.2,
+    -3.4
+  );
+}
+
 ribi::cmap::Node ribi::cmap::NodeFactory::GetNastyTest(const int i) const noexcept
 {
   const auto tests = GetNastyTests();

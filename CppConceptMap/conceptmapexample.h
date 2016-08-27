@@ -102,6 +102,12 @@ private:
 std::string ToXml(const Example& example) noexcept;
 Example XmlToExample(const std::string& s);
 
+Competency ExtractExampleCompetencyFromXml(const std::string& s);
+bool ExtractExampleIsComplexFromXml(const std::string& s);
+bool ExtractExampleIsConcreteFromXml(const std::string& s);
+bool ExtractExampleIsSpecificFromXml(const std::string& s);
+std::string ExtractExampleTextFromXml(const std::string& s);
+
 std::ostream& operator<<(std::ostream& os, const Example& example) noexcept;
 std::istream& operator>>(std::istream& is, Example& example);
 

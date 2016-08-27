@@ -45,6 +45,15 @@ struct ConceptFactory
   ) const noexcept;
 
   Concept GetTest(const int i) const noexcept;
+
+  Concept Get0() const noexcept;
+  Concept Get1() const noexcept;
+  Concept Get2() const noexcept;
+
+  Concept GetNasty0() const noexcept;
+  Concept GetNasty1() const noexcept;
+  Concept GetNasty2() const noexcept;
+
   std::vector<Concept> GetNastyTests() const noexcept;
   std::array<Concept, 3> GetTests() const noexcept;
   //int GetNumberOfTests() const noexcept { return static_cast<int>(GetTests().size()); }
