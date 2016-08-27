@@ -1,23 +1,37 @@
 #!/bin/bash
 
-cpp_files=`find . | egrep ".*\.cpp$" | egrep -v "^qrc_.*\.cpp$" | egrep -v "^moc_.*\.cpp$" | egrep -v "CppQt" | egrep -v "CppWt"`
-h_files=`find . | egrep ".*\.h$" | egrep -v "^ui_.*\.h$" | egrep -v "CppQt | egrep -v "CppWt"`
+cpp_files=`find . | egrep ".*\.cpp$" | egrep -v "^qrc_.*\.cpp$" | egrep -v "^moc_.*\.cpp$" | egrep -v "CppQt" | egrep -v "CppWt" | egrep "^./CppA"`
+h_files=  `find . | egrep ".*\.h$"   | egrep -v "^ui_.*\.h$"    | egrep -v "CppQt" | egrep -v "CppWt" | egrep "^./CppA"`
 
-echo $cpp_files
-echo $h_files
-
-./oclint-0.10.3/bin/oclint -o oclint.log -max-priority-1 0 -max-priority-2 0 -max-priority-3 0 \
+./oclint-0.10.3/bin/oclint -o oclint.log \
   -disable-rule ShortVariableName \
-  -disable-rule FileNotFound \
   $cpp_files \
   $h_files \
   -- \
   -c -std=c++11 \
+  -I./CppMusic \
+  -I./CppPolarCoordinat \
+  -I./CppTestTimer \
+  -I./CppTrace \
   -I/usr/include/c++/5 \
   -I/usr/include/qt5 \
   -I/usr/include/qt5/QtCore \
   -I/usr/include/qt5/QtGui \
   -I/usr/include/qt5/QtWidgets
+
+cat oclint.log
+
+# Will be 0 if success
+# Will be 1 if fail
+fail=`egrep "Compiler Errors" oclint.log | wc -l`
+
+if [ $fail -eq 1 ]; 
+then
+  echo "OCLint: Compiler error"
+  exit 1
+else
+  echo "OCLint: OK"
+fi
 
 # Will be 1 if success
 # Will be 0 if fail
