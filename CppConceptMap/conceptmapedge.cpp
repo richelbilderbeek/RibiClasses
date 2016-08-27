@@ -45,7 +45,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "xml.h"
 #pragma GCC diagnostic pop
 
-int ribi::cmap::Edge::sm_ids = 0; //ID to assign
+int ribi::cmap::Edge::sm_ids = 0; //!OCLINT must use static to track count
 
 ribi::cmap::Edge::Edge(
   const Node& node,
@@ -122,15 +122,6 @@ ribi::cmap::Edge ribi::cmap::XmlToEdge(
   assert(s.size() >= 13);
   assert(s.substr(0,6) == "<edge>");
   assert(s.substr(s.size() - 7,7) == "</edge>");
-  //m_concept
-  Concept concept = ConceptFactory().Create();
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexConcept());
-    assert(v.size() == 1);
-    concept = XmlToConcept(v[0]);
-  }
-
   //m_has_head
   bool has_head = false;
   {
@@ -165,7 +156,7 @@ ribi::cmap::Edge ribi::cmap::XmlToEdge(
     y = boost::lexical_cast<double>(StripXmlTag(v[0]));
   }
   Node node(
-    concept,
+    ExtractConceptFromXml(s),
     false, //is_center_node
     x,
     y

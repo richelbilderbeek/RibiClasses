@@ -29,7 +29,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
 #include <boost/bimap.hpp>
-
 #include "conceptmapcompetency.h"
 #pragma GCC diagnostic pop
 
@@ -48,11 +47,13 @@ struct Competencies
   Competency ToType(const std::string& s) const;
 
   private:
-  static boost::bimap<Competency,std::string> m_map_dutch;
-  static boost::bimap<Competency,std::string> m_map_english;
-  static boost::bimap<Competency,std::string> CreateMapDutch() noexcept;
-  static boost::bimap<Competency,std::string> CreateMapEnglish() noexcept;
+
+  mutable boost::bimap<Competency,std::string> m_map_dutch; //Lazy initialization
+  mutable boost::bimap<Competency,std::string> m_map_english; //Lazy initialization
 };
+
+boost::bimap<Competency,std::string> CreateMapDutch() noexcept;
+boost::bimap<Competency,std::string> CreateMapEnglish() noexcept;
 
 } //~namespace cmap
 } //~namespace ribi

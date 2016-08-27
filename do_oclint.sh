@@ -1,14 +1,16 @@
 #!/bin/bash
 
-cpp_files=`find . | egrep ".*\.cpp$" | egrep -v "^qrc_.*\.cpp$" | egrep -v "^moc_.*\.cpp$" | egrep -v "CppQt" | egrep -v "CppWt" | egrep "^./CppCon"`
-h_files=  `find . | egrep ".*\.h$"   | egrep -v "^ui_.*\.h$"    | egrep -v "CppQt" | egrep -v "CppWt" | egrep "^./CppCon"`
+cpp_files=`find . | egrep ".*\.cpp$" | egrep -v "^qrc_.*\.cpp$" | egrep -v "^moc_.*\.cpp$" | egrep -v "CppQt" | egrep -v "CppWt" | egrep "^./CppConce"`
+h_files=  `find . | egrep ".*\.h$"   | egrep -v "^ui_.*\.h$"    | egrep -v "CppQt" | egrep -v "CppWt" | egrep "^./CppConce"`
 
 ./oclint-0.10.3/bin/oclint -o oclint.log \
   -disable-rule ShortVariableName \
   $cpp_files \
   $h_files \
   -- \
-  -c -std=c++14 \
+  -c -std=c++14 -fPIC \
+  -I./CppContainer \
+  -I./CppCounter \
   -I./CppDnaSequence \
   -I./CppFastaFile \
   -I./CppFileIo \
@@ -16,9 +18,12 @@ h_files=  `find . | egrep ".*\.h$"   | egrep -v "^ui_.*\.h$"    | egrep -v "CppQ
   -I./CppNewick \
   -I./CppPolarCoordinat \
   -I./CppRibiRinside \
+  -I./CppRibiRegex \
   -I./CppTestTimer \
   -I./CppTrace \
   -I./CppUnits \
+  -I./CppXml \
+  -I../BoostGraphTutorial/BoostGraphTutorial \
   -I../RibiLibraries/bigint-2010.04.30 \
   -I../RibiLibraries/rinside \
   -I/usr/include/c++/5 \

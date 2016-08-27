@@ -5,7 +5,8 @@ BOOST_AUTO_TEST_CASE(ribi_concept_map_competencies_test)
 {
   using namespace ribi::cmap;
   static_assert(static_cast<int>(Competency::uninitialized) == 0,
-    "Start the uninitialized value at zero, so that GetAllCompetencies can check against n_competencies"
+    "Start the uninitialized value at zero, "
+    "so that GetAllCompetencies can check against n_competencies"
   );
   Competencies c;
   {

@@ -120,23 +120,23 @@ BOOST_AUTO_TEST_CASE(ribi_concept_map_concept_test)
     {
       const Concept a = ConceptFactory().Create("1", { {"2",Competency::misc} } );
             Concept b = ConceptFactory().Create("1", { {"2",Competency::misc} } );
-      const Concept c = ConceptFactory().Create("1", { {"2",Competency::misc},{"3",Competency::misc} } );
-            Concept d = ConceptFactory().Create("1", { {"2",Competency::misc},{"3",Competency::misc} } );
+      const Concept c = ConceptFactory().Create("1", { {"2",Competency::misc},{"3",Competency::misc} } ); //!OCLINT
+            Concept d = ConceptFactory().Create("1", { {"2",Competency::misc},{"3",Competency::misc} } ); //!OCLINT
       BOOST_CHECK(a < c); BOOST_CHECK(a < d);
       BOOST_CHECK(b < c); BOOST_CHECK(b < d);
     }
     if (verbose) { TRACE("Check correct ordering for equal examples' size, lexicographically in the 2nd text"); }
     {
-      const Concept a = ConceptFactory().Create("1", { {"2",Competency::misc},{"3",Competency::misc} } );
-            Concept b = ConceptFactory().Create("1", { {"2",Competency::misc},{"3",Competency::misc} } );
-      const Concept c = ConceptFactory().Create("1", { {"2",Competency::misc},{"4",Competency::misc} } );
-            Concept d = ConceptFactory().Create("1", { {"2",Competency::misc},{"4",Competency::misc} } );
+      const Concept a = ConceptFactory().Create("1", { {"2",Competency::misc},{"3",Competency::misc} } ); //!OCLINT
+            Concept b = ConceptFactory().Create("1", { {"2",Competency::misc},{"3",Competency::misc} } ); //!OCLINT
+      const Concept c = ConceptFactory().Create("1", { {"2",Competency::misc},{"4",Competency::misc} } ); //!OCLINT
+            Concept d = ConceptFactory().Create("1", { {"2",Competency::misc},{"4",Competency::misc} } ); //!OCLINT
       BOOST_CHECK(a < c); BOOST_CHECK(a < d);
       BOOST_CHECK(b < c); BOOST_CHECK(b < d);
     }
   }
   {
-    const std::string xml = "<concept><name>TEST</name><examples></examples><concept_is_complex>1</concept_is_complex><complexity>-1</complexity><concreteness>-1</concreteness><specificity>-1</specificity></concept>";
+    const std::string xml = "<concept><name>TEST</name><examples></examples><concept_is_complex>1</concept_is_complex><complexity>-1</complexity><concreteness>-1</concreteness><specificity>-1</specificity></concept>"; //!OCLINT
     const auto concept = XmlToConcept(xml);
     BOOST_CHECK(concept.GetName() == "TEST");
   }

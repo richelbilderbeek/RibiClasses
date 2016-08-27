@@ -23,15 +23,16 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <cassert>
 #include <stdexcept>
 
-boost::bimap<ribi::cmap::Competency,std::string> ribi::cmap::Competencies::m_map_english;
-boost::bimap<ribi::cmap::Competency,std::string> ribi::cmap::Competencies::m_map_dutch;
 
 ribi::cmap::Competencies::Competencies()
+  : m_map_dutch{}, //Lazy initialization
+    m_map_english{} //Lazy initialization
 {
 
 }
 
-boost::bimap<ribi::cmap::Competency,std::string> ribi::cmap::Competencies::CreateMapEnglish() noexcept
+boost::bimap<ribi::cmap::Competency,std::string>
+ribi::cmap::CreateMapEnglish() noexcept
 {
 
   boost::bimap<Competency,std::string> m;
@@ -55,7 +56,8 @@ boost::bimap<ribi::cmap::Competency,std::string> ribi::cmap::Competencies::Creat
   return m;
 }
 
-boost::bimap<ribi::cmap::Competency,std::string> ribi::cmap::Competencies::CreateMapDutch() noexcept
+boost::bimap<ribi::cmap::Competency,std::string>
+ribi::cmap::CreateMapDutch() noexcept
 {
   boost::bimap<Competency,std::string> m;
   m.insert(boost::bimap<Competency,std::string>::value_type(
@@ -133,8 +135,7 @@ ribi::cmap::Competency ribi::cmap::Competencies::ToType(const std::string& s) co
     throw std::logic_error(msg.str());
   }
   assert(m_map_english.right.count(s) == 1);
-  const Competency t = m_map_english.right.find(s)->second;
-  return t;
+  return m_map_english.right.find(s)->second;
 }
 
 ribi::cmap::Competency ribi::cmap::Competencies::ToTypeFromDutch(const std::string& s) const
@@ -151,6 +152,5 @@ ribi::cmap::Competency ribi::cmap::Competencies::ToTypeFromDutch(const std::stri
     throw std::logic_error(msg.str());
   }
   assert(m_map_dutch.right.count(s) == 1);
-  const Competency t = m_map_dutch.right.find(s)->second;
-  return t;
+  return m_map_dutch.right.find(s)->second;
 }

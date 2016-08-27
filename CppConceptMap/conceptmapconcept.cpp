@@ -23,6 +23,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #include "conceptmapconcept.h"
 
+#include <sstream>
+#include <stdexcept>
 #include <boost/lexical_cast.hpp>
 
 #include "conceptmapconceptfactory.h"
@@ -67,6 +69,32 @@ void ribi::cmap::Concept::Decode() noexcept
 {
   m_name = graphviz_decode(m_name);
   m_examples.Decode();
+}
+
+ribi::cmap::Concept ribi::cmap::ExtractConceptFromXml(const std::string& s)
+{
+  const std::vector<std::string> v
+    = Regex().GetRegexMatches(s,Regex().GetRegexConcept());
+  if (v.size() != 1)
+  {
+    std::stringstream msg;
+    msg << __func__ << ": must have one concept tag in XML";
+    throw std::invalid_argument(msg.str());
+  }
+  return XmlToConcept(v[0]);
+}
+
+std::string ribi::cmap::ExtractNameFromXml(const std::string& s)
+{
+  const std::vector<std::string> v
+    = Regex().GetRegexMatches(s,Regex().GetRegexName());
+  if (v.size() != 1)
+  {
+    std::stringstream msg;
+    msg << __func__ << ": must have one name tag in XML";
+    throw std::invalid_argument(msg.str());
+  }
+  return graphviz_decode(ribi::xml::StripXmlTag(v[0]));
 }
 
 void ribi::cmap::Concept::SetExamples(const Examples& examples) noexcept
@@ -157,20 +185,11 @@ ribi::cmap::Concept ribi::cmap::XmlToConcept(const std::string& s)
   assert(s.substr(0,9) == "<concept>");
   assert(s.substr(s.size() - 10,10) == "</concept>");
 
-  std::string name;
   Examples examples;
   bool is_complex = false;
   int rating_complexity    = -2; //Not even unrated (which has -1 as its value)
   int rating_concreteness  = -2; //Not even unrated (which has -1 as its value)
   int rating_specificity   = -2; //Not even unrated (which has -1 as its value)
-  //m_name
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexName());
-    assert(v.size() == 1);
-    name = ribi::xml::StripXmlTag(v[0]);
-    name = graphviz_decode(name);
-  }
   //m_examples
   {
     const std::vector<std::string> v
@@ -186,8 +205,6 @@ ribi::cmap::Concept ribi::cmap::XmlToConcept(const std::string& s)
     assert(v.size() == 1 && "GetRegexIsComplex must be present once per Concept");
     is_complex = boost::lexical_cast<bool>(ribi::xml::StripXmlTag(v[0]));
   }
-
-
   //m_rating_complexity
   {
     const std::vector<std::string> v
@@ -212,7 +229,7 @@ ribi::cmap::Concept ribi::cmap::XmlToConcept(const std::string& s)
     rating_specificity = boost::lexical_cast<int>(ribi::xml::StripXmlTag(v[0]));
   }
   return Concept(
-    name,
+    ExtractNameFromXml(s),
     examples,
     is_complex,
     rating_complexity,

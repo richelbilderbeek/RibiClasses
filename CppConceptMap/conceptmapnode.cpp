@@ -45,7 +45,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "graphviz_encode.h"
 #pragma GCC diagnostic pop
 
-int ribi::cmap::Node::sm_ids = 0; //ID to assign
+int ribi::cmap::Node::sm_ids = 0; //!OCLINT use static to track instances
 
 ribi::cmap::Node::Node(
   const Concept& concept,
@@ -65,13 +65,12 @@ ribi::cmap::Node::Node(
 
 int ribi::cmap::CountCenterNodes(const std::vector<Node>& nodes) noexcept
 {
-  const int cnt = container().CountIf(nodes,
+  return container().CountIf(nodes,
     [](const Node& node)
     {
       return IsCenterNode(node);
     }
   );
-  return cnt;
 }
 
 std::vector<ribi::cmap::Node>::const_iterator  ribi::cmap::FindCenterNode(const std::vector<Node>& nodes) noexcept
@@ -176,15 +175,6 @@ ribi::cmap::Node ribi::cmap::XmlToNode(const std::string& s)
     throw std::logic_error(msg.str());
   }
 
-  //m_concept
-  Concept concept = ConceptFactory().Create();
-  {
-    const std::vector<std::string> v
-      = Regex().GetRegexMatches(s,Regex().GetRegexConcept());
-    assert(v.size() == 1);
-    concept = XmlToConcept(v[0]);
-  }
-
   //m_is_centernode
   bool is_center_node = false;
   {
@@ -210,26 +200,27 @@ ribi::cmap::Node ribi::cmap::XmlToNode(const std::string& s)
     assert(v.size() == 1);
     y = boost::lexical_cast<double>(ribi::xml::StripXmlTag(v[0]));
   }
-  return Node(concept,is_center_node,x,y);
+  return Node(
+    ExtractConceptFromXml(s),
+    is_center_node,
+    x,
+    y
+  );
 }
 
 bool ribi::cmap::operator==(const Node& lhs, const Node& rhs) noexcept
 {
-  const bool verbose{false};
   const double e{0.001};
   if (lhs.GetConcept() != rhs.GetConcept())
   {
-    if (verbose) { TRACE("Concepts differ"); }
     return false;
   }
   if (std::abs(lhs.GetX() - rhs.GetX()) > e)
   {
-    if (verbose) { TRACE("X coordinats differ"); }
     return false;
   }
   if (std::abs(lhs.GetY() - rhs.GetY()) > e)
   {
-    if (verbose) { TRACE("Y coordinats differ"); }
     return false;
   }
   return true;
@@ -259,11 +250,6 @@ std::ostream& ribi::cmap::operator<<(std::ostream& os, const Node& node) noexcep
 
 std::istream& ribi::cmap::operator>>(std::istream& is, Node& node)
 {
-  #ifdef NO_EAT
-  std::string s;
-  is >> s;
-  assert(s != "0");
-  #else
   is >> std::noskipws;
   std::string s;
   while (1) //Eat whitespace
@@ -284,7 +270,7 @@ std::istream& ribi::cmap::operator>>(std::istream& is, Node& node)
     assert(s.size() < 6 || s.substr(0,6) == "<node>");
     if(s.size() > 7 && s.substr(s.size() - 7,7) == "</node>") break;
   }
-  #endif
+
   node = XmlToNode(graphviz_decode(s));
   return is;
 }

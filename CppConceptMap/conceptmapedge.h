@@ -85,7 +85,8 @@ struct Edge
   ///The Node on the Edge
   Node m_node;
 
-  static int sm_ids; //ID to assign
+  //ID to assign
+  static int sm_ids;
 };
 
 std::string ToXml(const Edge& edge) noexcept;

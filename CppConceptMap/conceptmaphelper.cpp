@@ -156,32 +156,9 @@ std::vector<std::string> ribi::cmap::Wordwrap(
   ///Replace bell characters by spaces again
   for (std::string& s: v)
   {
-    assert(x != ' ');
-    std::size_t pos = s.find(x);
-    while (pos != std::string::npos)
-    {
-      assert(pos != std::string::npos);
-      assert(pos < s.size());
-      assert(pos == s.find(x)); //To prevent infinite while loop
-      s[pos] = ' ';
-      assert(s[pos] == ' ');
-      assert(pos != s.find(x)); //To prevent infinite while loop
-      pos = s.find(x);
-    }
-    assert(s.find(x) == std::string::npos);
+    std::replace(std::begin(s), std::end(s), x, ' ');
   }
 
-  #ifndef NDEBUG
-  //Test if Unwordwrap the result produces the original input
-  if (Unwordwrap(v) != s_original)
-  {
-    std::cerr << v.size() << '\n';
-    std::copy(v.begin(),v.end(),std::ostream_iterator<std::string>(std::cerr,"\n"));
-    std::cerr << Unwordwrap(v) << '\n';
-    std::cerr << s_original << std::endl;
-
-  }
-  #endif
   assert(Unwordwrap(v) == s_original);
   return v;
 }

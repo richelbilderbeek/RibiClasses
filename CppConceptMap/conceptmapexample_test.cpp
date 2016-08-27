@@ -11,7 +11,7 @@ BOOST_AUTO_TEST_CASE(ribi_concept_map_example_test)
   //using ExampleFactory = ::ribi::cmap::ExampleFactory;
   const bool verbose{false};
 
-  if (verbose) { TRACE("Set and get must be symmetric"); }
+  // Set and get must be symmetric
   {
     const Competency competency_before = Competency::uninitialized;
     const Competency competency_after = Competency::misc;
@@ -59,7 +59,7 @@ BOOST_AUTO_TEST_CASE(ribi_concept_map_example_test)
     assert(example.GetText() != text_before);
     assert(example.GetText() == text_after);
   }
-  if (verbose) { TRACE("Test of operator== and operator!="); }
+  // Test of operator== and operator!=
   {
     const int sz = ExampleFactory().GetNumberOfTests();
     for (int i=0; i!=sz; ++i)
@@ -95,7 +95,7 @@ BOOST_AUTO_TEST_CASE(ribi_concept_map_example_test)
       }
     }
   }
-  if (verbose) { TRACE("Unrated and rated examples must be noticed as different"); }
+  // Unrated and rated examples must be noticed as different
   {
     const Example a("1",Competency::misc);
     const Example b("1",Competency::misc);
@@ -107,12 +107,16 @@ BOOST_AUTO_TEST_CASE(ribi_concept_map_example_test)
   //Conversion between std::string and competency
   //Checked by Competencies
   {
-    const std::string xml = "<example><text>TEST</text><competency>uninitialized</competency><is_complex>1</is_complex><is_concrete>1</is_concrete><is_specific>1</is_specific></example>";
+    const std::string xml = "<example><text>TEST</text>"
+      "<competency>uninitialized</competency>"
+      "<is_complex>1</is_complex><is_concrete>1</is_concrete>"
+      "<is_specific>1</is_specific></example>"
+    ;
     const auto example = XmlToExample(xml);
     assert(example.GetText() == "TEST");
   }
-
-  if (verbose) { TRACE("Conversion from class->XML->class must result in something equal to the class"); }
+  // Conversion from class->XML->class must result in
+  // something equal to the class
   {
     const std::vector<Example> v = ExampleFactory().GetTests();
     std::for_each(v.begin(),v.end(),
@@ -124,7 +128,8 @@ BOOST_AUTO_TEST_CASE(ribi_concept_map_example_test)
       }
     );
   }
-  if (verbose) { TRACE("Conversion from class->XML->class must result in something equal to the class"); }
+  // Conversion from class->XML->class must result in
+  // something equal to the class
   {
     const std::vector<Example> v = ExampleFactory().GetNastyTests();
     std::for_each(v.begin(),v.end(),
@@ -136,7 +141,7 @@ BOOST_AUTO_TEST_CASE(ribi_concept_map_example_test)
       }
     );
   }
-  if (verbose) { TRACE("Conversion from class->XML->class must differ between classes"); }
+  // Conversion from class->XML->class must differ between classes
   {
     const auto v = ExampleFactory().GetTests();
     const int sz = boost::numeric_cast<int>(v.size());

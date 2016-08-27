@@ -5,46 +5,57 @@
 #include "conceptmapconceptfactory.h"
 #include "trace.h"
 
-BOOST_AUTO_TEST_CASE(ribi_concept_map_node_test)
+BOOST_AUTO_TEST_CASE(ribi_cmap_node_copy_of_default_should_match)
 {
   using namespace ribi::cmap;
-  //Copy constructable
-  {
-    const Node a;
-    const Node b(a);
-    BOOST_CHECK(a == b);
-  }
-  {
-    const Node a = NodeFactory().GetTest(1);
-    const Node b = NodeFactory().GetTest(2);
-    BOOST_CHECK(a != b);
-    Node c(a);
-    BOOST_CHECK(c == a);
-    BOOST_CHECK(c != b);
-    c = b;
-    BOOST_CHECK(c != a);
-    BOOST_CHECK(c == b);
-  }
-  //SetX and GetX
-  {
-    Node a;
-    a.SetX(1.2);
-    BOOST_CHECK(a.GetX() == 1.2);
-    a.SetY(3.4);
-    BOOST_CHECK(a.GetX() == 1.2);
-    BOOST_CHECK(a.GetY() == 3.4);
-    a.SetX(5.6);
-    BOOST_CHECK(a.GetX() == 5.6);
-    BOOST_CHECK(a.GetY() == 3.4);
-  }
-  {
-    Node a{NodeFactory().GetTest(1)};
-    std::stringstream s;
-    s << a;
-    Node b;
-    s >> b;
-    BOOST_CHECK(a == b);
-  }
+  const Node a;
+  const Node b(a);
+  BOOST_CHECK(a == b);
+}
+
+BOOST_AUTO_TEST_CASE(ribi_cmap_node_copy_of_tests_should_mis_and_match)
+{
+  using namespace ribi::cmap;
+  const Node a = NodeFactory().GetTest(1);
+  const Node b = NodeFactory().GetTest(2);
+  BOOST_CHECK(a != b);
+  Node c(a);
+  BOOST_CHECK(c == a);
+  BOOST_CHECK(c != b);
+  c = b;
+  BOOST_CHECK(c != a);
+  BOOST_CHECK(c == b);
+}
+
+BOOST_AUTO_TEST_CASE(ribi_cmap_node_set_and_get_x)
+{
+  using namespace ribi::cmap;
+  Node a;
+  a.SetX(1.2);
+  BOOST_CHECK(a.GetX() == 1.2);
+  a.SetY(3.4);
+  BOOST_CHECK(a.GetX() == 1.2);
+  BOOST_CHECK(a.GetY() == 3.4);
+  a.SetX(5.6);
+  BOOST_CHECK(a.GetX() == 5.6);
+  BOOST_CHECK(a.GetY() == 3.4);
+}
+
+BOOST_AUTO_TEST_CASE(ribi_cmap_node_stream_one)
+{
+  using namespace ribi::cmap;
+  Node a{NodeFactory().GetTest(1)};
+  std::stringstream s;
+  s << a;
+  Node b;
+  s >> b;
+  BOOST_CHECK(a == b);
+}
+
+
+BOOST_AUTO_TEST_CASE(ribi_cmap_node_test)
+{
+  using namespace ribi::cmap;
   {
     const std::vector<Node> v = Node::GetTests();
     std::for_each(v.begin(),v.end(),
@@ -73,8 +84,12 @@ BOOST_AUTO_TEST_CASE(ribi_concept_map_node_test)
     const int sz = static_cast<int>(ConceptFactory().GetTests().size());
     for (int i=0; i!=sz; ++i)
     {
-      const Concept c = ConceptFactory().Create("1", { {"2", Competency::uninitialized} } );
-      const Concept d = ConceptFactory().Create("1", { {"2", Competency::uninitialized} } );
+      const Concept c = ConceptFactory().Create(
+        "1", { {"2", Competency::uninitialized} }
+      );
+      const Concept d = ConceptFactory().Create(
+        "1", { {"2", Competency::uninitialized} }
+      );
       BOOST_CHECK(c == d);
       const Node a{c};
       const Node b{d};
@@ -83,8 +98,18 @@ BOOST_AUTO_TEST_CASE(ribi_concept_map_node_test)
 
     {
       //Cannot shuffle Concept its examples. No need to as well: the order is important
-      const Concept c = ConceptFactory().Create("1", { {"2", Competency::uninitialized},{"3", Competency::uninitialized} } );
-      const Concept d = ConceptFactory().Create("1", { {"2", Competency::uninitialized},{"3", Competency::uninitialized} } );
+      const Concept c = ConceptFactory().Create(
+        "1",
+        {
+          {"2", Competency::uninitialized},{"3", Competency::uninitialized}
+        }
+      );
+      const Concept d = ConceptFactory().Create(
+        "1",
+        {
+          {"2", Competency::uninitialized},{"3", Competency::uninitialized}
+        }
+      );
       BOOST_CHECK(c == d);
       const Node a{c};
       const Node b{d};
@@ -93,8 +118,18 @@ BOOST_AUTO_TEST_CASE(ribi_concept_map_node_test)
     }
     {
       //Cannot shuffle Concept its examples. No need to as well: the order is important
-      const Concept c = ConceptFactory().Create("1", { {"2", Competency::uninitialized},{"3", Competency::uninitialized} } );
-      const Concept d = ConceptFactory().Create("1", { {"3", Competency::uninitialized},{"2", Competency::uninitialized} } );
+      const Concept c = ConceptFactory().Create(
+        "1",
+        {
+          {"2", Competency::uninitialized},{"3", Competency::uninitialized}
+        }
+      );
+      const Concept d = ConceptFactory().Create(
+        "1",
+        {
+          {"3", Competency::uninitialized},{"2", Competency::uninitialized}
+        }
+      );
       BOOST_CHECK(c != d);
       const Node a{c};
       const Node b{d};
@@ -103,7 +138,12 @@ BOOST_AUTO_TEST_CASE(ribi_concept_map_node_test)
     }
     {
       //Cannot shuffle Concept its examples. No need to as well: the order is important
-      const Concept c = ConceptFactory().Create("1", { {"2", Competency::uninitialized},{"3", Competency::uninitialized} } );
+      const Concept c = ConceptFactory().Create(
+        "1",
+        {
+          {"2", Competency::uninitialized},{"3", Competency::uninitialized}
+        }
+      );
       const Concept d = ConceptFactory().Create("1", { {"2", Competency::uninitialized} } );
       BOOST_CHECK(c != d);
       const Node a{c};
