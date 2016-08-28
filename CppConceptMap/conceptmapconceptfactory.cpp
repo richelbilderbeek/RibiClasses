@@ -206,12 +206,13 @@ ribi::cmap::Concept ribi::cmap::ConceptFactory::GetTest(const int i) const noexc
   return v[i];
 }
 
-std::array<ribi::cmap::Concept, 3> ribi::cmap::ConceptFactory::GetTests() const noexcept
+std::vector<ribi::cmap::Concept> ribi::cmap::ConceptFactory::GetTests() const noexcept
 {
-  std::array<Concept, 3> v;
-  v[0] = Get0();
-  v[1] = Get1();
-  v[2] = Get2();
+  std::vector<Concept> v;
+  v.reserve(3);
+  v.push_back(Get0());
+  v.push_back(Get1());
+  v.push_back(Get2());
   return v;
 }
 
