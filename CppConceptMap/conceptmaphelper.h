@@ -120,7 +120,6 @@ namespace cmap {
 /// {1,2  } -> { {}, {1}, {2},      {1,2}                        }
 /// {1,2,3} -> { {}, {1}, {2}, {3}, {1,2}, {1,3}, {2,3}, {1,2,3} }
 //From http://www.richelbilderbeek.nl/GetPermutations.htm
-/*
 template <class T>
 const std::vector<std::vector<T> > GetCombinations(const std::vector<T>& v)
 {
@@ -142,7 +141,7 @@ const std::vector<std::vector<T> > GetCombinations(const std::vector<T>& v)
   }
   return result;
 }
-*/
+
 ///Find the last space before the ith position
 std::size_t FindLastSpaceBeforeMaxLen(
   const std::string& s,
