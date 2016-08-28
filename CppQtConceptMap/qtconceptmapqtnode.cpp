@@ -38,10 +38,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "container.h"
 #include "qtconceptmapbrushfactory.h"
 #include "qtconceptmaphelper.h"
-#include "qtconceptmapeditstrategy.h"
 #include "qtconceptmapqtnodefactory.h"
-#include "qtconceptmapratestrategy.h"
-#include "qtitemdisplaystrategy.h"
 #include "trace.h"
 
 ribi::cmap::QtNode::QtNode(const Node& node, QGraphicsItem* parent)

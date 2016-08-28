@@ -60,7 +60,7 @@ struct QtBrushFactory
   ///Near-white brush, to be used in all derived classes for uniform coloring
   QBrush CreateWhiteGradientBrush() noexcept;
 
-  private:
+  //private:
   ///The bottom coordinat of a gradient
   static const int sm_bottom;
   ///The left coordinat of a gradient

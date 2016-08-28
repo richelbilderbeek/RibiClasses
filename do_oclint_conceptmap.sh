@@ -1,7 +1,7 @@
 #!/bin/bash
 
-cpp_files=`find . | egrep ".*\.cpp$" | egrep -v "^qrc_.*\.cpp$" | egrep -v "^moc_.*\.cpp$" | egrep -v "^.*_test\.cpp$" | egrep "^./CppQtConce"`
-h_files=  `find . | egrep ".*\.h$"   | egrep -v "^ui_.*\.h$"    | egrep "^./CppQtConce"`
+cpp_files=`find . | egrep ".*\.cpp$" | egrep -v "^qrc_.*\.cpp$" | egrep -v "^moc_.*\.cpp$" | egrep -v "^.*_test\.cpp$" | egrep -v "CppQt" | egrep -v "CppWt" | egrep "^./CppConce"`
+h_files=  `find . | egrep ".*\.h$"   | egrep -v "^ui_.*\.h$"    | egrep -v "CppQt" | egrep -v "CppWt" | egrep "^./CppConce"`
 
 ./oclint-0.10.3/bin/oclint -o oclint.log \
   -disable-rule ShortVariableName \
@@ -9,7 +9,6 @@ h_files=  `find . | egrep ".*\.h$"   | egrep -v "^ui_.*\.h$"    | egrep "^./CppQ
   $h_files \
   -- \
   -c -std=c++14 -fPIC \
-  -I./CppConceptMap \
   -I./CppContainer \
   -I./CppCounter \
   -I./CppDnaSequence \
@@ -18,8 +17,6 @@ h_files=  `find . | egrep ".*\.h$"   | egrep -v "^ui_.*\.h$"    | egrep "^./CppQ
   -I./CppMusic \
   -I./CppNewick \
   -I./CppPolarCoordinat \
-  -I./CppQtHideAndShowDialog \
-  -I./CppQtKeyboardFriendlyGraphicsView \
   -I./CppRibiRinside \
   -I./CppRibiRegex \
   -I./CppTestTimer \

@@ -15,7 +15,6 @@
 #include "qtconceptmapnodedialog.h"
 #include "qtconceptmapqtnodefactory.h"
 #include "qtconceptmapqtnode.h"
-#include "qtitemdisplaystrategy.h"
 #include "qtroundededitrectitemdialog.h"
 
 

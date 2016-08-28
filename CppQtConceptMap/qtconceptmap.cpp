@@ -69,7 +69,6 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "qtconceptmapcommandtogglearrowhead.h"
 #include "qtconceptmapcommandtogglearrowtail.h"
 #include "qtconceptmapconcepteditdialog.h"
-#include "qtconceptmapdisplaystrategy.h"
 #include "qtconceptmapexamplesitem.h"
 #include "qtconceptmaphelper.h"
 #include "qtconceptmapitemhighlighter.h"

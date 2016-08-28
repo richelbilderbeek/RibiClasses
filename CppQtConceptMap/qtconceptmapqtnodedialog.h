@@ -64,8 +64,6 @@ private:
   ///QtDialog that displays (2) inherited properties from QtRoundedEditRectItem
   boost::shared_ptr<QtRoundedEditRectItemDialog> m_qtroundededitrectitem_dialog;
 
-  //void OnDisplayStrategyChanged(QtNode * const qtnode) noexcept;
-  void OnNodeChanged(QtNode * const qtnode) noexcept;
   void OnQtRoundedRectItemChanged(QtNode * const qtnode) noexcept;
 };
 

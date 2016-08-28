@@ -38,7 +38,6 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "qtconceptmapnodedialog.h"
 #include "qtconceptmapqtnodefactory.h"
 #include "qtconceptmapqtnode.h"
-#include "qtitemdisplaystrategy.h"
 #include "qtroundededitrectitemdialog.h"
 
 
@@ -112,50 +111,6 @@ double ribi::cmap::QtQtNodeDialog::GetUiX() const noexcept
 double ribi::cmap::QtQtNodeDialog::GetUiY() const noexcept
 {
   return m_qtnodedialog->GetUiY();
-}
-
-void ribi::cmap::QtQtNodeDialog::OnNodeChanged(QtNode * const
-#ifndef NDEBUG
-  qtnode
-#endif // NDEBUG
-) noexcept
-{
-  assert(!"Am I called?");
-  assert( qtnode ==  m_qtnode.get());
-  assert(*qtnode == *m_qtnode);
-  m_qtroundededitrectitem_dialog->SetItem(m_qtnode);
-}
-
-void ribi::cmap::QtQtNodeDialog::OnQtRoundedRectItemChanged(QtNode * const qtnode) noexcept
-{
-  assert(!"Am I called?");
-  //Emit
-  m_qtnodedialog->SetNode(qtnode->GetNode());
-
-  /*
-  if (node == m_node) return;
-  if (*node == *m_node) return;
-  assert(std::abs(m_node->GetX() - this->GetPos().x()) < 2.0); //Allow two maximal rounding off errors
-  assert(std::abs(m_node->GetY() - this->GetPos().y()) < 2.0); //Allow two maximal rounding off errors
-  //if (node->GetX() != m_node->GetX())
-  {
-    //const double new_x = node->GetX();
-    //m_node->SetX(new_x);
-    this->SetPos(node->GetX(),this->GetPos().y());
-  }
-  //if (node->GetY() != m_node->GetY())
-  {
-    //const double new_y = node->GetY();
-    //m_node->SetY(new_y);
-    this->SetPos(this->GetPos().x(),node->GetY());
-  }
-  //if (node->GetConcept().GetName() != m_node->GetConcept().GetName())
-  {
-    //const auto new_text = node->GetConcept().GetName();
-    //m_node->GetConcept().SetName(new_text);
-    this->SetText(Container().SeperateString(node->GetConcept().GetName(),'\n'));
-  }
-  */
 }
 
 void ribi::cmap::QtQtNodeDialog::SetQtNode(const boost::shared_ptr<QtNode>& qtnode) noexcept

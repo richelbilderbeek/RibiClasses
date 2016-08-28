@@ -25,10 +25,8 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "qtconceptmapcenternode.h"
 
 
-#include "qtitemdisplaystrategy.h"
 #include "qtconceptmapbrushfactory.h"
 #include "conceptmapnode.h"
-#include "qtconceptmapdisplaystrategy.h"
 #include "trace.h"
 #pragma GCC diagnostic pop
 
@@ -36,7 +34,5 @@ ribi::cmap::QtCenterNode::QtCenterNode(const Node& node)
   : QtNode(node)
 {
   assert(IsCenterNode(node));
-  //assert(this->GetDisplayStrategy());
   this->setFlags(QGraphicsItem::ItemIsFocusable);
-  //this->GetDisplayStrategy()->SetMainBrush(QtBrushFactory::CreateGoldGradientBrush());
 }

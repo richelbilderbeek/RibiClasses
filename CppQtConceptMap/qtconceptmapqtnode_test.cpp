@@ -18,10 +18,7 @@
 #include "conceptmapnode.h"
 #include "container.h"
 #include "qtconceptmapbrushfactory.h"
-#include "qtconceptmapeditstrategy.h"
 #include "qtconceptmapqtnodefactory.h"
-#include "qtconceptmapratestrategy.h"
-#include "qtitemdisplaystrategy.h"
 
 #include "trace.h"
 

@@ -38,13 +38,12 @@ int ribi::cmap::Rating::SuggestComplexity(
   const int n_examples
 ) const noexcept
 {
-  const int complexity
-    = n_edges == 0  || (n_edges == 1 && n_examples == 0)
+  return n_edges == 0  || (n_edges == 1 && n_examples == 0)
     ? 0
     : (n_edges == 1 && n_examples > 0) || (n_edges == 2 && n_examples == 0)
       ? 1
-      : 2;
-  return complexity;
+      : 2
+  ;
 }
 
 int ribi::cmap::Rating::SuggestComplexity(
@@ -57,22 +56,17 @@ int ribi::cmap::Rating::SuggestComplexity(
   const auto pmap = get(boost::vertex_custom_type, sub_conceptmap);
   const auto node = get(pmap, vd);
   const int n_examples = node.GetConcept().GetExamples().Get().size();
-  //const int n_examples
-  //  = boost::numeric_cast<int>(
-  //    sub_GetFocalNode(conceptmap)->GetConcept().GetExamples().Get().size()
-  //  );
   return SuggestComplexity(n_edges,n_examples);
 }
 
 int ribi::cmap::Rating::SuggestConcreteness(const int n_examples) const noexcept
 {
-  const int concreteness
-    = n_examples < 2
+  return n_examples < 2
     ? 0
     : n_examples > 1 && n_examples < 4
       ? 1
-      : 2;
-  return concreteness;
+      : 2
+  ;
 }
 
 int ribi::cmap::Rating::SuggestConcreteness(
@@ -84,17 +78,12 @@ int ribi::cmap::Rating::SuggestConcreteness(
   const auto pmap = get(boost::vertex_custom_type, sub_conceptmap);
   const auto node = get(pmap, vd);
   const int n_examples = node.GetConcept().GetExamples().Get().size();
-  //const int n_examples
-  //  = boost::numeric_cast<int>(
-  //    sub_GetFocalNode(conceptmap)->GetConcept().GetExamples().Get().size()
-  //  );
   return SuggestConcreteness(n_examples);
 }
 
 int ribi::cmap::Rating::SuggestSpecificity(const int n_examples) const noexcept
 {
-  const int specificity = SuggestConcreteness(n_examples);
-  return specificity;
+  return SuggestConcreteness(n_examples);
 }
 
 int ribi::cmap::Rating::SuggestSpecificity(
@@ -106,9 +95,5 @@ int ribi::cmap::Rating::SuggestSpecificity(
   const auto pmap = get(boost::vertex_custom_type, sub_conceptmap);
   const auto node = get(pmap, vd);
   const int n_examples = node.GetConcept().GetExamples().Get().size();
-  //const int n_examples
-  //  = boost::numeric_cast<int>(
-  //    sub_GetFocalNode(conceptmap)->GetConcept().GetExamples().Get().size()
-  //  );
   return SuggestSpecificity(n_examples);
 }

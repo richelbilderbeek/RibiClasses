@@ -4,17 +4,26 @@ INCLUDEPATH += \
 HEADERS += \
     $$PWD/qtconceptmapbrushfactory.h \
     $$PWD/qtconceptmapcollect.h \
+    $$PWD/qtconceptmapcommandaddselectedrandom.h \
+    $$PWD/qtconceptmapcommandcreatenewedge.h \
+    $$PWD/qtconceptmapcommandcreatenewnode.h \
+    $$PWD/qtconceptmapcommanddeleteselected.h \
+    $$PWD/qtconceptmapcommand.h \
+    $$PWD/qtconceptmapcommandtogglearrowhead.h \
+    $$PWD/qtconceptmapcommandtogglearrowtail.h \
+    $$PWD/qtconceptmapcommandunselectrandom.h \
     $$PWD/qtconceptmapcompetency.h \
     $$PWD/qtconceptmapconceptdialog.h \
     $$PWD/qtconceptmapconcepteditdialog.h \
     $$PWD/qtconceptmapedgedialog.h \
-    $$PWD/qtconceptmapedgefactory.h \
     $$PWD/qtconceptmapexampledialog.h \
     $$PWD/qtconceptmapexamplesdialog.h \
     $$PWD/qtconceptmapexamplesitem.h \
     $$PWD/qtconceptmapfwd.h \
     $$PWD/qtconceptmap.h \
+    $$PWD/qtconceptmaphelper.h \
     $$PWD/qtconceptmapitemhighlighter.h \
+    $$PWD/qtconceptmapmode.h \
     $$PWD/qtconceptmapnewarrow.h \
     $$PWD/qtconceptmapnodedialog.h \
     $$PWD/qtconceptmapqtedgedialog.h \
@@ -28,25 +37,19 @@ HEADERS += \
     $$PWD/qtconceptmapratedconceptdialog.h \
     $$PWD/qtconceptmaprateexamplesdialognewname.h \
     $$PWD/qtconceptmaprating.h \
-    $$PWD/qtconceptmaptoolsitem.h \
-    $$PWD/qtconceptmapcommand.h \
-    $$PWD/qtconceptmapcommandaddselectedrandom.h \
-    $$PWD/qtconceptmapcommandcreatenewedge.h \
-    $$PWD/qtconceptmapcommandcreatenewnode.h \
-    $$PWD/qtconceptmapcommandfactory.h \
-    $$PWD/qtconceptmapcommandunselectrandom.h \
-    $$PWD/qtconceptmapcommandselectrandomitem.h \
-    $$PWD/qtconceptmapcommandselectrandomnode.h \
-    $$PWD/qtconceptmapcommanddeleteselected.h \
-    $$PWD/qtconceptmaphelper.h \
-    $$PWD/qtconceptmapcommandtogglearrowhead.h \
-    $$PWD/qtconceptmapcommandtogglearrowtail.h \
-    $$PWD/qtconceptmapmode.h
+    $$PWD/qtconceptmaptoolsitem.h
 
 SOURCES += \
-    $$PWD/qtconceptmapbrating.cpp \
     $$PWD/qtconceptmapbrushfactory.cpp \
     $$PWD/qtconceptmapcenternode.cpp \
+    $$PWD/qtconceptmapcommandaddselectedrandom.cpp \
+    $$PWD/qtconceptmapcommand.cpp \
+    $$PWD/qtconceptmapcommandcreatenewedge.cpp \
+    $$PWD/qtconceptmapcommandcreatenewnode.cpp \
+    $$PWD/qtconceptmapcommanddeleteselected.cpp \
+    $$PWD/qtconceptmapcommandtogglearrowhead.cpp \
+    $$PWD/qtconceptmapcommandtogglearrowtail.cpp \
+    $$PWD/qtconceptmapcommandunselectrandom.cpp \
     $$PWD/qtconceptmapcompetency.cpp \
     $$PWD/qtconceptmapconceptdialog.cpp \
     $$PWD/qtconceptmapconcepteditdialog.cpp \
@@ -55,7 +58,9 @@ SOURCES += \
     $$PWD/qtconceptmapexampledialog.cpp \
     $$PWD/qtconceptmapexamplesdialog.cpp \
     $$PWD/qtconceptmapexamplesitem.cpp \
+    $$PWD/qtconceptmaphelper.cpp \
     $$PWD/qtconceptmapitemhighlighter.cpp \
+    $$PWD/qtconceptmapmode.cpp \
     $$PWD/qtconceptmapnewarrow.cpp \
     $$PWD/qtconceptmapnodedialog.cpp \
     $$PWD/qtconceptmapqtedge.cpp \
@@ -68,20 +73,8 @@ SOURCES += \
     $$PWD/qtconceptmaprateconcepttallydialognewname.cpp \
     $$PWD/qtconceptmapratedconceptdialog.cpp \
     $$PWD/qtconceptmaprateexamplesdialognewname.cpp \
-    $$PWD/qtconceptmaptoolsitem.cpp \
-    $$PWD/qtconceptmapcommand.cpp \
-    $$PWD/qtconceptmapcommandaddselectedrandom.cpp \
-    $$PWD/qtconceptmapcommandcreatenewedge.cpp \
-    $$PWD/qtconceptmapcommandcreatenewnode.cpp \
-    $$PWD/qtconceptmapcommandfactory.cpp \
-    $$PWD/qtconceptmapcommandunselectrandom.cpp \
-    $$PWD/qtconceptmapcommandselectrandomitem.cpp \
-    $$PWD/qtconceptmapcommandselectrandomnode.cpp \
-    $$PWD/qtconceptmapcommanddeleteselected.cpp \
-    $$PWD/qtconceptmaphelper.cpp \
-    $$PWD/qtconceptmapcommandtogglearrowhead.cpp \
-    $$PWD/qtconceptmapcommandtogglearrowtail.cpp \
-    $$PWD/qtconceptmapmode.cpp
+    $$PWD/qtconceptmaprating.cpp \
+    $$PWD/qtconceptmaptoolsitem.cpp
 
 FORMS += \
     $$PWD/qtconceptmapconceptdialog.ui \
