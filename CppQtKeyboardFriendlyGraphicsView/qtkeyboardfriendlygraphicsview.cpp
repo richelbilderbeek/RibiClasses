@@ -447,7 +447,7 @@ void ribi::QtKeyboardFriendlyGraphicsView::SetRandomFocus()
     if (m_verbose) { std::clog << "Giving the " << i << "th item focus" << std::endl; }
     auto& new_focus_item = items[i];
     assert(!new_focus_item->isSelected());
-    new_focus_item->setSelected(true); // #239
+    new_focus_item->setSelected(true);
     new_focus_item->setFocus();
   }
   else

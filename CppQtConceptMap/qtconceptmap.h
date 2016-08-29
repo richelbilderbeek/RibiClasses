@@ -52,6 +52,9 @@ public:
   QtConceptMap& operator=(const QtConceptMap&) = delete;
   ~QtConceptMap() noexcept;
 
+  ///Checks if the QtConceptMap is in a valid state
+  void CheckInvariants() const noexcept;
+
   ///Raw pointer, because ConceptMap its QUndoStack will take over ownership of pointer
   void DoCommand(Command * const command) noexcept;
 
@@ -129,8 +132,9 @@ private:
 
   QUndoStack m_undo;
 
-  ///Checks if the QtConceptMap is in a valid state
-  void CheckInvariants() const noexcept;
+  ///All QtNodes must have a QScene
+  void CheckInvariantAllQtEdgesHaveAscene() const noexcept;
+  void CheckInvariantAllQtNodesHaveAscene() const noexcept;
 
   ///The function how a QtEdge determines it is colored
   std::function<QBrush(const QtEdge&)> GetEdgeBrushFunction(const Mode mode);

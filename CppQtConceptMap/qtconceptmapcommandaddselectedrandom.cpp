@@ -14,6 +14,7 @@ ribi::cmap::CommandAddSelectedRandom::CommandAddSelectedRandom(ConceptMap& conce
     m_before{conceptmap},
     m_after{RandomlyAddSelectedNode(conceptmap)}
 {
+  assert(!"Am I used?");
 }
 
 void ribi::cmap::CommandAddSelectedRandom::redo()

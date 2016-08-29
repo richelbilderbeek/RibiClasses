@@ -87,39 +87,6 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 
 #pragma GCC diagnostic pop
 
-/*
-///Returns a sorted vector
-template <class T>
-std::vector<T> Sort(const std::vector<T>& v)
-{
-  std::vector<T> w(v);
-  std::sort(w.begin(),w.end());
-  return w;
-}
-
-template <>
-std::vector<ribi::cmap::QtNode*>
-  Sort(
-    const std::vector<ribi::cmap::QtNode*>& v)
-{
-  typedef std::vector<ribi::cmap::QtNode*>::iterator Iterator;
-  std::vector<ribi::cmap::QtNode*> w(v);
-  std::sort(w.begin(),w.end());
-  const Iterator i = std::find_if(w.begin(),w.end(),
-    [](const ribi::cmap::QtNode* const node)
-    {
-      return dynamic_cast<const ribi::cmap::QtCenterNode*>(node);
-    }
-  );
-  if (i != w.end())
-  {
-    std::swap(*i,*w.begin());
-    assert(dynamic_cast<const ribi::cmap::QtCenterNode*>(*w.begin()));
-  }
-  return w;
-}
-*/
-
 ribi::cmap::QtConceptMap::QtConceptMap(QWidget* parent)
   : QtKeyboardFriendlyGraphicsView(parent),
     m_arrow{new QtNewArrow},
@@ -197,9 +164,40 @@ ribi::cmap::QtConceptMap::~QtConceptMap()
   delete m_arrow;
 }
 
+void ribi::cmap::QtConceptMap::CheckInvariantAllQtEdgesHaveAscene() const noexcept
+{
+  //All QtEdges, their QtNodes and Arrows must have a scene
+  const auto qtedges = GetQtEdges(scene());
+  for (const auto qtedge: qtedges)
+  {
+    assert(qtedge);
+    assert(qtedge->scene());
+    assert(qtedge->GetArrow());
+    assert(qtedge->GetArrow()->scene());
+    assert(qtedge->GetQtNode());
+    assert(qtedge->GetQtNode()->scene());
+    assert(qtedge->GetFrom());
+    assert(qtedge->GetFrom()->scene());
+    assert(qtedge->GetTo());
+    assert(qtedge->GetTo()->scene());
+  }
+}
+
+void ribi::cmap::QtConceptMap::CheckInvariantAllQtNodesHaveAscene() const noexcept
+{
+  const auto qtnodes = GetQtNodes(scene());
+  for (const auto qtnode: qtnodes)
+  {
+    assert(qtnode);
+    assert(qtnode->scene());
+  }
+}
+
 void ribi::cmap::QtConceptMap::CheckInvariants() const noexcept
 {
   #ifndef NDEBUG
+  CheckInvariantAllQtNodesHaveAscene();
+  CheckInvariantAllQtEdgesHaveAscene();
 
   //If there is one QtEdge selected, its Edge must be able to been found
   try
@@ -217,31 +215,37 @@ void ribi::cmap::QtConceptMap::CheckInvariants() const noexcept
   }
   catch (...) {} //No problem
 
-  //All QtNodes must have a scene
-  {
-    const auto qtnodes = GetQtNodes(scene());
-    for (const auto qtnode: qtnodes)
-    {
-      assert(qtnode);
-      assert(qtnode->scene());
-    }
-  }
 
-  //All QtEdges, their QtNodes and Arrows must have a scene
+  //If a QtNode with a vignette is selected, the QtExamplesItem must have that
+  //QtNode as its buddy
+  //For Issue #96, https://github.com/richelbilderbeek/Brainweaver/issues/96
   {
-    const auto qtedges = GetQtEdges(scene());
-    for (const auto qtedge: qtedges)
+    const auto qtnodes = ribi::cmap::GetSelectedQtNodesNotOnEdge(scene());
+    qDebug() << "QtNodes selected (that are not on an edge): " << qtnodes.size();
+    qDebug() << "QtNodes selected (that may be on an edge): " << ribi::cmap::GetSelectedQtNodes(scene()).size();
+    if (qtnodes.size() == 1)
     {
-      assert(qtedge);
-      assert(qtedge->scene());
-      assert(qtedge->GetArrow());
-      assert(qtedge->GetArrow()->scene());
-      assert(qtedge->GetQtNode());
-      assert(qtedge->GetQtNode()->scene());
-      assert(qtedge->GetFrom());
-      assert(qtedge->GetFrom()->scene());
-      assert(qtedge->GetTo());
-      assert(qtedge->GetTo()->scene());
+      //QtNode must have an example
+      const ribi::cmap::QtNode * const qtnode = qtnodes[0];
+      qDebug() << "That QtNode has "
+        << qtnode->GetNode().GetConcept().GetExamples().Get().size() << " examples"
+      ;
+      if (!qtnode->GetNode().GetConcept().GetExamples().Get().empty())
+      {
+        //QtExamplesItem must have that QtNode as its buddy
+        assert(GetQtExamplesItem()->GetBuddyItem() == qtnode);
+        assert(GetQtExamplesItem()->isVisible());
+        //Must be close
+        assert(std::abs(GetQtExamplesItem()->x() - qtnode->GetCenterX()) < 1.0);
+        assert(std::abs(qtnode->GetCenterY() - (qtnode->GetOuterHeight() / 2.0) - 16.0 - GetQtExamplesItem()->y()) < 1.0);
+
+        qDebug() << "That QtNode has Examples at ("
+          << GetQtExamplesItem()->GetCenterX()
+          << ", "
+          << GetQtExamplesItem()->GetCenterY()
+          << ")"
+        ;
+      }
     }
   }
 
@@ -795,7 +799,7 @@ void ribi::cmap::QtConceptMap::OnNodeKeyDownPressed(QtNode* const item, const in
 
 void ribi::cmap::QtConceptMap::onSelectionChanged()
 {
-  Graph& g = m_conceptmap;
+  ConceptMap& g = m_conceptmap;
 
   //Selectness of vertices
   const auto vip = vertices(g);

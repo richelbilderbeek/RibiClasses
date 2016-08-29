@@ -32,37 +32,37 @@ struct Node;
 class ConceptMapFactory
 {
 public:
-  using Graphs = std::vector<ConceptMap>;
+  using ConceptMaps = std::vector<ConceptMap>;
 
   ConceptMapFactory() noexcept;
 
   ///Get all the other tests as one vector
-  Graphs GetAllTests() const noexcept;
-  Graphs GetNastyTests() const noexcept;
-  Graph GetEmptyGraph() const noexcept { return Get0(); }
+  ConceptMaps GetAllTests() const noexcept;
+  ConceptMaps GetNastyTests() const noexcept;
+  ConceptMap GetEmptyGraph() const noexcept { return Get0(); }
 
   ///Get the documented heteromorphous test concept maps
-  Graph Get0() const noexcept; //Empty graph
-  Graph Get1() const noexcept;
-  Graph Get2() const noexcept;
-  Graph Get3() const noexcept;
-  Graph Get4() const noexcept;
-  Graph Get5() const noexcept;
-  Graph Get6() const noexcept;
-  Graph Get7() const noexcept;
+  ConceptMap Get0() const noexcept; //Empty graph
+  ConceptMap Get1() const noexcept;
+  ConceptMap Get2() const noexcept;
+  ConceptMap Get3() const noexcept;
+  ConceptMap Get4() const noexcept;
+  ConceptMap Get5() const noexcept;
+  ConceptMap Get6() const noexcept;
+  ConceptMap Get7() const noexcept;
 
   /// Complex rated concept map
-  Graph Get8() const noexcept;
+  ConceptMap Get8() const noexcept;
 
   /// Complex rated concept map with many examples
-  Graph Get9() const noexcept;
+  ConceptMap Get9() const noexcept;
 
   /// Complex rated concept map with many long concept names and examples
-  Graph Get10() const noexcept;
+  ConceptMap Get10() const noexcept;
 
   /// Complex rated concept map with all nodes connected
-  Graph Get11() const noexcept;
-  Graph GetNasty0() const noexcept;
+  ConceptMap Get11() const noexcept;
+  ConceptMap GetNasty0() const noexcept;
 
   private:
 
@@ -72,10 +72,13 @@ void AddEdge(
   const Edge& edge,
   const VertexDescriptor& vd_from,
   const VertexDescriptor& vd_to,
-  Graph& g
+  ConceptMap& g
 ) noexcept;
 
-VertexDescriptor AddVertex(const Node& node, Graph& g) noexcept;
+VertexDescriptor AddVertex(const Node& node, ConceptMap& g) noexcept;
+
+ConceptMap RepositionNodes(ConceptMap& g);
+
 
 } //~namespace cmap
 } //~namespace ribi

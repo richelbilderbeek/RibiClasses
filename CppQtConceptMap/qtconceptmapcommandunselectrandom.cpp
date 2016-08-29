@@ -15,10 +15,8 @@ ribi::cmap::CommandUnselectRandom::CommandUnselectRandom(
   : m_conceptmap(conceptmap),
     m_before{conceptmap},
     m_after{conceptmap}
-//    m_conceptmap(conceptmap),
-//    m_new_selected{conceptmap.GetSelected()},
-//    m_old_selected{conceptmap.GetSelected()}
 {
+  assert(!"Am I used?");
   /*
   if (conceptmap.GetSelectedEdges().empty() && conceptmap.GetSelectedNodes().empty())
   {
@@ -49,12 +47,14 @@ ribi::cmap::CommandUnselectRandom::CommandUnselectRandom(
 
 void ribi::cmap::CommandUnselectRandom::redo()
 {
+  assert(!"Am I used?");
   m_conceptmap = m_after;
   //m_conceptmap.SetSelected(m_new_selected);
 }
 
 void ribi::cmap::CommandUnselectRandom::undo()
 {
+  assert(!"Am I used?");
   m_conceptmap = m_before;
   //m_conceptmap.SetSelected(m_old_selected);
 }

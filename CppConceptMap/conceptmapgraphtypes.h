@@ -31,7 +31,6 @@ using ConceptMap = boost::adjacency_list
     >
   >
 >;
-using Graph = ConceptMap;
 using VertexDescriptor = boost::graph_traits<ConceptMap>::vertex_descriptor;
 static_assert(sizeof(VertexDescriptor) == sizeof(VertexDescriptor&),"On university computer");
 using EdgeDescriptor = boost::graph_traits<ConceptMap>::edge_descriptor;
