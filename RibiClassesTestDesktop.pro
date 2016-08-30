@@ -9,7 +9,7 @@ include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
 # Do not test console classes
 include(../RibiClasses/CppContainer/CppContainer.pri)
 include(../RibiClasses/CppCounter/CppCounter.pri)
-include(../ConceptMap/ConceptMap.pri)
+#include(../ConceptMap/ConceptMap.pri)
 include(../RibiClasses/CppDnaSequence/CppDnaSequence.pri)
 include(../RibiClasses/CppGeometry/CppGeometry.pri)
 include(../RibiClasses/CppFuzzy_equal_to/CppFuzzy_equal_to.pri)
@@ -28,7 +28,7 @@ include(../RibiClasses/CppGrabber/CppGrabberTest.pri)
 include(../RibiClasses/CppQtArrowItem/CppQtArrowItem.pri)
 include(../RibiClasses/CppQtArrowItem/CppQtArrowItemTest.pri)
 
-include(../QtConceptMap/QtConceptMap.pri)
+#include(../QtConceptMap/QtConceptMap.pri)
 
 include(../RibiClasses/CppQtDisplayPosItem/CppQtDisplayPosItem.pri)
 include(../RibiClasses/CppQtDisplayPosItem/CppQtDisplayPosItemTest.pri)
