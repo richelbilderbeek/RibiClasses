@@ -28,7 +28,7 @@ include(../RibiClasses/CppGrabber/CppGrabberTest.pri)
 include(../RibiClasses/CppQtArrowItem/CppQtArrowItem.pri)
 include(../RibiClasses/CppQtArrowItem/CppQtArrowItemTest.pri)
 
-#include(../QtConceptMap/QtConceptMap.pri)
+include(../QtConceptMap/QtConceptMap.pri)
 
 include(../RibiClasses/CppQtDisplayPosItem/CppQtDisplayPosItem.pri)
 include(../RibiClasses/CppQtDisplayPosItem/CppQtDisplayPosItemTest.pri)
