@@ -36,7 +36,7 @@ script:
   - ./RibiClassesTestDesktop
   - ./get_code_cov.sh
   - codecov
-  - ./do_oclint.sh
+  - travis_wait 50 ./do_oclint.sh
   # - ./no_temp_files.sh # TODO: put this back in
 
 after_success:
