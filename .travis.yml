@@ -36,8 +36,8 @@ script:
   - ./RibiClassesTestDesktop
   - ./get_code_cov.sh
   - codecov
+  - ./do_oclint.sh
   # - ./no_temp_files.sh # TODO: put this back in
-  # - ./do_oclint.sh #TODO: Put OCLint back in
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
