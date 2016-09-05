@@ -15,7 +15,7 @@ namespace ribi {
 
 struct Grabber : public QObject
 {
-  Q_OBJECT
+  Q_OBJECT //!OCLINT
 
   public:
   Grabber(

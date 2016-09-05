@@ -72,7 +72,7 @@ Comparison of Qt and this class:
 */
 class QtRoundedRectItem : public QGraphicsRectItem
 {
-  //Q_OBJECT //Cannot make this a QObject???
+  //Q_OBJECT  //!OCLINT //Cannot make this a QObject???
 
   public:
   explicit QtRoundedRectItem(QGraphicsItem *parent = 0);

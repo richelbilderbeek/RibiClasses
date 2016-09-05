@@ -171,47 +171,25 @@ std::string ribi::About::GetStlVersion() noexcept
   return boost::lexical_cast<std::string>(__VERSION__);
 }
 
+void ribi::VectorToStream(const std::vector<std::string>& v, std::ostream& os)
+{
+  std::copy(
+    std::begin(v),
+    std::end(v),
+    std::ostream_iterator<std::string>(os,"\n")
+  );
+}
+
 std::ostream& ribi::operator<<(std::ostream& os,const About& a) noexcept
 {
-  {
-    const std::vector<std::string> v{a.CreateAboutText()};
-    std::copy(
-      std::begin(v),
-      std::end(v),
-      std::ostream_iterator<std::string>(os,"\n")
-    );
-  }
-  os
-    << '\n';
-  {
-    std::vector<std::string> v{a.CreateLibrariesUsedText()};
-    std::copy(
-      std::begin(v),
-      std::end(v),
-      std::ostream_iterator<std::string>(os,"\n")
-    );
-  }
-  os
-    << '\n';
-  {
-    std::vector<std::string> v{a.CreateVersionHistory()};
-    std::copy(
-      std::begin(v),
-      std::end(v),
-      std::ostream_iterator<std::string>(os,"\n")
-    );
-  }
-  os
-    << '\n'
-    << "Licence:\n";
-  {
-    std::vector<std::string> v{a.CreateLicenceText()};
-    std::copy(
-      begin(v),
-      end(v),
-      std::ostream_iterator<std::string>(os,"\n")
-    );
-  }
+  VectorToStream(a.CreateAboutText(), os);
+  os << '\n';
+  VectorToStream(a.CreateLibrariesUsedText(), os);
+  os << '\n';
+  VectorToStream(a.CreateVersionHistory(), os);
+  os << '\n';
+  os << "Licence:\n";
+  VectorToStream(a.CreateLicenceText(), os);
   os
     << '\n'
     << "Source code built on "
@@ -227,3 +205,4 @@ std::ostream& ribi::operator<<(std::ostream& os,const About& a) noexcept
     << '\n';
   return os;
 }
+

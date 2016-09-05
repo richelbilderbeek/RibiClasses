@@ -2,11 +2,11 @@ INCLUDEPATH += \
     ../RibiClasses/CppBiology
 
 SOURCES += \
-    ../RibiClasses/CppBiology/biology.cpp
+    $$PWD/biology.cpp
 
 HEADERS  += \
-    ../RibiClasses/CppBiology/biology.h
+    $$PWD/biology.h
 
 OTHER_FILES += \
-    ../RibiClasses/CppBiology/Licence.txt
+    $$PWD/Licence.txt
 

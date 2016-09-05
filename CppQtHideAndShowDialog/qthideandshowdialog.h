@@ -34,7 +34,7 @@ namespace ribi {
 ///from http://richelbilderbeek.nl/CppQtHideAndShowDialog.htm
 class QtHideAndShowDialog : public QDialog
 {
-    Q_OBJECT
+  Q_OBJECT //!OCLINT
     
 public:
   explicit QtHideAndShowDialog(QWidget* parent = 0) noexcept;
