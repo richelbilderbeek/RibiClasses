@@ -126,8 +126,10 @@ std::vector<std::string> ribi::con3::Game::GetVersionHistory() noexcept
 {
   return {
     "2010-12-28: version 0.1: initial seperation of game logic from GUI",
-    "2011-01-09: version 0.2: converted square values to enum constant, fixed small constructor bug",
-    "2011-01-11: version 1.0: added that the game can end in a draw. First tested and debugged version",
+    "2011-01-09: version 0.2: converted square values to enum constant, "
+      "fixed small constructor bug",
+    "2011-01-11: version 1.0: added that the game can end in a draw. "
+      "First tested and debugged version",
     "2011-04-19: version 1.1: added Restart method, removed m_is_player_human",
     "2014-02-13: version 1.2: improved interface",
     "2014-06-30: version 1.3: fixed bug in ribi::con3::ConnectThree::DoMove",
@@ -169,37 +171,32 @@ ribi::con3::Move ribi::con3::Game::SuggestMove(
   const std::bitset<3>& is_player_human
 ) const
 {
-  try {
-    const auto m = CheckTwoHorizontalOwn();
-    if (CanDoMove(m)) return m;
+  try
+  {
+    {
+      const auto m = CheckTwoHorizontalOwn();
+      if (CanDoMove(m)) return m;
+    }
+    {
+      const auto m = CheckTwoVerticalOwn();
+      if (CanDoMove(m)) return m;
+    }
+    {
+      const auto m = CheckTwoOther(is_player_human);
+      if (CanDoMove(m)) return m;
+    }
+    {
+      const auto m = CheckTwoDiagonally();
+      if (CanDoMove(m)) return m;
+    }
+    {
+      const auto m = CheckOneOther(is_player_human);
+      if (CanDoMove(m)) return m;
+    }
   }
-  catch (std::logic_error&) { /* OK */ }
-
-  try {
-    const auto m = CheckTwoVerticalOwn();
-    if (CanDoMove(m)) return m;
-  }
-  catch (std::logic_error&) { /* OK */ }
-
-  try {
-    const auto m = CheckTwoOther(is_player_human);
-    if (CanDoMove(m)) return m;
-  }
-  catch (std::logic_error&) { /* OK */ }
-
-  try {
-    const auto m = CheckTwoDiagonally();
-    if (CanDoMove(m)) return m;
-  }
-  catch (std::logic_error&) { /* OK */ }
-
-  try {
-    const auto m = CheckOneOther(is_player_human);
-    if (CanDoMove(m)) return m;
-  }
-  catch (std::logic_error&) { /* OK */ }
-
+  catch (std::logic_error&) {} //!OCLINT
   return MakeRandomMove();
+
 }
 
 ribi::con3::Move ribi::con3::Game::CheckTwoHorizontalOwn() const
@@ -232,7 +229,8 @@ ribi::con3::Move ribi::con3::Game::CheckTwoHorizontalOwn() const
       //Perhaps a gap?
       if (x < n_cols-2)
       {
-        if (m_area[x][y] == PlayerToSquare(m_player) && m_area[x+1][y] == Square::empty && m_area[x+2][y] == PlayerToSquare(m_player))
+        if (m_area[x][y] == PlayerToSquare(m_player) && m_area[x+1][y]
+          == Square::empty && m_area[x+2][y] == PlayerToSquare(m_player))
         {
           const Move p { MoveFactory().Create(x+1,y,m_player) };
           assert(CanDoMove(p));
@@ -279,7 +277,8 @@ ribi::con3::Move ribi::con3::Game::CheckTwoVerticalOwn() const
       //Perhaps a gap?
       if (y < n_rows-2)
       {
-        if (m_area[x][y] == PlayerToSquare(m_player) && m_area[x][y+1] == Square::empty && m_area[x][y+2] == PlayerToSquare(m_player))
+        if (m_area[x][y] == PlayerToSquare(m_player) && m_area[x][y+1]
+          == Square::empty && m_area[x][y+2] == PlayerToSquare(m_player))
         {
           const Move p { MoveFactory().Create(x,y+1,m_player) };
           assert(CanDoMove(p));
@@ -403,7 +402,8 @@ std::vector<ribi::con3::Move> ribi::con3::Game::GetTwoHorizontalOtherMoves() con
         }
       }
       //Check gap, also X B C
-      if (m_area[x][y] != Square::empty && x + 2 < n_cols && m_area[x+1][y] == Square::empty && m_area[x][y] == m_area[x+2][y])
+      if (m_area[x][y] != Square::empty && x + 2 < n_cols && m_area[x+1][y]
+        == Square::empty && m_area[x][y] == m_area[x+2][y])
       {
         const Move m { MoveFactory().Create(
           x+1,y,SquareToPlayer(m_area[x][y]))
@@ -452,7 +452,8 @@ std::vector<ribi::con3::Move>
         }
       }
       //Check gap, also X B C
-      if (m_area[x][y] != Square::empty && y < n_rows && m_area[x][y+1] == Square::empty && m_area[x][y] == m_area[x][y+2])
+      if (m_area[x][y] != Square::empty && y < n_rows && m_area[x][y+1]
+        == Square::empty && m_area[x][y] == m_area[x][y+2])
       {
         const Move m { MoveFactory().Create(
           x,y+1,SquareToPlayer(m_area[x][y]))
@@ -672,7 +673,9 @@ bool ribi::con3::Game::IsDraw() const noexcept
   return true;
 }
 
-bool ribi::con3::Game::IsPlayerHuman(const Player player, const std::bitset<3>& is_player_human) const noexcept
+bool ribi::con3::Game::IsPlayerHuman(
+  const Player player, const std::bitset<3>& is_player_human
+) const noexcept
 {
   switch (player)
   {
@@ -680,7 +683,6 @@ bool ribi::con3::Game::IsPlayerHuman(const Player player, const std::bitset<3>& 
     case Player::player2: return is_player_human[1];
     case Player::player3: return is_player_human[2];
     default:
-      assert(!"Should not get here");
       throw std::logic_error("Unknown value of player");
   }
 }
@@ -693,7 +695,6 @@ ribi::con3::Square ribi::con3::Game::PlayerToSquare(const Player player) const n
     case Player::player2: return Square::player2;
     case Player::player3: return Square::player3;
     default:
-      assert(!"Should not get here");
       throw std::logic_error("Unknown player");
   }
 }
@@ -727,7 +728,6 @@ ribi::con3::Winner ribi::con3::Game::SquareToWinner(const Square square) const n
     case Square::player2: return Winner::player2;
     case Square::player3: return Winner::player3;
     default:
-      assert(!"Should not get here");
       throw std::logic_error("Unknown Square");
   }
 }

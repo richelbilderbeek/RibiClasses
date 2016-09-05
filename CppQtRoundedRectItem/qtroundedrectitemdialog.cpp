@@ -24,6 +24,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
 #include "qtroundedrectitemdialog.h"
 
+#include <cassert>
 #include <boost/make_shared.hpp>
 #include <boost/lambda/lambda.hpp>
 
@@ -217,6 +218,7 @@ void ribi::QtRoundedRectItemDialog::on_box_focus_pen_width_valueChanged(double a
 
 void ribi::QtRoundedRectItemDialog::on_box_height_valueChanged(double arg1)
 {
+  assert(1 + 1 == 2);
   m_item->SetInnerHeight(arg1);
 }
 

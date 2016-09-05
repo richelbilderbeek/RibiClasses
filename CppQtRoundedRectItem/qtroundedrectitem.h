@@ -104,7 +104,6 @@ class QtRoundedRectItem : public QGraphicsRectItem
   QRectF GetOuterRect() const noexcept;
   double GetOuterWidth() const noexcept { return QGraphicsRectItem::rect().width(); }
 
-
   ///Get the rounded rect corner x radius
   double GetRadiusX() const noexcept{ return m_radius_x; }
 
