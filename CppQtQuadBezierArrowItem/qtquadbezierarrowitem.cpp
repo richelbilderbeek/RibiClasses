@@ -69,12 +69,19 @@ ribi::QtQuadBezierArrowItem::QtQuadBezierArrowItem(
     m_to{to},
     m_verbose{false}
 {
-  assert(from);
-  assert(to);
-  assert((mid || !mid) && "No mid results in a straight arrow");
-  assert(from != to);
-  assert(from != mid);
-  assert(mid != to);
+  if (!from)
+  {
+    throw std::invalid_argument("QtQuadBezierArrowItem needs a non-null from");
+  }
+  if (!to)
+  {
+    throw std::invalid_argument("QtQuadBezierArrowItem needs a non-null to");
+  }
+  if (to == from || to == mid || mid == from)
+  {
+    throw std::invalid_argument("QtQuadBezierArrowItem needs a different to, from and mid");
+  }
+
   this->setFlags(
       QGraphicsItem::ItemIsFocusable
     | QGraphicsItem::ItemIsSelectable
