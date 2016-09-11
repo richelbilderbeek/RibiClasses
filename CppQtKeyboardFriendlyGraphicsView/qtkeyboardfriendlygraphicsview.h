@@ -21,7 +21,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #ifndef QTKEYBOARDFRIENDLYGRAPHICSVIEW_H
 #define QTKEYBOARDFRIENDLYGRAPHICSVIEW_H
 
-#include <random>
+#include <vector>
 #include <QGraphicsView>
 
 struct QGraphicsItem;
@@ -33,61 +33,74 @@ struct QtKeyboardFriendlyGraphicsView : public QGraphicsView
 {
   QtKeyboardFriendlyGraphicsView(QWidget* parent = 0);
 
-  ///QtKeyboardFriendlyGraphicsView creates its own QGraphicsScene
-  QtKeyboardFriendlyGraphicsView(QGraphicsScene* scene, QWidget* parent) = delete;
-
   virtual ~QtKeyboardFriendlyGraphicsView() noexcept {}
+
+  ///Obtain the QGraphicsScene, which is always present
+  const QGraphicsScene& GetScene() const noexcept;
+        QGraphicsScene& GetScene() noexcept;
 
   bool GetVerbosity() const noexcept { return m_verbose; }
 
-  ///Obtain the version of this class
-  static std::string GetVersion() noexcept;
-
-  ///Obtain the version history of this class
-  static std::vector<std::string> GetVersionHistory() noexcept;
-
   ///Respond to a key press
-  virtual void keyPressEvent(QKeyEvent *event);
+  virtual void keyPressEvent(QKeyEvent *event) override;
 
   void SetVerbosity(const bool verbosity) noexcept { m_verbose = verbosity; }
 
   private:
-
-  ///The RNG engine. When a user presses space, a random item is chosen
-  std::mt19937 m_rng_engine;
   bool m_verbose;
-
-  ///Obtain the closest item in the collection
-  ///Returns nullptr if there is no focusable item in the items
-  QGraphicsItem* GetClosest(
-    const QGraphicsItem* const focus_item,
-    const std::vector<QGraphicsItem *>& items
-  ) const noexcept;
-
-  ///Calculate the Euclidian distance between two points
-  static double GetDistance(const QPointF& a, const QPointF& b);
-
-  enum class Direction { above, below, left, right };
-  QGraphicsItem * GetClosestNonselectedItem(
-    const QGraphicsItem* const focus_item,
-    int key
-  ) const;
-
-  QGraphicsItem * GetClosestNonselectedItem(
-    const QGraphicsItem* const focus_item,
-    const Direction direction
-  ) const;
-
-  void KeyPressEventCtrl(QKeyEvent *event) noexcept;
-  void KeyPressEventNoModifiers(QKeyEvent *event) noexcept;
-  void KeyPressEventShift(QKeyEvent *event) noexcept;
-
-  ///Give focus to a random item
-  void SetRandomFocus();
-
-  ///Give selectedness to one random item
-  void SetRandomSelectedness();
 };
+
+///Obtain the closest item in the collection
+///Returns nullptr if there is no focusable item in the items
+QGraphicsItem* GetClosest(
+  const QGraphicsItem* const focus_item,
+  const std::vector<QGraphicsItem *>& items
+) noexcept;
+
+///Calculate the Euclidian distance between two points
+double GetDistance(const QPointF& a, const QPointF& b);
+
+enum class Direction { above, below, left, right };
+
+QGraphicsItem * GetClosestNonselectedItem(
+  const QtKeyboardFriendlyGraphicsView& q,
+  const QGraphicsItem* const focus_item,
+  int key
+);
+
+QGraphicsItem * GetClosestNonselectedItem(
+  const QtKeyboardFriendlyGraphicsView& q,
+  const QGraphicsItem* const focus_item,
+  const Direction direction
+);
+
+std::string GetQtKeyboardFriendlyGraphicsViewVersion() noexcept;
+std::vector<std::string> GetQtKeyboardFriendlyGraphicsViewVersionHistory() noexcept;
+
+void KeyPressEventCtrl(
+  QtKeyboardFriendlyGraphicsView& q,
+  QKeyEvent *event
+) noexcept;
+
+void KeyPressEventNoModifiers(
+  QtKeyboardFriendlyGraphicsView& q,
+  QKeyEvent *event
+) noexcept;
+
+void KeyPressEventShift(
+  QtKeyboardFriendlyGraphicsView& q,
+  QKeyEvent *event
+) noexcept;
+
+///Give focus to a random item
+void SetRandomFocus(
+  QtKeyboardFriendlyGraphicsView& q
+);
+
+///Give selectedness to one random item
+void SetRandomSelectedness(
+  QtKeyboardFriendlyGraphicsView& q
+);
 
 } //~namespace ribi
 
