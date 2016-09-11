@@ -2,7 +2,6 @@
 #include <QtTest/QtTest>
 #include "grabber_test.h"
 #include "qtarrowitem_test.h"
-#include "qtkeyboardfriendlygraphicsview_test.h"
 #include "qtdisplaypositem_test.h"
 #include "qthideandshowdialog_test.h"
 #include "qtscopeddisable_test.h"
@@ -28,7 +27,6 @@ int main(int argc, char *argv[])
   { ribi::qtdisplaypositem_test t; error |= QTest::qExec(&t, argc, argv); }
   { ribi::qtgraphics_test t; error |= QTest::qExec(&t, argc, argv); }
   { ribi::qtimage_test t; error |= QTest::qExec(&t, argc, argv); }
-  { ribi::qtkeyboardfriendlygraphicsview_test t; error |= QTest::qExec(&t, argc, argv); }
   { ribi::qtquadbezierarrowdialog_test t; error |= QTest::qExec(&t, argc, argv); }
   { ribi::qtquadbezierarrowitem_test t; error |= QTest::qExec(&t, argc, argv); }
   { ribi::qtroundededitrectitem_test t; error |= QTest::qExec(&t, argc, argv); }

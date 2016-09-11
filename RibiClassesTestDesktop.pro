@@ -4,12 +4,11 @@ include(../RibiLibraries/DesktopApplicationNoWeffcpp.pri)
 include(../RibiLibraries/GeneralConsole.pri)
 include(../RibiLibraries/Apfloat.pri)
 #include(../RibiLibraries/BoostAll.pri)
-include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
+#include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
 
 # Do not test console classes
 include(../RibiClasses/CppContainer/CppContainer.pri)
 include(../RibiClasses/CppCounter/CppCounter.pri)
-#include(../ConceptMap/ConceptMap.pri)
 include(../RibiClasses/CppDnaSequence/CppDnaSequence.pri)
 include(../RibiClasses/CppGeometry/CppGeometry.pri)
 include(../RibiClasses/CppFuzzy_equal_to/CppFuzzy_equal_to.pri)
@@ -39,8 +38,7 @@ include(../RibiClasses/CppQtHideAndShowDialog/CppQtHideAndShowDialogTest.pri)
 include(../RibiClasses/CppQtGraphics/CppQtGraphics.pri)
 include(../RibiClasses/CppQtGraphics/CppQtGraphicsTest.pri)
 
-include(../RibiClasses/CppQtKeyboardFriendlyGraphicsView/CppQtKeyboardFriendlyGraphicsView.pri)
-include(../RibiClasses/CppQtKeyboardFriendlyGraphicsView/CppQtKeyboardFriendlyGraphicsViewTest.pri)
+include(../QtKeyboardFriendlyGraphicsView/QtKeyboardFriendlyGraphicsView.pri)
 
 include(../RibiClasses/CppQtQuadBezierArrowItem/CppQtQuadBezierArrowItem.pri)
 include(../RibiClasses/CppQtQuadBezierArrowItem/CppQtQuadBezierArrowItemTest.pri)
