@@ -38,7 +38,7 @@ include(../RibiClasses/CppQtHideAndShowDialog/CppQtHideAndShowDialogTest.pri)
 include(../RibiClasses/CppQtGraphics/CppQtGraphics.pri)
 include(../RibiClasses/CppQtGraphics/CppQtGraphicsTest.pri)
 
-include(../QtKeyboardFriendlyGraphicsView/QtKeyboardFriendlyGraphicsVfiew.pri)
+include(../QtKeyboardFriendlyGraphicsView/QtKeyboardFriendlyGraphicsView.pri)
 
 include(../RibiClasses/CppQtQuadBezierArrowItem/CppQtQuadBezierArrowItem.pri)
 include(../RibiClasses/CppQtQuadBezierArrowItem/CppQtQuadBezierArrowItemTest.pri)
