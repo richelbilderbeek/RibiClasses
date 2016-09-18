@@ -20,9 +20,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 #include "counter.h"
 
+#include <iostream>
 #include <sstream>
-
-#include "trace.h"
 
 ribi::Counter::Counter(const int initial_count) noexcept
   : m_count(initial_count), m_verbosity{false}
@@ -52,8 +51,7 @@ void ribi::Counter::Inc() noexcept
   if (m_verbosity)
   {
     std::stringstream s;
-    s << "Incremented counter to " << m_count;
-    TRACE(s.str());
+    std::clog << "Incremented counter to " << m_count << '\n';
   }
 }
 

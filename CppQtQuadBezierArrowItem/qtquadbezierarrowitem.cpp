@@ -43,7 +43,6 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 
 #include "geometry.h"
 #include "grabber.h"
-#include "trace.h"
 #include "qtroundededitrectitem.h"
 #include "qtroundedrectitem.h"
 #pragma GCC diagnostic pop
@@ -227,15 +226,7 @@ QPointF ribi::QtQuadBezierArrowItem::GetTail() const noexcept
     Point(qr_from.bottomRight().x(),qr_from.bottomRight().y())
     );
 
-  if (m_verbose)
-  {
-    TRACE(Geometry().ToStr(line_tail));
-    TRACE(Geometry().ToStr(r_from));
-  }
-
   std::vector<Point> p_tail_end = Geometry().GetLineRectIntersections(line_tail,r_from);
-
-  if (m_verbose) { TRACE(p_tail_end.size()); }
 
   if (p_tail_end.size() == 1)
   {
@@ -446,19 +437,6 @@ void ribi::QtQuadBezierArrowItem::paint(QPainter* painter, const QStyleOptionGra
     painter->drawRect(this->boundingRect().adjusted(1.0,1.0,-1.0,-1.0));
     painter->setPen(prev_pen);
     painter->setBrush(prev_brush);
-  }
-
-  if (m_verbose)
-  {
-    TRACE("START");
-    TRACE(Geometry().ToStr(this->GetTail()));
-    TRACE(Geometry().ToStr(this->GetFromItem()->pos()));
-    TRACE(Geometry().ToStr(GetMidItem()->pos()));
-    //TRACE(Geometry().ToStr(p_center));
-    TRACE(Geometry().ToStr(p_beyond));
-    TRACE(Geometry().ToStr(this->GetToItem()->pos()));
-    TRACE(Geometry().ToStr(this->GetHead()));
-    TRACE("END");
   }
 }
 

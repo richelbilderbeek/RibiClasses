@@ -13,7 +13,6 @@
 #include <cassert>
 
 #include "qtquadbezierarrowitem.h"
-#include "trace.h"
 
 #include "ui_qtquadbezierarrowdialog.h"
 #pragma GCC diagnostic pop

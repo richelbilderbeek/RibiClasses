@@ -41,7 +41,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "ribi_regex.h"
 #include "plane.h"
-#include "trace.h"
 
 #pragma GCC diagnostic pop
 
@@ -250,17 +249,6 @@ ribi::Geometry::ApCoordinats2D ribi::Geometry::CalcProjection(
   assert(IsPlane(points));
   const std::unique_ptr<Plane> plane(new Plane(points[0],points[1],points[2]));
   assert(plane);
-
-  #ifndef NDEBUG
-  const bool verbose{false};
-  if (verbose)
-  {
-    TRACE(plane->CanCalcX());
-    TRACE(plane->CanCalcY());
-    TRACE(plane->CanCalcZ());
-  }
-  #endif
-
   return plane->CalcProjection(points);
 }
 
@@ -408,20 +396,6 @@ boost::geometry::model::polygon<boost::geometry::model::d2::point_xy<double>>
 
 double ribi::Geometry::Fmod(const double x, const double mod) const noexcept
 {
-  #ifndef NDEBUG
-  if (std::isnan(x)
-    || std::isnan(mod)
-    || mod <= 0.0
-  )
-  {
-    TRACE("ERROR");
-    TRACE(std::isnan(x));
-    TRACE(std::isnan(mod));
-    TRACE(x);
-    TRACE("BREAK");
-  }
-  #endif
-
   assert(!std::isnan(x) && "Fmod its input value cannot be NaN");
   assert(!std::isnan(mod) && "Fmod its input mod cannot be NaN");
   assert(mod != 0.0 && "Cannot do a modulus of zero");
@@ -468,15 +442,6 @@ ribi::Geometry::Apfloat ribi::Geometry::Fmod(const Apfloat& x, const Apfloat& mo
     return new_result;
   }
 
-  #ifndef NDEBUG
-  if(result < 0.0 || result >= mod)
-  {
-    TRACE("ERROR");
-    TRACE(ToStrSafe(result));
-    TRACE(ToStrSafe(mod));
-    TRACE("BREAK");
-  }
-  #endif
   assert(result >= 0.0 && "Fmod must return a value between zero and mod");
   assert(result < mod  && "Fmod must return a value between zero and mod");
   return result;
@@ -542,12 +507,10 @@ bool ribi::Geometry::IsConvex(Polygon polygon) const noexcept
 {
   //assert(boost::geometry::num_points(polygon) == points.size()
   //  && "Points and polygon have the same number of points");
-  const bool verbose{false};
   boost::geometry::correct(polygon);
   Polygon hull;
   boost::geometry::convex_hull(polygon, hull);
   const bool is_convex_first = boost::geometry::equals(polygon,hull);
-  if (verbose) { TRACE(is_convex_first); }
   if (is_convex_first)
   {
     return true;
@@ -589,9 +552,6 @@ bool ribi::Geometry::IsConvex(const Coordinats2D& points) const noexcept
 
 bool ribi::Geometry::IsConvex(const ApCoordinats3D& points) const noexcept
 {
-  const bool verbose{false};
-
-  #ifndef NDEBUG
   assert(points.size() >= 3);
   if (points.size() == 3)
   {
@@ -602,27 +562,7 @@ bool ribi::Geometry::IsConvex(const ApCoordinats3D& points) const noexcept
     return true;
   }
   assert(points.size() == 4);
-  if(!IsPlane(points))
-  {
-    TRACE("ERROR");
-    TRACE(points.size());
-    for (const auto& point: points) { TRACE(Geometry().ToStr(point)); }
-    TRACE("BREAK");
-  }
   assert(IsPlane(points));
-  #endif // NDEBUG
-  if (verbose)
-  {
-    std::stringstream s;
-    s << "{";
-    for (const auto& point3d: points)
-    {
-      s << ToStr(point3d) << ",";
-    }
-    std::string po_str(s.str());
-    po_str[po_str.size() - 1] = '}';
-    TRACE(po_str);
-  }
   //Use the first three points for a Plane
   for (const std::vector<int> v:
     {
@@ -662,26 +602,8 @@ bool ribi::Geometry::IsConvex(const ApCoordinats3D& points) const noexcept
     );
     assert(plane);
 
-    #ifndef NDEBUG
-    if (verbose)
-    {
-      TRACE(*plane);
-      TRACE(plane->CanCalcX());
-      TRACE(plane->CanCalcY());
-      TRACE(plane->CanCalcZ());
-    }
-    #endif
-
     const ApCoordinats2D apcoordinats2d = plane->CalcProjection(points);
-    if (verbose)
-    {
-      TRACE(ToStr(apcoordinats2d));
-    }
     const Coordinats2D coordinats2d = ToDoubleSafe(apcoordinats2d);
-    if (verbose)
-    {
-      TRACE(ToStr(coordinats2d));
-    }
     if (IsConvex(coordinats2d)) return true;
   }
   return false;
@@ -691,8 +613,6 @@ bool ribi::Geometry::IsConvex(const Coordinats3D& points) const noexcept
 {
   return IsConvex(ToApfloat(points));
 }
-
-
 
 std::function<bool(const ribi::Geometry::Coordinat2D& lhs, const ribi::Geometry::Coordinat2D& rhs)>
   ribi::Geometry::Equals2d() const noexcept
@@ -742,14 +662,6 @@ bool ribi::Geometry::IsPlane(const std::vector<ApCoordinat3D>& v) const noexcept
 
   if (v.size() < 3) return false;
   if (v.size() == 3) return true;
-  #ifndef NDEBUG
-  if (v.size() > 4)
-  {
-    TRACE("ERROR");
-    TRACE(v.size());
-    TRACE("BREAK");
-  }
-  #endif
   assert(v.size() == 4);
 
   try
@@ -764,10 +676,9 @@ bool ribi::Geometry::IsPlane(const std::vector<ApCoordinat3D>& v) const noexcept
     if (verbose)
     {
       std::stringstream s;
-      s << "Geometry::IsPlane: not in plane, as plane cannot be constructed ('"
-        << e.what() << "')"
+      std::clog << "Geometry::IsPlane: not in plane, as plane cannot be constructed ('"
+        << e.what() << "')\n"
       ;
-      TRACE(s.str());
     }
     return false;
   }
@@ -1014,7 +925,6 @@ double ribi::Geometry::ToDoubleSafe(const apfloat& a) const noexcept
        assert(r != 0.0);
        return r;
     }
-    TRACE(a);
     assert(!"Should not get here");
     return 0.0;
   }

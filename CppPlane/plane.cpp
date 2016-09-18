@@ -31,7 +31,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "planex.h"
 #include "planey.h"
 #include "planez.h"
-#include "trace.h"
 #pragma GCC diagnostic pop
 
 ribi::Plane::Plane(
@@ -68,22 +67,11 @@ ribi::Plane::Plane(
 
 apfloat ribi::Plane::CalcError(const Coordinat3D& coordinat) const noexcept
 {
-  const bool verbose{false};
   const apfloat x = boost::geometry::get<0>(coordinat);
   const apfloat y = boost::geometry::get<1>(coordinat);
   const apfloat z = boost::geometry::get<2>(coordinat);
 
   apfloat min_error = std::numeric_limits<double>::max();
-
-  if (verbose)
-  {
-    std::stringstream s;
-    s << std::setprecision(99) << (*this);
-    TRACE(s.str());
-    if (CanCalcX()) { TRACE(Container().ToStr(GetCoefficientsX())); }
-    if (CanCalcY()) { TRACE(Container().ToStr(GetCoefficientsY())); }
-    if (CanCalcZ()) { TRACE(Container().ToStr(GetCoefficientsZ())); }
-  }
 
   //Absolute method
   if (CanCalcX())
@@ -147,55 +135,6 @@ ribi::Plane::Coordinats2D ribi::Plane::CalcProjection(
   try { if (m_plane_z) { return m_plane_z->CalcProjection(points); }}
   catch (std::logic_error&) { /* OK, try next plane */ }
 
-  TRACE("ERROR");
-  TRACE("INITIAL POINTS");
-  for (const auto& point: m_points)
-  {
-    std::stringstream s;
-    s
-      << "("
-      << boost::geometry::get<0>(point) << ","
-      << boost::geometry::get<1>(point) << ","
-      << boost::geometry::get<2>(point)
-      << ")"
-    ;
-    TRACE(s.str());
-  }
-
-  TRACE(points.size());
-  {
-    if (m_plane_x)
-    {
-      try { TRACE(*m_plane_x); } catch(std::logic_error&) { TRACE("Failed m_plane_x"); }
-      try { m_plane_x->CalcProjection(points); } catch (std::logic_error&) { TRACE("Failed m_plane_x->CalcProjection"); }
-    }
-  }
-  {
-    if (m_plane_y)
-    {
-      try { TRACE(*m_plane_y); } catch(std::logic_error&) { TRACE("Failed m_plane_y"); }
-      try { m_plane_y->CalcProjection(points); } catch (std::logic_error&) { TRACE("Failed m_plane_y->CalcProjection"); }
-    }
-  }
-  {
-    if (m_plane_z)
-    {
-      try { TRACE(*m_plane_z); } catch(std::logic_error&) { TRACE("Failed m_plane_z"); }
-      try { m_plane_z->CalcProjection(points); } catch (std::logic_error&) { TRACE("Failed m_plane_z->CalcProjection"); }
-    }
-  }
-  for (const auto& point: points)
-  {
-    std::stringstream s;
-    s
-      << "("
-      << boost::geometry::get<0>(point) << ","
-      << boost::geometry::get<1>(point) << ","
-      << boost::geometry::get<2>(point)
-      << ")"
-    ;
-    TRACE(s.str());
-  }
   assert(!"Should not get here");
   throw std::logic_error("Plane::CalcProjection: unexpected behavior");
 }
@@ -247,7 +186,6 @@ boost::shared_ptr<ribi::PlaneX> ribi::Plane::CreatePlaneX(
   const Coordinat3D& p3
 ) noexcept
 {
-  const bool verbose{false};
   try
   {
     const boost::shared_ptr<PlaneX> p(
@@ -258,7 +196,6 @@ boost::shared_ptr<ribi::PlaneX> ribi::Plane::CreatePlaneX(
   }
   catch (std::exception& e)
   {
-    if (verbose) { TRACE(e.what()); }
     return boost::shared_ptr<PlaneX>();
   }
 }
@@ -361,15 +298,6 @@ bool ribi::Plane::IsInPlane(const Coordinat3D& coordinat) const noexcept
   };
   #ifndef NDEBUG
   const bool has_error_below_max = CalcError(coordinat) <= CalcMaxError(coordinat);
-  if (is_in_plane != has_error_below_max)
-  {
-    TRACE("ERROR");
-    TRACE(is_in_plane);
-    TRACE(has_error_below_max);
-    TRACE(CalcError(coordinat));
-    TRACE(CalcMaxError(coordinat));
-    TRACE("BREAK");
-  }
   assert(is_in_plane == has_error_below_max);
   #endif
   return is_in_plane;

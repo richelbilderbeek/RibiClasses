@@ -29,7 +29,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "container.h"
 #include "geometry.h"
 #include "planez.h"
-#include "trace.h"
 #pragma GCC diagnostic pop
 
 ///Create plane X = 0.0
@@ -266,9 +265,6 @@ bool ribi::PlaneX::IsInPlane(const Coordinat3D& coordinat) const noexcept
   }
   catch (std::exception& e)
   {
-    TRACE("ERROR");
-    TRACE(e.what());
-    assert(!"Should not get here");
     throw;
   }
 }

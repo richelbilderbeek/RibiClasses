@@ -28,7 +28,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "container.h"
 #include "geometry.h"
-#include "trace.h"
 #pragma GCC diagnostic pop
 
 ribi::PlaneZ::PlaneZ() noexcept
@@ -46,12 +45,10 @@ ribi::PlaneZ::PlaneZ(
 )
   : m_coefficients(coefficients)
 {
-  const bool verbose{false};
   assert(GetCoefficients().size() == 4);
 
   if (m_coefficients[2] == 0.0)
   {
-    if (verbose) { TRACE(Container().ToStr(m_coefficients)); }
     throw std::logic_error("PlaneZ (from coeffients) cannot be expressed in less than 3D space");
   }
 
@@ -76,12 +73,10 @@ ribi::PlaneZ::PlaneZ(
   const Coordinat3D& p3
 ) : PlaneZ(CalcPlaneZ(p1,p2,p3))
 {
-  const bool verbose{false};
   assert(GetCoefficients().size() == 4);
 
   if (m_coefficients[2] == 0.0)
   {
-    if (verbose) { TRACE(Container().ToStr(m_coefficients)); }
     throw std::logic_error("Plane (from points) that can be expressed in less than 3D space");
   }
 }
@@ -274,7 +269,6 @@ ribi::PlaneZ::Coordinats2D ribi::PlaneZ::CalcProjection(
 ribi::PlaneZ::Double ribi::PlaneZ::CalcZ(const Double& x, const Double& y) const
 {
   // z = -A/C.x - B/C.y + D/C = (-A.x - B.y + D) / C
-  const bool verbose{false};
   const auto a = m_coefficients[0];
   const auto b = m_coefficients[1];
   const auto c = m_coefficients[2];
@@ -286,26 +280,16 @@ ribi::PlaneZ::Double ribi::PlaneZ::CalcZ(const Double& x, const Double& y) const
   const apfloat term1 = -a*x;
   const apfloat term2 = -b*y;
   const apfloat numerator = term1 + term2 + d;
-  if (verbose)
-  {
-    TRACE(numerator);
-    TRACE(c);
-  }
   const apfloat result = numerator / c;
   return result;
 }
 
 apfloat ribi::PlaneZ::GetFunctionA() const
 {
-  const bool verbose{false};
   const auto coeff_a = m_coefficients[0];
   const auto coeff_c = m_coefficients[2];
   static const apfloat zero(0.0);
   assert(coeff_c != zero);
-  if (verbose)
-  {
-    TRACE(coeff_c);
-  }
   const auto a = -coeff_a/coeff_c;
   return a;
 }
@@ -387,8 +371,6 @@ bool ribi::PlaneZ::IsInPlane(const Coordinat3D& coordinat) const noexcept
   }
   catch (std::exception& e)
   {
-    TRACE("ERROR");
-    TRACE(e.what());
     assert(!"Should not get here");
     throw;
   }
