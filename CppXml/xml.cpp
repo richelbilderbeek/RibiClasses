@@ -31,7 +31,6 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include <boost/lexical_cast.hpp>
 #include <boost/make_shared.hpp>
 #include <boost/shared_ptr.hpp>
-#include "trace.h"
 #pragma GCC diagnostic pop
 
 std::string ribi::xml::Decode2(std::string s) noexcept
@@ -181,14 +180,6 @@ std::pair<std::string,std::vector<std::string>> ribi::xml::XmlToVector(
     assert(t.find('>') != std::string::npos);
     const int index_tag_sz = static_cast<int>(t.find('>')) - 1;
     const std::string index_tag = t.substr(1,index_tag_sz);
-    #ifndef NDEBUG
-    if (!CanLexicalCast<int>(index_tag))
-    {
-      TRACE("ERROR");
-      TRACE(t);
-      TRACE(index_tag);
-    }
-    #endif
     assert(CanLexicalCast<int>(index_tag));
     assert(i == boost::lexical_cast<int>(index_tag));
     assert(t.find('/') != std::string::npos);

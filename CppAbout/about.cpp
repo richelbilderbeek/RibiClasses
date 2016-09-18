@@ -32,7 +32,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <boost/lexical_cast.hpp>
 #include <boost/version.hpp>
 
-//#include "trace.h"
 #pragma GCC diagnostic pop
 
 ribi::About::About(

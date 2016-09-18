@@ -24,10 +24,6 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "qtgraphics.h"
 
 #include <cassert>
-
-//#include "stopwatch.h"
-//
-//#include "trace.h"
 #pragma GCC diagnostic pop
 
 
