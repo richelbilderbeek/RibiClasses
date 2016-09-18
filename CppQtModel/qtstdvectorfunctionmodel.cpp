@@ -28,8 +28,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "modelfunctionparser.h"
 
-#include "trace.h"
-
 #pragma GCC diagnostic pop
 
 ribi::QtStdVectorFunctionModel::QtStdVectorFunctionModel(

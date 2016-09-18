@@ -26,8 +26,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <cassert>
 #include <boost/lexical_cast.hpp>
 
-#include "trace.h"
-
 #pragma GCC diagnostic pop
 
 ribi::QtStdVectorStringModel::QtStdVectorStringModel(QObject *parent) noexcept

@@ -34,8 +34,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic pop
 
 #include "ribi_random.h"
-#include "testtimer.h"
-#include "trace.h"
 
 double ribi::Matrix::CalcDeterminant(boost::numeric::ublas::matrix<double> m)
 {
@@ -347,7 +345,7 @@ bool ribi::Matrix::MatrixIsAboutEqual(
   const boost::numeric::ublas::matrix<double>& a,
   const boost::numeric::ublas::matrix<double>& b) noexcept
 {
-  TRACE("Deprecated naming");
+  std::clog << "MatrixIsAboutEqual: Deprecated naming\n";
   return MatricesAreAboutEqual(a,b);
 }
 
@@ -490,7 +488,6 @@ void ribi::Matrix::Test() noexcept
   {
     Random();
   }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
   using boost::numeric::ublas::detail::equals;
   using boost::numeric::ublas::matrix;
   using boost::numeric::ublas::vector;
@@ -927,7 +924,7 @@ bool ribi::Matrix::VectorIsAboutEqual(
   const boost::numeric::ublas::vector<double>& a,
   const boost::numeric::ublas::vector<double>& b) noexcept
 {
-  TRACE("Deprecated naming");
+  std::clog << "VectorIsAboutEqual: Deprecated naming\n";
   return VectorsAreAboutEqual(a,b);
 }
 
