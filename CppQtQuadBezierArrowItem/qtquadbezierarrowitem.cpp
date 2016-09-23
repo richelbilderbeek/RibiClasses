@@ -39,7 +39,6 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include <QPainter>
 #include <QGraphicsView>
 #include <QApplication>
-#include <QTimer>
 
 #include "geometry.h"
 #include "grabber.h"
