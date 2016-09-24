@@ -133,6 +133,8 @@ class QtRoundedRectItem : public QGraphicsRectItem
   void SetRadiusX(const double radius_x) noexcept;
   void SetRadiusY(const double radius_y) noexcept;
 
+  int type() const override { return UserType + 1; }
+
 protected:
 
   virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) noexcept override;

@@ -146,6 +146,7 @@ class QtRoundedEditRectItem : public QtRoundedRectItem
   ///Set the pen by which the text is drawn
   void SetTextPen(const QPen& pen) noexcept;
 
+  int type() const override { return UserType + 2; }
 protected:
   virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) noexcept;
 
