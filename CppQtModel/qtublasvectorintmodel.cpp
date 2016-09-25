@@ -40,10 +40,6 @@ ribi::QtUblasVectorIntModel::QtUblasVectorIntModel(QObject *parent) noexcept
     m_range_max{std::numeric_limits<int>::max()},
     m_range_min{std::numeric_limits<int>::min()}
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
-
   assert(m_range_min < m_range_max);
   assert(this->IsValid());
 }

@@ -20,9 +20,6 @@ ribi::ModelFunctionParser::ModelFunctionParser(
   const std::string& variable_name)
   : m_parser{new FunctionParser}
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
   assert(m_parser);
 
   const double pi = boost::math::constants::pi<double>();

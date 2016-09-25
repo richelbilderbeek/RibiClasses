@@ -35,9 +35,6 @@ ribi::QtUblasVectorDoubleModel::QtUblasVectorDoubleModel(QObject *parent) noexce
     m_header_horizontal_text{},
     m_header_vertical_text{}
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
 }
 
 int ribi::QtUblasVectorDoubleModel::columnCount(const QModelIndex &) const noexcept
