@@ -9,7 +9,7 @@
 #pragma GCC diagnostic ignored "-Weffc++"
 #include <boost/test/unit_test.hpp>
 
-BOOST_AUTO_TEST_CASE(ribi_units_x)
+BOOST_AUTO_TEST_CASE(ribi_units_volumetricflow)
 {
   using VolumetricFlow = boost::units::quantity<boost::units::si::volumetric_flow>;
   using Volume = boost::units::quantity<boost::units::si::volume>;

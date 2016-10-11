@@ -8,7 +8,7 @@
 #pragma GCC diagnostic ignored "-Weffc++"
 #include <boost/test/unit_test.hpp>
 
-BOOST_AUTO_TEST_CASE(ribi_units_x)
+BOOST_AUTO_TEST_CASE(ribi_units_hydrogenmoleculeamount)
 {
   using HydrogenMoleculeAmount = boost::units::quantity<boost::units::si::hydrogen_molecule_amount>;
   //Hydrogen molecule amounts can be displayed

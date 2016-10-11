@@ -10,7 +10,7 @@
 #pragma GCC diagnostic ignored "-Weffc++"
 #include <boost/test/unit_test.hpp>
 
-BOOST_AUTO_TEST_CASE(ribi_units_x)
+BOOST_AUTO_TEST_CASE(ribi_units_sulfidemoleculeamount)
 {
   using SulfideMoleculeAmount = boost::units::quantity<boost::units::si::sulfide_molecule_amount>;
   //Sulfide molecule amounts can be displayed
