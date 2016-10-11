@@ -30,15 +30,12 @@ namespace boost {
   } // ~namespace units
 } // ~namespace boost
 
-
 namespace ribi {
   namespace units {
-    using Concentration = boost::units::si::Concentration;
-    #ifndef NDEBUG
-    void TestConcentration() noexcept;
-    #endif
+
+    using Concentration = boost::units::quantity<boost::units::si::concentration>;
+
   } //~namespace units
 } //~namespace ribi
-
 
 #endif // CONCENTRATION_H

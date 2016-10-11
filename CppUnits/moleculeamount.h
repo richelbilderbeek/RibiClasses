@@ -20,12 +20,4 @@ namespace boost {
   } // namespace units
 } //namespace boost
 
-namespace ribi {
-  namespace units {
-    #ifndef NDEBUG
-    void TestMoleculeAmount() noexcept;
-    #endif
-  } //~namespace units
-} //~namespace ribi
-
 #endif // MOLECULEAMOUNT_H

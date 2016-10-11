@@ -42,9 +42,6 @@ namespace ribi {
 
     using SpeciesGrowth = boost::units::quantity<boost::units::si::species_growth>;
 
-    #ifndef NDEBUG
-    void TestSpeciesGrowth() noexcept;
-    #endif
   } //~namespace units
 } //~namespace ribi
 

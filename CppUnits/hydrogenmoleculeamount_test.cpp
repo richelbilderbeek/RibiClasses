@@ -1,19 +1,15 @@
-#ifndef NDEBUG
 #include "hydrogenmoleculeamount.h"
 
-#include <sstream>
-#include <iostream>
-
+#include <fstream>
 #include <boost/units/io.hpp>
 
-#include "testtimer.h"
-void ribi::units::TestHydrogenMoleculeAmount() noexcept
+// Boost.Test does not play well with -Weffc++
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Weffc++"
+#include <boost/test/unit_test.hpp>
+
+BOOST_AUTO_TEST_CASE(ribi_units_x)
 {
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
   using HydrogenMoleculeAmount = boost::units::quantity<boost::units::si::hydrogen_molecule_amount>;
   //Hydrogen molecule amounts can be displayed
   {
@@ -21,7 +17,7 @@ void ribi::units::TestHydrogenMoleculeAmount() noexcept
     std::stringstream s;
     s << sa;
     const std::string t{s.str()};
-    assert(!t.empty());
+    BOOST_CHECK(!t.empty());
   }
   //#define FIX_ISSUE_999
   #ifdef FIX_ISSUE_999
@@ -31,9 +27,9 @@ void ribi::units::TestHydrogenMoleculeAmount() noexcept
     std::stringstream s;
     s << sa;
     const std::string t{s.str()};
-    assert(!t.empty());
+    BOOST_CHECK(!t.empty());
     std::cout << t << std::endl;
-    assert(t.substr(t.size()-3,3) == "mol");
+    BOOST_CHECK(t.substr(t.size()-3,3) == "mol");
   }
   #endif
   //Can add hydrogen molecule amounts
@@ -44,7 +40,8 @@ void ribi::units::TestHydrogenMoleculeAmount() noexcept
     const HydrogenMoleculeAmount sa{a * boost::units::si::hydrogen_molecules_mol};
     const HydrogenMoleculeAmount sb{b * boost::units::si::hydrogen_molecules_mol};
     const HydrogenMoleculeAmount sc{sa + sb};
-    assert(sc == HydrogenMoleculeAmount{c * boost::units::si::hydrogen_molecules_mol});
+    BOOST_CHECK(sc == HydrogenMoleculeAmount{c * boost::units::si::hydrogen_molecules_mol});
   }
 }
-#endif
+
+#pragma GCC diagnostic pop

@@ -1,5 +1,5 @@
-#ifndef RIBI_TIME_H
-#define RIBI_TIME_H
+#ifndef RIBI_TIME_UNIT_H
+#define RIBI_TIME_UNIT_H
 
 //Time
 // The relative (unitless) change of something in time
@@ -27,10 +27,7 @@ namespace ribi {
 
     using Time = boost::units::quantity<boost::units::si::time>;
 
-    #ifndef NDEBUG
-    void TestTime() noexcept;
-    #endif
   } //~namespace units
 } //~namespace ribi
 
-#endif // RIBI_TIME_H
+#endif // RIBI_TIME_UNIT_H

@@ -25,12 +25,4 @@ namespace boost {
   } // namespace units
 } //namespace boost
 
-namespace ribi {
-  namespace units {
-    #ifndef NDEBUG
-    void TestMassFlow() noexcept;
-    #endif
-  } //~namespace units
-} //~namespace ribi
-
 #endif // MASSFLOW_H

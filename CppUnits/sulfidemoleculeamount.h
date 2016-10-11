@@ -22,14 +22,6 @@ namespace boost {
   } // namespace units
 } //namespace boost
 
-namespace ribi {
-  namespace units {
-    #ifndef NDEBUG
-    void TestSulfideMoleculeAmount() noexcept;
-    #endif
-  } //~namespace units
-} //~namespace ribi
-
 #pragma GCC diagnostic pop
 
 #endif // SULFIDEMOLECULEAMOUNT_H

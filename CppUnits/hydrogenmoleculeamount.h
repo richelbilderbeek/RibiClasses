@@ -23,14 +23,6 @@ namespace boost {
   } // namespace units
 } //namespace boost
 
-namespace ribi {
-  namespace units {
-    #ifndef NDEBUG
-    void TestHydrogenMoleculeAmount() noexcept;
-    #endif
-  } //~namespace units
-} //~namespace ribi
-
 #pragma GCC diagnostic pop
 
 #endif // HYDROGENMOLECULEAMOUNT_H

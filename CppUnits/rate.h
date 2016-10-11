@@ -38,9 +38,6 @@ namespace ribi {
 
     using Rate = boost::units::quantity<boost::units::si::rate>;
 
-    #ifndef NDEBUG
-    void TestRate() noexcept;
-    #endif
   } //~namespace units
 } //~namespace ribi
 

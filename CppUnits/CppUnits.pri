@@ -2,35 +2,29 @@ INCLUDEPATH += \
     ../RibiClasses/CppUnits
 
 SOURCES += \
-    ../RibiClasses/CppUnits/units.cpp \
-    ../RibiClasses/CppUnits/sulfidemoleculeamount.cpp \
-    ../RibiClasses/CppUnits/hydrogenmoleculeamount.cpp \
-    ../RibiClasses/CppUnits/speciesdensity.cpp \
-    ../RibiClasses/CppUnits/moleculeamount.cpp \
-    ../RibiClasses/CppUnits/volumetricflow.cpp \
-    ../RibiClasses/CppUnits/massflow.cpp \
-    ../RibiClasses/CppUnits/massdensity.cpp \
-    ../RibiClasses/CppUnits/concentration.cpp \
-    ../RibiClasses/CppUnits/speciesgrowth.cpp \
-    ../RibiClasses/CppUnits/rate.cpp \
-    ../RibiClasses/CppUnits/concentrationchange.cpp \
-    ../RibiClasses/CppUnits/ribi_time.cpp
+    $$PWD/concentrationchange.cpp \
+    $$PWD/concentration.cpp \
+    $$PWD/massflow.cpp \
+    $$PWD/moleculeamount.cpp \
+    $$PWD/rate.cpp \
+    $$PWD/ribi_time_unit.cpp \
+    $$PWD/speciesdensity.cpp \
+    $$PWD/speciesgrowth.cpp \
+    $$PWD/sulfidemoleculeamount.cpp \
+    $$PWD/units.cpp \
+    $$PWD/volumetricflow.cpp
 
 HEADERS  += \
-    ../RibiClasses/CppUnits/units.h \
-    ../RibiClasses/CppUnits/moleculeamount.h \
-    ../RibiClasses/CppUnits/sulfidemoleculeamount.h \
-    ../RibiClasses/CppUnits/hydrogenmoleculeamount.h \
-    ../RibiClasses/CppUnits/speciesdensity.h \
-    ../RibiClasses/CppUnits/volumetricflow.h \
-    ../RibiClasses/CppUnits/massflow.h \
-    ../RibiClasses/CppUnits/massdensity.h \
-    ../RibiClasses/CppUnits/concentration.h \
-    ../RibiClasses/CppUnits/speciesgrowth.h \
-    ../RibiClasses/CppUnits/rate.h \
-    ../RibiClasses/CppUnits/concentrationchange.h \
-    ../RibiClasses/CppUnits/ribi_time.h
-
-OTHER_FILES += \
-    ../RibiClasses/CppUnits/Licence.txt
+    $$PWD/concentrationchange.h \
+    $$PWD/concentration.h \
+    $$PWD/hydrogenmoleculeamount.h \
+    $$PWD/massflow.h \
+    $$PWD/moleculeamount.h \
+    $$PWD/rate.h \
+    $$PWD/ribi_time_unit.h \
+    $$PWD/speciesdensity.h \
+    $$PWD/speciesgrowth.h \
+    $$PWD/sulfidemoleculeamount.h \
+    $$PWD/units.h \
+    $$PWD/volumetricflow.h
 

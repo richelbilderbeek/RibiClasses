@@ -42,10 +42,6 @@ namespace ribi {
   namespace units {
 
     using ConcentrationChange = boost::units::quantity<boost::units::si::concentration_change>;
-
-    #ifndef NDEBUG
-    void TestConcentrationChange() noexcept;
-    #endif
   } //~namespace units
 } //~namespace ribi
 

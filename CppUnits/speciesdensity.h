@@ -29,10 +29,6 @@ namespace boost {
 namespace ribi {
   namespace units {
 
-    #ifndef NDEBUG
-    void TestSpeciesDensity() noexcept;
-    #endif
-
     using SpeciesDensity = boost::units::quantity<boost::units::si::species_density>;
 
   } //~namespace units

@@ -1,41 +1,21 @@
-#include "ribi_time.h"
+#include "ribi_time_unit.h"
 
 #include <fstream>
 #include <sstream>
-
 #include <boost/units/io.hpp>
-
 #include "fileio.h"
 
-std::istream& boost::units::si::operator>>(std::istream& is, Time& sd)
+
+// Boost.Test does not play well with -Weffc++
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Weffc++"
+#include <boost/test/unit_test.hpp>
+
+using namespace ribi::units;
+
+BOOST_AUTO_TEST_CASE(ribi_units_ribi_time_unit)
 {
-  double value = 0.0;
-  is >> value;
-  std::string unit;
-  is >> unit;
-  assert(unit == "s");
-  sd = Time(value * seconds);
-  return is;
-}
-
-#ifndef NDEBUG
-#include "testtimer.h"
-
-#include <iostream>
-
-void ribi::units::TestTime() noexcept
-{
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  {
-    ribi::fileio::FileIo();
-  }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
   using ribi::fileio::FileIo;
-  using Time = boost::units::quantity<boost::units::si::time>;
   using boost::units::si::seconds;
 
   //Time is in seconds
@@ -44,7 +24,7 @@ void ribi::units::TestTime() noexcept
     std::stringstream s;
     s << d;
     const std::string t{s.str()};
-    assert(t.substr(t.size() - 1,1) == "s");
+    BOOST_CHECK(t.substr(t.size() - 1,1) == "s");
   }
   //Time uses a dot as a seperator
   {
@@ -52,7 +32,7 @@ void ribi::units::TestTime() noexcept
     std::stringstream s;
     s << d;
     const std::string t{s.str()};
-    assert(t == "12.34 s");
+    BOOST_CHECK(t == "12.34 s");
   }
   //Time file I/O, one Time
   {
@@ -71,7 +51,7 @@ void ribi::units::TestTime() noexcept
         << d_too << '\n'
       ;
     }
-    assert(d == d_too);
+    BOOST_CHECK(d == d_too);
   }
   //Time file I/O, two Time
   {
@@ -92,14 +72,15 @@ void ribi::units::TestTime() noexcept
         << a_too << '\n'
       ;
     }
-    assert(a == a_too);
+    BOOST_CHECK(a == a_too);
     if (b != b_too)
     {
       std::cerr << b << '\n'
         << b_too << '\n'
       ;
     }
-    assert(b == b_too);
+    BOOST_CHECK(b == b_too);
   }
 }
-#endif
+
+#pragma GCC diagnostic pop
