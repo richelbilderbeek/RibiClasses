@@ -1,9 +1,9 @@
-#include "speciesdensity.h"
+#include "rate.h"
 
 #include <fstream>
 #include <boost/units/io.hpp>
 #include "fileio.h"
-#include "rate.h"
+#include "speciesdensity.h"
 
 using namespace ribi::units;
 
@@ -12,7 +12,7 @@ using namespace ribi::units;
 #pragma GCC diagnostic ignored "-Weffc++"
 #include <boost/test/unit_test.hpp>
 
-BOOST_AUTO_TEST_CASE(ribi_units_x)
+BOOST_AUTO_TEST_CASE(ribi_units_rate)
 {
   using ribi::fileio::FileIo;
   //Species density is in species per square meter
