@@ -1,12 +1,12 @@
 #include "speciesgrowth.h"
 
-#include <fstream>
-#include <sstream>
+#include <cassert>
+#include <istream>
 
 #include <boost/units/io.hpp>
 
-#include "speciesdensity.h"
-#include "rate.h"
+//#include "speciesdensity.h"
+//#include "rate.h"
 
 std::istream& boost::units::si::operator>>(std::istream& is, SpeciesGrowth& sd)
 {

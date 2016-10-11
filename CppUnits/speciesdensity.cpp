@@ -1,11 +1,9 @@
 #include "speciesdensity.h"
 
-#include <fstream>
-#include <sstream>
+#include <cassert>
+#include <istream>
 
 #include <boost/units/io.hpp>
-
-#include "fileio.h"
 
 std::istream& boost::units::si::operator>>(std::istream& is, SpeciesDensity& sd)
 {

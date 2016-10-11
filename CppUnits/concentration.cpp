@@ -1,14 +1,8 @@
 #include "concentration.h"
 
 #include <cassert>
-#include <fstream>
-#include <iostream>
-#include <sstream>
-
+#include <istream>
 #include <boost/units/io.hpp>
-
-#include "fileio.h"
-#include "testtimer.h"
 
 std::istream& boost::units::si::operator>>(std::istream& is, Concentration& sd)
 {

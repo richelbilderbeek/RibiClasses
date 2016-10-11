@@ -1,11 +1,9 @@
 #include "ribi_time_unit.h"
 
-#include <fstream>
-#include <sstream>
+#include <cassert>
+#include <istream>
 
 #include <boost/units/io.hpp>
-
-#include "fileio.h"
 
 std::istream& boost::units::si::operator>>(std::istream& is, Time& sd)
 {

@@ -4,15 +4,10 @@ INCLUDEPATH += \
 SOURCES += \
     $$PWD/concentrationchange.cpp \
     $$PWD/concentration.cpp \
-    $$PWD/massflow.cpp \
-    $$PWD/moleculeamount.cpp \
     $$PWD/rate.cpp \
     $$PWD/ribi_time_unit.cpp \
     $$PWD/speciesdensity.cpp \
-    $$PWD/speciesgrowth.cpp \
-    $$PWD/sulfidemoleculeamount.cpp \
-    $$PWD/units.cpp \
-    $$PWD/volumetricflow.cpp
+    $$PWD/speciesgrowth.cpp
 
 HEADERS  += \
     $$PWD/concentrationchange.h \
@@ -25,6 +20,5 @@ HEADERS  += \
     $$PWD/speciesdensity.h \
     $$PWD/speciesgrowth.h \
     $$PWD/sulfidemoleculeamount.h \
-    $$PWD/units.h \
     $$PWD/volumetricflow.h
 

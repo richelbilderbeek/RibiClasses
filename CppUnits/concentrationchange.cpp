@@ -1,17 +1,12 @@
-
 #include "concentrationchange.h"
 
 #include <boost/units/io.hpp>
 
-#include <iostream>
-#include <fstream>
-#include <sstream>
+#include <cassert>
+#include <istream>
 
-#include "fileio.h"
-#include "testtimer.h"
-
-#include "concentration.h"
-#include "rate.h"
+//#include "concentration.h"
+//#include "rate.h"
 
 std::istream& boost::units::si::operator>>(std::istream& is, ConcentrationChange& sd)
 {
