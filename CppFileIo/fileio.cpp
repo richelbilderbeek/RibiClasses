@@ -97,9 +97,9 @@ void ribi::fileio::FileIo::CreateFolder(const std::string& folder) const
   assert(IsFolder(folder) && "it should work");
 }
 
-void ribi::fileio::FileIo::DeleteFile(const std::string& filename) const
+void ribi::delete_file(const std::string& filename)
 {
-  if(!IsRegularFile(filename))
+  if(!is_regular_file(filename))
   {
     std::stringstream msg;
     msg << __func__ << ": "
@@ -112,7 +112,7 @@ void ribi::fileio::FileIo::DeleteFile(const std::string& filename) const
   std::remove(filename.c_str());
 
   //Under Windows, readonly files must be made deleteable
-  if (IsRegularFile(filename))
+  if (is_regular_file(filename))
   {
     #ifdef _WIN32
     const auto cmd = "attrib -r " + filename;
@@ -121,8 +121,21 @@ void ribi::fileio::FileIo::DeleteFile(const std::string& filename) const
     #endif
   }
 
-  assert(!IsRegularFile(filename)
-    && "File must not exist anymore");
+  if(is_regular_file(filename))
+  {
+    std::stringstream msg;
+    msg << __func__ << ": "
+      << "failed to delete file '"
+      << filename << "'"
+    ;
+    throw std::invalid_argument(msg.str());
+  }
+}
+
+
+void ribi::fileio::FileIo::DeleteFile(const std::string& filename) const
+{
+  delete_file(filename);
 }
 
 void ribi::fileio::FileIo::DeleteFolder(const std::string& folder) const
