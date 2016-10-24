@@ -10,6 +10,3 @@ HEADERS  += \
 FORMS += \
     $$PWD/qtaboutdialog.ui
 
-OTHER_FILES += \
-    $$PWD/Licence.txt
-
