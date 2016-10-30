@@ -26,6 +26,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <cassert>
 #include <boost/lexical_cast.hpp>
 #include "matrix.h"
+#include "testtimer.h"
+#include "trace.h"
 
 #pragma GCC diagnostic pop
 
@@ -35,6 +37,9 @@ ribi::QtUblasVectorDoubleModel::QtUblasVectorDoubleModel(QObject *parent) noexce
     m_header_horizontal_text{},
     m_header_vertical_text{}
 {
+  #ifndef NDEBUG
+  Test();
+  #endif
 }
 
 int ribi::QtUblasVectorDoubleModel::columnCount(const QModelIndex &) const noexcept
@@ -304,6 +309,7 @@ void ribi::QtUblasVectorDoubleModel::Test() noexcept
     if (is_tested) return;
     is_tested = true;
   }
+  const TestTimer test_timer(__func__,__FILE__,1.0);
   {
     QtUblasVectorDoubleModel model;
     assert(model.rowCount()    == 0);

@@ -33,6 +33,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <QFile>
 
 #include "filecopymode.h"
+
 #pragma GCC diagnostic pop
 
 ribi::fileio::FileIo::FileIo()
@@ -97,9 +98,9 @@ void ribi::fileio::FileIo::CreateFolder(const std::string& folder) const
   assert(IsFolder(folder) && "it should work");
 }
 
-void ribi::delete_file(const std::string& filename)
+void ribi::fileio::FileIo::DeleteFile(const std::string& filename) const
 {
-  if(!is_regular_file(filename))
+  if(!IsRegularFile(filename))
   {
     std::stringstream msg;
     msg << __func__ << ": "
@@ -112,7 +113,7 @@ void ribi::delete_file(const std::string& filename)
   std::remove(filename.c_str());
 
   //Under Windows, readonly files must be made deleteable
-  if (is_regular_file(filename))
+  if (IsRegularFile(filename))
   {
     #ifdef _WIN32
     const auto cmd = "attrib -r " + filename;
@@ -121,21 +122,6 @@ void ribi::delete_file(const std::string& filename)
     #endif
   }
 
-  if(is_regular_file(filename))
-  {
-    std::stringstream msg;
-    msg << __func__ << ": "
-      << "failed to delete file '"
-      << filename << "'"
-    ;
-    throw std::invalid_argument(msg.str());
-  }
-}
-
-
-void ribi::fileio::FileIo::DeleteFile(const std::string& filename) const
-{
-  delete_file(filename);
   assert(!IsRegularFile(filename)
     && "File must not exist anymore");
 }
@@ -785,6 +771,22 @@ std::string ribi::fileio::FileIo::SimplifyPath(const std::string& s) const noexc
     if (t == new_t) break;
     t = new_t;
   }
+
+  #ifdef UDNEFINFE467830786530475
+  while (1)
+  {
+    static const boost::xpressive::sregex regex = boost::xpressive::sregex::compile("((/|_b)\\w*/..(/|_b))");
+
+    //const std::string new_t = boost::regex_replace(t,boost::regex("/\\w*/../"),"/");
+    const std::string new_t = boost::xpressive::regex_replace(
+      t,
+      regex,
+      ""
+    );
+    if (t == new_t) break;
+    t = new_t;
+  }
+  #endif
   return t;
 }
 

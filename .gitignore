@@ -38,12 +38,3 @@ temp.txt
 tmp*
 ui_*
 RibiClassesTestConsole
-*.tar.gz
-oclint-0.10.3/
-oclint.log
-qrc_*
-moc_*
-RibiClassesTestDesktop
-create_one_edge_with_head_command.dot
-QtQuadBezierArrowItemTest1.png
-*.pro.user.*

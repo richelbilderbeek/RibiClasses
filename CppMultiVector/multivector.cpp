@@ -19,6 +19,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 //From http://www.richelbilderbeek.nl/CppMultiVector.htm
 //---------------------------------------------------------------------------
 #include "multivector.h"
+#include "testtimer.h"
 
 #ifndef NDEBUG
 void ribi::TestMultiVector() noexcept
@@ -31,6 +32,7 @@ void ribi::TestMultiVector() noexcept
   {
 
   }
+  const TestTimer test_timer(__func__,__FILE__,1.0);
   ribi::MultiVector<int> x;
   //1 dimensional
   x.Store( { 0 }, 0);

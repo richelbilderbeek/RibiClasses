@@ -132,7 +132,6 @@ struct About
 
 };
 
-void VectorToStream(const std::vector<std::string>& v, std::ostream& os);
 std::ostream& operator<<(std::ostream& os,const About& a) noexcept;
 
 } //~namespace ribi

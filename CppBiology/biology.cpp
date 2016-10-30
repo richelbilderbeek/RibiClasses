@@ -22,6 +22,20 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include <cassert>
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Weffc++"
+#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
+#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
+#include "testtimer.h"
+#pragma GCC diagnostic pop
+
+ribi::Biology::Biology() noexcept
+{
+  #ifndef NDEBUG
+  Test();
+  #endif //NDEBUG
+}
+
 ribi::Biology::DnDt ribi::Biology::LogisticGrowth(
   const PopSize carrying_capacity,
   const PopSize current_population_size,
@@ -30,3 +44,22 @@ ribi::Biology::DnDt ribi::Biology::LogisticGrowth(
   return  intrinsic_growth_rate * current_population_size
   * ( (carrying_capacity - current_population_size) / carrying_capacity );
 }
+
+#ifndef NDEBUG
+void ribi::Biology::Test() noexcept
+{
+  {
+    static bool is_tested{false};
+    if (is_tested) return;
+    is_tested = true;
+  }
+  const TestTimer test_timer(__func__,__FILE__,1.0);
+
+  {
+    const PopSize K{1.0};
+    const double r{2.0};
+    assert(LogisticGrowth(K,0.5 * K,r) > 0.0);
+    assert(LogisticGrowth(K,2.0 * K,r) < 0.0);
+  }
+}
+#endif // NDEBUG

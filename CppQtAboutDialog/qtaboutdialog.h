@@ -41,7 +41,7 @@ namespace ribi {
 ///An About dialog
 class QtAboutDialog : public QtHideAndShowDialog
 {
-  Q_OBJECT //!OCLINT
+  Q_OBJECT
 
 public:
   explicit QtAboutDialog(const ribi::About& about) noexcept;

@@ -7,6 +7,9 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/numeric/conversion/cast.hpp>
 #include <QTableWidget>
+
+#include "trace.h"
+
 #pragma GCC diagnostic pop
 
 std::string ribi::QtMatrix::GetVersion() noexcept

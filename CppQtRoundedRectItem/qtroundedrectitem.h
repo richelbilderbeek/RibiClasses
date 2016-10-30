@@ -72,7 +72,7 @@ Comparison of Qt and this class:
 */
 class QtRoundedRectItem : public QGraphicsRectItem
 {
-  //Q_OBJECT  //!OCLINT //Cannot make this a QObject???
+  //Q_OBJECT //Cannot make this a QObject???
 
   public:
   explicit QtRoundedRectItem(QGraphicsItem *parent = 0);
@@ -104,6 +104,7 @@ class QtRoundedRectItem : public QGraphicsRectItem
   QRectF GetOuterRect() const noexcept;
   double GetOuterWidth() const noexcept { return QGraphicsRectItem::rect().width(); }
 
+
   ///Get the rounded rect corner x radius
   double GetRadiusX() const noexcept{ return m_radius_x; }
 
@@ -132,8 +133,6 @@ class QtRoundedRectItem : public QGraphicsRectItem
 
   void SetRadiusX(const double radius_x) noexcept;
   void SetRadiusY(const double radius_y) noexcept;
-
-  int type() const override { return UserType + 1; }
 
 protected:
 

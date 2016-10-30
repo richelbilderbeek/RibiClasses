@@ -34,6 +34,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic pop
 
 #include "ribi_random.h"
+#include "testtimer.h"
+#include "trace.h"
 
 double ribi::Matrix::CalcDeterminant(boost::numeric::ublas::matrix<double> m)
 {
@@ -57,20 +59,20 @@ double ribi::Matrix::CalcDeterminant(boost::numeric::ublas::matrix<double> m)
   return d;
 }
 
-const std::vector<boost::numeric::ublas::matrix<double>> ribi::Matrix::Chop(
+const std::vector<boost::numeric::ublas::matrix<double> > ribi::Matrix::Chop(
   const boost::numeric::ublas::matrix<double>& m)
 {
   using boost::numeric::ublas::range;
   using boost::numeric::ublas::matrix;
   using boost::numeric::ublas::matrix_range;
-  std::vector<matrix<double>> v;
+  std::vector<matrix<double> > v;
   v.reserve(4);
   const int midy = m.size1() / 2;
   const int midx = m.size2() / 2;
-  const matrix_range<const matrix<double>> top_left(    m,range(0   ,midy     ),range(0   ,midx     ));
-  const matrix_range<const matrix<double>> bottom_left( m,range(midy,m.size1()),range(0   ,midx     ));
-  const matrix_range<const matrix<double>> top_right(   m,range(0   ,midy     ),range(midx,m.size2()));
-  const matrix_range<const matrix<double>> bottom_right(m,range(midy,m.size1()),range(midx,m.size2()));
+  const matrix_range<const matrix<double> > top_left(    m,range(0   ,midy     ),range(0   ,midx     ));
+  const matrix_range<const matrix<double> > bottom_left( m,range(midy,m.size1()),range(0   ,midx     ));
+  const matrix_range<const matrix<double> > top_right(   m,range(0   ,midy     ),range(midx,m.size2()));
+  const matrix_range<const matrix<double> > bottom_right(m,range(midy,m.size1()),range(midx,m.size2()));
   v.push_back(matrix<double>(top_left));
   v.push_back(matrix<double>(top_right));
   v.push_back(matrix<double>(bottom_left));
@@ -220,7 +222,7 @@ const boost::numeric::ublas::matrix<double> ribi::Matrix::Inverse(
       //[ C at [2]   D at [4] ]
       assert(m.size1() > 3);
       assert(m.size2() > 3);
-      const std::vector<boost::numeric::ublas::matrix<double>> v = Chop(m);
+      const std::vector<boost::numeric::ublas::matrix<double> > v = Chop(m);
       const boost::numeric::ublas::matrix<double>& a = v[0];
       assert(a.size1() == a.size2());
       const boost::numeric::ublas::matrix<double>  a_inv = Inverse(a);
@@ -264,7 +266,7 @@ const boost::numeric::ublas::matrix<double> ribi::Matrix::Inverse(
             a_inv));
 
       const boost::numeric::ublas::matrix<double> new_d = term_inv;
-      const std::vector<boost::numeric::ublas::matrix<double>> w = { new_a, new_b, new_c, new_d };
+      const std::vector<boost::numeric::ublas::matrix<double> > w = { new_a, new_b, new_c, new_d };
       const boost::numeric::ublas::matrix<double> result = Unchop(w);
       return result;
     }
@@ -345,7 +347,7 @@ bool ribi::Matrix::MatrixIsAboutEqual(
   const boost::numeric::ublas::matrix<double>& a,
   const boost::numeric::ublas::matrix<double>& b) noexcept
 {
-  std::clog << "MatrixIsAboutEqual: Deprecated naming\n";
+  TRACE("Deprecated naming");
   return MatricesAreAboutEqual(a,b);
 }
 
@@ -488,6 +490,7 @@ void ribi::Matrix::Test() noexcept
   {
     Random();
   }
+  const TestTimer test_timer(__func__,__FILE__,1.0);
   using boost::numeric::ublas::detail::equals;
   using boost::numeric::ublas::matrix;
   using boost::numeric::ublas::vector;
@@ -511,7 +514,7 @@ void ribi::Matrix::Test() noexcept
     /// [     ]    [ B ]
     /// [ [C] ]    [ C ]
     /// [ [D] ] -> [ D ]
-    boost::numeric::ublas::vector<boost::numeric::ublas::vector<double>> v(2);
+    boost::numeric::ublas::vector<boost::numeric::ublas::vector<double> > v(2);
     v[0] = CreateVector( { 1.0, 2.0 } );
     v[1] = CreateVector( { 3.0, 4.0 } );
     const boost::numeric::ublas::vector<double> w
@@ -526,7 +529,7 @@ void ribi::Matrix::Test() noexcept
     /// [       ]    [ C D ]
     /// [ [E F] ]    [ E F ]
     /// [ [G H] ] -> [ G H ]
-    boost::numeric::ublas::vector<boost::numeric::ublas::matrix<double>> v(2);
+    boost::numeric::ublas::vector<boost::numeric::ublas::matrix<double> > v(2);
     v[0] = CreateMatrix(2,2, {1.0, 3.0, 2.0, 4.0} );
     v[1] = CreateMatrix(2,2, {5.0, 7.0, 6.0, 8.0} );
     const boost::numeric::ublas::matrix<double> w
@@ -548,7 +551,7 @@ void ribi::Matrix::Test() noexcept
     // [                  ]    [ C D K L]
     // [ [ 9 10]  [11 12] ]    [ E F M N]
     // [ [13 14]  [15 16] ] -> [ G H O P]
-    boost::numeric::ublas::matrix<boost::numeric::ublas::matrix<double>> v(2,2);
+    boost::numeric::ublas::matrix<boost::numeric::ublas::matrix<double> > v(2,2);
     v(0,0) = CreateMatrix(2,2, { 1.0,  5.0,  2.0,  6.0} );
     v(1,0) = CreateMatrix(2,2, { 9.0, 13.0, 10.0, 14.0} );
     v(0,1) = CreateMatrix(2,2, { 3.0,  7.0,  4.0,  8.0} );
@@ -584,7 +587,7 @@ void ribi::Matrix::Test() noexcept
     assert(m(0,0) == 1.0); assert(m(0,1) == 2.0); assert(m(0,2) == 3.0);
     assert(m(1,0) == 4.0); assert(m(1,1) == 5.0); assert(m(1,2) == 6.0);
     assert(m(2,0) == 7.0); assert(m(2,1) == 8.0); assert(m(2,2) == 9.0);
-    const std::vector<matrix<double>> n = Chop(m);
+    const std::vector<matrix<double> > n = Chop(m);
     assert(n.size() == 4);
     assert(n[0].size1() == 1);
     assert(n[0].size2() == 1);
@@ -615,7 +618,7 @@ void ribi::Matrix::Test() noexcept
     assert(m(2,0) == 11.0); assert(m(2,1) == 12.0); assert(m(2,2) == 13.0); assert(m(2,3) == 14.0); assert(m(2,4) == 15.0);
     assert(m(3,0) == 16.0); assert(m(3,1) == 17.0); assert(m(3,2) == 18.0); assert(m(3,3) == 19.0); assert(m(3,4) == 20.0);
     assert(m(4,0) == 21.0); assert(m(4,1) == 22.0); assert(m(4,2) == 23.0); assert(m(4,3) == 24.0); assert(m(4,4) == 25.0);
-    const std::vector<matrix<double>> n = Chop(m);
+    const std::vector<matrix<double> > n = Chop(m);
     assert(n.size() == 4);
     assert(n[0].size1() == 2);
     assert(n[0].size2() == 2);
@@ -924,7 +927,7 @@ bool ribi::Matrix::VectorIsAboutEqual(
   const boost::numeric::ublas::vector<double>& a,
   const boost::numeric::ublas::vector<double>& b) noexcept
 {
-  std::clog << "VectorIsAboutEqual: Deprecated naming\n";
+  TRACE("Deprecated naming");
   return VectorsAreAboutEqual(a,b);
 }
 

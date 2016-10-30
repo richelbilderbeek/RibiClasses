@@ -13,6 +13,8 @@
 
 #include "ribi_random.h"
 #include "templocale.h"
+#include "testtimer.h"
+#include "trace.h"
 #pragma GCC diagnostic pop
 
 ribi::ModelFunctionParser::ModelFunctionParser(
@@ -20,6 +22,9 @@ ribi::ModelFunctionParser::ModelFunctionParser(
   const std::string& variable_name)
   : m_parser{new FunctionParser}
 {
+  #ifndef NDEBUG
+  Test();
+  #endif
   assert(m_parser);
 
   const double pi = boost::math::constants::pi<double>();
@@ -44,6 +49,10 @@ ribi::ModelFunctionParser::ModelFunctionParser(
       + "' (note: this can have to do that FunctionParser assumes an English locale,"
       + "as '0.0' should be accepted)"
     ;
+    #ifndef NDEBUG
+    TRACE(my_function);
+    TRACE(variable_name);
+    #endif
     throw std::runtime_error(error.c_str());
   }
 }
@@ -78,6 +87,12 @@ double ribi::ModelFunctionParser::MyRand(const double * const max) noexcept
 #ifndef NDEBUG
 void ribi::ModelFunctionParser::Test() noexcept
 {
+  {
+    static bool is_tested{false};
+    if (is_tested) return;
+    is_tested = true;
+  }
+  const TestTimer test_timer(__func__,__FILE__,1.0);
   //Set std::locale to English
   TempLocale temp_english_locale("en_US.UTF-8");
 

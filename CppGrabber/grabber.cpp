@@ -4,7 +4,6 @@
 #pragma GCC diagnostic ignored "-Weffc++"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
-#include <iostream>
 #include <sstream>
 
 #include <QImage>
@@ -12,6 +11,8 @@
 #include <QScreen>
 #include <QApplication>
 
+
+// #include "trace.h"
 #pragma GCC diagnostic pop
 
 ribi::Grabber::Grabber(
@@ -52,13 +53,15 @@ void ribi::Grabber::Grab() const noexcept
   if (n_screens == 0)
   {
     std::stringstream s;
-    std::clog << "WARNING: no screens, so no screenshot\n";
+    s << "WARNING: no screens, so no screenshot";
+    // TRACE(s.str());
     return;
   }
   if (n_screens != 1)
   {
     std::stringstream s;
-    std::clog << "WARNING: number of screens " << n_screens << " (instead of just one), taking screenshot of first\n";
+    s << "WARNING: number of screens " << n_screens << " (instead of just one), taking screenshot of first";
+    // TRACE(s.str());
   }
   const QImage screenshot{screens[0]->grabWindow(m_win_id).toImage()};
   #else

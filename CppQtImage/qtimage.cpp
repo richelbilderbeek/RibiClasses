@@ -9,6 +9,9 @@
 #include <QGraphicsItem>
 #include <QGraphicsScene>
 #include <QPainter>
+
+
+// #include "trace.h"
 #pragma GCC diagnostic pop
 
 ribi::QtImage::QtImage() noexcept

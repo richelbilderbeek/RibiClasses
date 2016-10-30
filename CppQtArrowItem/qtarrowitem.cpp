@@ -35,6 +35,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include <QPainter>
 
 #include "geometry.h"
+// #include "trace.h"
 #pragma GCC diagnostic pop
 
 const double ribi::QtArrowItem::m_click_easy_width = 10.0;

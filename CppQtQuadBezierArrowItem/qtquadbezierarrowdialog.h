@@ -21,7 +21,7 @@ struct QtQuadBezierArrowItem;
 //Cannot mark it as a final class, because that would break Qt4 compatibility
 class QtQuadBezierArrowDialog : public QtHideAndShowDialog
 {
-  Q_OBJECT //!OCLINT
+  Q_OBJECT
 
 public:
   typedef boost::shared_ptr<QtQuadBezierArrowItem> Arrow;

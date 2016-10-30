@@ -31,7 +31,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <functional>
 #include <iostream>
 #include <iterator>
-#include <numeric>
 
 #include <boost/algorithm/string/split.hpp>
 #include <boost/geometry.hpp>
@@ -781,4 +780,3 @@ bool ribi::IsAboutEqual(const DrawCanvas& lhs, const DrawCanvas& rhs) noexcept
   }
   return true;
 }
-

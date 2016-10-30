@@ -30,7 +30,7 @@ namespace ribi {
 ///Biology contains biology-related classes and functions
 struct Biology
 {
-  explicit Biology() noexcept {}
+  explicit Biology() noexcept;
   typedef double DnDt;
   typedef double PopSize;
 
@@ -44,11 +44,13 @@ struct Biology
   /// K: Carrying capacity: the stable population size if r > 1.0
   /// r: intrinsic growth rate, the average number of offspring an individual has
   /// t: time
-  DnDt LogisticGrowth(
-    const PopSize carrying_capacity,
-    const PopSize current_population_size,
-    const double intrinsic_growth_rate
-  );
+  DnDt LogisticGrowth(const PopSize carrying_capacity, const PopSize current_population_size, const double intrinsic_growth_rate);
+
+  private:
+
+  #ifndef NDEBUG
+  void Test() noexcept;
+  #endif
 };
 
 } //~namespace ribi

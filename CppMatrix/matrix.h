@@ -41,7 +41,7 @@ struct Matrix
   ///Chop returns a std::vector of sub-matrices
   ///[ A at [0]   B at [1] ]
   ///[ C at [2]   D at [4] ]
-  static const std::vector<boost::numeric::ublas::matrix<double>> Chop(
+  static const std::vector<boost::numeric::ublas::matrix<double> > Chop(
     const boost::numeric::ublas::matrix<double>& m);
 
   ///Create a n_rows x n_cols sized matrix from a std::vector,
