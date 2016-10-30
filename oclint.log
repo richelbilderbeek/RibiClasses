@@ -1,0 +1,29 @@
+
+Compiler Warnings:
+
+/home/p230198/GitHubs/RibiClasses/CppConceptMap/conceptmapcenternodefactory.cpp:24:32: unknown warning group '-Wunused-but-set-parameter', ignored
+/home/p230198/GitHubs/RibiClasses/CppConceptMap/conceptmapcenternodefactory.h:28:32: unknown warning group '-Wunused-but-set-parameter', ignored
+/home/p230198/GitHubs/RibiClasses/CppConceptMap/conceptmapnode.h:27:32: unknown warning group '-Wunused-but-set-parameter', ignored
+/home/p230198/GitHubs/RibiClasses/CppConceptMap/conceptmapconcept.h:30:32: unknown warning group '-Wunused-but-set-parameter', ignored
+/home/p230198/GitHubs/RibiClasses/CppConceptMap/conceptmapexamples.h:27:32: unknown warning group '-Wunused-but-set-parameter', ignored
+/home/p230198/GitHubs/RibiClasses/CppConceptMap/conceptmapexamplefactory.h:28:32: unknown warning group '-Wunused-but-set-parameter', ignored
+/home/p230198/GitHubs/RibiClasses/CppConceptMap/conceptmapexamplesfactory.h:28:32: unknown warning group '-Wunused-but-set-parameter', ignored
+/home/p230198/GitHubs/RibiClasses/CppConceptMap/conceptmaphelper.h:33:32: unknown warning group '-Wunused-but-set-parameter', ignored
+/home/p230198/GitHubs/RibiClasses/CppConceptMap/conceptmapnodefactory.h:28:32: unknown warning group '-Wunused-but-set-parameter', ignored
+/home/p230198/GitHubs/RibiClasses/CppConceptMap/conceptmapregex.h:9:32: unknown warning group '-Wunused-but-set-parameter', ignored
+/home/p230198/GitHubs/RibiClasses/CppConceptMap/conceptmapexample.cpp:24:32: unknown warning group '-Wunused-but-set-parameter', ignored
+/home/p230198/GitHubs/RibiClasses/CppConceptMap/conceptmapcompetencies.h:30:32: unknown warning group '-Wunused-but-set-parameter', ignored
+/home/p230198/GitHubs/RibiClasses/CppConceptMap/conceptmapedge.h:27:32: unknown warning group '-Wunused-but-set-parameter', ignored
+/home/p230198/GitHubs/RibiClasses/CppConceptMap/conceptmaphelper.cpp:24:32: unknown warning group '-Wunused-but-set-parameter', ignored
+/home/p230198/GitHubs/RibiClasses/CppConceptMap/conceptmapedgefactory.h:27:32: unknown warning group '-Wunused-but-set-parameter', ignored
+/home/p230198/GitHubs/RibiClasses/CppConceptMap/conceptmapfactory.cpp:48:24: pragma diagnostic pop could not pop, no matching push
+/home/p230198/GitHubs/RibiClasses/CppConceptMap/conceptmapexamplefactory.cpp:24:32: unknown warning group '-Wunused-but-set-parameter', ignored
+/home/p230198/GitHubs/RibiClasses/CppConceptMap/conceptmapnode.cpp:24:32: unknown warning group '-Wunused-but-set-parameter', ignored
+
+
+OCLint Report
+
+Summary: TotalFiles=17 FilesWithViolations=0 P1=0 P2=0 P3=0 
+
+
+[OCLint (http://oclint.org) v0.10.3]
