@@ -36,6 +36,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "qtroundedrectitemdialog.h"
 #include "qtroundededitrectitem.h"
 
+// #include "trace.h"
 #include "ui_qtroundededitrectitemdialog.h"
 #pragma GCC diagnostic pop
 
@@ -93,7 +94,6 @@ void ribi::QtRoundedEditRectItemDialog::keyPressEvent(QKeyEvent * event)
 
 void ribi::QtRoundedEditRectItemDialog::on_button_font_clicked()
 {
-  assert(m_item);
   static QFont font = m_item->GetFont();
   bool ok = false;
   const QFont new_font = QFontDialog::getFont(&ok, font, this);
@@ -104,7 +104,6 @@ void ribi::QtRoundedEditRectItemDialog::on_text_textChanged()
 {
   const auto s = ui->text->toPlainText().toStdString();
   const auto text = Container().SeperateString(s,'\n');
-  assert(m_item);
   m_item->SetText(text);
 }
 
@@ -114,7 +113,6 @@ void ribi::QtRoundedEditRectItemDialog::on_button_text_pen_clicked()
     QBrush(qRgb(std::rand() % 256,std::rand() % 256,std::rand() % 256)),
     1.0 + (static_cast<double>(std::rand() % 100) / 10.0)
   );
-  assert(m_item);
   m_item->SetTextPen(pen);
 }
 

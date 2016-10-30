@@ -2,8 +2,11 @@ INCLUDEPATH += \
     ../RibiClasses/CppTempLocale
 
 SOURCES += \
-    $$PWD/templocale.cpp
+    ../RibiClasses/CppTempLocale/templocale.cpp
 
 HEADERS  += \
-    $$PWD/templocale.h
+    ../RibiClasses/CppTempLocale/templocale.h
+
+OTHER_FILES += \
+    ../RibiClasses/CppTempLocale/Licence.txt
 

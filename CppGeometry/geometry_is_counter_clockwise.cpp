@@ -3,6 +3,7 @@
 #include <cassert>
 
 #include "plane.h"
+// #include "trace.h"
 
 bool ribi::Geometry::IsCounterClockwise(const Apfloat& a, const Apfloat& b) const noexcept
 {
@@ -52,6 +53,7 @@ bool ribi::Geometry::IsCounterClockwiseCartesian(
   const ApCoordinat3D& observer
 ) const noexcept
 {
+  // const bool verbose{false};
   const int n_points{static_cast<int>(points.size())};
   assert(n_points == 3 || n_points == 4);
   if (n_points == 3)
@@ -62,6 +64,15 @@ bool ribi::Geometry::IsCounterClockwiseCartesian(
     const auto normal = CalcNormal(a,b,c);
     const Apfloat direction{CalcDotProduct(normal,a - observer)};
     const bool is_counter_clockwise{direction > Apfloat(0.0)}; //Difference between CW ('<') and CCW ('>')
+    /* if (verbose)
+    {
+    //  TRACE(ToStr(a));
+    //  TRACE(ToStr(b));
+    //  TRACE(ToStr(c));
+    //  TRACE(ToStr(normal));
+    //  TRACE(ToStrSafe(direction));
+    //  TRACE(is_counter_clockwise);
+    } */
     return is_counter_clockwise;
   }
   else
@@ -81,6 +92,7 @@ bool ribi::Geometry::IsCounterClockwiseCartesian(
         }
       )
     ;
+
     //If the points are messed up, they cannot be clockwise
     if (!IsClockwiseCartesianHorizontal(v) && !IsCounterClockwiseCartesianHorizontal(v)) return false;
     //The neatly orderder point have the same winding as the first three

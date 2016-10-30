@@ -39,9 +39,11 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include <QPainter>
 #include <QGraphicsView>
 #include <QApplication>
+#include <QTimer>
 
 #include "geometry.h"
 #include "grabber.h"
+// #include "trace.h"
 #include "qtroundededitrectitem.h"
 #include "qtroundedrectitem.h"
 #pragma GCC diagnostic pop
@@ -64,22 +66,15 @@ ribi::QtQuadBezierArrowItem::QtQuadBezierArrowItem(
     m_pen{QPen(QColor(0,0,0))},
     m_show_bounding_rect{false},
     m_tail{tail},
-    m_to{to},
-    m_verbose{false}
+    m_to{to}
+    // m_verbose{false}
 {
-  if (!from)
-  {
-    throw std::invalid_argument("QtQuadBezierArrowItem needs a non-null from");
-  }
-  if (!to)
-  {
-    throw std::invalid_argument("QtQuadBezierArrowItem needs a non-null to");
-  }
-  if (to == from || to == mid || mid == from)
-  {
-    throw std::invalid_argument("QtQuadBezierArrowItem needs a different to, from and mid");
-  }
-
+  assert(from);
+  assert(to);
+  assert((mid || !mid) && "No mid results in a straight arrow");
+  assert(from != to);
+  assert(from != mid);
+  assert(mid != to);
   this->setFlags(
       QGraphicsItem::ItemIsFocusable
     | QGraphicsItem::ItemIsSelectable
@@ -225,7 +220,15 @@ QPointF ribi::QtQuadBezierArrowItem::GetTail() const noexcept
     Point(qr_from.bottomRight().x(),qr_from.bottomRight().y())
     );
 
+  /* if (m_verbose)
+  {
+    TRACE(Geometry().ToStr(line_tail));
+    TRACE(Geometry().ToStr(r_from));
+  } */
+
   std::vector<Point> p_tail_end = Geometry().GetLineRectIntersections(line_tail,r_from);
+
+  // if (m_verbose) { TRACE(p_tail_end.size()); }
 
   if (p_tail_end.size() == 1)
   {
@@ -437,6 +440,19 @@ void ribi::QtQuadBezierArrowItem::paint(QPainter* painter, const QStyleOptionGra
     painter->setPen(prev_pen);
     painter->setBrush(prev_brush);
   }
+
+  /* if (m_verbose)
+  {
+    TRACE("START");
+    TRACE(Geometry().ToStr(this->GetTail()));
+    TRACE(Geometry().ToStr(this->GetFromItem()->pos()));
+    TRACE(Geometry().ToStr(GetMidItem()->pos()));
+    //TRACE(Geometry().ToStr(p_center));
+    TRACE(Geometry().ToStr(p_beyond));
+    TRACE(Geometry().ToStr(this->GetToItem()->pos()));
+    TRACE(Geometry().ToStr(this->GetHead()));
+    TRACE("END");
+  } */
 }
 
 void ribi::QtQuadBezierArrowItem::SetFocusPen(const QPen& pen) noexcept

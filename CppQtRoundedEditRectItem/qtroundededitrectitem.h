@@ -34,7 +34,7 @@ namespace ribi {
 ///For a single line of text, use QtRoundedEditRectItem
 class QtRoundedEditRectItem : public QtRoundedRectItem
 {
-  //Q_OBJECT  //!OCLINT //Cannot make this a QObject???
+  //Q_OBJECT //Cannot make this a QObject???
 
   public:
   typedef QtRoundedRectItem Base;
@@ -146,7 +146,6 @@ class QtRoundedEditRectItem : public QtRoundedRectItem
   ///Set the pen by which the text is drawn
   void SetTextPen(const QPen& pen) noexcept;
 
-  int type() const override { return UserType + 2; }
 protected:
   virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) noexcept;
 

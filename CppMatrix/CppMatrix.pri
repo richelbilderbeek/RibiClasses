@@ -2,8 +2,11 @@ INCLUDEPATH += \
     ../RibiClasses/CppMatrix
 
 SOURCES += \
-    $$PWD/matrix.cpp
+    ../RibiClasses/CppMatrix/matrix.cpp
 
 HEADERS  += \
-    $$PWD/matrix.h
+    ../RibiClasses/CppMatrix/matrix.h
+
+OTHER_FILES += \
+    ../RibiClasses/CppMatrix/Licence.txt
 

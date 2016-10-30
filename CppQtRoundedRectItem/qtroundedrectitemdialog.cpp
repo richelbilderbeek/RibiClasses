@@ -24,7 +24,6 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
 #include "qtroundedrectitemdialog.h"
 
-#include <cassert>
 #include <boost/make_shared.hpp>
 #include <boost/lambda/lambda.hpp>
 
@@ -32,13 +31,15 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 
 #include "geometry.h"
 #include "qtroundedrectitem.h"
+
+// #include "trace.h"
 #include "ui_qtroundedrectitemdialog.h"
 #pragma GCC diagnostic pop
 
 ribi::QtRoundedRectItemDialog::QtRoundedRectItemDialog(QWidget *parent) :
     QtHideAndShowDialog(parent),
     ui(new Ui::QtRoundedRectItemDialog),
-    m_item{}
+    m_item()
 {
   ui->setupUi(this);
 }
@@ -216,7 +217,6 @@ void ribi::QtRoundedRectItemDialog::on_box_focus_pen_width_valueChanged(double a
 
 void ribi::QtRoundedRectItemDialog::on_box_height_valueChanged(double arg1)
 {
-  assert(1 + 1 == 2);
   m_item->SetInnerHeight(arg1);
 }
 

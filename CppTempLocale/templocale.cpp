@@ -23,6 +23,8 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include <cassert>
 #include <locale>
 
+#include "testtimer.h"
+
 struct ribi::TempLocale::TempLocaleImpl
 {
   explicit TempLocaleImpl(
@@ -83,6 +85,7 @@ void ribi::TempLocale::Test() noexcept
     if (is_tested) return;
     is_tested = true;
   }
+  const TestTimer test_timer(__func__,__FILE__,1.0);
   {
     const double x = 1.5;
     const TempLocale temp_dutch_locale("nl_NL.UTF-8");

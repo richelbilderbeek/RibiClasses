@@ -41,7 +41,7 @@ struct QtRoundedRectItemDialog; //its base class display
 
 class QtRoundedEditRectItemDialog : public QtHideAndShowDialog
 {
-  Q_OBJECT //!OCLINT
+  Q_OBJECT
     
 public:
 
