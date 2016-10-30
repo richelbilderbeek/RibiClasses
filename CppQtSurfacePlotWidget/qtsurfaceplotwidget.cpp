@@ -37,9 +37,8 @@ ribi::QtSurfacePlotWidget::QtSurfacePlotWidget(QWidget *parent)
   : QWidget(parent),
     m_surface{}
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
+  //Just one simple test
+  assert(Rescale(2.0,1.0,5.0,0.0,100.0) >= 24.9999 && Rescale(2.0,1.0,5.0,0.0,100.0) < 25.0001);
 
   std::vector<std::vector<unsigned char>> v(128,std::vector<unsigned char>(128));
   for(int y=0; y!=128; ++y)
@@ -122,12 +121,13 @@ void ribi::QtSurfacePlotWidget::Plot(
 }
 
 
-double ribi::QtSurfacePlotWidget::Rescale(
+double ribi::Rescale(
   const double value,
   const double old_min,
   const double old_max,
   const double new_min,
-  const double new_max) noexcept
+  const double new_max
+) noexcept
 {
   assert(value >= old_min);
   assert(value <= old_max);
@@ -196,16 +196,3 @@ void ribi::QtSurfacePlotWidget::SetSurfaceGrey(const std::vector<std::vector<uns
   m_surface = surface;
   this->repaint();
 }
-
-#ifndef NDEBUG
-void ribi::QtSurfacePlotWidget::Test() noexcept
-{
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
-  assert(Rescale(2.0,1.0,5.0,0.0,100.0) >= 24.9999 && Rescale(2.0,1.0,5.0,0.0,100.0) < 25.0001);
-}
-#endif

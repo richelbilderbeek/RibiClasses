@@ -77,23 +77,19 @@ protected:
 private:
   std::vector<std::vector<unsigned char>> m_surface;
 
-  ///Rescale calculates a value between old_min and old_max its relative place and transforms
-  ///this relative position to a new_min and new_max
-  ///For example: for the old range [1,5], the value 2 is at 25% of this range. Transforming this
-  ///to the new range range [0,100] results in a 25
-  static double Rescale(
-    const double value,
-    const double old_min,
-    const double old_max,
-    const double new_min,
-    const double new_max
-  ) noexcept;
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
-
 };
+
+///Rescale calculates a value between old_min and old_max its relative place and transforms
+///this relative position to a new_min and new_max
+///For example: for the old range [1,5], the value 2 is at 25% of this range. Transforming this
+///to the new range range [0,100] results in a 25
+double Rescale(
+  const double value,
+  const double old_min,
+  const double old_max,
+  const double new_min,
+  const double new_max
+) noexcept;
 
 } //~namespace ribi
 
