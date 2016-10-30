@@ -39,8 +39,6 @@ include(../RibiClasses/CppRibiTime/CppRibiTime.pri)
 include(../RibiClasses/CppRibiTime/CppRibiTimeTest.pri)
 include(../RibiClasses/CppStopwatch/CppStopwatch.pri)
 include(../RibiClasses/CppStopwatch/CppStopwatchTest.pri)
-include(../RibiClasses/CppUnits/CppUnits.pri)
-include(../RibiClasses/CppUnits/CppUnitsTest.pri)
 include(../RibiClasses/CppXml/CppXml.pri)
 include(../RibiClasses/CppXml/CppXmlTest.pri)
 
