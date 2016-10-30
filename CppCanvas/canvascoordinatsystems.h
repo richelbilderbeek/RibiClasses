@@ -26,10 +26,6 @@ struct CanvasCoordinatSystems
   private:
   static boost::bimap<CanvasCoordinatSystem,std::string> m_map;
   static boost::bimap<CanvasCoordinatSystem,std::string> CreateMap();
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 };
 
 } //~namespace ribi

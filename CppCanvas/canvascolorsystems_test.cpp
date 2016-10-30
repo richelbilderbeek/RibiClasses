@@ -2,11 +2,16 @@
 
 #include <cassert>
 
+#include "testtimer.h"
+#include "trace.h"
+
 boost::bimap<ribi::CanvasColorSystem,std::string> ribi::CanvasColorSystems::m_map;
 
 ribi::CanvasColorSystems::CanvasColorSystems()
 {
-
+  #ifndef NDEBUG
+  Test();
+  #endif
 }
 
 boost::bimap<ribi::CanvasColorSystem,std::string> ribi::CanvasColorSystems::CreateMap()
@@ -28,6 +33,29 @@ std::vector<ribi::CanvasColorSystem> ribi::CanvasColorSystems::GetAll() const no
   assert(static_cast<int>(v.size()) == static_cast<int>(CanvasColorSystem::n_types));
   return v;
 }
+
+#ifndef NDEBUG
+void ribi::CanvasColorSystems::Test() noexcept
+{
+  {
+    static bool is_tested{false};
+    if (is_tested) return;
+    is_tested = true;
+  }
+  const TestTimer test_timer(__func__,__FILE__,1.0);
+  const std::vector<CanvasColorSystem> v = CanvasColorSystems().GetAll();
+  const std::size_t sz = v.size();
+  for (std::size_t i=0; i!=sz; ++i)
+  {
+    assert(i < v.size());
+    const CanvasColorSystem t = v[i];
+    const std::string s = CanvasColorSystems().ToStr(t);
+    assert(!s.empty());
+    const CanvasColorSystem u = CanvasColorSystems().ToType(s);
+    assert(u == t);
+  }
+}
+#endif
 
 std::string ribi::CanvasColorSystems::ToStr(const CanvasColorSystem type) const noexcept
 {

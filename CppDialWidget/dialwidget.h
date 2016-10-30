@@ -75,10 +75,6 @@ struct DialWidget : public Widget
   TextCanvas ToTextCanvas(const int radius) const noexcept;
 
   private:
-
-  ///Test this class
-  static void Test() noexcept;
-
   Dial m_dial;
 
   friend std::ostream& operator<<(std::ostream& os, const DialWidget& widget) noexcept;

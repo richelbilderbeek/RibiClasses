@@ -2,11 +2,7 @@ INCLUDEPATH += \
     ../RibiClasses/CppDialWidget
 
 SOURCES += \
-    ../RibiClasses/CppDialWidget/dialwidget.cpp
+    $$PWD/dialwidget.cpp
 
 HEADERS  += \
-    ../RibiClasses/CppDialWidget/dialwidget.h
-
-OTHER_FILES += \
-    ../RibiClasses/CppDialWidget/Licence.txt
-
+    $$PWD/dialwidget.h

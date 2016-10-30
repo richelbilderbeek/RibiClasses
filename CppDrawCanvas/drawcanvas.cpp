@@ -46,8 +46,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "fileio.h"
 #include "geometry.h"
 #include "ribi_regex.h"
-#include "testtimer.h"
-#include "trace.h"
 #include "xml.h"
 
 #pragma GCC diagnostic pop
@@ -62,9 +60,6 @@ ribi::DrawCanvas::DrawCanvas(
     m_color_system(color_system),
     m_coordinat_system(coordinat_system)
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
   assert(width  > 0);
   assert(height > 0);
 }
@@ -77,9 +72,6 @@ ribi::DrawCanvas::DrawCanvas(
     m_color_system(color_system),
     m_coordinat_system(coordinat_system)
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
   assert(!canvas.empty());
   assert(!canvas[0].empty());
 }
@@ -498,18 +490,6 @@ void ribi::DrawCanvas::Save(const std::string& filename) const noexcept
     std::ofstream f(filename.c_str());
     f << t;
   }
-  #ifndef NDEBUG
-  {
-    DrawCanvas c(filename);
-    if (!IsAboutEqual(*this,c))
-    {
-      TRACE("ERROR");
-      TRACE(*this);
-      TRACE(c);
-    }
-    assert(IsAboutEqual(*this,c));
-  }
-  #endif
 }
 
 void ribi::DrawCanvas::SetColorSystem(const CanvasColorSystem colorSystem) noexcept
@@ -527,186 +507,6 @@ void ribi::DrawCanvas::SetCoordinatSystem(const CanvasCoordinatSystem coordinatS
     this->m_coordinat_system = coordinatSystem;
   }
 }
-
-#ifndef NDEBUG
-void ribi::DrawCanvas::Test() noexcept
-{
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  {
-    Container();
-    DotMatrixString("X",1);
-    CanvasColorSystems();
-    CanvasCoordinatSystems();
-    fileio::FileIo();
-    Geometry();
-  }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
-  //Drawing text
-  {
-    const int maxx = 90;
-    const int maxy = 18;
-    DrawCanvas canvas(maxx,maxy,CanvasColorSystem::invert);
-    std::stringstream s_before;
-    s_before << canvas;
-    const std::string str_before {s_before.str() };
-    assert(static_cast<int>(str_before.size()) - maxy == maxx * maxy); //-maxy, as newlines are added
-    assert(std::count(str_before.begin(),str_before.end(),' ') == maxx * maxy); //Only spaces
-
-    canvas.DrawText(1,1,"Hello world");
-
-    std::stringstream s_after;
-    s_after << canvas;
-    const std::string str_after {s_after.str() };
-    assert(std::count(str_after.begin(),str_after.end(),' ') != maxx * maxy); //Line trly drawn
-  }
-  //Is a line that starts and ends beyond the canvas drawn?
-  {
-    const int maxx = 3;
-    const int maxy = 4;
-    DrawCanvas canvas(maxx,maxy,CanvasColorSystem::invert);
-    std::stringstream s_before;
-    s_before << canvas;
-    const std::string str_before {s_before.str() };
-    assert(static_cast<int>(str_before.size()) - maxy == maxx * maxy); //-maxy, as newlines are added
-    assert(std::count(str_before.begin(),str_before.end(),' ') == maxx * maxy); //Only spaces
-
-    canvas.DrawLine(-maxx,-maxy,maxx*2.0,maxy*2.0);
-
-    std::stringstream s_after;
-    s_after << canvas;
-    const std::string str_after {s_after.str() };
-    assert(std::count(str_after.begin(),str_after.end(),' ') != maxx * maxy); //Line trly drawn
-  }
-  //Draw a polygon
-  {
-    /*
-
-    6 +
-      |
-    5 +      -C
-      |     - |
-    4 +   --  |
-      |  -    |
-    3 + B     |
-      | |    |
-    2 + |    |
-      | |   |
-    1 + A---D
-      |
-    0 +-+-+-+-+-+-+
-
-      0 1 2 3 4 5 6
-    */
-    const int maxx = 22;
-    const int maxy = 22;
-    DrawCanvas canvas(
-      maxx,
-      maxy,
-      CanvasColorSystem::invert,
-      CanvasCoordinatSystem::graph
-    );
-    const std::vector<Coordinat> points {
-      {  4.0,  4.0}, //A
-      {  4.0, 12.0}, //B
-      { 16.0, 20.0}, //C
-      { 12.0,  4.0}  //D
-    };
-    boost::geometry::model::polygon<Coordinat> polygon;
-    boost::geometry::append(polygon,points);
-    canvas.DrawPolygon(polygon);
-    {
-      std::stringstream s;
-      s << canvas;
-      assert(!s.str().empty());
-    }
-  }
-  //Draw a smiley is all coordinat- and colorsystem combinations
-  for (int i=0; i!=4; ++i)
-  {
-    const int maxx = 79;
-    const int maxy = 23;
-    DrawCanvas canvas(maxx,maxy);
-    canvas.SetColorSystem(
-      i % 2
-      ? CanvasColorSystem::normal
-      : CanvasColorSystem::invert);
-    canvas.SetCoordinatSystem(
-      i / 2
-      ? CanvasCoordinatSystem::screen
-      : CanvasCoordinatSystem::graph);
-
-    //Determine and calculate dimensions and coordinats of smiley
-    const double maxxD = static_cast<double>(maxx);
-    const double maxyD = static_cast<double>(maxy);
-    const double midX        = 0.50 * maxxD;
-    const double midY        = 0.50 * maxyD;
-    const double headRay     = 0.50 * maxyD;
-    const double eyeLeftX    = 0.50 * maxxD - (0.35 * headRay) ;
-    const double eyeLeftY    = 0.50 * maxyD - (0.25 * headRay) ;
-    const double eyeRightX   = 0.50 * maxxD + (0.35 * headRay) ;
-    const double eyeRightY   = 0.50 * maxyD - (0.25 * headRay) ;
-    const double eyeRay      = 0.30 * headRay;
-    const double mouthLeftX  = 0.50 * maxxD - (0.7 * headRay) ;
-    const double mouthMidX   = 0.50 * maxxD;
-    const double mouthRightX = 0.50 * maxxD + (0.7 * headRay) ;
-    const double mouthLeftY  = 0.50 * maxyD + (0.2 * headRay) ;
-    const double mouthMidY   = 0.50 * maxyD + (0.7 * headRay) ;
-    const double mouthRightY = 0.50 * maxyD + (0.2 * headRay) ;
-    //Draw the image on DrawCanvas
-    canvas.DrawCircle(midX, midY, headRay);
-    canvas.DrawCircle(eyeLeftX, eyeLeftY, eyeRay);
-    canvas.DrawDot(eyeLeftX, eyeLeftY);
-    canvas.DrawCircle(eyeRightX, eyeRightY, eyeRay);
-    canvas.DrawDot(eyeRightX, eyeRightY);
-    canvas.DrawLine(mouthLeftX, mouthLeftY, mouthMidX, mouthMidY);
-    canvas.DrawLine(mouthMidX, mouthMidY, mouthRightX, mouthRightY);
-    canvas.DrawLine(mouthRightX, mouthRightY, mouthLeftX, mouthLeftY);
-    {
-      std::stringstream s;
-      s << canvas;
-      assert(!s.str().empty());
-    }
-    canvas.Clear();
-    {
-      canvas.SetColorSystem(CanvasColorSystem::invert); //Background = Black
-      std::stringstream s;
-      s << canvas;
-      const std::string t { s.str() };
-      assert(std::count(t.begin(),t.end(),' ') == canvas.GetWidth() * canvas.GetHeight());
-
-    }
-  }
-  //Saving and loading
-  {
-    const int maxx = 2;
-    const int maxy = 3;
-    DrawCanvas canvas(maxx,maxy,CanvasColorSystem::invert);
-    canvas.DrawLine(-maxx,-maxy,maxx*2.0,maxy*2.0);
-
-    const DrawCanvas old_canvas(
-      canvas.GetGreynesses(),
-      canvas.GetColorSystem(),
-      canvas.GetCoordinatSystem()
-    );
-    assert(old_canvas == canvas);
-
-    const std::string temp_filename { fileio::FileIo().GetTempFileName() };
-    canvas.Save(temp_filename);
-    canvas.Clear();
-
-    assert(old_canvas != canvas);
-
-    const DrawCanvas new_canvas(temp_filename);
-
-    assert(old_canvas == new_canvas);
-
-  }
-}
-#endif
 
 std::vector<std::string> ribi::DrawCanvas::ToStrings() const noexcept
 {
@@ -741,21 +541,17 @@ bool ribi::operator!=(const DrawCanvas& lhs, const DrawCanvas& rhs) noexcept
 
 bool ribi::IsAboutEqual(const DrawCanvas& lhs, const DrawCanvas& rhs) noexcept
 {
-  const bool verbose{false};
   if (lhs.GetColorSystem() != rhs.GetColorSystem())
   {
-    if (verbose) { TRACE("Color systems differ"); }
     return false;
   }
   if (lhs.GetCoordinatSystem() != rhs.GetCoordinatSystem())
   {
-    if (verbose) { TRACE("Coordinat systems differ"); }
     return false;
   }
 
   if (lhs.GetGreynesses().size() != rhs.GetGreynesses().size())
   {
-    if (verbose) { TRACE("Number of rows differ"); }
     return false;
   }
   const std::size_t n_rows = lhs.GetGreynesses().size();
@@ -765,7 +561,6 @@ bool ribi::IsAboutEqual(const DrawCanvas& lhs, const DrawCanvas& rhs) noexcept
     const std::vector<double>& w { rhs.GetGreynesses()[row] };
     if (v.size() != w.size())
     {
-      if (verbose) { TRACE("Number of columns differ"); }
       return false;
     }
     const std::size_t n_cols = v.size();
@@ -774,7 +569,6 @@ bool ribi::IsAboutEqual(const DrawCanvas& lhs, const DrawCanvas& rhs) noexcept
       const double diff = std::abs(v[col] - w[col]);
       if (diff > 0.01)
       {
-        if (verbose) { TRACE("Value differs"); }
         return false;
       }
     }

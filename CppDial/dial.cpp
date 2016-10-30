@@ -30,8 +30,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <boost/numeric/conversion/cast.hpp>
 
 #include "geometry.h"
-#include "testtimer.h"
-#include "trace.h"
 
 #pragma GCC diagnostic pop
 
@@ -45,9 +43,6 @@ ribi::Dial::Dial(
     m_position{position},
     m_red{red}
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
   assert(m_position >= 0.0);
   assert(m_position <= 1.0);
 }
@@ -119,63 +114,6 @@ void ribi::Dial::SetPosition(const double position) noexcept
     m_position = position;
   }
 }
-
-#ifndef NDEBUG
-void ribi::Dial::Test() noexcept
-{
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  {
-    Geometry();
-  }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
-  {
-    const Dial a;
-    const Dial b;
-    assert(a == b);
-  }
-  {
-    const Dial a(0.0,255,0,0);
-    const Dial b(0.0,255,0,0);
-    assert(a == b);
-  }
-  {
-    const Dial a(0.0,255,0,0);
-    const Dial b(1.0,255,0,0);
-    assert(a != b);
-  }
-  {
-    const Dial a(0.0,255,0,0);
-    const Dial b(0.0,0,0,0);
-    assert(a != b);
-  }
-  {
-    const Dial a(0.0,255,0,0);
-    const Dial b(0.0,255,255,0);
-    assert(a != b);
-  }
-  {
-    const Dial a(0.0,255,0,0);
-    const Dial b(0.0,255,0,255);
-    assert(a != b);
-  }
-  {
-    const Dial a;
-    const Dial b(a);
-    assert(a == b);
-  }
-  {
-    const Dial a(0.0,255,0,0);
-    Dial b(1.0,255,0,0);
-    assert(a != b);
-    b = a;
-    assert(a == b);
-  }
-}
-#endif
 
 std::ostream& ribi::operator<<(std::ostream& os, const Dial& dial)
 {

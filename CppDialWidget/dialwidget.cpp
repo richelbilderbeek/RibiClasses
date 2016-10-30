@@ -34,8 +34,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "dial.h"
 #include "drawcanvas.h"
 #include "geometry.h"
-#include "testtimer.h"
-#include "trace.h"
 #include "textcanvas.h"
 
 #pragma GCC diagnostic pop
@@ -51,9 +49,6 @@ ribi::DialWidget::DialWidget(
   const unsigned char blue)
   : m_dial{position,red,green,blue}
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
   this->SetGeometry(Geometry().CreateRect(x,y,width,height));
 }
 
@@ -107,41 +102,6 @@ bool ribi::DialWidget::IsClicked(const int x, const int y) const noexcept
   const double y_d = boost::numeric_cast<double>(y);
   return Geometry().GetDistance(x_d - widget_midx, y_d - widget_midy)
     < (boost::numeric_cast<double>(h.GetWidth(g)) / 2.0);
-}
-
-void ribi::DialWidget::Test() noexcept
-{
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  {
-    DrawCanvas();
-    TextCanvas();
-    Geometry();
-    Dial();
-  }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
-  {
-    DialWidget a;
-    DialWidget b;
-    assert(a == b);
-  }
-  {
-    DialWidget w;
-    for (double position = 0.0; position < 1.0; position += 0.0625)
-    {
-      w.GetDial().SetPosition(position);
-      std::stringstream s;
-      s << '\n' << w.ToTextCanvas(4);
-      assert(!s.str().empty());
-
-      s << '\n' << w.ToDrawCanvas(4);
-      assert(!s.str().empty());
-      //TRACE(s.str());
-    }
-  }
 }
 
 ribi::DrawCanvas ribi::DialWidget::ToDrawCanvas(const int radius) const noexcept
@@ -238,5 +198,3 @@ std::ostream& ribi::operator<<(std::ostream& os, const DialWidget& widget) noexc
   ;
   return os;
 }
-
-

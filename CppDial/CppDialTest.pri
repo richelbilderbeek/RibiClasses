@@ -2,8 +2,4 @@ INCLUDEPATH += \
     ../RibiClasses/CppDial
 
 SOURCES += \
-    $$PWD/dial.cpp
-
-HEADERS  += \
-    $$PWD/dial.h
-
+    $$PWD/dial_test.cpp

@@ -81,17 +81,8 @@ struct Widget
   void SetGeometry(const Rect& geometry) noexcept;
   void SetGeometry(const double left, const double top, const double width, const double height) noexcept;
 
-  ///Respond to a change in size
-  //mutable boost::signals2::signal<void ()> m_signal_geometry_changed;
-
-  protected:
-
   private:
   Rect m_geometry;
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 };
 
 bool operator==(const Widget& lhs, const Widget& rhs) noexcept;

@@ -25,10 +25,6 @@ struct CanvasColorSystems
   private:
   static boost::bimap<CanvasColorSystem,std::string> m_map;
   static boost::bimap<CanvasColorSystem,std::string> CreateMap();
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 };
 
 } //~namespace ribi

@@ -207,16 +207,11 @@ struct DrawCanvas : public Canvas
     std::ostream& os,
     const std::vector<std::vector<double>>& v,
     const bool use_normal_color_system,
-    const bool as_screen_coordinat_system);
-
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
+    const bool as_screen_coordinat_system
+  );
 
   friend std::ostream& operator<<(std::ostream& os, const DrawCanvas& canvas);
   friend bool operator==(const DrawCanvas& lhs, const DrawCanvas& rhs) noexcept;
-
 };
 
 std::ostream& operator<<(std::ostream& os, const DrawCanvas& canvas);

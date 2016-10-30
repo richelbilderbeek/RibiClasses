@@ -2,11 +2,9 @@ INCLUDEPATH += \
     ../RibiClasses/CppWidget
 
 SOURCES += \
-    ../RibiClasses/CppWidget/widget.cpp
+    $$PWD/widget.cpp
 
 HEADERS  += \
-    ../RibiClasses/CppWidget/widget.h
+    $$PWD/widget.h
 
-OTHER_FILES += \
-    ../RibiClasses/CppWidget/Licence.txt
 

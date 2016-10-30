@@ -79,10 +79,6 @@ struct Canvas
   //From http://www.richelbilderbeek.nl/CppMaxElement.htm
   template <class Container>
   static typename Container::value_type::value_type MaxElement(const Container& v);
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 };
 
 } //~namespace ribi

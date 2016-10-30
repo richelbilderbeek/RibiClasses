@@ -85,11 +85,6 @@ struct Dial
   unsigned char m_red;
 
   friend std::ostream& operator<<(std::ostream& os, const Dial& dial);
-
-  #ifndef NDEBUG
-  ///Test this class
-  static void Test() noexcept;
-  #endif
 };
 
 std::ostream& operator<<(std::ostream& os, const Dial& dial);

@@ -27,7 +27,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <boost/geometry/algorithms/equals.hpp>
 
 #include "geometry.h"
-#include "testtimer.h"
+
 
 #pragma GCC diagnostic pop
 
@@ -38,9 +38,7 @@ ribi::Widget::Widget(
   : m_geometry{
     CreateRect(top_left,bottom_right)}
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
+
 }
 
 ribi::Widget::Rect ribi::Widget::CreateRect(
@@ -124,63 +122,6 @@ void ribi::Widget::SetGeometry(const Rect& geometry) noexcept
     m_geometry = geometry;
   }
 }
-
-#ifndef NDEBUG
-void ribi::Widget::Test() noexcept
-{
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
-  using Point = boost::geometry::model::d2::point_xy<double>;
-  {
-    const Widget a;
-    const Widget b;
-    assert(a == b);
-  }
-  {
-    const Widget a(Point(0.0,0.0),Point(1.0,1.0));
-    const Widget b(Point(0.0,0.0),Point(1.0,1.0));
-    assert(a == b);
-  }
-  {
-    const Widget a(Point(0.0,0.0),Point(1.0,1.0));
-    const Widget b(Point(0.5,0.0),Point(1.0,1.0));
-    assert(a != b);
-  }
-  {
-    const Widget a(Point(0.0,0.0),Point(1.0,1.0));
-    const Widget b(Point(0.0,0.5),Point(1.0,1.0));
-    assert(a != b);
-  }
-  {
-    const Widget a(Point(0.0,0.0),Point(1.0,1.0));
-    const Widget b(Point(0.0,0.0),Point(1.5,1.0));
-    assert(a != b);
-  }
-  {
-    const Widget a(Point(0.0,0.0),Point(1.0,1.0));
-    const Widget b(Point(0.0,0.0),Point(1.0,1.5));
-    assert(a != b);
-  }
-
-  {
-    const Widget a;
-    const Widget b(a);
-    assert(a == b);
-  }
-  {
-    const Widget a(Point(0.0,0.0),Point(1.0,1.0));
-    Widget b(Point(0.0,0.0),Point(1.0,1.5));
-    assert(a != b);
-    b = a;
-    assert(a == b);
-  }
-}
-#endif
-
 
 bool ribi::operator==(const Widget& lhs, const Widget& rhs) noexcept
 {
