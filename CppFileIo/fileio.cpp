@@ -34,7 +34,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "filecopymode.h"
 
-#include "trace.h"
 #pragma GCC diagnostic pop
 
 ribi::fileio::FileIo::FileIo()
@@ -87,9 +86,6 @@ void ribi::fileio::FileIo::CreateFolder(const std::string& folder) const
   }
   const auto cmd = "mkdir " + folder;
   const auto error = std::system(cmd.c_str());
-  #ifndef NDEBUG
-  if (error) { TRACE(cmd); }
-  #endif
   assert(!error && "Assume mkdir works under both Windows and Linux");
   if (error)
   {
@@ -97,7 +93,6 @@ void ribi::fileio::FileIo::CreateFolder(const std::string& folder) const
     s << "ribi::fileio::FileIo::CreateFolder: "
       << "CreateFolder failed in creating the folder '" << folder << "': "
     ;
-    TRACE(s.str());
     throw std::runtime_error(s.str());
   }
   assert(IsFolder(folder) && "it should work");
@@ -127,13 +122,6 @@ void ribi::fileio::FileIo::DeleteFile(const std::string& filename) const
     #endif
   }
 
-  #ifndef NDEBUG
-  if (IsRegularFile(filename))
-  {
-    const auto s = "Failed to delete " + filename;
-    TRACE(s);
-  }
-  #endif
   assert(!IsRegularFile(filename)
     && "File must not exist anymore");
 }
@@ -178,7 +166,6 @@ void ribi::fileio::FileIo::DeleteFolder(const std::string& folder) const
       << "DeleteFolder failed in deleting the folder '" << folder << "': "
       << "failed by system call"
     ;
-    TRACE(s.str());
     throw std::runtime_error(s.str());
   }
   if (IsFolder(folder))
@@ -187,7 +174,6 @@ void ribi::fileio::FileIo::DeleteFolder(const std::string& folder) const
     s << "ribi::fileio::FileIo::DeleteFolder: "
       << "DeleteFolder failed in deleting the folder '" << folder << "'"
     ;
-    TRACE(s.str());
     throw std::runtime_error(s.str());
   }
 }
@@ -406,24 +392,12 @@ std::vector<std::string> ribi::fileio::FileIo::GetFilesInFolderRecursive(
     //Done with this folder
     folders_todo.pop_back();
 
-    #ifndef NDEBUG
-    if(!(folders_todo.empty() || folders_todo.back() != folder_todo))
-    {
-      TRACE("ERROR");
-      for (const auto& todo: folders_todo) { TRACE(todo); }
-      for (const auto& result: v) { TRACE(result); }
-    }
-    #endif
     assert( (folders_todo.empty() || folders_todo.back() != folder_todo)
       && "Next folder must not be the one that is just processed");
 
 
     const auto files_here = GetFilesInFolder(folder_todo);
     const auto folders_here = GetFoldersInFolder(folder_todo);
-
-    #ifndef NDEBUG
-    for (const auto& folder_here: folders_here) { TRACE(folder_here); }
-    #endif
 
     //Copy the files and folders with path added
     std::transform(
@@ -462,14 +436,6 @@ std::vector<std::string> ribi::fileio::FileIo::GetFilesInFolderByRegex(
   const std::string& regex_str
 ) const
 {
-  #ifndef NDEBUG
-  if(!IsFolder(folder))
-  {
-    TRACE("ERROR");
-    TRACE(folder);
-  }
-  #endif
-
   //Get all filenames
   assert(IsFolder(folder));
   const auto v = GetFilesInFolder(folder);
@@ -528,15 +494,6 @@ std::string ribi::fileio::FileIo::GetPath(const std::string& filename) const
   std::size_t i{0};
   if (a != std::string::npos) { i = a; }
   if (b != std::string::npos) { i = std::max(i,b); }
-  if (i >= filename.size())
-  {
-    TRACE("ERROR");
-    TRACE(filename);
-    TRACE(a);
-    TRACE(b);
-    TRACE(i);
-    TRACE("BREAK");
-  }
   //assert(i >= 0);
   assert(i < filename.size());
   return filename.substr(0,i);
@@ -589,7 +546,6 @@ std::string ribi::get_temp_filename(const std::string& post)
   s << "ribi::fileio::FileIo::GetTempFileName: "
     << "Could not find a temporary file name"
   ;
-  TRACE(s.str());
   throw std::runtime_error(s.str());
 }
 
@@ -614,7 +570,6 @@ std::string ribi::get_temp_filename_simple(const std::string& post)
   s << "ribi::fileio::FileIo::GetTempFileNameSimple: "
     << "Could not find a temporary file name"
   ;
-  TRACE(s.str());
   throw std::runtime_error(s.str());
 }
 
@@ -642,7 +597,6 @@ std::string ribi::fileio::FileIo::GetTempFolderName() const
   s << "ribi::fileio::FileIo::GetTempFolderName: "
     << "Could not find a temporary folder name"
   ;
-  TRACE(s.str());
   throw std::runtime_error(s.str());
 }
 
@@ -852,7 +806,6 @@ void ribi::fileio::FileIo::VectorToFile(
         << "VectorToFile: not allowed to overwrite file '"
         << filename
         << "'";
-      TRACE(s.str());
       throw std::runtime_error(s.str());
     }
   }
