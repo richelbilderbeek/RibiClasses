@@ -136,6 +136,8 @@ void ribi::delete_file(const std::string& filename)
 void ribi::fileio::FileIo::DeleteFile(const std::string& filename) const
 {
   delete_file(filename);
+  assert(!IsRegularFile(filename)
+    && "File must not exist anymore");
 }
 
 void ribi::fileio::FileIo::DeleteFolder(const std::string& folder) const
@@ -506,6 +508,7 @@ std::string ribi::fileio::FileIo::GetPath(const std::string& filename) const
   std::size_t i{0};
   if (a != std::string::npos) { i = a; }
   if (b != std::string::npos) { i = std::max(i,b); }
+  //assert(i >= 0);
   assert(i < filename.size());
   return filename.substr(0,i);
 }
@@ -782,22 +785,6 @@ std::string ribi::fileio::FileIo::SimplifyPath(const std::string& s) const noexc
     if (t == new_t) break;
     t = new_t;
   }
-
-  #ifdef UDNEFINFE467830786530475
-  while (1)
-  {
-    static const boost::xpressive::sregex regex = boost::xpressive::sregex::compile("((/|_b)\\w*/..(/|_b))");
-
-    //const std::string new_t = boost::regex_replace(t,boost::regex("/\\w*/../"),"/");
-    const std::string new_t = boost::xpressive::regex_replace(
-      t,
-      regex,
-      ""
-    );
-    if (t == new_t) break;
-    t = new_t;
-  }
-  #endif
   return t;
 }
 
