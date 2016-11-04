@@ -31,6 +31,11 @@ namespace ribi {
 
 ///New form: just in namespace ribi
 
+///Delete a file
+///Will throw if file is absent or file is removed unsuccessfully
+//From http://www.richelbilderbeek.nl/CppDeleteFile.htm
+void delete_file(const std::string& filename);
+
 ///Obtain the name of a file that does not exist
 ///Will throw a std::runtime_error in the unlikely
 ///case it fails after one thousand times
