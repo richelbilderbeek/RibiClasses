@@ -135,7 +135,7 @@ void ribi::delete_file(const std::string& filename)
 
 void ribi::fileio::FileIo::DeleteFile(const std::string& filename) const
 {
-  delete_file(filename)
+  delete_file(filename);
 }
 
 void ribi::fileio::FileIo::DeleteFolder(const std::string& folder) const
