@@ -25,7 +25,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <iostream>
 #include <stdexcept>
 
-#include "trace.h"
+
 
 ribi::Rect::Rect(
     const int any_x,

@@ -43,12 +43,12 @@ ribi::WtLedWidget::WtLedWidget(
   : m_widget(new LedWidget(0,0,99,99,intensity,red,green,blue))
 {
   assert(m_widget);
-  m_widget->GetLed()->m_signal_color_changed.connect(
+  /*
+  m_widget->GetLed().m_signal_color_changed.connect(
     boost::bind(
       &ribi::WtLedWidget::DoRepaint,
       this));
-
-  m_widget->GetLed()->m_signal_intensity_changed.connect(
+  m_widget->GetLed().m_signal_intensity_changed.connect(
     boost::bind(
       &ribi::WtLedWidget::DoRepaint,
       this));
@@ -57,10 +57,11 @@ ribi::WtLedWidget::WtLedWidget(
     boost::bind(
       &ribi::WtLedWidget::OnResize,
       this));
+  */
 
   m_widget->SetGeometry(0,0,100,100);
-  m_widget->GetLed()->SetColor(254,254,254);
-  m_widget->GetLed()->SetIntensity(0.98);
+  m_widget->GetLed().SetColor(254,254,254);
+  m_widget->GetLed().SetIntensity(0.98);
 }
 
 void ribi::WtLedWidget::DoRepaint()
@@ -176,7 +177,7 @@ void ribi::WtLedWidget::DrawLed(
     Geometry().GetTop(widget->GetGeometry()),
     Geometry().GetWidth(widget->GetGeometry()),
     Geometry().GetHeight(widget->GetGeometry()),
-    widget->GetLed()
+    &widget->GetLed()
   );
 }
 
