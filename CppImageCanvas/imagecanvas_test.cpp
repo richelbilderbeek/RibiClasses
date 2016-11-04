@@ -41,8 +41,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "canvascolorsystems.h"
 #include "canvascoordinatsystems.h"
 #include "fileio.h"
-#include "trace.h"
-#include "testtimer.h"
+
+
 #include "imagecanvas.h"
 
 void ribi::ImageCanvas::Test() noexcept

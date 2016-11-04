@@ -31,7 +31,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include <boost/lexical_cast.hpp>
 #include <boost/make_shared.hpp>
 #include <boost/shared_ptr.hpp>
-// #include "trace.h"
+// 
 #pragma GCC diagnostic pop
 
 std::string ribi::xml::Decode2(std::string s) noexcept

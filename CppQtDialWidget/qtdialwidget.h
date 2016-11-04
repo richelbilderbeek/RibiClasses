@@ -53,7 +53,7 @@ public:
     QPainter& painter,
     const int left, const int top,
     const int width, const int height,
-    const Dial * const dial);
+    const Dial& dial);
 
   ///Draw a dial from a DialWidget
   static void DrawDial(

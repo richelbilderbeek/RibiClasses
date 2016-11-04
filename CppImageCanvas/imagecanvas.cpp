@@ -29,6 +29,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <algorithm>
 #include <functional>
 #include <iterator>
+#include <numeric>
 #include <sstream>
 #include <boost/math/constants/constants.hpp>
 
@@ -38,8 +39,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "canvascolorsystems.h"
 #include "canvascoordinatsystems.h"
 #include "fileio.h"
-#include "trace.h"
-#include "testtimer.h"
 #pragma GCC diagnostic pop
 
 ribi::ImageCanvas::ImageCanvas() noexcept
@@ -49,11 +48,8 @@ ribi::ImageCanvas::ImageCanvas() noexcept
     m_coordinat_system{},
     m_n_cols{0}
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
-}
 
+}
 
 ribi::ImageCanvas::ImageCanvas(
   const std::string& filename,
@@ -65,9 +61,7 @@ ribi::ImageCanvas::ImageCanvas(
     m_coordinat_system(coordinatSystem),
     m_n_cols(n_cols)
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
+
 }
 
 ribi::ImageCanvas::ImageCanvas(

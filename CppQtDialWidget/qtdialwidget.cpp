@@ -38,16 +38,17 @@ ribi::QtDialWidget::QtDialWidget(QWidget *parent)
   : QWidget(parent),
     m_widget(new DialWidget)
 {
-
-  m_widget->GetDial()->m_signal_color_changed.connect(
+  /*
+  m_widget->GetDial().m_signal_color_changed.connect(
     boost::bind(
       &ribi::QtDialWidget::OnDialChanged,
       this));
 
-  m_widget->GetDial()->m_signal_position_changed.connect(
+  m_widget->GetDial().m_signal_position_changed.connect(
     boost::bind(
       &ribi::QtDialWidget::OnDialChanged,
       this));
+  */
 }
 
 void ribi::QtDialWidget::DrawDial(
@@ -68,13 +69,13 @@ void ribi::QtDialWidget::DrawDial(
   QPainter& painter,
   const int left, const int top,
   const int width, const int height,
-  const Dial * const dial)
+  const Dial& dial)
 {
   const QPen initial_pen = painter.pen();
-  const double position = dial->GetPosition();
-  const unsigned char red = dial->GetRed();
-  const unsigned char green = dial->GetGreen();
-  const unsigned char blue = dial->GetBlue();
+  const double position = dial.GetPosition();
+  const unsigned char red = dial.GetRed();
+  const unsigned char green = dial.GetGreen();
+  const unsigned char blue = dial.GetBlue();
 
   //Draw knob
   {

@@ -14,7 +14,6 @@
 
 #include "canvas.h"
 #include "dotmatrixtext.h"
-#include "trace.h"
 #pragma GCC diagnostic pop
 
 ribi::QtCanvas::QtCanvas()

@@ -3,7 +3,7 @@
 #include <cassert>
 
 #include "plane.h"
-// #include "trace.h"
+// 
 
 bool ribi::Geometry::IsCounterClockwise(const Apfloat& a, const Apfloat& b) const noexcept
 {

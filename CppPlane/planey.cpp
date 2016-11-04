@@ -28,7 +28,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "geometry.h"
 #include "planez.h"
-// #include "trace.h"
+// 
 #pragma GCC diagnostic pop
 
 ribi::PlaneY::PlaneY() noexcept

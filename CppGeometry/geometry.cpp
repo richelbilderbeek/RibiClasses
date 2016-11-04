@@ -41,8 +41,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "ribi_regex.h"
 #include "plane.h"
-// #include "trace.h"
-
 #pragma GCC diagnostic pop
 
 namespace ribi {

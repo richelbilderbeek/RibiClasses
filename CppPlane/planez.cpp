@@ -28,7 +28,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "container.h"
 #include "geometry.h"
-// #include "trace.h"
+// 
 #pragma GCC diagnostic pop
 
 ribi::PlaneZ::PlaneZ() noexcept

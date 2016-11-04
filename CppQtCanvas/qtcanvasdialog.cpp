@@ -8,7 +8,6 @@
 #include <QVBoxLayout>
 
 #include "qtcanvas.h"
-#include "trace.h"
 #pragma GCC diagnostic pop
 
 ribi::QtCanvasDialog::QtCanvasDialog(QtCanvas * const qtcanvas)
