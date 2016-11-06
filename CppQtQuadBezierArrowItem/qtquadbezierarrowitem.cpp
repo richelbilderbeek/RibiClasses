@@ -43,7 +43,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 
 #include "geometry.h"
 #include "grabber.h"
-// #include "trace.h"
+// 
 #include "qtroundededitrectitem.h"
 #include "qtroundedrectitem.h"
 #pragma GCC diagnostic pop

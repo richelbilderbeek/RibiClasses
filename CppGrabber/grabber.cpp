@@ -12,7 +12,7 @@
 #include <QApplication>
 
 
-// #include "trace.h"
+// 
 #pragma GCC diagnostic pop
 
 ribi::Grabber::Grabber(
