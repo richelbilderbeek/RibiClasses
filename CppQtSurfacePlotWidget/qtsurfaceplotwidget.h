@@ -88,11 +88,6 @@ private:
     const double new_min,
     const double new_max
   ) noexcept;
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
-
 };
 
 } //~namespace ribi

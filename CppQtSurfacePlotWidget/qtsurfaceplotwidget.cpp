@@ -28,9 +28,9 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
 #include <QPainter>
 
-#include "testtimer.h"
+
 #include "qtsurfaceplotwidget.h"
-#include "trace.h"
+
 #pragma GCC diagnostic pop
 
 ribi::QtSurfacePlotWidget::QtSurfacePlotWidget(QWidget *parent)
@@ -38,7 +38,7 @@ ribi::QtSurfacePlotWidget::QtSurfacePlotWidget(QWidget *parent)
     m_surface{}
 {
   #ifndef NDEBUG
-  Test();
+  assert(Rescale(2.0,1.0,5.0,0.0,100.0) >= 24.9999 && Rescale(2.0,1.0,5.0,0.0,100.0) < 25.0001);
   #endif
 
   std::vector<std::vector<unsigned char>> v(128,std::vector<unsigned char>(128));
@@ -197,15 +197,3 @@ void ribi::QtSurfacePlotWidget::SetSurfaceGrey(const std::vector<std::vector<uns
   this->repaint();
 }
 
-#ifndef NDEBUG
-void ribi::QtSurfacePlotWidget::Test() noexcept
-{
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
-  assert(Rescale(2.0,1.0,5.0,0.0,100.0) >= 24.9999 && Rescale(2.0,1.0,5.0,0.0,100.0) < 25.0001);
-}
-#endif
