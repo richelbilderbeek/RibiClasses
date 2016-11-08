@@ -13,8 +13,8 @@
 
 #include "ribi_random.h"
 #include "templocale.h"
-#include "testtimer.h"
-#include "trace.h"
+
+
 #pragma GCC diagnostic pop
 
 ribi::ModelFunctionParser::ModelFunctionParser(
@@ -49,10 +49,6 @@ ribi::ModelFunctionParser::ModelFunctionParser(
       + "' (note: this can have to do that FunctionParser assumes an English locale,"
       + "as '0.0' should be accepted)"
     ;
-    #ifndef NDEBUG
-    TRACE(my_function);
-    TRACE(variable_name);
-    #endif
     throw std::runtime_error(error.c_str());
   }
 }

@@ -8,7 +8,7 @@
 #include <boost/numeric/conversion/cast.hpp>
 #include <QTableWidget>
 
-#include "trace.h"
+
 
 #pragma GCC diagnostic pop
 

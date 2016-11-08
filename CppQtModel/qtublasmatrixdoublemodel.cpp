@@ -28,7 +28,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <boost/lexical_cast.hpp>
 
 #include "matrix.h"
-#include "trace.h"
+
 
 #pragma GCC diagnostic pop
 

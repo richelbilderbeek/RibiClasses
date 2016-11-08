@@ -28,7 +28,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <boost/lexical_cast.hpp>
 #include <boost/numeric/ublas/vector.hpp>
 #include "matrix.h"
-#include "trace.h"
+
 
 #pragma GCC diagnostic pop
 
@@ -73,11 +73,6 @@ QVariant ribi::QtUblasVectorIntModel::data(const QModelIndex &index, int role) c
   assert(row < this->rowCount());
   assert(row < boost::numeric_cast<int>(m_data.size()));
   assert(col == 0);
-  if (m_data(row) < m_range_min || m_data(row) >= m_range_max)
-  {
-    TRACE("BREAK");
-  }
-
   assert(m_data(row) >= m_range_min && "One of the purposes of this class it to ensure this");
   assert(m_data(row)  < m_range_max && "One of the purposes of this class it to ensure this");
   #endif
@@ -141,7 +136,6 @@ bool ribi::QtUblasVectorIntModel::IsValid() const noexcept
 {
   if (m_range_min >= m_range_max)
   {
-    TRACE("m_range_min bigger or equal than m_range_max");
     return false;
   }
   const std::size_t sz = m_data.size();
@@ -150,12 +144,10 @@ bool ribi::QtUblasVectorIntModel::IsValid() const noexcept
     const int x = m_data[i];
     if (x < m_range_min)
     {
-      TRACE("x below minimum value");
       return false;
     }
     if (x >= m_range_max)
     {
-      TRACE("x above maximum value");
       return false;
     }
   }
