@@ -5,6 +5,7 @@
 
 #include <cassert>
 #include <stdexcept>
+#include <vector>
 
 #include <boost/math/constants/constants.hpp>
 
