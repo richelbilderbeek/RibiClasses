@@ -155,11 +155,6 @@ struct Matrix
       boost::numeric::ublas::matrix<double>
     >& m);
 
-  #ifndef NDEBUG
-  ///Test these functions
-  static void Test() noexcept;
-  #endif
-
   ///Unchop merges the 4 std::vector of sub-matrices produced by Chop
   static const boost::numeric::ublas::matrix<double> Unchop(
     const std::vector<boost::numeric::ublas::matrix<double> >& v);

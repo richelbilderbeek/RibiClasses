@@ -41,10 +41,6 @@ ribi::QtUblasVectorIntModel::QtUblasVectorIntModel(QObject *parent) noexcept
     m_range_max{std::numeric_limits<int>::max()},
     m_range_min{std::numeric_limits<int>::min()}
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
-
   assert(m_range_min < m_range_max);
   assert(this->IsValid());
 }
@@ -60,8 +56,6 @@ QVariant ribi::QtUblasVectorIntModel::data(const QModelIndex &index, int role) c
 
   //Removing this line will cause checkboxes to appear
   if (role != Qt::EditRole && role != Qt::DisplayRole) return QVariant();
-
-
 
   assert(index.isValid());
 
@@ -413,21 +407,3 @@ void ribi::QtUblasVectorIntModel::SetRawData(const boost::numeric::ublas::vector
   assert(this->IsValid());
 }
 
-#ifndef NDEBUG
-void ribi::QtUblasVectorIntModel::Test() noexcept
-{
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  {
-    QtUblasVectorIntModel d;
-    d.SetRawData( Matrix::CreateVector( { 1,2,3 } ) );
-    d.SetRange(1,4,1);
-    assert(d.data(d.index(0,0)).toInt() == 1);
-    d.setData(d.index(0,0),"0"); //Should not change the data
-    assert(d.data(d.index(0,0)).toInt() == 1);
-  }
-}
-#endif

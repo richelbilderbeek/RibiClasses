@@ -101,45 +101,6 @@ void ribi::QtMatrix::StdVectorDoubleToTable(const std::vector<double>& v, QTable
   UblasVectorDoubleToTable(w,table);
 }
 
-void ribi::QtMatrix::Test() noexcept
-{
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  #ifdef REALLY_WANNA_CHECK_2463986504397503
-  {
-    const std::vector<std::string> v = {};
-    QTableWidget * const table = new QTableWidget;
-    StrVectorToTable(v,table);
-    assert(table->rowCount() == 0);
-    assert(table->columnCount() == 0);
-  }
-  {
-    const std::vector<std::string> v = { "X" };
-    QTableWidget * const table = new QTableWidget;
-    StrVectorToTable(v,table);
-    assert(table->rowCount() == 1);
-    assert(table->columnCount() == 1);
-  }
-  {
-    const std::vector<std::string> v = { "A","B" };
-    QTableWidget * const table = new QTableWidget;
-    StrVectorToTable(v,table);
-    assert(table->rowCount() == 2);
-    assert(table->columnCount() == 1);
-  }
-  {
-    const std::vector<std::string> v = { "A","BB","CCC" };
-    QTableWidget * const table = new QTableWidget;
-    StrVectorToTable(v,table);
-    assert(table->rowCount() == 3);
-    assert(table->columnCount() == 1);
-  }
-  #endif
-}
-
 const boost::numeric::ublas::matrix<double> ribi::QtMatrix::ToMatrix(const QTableWidget * const table)
 {
   assert(table);

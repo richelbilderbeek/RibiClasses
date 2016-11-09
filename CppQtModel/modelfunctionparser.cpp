@@ -22,9 +22,6 @@ ribi::ModelFunctionParser::ModelFunctionParser(
   const std::string& variable_name)
   : m_parser{new FunctionParser}
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
   assert(m_parser);
 
   const double pi = boost::math::constants::pi<double>();
@@ -80,37 +77,3 @@ double ribi::ModelFunctionParser::MyRand(const double * const max) noexcept
   return (*max) * Random().GetFraction();
 }
 
-#ifndef NDEBUG
-void ribi::ModelFunctionParser::Test() noexcept
-{
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
-  //Set std::locale to English
-  TempLocale temp_english_locale("en_US.UTF-8");
-
-  //In case the decimal digits need to be non-Dutch
-  {
-    const double pi = boost::math::constants::pi<double>();
-    assert(boost::lexical_cast<std::string>(pi)[1] == '.' && "No Dutch please");
-  }
-
-  {
-    const ModelFunctionParser p("x * x * sin(x) * rand(x)","x");
-    p.Evaluate(0.0);
-  }
-  try
-  {
-    std::string zero{boost::lexical_cast<std::string>(0.0)};
-    const ModelFunctionParser p(zero,"x");
-    assert(std::abs(p.Evaluate(0.0) - 0.0) < 0.0001);
-  }
-  catch (std::runtime_error&)
-  {
-    assert(!"Should not get here, '0.0' is a correct function");
-  }
-}
-#endif

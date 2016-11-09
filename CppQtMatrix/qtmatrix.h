@@ -33,9 +33,6 @@ struct QtMatrix
   ///Write a vector of strings to a QTableWidget
   static void StrVectorToTable(const std::vector<std::string>& v, QTableWidget * const table);
 
-  ///Test these functions
-  static void Test() noexcept;
-
   ///Convert a QTableWidget to a uBLAS matrix of doubles
   static const boost::numeric::ublas::matrix<double> ToMatrix(const QTableWidget * const table);
 

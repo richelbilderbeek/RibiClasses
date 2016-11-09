@@ -91,12 +91,6 @@ struct QtUblasVectorDoubleModel: public QAbstractTableModel
 
   ///Redefined from ABC
   bool setHeaderData(int section, Qt::Orientation orientation, const QVariant &value, int role);
-
-  #ifndef NDEBUG
-  ///Test this class
-  static void Test() noexcept;
-  #endif
-
 };
 
 } //~namespace ribi

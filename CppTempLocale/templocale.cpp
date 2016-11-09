@@ -23,8 +23,6 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include <cassert>
 #include <locale>
 
-
-
 struct ribi::TempLocale::TempLocaleImpl
 {
   explicit TempLocaleImpl(
@@ -77,34 +75,3 @@ std::vector<std::string> ribi::TempLocale::GetVersionHistory() noexcept
   };
 }
 
-#ifndef NDEBUG
-void ribi::TempLocale::Test() noexcept
-{
-  {
-    static bool is_tested { false };
-    if (is_tested) return;
-    is_tested = true;
-  }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
-  {
-    const double x = 1.5;
-    const TempLocale temp_dutch_locale("nl_NL.UTF-8");
-    assert(std::to_string(x)[1] == ',' && "Dutch");
-  }
-  {
-    const double x = 1.5;
-    const TempLocale temp_english_locale("en_US.UTF-8");
-    assert(std::to_string(x)[1] == '.' && "English");
-  }
-  {
-    const double x = 1.5;
-    const TempLocale temp_dutch_locale("nl_NL.UTF-8");
-    assert(std::to_string(x)[1] == ',' && "Dutch");
-  }
-  {
-    const double x = 1.5;
-    const TempLocale temp_english_locale("en_US.UTF-8");
-    assert(std::to_string(x)[1] == '.' && "English");
-  }
-}
-#endif

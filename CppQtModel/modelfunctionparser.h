@@ -37,10 +37,6 @@ struct ModelFunctionParser
   const boost::shared_ptr<FunctionParser> m_parser;
 
   static double MyRand(const double * const max) noexcept;
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 };
 
 } //~namespace ribi

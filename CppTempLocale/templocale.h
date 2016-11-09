@@ -41,10 +41,6 @@ struct TempLocale
   private:
   struct TempLocaleImpl;
   const std::unique_ptr<TempLocaleImpl> m_impl;
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 };
 
 } //~namespace ribi

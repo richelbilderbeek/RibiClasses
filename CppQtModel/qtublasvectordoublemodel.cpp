@@ -37,9 +37,7 @@ ribi::QtUblasVectorDoubleModel::QtUblasVectorDoubleModel(QObject *parent) noexce
     m_header_horizontal_text{},
     m_header_vertical_text{}
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
+
 }
 
 int ribi::QtUblasVectorDoubleModel::columnCount(const QModelIndex &) const noexcept
@@ -300,26 +298,3 @@ void ribi::QtUblasVectorDoubleModel::SetRawData(const boost::numeric::ublas::vec
   assert(this->rowCount() == boost::numeric_cast<int>(m_header_vertical_text.size()));
   assert(this->columnCount() == (this->rowCount() == 0 ? 0 : 1));
 }
-
-#ifndef NDEBUG
-void ribi::QtUblasVectorDoubleModel::Test() noexcept
-{
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
-  {
-    QtUblasVectorDoubleModel model;
-    assert(model.rowCount()    == 0);
-    assert(model.columnCount() == 0);
-    model.insertRow(1);
-    assert(model.rowCount()    == 1);
-    assert(model.columnCount() == 1);
-    model.removeRow(1);
-    assert(model.rowCount()    == 0);
-    assert(model.columnCount() == 0);
-  }
-}
-#endif
