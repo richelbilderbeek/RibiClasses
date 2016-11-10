@@ -50,10 +50,10 @@ ribi::QtGaborFilterWidget::QtGaborFilterWidget(
       &ribi::QtGaborFilterWidget::repaint,
       this));
 
-  m_widget->m_signal_geometry_changed.connect(
-    boost::bind(
-      &ribi::QtGaborFilterWidget::OnResize,
-      this));
+  //m_widget->m_signal_geometry_changed.connect(
+  //  boost::bind(
+  //    &ribi::QtGaborFilterWidget::OnResize,
+  //    this));
 
   const double pi = boost::math::constants::pi<double>();
   this->GetWidget()->GetGaborFilter()->SetAngle(pi * 2.0 / 16.0);
