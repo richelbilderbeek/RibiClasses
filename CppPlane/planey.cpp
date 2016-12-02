@@ -31,14 +31,14 @@ ribi::PlaneY::PlaneY(
 
 }
 
-apfloat ribi::PlaneY::CalcError(const Coordinat3D& coordinat) const noexcept
+double ribi::PlaneY::CalcError(const Coordinat3D& coordinat) const noexcept
 {
-  const apfloat x = boost::geometry::get<0>(coordinat);
-  const apfloat y = boost::geometry::get<1>(coordinat);
-  const apfloat z = boost::geometry::get<2>(coordinat);
+  const double x = boost::geometry::get<0>(coordinat);
+  const double y = boost::geometry::get<1>(coordinat);
+  const double z = boost::geometry::get<2>(coordinat);
   const auto expected = y;
   const auto calculated = CalcY(x,z);
-  const auto error = abs(calculated - expected);
+  const double error{std::abs(calculated - expected)};
   return error;
 }
 
@@ -65,7 +65,7 @@ ribi::PlaneY::Double ribi::PlaneY::CalcMinErrorPerC() noexcept
   const double max_y = high;
   const double min_z = low;
   const double max_z = high;
-  const apfloat zero(0.0);
+  const double zero(0.0);
 
   for (double z = min_z; z < max_z; z*=10.0)
   {
@@ -82,7 +82,7 @@ ribi::PlaneY::Double ribi::PlaneY::CalcMinErrorPerC() noexcept
           const auto error = p.CalcError(p4);
           const auto error_per_c = error / p.GetFunctionC();
           assert(error_per_c >= zero);
-          //TRACE(apfloat(min_error_per_c) / p.GetFunctionC());
+          //TRACE(double(min_error_per_c) / p.GetFunctionC());
           if (error_per_c > min_error_per_c)
           {
             min_error_per_c = error_per_c;
@@ -91,7 +91,7 @@ ribi::PlaneY::Double ribi::PlaneY::CalcMinErrorPerC() noexcept
             //TRACE(y);
             //TRACE(z);
             //TRACE(p.GetFunctionC());
-            //TRACE(apfloat(min_error_per_c) / p.GetFunctionC());
+            //TRACE(double(min_error_per_c) / p.GetFunctionC());
             //std::stringstream s;
             //s << Geometry().ToStr(p4) << " " << min_error;
             //TRACE(s.str());
@@ -109,38 +109,12 @@ ribi::PlaneY::Double ribi::PlaneY::CalcMinErrorPerC() noexcept
   #endif // USE_STUB
 }
 
-apfloat ribi::PlaneY::CalcMaxError(const Coordinat3D& /*coordinat*/) const noexcept
+double ribi::PlaneY::CalcMaxError(const Coordinat3D& /*coordinat*/) const noexcept
 {
   assert(CalcMinErrorPerC() > 0.0);
-  const auto max_error = abs(CalcMinErrorPerC() * GetFunctionC());
+  const double max_error{std::abs(CalcMinErrorPerC() * GetFunctionC())};
   assert(max_error >= 0.0);
   return max_error;
-  /*
-  const apfloat x = boost::geometry::get<0>(coordinat);
-  //const apfloat y = boost::geometry::get<1>(coordinat);
-  const apfloat z = boost::geometry::get<2>(coordinat);
-  const auto coefficients = GetCoefficients();
-  const auto a = coefficients[0];
-  const auto b = coefficients[1];
-  const auto c = coefficients[2];
-  const apfloat e = boost::numeric::bounds<double>::smallest();
-  assert(e > 0.0);
-  //    y = -A/C.z - B/C.x + D/C
-  //If C is zero, the slope in X and Y cannot be calculated
-  if (c.sign())
-  {
-    const auto rc_x = -b / c;
-    const auto rc_z = -a / c;
-    const auto max_error_x = abs(e * rc_x * x) + 0.0;
-    const auto max_error_y = 0.0;
-    const auto max_error_z = abs(e * rc_z * z) + 0.0;
-    const auto max_error = max_error_x + max_error_y + max_error_z;
-    assert(max_error >= 0.0);
-    return max_error;
-  }
-  assert(e > 0.0);
-  return e;
-  */
 }
 
 ribi::PlaneY::Coordinats2D ribi::PlaneY::CalcProjection(
@@ -184,7 +158,7 @@ std::unique_ptr<ribi::PlaneZ> ribi::PlaneY::Create(
   return p;
 }
 
-std::vector<apfloat> ribi::PlaneY::GetCoefficients() const noexcept
+std::vector<double> ribi::PlaneY::GetCoefficients() const noexcept
 {
   const auto v(m_plane_z->GetCoefficients());
   assert(v.size() == 4);
@@ -231,8 +205,8 @@ bool ribi::PlaneY::IsInPlane(const Coordinat3D& coordinat) const noexcept
 {
   try
   {
-    const apfloat error = CalcError(coordinat);
-    const apfloat max_error = CalcMaxError(coordinat);
+    const double error = CalcError(coordinat);
+    const double max_error = CalcMaxError(coordinat);
     return error <= max_error;
   }
   catch (std::exception& e)

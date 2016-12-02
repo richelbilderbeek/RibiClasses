@@ -31,3 +31,19 @@ ribi::Geometry::Coordinat3D ribi::Geometry::CalcCrossProduct(
   );
   */
 }
+
+ribi::Geometry::ApCoordinat3D ribi::Geometry::CalcCrossProduct(
+  const ApCoordinat3D& a,
+  const ApCoordinat3D& b
+) const noexcept
+{
+  return CalcCrossProductImpl<Apfloat>(a,b);
+  /*
+  using boost::geometry::get;
+  return ApCoordinat3D(
+    (get<1>(a) * get<2>(b)) - (get<2>(a) * get<1>(b)),
+    (get<2>(a) * get<0>(b)) - (get<0>(a) * get<2>(b)),
+    (get<0>(a) * get<1>(b)) - (get<1>(a) * get<0>(b))
+  );
+  */
+}

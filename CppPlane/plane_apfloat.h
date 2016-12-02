@@ -14,6 +14,7 @@
 #include <boost/geometry/geometries/polygon.hpp>
 #endif
 
+#include "apfloat.h"
 #pragma GCC diagnostic pop
 
 namespace ribi {
@@ -31,9 +32,9 @@ struct PlaneZ;
 //    z = -A/C.x - B/C.y + D/C
 struct Plane
 {
-  typedef double Double;
-  typedef boost::geometry::model::d2::point_xy<double> Coordinat2D;
-  typedef boost::geometry::model::point<double,3,boost::geometry::cs::cartesian> Coordinat3D;
+  typedef apfloat Double;
+  typedef boost::geometry::model::d2::point_xy<apfloat> Coordinat2D;
+  typedef boost::geometry::model::point<apfloat,3,boost::geometry::cs::cartesian> Coordinat3D;
   typedef std::vector<Coordinat2D> Coordinats2D;
   typedef std::vector<Coordinat3D> Coordinats3D;
   typedef std::vector<Double> Doubles;

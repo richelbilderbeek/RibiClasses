@@ -154,21 +154,21 @@ std::vector<std::string> ribi::cmap::Wordwrap(
   }
 
   ///Replace bell characters by spaces again
-  for (std::string& s: v)
+  for (std::string& t: v)
   {
     assert(x != ' ');
-    std::size_t pos = s.find(x);
+    std::size_t pos = t.find(x);
     while (pos != std::string::npos)
     {
       assert(pos != std::string::npos);
-      assert(pos < s.size());
-      assert(pos == s.find(x)); //To prevent infinite while loop
-      s[pos] = ' ';
-      assert(s[pos] == ' ');
-      assert(pos != s.find(x)); //To prevent infinite while loop
-      pos = s.find(x);
+      assert(pos < t.size());
+      assert(pos == t.find(x)); //To prevent infinite while loop
+      t[pos] = ' ';
+      assert(t[pos] == ' ');
+      assert(pos != t.find(x)); //To prevent infinite while loop
+      pos = t.find(x);
     }
-    assert(s.find(x) == std::string::npos);
+    assert(t.find(x) == std::string::npos);
   }
 
   #ifndef NDEBUG

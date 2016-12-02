@@ -27,11 +27,11 @@ std::string ribi::CleanSequence(std::string s)
   );
   if (iter != std::end(s))
   {
-    std::stringstream s;
-    s << "Sequence::Sequence: sequence can only contain the characters 'A','C','G','T'"
+    std::stringstream t;
+    t << "Sequence::Sequence: sequence can only contain the characters 'A','C','G','T'"
       << ", found character: " << *iter
     ;
-    throw std::invalid_argument(s.str().c_str());
+    throw std::invalid_argument(t.str().c_str());
   }
   return s;
 }

@@ -13,6 +13,8 @@
 #include <boost/geometry/geometries/linestring.hpp>
 #endif
 
+#include "apcplx.h"
+
 #include <QPen>
 #include <QPoint>
 #include <QRect>
@@ -127,9 +129,15 @@ ribi::Geometry::Geometry()
 
 }
 
-double ribi::Geometry::CalcDotProduct(
-  const Coordinat3D& a,
-  const Coordinat3D& b
+ribi::Geometry::Apfloat ribi::Geometry::Atan2(const Apfloat& dx, const Apfloat& dy) const noexcept
+{
+  const apfloat pi(boost::math::constants::pi<double>());
+  return atan2(dy,dx); //apfloats's atan has reversed arguments
+}
+
+ribi::Geometry::Apfloat ribi::Geometry::CalcDotProduct(
+  const ApCoordinat3D& a,
+  const ApCoordinat3D& b
 ) const noexcept
 {
   using boost::geometry::get;
@@ -140,10 +148,23 @@ double ribi::Geometry::CalcDotProduct(
   ;
 }
 
-ribi::Geometry::Coordinat3D ribi::Geometry::CalcNormal(
+double ribi::Geometry::CalcDotProduct(
   const Coordinat3D& a,
-  const Coordinat3D& b,
-  const Coordinat3D& c
+  const Coordinat3D& b
+) const noexcept
+{
+  return ToDoubleSafe(
+    CalcDotProduct(
+      ToApfloat(a),
+      ToApfloat(b)
+    )
+  );
+}
+
+ribi::Geometry::ApCoordinat3D ribi::Geometry::CalcNormal(
+  const ApCoordinat3D& a,
+  const ApCoordinat3D& b,
+  const ApCoordinat3D& c
 ) const noexcept
 {
   const auto u = c - a;
@@ -151,10 +172,31 @@ ribi::Geometry::Coordinat3D ribi::Geometry::CalcNormal(
   return CalcCrossProduct(u,v);
 }
 
+ribi::Geometry::Coordinat3D ribi::Geometry::CalcNormal(
+  const Coordinat3D& a,
+  const Coordinat3D& b,
+  const Coordinat3D& c
+) const noexcept
+{
+  return ToDoubleSafe(CalcNormal(ToApfloat(a),ToApfloat(b),ToApfloat(c)));
+}
+
 std::vector<double> ribi::Geometry::CalcPlane(
   const Coordinat3D& p1,
   const Coordinat3D& p2,
   const Coordinat3D& p3
+) const noexcept
+{
+  const std::vector<apfloat> v
+    = CalcPlane(ToApfloat(p1),ToApfloat(p2),ToApfloat(p3)
+  );
+  return ToDouble(v);
+}
+
+std::vector<apfloat> ribi::Geometry::CalcPlane(
+  const ApCoordinat3D& p1,
+  const ApCoordinat3D& p2,
+  const ApCoordinat3D& p3
 ) const noexcept
 {
   using boost::geometry::get;
@@ -179,13 +221,20 @@ std::vector<double> ribi::Geometry::CalcPlane(
   return { a,b,c,d };
 }
 
-ribi::Geometry::Coordinats2D ribi::Geometry::CalcProjection(const Coordinats3D& points) const
+ribi::Geometry::ApCoordinats2D ribi::Geometry::CalcProjection(
+  const ribi::Geometry::ApCoordinats3D& points) const
 {
   assert(points.size() >= 3);
   assert(IsPlane(points));
   const std::unique_ptr<Plane> plane(new Plane(points[0],points[1],points[2]));
   assert(plane);
+
   return plane->CalcProjection(points);
+}
+
+ribi::Geometry::Coordinats2D ribi::Geometry::CalcProjection(const Coordinats3D& v) const
+{
+  return ToDoubleSafe(CalcProjection(ToApfloat(v)));
 }
 
 boost::geometry::model::polygon<boost::geometry::model::d2::point_xy<double>>
@@ -348,6 +397,38 @@ double ribi::Geometry::Fmod(const double x, const double mod) const noexcept
   return result;
 }
 
+ribi::Geometry::Apfloat ribi::Geometry::Fmod(const Apfloat& x, const Apfloat& mod) const noexcept
+{
+  if (x < 0.0)
+  {
+    const Apfloat new_x(
+      x + (mod * (1 + ToInt(-x / mod)))
+    );
+    assert(new_x >= 0.0);
+    return Fmod(new_x,mod);
+  }
+  const Apfloat result = x - (mod * Apfloat(ToInt(x / mod)));
+
+  if (result < 0.0) //Happens due to rounding errors
+  {
+    assert(result > -0.000000001);
+    return 0.0;
+  }
+  if (result >= mod)
+  {
+    assert(result - mod < Apfloat(0.000000001));
+    const Apfloat new_result = mod - Apfloat(std::numeric_limits<double>::epsilon());
+    assert(new_result < mod);
+    return new_result;
+  }
+
+  assert(result >= 0.0 && "Fmod must return a value between zero and mod");
+  assert(result < mod  && "Fmod must return a value between zero and mod");
+  return result;
+}
+
+
+
 double ribi::Geometry::GetDistance(const double dx, const double dy) const noexcept
 {
   //return GetDistance(
@@ -451,8 +532,10 @@ bool ribi::Geometry::IsConvex(const Coordinats2D& points) const noexcept
   return is_convex;
 }
 
-bool ribi::Geometry::IsConvex(const Coordinats3D& points) const noexcept
+bool ribi::Geometry::IsConvex(const ApCoordinats3D& points) const noexcept
 {
+  // const bool verbose{false};
+
   #ifndef NDEBUG
   assert(points.size() >= 3);
   if (points.size() == 3)
@@ -524,10 +607,24 @@ bool ribi::Geometry::IsConvex(const Coordinats3D& points) const noexcept
     );
     assert(plane);
 
-    const Coordinats2D coordinats2d = plane->CalcProjection(points);
+    const ApCoordinats2D apcoordinats2d = plane->CalcProjection(points);
+    /* if (verbose)
+    {
+      // TRACE(ToStr(apcoordinats2d));
+    } */
+    const Coordinats2D coordinats2d = ToDoubleSafe(apcoordinats2d);
+    /* if (verbose)
+    {
+      // TRACE(ToStr(coordinats2d));
+    } */
     if (IsConvex(coordinats2d)) return true;
   }
   return false;
+}
+
+bool ribi::Geometry::IsConvex(const Coordinats3D& points) const noexcept
+{
+  return IsConvex(ToApfloat(points));
 }
 
 
@@ -559,8 +656,23 @@ std::function<bool(const ribi::Geometry::Coordinat3D& lhs, const ribi::Geometry:
   };
 }
 
-bool ribi::Geometry::IsPlane(const std::vector<Coordinat3D>& v) const noexcept
+std::function<bool(const ribi::Geometry::ApCoordinat3D& lhs, const ribi::Geometry::ApCoordinat3D& rhs)>
+  ribi::Geometry::Equals3d() const noexcept
 {
+  return [](const ApCoordinat3D& lhs, const ApCoordinat3D& rhs)
+  {
+    using boost::geometry::get;
+    return
+      get<0>(lhs) == get<0>(rhs)
+      && get<1>(lhs) == get<1>(rhs)
+      && get<2>(lhs) == get<2>(rhs)
+    ;
+  };
+}
+
+bool ribi::Geometry::IsPlane(const std::vector<ApCoordinat3D>& v) const noexcept
+{
+  // const bool verbose{false};
   using boost::geometry::get;
 
   if (v.size() < 3) return false;
@@ -577,8 +689,21 @@ bool ribi::Geometry::IsPlane(const std::vector<Coordinat3D>& v) const noexcept
   }
   catch (std::logic_error& e)
   {
+    /* if (verbose)
+    {
+      std::stringstream s;
+      s << "Geometry::IsPlane: not in plane, as plane cannot be constructed ('"
+        << e.what() << "')"
+      ;
+      // TRACE(s.str());
+    } */
     return false;
   }
+}
+
+bool ribi::Geometry::IsPlane(const std::vector<Coordinat3D>& v) const noexcept
+{
+  return IsPlane(ToApfloat(v));
 }
 
 
@@ -731,6 +856,129 @@ ribi::Geometry::Shapes ribi::Geometry::Rescale(
   return new_shapes;
 }
 
+ribi::Geometry::Apfloats ribi::Geometry::ToApfloat(const Doubles& v) const noexcept
+{
+  Apfloats w;
+  std::transform(std::begin(v),std::end(v),std::back_inserter(w),
+    [](const double d) { return Apfloat(d); }
+  );
+  return w;
+}
+
+ribi::Geometry::ApCoordinat2D ribi::Geometry::ToApfloat(const Coordinat2D& p) const noexcept
+{
+  return ApCoordinat2D(
+    boost::geometry::get<0>(p),
+    boost::geometry::get<1>(p)
+  );
+}
+
+ribi::Geometry::ApCoordinat3D ribi::Geometry::ToApfloat(const Coordinat3D& p) const noexcept
+{
+  return ApCoordinat3D(
+    boost::geometry::get<0>(p),
+    boost::geometry::get<1>(p),
+    boost::geometry::get<2>(p)
+  );
+}
+
+ribi::Geometry::ApCoordinats2D ribi::Geometry::ToApfloat(const Coordinats2D& v) const noexcept
+{
+  ApCoordinats2D w;
+  std::transform(std::begin(v),std::end(v),std::back_inserter(w),
+    [this](const Coordinat2D& c) { return ToApfloat(c); }
+  );
+  return w;
+}
+
+ribi::Geometry::ApCoordinats3D ribi::Geometry::ToApfloat(const Coordinats3D& v) const noexcept
+{
+  ApCoordinats3D w;
+  std::transform(std::begin(v),std::end(v),std::back_inserter(w),
+    [this](const Coordinat3D& c) { return ToApfloat(c); }
+  );
+  return w;
+}
+
+
+double ribi::Geometry::ToDouble(const apfloat& a) const
+{
+  std::stringstream s;
+  s << std::fixed << std::setprecision(99) << a;
+  //s << pretty << a;
+  const double x = boost::lexical_cast<double>(s.str());
+  return x;
+}
+
+std::vector<double> ribi::Geometry::ToDouble(const std::vector<apfloat>& v) const
+{
+  std::vector<double> w;
+  std::transform(std::begin(v),std::end(v),std::back_inserter(w),
+    [this](const apfloat& f) { return ToDouble(f); }
+  );
+  assert(v.size() == w.size());
+  return w;
+}
+
+double ribi::Geometry::ToDoubleSafe(const apfloat& a) const noexcept
+{
+  try
+  {
+    return ToDouble(a);
+  }
+  catch (boost::bad_lexical_cast&)
+  {
+    if (a < apfloat(std::numeric_limits<double>::lowest())) { return std::numeric_limits<double>::lowest(); }
+    if (a > apfloat(std::numeric_limits<double>::max())) { return std::numeric_limits<double>::max(); }
+    if (a > apfloat(0.0))
+    {
+       if (a < apfloat(0.5) * apfloat(std::numeric_limits<double>::denorm_min())) { return 0.0; }
+       return std::numeric_limits<double>::denorm_min();
+    }
+    if (a < apfloat(0.0))
+    {
+       if (a > apfloat(-0.5) * apfloat(std::numeric_limits<double>::denorm_min())) { return 0.0; }
+       const double r = -std::numeric_limits<double>::denorm_min();
+       assert(r != 0.0);
+       return r;
+    }
+    // TRACE(a);
+    assert(!"Should not get here");
+    return 0.0;
+  }
+}
+
+ribi::Geometry::Coordinat2D ribi::Geometry::ToDoubleSafe(const ApCoordinat2D& a) const noexcept
+{
+  return Coordinat2D(
+    ToDoubleSafe(boost::geometry::get<0>(a)),
+    ToDoubleSafe(boost::geometry::get<1>(a))
+  );
+}
+
+ribi::Geometry::Coordinat3D ribi::Geometry::ToDoubleSafe(const ApCoordinat3D& a) const noexcept
+{
+  return Coordinat3D(
+    ToDoubleSafe(boost::geometry::get<0>(a)),
+    ToDoubleSafe(boost::geometry::get<1>(a)),
+    ToDoubleSafe(boost::geometry::get<2>(a))
+  );
+}
+
+ribi::Geometry::Coordinats2D ribi::Geometry::ToDoubleSafe(const ribi::Geometry::ApCoordinats2D& v) const noexcept
+{
+  Coordinats2D w;
+  std::transform(std::begin(v),std::end(v),std::back_inserter(w),
+    [this](const ApCoordinat2D& c) { return ToDoubleSafe(c); }
+  );
+  return w;
+}
+
+int ribi::Geometry::ToInt(const Apfloat& a) const noexcept
+{
+  return static_cast<int>(ToDoubleSafe(a));
+}
+
 ribi::Geometry::Polygon ribi::Geometry::ToPolygon(const Linestring& linestring) const noexcept
 {
   std::vector<Coordinat2D> v;
@@ -742,6 +990,72 @@ ribi::Geometry::Polygon ribi::Geometry::ToPolygon(const Linestring& linestring) 
 
   boost::geometry::append(polygon,v);
   return polygon;
+}
+
+std::string ribi::Geometry::ToStrSafe(const apfloat& f) const noexcept
+{
+  try
+  {
+    std::stringstream s;
+    s << pretty << f;
+    return s.str();
+  }
+  catch (boost::bad_lexical_cast&)
+  {
+    std::stringstream s;
+    s << ToDoubleSafe(f);
+    return s.str();
+  }
+}
+
+std::string ribi::Geometry::ToStr(const Apfloats& v) const noexcept
+{
+  std::stringstream s;
+  for (const auto& i:v) { s << ToStrSafe(i) << ','; }
+  std::string t = s.str();
+  if (!t.empty()) t.pop_back();
+  return t;
+}
+
+std::string ribi::Geometry::ToStr(const ApCoordinat2D& p) const noexcept
+{
+  std::stringstream s;
+  s << '('
+    << ToStrSafe(boost::geometry::get<0>(p)) << ','
+    << ToStrSafe(boost::geometry::get<1>(p))
+    << ')'
+  ;
+  return s.str();
+}
+
+std::string ribi::Geometry::ToStr(const ApCoordinats2D& v) const noexcept
+{
+  std::stringstream s;
+  for (const auto& i:v) { s << ToStr(i) << '-'; }
+  std::string t = s.str();
+  if (!t.empty()) t.pop_back();
+  return t;
+}
+
+std::string ribi::Geometry::ToStr(const ApCoordinat3D& p) const noexcept
+{
+  std::stringstream s;
+  s << '('
+    << ToStrSafe(boost::geometry::get<0>(p)) << ','
+    << ToStrSafe(boost::geometry::get<1>(p)) << ','
+    << ToStrSafe(boost::geometry::get<2>(p))
+    << ')'
+  ;
+  return s.str();
+}
+
+std::string ribi::Geometry::ToStr(const ApCoordinats3D& v) const noexcept
+{
+  std::stringstream s;
+  for (const auto& i:v) { s << ToStr(i) << '-'; }
+  std::string t = s.str();
+  if (!t.empty()) t.pop_back();
+  return t;
 }
 
 std::string ribi::Geometry::ToStr(const Coordinat2D& p) const noexcept
@@ -1073,9 +1387,32 @@ ribi::Geometry::Coordinat2D ribi::operator-(
   );
 }
 
+ribi::Geometry::ApCoordinat2D ribi::operator-(
+  const ribi::Geometry::ApCoordinat2D& a,
+  const ribi::Geometry::ApCoordinat2D& b
+) noexcept
+{
+  return std::remove_const<std::remove_reference<decltype(a)>::type>::type(
+    boost::geometry::get<0>(a) - boost::geometry::get<0>(b),
+    boost::geometry::get<1>(a) - boost::geometry::get<1>(b)
+  );
+}
+
 ribi::Geometry::Coordinat3D ribi::operator-(
     const ribi::Geometry::Coordinat3D& a,
     const ribi::Geometry::Coordinat3D& b
+  ) noexcept
+{
+  return std::remove_const<std::remove_reference<decltype(a)>::type>::type(
+    boost::geometry::get<0>(a) - boost::geometry::get<0>(b),
+    boost::geometry::get<1>(a) - boost::geometry::get<1>(b),
+    boost::geometry::get<2>(a) - boost::geometry::get<2>(b)
+  );
+}
+
+ribi::Geometry::ApCoordinat3D ribi::operator-(
+    const ribi::Geometry::ApCoordinat3D& a,
+    const ribi::Geometry::ApCoordinat3D& b
   ) noexcept
 {
   return std::remove_const<std::remove_reference<decltype(a)>::type>::type(

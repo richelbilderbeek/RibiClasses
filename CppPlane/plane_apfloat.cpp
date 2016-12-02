@@ -24,6 +24,12 @@ ribi::Plane::Plane(
   m_plane_z(CreatePlaneZ(p1,p2,p3)),
   m_points( {p1,p2,p3} )
 {
+  #ifndef NDEBUG
+  assert(Geometry().IsEqual3d(m_points[0],p1));
+  assert(Geometry().IsEqual3d(m_points[1],p2));
+  assert(Geometry().IsEqual3d(m_points[2],p3));
+  #endif
+
   if (m_plane_z)
   {
     try
@@ -40,44 +46,54 @@ ribi::Plane::Plane(
 
 }
 
-ribi::Plane::Double ribi::Plane::CalcError(const Coordinat3D& coordinat) const noexcept
+apfloat ribi::Plane::CalcError(const Coordinat3D& coordinat) const noexcept
 {
   // const bool verbose{false};
-  const double x{boost::geometry::get<0>(coordinat)};
-  const double y{boost::geometry::get<1>(coordinat)};
-  const double z{boost::geometry::get<2>(coordinat)};
+  const apfloat x = boost::geometry::get<0>(coordinat);
+  const apfloat y = boost::geometry::get<1>(coordinat);
+  const apfloat z = boost::geometry::get<2>(coordinat);
 
-  double min_error = std::numeric_limits<double>::max();
+  apfloat min_error = std::numeric_limits<double>::max();
+
+  /* if (verbose)
+  {
+    std::stringstream s;
+    s << std::setprecision(99) << (*this);
+    // TRACE(s.str());
+    // if (CanCalcX()) { TRACE(Container().ToStr(GetCoefficientsX())); }
+    // if (CanCalcY()) { TRACE(Container().ToStr(GetCoefficientsY())); }
+    // if (CanCalcZ()) { TRACE(Container().ToStr(GetCoefficientsZ())); }
+  } */
 
   //Absolute method
   if (CanCalcX())
   {
     const auto expected = x;
-    const double calculated = CalcX(y,z);
-    const double error{std::abs(calculated - expected)};
+    const apfloat calculated = CalcX(y,z);
+    const apfloat error = abs(calculated - expected);
     min_error = std::min(error,min_error);
   }
   if (CanCalcY())
   {
     const auto expected = y;
     const auto calculated = CalcY(x,z);
-    const double error{std::abs(calculated - expected)};
+    const auto error = abs(calculated - expected);
     min_error = std::min(error,min_error);
   }
   if (CanCalcZ())
   {
     const auto expected = z;
     const auto calculated = CalcZ(x,y);
-    const double error{std::abs(calculated - expected)};
+    const auto error = abs(calculated - expected);
     min_error = std::min(error,min_error);
   }
   assert(min_error >= 0.0);
   return min_error;
 }
 
-ribi::Plane::Double ribi::Plane::CalcMaxError(const Coordinat3D& coordinat) const noexcept
+apfloat ribi::Plane::CalcMaxError(const Coordinat3D& coordinat) const noexcept
 {
-  double max_error{std::numeric_limits<double>::denorm_min()};
+  apfloat max_error{std::numeric_limits<double>::denorm_min()};
   if (CanCalcX())
   {
     max_error = std::max(max_error,m_plane_x->CalcMaxError(coordinat));
@@ -265,7 +281,7 @@ boost::shared_ptr<ribi::PlaneZ> ribi::Plane::CreatePlaneZ(
   }
 }
 
-ribi::Plane::Doubles ribi::Plane::GetCoefficientsX() const
+std::vector<apfloat> ribi::Plane::GetCoefficientsX() const
 {
   if (!m_plane_x)
   {
@@ -274,7 +290,7 @@ ribi::Plane::Doubles ribi::Plane::GetCoefficientsX() const
   return m_plane_x->GetCoefficients();
 }
 
-ribi::Plane::Doubles ribi::Plane::GetCoefficientsY() const
+std::vector<apfloat> ribi::Plane::GetCoefficientsY() const
 {
   if (!m_plane_y)
   {
@@ -283,7 +299,7 @@ ribi::Plane::Doubles ribi::Plane::GetCoefficientsY() const
   return m_plane_y->GetCoefficients();
 }
 
-ribi::Plane::Doubles ribi::Plane::GetCoefficientsZ() const
+std::vector<apfloat> ribi::Plane::GetCoefficientsZ() const
 {
   if (!m_plane_z)
   {

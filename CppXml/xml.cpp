@@ -94,9 +94,9 @@ std::string ribi::xml::StripXmlTag(const std::string& s)
   return text;
 }
 
-std::vector<std::string> ribi::xml::XmlToPretty(const std::string& s) noexcept
+std::vector<std::string> ribi::xml::XmlToPretty(const std::string& xml_string) noexcept
 {
-  std::vector<std::string> v = SplitXml(s);
+  std::vector<std::string> v = SplitXml(xml_string);
   int n = -2;
   for (std::string& s: v)
   {

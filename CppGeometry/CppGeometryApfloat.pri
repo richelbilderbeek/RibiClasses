@@ -11,3 +11,7 @@ SOURCES += \
 
 HEADERS  += \
     $$PWD/geometry.h
+
+OTHER_FILES += \
+    $$PWD/Licence.txt
+

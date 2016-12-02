@@ -9,7 +9,6 @@
 #include <boost/geometry/geometries/point_xy.hpp>
 #include <boost/make_shared.hpp>
 //#include "planez.h"
-#include "apfloat.h"
 #pragma GCC diagnostic pop
 
 namespace ribi {
@@ -29,9 +28,9 @@ struct PlaneZ;
 ///where A,B,C can be obtained by GetFunctionA/B/C
 struct PlaneX
 {
-  typedef apfloat Double;
-  typedef boost::geometry::model::d2::point_xy<apfloat> Coordinat2D;
-  typedef boost::geometry::model::point<apfloat,3,boost::geometry::cs::cartesian> Coordinat3D;
+  typedef double Double;
+  typedef boost::geometry::model::d2::point_xy<Double> Coordinat2D;
+  typedef boost::geometry::model::point<Double,3,boost::geometry::cs::cartesian> Coordinat3D;
   typedef std::vector<Double> Doubles;
   typedef std::vector<Coordinat2D> Coordinats2D;
   typedef std::vector<Coordinat3D> Coordinats3D;

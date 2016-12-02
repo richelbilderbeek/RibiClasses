@@ -158,9 +158,9 @@ BOOST_AUTO_TEST_CASE(ribi_planex_test)
     const Coordinat3D p2(2.0,5.0,8.0);
     const Coordinat3D p3(3.0,7.0,11.0);
     PlaneX p(p1,p2,p3);
-    BOOST_CHECK( abs(p.CalcX(2.0, 3.0)- 1.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
-    BOOST_CHECK( abs(p.CalcX(5.0, 8.0)- 2.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
-    BOOST_CHECK( abs(p.CalcX(7.0,11.0)-3.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
+    BOOST_CHECK(std::abs(p.CalcX(2.0, 3.0)- 1.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
+    BOOST_CHECK(std::abs(p.CalcX(5.0, 8.0)- 2.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
+    BOOST_CHECK(std::abs(p.CalcX(7.0,11.0)-3.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
   }
   if (verbose) TRACE("CalcX, vertical plane X = 2.0");
   /*
@@ -183,9 +183,9 @@ BOOST_AUTO_TEST_CASE(ribi_planex_test)
     const Coordinat3D p2(2.0, 7.0,11.0);
     const Coordinat3D p3(2.0,13.0,17.0);
     PlaneX p(p1,p2,p3);
-    BOOST_CHECK( abs(p.CalcX(1.0,2.0)-2.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
-    BOOST_CHECK( abs(p.CalcX(3.0,5.0)-2.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
-    BOOST_CHECK( abs(p.CalcX(7.0,9.0)-2.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
+    BOOST_CHECK(std::abs(p.CalcX(1.0,2.0)-2.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
+    BOOST_CHECK(std::abs(p.CalcX(3.0,5.0)-2.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
+    BOOST_CHECK(std::abs(p.CalcX(7.0,9.0)-2.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
   }
   if (verbose) TRACE("ToFunction, 3 points and 4 points");
   {

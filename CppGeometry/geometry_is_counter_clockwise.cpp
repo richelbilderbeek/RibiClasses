@@ -3,19 +3,13 @@
 #include <cassert>
 
 #include "plane.h"
-// 
 
-bool ribi::Geometry::IsCounterClockwise(const Apfloat& a, const Apfloat& b) const noexcept
+bool ribi::Geometry::IsCounterClockwise(const double a, const double b) const noexcept
 {
   return !IsClockwise(a,b);
 }
 
-bool ribi::Geometry::IsCounterClockwise(const double a, const double b) const noexcept
-{
-  return IsCounterClockwise(Apfloat(a),Apfloat(b));
-}
-
-bool ribi::Geometry::IsCounterClockwise(const Apfloats& angles) const noexcept
+bool ribi::Geometry::IsCounterClockwise(const Doubles& angles) const noexcept
 {
   const int sz = static_cast<int>(angles.size());
   assert(sz >= 2 && "Need at least two angles to determine if these are counter-clockwise");
@@ -25,11 +19,11 @@ bool ribi::Geometry::IsCounterClockwise(const Apfloats& angles) const noexcept
   }
 
   //Calculate cumulative clockwise distance
-  const Apfloat tau{boost::math::constants::two_pi<double>()};
-  Apfloat sum{0.0};
+  const double tau{boost::math::constants::two_pi<double>()};
+  double sum{0.0};
   for (int i=0; i!=sz-1; ++i)
   {
-    const Apfloat diff{angles[i] - angles[i+1]}; //Order reversed compared to IsClockwise
+    const double diff{angles[i] - angles[i+1]}; //Order reversed compared to IsClockwise
     if (diff > 0.0)
     {
       sum += diff;
@@ -43,14 +37,9 @@ bool ribi::Geometry::IsCounterClockwise(const Apfloats& angles) const noexcept
   return sum < tau;
 }
 
-bool ribi::Geometry::IsCounterClockwise(const Doubles& angles) const noexcept
-{
-  return IsCounterClockwise(ToApfloat(angles));
-}
-
 bool ribi::Geometry::IsCounterClockwiseCartesian(
-  const ApCoordinats3D& points,
-  const ApCoordinat3D& observer
+  const Coordinats3D& points,
+  const Coordinat3D& observer
 ) const noexcept
 {
   // const bool verbose{false};
@@ -62,17 +51,8 @@ bool ribi::Geometry::IsCounterClockwiseCartesian(
     const auto b = points[1];
     const auto c = points[2];
     const auto normal = CalcNormal(a,b,c);
-    const Apfloat direction{CalcDotProduct(normal,a - observer)};
-    const bool is_counter_clockwise{direction > Apfloat(0.0)}; //Difference between CW ('<') and CCW ('>')
-    /* if (verbose)
-    {
-    //  TRACE(ToStr(a));
-    //  TRACE(ToStr(b));
-    //  TRACE(ToStr(c));
-    //  TRACE(ToStr(normal));
-    //  TRACE(ToStrSafe(direction));
-    //  TRACE(is_counter_clockwise);
-    } */
+    const double direction{CalcDotProduct(normal,a - observer)};
+    const bool is_counter_clockwise{direction > 0.0}; //Difference between CW ('<') and CCW ('>')
     return is_counter_clockwise;
   }
   else
@@ -100,25 +80,18 @@ bool ribi::Geometry::IsCounterClockwiseCartesian(
     std::copy(points.begin() + 0,points.begin() + 3,std::back_inserter(a));
     return IsCounterClockwiseCartesian(a,observer);
   }
+
 }
 
-bool ribi::Geometry::IsCounterClockwiseCartesian(
-  const Coordinats3D& points,
-  const Coordinat3D& observer
-) const noexcept
-{
-  return IsCounterClockwiseCartesian(ToApfloat(points),ToApfloat(observer));
-}
-
-bool ribi::Geometry::IsCounterClockwiseCartesianHorizontal(const ApCoordinats2D& points) const noexcept
+bool ribi::Geometry::IsCounterClockwiseCartesianHorizontal(const Coordinats2D& points) const noexcept
 {
   //Points are determined from their center
   const auto center(CalcCenter(points));
-  Apfloats angles;
+  Doubles angles;
   angles.reserve(points.size());
   std::transform(points.begin(),points.end(),
     std::back_inserter(angles),
-    [this,center](const ApCoordinat2D& coordinat)
+    [this,center](const Coordinat2D& coordinat)
     {
       return GetAngleClockCartesian(
         coordinat - center
@@ -128,14 +101,9 @@ bool ribi::Geometry::IsCounterClockwiseCartesianHorizontal(const ApCoordinats2D&
   return IsCounterClockwise(angles);
 }
 
-bool ribi::Geometry::IsCounterClockwiseCartesianHorizontal(const Coordinats2D& points) const noexcept
+bool ribi::Geometry::IsCounterClockwiseCartesianHorizontal(const Coordinats3D& points3d) const noexcept
 {
-  return IsCounterClockwiseCartesianHorizontal(ToApfloat(points));
-}
-
-bool ribi::Geometry::IsCounterClockwiseCartesianHorizontal(const ApCoordinats3D& points3d) const noexcept
-{
-  ApCoordinats2D points2d;
+  Coordinats2D points2d;
   for (const auto& point3d: points3d)
   {
     points2d.push_back(
@@ -146,9 +114,4 @@ bool ribi::Geometry::IsCounterClockwiseCartesianHorizontal(const ApCoordinats3D&
     );
   }
   return IsCounterClockwiseCartesianHorizontal(points2d);
-}
-
-bool ribi::Geometry::IsCounterClockwiseCartesianHorizontal(const Coordinats3D& points) const noexcept
-{
-  return IsCounterClockwiseCartesianHorizontal(ToApfloat(points));
 }

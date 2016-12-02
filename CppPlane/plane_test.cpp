@@ -14,6 +14,8 @@
 #include "testtimer.h"
 #include "trace.h"
 
+using namespace ribi;
+
 BOOST_AUTO_TEST_CASE(test_ribi_plane_construct_simple)
 {
   using Plane = ribi::Plane;
@@ -31,9 +33,29 @@ BOOST_AUTO_TEST_CASE(test_ribi_plane_construct_simple)
   );
 }
 
+BOOST_AUTO_TEST_CASE(test_ribi_plane_that_can_be_expressed_in_all_three_forms)
+{
+  using Coordinat3D = ::ribi::Plane::Coordinat3D;
+  const Coordinat3D p1( 1.0, 2.0,3.0);
+  const Coordinat3D p2( 4.0, 6.0,9.0);
+  const Coordinat3D p3(12.0,11.0,9.0);
+  const Plane p(p1,p2,p3);
+  BOOST_CHECK(p.CanCalcX());
+  BOOST_CHECK(p.CanCalcY());
+  BOOST_CHECK(p.CanCalcZ());
+  BOOST_CHECK(
+    !p.CalcProjection(
+      {
+        Coordinat3D(0.0,0.0,1.0),
+        Coordinat3D(1.0,0.0,0.0),
+        Coordinat3D(1.0,1.0,0.0)
+      }
+    ).empty()
+  );
+}
+
 BOOST_AUTO_TEST_CASE(test_ribi_plane)
 {
-  using namespace ribi;
   using Coordinat3D = ::ribi::Plane::Coordinat3D;
 
   const bool verbose{false};
@@ -43,26 +65,6 @@ BOOST_AUTO_TEST_CASE(test_ribi_plane)
   //Sorted by difficulty
   const auto series = PlaneZ::GetTestSeries();
 
-  if (verbose) TRACE("Plane that can be expressed in all three forms");
-  {
-    const Coordinat3D p1( 1.0, 2.0,3.0);
-    const Coordinat3D p2( 4.0, 6.0,9.0);
-    const Coordinat3D p3(12.0,11.0,9.0);
-    const Plane p(p1,p2,p3);
-    BOOST_CHECK(p.CanCalcX());
-    BOOST_CHECK(p.CanCalcY());
-    BOOST_CHECK(p.CanCalcZ());
-    BOOST_CHECK(
-      !p.CalcProjection(
-        {
-          Coordinat3D(0.0,0.0,1.0),
-          Coordinat3D(1.0,0.0,0.0),
-          Coordinat3D(1.0,1.0,0.0)
-        }
-      ).empty()
-    );
-
-  }
   if (verbose) TRACE("Plane X = 2");
   {
     const Coordinat3D p1(2.0, 2.0,3.0);
@@ -712,12 +714,6 @@ BOOST_AUTO_TEST_CASE(test_ribi_plane)
     const double x4 = 0.000403505141811931846741734464245610070065595209598541259765625;
     const double y4 = 0.00023296414405748076185791173298156309101614169776439666748046875;
     const double z4 = 0.00025000000000000000520417042793042128323577344417572021484375;
-
-    {
-      const apfloat x1_as_apfloat(x1);
-      const double  x1_as_double(Geometry().ToDoubleSafe(x1_as_apfloat));
-      BOOST_CHECK(x1 == x1_as_double);
-    }
 
     const Coordinat3D p1(x1,y1,z1);
     const Coordinat3D p2(x2,y2,z2);

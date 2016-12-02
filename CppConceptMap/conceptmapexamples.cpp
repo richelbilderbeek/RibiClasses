@@ -94,36 +94,36 @@ std::string ribi::cmap::ToXml(const Examples& any_examples) noexcept
   return r;
 }
 
-ribi::cmap::Examples ribi::cmap::XmlToExamples(const std::string& s)
+ribi::cmap::Examples ribi::cmap::XmlToExamples(const std::string& xml_string)
 {
-  if (s.size() < 20)
+  if (xml_string.size() < 20)
   {
     std::stringstream msg;
-    msg << __func__ << ": XML string '" << s << "' is only " << s.size() << " characters long, need at least 20";
+    msg << __func__ << ": XML string '" << xml_string << "' is only " << xml_string.size() << " characters long, need at least 20";
     throw std::logic_error(msg.str());
   }
-  if (s.substr(0,10) != "<examples>")
+  if (xml_string.substr(0,10) != "<examples>")
   {
     std::stringstream msg;
-    msg << __func__ << ": XML string '" << s << "' does not begin with <examples>";
+    msg << __func__ << ": XML string '" << xml_string << "' does not begin with <examples>";
     throw std::logic_error(msg.str());
   }
-  if (s.substr(s.size() - 11,11) != "</examples>")
+  if (xml_string.substr(xml_string.size() - 11,11) != "</examples>")
   {
     std::stringstream msg;
-    msg << __func__ << ": XML string '" << s << "' does not end with </examples>";
+    msg << __func__ << ": XML string '" << xml_string << "' does not end with </examples>";
     throw std::logic_error(msg.str());
   }
 
-  assert(Regex().GetRegexMatches(s,"(<examples>)").size()
-      == Regex().GetRegexMatches(s,"(</examples>)").size());
+  assert(Regex().GetRegexMatches(xml_string,"(<examples>)").size()
+      == Regex().GetRegexMatches(xml_string,"(</examples>)").size());
 
   std::vector<Example> examples;
   {
 
-    assert(Regex().GetRegexMatches(s,"(<example>)").size()
-        == Regex().GetRegexMatches(s,"(</example>)").size());
-    const auto v = Regex().GetRegexMatches(s,Regex().GetRegexExample());
+    assert(Regex().GetRegexMatches(xml_string,"(<example>)").size()
+        == Regex().GetRegexMatches(xml_string,"(</example>)").size());
+    const auto v = Regex().GetRegexMatches(xml_string,Regex().GetRegexExample());
     std::transform(v.begin(),v.end(),std::back_inserter(examples),
       [](const std::string& s)
       {

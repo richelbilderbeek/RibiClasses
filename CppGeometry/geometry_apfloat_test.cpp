@@ -1,6 +1,8 @@
 #include "geometry.h"
 #include <boost/test/unit_test.hpp>
 
+#include "apcplx.h" //apfloat's atan2
+
 #include "fuzzy_equal_to.h"
 #include "plane.h"
 #include "ribi_regex.h"
@@ -120,6 +122,24 @@ BOOST_AUTO_TEST_CASE(test_ribi_geometry_Fmod)
   BOOST_CHECK(g.Fmod(-13.0,2.0) > expected_min && g.Fmod(-13.0,2.0) < expected_max);
 }
 
+BOOST_AUTO_TEST_CASE(test_ribi_geometry_std_atan2_versus_apfloats_atan2)
+{
+  using Apfloat = ::ribi::Geometry::Apfloat;
+  const ribi::Geometry g;
+  for (double dx = -1.0; dx < 1.01; dx += 1.0)
+  {
+    for (double dy = -1.0; dy < 1.01; dy += 1.0)
+    {
+      if (dx == 0.0 && dy == 0.0) continue;
+      const auto a = std::atan2(dx,dy);
+      const auto b = atan2(Apfloat(dx),Apfloat(dy));
+      const auto c = g.Atan2(Apfloat(dx),Apfloat(dy));
+      const auto error = abs(a - c);
+      BOOST_CHECK(error < 0.01); //apfloat does not use namespace std::
+    }
+  }
+}
+
 BOOST_AUTO_TEST_CASE(test_ribi_geometry_GetAngleClockCartesian_double)
 {
   const ribi::Geometry g;
@@ -163,6 +183,48 @@ BOOST_AUTO_TEST_CASE(test_ribi_geometry_GetAngleClockCartesian_double)
     const double angle =  g.GetAngleClockCartesian(-1.0,1.0); //North-West
     const double expected = 1.75 * pi;
     BOOST_CHECK(std::abs(angle-expected) < 0.01);
+  }
+}
+
+BOOST_AUTO_TEST_CASE(test_ribi_geometry_GetAngleClockCartesian_Apfloat)
+{
+  using Apfloat = ::ribi::Geometry::Apfloat;
+  const ribi::Geometry g;
+  const double pi = boost::math::constants::pi<double>();
+  {
+    const auto angle =  g.GetAngleClockCartesian(Apfloat(1.0),Apfloat(1.0)); //North-East
+    const auto expected = 0.25 * pi;
+    BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
+  }
+  {
+    const auto angle =  g.GetAngleClockCartesian(Apfloat(1.0),Apfloat(0.0)); //East
+    const auto expected = 0.5 * pi;
+    BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
+  }
+  {
+    const auto angle =  g.GetAngleClockCartesian(Apfloat(1.0),Apfloat(-1.0)); //South-East
+    const auto expected = 0.75 * pi;
+    BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
+  }
+  {
+    const auto angle =  g.GetAngleClockCartesian(Apfloat(0.0),Apfloat(-1.0)); //South
+    const auto expected = 1.0 * pi;
+    BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
+  }
+  {
+    const auto angle =  g.GetAngleClockCartesian(Apfloat(-1.0),Apfloat(-1.0)); //South-West
+    const auto expected = 1.25 * pi;
+    BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
+  }
+  {
+    const auto angle =  g.GetAngleClockCartesian(Apfloat(-1.0),Apfloat(0.0)); //West
+    const auto expected = 1.5 * pi;
+    BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
+  }
+  {
+    const auto angle =  g.GetAngleClockCartesian(Apfloat(-1.0),Apfloat(1.0)); //North-West
+    const auto expected = 1.75 * pi;
+    BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
   }
 }
 
@@ -212,6 +274,48 @@ BOOST_AUTO_TEST_CASE(test_ribi_geometry_GetAngleClockScreen_double)
   }
 }
 
+BOOST_AUTO_TEST_CASE(test_ribi_geometry_GetAngleClockScreen_Apfloat)
+{
+  using Apfloat = ::ribi::Geometry::Apfloat;
+  const ribi::Geometry g;
+  const double pi = boost::math::constants::pi<double>();
+  {
+    const auto angle =  g.GetAngleClockScreen(Apfloat(1.0),Apfloat(-1.0)); //North-East
+    const auto expected = 0.25 * pi;
+    BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
+  }
+  {
+    const auto angle =  g.GetAngleClockScreen(Apfloat(1.0),Apfloat(0.0)); //East
+    const auto expected = 0.5 * pi;
+    BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
+  }
+  {
+    const auto angle =  g.GetAngleClockScreen(Apfloat(1.0),Apfloat(1.0)); //South-East
+    const auto expected = 0.75 * pi;
+    BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
+  }
+  {
+    const auto angle =  g.GetAngleClockScreen(Apfloat(0.0),Apfloat(1.0)); //South
+    const auto expected = 1.0 * pi;
+    BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
+  }
+  {
+    const auto angle =  g.GetAngleClockScreen(Apfloat(-1.0),Apfloat(1.0)); //South-West
+    const auto expected = 1.25 * pi;
+    BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
+  }
+  {
+    const auto angle =  g.GetAngleClockScreen(Apfloat(-1.0),Apfloat(0.0)); //West
+    const auto expected = 1.5 * pi;
+    BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
+  }
+  {
+    const auto angle =  g.GetAngleClockScreen(Apfloat(-1.0),Apfloat(-1.0)); //North-West
+    const auto expected = 1.75 * pi;
+    BOOST_CHECK(abs(angle-expected) < 0.01); //apfloat does not use namespace std::
+  }
+}
+
 BOOST_AUTO_TEST_CASE(test_ribi_geometry_GetDistance)
 {
   const ribi::Geometry g;
@@ -238,6 +342,25 @@ BOOST_AUTO_TEST_CASE(test_ribi_geometry_GetDistance)
 
 }
 
+BOOST_AUTO_TEST_CASE(test_ribi_geometry_double_to_apfloat_to_double_conversion)
+{
+  const ribi::Geometry g;
+  for (const double x:
+    {
+      1.0,
+      0.0,
+      boost::math::constants::pi<double>(),
+      boost::numeric::bounds<double>::smallest(),
+      boost::numeric::bounds<double>::lowest(),
+      boost::numeric::bounds<double>::highest()
+    }
+  )
+  {
+    const apfloat y = x;
+    const double z = g.ToDouble(y);
+    BOOST_CHECK(x == z);
+  }
+}
 
 BOOST_AUTO_TEST_CASE(test_ribi_geometry_IsClockWise_two_angles_double)
 {
@@ -738,11 +861,11 @@ BOOST_AUTO_TEST_CASE(test_ribi_geometry)
   const bool verbose{false};
   const double pi = boost::math::constants::pi<double>();
   using namespace ribi;
-  using ApCoordinat3D = ::ribi::Geometry::Coordinat3D;
-  using ApCoordinats3D = ::ribi::Geometry::Coordinats3D;
+  using ApCoordinat3D = ::ribi::Geometry::ApCoordinat3D;
+  using ApCoordinats3D = ::ribi::Geometry::ApCoordinats3D;
   using Coordinat2D = ::ribi::Geometry::Coordinat2D;
   //using Coordinats2D = ::ribi::Geometry::Coordinats2D;
-  using Apfloat = double;
+  using Apfloat = ::ribi::Geometry::Apfloat;
 
   if (verbose) TRACE("Convex shape, 3D, points in Y=0 plane");
   {

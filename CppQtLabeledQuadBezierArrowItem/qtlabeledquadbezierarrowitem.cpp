@@ -14,7 +14,7 @@
 #include <QPainter>
 
 #include "qtquadbezierarrowitem.h"
-#include "trace.h"
+
 
 #pragma GCC diagnostic pop
 

@@ -111,7 +111,7 @@ void ribi::delete_file(const std::string& filename)
     ;
     throw std::invalid_argument(msg.str());
   }
-};
+}
 
 void ribi::fileio::FileIo::DeleteFile(const std::string& filename) const
 {

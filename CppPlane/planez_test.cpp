@@ -304,7 +304,7 @@ BOOST_AUTO_TEST_CASE(ribi_planez_test)
       Coordinat3D(p2_x,p2_y,p2_z),
       Coordinat3D(p3_x,p3_y,p3_z)
     );
-    const auto t(Geometry().ToDouble(p.GetCoefficients()));
+    const auto& t = p.GetCoefficients();
     BOOST_CHECK(t.size() == 4);
     const auto a = t[0];
     const auto b = t[1];
@@ -372,7 +372,7 @@ BOOST_AUTO_TEST_CASE(ribi_planez_test)
     const Coordinat3D p2(1.0,2.0,13.0);
     const Coordinat3D p3(2.0,1.0,12.0);
     const PlaneZ p(p1,p2,p3);
-    const auto t(Geometry().ToDouble(p.GetCoefficients()));
+    const auto& t = p.GetCoefficients();
     const auto a = t[0];
     const auto b = t[1];
     const auto c = t[2];
@@ -423,9 +423,9 @@ BOOST_AUTO_TEST_CASE(ribi_planez_test)
     const Coordinat3D p2( 7.0,11.0,5.0);
     const Coordinat3D p3(13.0,17.0,5.0);
     const PlaneZ p(p1,p2,p3);
-    BOOST_CHECK( abs(p.CalcZ(1.0,2.0)-5.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
-    BOOST_CHECK( abs(p.CalcZ(3.0,5.0)-5.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
-    BOOST_CHECK( abs(p.CalcZ(7.0,9.0)-5.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
+    BOOST_CHECK(std::abs(p.CalcZ(1.0,2.0)-5.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
+    BOOST_CHECK(std::abs(p.CalcZ(3.0,5.0)-5.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
+    BOOST_CHECK(std::abs(p.CalcZ(7.0,9.0)-5.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
   }
   if (verbose) { TRACE("ToFunction, 3 points and 4 points"); }
   {

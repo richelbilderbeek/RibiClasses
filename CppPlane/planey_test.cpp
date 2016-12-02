@@ -165,9 +165,9 @@ BOOST_AUTO_TEST_CASE(ribi_planey_test)
     const Coordinat3D p2(2.0,5.0,8.0);
     const Coordinat3D p3(3.0,7.0,11.0);
     PlaneY p(p1,p2,p3);
-    BOOST_CHECK( abs(p.CalcY(1.0, 3.0)- 2.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
-    BOOST_CHECK( abs(p.CalcY(2.0, 8.0)- 5.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
-    BOOST_CHECK( abs(p.CalcY(3.0,11.0)- 7.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
+    BOOST_CHECK(std::abs(p.CalcY(1.0, 3.0)- 2.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
+    BOOST_CHECK(std::abs(p.CalcY(2.0, 8.0)- 5.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
+    BOOST_CHECK(std::abs(p.CalcY(3.0,11.0)- 7.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
   }
   if (verbose) TRACE("CalcY, vertical plane Y = 3.0");
   /*
@@ -190,9 +190,9 @@ BOOST_AUTO_TEST_CASE(ribi_planey_test)
     const Coordinat3D p2( 7.0,3.0,11.0);
     const Coordinat3D p3(13.0,3.0,17.0);
     PlaneY p(p1,p2,p3);
-    BOOST_CHECK( abs(p.CalcY(1.0,2.0)-3.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
-    BOOST_CHECK( abs(p.CalcY(3.0,5.0)-3.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
-    BOOST_CHECK( abs(p.CalcY(7.0,9.0)-3.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
+    BOOST_CHECK(std::abs(p.CalcY(1.0,2.0)-3.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
+    BOOST_CHECK(std::abs(p.CalcY(3.0,5.0)-3.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
+    BOOST_CHECK(std::abs(p.CalcY(7.0,9.0)-3.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
   }
 
   if (verbose) TRACE("IsInPlane, Y = 1, zooming to smallest three points to determine a plane, point above origin");
@@ -239,25 +239,6 @@ BOOST_AUTO_TEST_CASE(ribi_planey_test)
     const Coordinat3D p3(-3.64472,-0.25,10.0);
     const Coordinat3D p4(-4.52988,-0.25,10.0);
     const PlaneY p(p1,p2,p3);
-    if (verbose)
-    {
-      TRACE("----------------------------");
-      TRACE(Geometry().ToStrSafe(p.CalcMaxError(p1)));
-      TRACE(Geometry().ToStrSafe(p.CalcError(p1)));
-      TRACE(Geometry().ToStrSafe(p.CalcMaxError(p2)));
-      TRACE(Geometry().ToStrSafe(p.CalcError(p2)));
-      TRACE(Geometry().ToStrSafe(p.CalcMaxError(p3)));
-      TRACE(Geometry().ToStrSafe(p.CalcError(p3)));
-      TRACE(Geometry().ToStrSafe(p.CalcMaxError(p4)));
-      TRACE(Geometry().ToStrSafe(p.CalcError(p4)));
-      TRACE(Geometry().ToStrSafe(p.GetFunctionA()));
-      TRACE(Geometry().ToStrSafe(p.GetFunctionB()));
-      TRACE(Geometry().ToStrSafe(p.GetFunctionC()));
-      TRACE(Geometry().ToStrSafe(p.GetCoefficients()[0]));
-      TRACE(Geometry().ToStrSafe(p.GetCoefficients()[1]));
-      TRACE(Geometry().ToStrSafe(p.GetCoefficients()[2]));
-      TRACE(Geometry().ToStrSafe(p.GetCoefficients()[3]));
-    }
     BOOST_CHECK(p.IsInPlane(p1));
     BOOST_CHECK(p.IsInPlane(p2));
     BOOST_CHECK(p.IsInPlane(p3));

@@ -12,6 +12,7 @@
 #ifndef _WIN32
 #include <boost/geometry/geometries/polygon.hpp>
 #endif
+#include "apfloat.h"
 #pragma GCC diagnostic pop
 
 namespace ribi {
@@ -33,11 +34,11 @@ namespace ribi {
 //
 struct PlaneZ
 {
-  typedef double Double;
-  typedef boost::geometry::model::d2::point_xy<Double> Coordinat2D;
-  typedef boost::geometry::model::point<Double,3,boost::geometry::cs::cartesian> Coordinat3D;
+  typedef boost::geometry::model::d2::point_xy<apfloat> Coordinat2D;
+  typedef boost::geometry::model::point<apfloat,3,boost::geometry::cs::cartesian> Coordinat3D;
   typedef std::vector<Coordinat2D> Coordinats2D;
   typedef std::vector<Coordinat3D> Coordinats3D;
+  typedef apfloat Double;
   typedef std::vector<Double> Doubles;
 
   ///Create plane Z = 0.0
