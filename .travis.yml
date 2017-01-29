@@ -32,7 +32,7 @@ before_script:
   - sleep 3 # give xvfb some time to start
 
 script: 
-  - ./install_githubs.sh
+  - ./download_other_githubs
   - ./build_console.sh
   - ./RibiClassesTestConsole
   - ./build_desktop.sh
