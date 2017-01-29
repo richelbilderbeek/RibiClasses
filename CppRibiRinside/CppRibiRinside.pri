@@ -2,13 +2,10 @@ INCLUDEPATH += \
     ../RibiClasses/CppRibiRinside
 
 SOURCES += \
-    ../RibiClasses/CppRibiRinside/ribi_rinside.cpp \
-    ../RibiClasses/CppRibiRinside/ribi_rinside_test.cpp
+    $$PWD/ribi_rinside.cpp \
+    $$PWD/ribi_rinside_test.cpp
 
 HEADERS  += \
-    ../RibiClasses/CppRibiRinside/ribi_rinside.h
+    $$PWD/ribi_rinside.h
 
-
-OTHER_FILES += \
-    ../RibiClasses/CppRibiRinside/Licence.txt
 
