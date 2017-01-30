@@ -183,9 +183,8 @@ ribi::Geometry::Coordinats2D ribi::Geometry::CalcProjection(const Coordinats3D& 
 {
   assert(points.size() >= 3);
   assert(IsPlane(points));
-  const std::unique_ptr<Plane> plane(new Plane(points[0],points[1],points[2]));
-  assert(plane);
-  return plane->CalcProjection(points);
+  const Plane plane(points[0],points[1],points[2]);
+  return plane.CalcProjection(points);
 }
 
 boost::geometry::model::polygon<boost::geometry::model::d2::point_xy<double>>
@@ -515,7 +514,7 @@ bool ribi::Geometry::IsConvex(const Coordinats3D& points) const noexcept
     }
   )
   {
-    const boost::shared_ptr<Plane> plane(
+    const std::unique_ptr<Plane> plane(
       new Plane(
         points[v[0]],
         points[v[1]],
