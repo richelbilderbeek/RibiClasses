@@ -1,7 +1,9 @@
 include(../RibiLibraries/GeneralConsole.pri)
 include(../RibiLibraries/GeneralConsoleTest.pri)
 include(../RibiLibraries/BoostAll.pri)
+include(../RibiLibraries/Apfloat.pri)
 include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
+include(../plane/plane.pri)
 
 include(../RibiClasses/CppContainer/CppContainer.pri)
 include(../RibiClasses/CppContainer/CppContainerTest.pri)
@@ -15,8 +17,6 @@ include(../RibiClasses/CppGeometry/CppGeometry.pri)
 include(../RibiClasses/CppGeometry/CppGeometryTest.pri)
 include(../RibiClasses/CppFuzzy_equal_to/CppFuzzy_equal_to.pri)
 include(../RibiClasses/CppFuzzy_equal_to/CppFuzzy_equal_toTest.pri)
-include(../RibiClasses/CppPlane/CppPlane.pri)
-include(../RibiClasses/CppPlane/CppPlaneTest.pri)
 include(../RibiClasses/CppRibiRandom/CppRibiRandom.pri)
 include(../RibiClasses/CppRibiRandom/CppRibiRandomTest.pri)
 include(../RibiClasses/CppRibiRegex/CppRibiRegex.pri)
@@ -41,7 +41,8 @@ CONFIG += c++14
 QMAKE_CXXFLAGS += -std=c++14
 
 # High warning levels
-QMAKE_CXXFLAGS += -Wall -Wextra -Wshadow -Wnon-virtual-dtor -pedantic -Werror
+# -Wshadow goes bad with apfloat
+QMAKE_CXXFLAGS += -Wall -Wextra -Wnon-virtual-dtor -pedantic -Werror
 
 
 CONFIG(release, debug|release) {

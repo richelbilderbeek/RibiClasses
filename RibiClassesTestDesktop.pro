@@ -5,6 +5,7 @@ include(../RibiLibraries/GeneralConsole.pri)
 include(../RibiLibraries/Apfloat.pri)
 #include(../RibiLibraries/BoostAll.pri)
 include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
+include(../plane/plane.pri)
 
 # Do not test console classes
 include(../RibiClasses/CppContainer/CppContainer.pri)
