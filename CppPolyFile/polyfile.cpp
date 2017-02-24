@@ -10,13 +10,14 @@
 #include <boost/make_shared.hpp>
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/trim.hpp>
+#include <boost/lexical_cast.hpp>
 
 #include <QFile>
 
 #include "container.h"
 #include "fileio.h"
-#include "testtimer.h"
-#include "trace.h"
+
+
 
 #pragma GCC diagnostic pop
 
@@ -47,15 +48,10 @@ std::vector<std::string> ribi::PolyFile::GetVersionHistory() noexcept
 
 std::pair<ribi::PolyFile::Vertices,ribi::PolyFile::Edges> ribi::PolyFile::Parse(const std::string& filename)
 {
-  const bool verbose{false};
   //Collect all indices
   const auto v = RemoveComments(fileio::FileIo().FileToVector(filename));
   if (v.empty())
   {
-    if (verbose)
-    {
-      TRACE(Container().ToStr(v));
-    }
     std::stringstream s;
     s
       << __FILE__ << "(" <<  (__LINE__) <<  "): "
@@ -187,7 +183,6 @@ std::pair<ribi::PolyFile::Vertices,ribi::PolyFile::Edges> ribi::PolyFile::Parse(
         << "line #" << i << ": '"
         << line << "'"
       ;
-      if (verbose) { TRACE(s.str()); }
       throw std::runtime_error(s.str());
     }
     assert(w.size() == 4);
@@ -211,7 +206,6 @@ std::pair<ribi::PolyFile::Vertices,ribi::PolyFile::Edges> ribi::PolyFile::Parse(
         << "line #" << i << ": '"
         << line << "'"
       ;
-      if (verbose) { TRACE(s.str()); }
       throw std::runtime_error(s.str());
     }
     assert(w.size() == 3);
@@ -227,7 +221,6 @@ std::pair<ribi::PolyFile::Vertices,ribi::PolyFile::Edges> ribi::PolyFile::Parse(
         << "line #" << i << ": '"
         << line << "'"
       ;
-      if (verbose) { TRACE(s.str()); }
       throw std::runtime_error(s.str());
     }
     if (from_index < 0)
@@ -241,7 +234,6 @@ std::pair<ribi::PolyFile::Vertices,ribi::PolyFile::Edges> ribi::PolyFile::Parse(
         << "line #" << i << ": '"
         << line << "'"
       ;
-      if (verbose) { TRACE(s.str()); }
       throw std::runtime_error(s.str());
     }
     if (from_index >= static_cast<int>(vertices.size()))
@@ -256,7 +248,6 @@ std::pair<ribi::PolyFile::Vertices,ribi::PolyFile::Edges> ribi::PolyFile::Parse(
         << "line #" << i << ": '"
         << line << "'"
       ;
-      if (verbose) { TRACE(s.str()); }
       throw std::runtime_error(s.str());
     }
     if (to_index < 0)
@@ -270,7 +261,6 @@ std::pair<ribi::PolyFile::Vertices,ribi::PolyFile::Edges> ribi::PolyFile::Parse(
         << "line #" << i << ": '"
         << line << "'"
       ;
-      if (verbose) { TRACE(s.str()); };
       throw std::runtime_error(s.str());
     }
     if (to_index >= static_cast<int>(vertices.size()))
@@ -285,7 +275,6 @@ std::pair<ribi::PolyFile::Vertices,ribi::PolyFile::Edges> ribi::PolyFile::Parse(
         << "line #" << i << ": '"
         << line << "'"
       ;
-      if (verbose) { TRACE(s.str()); }
       throw std::runtime_error(s.str());
     }
     assert(from_index != to_index);
@@ -326,16 +315,16 @@ void ribi::PolyFile::Test() noexcept
   Container();
   fileio::FileIo();
 
-  const TestTimer test_timer(__func__,__FILE__,1.0);
+  
   const bool verbose{false};
-  if (verbose) { TRACE("RemoveComments"); }
+  // RemoveComments"); }
   {
     std::vector<std::string> v
       = { "#At beginning", " #At second spot", "Keep me", "  #At third spot"  } ;
     const auto w = RemoveComments(v);
     assert(w.size() == 1);
   }
-  if (verbose) { TRACE("Load a .poly file"); }
+  // Load a .poly file"); }
   {
     const std::string filename = fileio::FileIo().GetTempFileName(".poly");
     {
@@ -350,7 +339,6 @@ void ribi::PolyFile::Test() noexcept
           << "(1) Add the resource file Classes/CppPolyFile/CppPolyFile.qrc to your project "
           << "(2) Check that in that resource file, " << qtfilename << " is present"
         ;
-        TRACE(s.str());
       }
       assert(qfile.size() > 0);
       qfile.copy(filename.c_str());
@@ -361,7 +349,7 @@ void ribi::PolyFile::Test() noexcept
     assert(!polyfile.GetEdges().empty());
     fileio::FileIo().DeleteFile(filename);
   }
-  if (verbose) { TRACE("Create a .poly file from vertices and edges, save to file and load again"); }
+  // Create a .poly file from vertices and edges, save to file and load again"); }
   {
     const Vertices vertices = { {0.0,0.0},{0.0,1.0},{1.0,0.0} };
     const int n_vertices = static_cast<int>(vertices.size());
@@ -390,7 +378,7 @@ void ribi::PolyFile::Test() noexcept
     }
     fileio::FileIo().DeleteFile(filename);
   }
-  if (verbose) { TRACE("Create a .poly file starting at index 0"); }
+  // Create a .poly file starting at index 0"); }
   {
     const std::string filename = fileio::FileIo().GetTempFileName(".poly");
     {
@@ -418,7 +406,7 @@ void ribi::PolyFile::Test() noexcept
     assert(polyfile.GetVertices().size() == 3);
     fileio::FileIo().DeleteFile(filename);
   }
-  if (verbose) { TRACE("Create a .poly file starting at index 1"); }
+  // Create a .poly file starting at index 1"); }
   {
     const std::string filename = fileio::FileIo().GetTempFileName(".poly");
     {
@@ -446,7 +434,7 @@ void ribi::PolyFile::Test() noexcept
     assert(polyfile.GetVertices().size() == 3);
     fileio::FileIo().DeleteFile(filename);
   }
-  if (verbose) { TRACE("Create a broken .poly file: number of vertices is more than supplied"); }
+  // Create a broken .poly file: number of vertices is more than supplied"); }
   {
     const std::string filename = fileio::FileIo().GetTempFileName(".poly");
     {
@@ -481,7 +469,7 @@ void ribi::PolyFile::Test() noexcept
     }
     fileio::FileIo().DeleteFile(filename);
   }
-  if (verbose) { TRACE("Create a broken .poly file: number of vertices is less than supplied"); }
+  // Create a broken .poly file: number of vertices is less than supplied"); }
   {
     const std::string filename = fileio::FileIo().GetTempFileName(".poly");
     {
@@ -516,7 +504,7 @@ void ribi::PolyFile::Test() noexcept
     }
     fileio::FileIo().DeleteFile(filename);
   }
-  if (verbose) { TRACE("Create a broken .poly file: number of edges is more than supplied"); }
+  // Create a broken .poly file: number of edges is more than supplied"); }
   {
     const std::string filename = fileio::FileIo().GetTempFileName(".poly");
     {
@@ -551,7 +539,7 @@ void ribi::PolyFile::Test() noexcept
     }
     fileio::FileIo().DeleteFile(filename);
   }
-  if (verbose) { TRACE("Create a broken .poly file: number of edges is less than supplied"); }
+  // Create a broken .poly file: number of edges is less than supplied"); }
   {
     const std::string filename = fileio::FileIo().GetTempFileName(".poly");
     {
@@ -586,7 +574,7 @@ void ribi::PolyFile::Test() noexcept
     }
     fileio::FileIo().DeleteFile(filename);
   }
-  if (verbose) { TRACE("Create a broken .poly file starting at index 1, but has an edge pointing to index 0"); }
+  // Create a broken .poly file starting at index 1, but has an edge pointing to index 0"); }
   {
     const std::string filename = fileio::FileIo().GetTempFileName(".poly");
     {

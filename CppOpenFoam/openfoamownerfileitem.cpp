@@ -2,9 +2,7 @@
 
 #include <cassert>
 #include <iostream>
-
-#include "testtimer.h"
-#include "trace.h"
+#include <sstream>
 
 ribi::foam::OwnerFileItem::OwnerFileItem(
   const CellIndex& cell_index
@@ -12,20 +10,19 @@ ribi::foam::OwnerFileItem::OwnerFileItem(
   : m_cell_index{cell_index}
 {
   #ifndef NDEBUG
-  Test();
   assert(m_cell_index.Get() >= 0);
   #endif
 }
 
 #ifndef NDEBUG
-void ribi::foam::OwnerFileItem::Test() noexcept
+void ribi::foam::TestOwnerFileItem() noexcept
 {
   {
     static bool is_tested{false};
     if (is_tested) return;
     is_tested = true;
   }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
+  
   //operator==
   {
     const OwnerFileItem i(CellIndex(123));
@@ -49,11 +46,6 @@ void ribi::foam::OwnerFileItem::Test() noexcept
     s << i;
     OwnerFileItem j;
     s >> j;
-    if (i != j)
-    {
-      TRACE(i);
-      TRACE(j);
-    }
     assert(i == j);
   }
 }
@@ -81,7 +73,6 @@ std::istream& ribi::foam::operator>>(std::istream& is, OwnerFileItem& f)
 {
   is >> f.m_cell_index;
   assert(is);
-  if (f.GetCellIndex().Get() < 0) TRACE(f.GetCellIndex());
   assert(f.GetCellIndex().Get() >= 0);
   return is;
 }

@@ -11,10 +11,10 @@
 #include <boost/lambda/lambda.hpp>
 
 #include "geometry.h"
-#include "testtimer.h"
+
 #include "trianglemeshface.h"
 #include "trianglemeshhelper.h"
-#include "trace.h"
+
 #include "xml.h"
 #pragma GCC diagnostic pop
 
@@ -69,10 +69,6 @@ bool ribi::trim::Point::CanGetZ() const noexcept
 
 boost::units::quantity<boost::units::si::length> ribi::trim::Point::GetZ() const noexcept
 {
-  if (!CanGetZ())
-  {
-    TRACE("BREAK");
-  }
   assert(CanGetZ());
   return *m_z;
 }
@@ -136,7 +132,7 @@ void ribi::trim::Point::Test() noexcept
     if (is_tested) return;
     is_tested = true;
   }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
+  
 }
 #endif
 

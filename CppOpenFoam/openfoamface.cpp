@@ -5,7 +5,7 @@
 
 #include "openfoamcell.h"
 #include "openfoamhelper.h"
-#include "trace.h"
+
 
 ribi::foam::Face::Face(
   const boost::shared_ptr<Cell>& neighbour,

@@ -15,7 +15,7 @@
 #include <boost/units/systems/si/prefixes.hpp>
 
 #include "geometry.h"
-#include "testtimer.h"
+
 #include "trianglemeshcell.h"
 #include "trianglemeshcreateverticalfacesstrategies.h"
 #include "trianglemeshpoint.h"
@@ -24,7 +24,7 @@
 #include "trianglemeshpointfactory.h"
 #include "trianglemeshwinding.h"
 #include "trianglemeshwindings.h"
-#include "trace.h"
+
 #include "xml.h"
 #pragma GCC diagnostic pop
 
@@ -51,11 +51,6 @@ ribi::trim::Face::Face(
   assert(  m_points[0].use_count() >= 2);
   assert(any_points[0].use_count() >= 2);
   assert(Helper().IsPlane(m_points));
-  if (!Helper().IsConvex(m_points))
-  {
-    TRACE("ERROR");
-    for (const auto& point: m_points) TRACE(point->ToStr());
-  }
   assert(sm_faces.count(this) == 0);
   #endif
 
@@ -295,7 +290,7 @@ void ribi::trim::Face::Test() noexcept
   }
   FaceFactory();
 
-  const TestTimer test_timer(__func__,__FILE__,1.0);
+  
   //Check that a Face has no owner nor neighbour when not added to a Cell
   for (const auto& strategy: CreateVerticalFacesStrategies().GetAll())
   {

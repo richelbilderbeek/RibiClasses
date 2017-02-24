@@ -3,8 +3,8 @@
 #include <cassert>
 #include <iostream>
 
-#include "testtimer.h"
-#include "trace.h"
+
+
 
 ribi::foam::CellIndex::CellIndex(const int index)
   : m_index(index)
@@ -39,7 +39,7 @@ void ribi::foam::CellIndex::Test() noexcept
     if (is_tested) return;
     is_tested = true;
   }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
+  
   CellIndex a(2);
   CellIndex b(2);
   CellIndex c(3);
@@ -62,12 +62,6 @@ std::ostream& ribi::foam::operator<<(std::ostream& os, const CellIndex& cell_ind
 std::istream& ribi::foam::operator>>(std::istream& is, CellIndex& cell_index)
 {
   is >> cell_index.m_index;
-  #ifndef NDEBUG
-  if (!is)
-  {
-    TRACE("ERROR");
-  }
-  #endif
   assert(is);
   return is;
 }

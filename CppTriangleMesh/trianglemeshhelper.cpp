@@ -14,7 +14,7 @@
 
 
 #include "geometry.h"
-#include "trace.h"
+
 #include "trianglemeshface.h"
 #include "trianglemeshhelper.h"
 #include "trianglemeshpoint.h"
@@ -118,10 +118,6 @@ std::set<
   );
   for (const auto& point: points)
   {
-    if (!point->CanGetZ())
-    {
-      TRACE("Extract these coordinats later: the Face must be assigned to a Layer first");
-    }
     assert(point->CanGetZ());
     const Coordinat3D c(
       point->GetCoordinat3D()
@@ -234,26 +230,11 @@ bool ribi::trim::Helper::IsConvex(const std::vector<boost::shared_ptr<ribi::trim
   const bool verbose{false};
   if (points.size() == 3)
   {
-    if (verbose) { TRACE("Three points are always convex"); }
+    // Three points are always convex"); }
     return true;
   }
 
-  #ifndef NDEBUG
   assert(points.size() == 4);
-  if (verbose)
-  {
-    std::stringstream s;
-    s << "{";
-    for (const auto& point3d: points)
-    {
-      assert(point3d);
-      s << (*point3d) << ",";
-    }
-    std::string po_str(s.str());
-    po_str[po_str.size() - 1] = '}';
-    TRACE(po_str);
-  }
-  #endif
 
   const auto const_points(AddConst(points));
 
@@ -340,14 +321,13 @@ void ribi::trim::Helper::MakeConvex(
 
   if (verbose)
   {
-    TRACE(Helper().ToStr(AddConst(points)));
-    for (const auto& p: points) { std::cerr << (*p) << std::endl; }
-    TRACE("BREAK");
+    std::clog << Helper().ToStr(AddConst(points)) << '\n';
+    for (const auto& p: points) { std::cerr << (*p) << '\n'; }
   }
 
   if (IsConvex(points))
   {
-    if (verbose) { TRACE("MakeConvex: points were convex at start"); }
+    // MakeConvex: points were convex at start"); }
     return;
   }
 

@@ -19,13 +19,12 @@ struct OwnerFileItem
 
   CellIndex m_cell_index;
 
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 
   friend class OpenFoamOwnerFile;
   friend std::istream& operator>>(std::istream& is, OwnerFileItem& f);
 };
+
+void TestOwnerFileItem() noexcept;
 
 bool operator==(const OwnerFileItem& lhs, const OwnerFileItem& rhs);
 bool operator!=(const OwnerFileItem& lhs, const OwnerFileItem& rhs);

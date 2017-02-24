@@ -8,7 +8,7 @@
 #include <boost/make_shared.hpp>
 
 #include "geometry.h"
-#include "testtimer.h"
+
 #include "trianglemeshcreateverticalfacesstrategies.h"
 #include "trianglemeshface.h"
 #include "trianglemeshfacefactory.h"
@@ -17,7 +17,7 @@
 #include "trianglemeshpointfactory.h"
 #include "trianglemeshwinding.h"
 #include "trianglemeshwindings.h"
-#include "trace.h"
+
 #pragma GCC diagnostic pop
 
 ribi::trim::FaceFactory::FaceFactory()
@@ -41,18 +41,7 @@ boost::shared_ptr<ribi::trim::Face> ribi::trim::FaceFactory::Create(
 
   assert(points.size() == 3 || points.size() == 4);
   assert(std::count(points.begin(),points.end(),nullptr) == 0);
-  #ifndef NDEBUG
-  if(!Helper().IsPlane(points))
-  {
-    TRACE("ERROR");
-  }
-  #endif //NDEBUG
   assert(Helper().IsPlane(points));
-
-  if (!Helper().IsConvex(points))
-  {
-    TRACE("ERROR");
-  }
 
   assert(Helper().IsConvex(points)
     && "FaceFactory must be called by a sorted and convex collection of points"
@@ -61,7 +50,7 @@ boost::shared_ptr<ribi::trim::Face> ribi::trim::FaceFactory::Create(
   if (verbose)
   {
     std::clog << __FILE__ << "(" <<  (__LINE__) <<  ") : "
-      << "Creating face with index " << n << std::endl
+      << "Creating face with index " << n << '\n'
     ;
   }
 
@@ -79,7 +68,7 @@ boost::shared_ptr<ribi::trim::Face> ribi::trim::FaceFactory::Create(
   {
     std::clog << __FILE__ << "(" <<  (__LINE__) <<  ") : "
       << "Connecting all " << face->GetPoints().size()
-      << " points to the face" << std::endl
+      << " points to the face" << '\n'
     ;
   }
 
@@ -230,9 +219,9 @@ void ribi::trim::FaceFactory::Test() noexcept
   PointFactory();
   FaceFactory().CreateTestSquare(Winding::clockwise); //Face
 
-  const TestTimer test_timer(__func__,__FILE__,1.0);
+  
   const bool verbose{false};
-  if (verbose) TRACE("Create a testing prism");
+  // "Create a testing prism");
   for (const auto& strategy: CreateVerticalFacesStrategies().GetAll())
   {
     const std::vector<boost::shared_ptr<Face>> prism {
@@ -248,7 +237,7 @@ void ribi::trim::FaceFactory::Test() noexcept
         break;
     }
   }
-  if (verbose) TRACE("Check that incorrect Faces cannot be constructed");
+  // "Check that incorrect Faces cannot be constructed");
   //(as this test is done in each Face its contructor)
   for (Winding winding: Windings().GetAll())
   {
@@ -260,7 +249,7 @@ void ribi::trim::FaceFactory::Test() noexcept
       == (winding == Winding::clockwise || winding == Winding::counter_clockwise)
     );
   }
-  if (verbose) TRACE("Check that incorrect Faces cannot be constructed");
+  // "Check that incorrect Faces cannot be constructed");
   //(as this test is done in each Face its contructor)
   {
     const std::vector<boost::shared_ptr<Point>> points {
@@ -270,7 +259,7 @@ void ribi::trim::FaceFactory::Test() noexcept
     assert(!Helper().IsConvex(points));
   }
   #ifdef BRUTE_FORCE_ISSUE_168
-  if (verbose) TRACE("IsConvex, issue 168");
+  // "IsConvex, issue 168");
   {
     typedef boost::geometry::model::d2::point_xy<double> Coordinat2D;
     boost::shared_ptr<Coordinat2D> c_0(new Coordinat2D(2.35114,3.23607));
@@ -305,7 +294,7 @@ void ribi::trim::FaceFactory::Test() noexcept
     }
   }
 
-  if (verbose) TRACE("IsConvex, issue 168");
+  // "IsConvex, issue 168");
   {
     typedef boost::geometry::model::d2::point_xy<double> Coordinat2D;
     boost::shared_ptr<Coordinat2D> c_0(new Coordinat2D(1.17557,2.35781));

@@ -10,8 +10,8 @@
 
 #include "fileio.h"
 #include "geometry.h"
-#include "testtimer.h"
-#include "trace.h"
+
+
 #pragma GCC diagnostic pop
 
 
@@ -73,7 +73,7 @@ void ribi::PolyFileFromPolygons::Test() noexcept
     PolyFile(vertices,edges);
   }
 
-  const TestTimer test_timer(__func__,__FILE__,1.0);
+  
   //Create PolyFileFromPolygon, save to file, load PolyFile from file,
   //shapes before should match those loaded from file
   {

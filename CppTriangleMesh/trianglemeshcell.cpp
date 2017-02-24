@@ -5,13 +5,13 @@
 
 
 #include "geometry.h"
-#include "testtimer.h"
+
 #include "trianglemeshcellfactory.h"
 #include "trianglemeshface.h"
 #include "trianglemeshhelper.h"
 #include "trianglemeshpoint.h"
 #include "trianglemeshcreateverticalfacesstrategies.h"
-#include "trace.h"
+
 #include "xml.h"
 
 ribi::trim::Cell::Cell(
@@ -110,7 +110,7 @@ void ribi::trim::Cell::Test() noexcept
   CellFactory().CreateTestPrism(CreateVerticalFacesStrategy::one_face_per_square);
   CellFactory().CreateTestCube(CreateVerticalFacesStrategy::one_face_per_square);
 
-  const TestTimer test_timer(__func__,__FILE__,1.0);
+  
   //Test that in a prism-shaped Cell, all Faces are owned, and no faces have a neighbour
   for (const auto& strategy: CreateVerticalFacesStrategies().GetAll())
   {
@@ -163,22 +163,6 @@ void ribi::trim::Cell::Test() noexcept
     assert(std::is_sorted(faces.begin(),faces.end(),Helper().OrderByIndex()));
     faces.erase(std::remove(std::begin(faces),std::end(faces),nullptr),faces.end()); //OBLIGATORY! std::unique creates nullptrs!
     assert(std::is_sorted(faces.begin(),faces.end(),Helper().OrderByIndex()));
-    if (!
-      (
-        (
-             (strategy == CreateVerticalFacesStrategy::one_face_per_square  && faces.size() ==  9)
-          || (strategy == CreateVerticalFacesStrategy::two_faces_per_square && faces.size() == 14)
-        )
-        && "One or two faces were in both Cells, and are now present only once"
-      )
-    )
-    {
-      TRACE("ERROR");
-      TRACE(faces.size());
-      TRACE(CreateVerticalFacesStrategies().ToStr(strategy));
-      TRACE("BREAK");
-    }
-
     assert(
       (
            (strategy == CreateVerticalFacesStrategy::one_face_per_square  && faces.size() ==  9)

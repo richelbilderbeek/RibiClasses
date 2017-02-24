@@ -19,8 +19,8 @@
 
 #include "openfoamheader.h"
 #include "openfoampointsfileitem.h"
-#include "testtimer.h"
-#include "trace.h"
+
+
 #pragma GCC diagnostic pop
 
 
@@ -68,7 +68,7 @@ void ribi::foam::PointsFile::Test() noexcept
     if (is_tested) return;
     is_tested = true;
   }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
+  
   typedef boost::geometry::model::point<double,3,boost::geometry::cs::cartesian> Coordinat3D;
 
   //Some initial data
@@ -125,11 +125,6 @@ void ribi::foam::PointsFile::Test() noexcept
     s << b;
     PointsFile c;
     s >> c;
-    if (b != c)
-    {
-      TRACE(b);
-      TRACE(c);
-    }
     assert(b == c);
   }
   //Read from testing file
@@ -156,17 +151,8 @@ void ribi::foam::PointsFile::Test() noexcept
       f.copy(filename.c_str());
     }
     {
-      if (!fileio::FileIo().IsRegularFile(filename))
-      {
-        TRACE("ERROR");
-        TRACE(filename);
-      }
       assert(fileio::FileIo().IsRegularFile(filename));
       PointsFile b(filename);
-      if (b.GetItems().empty())
-      {
-        TRACE("ERROR");
-      }
       assert(!b.GetItems().empty());
     }
   }
@@ -223,13 +209,6 @@ std::istream& ribi::foam::operator>>(std::istream& is, PointsFile& f)
       }
     }
     opening_bracket = c;
-    #ifndef NDEBUG
-    if (!(opening_bracket == '(' || opening_bracket == '{'))
-    {
-      TRACE(opening_bracket);
-      TRACE("ERROR");
-    }
-    #endif
     assert(opening_bracket == '(' || opening_bracket == '{');
   }
   assert(opening_bracket == '(' || opening_bracket == '{');

@@ -3,7 +3,7 @@
 #include <cassert>
 #include <stdexcept>
 
-#include "trace.h"
+
 
 std::vector<ribi::trim::Winding> ribi::trim::Windings::GetAll() const noexcept
 {

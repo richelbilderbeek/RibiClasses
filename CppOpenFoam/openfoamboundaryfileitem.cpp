@@ -4,8 +4,8 @@
 #include <iostream>
 
 #include "openfoampatchfieldtypes.h"
-#include "testtimer.h"
-#include "trace.h"
+
+
 
 ribi::foam::BoundaryFileItem::BoundaryFileItem(
   const std::string& name,
@@ -39,17 +39,12 @@ void ribi::foam::BoundaryFileItem::Test() noexcept
     if (is_tested) return;
     is_tested = true;
   }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
+  
   const BoundaryFileItem i("some_name",PatchFieldType::empty,123,FaceIndex(456));
   std::stringstream s;
   s << i;
   BoundaryFileItem j;
   s >> j;
-  if (i != j)
-  {
-    TRACE(i);
-    TRACE(j);
-  }
   assert(i == j);
 }
 #endif
@@ -121,24 +116,12 @@ std::istream& ribi::foam::operator>>(std::istream& is, BoundaryFileItem& f)
     std::string semicolon;
     is >> semicolon;
     assert(is);
-    #ifndef NDEBUG
-    if (semicolon != ";")
-    {
-      TRACE(semicolon);
-    }
-    #endif
     assert(semicolon == ";");
   }
   {
     std::string start_face_text;
     is >> start_face_text;
     assert(is);
-    #ifndef NDEBUG
-    if (start_face_text != "startFace")
-    {
-      TRACE(start_face_text);
-    }
-    #endif
     assert(start_face_text == "startFace");
   }
   {

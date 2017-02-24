@@ -51,7 +51,7 @@ int ribi::MenuDialog::Execute(const std::vector<std::string>& argv) noexcept
       << "debug"
     #endif
       << " version)"
-      << std::endl;
+      << '\n';
     return 0;
   }
   else if (s == "--help" || s == "-h")

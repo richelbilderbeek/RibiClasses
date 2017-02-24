@@ -20,8 +20,8 @@
 #include "openfoamfacesfileitem.h"
 #include "openfoamfaceindex.h"
 #include "openfoamparseerror.h"
-#include "testtimer.h"
-#include "trace.h"
+
+
 #pragma GCC diagnostic pop
 
 
@@ -87,7 +87,7 @@ void ribi::foam::FacesFile::Test() noexcept
     if (is_tested) return;
     is_tested = true;
   }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
+  
   //Some initial data
   const Header header("some_name","some_location","some_object");
   std::vector<FacesFileItem> items;
@@ -130,11 +130,6 @@ void ribi::foam::FacesFile::Test() noexcept
     s << b;
     FacesFile c;
     s >> c;
-    if (b != c)
-    {
-      TRACE(b);
-      TRACE(c);
-    }
     assert(b == c);
   }
   //Read from testing file
@@ -161,17 +156,8 @@ void ribi::foam::FacesFile::Test() noexcept
       f.copy(filename.c_str());
     }
     {
-      if (!fileio::FileIo().IsRegularFile(filename))
-      {
-        TRACE("ERROR");
-        TRACE(filename);
-      }
       assert(fileio::FileIo().IsRegularFile(filename));
       FacesFile b(filename);
-      if (b.GetItems().empty())
-      {
-        TRACE("ERROR");
-      }
       assert( (!b.GetItems().empty() || b.GetItems().empty())
         && "If a mesh has no non-bhoundary cells, neighbour can be empty");
     }
@@ -229,13 +215,6 @@ std::istream& ribi::foam::operator>>(std::istream& is, FacesFile& f)
       }
     }
     opening_bracket = c;
-    #ifndef NDEBUG
-    if (!(opening_bracket == '(' || opening_bracket == '{'))
-    {
-      TRACE(opening_bracket);
-      TRACE("ERROR");
-    }
-    #endif
     assert(opening_bracket == '(' || opening_bracket == '{');
   }
   assert(opening_bracket == '(' || opening_bracket == '{');

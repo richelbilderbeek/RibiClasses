@@ -1,7 +1,7 @@
 #include "trianglemeshcellscreatorfactory.h"
 #include <cassert>
 
-#include "testtimer.h"
+
 #include "trianglemeshcell.h"
 #include "trianglemeshcellfactory.h"
 #include "trianglemeshcellscreator.h"
@@ -10,7 +10,7 @@
 #include "trianglemeshhelper.h"
 #include "trianglemeshtemplate.h"
 #include "trianglemeshcreateverticalfacesstrategies.h"
-#include "trace.h"
+
 
 ribi::trim::CellsCreatorFactory::CellsCreatorFactory() noexcept
 {
@@ -122,7 +122,7 @@ void ribi::trim::CellsCreatorFactory::Test() noexcept
     CellsCreator(Template::CreateTest(0),1,1.0 * boost::units::si::meter,CreateVerticalFacesStrategy::one_face_per_square,false,CellsCreatorFactory());
   }
 
-  const TestTimer test_timer(__func__,__FILE__,1.0);
+  
   const CellsCreatorFactory cells_creator;
   const CreateVerticalFacesStrategies create_vertical_faces_strategies;
   //Create prism

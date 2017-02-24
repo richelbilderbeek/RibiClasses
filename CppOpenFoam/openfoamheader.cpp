@@ -11,8 +11,8 @@
 #include <boost/algorithm/string/trim.hpp>
 
 #include "fileio.h"
-#include "testtimer.h"
-#include "trace.h"
+
+
 #pragma GCC diagnostic pop
 
 ribi::foam::Header::Header(
@@ -42,13 +42,6 @@ ribi::foam::Header::Header(
 void ribi::foam::Header::CleanFile(
   const std::string& filename) noexcept
 {
-  #ifndef NDEBUG
-  if(!fileio::FileIo().IsRegularFile(filename))
-  {
-    TRACE("ERROR");
-  }
-  #endif
-
   assert(fileio::FileIo().IsRegularFile(filename));
   //v is dirty
   const std::vector<std::string> v { fileio::FileIo().FileToVector(filename) };
@@ -77,32 +70,20 @@ void ribi::foam::Header::Test() noexcept
     if (is_tested) return;
     is_tested = true;
   }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
+  
   const Header h("some_name","some_location","some_note","some_object");
   std::stringstream s;
   s << h;
   Header i;
   s >> i;
-  if (h != i)
-  {
-    TRACE(h);
-    TRACE(i);
-  }
   assert(h == i);
 }
 #endif
 
 bool ribi::foam::operator==(const ribi::foam::Header& lhs, const ribi::foam::Header& rhs) noexcept
 {
-  const bool verbose{false};
   if (lhs.GetClass() != rhs.GetClass())
   {
-    if (verbose)
-    {
-      TRACE("Classes differ:");
-      TRACE(lhs.GetClass());
-      TRACE(rhs.GetClass());
-    }
     return false;
   }
   //Compare location independent of OS path seperator
@@ -113,23 +94,11 @@ bool ribi::foam::operator==(const ribi::foam::Header& lhs, const ribi::foam::Hea
     std::replace(rhs_location.begin(),rhs_location.end(),'\\','/');
     if (lhs_location != rhs_location)
     {
-      if (verbose)
-      {
-        TRACE("Locations differ:");
-        TRACE(lhs.GetLocation());
-        TRACE(rhs.GetLocation());
-      }
       return false;
     }
   }
   if (lhs.GetObject() != rhs.GetObject())
   {
-    if (verbose)
-    {
-      TRACE("Object differ:");
-      TRACE(lhs.GetObject());
-      TRACE(rhs.GetObject());
-    }
     return false;
   }
   return true;
@@ -186,7 +155,6 @@ std::istream& ribi::foam::operator>>(std::istream& is, Header& h)
         << "OpenFOAM header start with 'FoamFile'. "
         << "This file starts with  '"
         << title << "' instead";
-      TRACE(s.str());
       throw std::runtime_error(s.str());
     }
   }

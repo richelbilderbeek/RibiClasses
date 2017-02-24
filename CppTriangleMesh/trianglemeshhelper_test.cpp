@@ -13,8 +13,8 @@
 #include <boost/math/constants/constants.hpp>
 
 #include "geometry.h"
-#include "testtimer.h"
-#include "trace.h"
+
+
 #include "trianglemeshface.h"
 #include "trianglemeshhelper.h"
 #include "trianglemeshpoint.h"
@@ -32,7 +32,7 @@ void ribi::trim::Helper::Test() noexcept
   }
   Geometry();
 
-  const TestTimer test_timer(__func__,__FILE__,1.0);
+  
   typedef boost::geometry::model::d2::point_xy<double> Coordinat2D;
   using boost::geometry::get;
   const bool verbose{false};
@@ -43,7 +43,7 @@ void ribi::trim::Helper::Test() noexcept
   //IsClockwiseHorizontal 1
   //IsClockwiseHorizontal 2
   //IsClockwiseVertical
-  if (verbose) { TRACE("IsConvex, 2D, from error"); }
+  // IsConvex, 2D, from error"); }
   {
     //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,1.0);
     std::vector<boost::shared_ptr<const Coordinat2D>> coordinats2d;
@@ -83,7 +83,7 @@ void ribi::trim::Helper::Test() noexcept
     assert(h.IsConvex(points));
     assert(h.IsConvex(AddConst(points)));
   }
-  if (verbose) { TRACE("IsConvex, 3D, from error"); }
+  // IsConvex, 3D, from error"); }
   {
     //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,1.0);
     std::vector<boost::shared_ptr<const Coordinat3D>> coordinats3d;
@@ -120,7 +120,7 @@ void ribi::trim::Helper::Test() noexcept
     assert(h.IsConvex(points));
     assert(h.IsConvex(AddConst(points)));
   }
-  if (verbose) { TRACE("IsConvex, 2D, from #228, this is the 2D projection of the next test"); }
+  // IsConvex, 2D, from #228, this is the 2D projection of the next test"); }
   {
     //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,1.0);
   /*
@@ -141,7 +141,7 @@ void ribi::trim::Helper::Test() noexcept
     assert(!Geometry().IsConvex(points));
   }
   #ifdef FIX_ISSUE_228
-  if (verbose) { TRACE("IsCounterClockwise, 3D, from #228"); }
+  // IsCounterClockwise, 3D, from #228"); }
   {
     //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,1.0);
     /*
@@ -197,7 +197,7 @@ void ribi::trim::Helper::Test() noexcept
     assert(!h.IsClockwise(points,observer));
     assert(!h.IsClockwise(AddConst(points),observer));
   }
-  if (verbose) { TRACE("IsCounterClockwise, 3D, from #228, test for positive"); }
+  // IsCounterClockwise, 3D, from #228, test for positive"); }
   {
     //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,1.0);
     /*
@@ -254,7 +254,7 @@ void ribi::trim::Helper::Test() noexcept
   }
   #endif // FIX_ISSUE_228
   #ifdef BRUTE_FORCE_TEST_MAKECOUNTERCLOCKWISE
-  if (verbose) { TRACE("MakeCounterClockwise, make shuffled points counterclockwise, from #228"); }
+  // MakeCounterClockwise, make shuffled points counterclockwise, from #228"); }
   {
     //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,1.0);
     /*
@@ -337,7 +337,7 @@ void ribi::trim::Helper::Test() noexcept
     }
   }
   //MakeConvex
-  if (verbose) { TRACE("MakeConvex"); }
+  // MakeConvex"); }
   {
     //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,1.0);
     boost::shared_ptr<const Coordinat2D> left {new Coordinat2D(1.17557,2.35781)};
@@ -353,7 +353,7 @@ void ribi::trim::Helper::Test() noexcept
   }
 
   //MakeConvex
-  if (verbose) { TRACE("MakeConvex, from #228"); }
+  // MakeConvex, from #228"); }
   {
     //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,1.0);
     /*
@@ -376,7 +376,7 @@ void ribi::trim::Helper::Test() noexcept
     assert(h.IsConvex(points));
   }
   #ifdef BRUTE_FORCE_TEST_ISSUE228
-  if (verbose) { TRACE("MakeConvex, #228"); }
+  // MakeConvex, #228"); }
   {
     //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,1.0);
     /*
@@ -397,16 +397,10 @@ void ribi::trim::Helper::Test() noexcept
     {
       std::random_shuffle(std::begin(points),std::end(points));
       h.MakeConvex(points);
-      #ifndef NDEBUG
-      if(!h.IsConvex(points))
-      {
-        TRACE("ERROR");
-      }
-      #endif
       assert(h.IsConvex(points));
     }
   }
-  if (verbose) { TRACE("Making CounterClockWise (seen from an observer), #228"); }
+  // Making CounterClockWise (seen from an observer), #228"); }
   {
     //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,1.0);
     /* Make these counterclockwise
@@ -443,7 +437,7 @@ void ribi::trim::Helper::Test() noexcept
       assert(Helper().IsCounterClockwise(points,observer));
     }
   }
-  if (verbose) { TRACE("MakCounterClockWise, #228"); }
+  // MakCounterClockWise, #228"); }
   {
     //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,1.0);
     /* Make these counterclockwise

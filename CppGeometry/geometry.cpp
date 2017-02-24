@@ -410,7 +410,6 @@ bool ribi::Geometry::IsConvex(Polygon polygon) const noexcept
   Polygon hull;
   boost::geometry::convex_hull(polygon, hull);
   const bool is_convex_first = boost::geometry::equals(polygon,hull);
-  // if (verbose) { /* TRACE(is_convex_first); */}
   if (is_convex_first)
   {
     return true;
@@ -463,27 +462,8 @@ bool ribi::Geometry::IsConvex(const Coordinats3D& points) const noexcept
     return true;
   }
   assert(points.size() == 4);
-  /* if(!IsPlane(points))
-  {
-    // TRACE("ERROR");
-    // TRACE(points.size());
-    // for (const auto& point: points) { TRACE(Geometry().ToStr(point)); }
-    // TRACE("BREAK");
-  } */
   assert(IsPlane(points));
   #endif // NDEBUG
-  /* if (verbose)
-  {
-    std::stringstream s;
-    s << "{";
-    for (const auto& point3d: points)
-    {
-      s << ToStr(point3d) << ",";
-    }
-    std::string po_str(s.str());
-    po_str[po_str.size() - 1] = '}';
-    // TRACE(po_str);
-  } */
   //Use the first three points for a Plane
   for (const std::vector<int> v:
     {

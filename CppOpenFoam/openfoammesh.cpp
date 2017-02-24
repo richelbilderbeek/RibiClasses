@@ -22,8 +22,8 @@
 #include "openfoampatchfieldtypes.h"
 #include "openfoampoint.h"
 #include "openfoampointsfile.h"
-#include "testtimer.h"
-#include "trace.h"
+
+
 
 ribi::foam::Mesh::Mesh(
   const std::vector<boost::shared_ptr<Boundary>>& boundaries,
@@ -50,7 +50,7 @@ ribi::foam::Mesh::Mesh(
 
   if (!AreFacesOrdered())
   {
-    std::cout << "Reordering faces" << std::endl;
+    std::cout << "Reordering faces" << '\n';
     ReorderFaces();
   }
 
@@ -83,14 +83,6 @@ ribi::foam::Mesh::Mesh(
     for (FaceIndex i = FaceIndex(0); i!=n_faces; ++i)
     {
       const CellIndex owner_cell_index { files.GetOwner()->GetItem(i).GetCellIndex() };
-      #ifndef NDEBUG
-      if (owner_cell_index.Get() >= static_cast<int>(m_cells.size()))
-      {
-        TRACE("ERROR");
-        TRACE(owner_cell_index);
-        TRACE(m_cells.size());
-      }
-      #endif
       assert(owner_cell_index.Get() >= 0);
       assert(owner_cell_index.Get() < static_cast<int>(m_cells.size()));
       assert(m_cells[ owner_cell_index.Get() ]);
@@ -158,13 +150,6 @@ ribi::foam::Mesh::Mesh(
     assert(cell);
     //assert( (cell->GetNeighbour() || !cell->GetNeighbour())
     //  && "Not all cells have a neighbour, for example in a 1x1x1 mesh");
-  }
-
-  if (GetNumberOfBoundaries() != files.GetBoundary()->GetMaxBoundaryIndex().Get())
-  {
-    TRACE("ERROR");
-    TRACE(GetNumberOfBoundaries());
-    TRACE(files.GetBoundary()->GetMaxBoundaryIndex());
   }
   #endif
   assert(GetNumberOfBoundaries() == files.GetBoundary()->GetMaxBoundaryIndex().Get());
@@ -398,10 +383,6 @@ boost::shared_ptr<ribi::foam::BoundaryFile> ribi::foam::Mesh::CreateBoundary() c
       {
         assert(indices[i-1] != indices[i]
           && "All face indices must be unique");
-        if (indices[i-1] + 1 != indices[i])
-        {
-          TRACE("ERROR");
-        }
         assert(indices[i-1] + 1 == indices[i]
           && "All face indices must be adjacent");
       }
@@ -690,7 +671,6 @@ boost::shared_ptr<const ribi::foam::Face> ribi::foam::Mesh::FindMostSimilarFace(
       AddConst(m_faces[i]->GetPoints()),
       coordinats
     );
-    TRACE(distance);
     distances.push_back(distance);
   }
 
@@ -798,7 +778,7 @@ void ribi::foam::Mesh::Test() noexcept
     if (is_tested) return;
     is_tested = true;
   }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
+  
   //Check if the number of boundary faces is correct
   {
     const std::vector<boost::shared_ptr<ribi::foam::Files>> v { Files::CreateTestFiles() };
@@ -984,12 +964,6 @@ void ribi::foam::Mesh::Test() noexcept
         m.FindMostSimilarFace(coordinats)
       };
       assert(result);
-      if (face != result)
-      {
-        TRACE("ERROR");
-        TRACE(*face);
-        TRACE(*result);
-      }
       assert(result == face);
     }
   }
@@ -1001,14 +975,12 @@ std::ostream& ribi::foam::operator<<(std::ostream& os, const ribi::foam::Mesh& m
 {
   typedef boost::geometry::model::point<double,3,boost::geometry::cs::cartesian> Coordinat3D;
 
-  TRACE("Smallest: points");
   os << "Points: ";
   for (boost::shared_ptr<Coordinat3D> point: mesh.m_points)
   {
     assert(point);
     os << "* " << ToStr(*point) << '\n';
   }
-  TRACE("Small: faces");
   os << "Faces:\n";
   for (boost::shared_ptr<Face> face: mesh.m_faces)
   {
@@ -1022,7 +994,6 @@ std::ostream& ribi::foam::operator<<(std::ostream& os, const ribi::foam::Mesh& m
     }
     os << '\n';
   }
-  TRACE("Bigger: boundaries");
   os << "Boundary:\n";
   for (boost::shared_ptr<Boundary> boundary: mesh.m_boundaries)
   {
@@ -1037,7 +1008,6 @@ std::ostream& ribi::foam::operator<<(std::ostream& os, const ribi::foam::Mesh& m
     os << '\n';
   }
 
-  TRACE("Biggest: cells");
   os << "Cells:\n";
   for (const boost::shared_ptr<Cell> cell: mesh.m_cells)
   {

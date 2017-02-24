@@ -2,7 +2,7 @@
 
 #include <cassert>
 
-#include "testtimer.h"
+
 #include "trianglemeshcell.h"
 #include "trianglemeshcellscreator.h"
 #include "trianglemeshcellscreatorfactory.h"
@@ -10,7 +10,7 @@
 #include "trianglemeshfacefactory.h"
 #include "trianglemeshtemplate.h"
 #include "trianglemeshcreateverticalfacesstrategies.h"
-#include "trace.h"
+
 
 ribi::trim::CellFactory::CellFactory()
 {
@@ -117,7 +117,7 @@ void ribi::trim::CellFactory::Test() noexcept
   CellsCreatorFactory().Create(Template::CreateTest(0),1,1.0 * meter,CreateVerticalFacesStrategy::one_face_per_square,false);
 
 
-  const TestTimer test_timer(__func__,__FILE__,1.0);
+  
   //Create prism
   for (const auto& strategy: CreateVerticalFacesStrategies().GetAll())
   {

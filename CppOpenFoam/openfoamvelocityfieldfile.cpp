@@ -19,8 +19,8 @@
 
 #include "openfoamheader.h"
 #include "openfoampatchfieldtypes.h"
-#include "testtimer.h"
-#include "trace.h"
+
+
 #pragma GCC diagnostic pop
 
 
@@ -50,7 +50,7 @@ void ribi::foam::VelocityFieldFile::Test() noexcept
     if (is_tested) return;
     is_tested = true;
   }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
+  
 }
 #endif
 

@@ -3,7 +3,7 @@
 #include <cassert>
 #include <ostream>
 
-#include "trace.h"
+
 #include "openfoamface.h"
 #include "openfoampatchfieldtypes.h"
 

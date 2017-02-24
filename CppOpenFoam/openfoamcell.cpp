@@ -4,7 +4,7 @@
 #include <ostream>
 
 #include "openfoamface.h"
-#include "trace.h"
+
 
 ribi::foam::Cell::Cell(
   const std::vector<boost::shared_ptr<Face>> owned_faces,

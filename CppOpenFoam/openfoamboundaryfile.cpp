@@ -20,8 +20,8 @@
 #include "openfoamheader.h"
 #include "openfoamboundaryindex.h"
 #include "openfoamboundaryfileitem.h"
-#include "testtimer.h"
-#include "trace.h"
+
+
 #pragma GCC diagnostic pop
 
 
@@ -118,7 +118,7 @@ void ribi::foam::BoundaryFile::Test() noexcept
     FaceIndex(0);
     BoundaryIndex(0);
   }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
+  
 
   //Some initial data
   const Header header("some_name","some_location","some_object");
@@ -170,11 +170,6 @@ void ribi::foam::BoundaryFile::Test() noexcept
     s << b;
     BoundaryFile c;
     s >> c;
-    if (b != c)
-    {
-      TRACE(b);
-      TRACE(c);
-    }
     assert(b == c);
   }
   //Read from testing file
@@ -201,17 +196,8 @@ void ribi::foam::BoundaryFile::Test() noexcept
       f.copy(filename.c_str());
     }
     {
-      if (!fileio::FileIo().IsRegularFile(filename))
-      {
-        TRACE("ERROR");
-        TRACE(filename);
-      }
       assert(fileio::FileIo().IsRegularFile(filename));
       BoundaryFile b(filename);
-      if (b.GetItems().empty())
-      {
-        TRACE("ERROR");
-      }
       assert( (!b.GetItems().empty() || b.GetItems().empty())
         && "If a mesh has no non-boundary cells, neighbour can be empty");
     }
@@ -221,37 +207,19 @@ void ribi::foam::BoundaryFile::Test() noexcept
 
 bool ribi::foam::operator==(const BoundaryFile& lhs,const BoundaryFile& rhs) noexcept
 {
-  const bool verbose{false};
   if (lhs.GetHeader() != rhs.GetHeader())
   {
-    if (verbose)
-    {
-      TRACE("Headers differ:");
-      TRACE(lhs.GetHeader());
-      TRACE(rhs.GetHeader());
-    }
     return false;
   }
   const std::vector<BoundaryFileItem>& lhs_items = lhs.GetItems();
   const std::vector<BoundaryFileItem>& rhs_items = rhs.GetItems();
   if (lhs_items.size() != rhs_items.size())
   {
-    if (verbose)
-    {
-      TRACE("Number of items differ:");
-      TRACE(lhs_items.size());
-      TRACE(rhs_items.size());
-    }
     return false;
   }
   const bool all_items_equal {
     std::equal(lhs_items.begin(),lhs_items.end(),rhs_items.begin())
   };
-  if (verbose && !all_items_equal)
-  {
-    TRACE("Items differ:");
-    TRACE(all_items_equal);
-  }
   return all_items_equal;
 }
 
@@ -290,13 +258,6 @@ std::istream& ribi::foam::operator>>(std::istream& is, BoundaryFile& f)
       }
     }
     opening_bracket = c;
-    #ifndef NDEBUG
-    if (!(opening_bracket == '(' || opening_bracket == '{'))
-    {
-      TRACE(opening_bracket);
-      TRACE("ERROR");
-    }
-    #endif
     assert(opening_bracket == '(' || opening_bracket == '{');
   }
   assert(opening_bracket == '(' || opening_bracket == '{');

@@ -8,7 +8,7 @@
 
 #include <boost/bimap.hpp>
 
-#include "trace.h"
+
 
 #pragma GCC diagnostic pop
 
@@ -241,15 +241,6 @@ ribi::foam::PatchFieldType ribi::foam::PatchFieldTypes::ToType(const std::string
 {
   if (m_map.right.empty()) m_map = CreateMap();
   assert(!m_map.right.empty());
-  #ifndef NDEBUG
-  if(m_map.right.count(s) != 1)
-  {
-    TRACE("ERROR");
-    TRACE(s);
-    TRACE(m_map.right.count(s));
-  }
-
-  #endif
   assert(m_map.right.count(s) == 1);
   const PatchFieldType t = m_map.right.find(s)->second;
   return t;

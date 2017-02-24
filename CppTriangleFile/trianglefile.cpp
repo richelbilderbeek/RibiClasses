@@ -16,8 +16,8 @@
 #include "geometry.h"
 #include "polyfile.h"
 #include "polyfilefrompolygons.h"
-#include "testtimer.h"
-#include "trace.h"
+
+
 
 //#define TODO_ISSUE_207
 #ifdef  TODO_ISSUE_207
@@ -197,7 +197,7 @@ void ribi::TriangleFile::ExecuteTriangleExe(
   {
     std::stringstream s;
     s << "Writing .poly file to '" << filename << "'";
-    std::clog << s.str() << std::endl;
+    std::clog << s.str() << '\n';
   }
   {
     std::ofstream f(filename.c_str());
@@ -248,14 +248,14 @@ void ribi::TriangleFile::ExecuteTriangleExe(
     chmod
       << "chmod +x "
       << exe_filename;
-    if (verbose) { std::cout << "Starting command '" << chmod.str() << "'" << std::endl; }
+    if (verbose) { std::cout << "Starting command '" << chmod.str() << "'" << '\n'; }
     const bool error = std::system(chmod.str().c_str());
     if (error)
     {
       if (verbose)
       {
-        std::cout << "Finished command with an error (" << __FILE__ << "," << __LINE__ << ")" << std::endl
-          << *m_polyfile << std::endl;
+        std::cout << "Finished command with an error (" << __FILE__ << "," << __LINE__ << ")" << '\n'
+          << *m_polyfile << '\n';
       }
       std::stringstream s;
       s << "Error: '" << chmod.str() << "' failed (" << __FILE__ << "," << __LINE__ << "), with error code " << error;
@@ -279,7 +279,7 @@ void ribi::TriangleFile::ExecuteTriangleExe(
     << " "
     << filename
   ;
-  if (verbose) { std::cout << "Starting command '" << command.str() << "'" << std::endl; }
+  if (verbose) { std::cout << "Starting command '" << command.str() << "'" << '\n'; }
   const bool error = std::system(command.str().c_str());
 
   //Delete input file directly after running the program,
@@ -287,12 +287,12 @@ void ribi::TriangleFile::ExecuteTriangleExe(
   {
     if (delete_poly_file)
     {
-      if (verbose) { std::cout << "Deleted file " << filename << std::endl; }
+      if (verbose) { std::cout << "Deleted file " << filename << '\n'; }
       fileio::FileIo().DeleteFile(filename);
     }
     else
     {
-      if (verbose) { std::cout << "Kept file " << filename << " for inspection" << std::endl; }
+      if (verbose) { std::cout << "Kept file " << filename << " for inspection" << '\n'; }
     }
   }
 
@@ -301,14 +301,14 @@ void ribi::TriangleFile::ExecuteTriangleExe(
   {
     if (verbose)
     {
-      std::cout << "Finished command with an error (" << __FILE__ << "," << __LINE__ << ")" << std::endl
-        << *m_polyfile << std::endl;
+      std::cout << "Finished command with an error (" << __FILE__ << "," << __LINE__ << ")" << '\n'
+        << *m_polyfile << '\n';
     }
     std::stringstream s;
     s << "Error: '" << command.str() << "' failed (" << __FILE__ << "," << __LINE__ << "), with error code " << error;
     throw std::runtime_error(s.str());
   }
-  if (verbose) { std::cout << "Finished command without errors" << std::endl; }
+  if (verbose) { std::cout << "Finished command without errors" << '\n'; }
   //End of specific
 
   const std::string filename_base(fileio::FileIo().GetFileBasename(filename));
@@ -366,7 +366,7 @@ void ribi::TriangleFile::Test() noexcept
     if (is_tested) return;
     is_tested = true;
   }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
+  
 
   #ifdef FIX_ISSUE_231
   const bool verbose{false};
@@ -413,8 +413,6 @@ void ribi::TriangleFile::Test() noexcept
         << "TriangleFile::Test: "
         << "Triangle.exe failed: " << e.what()
       ;
-      TRACE(s.str());
-      std::exit(0); //TEMP for profiling
       assert(!"Should not get here");
     }
   }

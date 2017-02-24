@@ -10,12 +10,12 @@
 
 #include "trianglemeshface.h"
 #include "trianglemeshfacefactory.h"
-#include "testtimer.h"
+
 #include "fileio.h"
 #include "trianglemeshhelper.h"
 #include "trianglemeshpoint.h"
 #include "trianglemeshpointfactory.h"
-#include "trace.h"
+
 #pragma GCC diagnostic pop
 
 ribi::trim::Template::Template(
@@ -32,7 +32,7 @@ ribi::trim::Template::Template(
   Test();
   #endif
 
-  if (verbose) { TRACE("Load the points and faces created by Triangle"); }
+  // Load the points and faces created by Triangle"); }
   {
     const std::vector<std::string> v {
       ribi::fileio::FileIo().FileToVector(
@@ -55,18 +55,6 @@ ribi::trim::Template::Template(
       assert(w.size() == 4);
       assert(CanLexicalCast<int>(w[0]));
       assert(CanLexicalCast<double>(w[1]));
-      #ifndef NDEBUG
-      if (!CanLexicalCast<double>(w[2]))
-      {
-        TRACE("ERROR");
-        TRACE(line);
-        TRACE(w[0]);
-        TRACE(w[1]);
-        TRACE(w[2]);
-        TRACE(w[3]);
-        TRACE("BREAK");
-      }
-      #endif
       assert(CanLexicalCast<double>(w[2]));
       assert(CanLexicalCast<int>(w[3]));
       const double x = boost::lexical_cast<double>(w[1]);
@@ -82,7 +70,7 @@ ribi::trim::Template::Template(
     }
   }
 
-  if (verbose) { TRACE("Load and translate faces"); }
+  // Load and translate faces"); }
   {
     const std::vector<std::string> v
       = ribi::fileio::FileIo().FileToVector(filename_ele);
@@ -160,7 +148,7 @@ ribi::trim::Template::Template(
   }
 
   #ifndef NDEBUG
-  if (verbose) { TRACE("Checking the result"); }
+  // Checking the result"); }
   const int n_faces = static_cast<int>(m_faces.size());
   assert(m_faces.size() == m_face_point_indices.size());
   for (int i=0; i!=n_faces; ++i)
@@ -181,7 +169,7 @@ ribi::trim::Template::Template(
   auto new_end = std::unique(m_edges.begin(),m_edges.end());
   m_edges.erase(new_end,m_edges.end());
 
-  if (verbose) { TRACE("Done checking the result"); }
+  // Done checking the result"); }
 }
 
 ribi::trim::Template::Template(
@@ -420,16 +408,6 @@ boost::shared_ptr<ribi::trim::Template> ribi::trim::Template::CreateTestTriangle
       {
         std::reverse(face_points.begin(),face_points.end());
       }
-      #ifndef NDEBUG
-      if (!Helper().IsClockwiseHorizontal(face_points))
-      {
-        TRACE("ERROR");
-        TRACE(*face_points[0]);
-        TRACE(*face_points[1]);
-        TRACE(*face_points[2]);
-        TRACE("BREAK");
-      }
-      #endif
       assert(Helper().IsClockwiseHorizontal(face_points));
       const boost::shared_ptr<Face> face {
         FaceFactory().Create(
@@ -792,9 +770,9 @@ void ribi::trim::Template::Test() noexcept
   PointFactory();
   FaceFactory();
 
-  const TestTimer test_timer(__func__,__FILE__,1.0);
+  
   const bool verbose{false};
-  if (verbose) { TRACE("IsClockWise, confirmation"); }
+  // IsClockWise, confirmation"); }
   {
     /*
 
@@ -837,7 +815,7 @@ void ribi::trim::Template::Test() noexcept
     std::reverse(points.begin(),points.end());
     assert(!Helper().IsClockwiseHorizontal(points));
   }
-  if (verbose) { TRACE("IsClockWise, rejection"); }
+  // IsClockWise, rejection"); }
   {
     /*
 
@@ -888,10 +866,6 @@ void ribi::trim::Template::Test() noexcept
     assert(my_template);
     for (const auto& face: my_template->GetFaces())
     {
-      if (!Helper().IsClockwiseHorizontal(face->GetPoints()))
-      {
-        TRACE("BREAK");
-      }
       assert(Helper().IsClockwiseHorizontal(face->GetPoints()));
     }
   }

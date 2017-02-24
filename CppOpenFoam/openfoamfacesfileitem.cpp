@@ -5,8 +5,8 @@
 #include <sstream>
 
 #include "openfoamparseerror.h"
-#include "testtimer.h"
-#include "trace.h"
+
+
 
 ribi::foam::FacesFileItem::FacesFileItem(
   const std::vector<PointIndex>& point_indices
@@ -30,17 +30,12 @@ void ribi::foam::FacesFileItem::Test() noexcept
     if (is_tested) return;
     is_tested = true;
   }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
+  
   const FacesFileItem i( { PointIndex(1),PointIndex(2),PointIndex(3),PointIndex(4) } );
   std::stringstream s;
   s << i;
   FacesFileItem j;
   s >> j;
-  if (i != j)
-  {
-    TRACE(i);
-    TRACE(j);
-  }
   assert(i == j);
 }
 #endif

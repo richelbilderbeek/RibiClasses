@@ -43,8 +43,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "openfoamthermophysicalpropertiesfile.h"
 #include "openfoamvelocityfieldfile.h"
 #include "polyfile.h"
-#include "testtimer.h"
-#include "trace.h"
+
+
 #include "trianglefile.h"
 #include "trianglemeshbuilder.h"
 #include "trianglemeshcell.h"
@@ -94,17 +94,9 @@ void ribi::trim::Dialog::Check3dMesh(const std::string&
   #endif // NDEBUG
 ) const noexcept
 {
-  #ifndef NDEBUG
-  if (!fileio::FileIo().IsRegularFile(path))
-  {
-    TRACE("ERROR");
-    TRACE("BREAK");
-  }
-
   assert(fileio::FileIo().IsRegularFile(path)
     && "Check3dMesh calls OpenFOAM its checkMesh, which needs to know the full path"
   );
-  #endif
 
 
   const std::string ply_filename = fileio::FileIo().GetTempFileName(".ply");
@@ -133,18 +125,13 @@ void ribi::trim::Dialog::Check3dMesh(const std::string&
     #endif
   );
 
-  if (verbose) { TRACE(checkMesh_command); }
   const int error = std::system(checkMesh_command.c_str());
 
   ribi::fileio::FileIo().DeleteFile(ply_filename);
 
   if (error)
   {
-    TRACE("WARNING: cannot find checkMesh");
-    //TRACE(path);
-    //TRACE(ribi::fileio::FileIo().GetPath(path));
-    //TRACE(checkMesh_command);
-    //TRACE(error);
+    std::clog << "WARNING: cannot find checkMesh\n";
   }
   //assert(!error);
 }
@@ -236,7 +223,6 @@ std::function<ribi::foam::PatchFieldType(const std::string&)>
       if (patch_name == "left") return ribi::foam::PatchFieldType::zeroGradient;
       if (patch_name == "right") return ribi::foam::PatchFieldType::zeroGradient;
       //if (patch_name == "defaultFaces") return ribi::foam::PatchFieldType::wall;
-      TRACE(patch_name);
       assert(!"CreateDefaultBoundaryToPatchFieldTypeFunction: unknown patch name");
       throw std::logic_error("CreateDefaultBoundaryToPatchFieldTypeFunction: unknown patch name");
     }
@@ -423,7 +409,7 @@ void ribi::trim::Dialog::CreateTriangleMesh() noexcept
   if (verbose)
   {
     std::clog << __FILE__ << "(" <<  (__LINE__) <<  ") : "
-      << "Write some geometries, let Triangle.exe work on it" << std::endl
+      << "Write some geometries, let Triangle.exe work on it" << '\n'
     ;
   }
 
@@ -437,7 +423,7 @@ void ribi::trim::Dialog::CreateTriangleMesh() noexcept
     if (verbose)
     {
       std::clog << __FILE__ << "(" <<  (__LINE__) <<  ") : "
-        << "Create Triangle.exe input" << std::endl
+        << "Create Triangle.exe input" << '\n'
       ;
     }
 
@@ -447,7 +433,7 @@ void ribi::trim::Dialog::CreateTriangleMesh() noexcept
     if (verbose)
     {
       std::clog << __FILE__ << "(" <<  (__LINE__) <<  ") : "
-        << "Store the Triangle.exe input" << std::endl
+        << "Store the Triangle.exe input" << '\n'
       ;
     }
 
@@ -460,7 +446,7 @@ void ribi::trim::Dialog::CreateTriangleMesh() noexcept
     if (verbose)
     {
       std::clog << __FILE__ << "(" <<  (__LINE__) <<  ") : "
-        << "Calling Triangle.exe" << std::endl
+        << "Calling Triangle.exe" << '\n'
       ;
     }
 
@@ -476,7 +462,7 @@ void ribi::trim::Dialog::CreateTriangleMesh() noexcept
     if (verbose)
     {
       std::clog << __FILE__ << "(" <<  (__LINE__) <<  ") : "
-        << "Saving Triangle.exe output" << std::endl
+        << "Saving Triangle.exe output" << '\n'
       ;
     }
 
@@ -487,7 +473,7 @@ void ribi::trim::Dialog::CreateTriangleMesh() noexcept
     if (verbose)
     {
       std::clog << __FILE__ << "(" <<  (__LINE__) <<  ") : "
-        << "Read data from Triangle.exe output" << std::endl
+        << "Read data from Triangle.exe output" << '\n'
       ;
     }
 
@@ -503,7 +489,7 @@ void ribi::trim::Dialog::CreateTriangleMesh() noexcept
     if (verbose)
     {
       std::clog << __FILE__ << "(" <<  (__LINE__) <<  ") : "
-        << "Convert Triangle.exe output to polygons" << std::endl
+        << "Convert Triangle.exe output to polygons" << '\n'
       ;
     }
 
@@ -522,7 +508,7 @@ void ribi::trim::Dialog::CreateTriangleMesh() noexcept
     if (verbose)
     {
       std::clog << __FILE__ << "(" <<  (__LINE__) <<  ") : "
-        << "Delete Triangle.exe output" << std::endl
+        << "Delete Triangle.exe output" << '\n'
       ;
     }
     fileio::FileIo().DeleteFile(filename_ele);
@@ -547,7 +533,7 @@ void ribi::trim::Dialog::Create3dMesh() noexcept
   if (verbose)
   {
     std::clog << __FILE__ << "(" <<  (__LINE__) <<  ") : "
-      << "Read data from Triangle.exe output" << std::endl
+      << "Read data from Triangle.exe output" << '\n'
     ;
   }
 
@@ -594,7 +580,7 @@ void ribi::trim::Dialog::Create3dMesh() noexcept
     if (verbose)
     {
       std::clog << __FILE__ << "(" <<  (__LINE__) <<  ") : "
-        << "Number of cells before sculpting: " << cells.size() << std::endl
+        << "Number of cells before sculpting: " << cells.size() << '\n'
       ;
     }
     m_3dmesh_sculpt_function(cells);
@@ -603,7 +589,7 @@ void ribi::trim::Dialog::Create3dMesh() noexcept
     if (verbose)
     {
       std::clog << __FILE__ << "(" <<  (__LINE__) <<  ") : "
-        << "Number of cells after sculpting: " << m_n_cells << std::endl
+        << "Number of cells after sculpting: " << m_n_cells << '\n'
       ;
     }
 
@@ -618,7 +604,7 @@ void ribi::trim::Dialog::Create3dMesh() noexcept
       if (verbose)
       {
         std::clog << __FILE__ << "(" <<  (__LINE__) <<  ") : "
-          << "Number of weak faces: " << faces.size() << std::endl
+          << "Number of weak faces: " << faces.size() << '\n'
         ;
       }
       assert(std::unique(faces.begin(),faces.end()) == faces.end());
@@ -639,7 +625,7 @@ void ribi::trim::Dialog::Create3dMesh() noexcept
       if (verbose)
       {
         std::clog << __FILE__ << "(" <<  (__LINE__) <<  ") : "
-          << "Number of strong faces: " << m_n_faces << std::endl
+          << "Number of strong faces: " << m_n_faces << '\n'
         ;
       }
       //const ribi::trim::Helper helper;
@@ -656,7 +642,7 @@ void ribi::trim::Dialog::Create3dMesh() noexcept
   if (verbose)
   {
     std::clog << __FILE__ << "(" <<  (__LINE__) <<  ") : "
-      << "Checking the cells" << std::endl
+      << "Checking the cells" << '\n'
     ;
   }
   #ifndef NDEBUG
@@ -679,7 +665,7 @@ void ribi::trim::Dialog::Create3dMesh() noexcept
   if (verbose)
   {
     std::clog << __FILE__ << "(" <<  (__LINE__) <<  ") : "
-      << "Build the OpenFOAM files" << std::endl
+      << "Build the OpenFOAM files" << '\n'
     ;
   }
   {
@@ -704,7 +690,7 @@ void ribi::trim::Dialog::Create3dMesh() noexcept
   if (verbose)
   {
     std::clog << __FILE__ << "(" <<  (__LINE__) <<  ") : "
-      << "Create some files (checkMesh needs these)" << std::endl
+      << "Create some files (checkMesh needs these)" << '\n'
     ;
   }
   CreateDefaultControlDict();
@@ -815,7 +801,6 @@ void ribi::trim::Dialog::Show3dMesh() const noexcept
   if (error)
   {
     std::cout << "WARNING: cannot display mesh" << '\n';
-    TRACE("BREAK");
   }
 
   ribi::fileio::FileIo().DeleteFile(filename);
@@ -858,7 +843,7 @@ void ribi::trim::Dialog::Test() noexcept
     foam::VelocityFieldFile();
     //{ Dialog d; d.CreateTriangleMesh(); d.Create3dMesh(); } //TriangleMeshBuilder
   }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
+  
   const bool verbose{false};
   //Flow of Dialog
   {

@@ -20,8 +20,8 @@
 #include "openfoamheader.h"
 #include "openfoamneighbourfileitem.h"
 #include "openfoamfaceindex.h"
-#include "testtimer.h"
-#include "trace.h"
+
+
 #pragma GCC diagnostic pop
 
 
@@ -51,12 +51,6 @@ ribi::foam::Header ribi::foam::NeighbourFile::GetDefaultHeader() noexcept
 const ribi::foam::NeighbourFileItem& ribi::foam::NeighbourFile::GetItem(
   const FaceIndex& face_index) const noexcept
 {
-  #ifndef NDEBUG
-  if(!CanGetItem(face_index))
-  {
-    TRACE("BREAK");
-  }
-  #endif
   assert(CanGetItem(face_index));
   return m_items[ static_cast<int>(face_index.Get()) ];
 }
@@ -97,7 +91,7 @@ void ribi::foam::NeighbourFile::Test() noexcept
     if (is_tested) return;
     is_tested = true;
   }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
+  
   //Some initial data
   const Header header("some_name","some_location","some_object");
   std::vector<NeighbourFileItem> items;
@@ -140,11 +134,6 @@ void ribi::foam::NeighbourFile::Test() noexcept
     s << b;
     NeighbourFile c;
     s >> c;
-    if (b != c)
-    {
-      TRACE(b);
-      TRACE(c);
-    }
     assert(b == c);
   }
   //Read from testing file
@@ -171,11 +160,6 @@ void ribi::foam::NeighbourFile::Test() noexcept
       f.copy(filename.c_str());
     }
     {
-      if (!fileio::FileIo().IsRegularFile(filename))
-      {
-        TRACE("ERROR");
-        TRACE(filename);
-      }
       assert(fileio::FileIo().IsRegularFile(filename));
       NeighbourFile b(filename);
       assert( (!b.GetItems().empty() || b.GetItems().empty())
@@ -235,13 +219,6 @@ std::istream& ribi::foam::operator>>(std::istream& is, NeighbourFile& f)
       }
     }
     opening_bracket = c;
-    #ifndef NDEBUG
-    if (!(opening_bracket == '(' || opening_bracket == '{'))
-    {
-      TRACE(opening_bracket);
-      TRACE("ERROR");
-    }
-    #endif
     assert(opening_bracket == '(' || opening_bracket == '{');
   }
   assert(opening_bracket == '(' || opening_bracket == '{');

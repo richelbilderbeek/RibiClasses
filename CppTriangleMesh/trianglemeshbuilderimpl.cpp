@@ -12,11 +12,11 @@
 #include "openfoamfaceindex.h"
 #include "openfoampointindex.h"
 #include "php.h"
-#include "testtimer.h"
+
 #include "trianglemeshhelper.h"
 #include "trianglemeshpoint.h"
 #include "trianglemeshcreateverticalfacesstrategies.h"
-#include "trace.h"
+
 
 ribi::trim::TriangleMeshBuilderImpl::TriangleMeshBuilderImpl(
   const std::vector<boost::shared_ptr<Cell>>& cells,
@@ -401,23 +401,19 @@ ribi::trim::TriangleMeshBuilderImpl::TriangleMeshBuilderImpl(
   if (verbose_show_cell_indices)
   {
     const int n_cells = static_cast<int>(m_cells.size());
-    TRACE(n_cells);
+    std::clog << n_cells << '\n';
     for (int i=0; i!=n_cells; ++i)
     {
       assert(m_cells[i]);
       {
-        std::stringstream s;
-        s << "m_cells[" << i << "] has index " << m_cells[i]->GetIndex()
+        std::clog << "m_cells[" << i << "] has index " << m_cells[i]->GetIndex()
           << " and " << m_cells[i]->GetFaces().size() << " faces:";
-        TRACE(s.str());
       }
       for (const auto& face: m_cells[i]->GetFaces())
       {
-        std::stringstream s;
-        s << "owner: " << face->GetConstOwner()->GetIndex()
+        std::clog << "owner: " << face->GetConstOwner()->GetIndex()
           << ", neighbour: " << (face->GetNeighbour() ? face->GetNeighbour()->GetIndex() : -1)
         ;
-        TRACE(s.str());
       }
     }
   }
@@ -439,27 +435,6 @@ ribi::trim::TriangleMeshBuilderImpl::TriangleMeshBuilderImpl(
         assert(i < static_cast<int>(m_cells.size()));
         assert(m_cells[i]);
         const auto this_index = m_cells[i]->GetIndex();
-        #ifndef NDEBUG
-        if (this_index == Cell::sm_cell_no_index)
-        {
-          TRACE("ERROR");
-          TRACE(m_cells.size());
-          TRACE(m_faces.size());
-          TRACE(m_cells.max_size());
-          TRACE(m_faces.max_size());
-          TRACE(i);
-          TRACE(m_cells[i]->GetFaces().size());
-          for (const auto& face: m_cells[i]->GetFaces())
-          {
-            std::stringstream s;
-            s << "owner: " << face->GetConstOwner()->GetIndex()
-              << ", neighbour: " << (face->GetNeighbour() ? face->GetNeighbour()->GetIndex() : -1)
-            ;
-            TRACE(s.str());
-          }
-          TRACE("BREAK"); //#221
-        }
-        #endif
         assert(this_index != Cell::sm_cell_no_index);
         if (i != this_index)
         {
@@ -467,9 +442,7 @@ ribi::trim::TriangleMeshBuilderImpl::TriangleMeshBuilderImpl(
           assert(this_index < static_cast<int>(m_cells.size()));
           if (verbose_show_cell_indices)
           {
-            std::stringstream s;
-            s << "i != this_index <-> " << i << " != " << this_index;
-            TRACE(s.str());
+            std::clog << "i != this_index <-> " << i << " != " << this_index;
           }
           std::swap(m_cells[i],m_cells[this_index]);
         }
@@ -478,9 +451,7 @@ ribi::trim::TriangleMeshBuilderImpl::TriangleMeshBuilderImpl(
           assert(i == this_index);
           if (verbose_show_cell_indices)
           {
-            std::stringstream s;
-            s << "i == this_index == " << i;
-            TRACE(s.str());
+            std::clog << "i == this_index == " << i;
           }
           //Everything is OK
           break; //Next
@@ -643,7 +614,7 @@ ribi::trim::TriangleMeshBuilderImpl::TriangleMeshBuilderImpl(
   if (verbose_show_faces)
   {
     const int n_faces = static_cast<int>(m_faces.size());
-    TRACE(n_faces);
+    std::clog << n_faces);
     for (int i=0; i!=n_faces; ++i)
     {
       std::stringstream s;
@@ -661,7 +632,7 @@ ribi::trim::TriangleMeshBuilderImpl::TriangleMeshBuilderImpl(
       {
         s << "[no neighbour]";
       }
-      TRACE(s.str());
+      std::clog << s.str());
     }
   }
 
@@ -1089,8 +1060,7 @@ std::vector<boost::shared_ptr<ribi::trim::Face>> ribi::trim::TriangleMeshBuilder
   }
   if (verbose)
   {
-    TRACE("n_face, non-unique:");
-    TRACE(v.size());
+    std::clog << "n_face, non-unique:" << v.size());
   }
 
   std::sort(v.begin(),v.end(),Helper().OrderByIndex());
@@ -1100,8 +1070,7 @@ std::vector<boost::shared_ptr<ribi::trim::Face>> ribi::trim::TriangleMeshBuilder
 
   if (verbose)
   {
-    TRACE("n_face, unique:");
-    TRACE(v.size());
+    std::clog << "n_face, unique:" << v.size() << '\n';
   }
   return v;
 
@@ -1227,6 +1196,6 @@ void ribi::trim::TriangleMeshBuilderImpl::Test() noexcept
     if (is_tested) return;
     is_tested = true;
   }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
+  
 }
 #endif

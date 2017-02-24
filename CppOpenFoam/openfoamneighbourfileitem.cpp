@@ -2,9 +2,7 @@
 
 #include <cassert>
 #include <iostream>
-
-#include "testtimer.h"
-#include "trace.h"
+#include <sstream>
 
 ribi::foam::NeighbourFileItem::NeighbourFileItem(
   const CellIndex cell_index
@@ -25,17 +23,12 @@ void ribi::foam::NeighbourFileItem::Test() noexcept
     if (is_tested) return;
     is_tested = true;
   }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
+  
   const NeighbourFileItem i(CellIndex(123));
   std::stringstream s;
   s << i;
   NeighbourFileItem j;
   s >> j;
-  if (i != j)
-  {
-    TRACE(i);
-    TRACE(j);
-  }
   assert(i == j);
 }
 #endif

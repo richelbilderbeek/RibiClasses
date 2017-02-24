@@ -1,8 +1,7 @@
-INCLUDEPATH += \
-    ../RibiClasses/CppImageCanvas
+INCLUDEPATH += $$PWD
 
 SOURCES += \
-    $$PWD/imagecanvas.cpp \
+    $$PWD/imagecanvas.cpp
 
 HEADERS  += \
     $$PWD/imagecanvas.h

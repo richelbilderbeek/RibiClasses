@@ -5,14 +5,14 @@
 
 
 #include "geometry.h"
-#include "testtimer.h"
+
 #include "trianglemeshhelper.h"
 #include "trianglemeshpoint.h"
 #include "trianglemeshface.h"
 #include "trianglemeshfacefactory.h"
 #include "trianglemeshhelper.h"
 #include "trianglemeshwindings.h"
-#include "trace.h"
+
 
 ribi::trim::PointFactory::PointFactory()
 {
@@ -207,19 +207,6 @@ std::vector<boost::shared_ptr<ribi::trim::Point>>
   c->SetZ(1.0 * boost::units::si::meter);
   d->SetZ(1.0 * boost::units::si::meter);
   const std::vector<boost::shared_ptr<Point>> square { a,b,c,d };
-  #ifndef NDEBUG
-  
-  if(Helper().CalcWindingHorizontal(AddConst(square)) != winding)
-  {
-    TRACE("ERROR");
-    TRACE(*a);
-    TRACE(*b);
-    TRACE(*c);
-    TRACE(Windings().ToStr(winding));
-    TRACE(Helper().IsClockwiseHorizontal(square));
-    TRACE("BREAK");
-  }
-  #endif
   assert(Helper().CalcWindingHorizontal(AddConst(square)) == winding);
   return square;
 }
@@ -284,19 +271,6 @@ std::vector<boost::shared_ptr<ribi::trim::Point>>
   b->SetZ(1.0 * boost::units::si::meter);
   c->SetZ(1.0 * boost::units::si::meter);
   const std::vector<boost::shared_ptr<Point>> triangle { a,b,c };
-  #ifndef NDEBUG
-  
-  if (!(Helper().IsClockwiseHorizontal(triangle)   == (winding == Winding::clockwise)))
-  {
-    TRACE("ERROR");
-    TRACE(*a);
-    TRACE(*b);
-    TRACE(*c);
-    TRACE(Windings().ToStr(winding));
-    TRACE(Helper().IsClockwiseHorizontal(triangle));
-    TRACE("BREAK");
-  }
-  #endif
   assert(Helper().IsClockwiseHorizontal(triangle)   == (winding == Winding::clockwise));
   return triangle;
 }
@@ -310,7 +284,7 @@ void ribi::trim::PointFactory::Test() noexcept
     is_tested = true;
   }
   PointFactory().CreateTestTriangle(Winding::clockwise);
-  const TestTimer test_timer(__func__,__FILE__,1.0);
+  
   {
     const std::vector<boost::shared_ptr<Point>> prism {
       PointFactory().CreateTestPrism()
