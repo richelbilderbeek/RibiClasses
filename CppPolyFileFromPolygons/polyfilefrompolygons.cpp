@@ -1,6 +1,7 @@
 #include "polyfilefrompolygons.h"
 
 #include <cassert>
+#include <fstream>
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
@@ -65,15 +66,6 @@ void ribi::PolyFileFromPolygons::Test() noexcept
     if (is_tested) return;
     is_tested = true;
   }
-  {
-    fileio::FileIo();
-    Geometry();
-    const PolyFile::Vertices vertices{ PolyFile::Vertex(0.0,0.0), PolyFile::Vertex(0.0,1.0), PolyFile::Vertex(1.0,0.0) };
-    const PolyFile::Edges edges{ {0,1}, {1,2}, {0,2} };
-    PolyFile(vertices,edges);
-  }
-
-  
   //Create PolyFileFromPolygon, save to file, load PolyFile from file,
   //shapes before should match those loaded from file
   {

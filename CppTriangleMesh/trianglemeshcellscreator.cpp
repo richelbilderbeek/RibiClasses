@@ -521,15 +521,6 @@ std::vector<boost::shared_ptr<ribi::trim::Face>> ribi::trim::CellsCreator::Creat
         face_points_2[1]->SetZ(z_above);
         face_points_2[2]->SetZ(z_above);
 
-        #ifndef NDEBUG
-        if (!Helper().IsConvex(face_points_2))
-        {
-          TRACE("ERROR");
-
-          for (const auto& point:face_points_2) { TRACE(Geometry().ToStr(point->GetCoordinat3D())); }
-        }
-        #endif
-
         assert(Helper().IsConvex(face_points_2)
           && "FaceFactory expects convex ordered points");
 
@@ -819,15 +810,6 @@ void ribi::trim::CellsCreator::Test() noexcept
 
     //Order face_points
     if (!Helper().IsConvex(face_points)) { Helper().MakeConvex(face_points); }
-
-    #ifndef NDEBUG
-    if (!Helper().IsConvex(face_points))
-    {
-      TRACE("ERROR");
-      for (const auto& p: face_points) { TRACE(*p); }
-      TRACE("BREAK");
-    }
-    #endif
 
     assert(Helper().IsConvex(face_points));
 

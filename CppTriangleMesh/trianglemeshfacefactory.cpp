@@ -22,9 +22,7 @@
 
 ribi::trim::FaceFactory::FaceFactory()
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
+
 }
 
 boost::shared_ptr<ribi::trim::Face> ribi::trim::FaceFactory::Create(
@@ -208,19 +206,8 @@ boost::shared_ptr<ribi::trim::Face> ribi::trim::FaceFactory::CreateTestSquare(co
   return square;
 }
 
-#ifndef NDEBUG
-void ribi::trim::FaceFactory::Test() noexcept
+void ribi::trim::FaceFactory::TestFaceFactory() noexcept
 {
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  PointFactory();
-  FaceFactory().CreateTestSquare(Winding::clockwise); //Face
-
-  
-  const bool verbose{false};
   // "Create a testing prism");
   for (const auto& strategy: CreateVerticalFacesStrategies().GetAll())
   {
@@ -330,5 +317,3 @@ void ribi::trim::FaceFactory::Test() noexcept
   }
   #endif // BRUTE_FORCE_ISSUE_168
 }
-#endif
-

@@ -90,15 +90,16 @@ class FaceFactory
 
   boost::shared_ptr<Face> CreateTestSquare(const Winding winding) const noexcept;
 
+  void TestFaceFactory() noexcept;
+
   private:
 
   std::vector<boost::shared_ptr<Face>> CreateTestPrismOneFacePerVerticalFace() const noexcept;
   std::vector<boost::shared_ptr<Face>> CreateTestPrismTwoFacesPerVerticalFace() const noexcept;
 
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
+
 };
+
 
 } //~namespace trim
 } //~namespace ribi

@@ -312,11 +312,7 @@ void ribi::PolyFile::Test() noexcept
     if (is_tested) return;
     is_tested = true;
   }
-  Container();
-  fileio::FileIo();
 
-  
-  const bool verbose{false};
   // RemoveComments"); }
   {
     std::vector<std::string> v

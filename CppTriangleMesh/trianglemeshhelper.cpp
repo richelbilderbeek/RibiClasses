@@ -227,7 +227,6 @@ bool ribi::trim::Helper::IsConvex(const std::vector<boost::shared_ptr<const ribi
 
 bool ribi::trim::Helper::IsConvex(const std::vector<boost::shared_ptr<ribi::trim::Point>>& points) const noexcept
 {
-  const bool verbose{false};
   if (points.size() == 3)
   {
     // Three points are always convex"); }
@@ -340,16 +339,7 @@ void ribi::trim::Helper::MakeConvex(
   while (1)
   #endif
   {
-    #ifndef NDEBUG
-    if (i == max_i-1)
-    {
-      TRACE("ERROR");
-      TRACE(Helper().ToStr(AddConst(points)));
-      for (const auto& p: points) { TRACE(*p); }
-      TRACE("BREAK");
-    }
     assert(i!=max_i-1 && "There must be a permutation of the points that renders them convex");
-    #endif
 
     if (IsConvex(points))
     {
@@ -367,44 +357,6 @@ void ribi::trim::Helper::MakeConvex(
     assert(before != after);
     #endif
   }
-
-  #ifndef NDEBUG
-  if(!IsConvex(points))
-  {
-    TRACE("ERROR");
-    for (int i=0; i!=26; ++i)
-    {
-      std::next_permutation(points.begin(),points.end(),OrderByX());
-      {
-        std::stringstream s;
-        assert(points.size() == 4);
-        assert(points[0]); assert(points[1]); assert(points[2]); assert(points[3]);
-        s << (IsConvex(points) ? "Convex" : "Not convex")
-          << ": "
-          << Geometry().ToStr(points[0]->GetCoordinat3D()) << "->"<< points[0]->GetIndex() << ","
-          << Geometry().ToStr(points[1]->GetCoordinat3D()) << "->"<< points[1]->GetIndex() << ","
-          << Geometry().ToStr(points[2]->GetCoordinat3D()) << "->"<< points[2]->GetIndex() << ","
-          << Geometry().ToStr(points[3]->GetCoordinat3D()) << "->"<< points[3]->GetIndex() << '\n'
-        ;
-        TRACE(s.str());
-      }
-      {
-        std::stringstream t;
-        const std::vector<Coordinat2D> projected_points(CalcProjection(AddConst(points)));
-        assert(projected_points.size() == 4);
-        t << (IsConvex(points) ? "Convex" : "Not convex")
-          << ": "
-          << Geometry().ToStr(projected_points[0]) << ","
-          << Geometry().ToStr(projected_points[1]) << ","
-          << Geometry().ToStr(projected_points[2]) << ","
-          << Geometry().ToStr(projected_points[3])
-        ;
-        TRACE(t.str());
-      }
-    }
-  }
-  #endif
-
   assert(Helper().IsConvex(points));
   return;
 }
@@ -436,30 +388,7 @@ void ribi::trim::Helper::MakeClockwise(
     if (IsClockwise(points,observer)) return;
   }
 
-  #ifndef NDEBUG
-  TRACE("ERROR: failed making these points counterclockwards:");
-  for (const auto& point: original) { TRACE(Geometry().ToStr(point->GetCoordinat3D())); }
-  TRACE(Geometry().ToStr(observer));
-  TRACE(IsClockwise(original,observer));
-  TRACE(IsPlane(original));
-  TRACE(IsConvex(original));
-  TRACE("Let's try again");
-  for (const auto& point: points) { TRACE(Geometry().ToStr(point->GetCoordinat3D())); }
-  TRACE(IsClockwise(points,observer));
-
-  for (const auto& sequence: GetPermutations(indices))
-  {
-    for (int i{0}; i!=n_points; ++i)
-    {
-      points[i] = original[ sequence[i] ];
-    }
-    for (const auto& point: points) { TRACE(Geometry().ToStr(point->GetCoordinat3D())); }
-    TRACE(IsClockwise(points,observer));
-  }
-
   assert(!"Should not get here");
-  assert(IsClockwise(points,observer));
-  #endif
 }
 
 void ribi::trim::Helper::MakeCounterClockwise(
@@ -488,31 +417,7 @@ void ribi::trim::Helper::MakeCounterClockwise(
     }
     if (IsCounterClockwise(points,observer)) return;
   }
-
-  #ifndef NDEBUG
-  TRACE("ERROR: failed making these points counterclockwards:");
-  for (const auto& point: original) { TRACE(Geometry().ToStr(point->GetCoordinat3D())); }
-  TRACE(Geometry().ToStr(observer));
-  TRACE(IsCounterClockwise(original,observer));
-  TRACE(IsPlane(original));
-  TRACE(IsConvex(original));
-  TRACE("Let's try again");
-  for (const auto& point: points) { TRACE(Geometry().ToStr(point->GetCoordinat3D())); }
-  TRACE(IsCounterClockwise(points,observer));
-
-  for (const auto& sequence: GetPermutations(indices))
-  {
-    for (int i{0}; i!=n_points; ++i)
-    {
-      points[i] = original[ sequence[i] ];
-    }
-    for (const auto& point: points) { TRACE(Geometry().ToStr(point->GetCoordinat3D())); }
-    TRACE(IsCounterClockwise(points,observer));
-  }
-
   assert(!"Should not get here");
-  assert(IsCounterClockwise(points,observer));
-  #endif
 }
 
 std::function<

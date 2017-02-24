@@ -767,11 +767,7 @@ void ribi::trim::Template::Test() noexcept
     if (is_tested) return;
     is_tested = true;
   }
-  PointFactory();
-  FaceFactory();
 
-  
-  const bool verbose{false};
   // IsClockWise, confirmation"); }
   {
     /*
