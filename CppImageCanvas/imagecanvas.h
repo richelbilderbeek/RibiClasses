@@ -78,10 +78,6 @@ struct ImageCanvas : public Canvas
   ///Set the coordinat system used
   void SetCoordinatSystem(const CanvasCoordinatSystem coordinat_system) noexcept;
 
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
-
   std::vector<std::string> ToStrings() const noexcept override;
 
   private:

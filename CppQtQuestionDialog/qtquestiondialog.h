@@ -45,11 +45,6 @@ struct QtQuestionDialog : public QtHideAndShowDialog
 
   static std::string GetVersion() noexcept;
   static std::vector<std::string> GetVersionHistory() noexcept;
-
-  private:
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 };
 
 } //~namespace ribi
