@@ -228,6 +228,7 @@ bool ribi::trim::Helper::IsConvex(const std::vector<boost::shared_ptr<const ribi
 bool ribi::trim::Helper::IsConvex(const std::vector<boost::shared_ptr<ribi::trim::Point>>& points) const noexcept
 {
   if (points.size() == 3)
+
   {
     // Three points are always convex"); }
     return true;
