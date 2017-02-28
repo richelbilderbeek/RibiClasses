@@ -24,7 +24,7 @@ struct BeastParameterFile
     const int date_iso8601 // = 20151005
   );
 
-  const std::vector<ribi::DnaSequence>& GetSequences() const noexcept { return m_sequences; }
+  const std::vector<DnaSequence>& GetSequences() const noexcept { return m_sequences; }
   int GetMcmcChainlengths() const noexcept { return m_mcmc_chainlength; }
   TreePrior GetTreePrior() const noexcept { return m_tree_prior; }
 
@@ -37,10 +37,6 @@ struct BeastParameterFile
   const int m_mcmc_chainlength;
   const std::vector<ribi::DnaSequence> m_sequences;
   const TreePrior m_tree_prior;
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 
   std::vector<std::string> ToBirthDeathXml20150101() const noexcept;
   std::vector<std::string> ToBirthDeathXml20151005() const noexcept;

@@ -5,35 +5,23 @@
 
 #include <QFile>
 
-#include "RInside.h"
 
 #include "fileio.h"
-#include "testtimer.h"
 #include "ribi_rinside.h"
-#include "trace.h"
 
-#ifndef NDEBUG
-void ribi::Beast::Test() noexcept
+#include <boost/test/unit_test.hpp>
+
+#include "RInside.h"
+
+using namespace ribi;
+
+BOOST_AUTO_TEST_CASE(beast_constructor)
 {
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  {
-    ribi::fileio::FileIo();
-    ribi::Rinside();
-    auto& r = ribi::Rinside().Get();
-    r.parseEval("library(ape)");
-    r.parseEval("library(geiger)");
-    r.parseEval("library(phangorn)");
-  }
-  const ribi::TestTimer test_timer(__func__,__FILE__,1.0);
-  const bool verbose{false};
-  if (verbose) { TRACE("Constructor"); }
-  {
-    Beast();
-  }
+  BOOST_CHECK_NO_THROW(Beast());
+}
+
+BOOST_AUTO_TEST_CASE(beast)
+{
   Beast b;
   ribi::fileio::FileIo f;
 
@@ -51,7 +39,7 @@ void ribi::Beast::Test() noexcept
     {
       QFile((std::string(":/CppBeast/") + s).c_str()).copy(s.c_str());
     }
-    assert(f.IsRegularFile(s));
+    BOOST_CHECK(f.IsRegularFile(s));
   }
 
   if (!"Speed comparison AnalyzeBirthDeath")
@@ -72,7 +60,7 @@ void ribi::Beast::Test() noexcept
     );
 
     const auto d1 = std::chrono::system_clock::now() - t1;
-    assert(d2 < d1 / 10);
+    BOOST_CHECK(d2 < d1 / 10);
   }
 
   if (!"Speed comparison AnalyzeCoalescent")
@@ -96,7 +84,7 @@ void ribi::Beast::Test() noexcept
     );
 
     const auto d1 = std::chrono::system_clock::now() - t1;
-    assert(d2 < d1 / 10);
+    BOOST_CHECK(d2 < d1 / 10);
   }
 
   //Cleanup resources
@@ -107,5 +95,3 @@ void ribi::Beast::Test() noexcept
     assert(!f.IsRegularFile(s));
   }
 }
-#endif
-

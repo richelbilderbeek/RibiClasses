@@ -1,26 +1,19 @@
-INCLUDEPATH += \
-    ../RibiClasses/CppBeast
+INCLUDEPATH += $$PWD
 
 SOURCES += \
-    ../RibiClasses/CppBeast/beast.cpp \
-    ../RibiClasses/CppBeast/beastparameterfile.cpp \
-    ../RibiClasses/CppBeast/beaststatefile.cpp \
-    ../RibiClasses/CppBeast/beast_test.cpp \
-    ../RibiClasses/CppBeast/beastparameterfile_test.cpp \
-    ../RibiClasses/CppBeast/beaststatefile_test.cpp \
-    ../RibiClasses/CppBeast/beasttreeprior.cpp \
-    ../RibiClasses/CppBeast/beastparameterfile20150101.cpp \
-    ../RibiClasses/CppBeast/beastparameterfile20151005.cpp
+    $$PWD/beast.cpp \
+    $$PWD/beastparameterfile.cpp \
+    $$PWD/beaststatefile.cpp \
+    $$PWD/beasttreeprior.cpp \
+    $$PWD/beastparameterfile20150101.cpp \
+    $$PWD/beastparameterfile20151005.cpp
 
 HEADERS  += \
-    ../RibiClasses/CppBeast/beast.h \
-    ../RibiClasses/CppBeast/beaststatefile.h \
-    ../RibiClasses/CppBeast/beastparameterfile.h \
-    ../RibiClasses/CppBeast/beasttreeprior.h
-
-OTHER_FILES += \
-    ../RibiClasses/CppBeast/Licence.txt
+    $$PWD/beast.h \
+    $$PWD/beaststatefile.h \
+    $$PWD/beastparameterfile.h \
+    $$PWD/beasttreeprior.h
 
 RESOURCES += \
-    ../RibiClasses/CppBeast/CppBeast.qrc
+    $$PWD/CppBeast.qrc
 

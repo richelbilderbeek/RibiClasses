@@ -1,5 +1,4 @@
-INCLUDEPATH += \
-    ../RibiClasses/CppRibiRinside
+INCLUDEPATH += $$PWD
 
 SOURCES += \
     $$PWD/ribi_rinside.cpp \

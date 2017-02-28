@@ -21,9 +21,8 @@ ribi::BeastParameterFile::BeastParameterFile(
     m_sequences{MakeDescriptionsUnique(sequences)},
     m_tree_prior{tree_prior}
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
+
+
 }
 
 std::vector<ribi::DnaSequence> ribi::MakeDescriptionsUnique(std::vector<DnaSequence> sequences) noexcept

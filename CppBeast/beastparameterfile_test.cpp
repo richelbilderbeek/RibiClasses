@@ -24,7 +24,7 @@ void ribi::BeastParameterFile::Test() noexcept
   {
     fileio::FileIo();
   }
-  const ribi::TestTimer test_timer(__func__,__FILE__,1.0);
+  
   const bool verbose{false};
 
   const ribi::fileio::FileIo fileio;

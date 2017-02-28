@@ -25,6 +25,8 @@ install:
   - sudo pip install codecov
   # OCLint
   - ./install_oclint
+  # BEAST2
+  - ./install_beast2
 
 # Boost
 addons: 
@@ -52,4 +54,3 @@ script:
   - codecov
   # OCLint
   - ./do_oclint
-  # - ./no_temp_files.sh # TODO: put this back in

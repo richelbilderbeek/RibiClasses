@@ -12,10 +12,6 @@ struct BeastStateFile
 
   std::string GetTree() const noexcept { return m_tree; }
 
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
-
   private:
 
   const std::string m_tree;

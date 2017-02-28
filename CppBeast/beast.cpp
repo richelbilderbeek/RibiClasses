@@ -18,9 +18,6 @@ const std::string ribi::Beast::sm_beast_path{"../../../../Programs/BEAST/bin"};
 
 ribi::Beast::Beast()
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
   const std::string executable{sm_beast_path + "/beast"};
   if (!ribi::fileio::FileIo().IsRegularFile(executable))
   {

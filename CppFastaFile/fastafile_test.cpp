@@ -1,4 +1,3 @@
-#ifndef NDEBUG
 #include "fastafile.h"
 
 #include <cassert>
@@ -8,24 +7,15 @@
 #include "container.h"
 #include "dnasequence.h"
 #include "fileio.h"
-#include "testtimer.h"
-#include "trace.h"
 #include <QFile>
 
-void ribi::FastaFile::Test() noexcept
+#include <boost/test/unit_test.hpp>
+
+using namespace ribi;
+
+BOOST_AUTO_TEST_CASE(fasta)
 {
-  {
-    static bool is_tested {false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  {
-    fileio::FileIo();
-    DnaSequence("no_description","ATGC");
-  }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
-  const bool verbose{false};
-  if (verbose) { TRACE("One sequence"); }
+  // "One sequence"); }
   {
     const std::vector<DnaSequence> alignments{
       DnaSequence("my_a","A")
@@ -33,9 +23,9 @@ void ribi::FastaFile::Test() noexcept
     const FastaFile file(alignments);
     std::stringstream s;
     s << file;
-    assert(s.str() == ">my_a\nA\n");
+    BOOST_CHECK(s.str() == ">my_a\nA\n");
   }
-  if (verbose) { TRACE("Two sequences"); }
+  // "Two sequences"); }
   {
     std::vector<DnaSequence> sequences{
       DnaSequence("my_a","A"),DnaSequence("my_b","C")
@@ -43,9 +33,9 @@ void ribi::FastaFile::Test() noexcept
     FastaFile file(sequences);
     std::stringstream s;
     s << file;
-    assert(s.str() == ">my_a\nA\n>my_b\nC\n");
+    BOOST_CHECK(s.str() == ">my_a\nA\n>my_b\nC\n");
   }
-  if (verbose) { TRACE("File I/O"); }
+  // "File I/O"); }
   {
     std::vector<DnaSequence> sequences{
       DnaSequence("my_a","A"),DnaSequence("my_b","C")
@@ -59,10 +49,10 @@ void ribi::FastaFile::Test() noexcept
     }
     //Read from disc
     const FastaFile file(temp_filename);
-    assert(file.GetSequences() == sequences);
+    BOOST_CHECK(file.GetSequences() == sequences);
     fileio::FileIo().DeleteFile(temp_filename);
   }
-  if (verbose) { TRACE("Test case #0"); }
+  // "Test case #0"); }
   {
     const std::string temp_filename{fileio::FileIo().GetTempFileName(".fasta")};
     QFile file(":/fasta_file/files/fasta_file_test_0.fasta");
@@ -71,15 +61,13 @@ void ribi::FastaFile::Test() noexcept
     const FastaFile fasta_file(temp_filename);
     assert(fasta_file.GetSequences().size() == 8);
     const auto first_dna_sequence = fasta_file.GetSequences()[0];
-    assert(first_dna_sequence.GetDescription() == "Outgroup");
+    BOOST_CHECK(first_dna_sequence.GetDescription() == "Outgroup");
     const std::string expected_first_dna_sequence{
       Container().ToUpper(
         "ctacgattcgcatcacaatttgtcaaatactttgacgacggcagcaatttggaaccggaaggcaaaagaactcgtagcgaccttgttgcgactacgcaag"
       )
     };
-    assert(first_dna_sequence.GetSequence() == expected_first_dna_sequence);
+    BOOST_CHECK(first_dna_sequence.GetSequence() == expected_first_dna_sequence);
     fileio::FileIo().DeleteFile(temp_filename);
   }
 }
-#endif
-

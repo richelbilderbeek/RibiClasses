@@ -40,8 +40,8 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include <boost/function.hpp>
 
 #include "fileio.h"
-#include "trace.h"
-#include "testtimer.h"
+
+
 
 #pragma GCC diagnostic pop
 
@@ -150,7 +150,7 @@ void ribi::QtCreatorProFile::Parse(std::stringstream& data)
   {
     std::string s;
     data >> s;
-    if (verbose) { TRACE(s); }
+    if (verbose) { std::clog << s); }
     assert(s[0] != '#' && "Comments are already removed");
     if (s[0] == '{') continue;
     if (s[0] == '}') continue;
@@ -158,11 +158,11 @@ void ribi::QtCreatorProFile::Parse(std::stringstream& data)
     if (s.size() > 7 && s.substr(0,7) == "include")
     {
       std::string t = s.substr(8,s.size() - 8 - 1);
-      if (verbose) { TRACE(t); }
+      if (verbose) { std::clog << t); }
       while (t[0] == ' ' || t[0] == '(') t = t.substr(1,t.size()-1);
-      if (verbose) { TRACE(t); }
+      if (verbose) { std::clog << t); }
       while (t.back() == ' ' || t.back() == ')') t.pop_back();
-      if (verbose) { TRACE(t); }
+      if (verbose) { std::clog << t); }
       assert(t.find('(') == std::string::npos);
       assert(t.find(')') == std::string::npos);
       m_pri_files.insert(t);
@@ -201,7 +201,7 @@ void ribi::QtCreatorProFile::Parse(std::stringstream& data)
     };
     if (iter != std::end(m))
     {
-      if (verbose) { const std::string msg = "Set pointer to " + iter->first; TRACE(msg); }
+      if (verbose) { const std::string msg = "Set pointer to " + iter->first; std::clog << msg); }
       p = iter->second;
       prefix = Prefix::none;
       continue;
@@ -242,7 +242,7 @@ void ribi::QtCreatorProFile::Parse(std::stringstream& data)
     }
     if (p && !s.empty())
     {
-      if (verbose) { const std::string msg = "Added " + s; TRACE(msg); }
+      if (verbose) { const std::string msg = "Added " + s; std::clog << msg); }
       p->insert(
         (prefix == Prefix::minus ? "-" : "") + s);
     }
@@ -288,7 +288,7 @@ void ribi::QtCreatorProFile::Test() noexcept
   }
   fileio::FileIo();
 
-  const TestTimer test_timer(__func__,__FILE__,1.0);
+
   {
     const std::string mypath { fileio::FileIo().GetTempFileName() };
     {
@@ -382,14 +382,14 @@ void ribi::QtCreatorProFile::Test() noexcept
       std::stringstream ss;
       ss << p << '\n';
     }
-    //TRACE("Test QtCreatorProFile::operator==");
+    //std::clog << "Test QtCreatorProFile::operator==");
     {
       QtCreatorProFile q(mypath);
       assert(p == q);
     }
     fileio::FileIo().DeleteFile(mypath.c_str());
   }
-  //TRACE("Test QtCreatorProFile::Merge");
+  //std::clog << "Test QtCreatorProFile::Merge");
   {
     const std::string mypath1 { fileio::FileIo().GetTempFileName() };
     const std::string mypath2 { fileio::FileIo().GetTempFileName() };

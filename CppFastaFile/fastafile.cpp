@@ -14,9 +14,7 @@ ribi::FastaFile::FastaFile(
   const std::vector<ribi::DnaSequence>& sequences
 ) : m_sequences{sequences}
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
+
 }
 
 std::string ribi::FastaFile::GetVersion() const noexcept

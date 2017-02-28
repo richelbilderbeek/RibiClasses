@@ -9,9 +9,7 @@
 ribi::BeastStateFile::BeastStateFile(const std::string& filename)
   : m_tree{FindTree(filename)}
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
+
   if (!ribi::fileio::FileIo().IsRegularFile(filename))
   {
     std::stringstream s;

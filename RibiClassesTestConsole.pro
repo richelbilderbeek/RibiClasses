@@ -2,8 +2,15 @@ include(../RibiLibraries/GeneralConsole.pri)
 include(../RibiLibraries/GeneralConsoleTest.pri)
 include(../RibiLibraries/BoostAll.pri)
 include(../RibiLibraries/Apfloat.pri)
+include(../RibiLibraries/Rinside.pri)
 include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
 include(../plane/plane.pri)
+
+include(../RibiClasses/CppBeast/CppBeast.pri)
+include(../RibiClasses/CppBeast/CppBeastTest.pri)
+
+include(../RibiClasses/CppFastaFile/CppFastaFile.pri)
+include(../RibiClasses/CppFastaFile/CppFastaFileTest.pri)
 
 include(../RibiClasses/CppContainer/CppContainer.pri)
 include(../RibiClasses/CppContainer/CppContainerTest.pri)
@@ -17,6 +24,9 @@ include(../RibiClasses/CppGeometry/CppGeometry.pri)
 include(../RibiClasses/CppGeometry/CppGeometryTest.pri)
 include(../RibiClasses/CppFuzzy_equal_to/CppFuzzy_equal_to.pri)
 include(../RibiClasses/CppFuzzy_equal_to/CppFuzzy_equal_toTest.pri)
+
+include(../RibiClasses/CppRibiRinside/CppRibiRinside.pri)
+
 include(../RibiClasses/CppRibiRandom/CppRibiRandom.pri)
 include(../RibiClasses/CppRibiRandom/CppRibiRandomTest.pri)
 include(../RibiClasses/CppRibiRegex/CppRibiRegex.pri)
@@ -34,6 +44,7 @@ include(../RibiClasses/CppXml/CppXmlTest.pri)
 SOURCES += main_test_console.cpp
 
 # C++14
+CONFIG += c++14
 QMAKE_CXX = g++-5
 QMAKE_LINK = g++-5
 QMAKE_CC = gcc-5
@@ -44,7 +55,8 @@ QMAKE_CXXFLAGS += -std=c++14
 # -Wshadow goes bad with apfloat
 QMAKE_CXXFLAGS += -Wall -Wextra -Wnon-virtual-dtor -pedantic -Werror
 
-
+# Debug and release mode
+CONFIG += debug_and_release
 CONFIG(release, debug|release) {
 
   DEFINES += NDEBUG
@@ -77,3 +89,9 @@ LIBS += \
 
 # QResources give this error
 QMAKE_CXXFLAGS += -Wno-unused-variable
+
+# Fixes
+#/usr/include/boost/math/constants/constants.hpp:277: error: unable to find numeric literal operator 'operator""Q'
+#   BOOST_DEFINE_MATH_CONSTANT(half, 5.000000000000000000000000000000000000e-01, "5.00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e-01")
+#   ^
+QMAKE_CXXFLAGS += -fext-numeric-literals
