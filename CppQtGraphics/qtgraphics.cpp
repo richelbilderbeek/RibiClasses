@@ -39,8 +39,6 @@ void ribi::QtGraphics::DrawImage(
 {
   #if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
   #ifdef FIX_MAZIAK_ISSUE_2
-  const auto s = source.format();
-  TRACE(s);
   assert(source.format() == QImage::Format::Format_RGB32
       || source.format() == QImage::Format::Format_ARGB32
   );
