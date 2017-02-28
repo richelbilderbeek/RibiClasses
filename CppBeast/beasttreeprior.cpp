@@ -12,7 +12,7 @@ std::string ribi::ToStr(const TreePrior p) noexcept
     case TreePrior::coalescent_constant_population: return "coalescent_constant_population";
   }
   assert(!"Should not get here");
-  throw std::logic_error("ribi::ToStr(const TreePrior p): unknown TreePrior");
+  return "";
 }
 
 std::ostream& ribi::operator<<(std::ostream& os, const TreePrior p) noexcept
