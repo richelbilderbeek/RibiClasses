@@ -150,7 +150,7 @@ void ribi::QtCreatorProFile::Parse(std::stringstream& data)
   {
     std::string s;
     data >> s;
-    if (verbose) { std::clog << s); }
+    if (verbose) { std::clog << s; }
     assert(s[0] != '#' && "Comments are already removed");
     if (s[0] == '{') continue;
     if (s[0] == '}') continue;
@@ -158,11 +158,11 @@ void ribi::QtCreatorProFile::Parse(std::stringstream& data)
     if (s.size() > 7 && s.substr(0,7) == "include")
     {
       std::string t = s.substr(8,s.size() - 8 - 1);
-      if (verbose) { std::clog << t); }
+      if (verbose) { std::clog << t; }
       while (t[0] == ' ' || t[0] == '(') t = t.substr(1,t.size()-1);
-      if (verbose) { std::clog << t); }
+      if (verbose) { std::clog << t; }
       while (t.back() == ' ' || t.back() == ')') t.pop_back();
-      if (verbose) { std::clog << t); }
+      if (verbose) { std::clog << t; }
       assert(t.find('(') == std::string::npos);
       assert(t.find(')') == std::string::npos);
       m_pri_files.insert(t);
@@ -201,7 +201,7 @@ void ribi::QtCreatorProFile::Parse(std::stringstream& data)
     };
     if (iter != std::end(m))
     {
-      if (verbose) { const std::string msg = "Set pointer to " + iter->first; std::clog << msg); }
+      if (verbose) { const std::string msg = "Set pointer to " + iter->first; std::clog << msg; }
       p = iter->second;
       prefix = Prefix::none;
       continue;
@@ -242,7 +242,7 @@ void ribi::QtCreatorProFile::Parse(std::stringstream& data)
     }
     if (p && !s.empty())
     {
-      if (verbose) { const std::string msg = "Added " + s; std::clog << msg); }
+      if (verbose) { const std::string msg = "Added " + s; std::clog << msg; }
       p->insert(
         (prefix == Prefix::minus ? "-" : "") + s);
     }
