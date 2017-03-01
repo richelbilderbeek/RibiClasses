@@ -1,3 +1,3 @@
 #!/bin/bash
 cd ../RibiLibraries
-./Rinside.sh
+./RInside.sh
