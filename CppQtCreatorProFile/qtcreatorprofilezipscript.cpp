@@ -1,23 +1,3 @@
-//---------------------------------------------------------------------------
-/*
-QtCreatorProFile, class to parse Qt Project files
-Copyright (C) 2010-2015 Richel Bilderbeek
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
-GNU General Public License for more details.
-You should have received a copy of the GNU General Public License
-along with this program.If not, see <http://www.gnu.org/licenses/>.
-*/
-//---------------------------------------------------------------------------
-//From http://www.richelbilderbeek.nl/CppQtCreatorProFile.htm
-//---------------------------------------------------------------------------
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
@@ -26,13 +6,13 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 
 #include <fstream>
 #include <functional>
+#include <iostream>
 #include <iterator>
 #include <set>
 
 #include <boost/xpressive/xpressive.hpp>
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string.hpp>
-
 #include <QDir>
 
 #include "fileio.h"
@@ -168,25 +148,6 @@ std::string ribi::QtCreatorProFileZipScript::CreateScript(const std::string& sou
       + pro_filename
       )
     ;
-    #ifndef NDEBUG
-    if (!ribi::fileio::FileIo().IsRegularFile(full_pro_filename))
-    {
-      TRACE("ERROR");
-      TRACE(full_pro_filename);
-      TRACE(source_folder);
-      TRACE(pro_filename);
-      TRACE("BREAK");
-    }
-    if (!ribi::fileio::FileIo().IsUnixPath(full_pro_filename))
-    {
-      TRACE("ERROR");
-      TRACE(full_pro_filename);
-      TRACE(source_folder);
-      TRACE(pro_filename);
-      TRACE("BREAK");
-    }
-    #endif
-
     assert(ribi::fileio::FileIo().IsRegularFile(full_pro_filename));
     assert(fileio::FileIo().IsUnixPath(full_pro_filename));
     const boost::shared_ptr<QtCreatorProFile> pro_file(
@@ -248,7 +209,7 @@ const std::set<std::string> ribi::QtCreatorProFileZipScript::ExtractFilenames(
     if (!ribi::fileio::FileIo().IsRegularFile(qrc_filename_full))
     {
       const std::string s = "Warning: Resource file \'" + qrc_filename_full + "\' not found";
-      TRACE(s);
+      std::clog << s;
       continue;
     }
     assert(ribi::fileio::FileIo().IsRegularFile(qrc_filename_full));
@@ -285,14 +246,6 @@ const std::set<std::string> ribi::QtCreatorProFileZipScript::ExtractFilenames(
   {
     if (!filename.empty() && (filename[0] == '/' || filename[0] == '.'))
     {
-      #ifndef NDEBUG
-      if (!ribi::fileio::FileIo().IsRegularFile(filename))
-      {
-        TRACE("ERROR");
-        TRACE(filename);
-        TRACE("BREAK");
-      }
-      #endif
       assert(ribi::fileio::FileIo().IsRegularFile(filename));
       assert(ribi::fileio::FileIo().IsUnixPath(filename));
       filenames.push_back(filename);
@@ -308,7 +261,6 @@ const std::set<std::string> ribi::QtCreatorProFileZipScript::ExtractFilenames(
       assert(ribi::fileio::FileIo().IsUnixPath(s));
 
       const std::string t = s + "/" + filename;
-      //TRACE(t);
       assert(ribi::fileio::FileIo().IsRegularFile(t));
       assert(ribi::fileio::FileIo().IsUnixPath(t));
       filenames.push_back(t);
@@ -343,7 +295,6 @@ ribi::About ribi::QtCreatorProFileZipScript::GetAbout() noexcept
     GetVersionHistory());
   a.AddLibrary("QrcFile version: " + QrcFile::GetVersion());
   a.AddLibrary("QtCreatorProFile version: " + QtCreatorProFile::GetVersion());
-  a.AddLibrary("Trace version: " + Trace::GetVersion());
   return a;
 }
 
@@ -436,7 +387,7 @@ void ribi::QtCreatorProFileZipScript::Test() noexcept
       if (!ribi::fileio::FileIo().IsRegularFile(filename))
       {
         const std::string warning = "Warning: file \'" + filename + "\' not found";
-        TRACE(warning);
+        std::clog << warning;
         continue;
       }
       assert(ribi::fileio::FileIo().IsRegularFile(filename));
@@ -459,12 +410,6 @@ void ribi::QtCreatorProFileZipScript::Test() noexcept
 
     //Count the current number of .pro and .pri files again
     const std::size_t p = GetProAndPriFilesInFolder("").size();
-    #ifndef NDEBUG
-    if (n != p-1)
-    {
-      TRACE("ERROR: GetProFilesInFolder does not detect .pro files correctly");
-    }
-    #endif
     assert(n == p - 1);
     fileio::FileIo().DeleteFile(tmp_pro_filename);
     const std::size_t q = GetProAndPriFilesInFolder("").size();
@@ -552,14 +497,6 @@ std::ostream& ribi::operator<<(std::ostream& os,const QtCreatorProFileZipScript&
     {
       const std::string folder = s.substr(6,s.size() - 6);
       assert(ribi::fileio::FileIo().IsUnixPath(folder));
-      if ( folder[ folder.size() - 1] == '.'
-        || folder[ folder.size() - 2] == '.'
-      )
-      {
-        TRACE("ERROR");
-        TRACE(folder);
-        TRACE("BREAK");
-      }
       assert(folder[ folder.size() - 1] != '.');
       assert(folder[ folder.size() - 2] != '.');
       assert(folder[ folder.size() - 3] != '.');
