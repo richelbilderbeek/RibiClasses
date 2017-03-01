@@ -117,9 +117,9 @@ ribi::DrawCanvas::DrawCanvas(const std::string& filename)
     assert(lines.first == "data");
     const std::vector<std::string>& data { lines.second };
     int i = 0;
-    for (const std::string& s: data)
+    for (const std::string& t: data)
     {
-      const double d = boost::lexical_cast<double>(s);
+      const double d = boost::lexical_cast<double>(t);
 
       m_canvas.back().push_back(d);
       ++i;
@@ -369,10 +369,10 @@ void ribi::DrawCanvas::PlotSurface(
 
   const auto row_function(
     [](const std::vector<double>& row,
-      std::ostream& os,
-      const double minVal,
-      const double maxVal,
-      const bool use_normal_color_system)
+      std::ostream& os_here,
+      const double minVal_here,
+      const double maxVal_here,
+      const bool use_normal_color_system_here)
     {
       //Iterate through each row's columns
       const std::vector<double>::const_iterator colEnd = row.end();
@@ -381,13 +381,13 @@ void ribi::DrawCanvas::PlotSurface(
         ++col)
       {
         //Scale the found grey value to an ASCII art character
-        assert(maxVal != minVal);
-        assert(maxVal - minVal != 0.0);
-        assert(maxVal > minVal);
-        const double greyValueDouble = ( (*col) - minVal) / (maxVal - minVal);
+        assert(maxVal_here != minVal_here);
+        assert(maxVal_here - minVal_here != 0.0);
+        assert(maxVal_here > minVal_here);
+        const double greyValueDouble = ( (*col) - minVal_here) / (maxVal_here - minVal_here);
         assert(greyValueDouble >= 0.0 && greyValueDouble <= 1.0);
         const int greyValueInt
-          = (use_normal_color_system
+          = (use_normal_color_system_here
           ? greyValueDouble
           : 1.0 - greyValueDouble
           ) * nAsciiArtGradientChars;
@@ -396,9 +396,9 @@ void ribi::DrawCanvas::PlotSurface(
           ? 0 : (greyValueInt > nAsciiArtGradientChars - 1
             ? nAsciiArtGradientChars - 1: greyValueInt) );
         assert(greyValue >= 0 && greyValue < nAsciiArtGradientChars);
-        os << asciiArtGradient[greyValue];
+        os_here << asciiArtGradient[greyValue];
       }
-      os << std::endl;
+      os_here << '\n';
 
     }
   );

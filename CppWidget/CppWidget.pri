@@ -1,5 +1,4 @@
-INCLUDEPATH += \
-    ../RibiClasses/CppWidget
+INCLUDEPATH += $$PWD
 
 SOURCES += \
     $$PWD/widget.cpp
