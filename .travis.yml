@@ -23,6 +23,9 @@ install:
   # gcov
   - sudo update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-5 90
   - sudo pip install codecov
+  # R
+  - sudo apt-get install r-base r-base-dev; fi
+  - sudo Rscript -e 'source("install_r_packages.R")'; fi
   # OCLint
   - ./install_oclint
   # BEAST2
