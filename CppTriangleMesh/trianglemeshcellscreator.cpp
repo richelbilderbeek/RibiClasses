@@ -383,7 +383,6 @@ std::vector<boost::shared_ptr<ribi::trim::Face>> ribi::trim::CellsCreator::Creat
   const int n_reserve = n_ver_faces * (n_face_layers - 1);
   #endif
   assert(n_reserve > 0);
-  assert(n_reserve < static_cast<int>(v.max_size()));
   v.reserve(n_ver_faces * (n_face_layers - 1));
 
   assert(n_face_layers > 0);
