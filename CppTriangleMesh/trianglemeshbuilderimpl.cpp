@@ -614,7 +614,7 @@ ribi::trim::TriangleMeshBuilderImpl::TriangleMeshBuilderImpl(
   if (verbose_show_faces)
   {
     const int n_faces = static_cast<int>(m_faces.size());
-    std::clog << n_faces);
+    std::clog << n_faces;
     for (int i=0; i!=n_faces; ++i)
     {
       std::stringstream s;
@@ -632,7 +632,7 @@ ribi::trim::TriangleMeshBuilderImpl::TriangleMeshBuilderImpl(
       {
         s << "[no neighbour]";
       }
-      std::clog << s.str());
+      std::clog << s.str();
     }
   }
 
@@ -1060,7 +1060,7 @@ std::vector<boost::shared_ptr<ribi::trim::Face>> ribi::trim::TriangleMeshBuilder
   }
   if (verbose)
   {
-    std::clog << "n_face, non-unique:" << v.size());
+    std::clog << "n_face, non-unique:" << v.size();
   }
 
   std::sort(v.begin(),v.end(),Helper().OrderByIndex());

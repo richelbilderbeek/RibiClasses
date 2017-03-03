@@ -32,11 +32,8 @@ void ribi::trim::Helper::Test() noexcept
   }
   Geometry();
 
-  
   typedef boost::geometry::model::d2::point_xy<double> Coordinat2D;
   using boost::geometry::get;
-  const bool verbose{false};
-
   //CalcCenter
   //CalcWindingHorizontal
   const Helper h;
