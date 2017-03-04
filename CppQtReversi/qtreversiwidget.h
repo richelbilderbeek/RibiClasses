@@ -30,10 +30,6 @@ private:
   QColor m_color_square_odd;
   void mousePressEvent(QMouseEvent * e);
   void paintEvent(QPaintEvent *);
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 };
 
 } //~namespace reversi

@@ -12,9 +12,7 @@
 #include "reversimove.h"
 #include "reversiboard.h"
 #include "reversiplayer.h"
-#include "testtimer.h"
 #include "textcanvas.h"
-#include "trace.h"
 #pragma GCC diagnostic pop
 
 ribi::reversi::Widget::Widget(const int size)
@@ -91,16 +89,7 @@ bool ribi::reversi::Widget::CanDoMove(const int x, const int y) const noexcept
 
 void ribi::reversi::Widget::DoMove(const boost::shared_ptr<const ribi::reversi::Move> move) noexcept
 {
-  #ifndef NDEBUG
   assert(move);
-  if(!CanDoMove(move))
-  {
-    TRACE("ERROR");
-    TRACE(*this);
-    TRACE(move->ToStr());
-    TRACE("ERROR");
-  }
-  #endif
   assert(CanDoMove(move));
 
   //Undo
@@ -254,15 +243,13 @@ void ribi::reversi::Widget::Test() noexcept
     if (is_tested) return;
     is_tested = true;
   }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
-  const bool verbose{false};
   {
     ribi::reversi::Widget r(4);
     assert(r.GetCurrentPlayer() == Player::player1);
     assert(r.GetValidMoves().size() == 5); //4 place moves and one pass
   }
   /*
-  if (verbose) { TRACE("Play random games") }
+  // Play random games
   for (int sz = 4; sz != 6; ++sz)
   {
     ribi::reversi::Widget r(sz);
@@ -280,7 +267,7 @@ void ribi::reversi::Widget::Test() noexcept
     }
   }
   */
-  if (verbose) { TRACE("Test copy constructor and operator== and operator!="); }
+  // Test copy constructor and operator== and operator!=
   {
     const int sz = 4;
     ribi::reversi::Widget r(sz);
@@ -309,7 +296,7 @@ void ribi::reversi::Widget::Test() noexcept
       assert(before == r);
     }
   }
-  if (verbose) { TRACE("Test undo functionality in a single game"); }
+  // Test undo functionality in a single game
   {
     const int sz = 4;
     ribi::reversi::Widget r(sz);
@@ -345,14 +332,6 @@ void ribi::reversi::Widget::Undo()
   assert(!m_undo.empty());
   this->m_board = (m_undo.back().first)->GetBoard();
   assert(*m_board == *(m_undo.back().first)->GetBoard());
-  #ifndef NDEBUG
-  if (this->m_current_player == (m_undo.back().first)->GetCurrentPlayer())
-  {
-    TRACE("ERROR");
-    std::clog << "\n" << *this << std::endl;
-    TRACE(PlayerToStr(m_current_player));
-  }
-  #endif
   assert(this->m_current_player != (m_undo.back().first)->GetCurrentPlayer());
   this->m_current_player = (m_undo.back().first)->GetCurrentPlayer();
   m_undo.pop_back();

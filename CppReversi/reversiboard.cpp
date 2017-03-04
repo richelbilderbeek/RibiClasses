@@ -4,13 +4,13 @@
 #include <cassert>
 #include <stdexcept>
 #include <iterator>
-
+#include <sstream>
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
-#include "testtimer.h"
+
 #include "textcanvas.h"
-#include "trace.h"
+
 #pragma GCC diagnostic pop
 
 ribi::reversi::Board::Board(const int size)
@@ -263,7 +263,6 @@ void ribi::reversi::Board::Test() noexcept
     if (is_tested) return;
     is_tested = true;
   }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
   {
     Board r(4);
     assert(r.Get(1,1) == Square::player1);

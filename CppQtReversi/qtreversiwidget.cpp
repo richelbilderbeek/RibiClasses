@@ -11,9 +11,9 @@
 
 #include "reversiboard.h"
 #include "reversiwidget.h"
-#include "testtimer.h"
+
 #include "reversimove.h"
-#include "trace.h"
+
 #pragma GCC diagnostic pop
 
 ribi::reversi::QtWidget::QtWidget(QWidget* parent, Qt::WindowFlags f)
@@ -24,9 +24,6 @@ ribi::reversi::QtWidget::QtWidget(QWidget* parent, Qt::WindowFlags f)
     m_color_square_even(QColor( 32, 32, 32)),
     m_color_square_odd( QColor( 64, 64, 64))
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
   //Allows this widget to respond to mouse moving over it
   this->setMouseTracking(true);
 }
@@ -76,15 +73,3 @@ void ribi::reversi::QtWidget::paintEvent(QPaintEvent *)
     }
   }
 }
-
-#ifndef NDEBUG
-void ribi::reversi::QtWidget::Test() noexcept
-{
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
-}
-#endif
