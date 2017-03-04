@@ -5,7 +5,7 @@
 #include "rubiksclockside.h"
 #include "togglebutton.h"
 #include "togglebuttonwidget.h"
-#include "trace.h"
+
 
 ribi::ruco::Pegs::Pegs() noexcept
 {

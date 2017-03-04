@@ -41,7 +41,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "textcanvas.h"
 #include "togglebutton.h"
 #include "togglebuttonwidget.h"
-//#include "trace.h"
+//
 
 #pragma GCC diagnostic pop
 
