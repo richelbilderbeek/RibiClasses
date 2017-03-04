@@ -68,10 +68,10 @@ ribi::ruco::WtClockWidget::WtClockWidget(
       &ribi::ruco::WtClockWidget::DoRepaint,
       this));
 
-  m_widget->m_signal_geometry_changed.connect(
-    boost::bind(
-      &ribi::ruco::WtClockWidget::OnResize,
-      this));
+  //m_widget->m_signal_geometry_changed.connect(
+  //  boost::bind(
+  //    &ribi::ruco::WtClockWidget::OnResize,
+  //    this));
 
   this->clicked().connect(this,&ribi::ruco::WtClockWidget::OnClicked);
 

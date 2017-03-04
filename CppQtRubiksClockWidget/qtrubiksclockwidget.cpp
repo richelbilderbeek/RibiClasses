@@ -65,10 +65,10 @@ ribi::ruco::QtRubiksClockWidget::QtRubiksClockWidget(
       &ribi::ruco::QtRubiksClockWidget::DoRepaint,
       this));
 
-  m_widget->m_signal_geometry_changed.connect(
-    boost::bind(
-      &ribi::ruco::QtRubiksClockWidget::OnResize,
-      this));
+  //m_widget->m_signal_geometry_changed.connect(
+  //  boost::bind(
+  //    &ribi::ruco::QtRubiksClockWidget::OnResize,
+  //    this));
 
   m_widget->SetGeometry(0,0,200,200);
 }
@@ -125,7 +125,7 @@ void ribi::ruco::QtRubiksClockWidget::DrawRubiksClock(
           w->GetTop(),
           w->GetWidth(),
           w->GetHeight(),
-          w->GetRubiksClockDial()->GetDial()
+          *w->GetRubiksClockDial()->GetDial()
         );
       }
     }

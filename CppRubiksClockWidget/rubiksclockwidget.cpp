@@ -54,10 +54,10 @@ ribi::ruco::ClockWidget::ClockWidget(
     m_clock{new Clock},
     m_display_front{true}
 {
-  m_signal_geometry_changed.connect(
-    boost::bind(
-      &ribi::ruco::ClockWidget::OnResize,
-      this));
+  //m_signal_geometry_changed.connect(
+  //  boost::bind(
+  //    &ribi::ruco::ClockWidget::OnResize,
+  //    this));
 
   SetGeometry(x,y,width,height);
 }
