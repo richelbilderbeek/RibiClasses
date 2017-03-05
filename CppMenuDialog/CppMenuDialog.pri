@@ -1,12 +1,8 @@
-INCLUDEPATH += \
-    ../RibiClasses/CppMenuDialog
+INCLUDEPATH += $$PWD
 
 SOURCES += \
-    ../RibiClasses/CppMenuDialog/menudialog.cpp
+    $$PWD/menudialog.cpp
 
 HEADERS  += \
-    ../RibiClasses/CppMenuDialog/menudialog.h
-
-OTHER_FILES += \
-    ../RibiClasses/CppMenuDialog/Licence.txt
+    $$PWD/menudialog.h
 
