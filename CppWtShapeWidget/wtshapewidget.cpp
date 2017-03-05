@@ -44,10 +44,10 @@ ribi::WtShapeWidget::WtShapeWidget(
   : m_widget(widget)
 {
   assert(widget);
-  m_widget->m_signal_geometry_changed.connect(
-    boost::bind(
-      &ribi::WtShapeWidget::OnResize,
-      this));
+  //m_widget->m_signal_geometry_changed.connect(
+  //  boost::bind(
+  //    &ribi::WtShapeWidget::OnResize,
+  //    this));
 
   this->OnResize();
 }
