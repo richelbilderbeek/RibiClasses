@@ -39,3 +39,4 @@ tmp*
 ui_*
 RibiClassesTestConsole
 *.pro.user.*
+RibiClassesTestDesktop
