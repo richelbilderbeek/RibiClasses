@@ -120,10 +120,6 @@ struct TextCanvas : public Canvas
     const bool use_normal_color_system,
     const bool as_screen_coordinat_system);
 
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
-
   friend std::ostream& operator<<(std::ostream& os, const TextCanvas& canvas);
 
 };

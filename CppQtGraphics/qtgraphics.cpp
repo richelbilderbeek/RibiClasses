@@ -16,7 +16,8 @@ ribi::QtGraphics::QtGraphics()
 
 }
 
-QImage ribi::QtGraphics::CreateImage(const int width, const int height, const int z) const noexcept
+QImage ribi::QtGraphics::CreateImage(
+  const int width, const int height, const int z) const noexcept
 {
   QImage image(width,height,QImage::Format_ARGB32);
   for (int y=0;y!=height;++y)
@@ -37,22 +38,9 @@ void ribi::QtGraphics::DrawImage(
   const int left, const int top
 ) const noexcept
 {
-  #if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
-  #ifdef FIX_MAZIAK_ISSUE_2
-  assert(source.format() == QImage::Format::Format_RGB32
-      || source.format() == QImage::Format::Format_ARGB32
-  );
-  #endif // FIX_MAZIAK_ISSUE_2
+  assert(IsValidFormat(source.format()));
   const int n_channels{4};
   assert(n_channels == 3 || n_channels == 4);
-  #else
-  //const auto n_channels = source.pixelFormat().channelCount();
-  //assert(source.format() == QImage::Format::Format_RGB32
-  //    || source.format() == QImage::Format::Format_ARGB32
-  //);
-  const int n_channels{4};
-  assert(n_channels == 3 || n_channels == 4);
-  #endif
   const int width = source.width();
   const int height = source.height();
   for (int y=0; y!=height; ++y)
@@ -67,22 +55,14 @@ void ribi::QtGraphics::DrawImage(
   }
 }
 
-
-
 void ribi::QtGraphics::DrawImageSlow(
   QImage& target, const QImage& source,
   const int left, const int top
 ) const noexcept
 {
-  #if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
   assert(source.format() == QImage::Format::Format_ARGB32);
   const int n_channels{4};
   assert(n_channels == 3 || n_channels == 4);
-  #else
-  //const auto n_channels = source.pixelFormat().channelCount();
-  const int n_channels{4};
-  assert(n_channels == 3 || n_channels == 4);
-  #endif
   const int width = source.width();
   const int height = source.height();
   for (int y=0; y!=height; ++y)
@@ -132,3 +112,8 @@ std::vector<std::string> ribi::QtGraphics::GetVersionHistory() const noexcept
   };
 }
 
+bool ribi::IsValidFormat(const QImage::Format f) noexcept
+{
+  return f == QImage::Format::Format_RGB32
+      || f == QImage::Format::Format_ARGB32;
+}
