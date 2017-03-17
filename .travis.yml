@@ -28,7 +28,7 @@ install:
   # R
   - sudo apt-get install r-base r-base-dev
   - sudo apt-get install libssh2-1-dev
-  - sudo Rscript -e 'source("install_r_packages.R")'
+  - sudo Rscript install_r_packages.R
   # OCLint
   - ./install_oclint
   # BEAST2

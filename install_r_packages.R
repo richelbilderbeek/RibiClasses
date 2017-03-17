@@ -1,3 +1,5 @@
+#!/usr/bin/Rscript
+
 # Installs the R packages needed
 
 install.packages("devtools", repos = "http://cran.uk.r-project.org")
