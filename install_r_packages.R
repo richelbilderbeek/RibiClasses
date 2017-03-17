@@ -1,5 +1,5 @@
 # Installs the R packages needed
-lib_path <- "~/R"
+lib_path <- "~"
 
 install.packages("devtools", repos = "http://cran.uk.r-project.org", lib = lib_path)
 
