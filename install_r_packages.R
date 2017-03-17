@@ -1,4 +1,13 @@
 # Installs the R packages needed
+
+install.packages("devtools", repos = "http://cran.uk.r-project.org")
+#install.packages("DAISIE", repos = "http://cran.uk.r-project.org")
+devtools::install_github("richelbilderbeek/nLTT")
+devtools::install_github("rsetienne/PBD", subdir = "PBD")
+warnings()
+
+if (1 == 2) {
+
 lib_path <- "~"
 
 install.packages("devtools", repos = "http://cran.uk.r-project.org", lib = lib_path)
@@ -12,7 +21,4 @@ devtools::install_github("richelbilderbeek/nLTT", lib = lib_path)
 devtools::install_github("rsetienne/PBD", subdir = "PBD", lib = lib_path)
 warnings()
 
-#packageVersion("DAISIE")
-packageVersion("devtools")
-packageVersion("nLTT")
-packageVersion("PBD")
+}
