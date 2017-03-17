@@ -196,8 +196,6 @@ void ribi::QtRoundedEditRectItem::paint(QPainter* painter, const QStyleOptionGra
       )
     );
 
-    //TRACE(Geometry().ToStr(text_rect));
-
     painter->drawText(text_rect,s.c_str());
   }
 }

@@ -54,14 +54,12 @@ void ribi::Grabber::Grab() const noexcept
   {
     std::stringstream s;
     s << "WARNING: no screens, so no screenshot";
-    // TRACE(s.str());
     return;
   }
   if (n_screens != 1)
   {
     std::stringstream s;
     s << "WARNING: number of screens " << n_screens << " (instead of just one), taking screenshot of first";
-    // TRACE(s.str());
   }
   const QImage screenshot{screens[0]->grabWindow(m_win_id).toImage()};
   #else
