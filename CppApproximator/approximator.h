@@ -1,29 +1,10 @@
-//---------------------------------------------------------------------------
-/*
-Approximator, class for approximating values by interpolation
-Copyright (C) 2013-2015 Richel Bilderbeek
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU General Public License for more details.
-You should have received a copy of the GNU General Public License
-along with this program. If not, see <http://www.gnu.org/licenses/>.
-*/
-//---------------------------------------------------------------------------
-//From http://www.richelbilderbeek.nl/CppApproximator.htm
-//---------------------------------------------------------------------------
 #ifndef RIBI_APPROXIMATOR_H
 #define RIBI_APPROXIMATOR_H
 
 #include <cassert>
 #include <stdexcept>
 #include <map>
+#include <vector>
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
@@ -31,8 +12,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <boost/container/flat_map.hpp>
 
 #include "exceptionnoextrapolation.h"
-#include "testtimer.h"
-#include "trace.h"
 #pragma GCC diagnostic pop
 
 namespace ribi {
@@ -173,34 +152,6 @@ std::vector<std::string> Approximator<Key,Value,Container>::GetVersionHistory() 
   };
   return v;
 }
-
-
-#ifndef NDEBUG
-template <class Key, class Value, class Container>
-void Approximator<Key,Value,Container>::Test() noexcept
-{
-  {
-    static bool is_tested { false };
-    if (is_tested) return;
-    is_tested = true;
-  }
-  TestTimer::SetMaxCnt(2); //Due to templates, multiple Approximators get active
-  const TestTimer test_timer(__func__,__FILE__,1.0);
-  {
-    Approximator<double,int> m;
-    m.Add(1.0,10);
-    m.Add(2.0,20);
-    assert(m.Approximate(1.5) == 15);
-    m.Add(4.0,40);
-    assert(m.Approximate(3.0) == 30);
-    m.Add(3.0,35);
-    assert(m.Approximate(3.0) == 35);
-    assert(m.GetMin() == 1.0);
-    assert(m.GetMax() == 4.0);
-  }
-  TestTimer::SetMaxCnt(1); //Restore strictness
-}
-#endif
 
 } //~namespace ribi
 
