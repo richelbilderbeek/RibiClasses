@@ -62,10 +62,6 @@ private:
   ///From htpp://www.richelbilderbeek.nl/CppCalculateVariance.htm
   static double CalculateVariance(
     const std::vector<double>& v);
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 };
 
 template <class X, class Y>
@@ -73,10 +69,6 @@ auto SimpleLinearRegression::CalculateBestFit(
   const std::vector<X>& xs,
   const std::vector<Y>& ys) -> const std::pair<decltype(ys[0]/xs[0]),Y>
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
-
   assert(xs.size() == ys.size()
     && "Every coordinat must have exactly one x and one y value");
   const X mean_x { CalculateMean(xs) };
