@@ -2,6 +2,7 @@
 #include <ircbot.h>
 
 #include <fstream>
+#include <iostream>
 #include <stdexcept>
 #include <netdb.h>
 
@@ -12,7 +13,8 @@ IrcBot::IrcBot(
   const std::string& channel_name,
   const int port,
   const std::string& server_name,
-  const std::function<const std::vector<std::string>(const std::string& input)>& respond_function)
+  const std::function<std::vector<std::string>(const std::string& input)>& respond_function
+)
   : m_log_file("log_lambdabot.txt"),
     m_socket_index{-1}
 {
@@ -123,7 +125,7 @@ IrcBot::IrcBot(
   close(m_socket_index);
 }
 
-const std::string IrcBot::ReadLine() const
+std::string IrcBot::ReadLine() const
 {
   const int max_data_size = 1024;
   char buf[max_data_size];

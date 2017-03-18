@@ -1,12 +1,8 @@
-INCLUDEPATH += \
-    ../RibiClasses/CppQrcFile
+INCLUDEPATH += $$PWD
 
 SOURCES += \
-    ../RibiClasses/CppQrcFile/qrcfile.cpp
+    $$PWD/qrcfile.cpp
 
 HEADERS  += \
-    ../RibiClasses/CppQrcFile/qrcfile.h
-
-OTHER_FILES += \
-    ../RibiClasses/CppQrcFile/Licence.txt
+    $$PWD/qrcfile.h
 

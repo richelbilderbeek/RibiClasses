@@ -1,14 +1,10 @@
-INCLUDEPATH += \
-    ../RibiClasses/CppQtCreatorProFile
+INCLUDEPATH += $$PWD
 
 SOURCES += \
-    ../RibiClasses/CppQtCreatorProFile/qtcreatorprofile.cpp \
-    ../RibiClasses/CppQtCreatorProFile/qtcreatorprofilezipscript.cpp
+    $$PWD/qtcreatorprofile.cpp \
+    $$PWD/qtcreatorprofilezipscript.cpp
 
 HEADERS  += \
-    ../RibiClasses/CppQtCreatorProFile/qtcreatorprofile.h \
-    ../RibiClasses/CppQtCreatorProFile/qtcreatorprofilezipscript.h
-
-OTHER_FILES += \
-    ../RibiClasses/CppQtCreatorProFile/Licence.txt
+    $$PWD/qtcreatorprofile.h \
+    $$PWD/qtcreatorprofilezipscript.h
 

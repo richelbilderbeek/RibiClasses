@@ -1,12 +1,8 @@
-INCLUDEPATH += \
-    ../RibiClasses/CppIrcBot
+INCLUDEPATH += $$PWD
 
 SOURCES += \
-    ../RibiClasses/CppIrcBot/ircbot.cpp
+    $$PWD/ircbot.cpp
 
 HEADERS  += \
-    ../RibiClasses/CppIrcBot/ircbot.h
-
-OTHER_FILES += \
-    ../RibiClasses/CppIrcBot/Licence.txt
+    $$PWD/ircbot.h
 
