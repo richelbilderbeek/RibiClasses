@@ -35,7 +35,7 @@ install:
   - ./install_beast2
   # Other GitHubs
   - ./download_other_githubs
-  - ./install_other_githubs
+  - sudo ./install_other_githubs
 
 # Boost
 addons: 
