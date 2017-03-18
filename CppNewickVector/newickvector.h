@@ -83,11 +83,6 @@ struct NewickVector
   static bool NewickCompare(
     const std::vector<int>& lhs,
     const std::vector<int>& rhs) noexcept;
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
-
 };
 
 bool operator<(

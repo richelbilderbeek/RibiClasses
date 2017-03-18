@@ -31,8 +31,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <boost/lexical_cast.hpp>
 
-#include "trace.h"
-
 namespace ribi {
 
 template <class NewickType>
@@ -94,11 +92,6 @@ double NewickStorage<T>::Find(const T& n) const
 template <class T>
 void NewickStorage<T>::Store(const T& n, const double p)
 {
-  //TRACE("Stored probability for "
-  //  + n.ToStr()
-  //  + " = "
-  //  + boost::lexical_cast<std::string>(p));
-
   const int n_sz = n.Size();
   //Disallow resizing
   assert(n_sz < static_cast<int>(m.size()));
@@ -114,18 +107,14 @@ void NewickStorage<T>::Store(const T& n, const double p)
     }
     catch (std::bad_alloc& e)
     {
-      //TRACE("std::bad_alloc in NewickStorage<T>::Store");
       CleanUp();
     }
     catch (std::exception& e)
     {
-      //TRACE("std::exception in NewickStorage<T>::Store");
-      //TRACE(e.what());
       CleanUp();
     }
     catch (...)
     {
-      //TRACE_FILE("Unknown exception in NewickStorage<T>::Store");
       CleanUp();
     }
   }
@@ -150,13 +139,11 @@ void NewickStorage<T>::CleanUp()
   //  save the std::maps with most complex ones
   //  (is this really wise?)
   //  (but what is the alternative?)
-  //TRACE_FILE("Investigating std::map sizes - VERSION 2009-07-31-17:21");
   const int m_sz = m.size();
   std::vector<int> v(m_sz);
   for (int i=0; i!=m_sz; ++i)
   {
     v[i] = m[i].size();
-    //TRACE_FILE(v[i]);
   }
   for (int i=0; i!=m_sz; ++i)
   {
@@ -167,16 +154,6 @@ void NewickStorage<T>::CleanUp()
       //All cleared except last
       break;
     }
-    #ifndef NTRACE
-    {
-      const std::string trace = "Cleared index "
-        + boost::lexical_cast<std::string>(i)
-        + " with "
-        + boost::lexical_cast<std::string>(m[i].size())
-        + " entries.";
-      //TRACE_FILE(trace);
-    }
-    #endif
     m[i] = std::map<T,double>(); //Clear
   }
 }

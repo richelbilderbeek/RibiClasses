@@ -1,23 +1,3 @@
-//---------------------------------------------------------------------------
-/*
-Newick, Newick functions
-Copyright (C) 2010-2015 Richel Bilderbeek
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
-GNU General Public License for more details.
-You should have received a copy of the GNU General Public License
-along with this program.If not, see <http://www.gnu.org/licenses/>.
-*/
-//---------------------------------------------------------------------------
-//From http://www.richelbilderbeek.nl/CppNewick.htm
-//---------------------------------------------------------------------------
 #ifndef NEWICK_H
 #define NEWICK_H
 
@@ -35,7 +15,6 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "BigIntegerLibrary.hh"
 #include "newickcpp98.h"
 #include "newickstorage.h"
-#include "trace.h"
 #pragma GCC diagnostic pop
 
 namespace ribi {
@@ -321,10 +300,6 @@ struct Newick
   ///Surround surrounds the Newick with brackets
   std::vector<int> Surround(const std::vector<int>& newick) noexcept;
 
-  #ifndef NDEBUG
-  void Test();
-  #endif
-
   //char ValueToChar(const int value);
 
   template <class NewickType>
@@ -333,7 +308,6 @@ struct Newick
     const double theta,
     NewickStorage<NewickType>& storage)
 {
-  //#define TRACE_NEWICK_CALCULATEPROBABILITY
   while(1)
   {
     try
@@ -360,12 +334,6 @@ struct Newick
       std::vector<NewickType> newicks;
       {
         const double d = n.CalcDenominator(theta);
-        #ifdef TRACE_NEWICK_CALCULATEPROBABILITY
-        TRACE("Denominator for "
-          + n.ToStr()
-          + " = "
-          + boost::lexical_cast<std::string>(d));
-        #endif
         typedef std::pair<std::vector<int>,int> NewickFrequencyPair;
         const std::vector<NewickFrequencyPair> newick_freqs
           = Newick::GetSimplerNewicksFrequencyPairs(n.Peek());
@@ -384,12 +352,6 @@ struct Newick
             newicks.push_back(p.first);
             coefficients.push_back( (f_d*(f_d-1.0)) / d);
           }
-          #ifdef TRACE_NEWICK_CALCULATEPROBABILITY
-          TRACE("BinaryNewickVector "
-            + Newick::NewickToString(p.first)
-            + " has coefficient "
-            + boost::lexical_cast<std::string>(coefficients.back()))
-          #endif
         }
       }
       //Ask help about these new Newicks

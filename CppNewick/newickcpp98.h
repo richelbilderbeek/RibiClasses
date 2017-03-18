@@ -40,11 +40,6 @@ struct NewickCpp98
   std::vector<boost::tuple<std::string,double,double> > GetKnownProbabilities() noexcept;
   std::vector<std::pair<std::vector<int>,int> > GetSimplerNewicksFrequencyPairs(const std::vector<int>& n);
   std::vector<std::vector<int> > GetRootBranches(const std::vector<int>& n);
-
-  private:
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 };
 
 } //~namespace ribi

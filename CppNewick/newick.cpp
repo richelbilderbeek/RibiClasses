@@ -41,8 +41,6 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "BigIntegerLibrary.hh"
 
 #include "newickcpp98.h"
-#include "testtimer.h"
-#include "trace.h"
 
 #pragma GCC diagnostic pop
 
@@ -93,9 +91,7 @@ struct Increase
 
 ribi::Newick::Newick()
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
+
 }
 
 BigInteger ribi::Newick::CalcComplexity(const std::vector<int>& v)
@@ -1061,12 +1057,6 @@ std::vector<std::vector<int> >
   ///The tests below must be put back in again once
   #ifdef DEBUG_TEMP_REMOVE_2738236826438
 
-  //#define DEBUG_GETROOTBRANCHES
-  #ifdef  DEBUG_GETROOTBRANCHES
-  TRACE_FUNC();
-  TRACE(Newick::NewickToString(n));
-  #endif
-
   assert(IsNewick(n));
   assert(!IsUnaryNewick(n));
 
@@ -1182,7 +1172,7 @@ std::pair<std::vector<int>,std::vector<int> >
     }
   }
   assert(!"Should not get here");
-  throw std::logic_error("Should not get here");
+  return { {}, {} };
 }
 
 std::vector<std::vector<int> >
@@ -1330,12 +1320,6 @@ std::vector<std::vector<int> >
     {
       std::vector<int> new_newick(n);
       --new_newick[i];
-      #ifdef DEBUG_GETSIMPLERNEWICKS
-      {
-        const std::string stored = Newick::NewickToString(new_newick);
-        TRACE(stored);
-      }
-      #endif
       newicks.push_back(new_newick);
       continue;
     }
@@ -1372,14 +1356,6 @@ std::vector<std::vector<int> >
       assert(new_newick_with_zero[i] == 0);
       ++new_newick_with_zero[j];
       //Remove brackets after possibly lonely value
-      #ifdef DEBUG_GETSIMPLERNEWICKS
-      {
-        const std::string newick_str_with_zeroes = Newick::DumbNewickToString(new_newick_with_zero);
-        TRACE(newick_str_with_zeroes);
-        const std::string dist_i_j = boost::lexical_cast<std::string>(std::abs(i - j));
-        TRACE(dist_i_j)
-      }
-      #endif
       //If there is only one or two values between
       //the brackets, and one of these values was a
       //1 becoming added to the other, nullify the
@@ -1397,12 +1373,6 @@ std::vector<std::vector<int> >
           new_newick_with_zero[index_bracket_close] = 0;
         }
       }
-      #ifdef DEBUG_GETSIMPLERNEWICKS
-      {
-        const std::string newick_str_with_more_zeroes = Newick::DumbNewickToString(new_newick_with_zero);
-        TRACE(newick_str_with_more_zeroes);
-      }
-      #endif
       //Remove decremented i and possibly nullified brackets
       std::vector<int> new_newick;
       std::remove_copy(
@@ -1416,20 +1386,6 @@ std::vector<std::vector<int> >
       {
         new_newick = Surround(new_newick);
       }
-      #ifdef DEBUG_GETSIMPLERNEWICKS
-      {
-        const std::string newick_str_done = Newick::DumbNewickToString(new_newick);
-        TRACE(newick_str_done);
-      }
-      #endif
-      #define DEBUG_2436964926435498753298216832187
-      #ifdef  DEBUG_2436964926435498753298216832187
-      if (!IsNewick(new_newick))
-      {
-        TRACE(Newick::DumbNewickToString(new_newick));
-      }
-      #endif
-
       assert(IsNewick(new_newick));
       newicks.push_back(new_newick);
       continue;
@@ -1462,12 +1418,6 @@ std::vector<std::pair<std::vector<int>,int> >
     {
       std::vector<int> new_newick(n);
       --new_newick[i];
-      #ifdef DEBUG_GETSIMPLERNEWICKS
-      {
-        const std::string stored = Newick::NewickToString(new_newick);
-        TRACE(stored);
-      }
-      #endif
       newicks.push_back( { new_newick,n[i] } );
       continue;
     }
@@ -1504,14 +1454,6 @@ std::vector<std::pair<std::vector<int>,int> >
       assert(new_newick_with_zero[i] == 0);
       ++new_newick_with_zero[j];
       //Remove brackets after possibly lonely value
-      #ifdef DEBUG_GETSIMPLERNEWICKS
-      {
-        const std::string newick_str_with_zeroes = Newick::DumbNewickToString(new_newick_with_zero);
-        TRACE(newick_str_with_zeroes);
-        const std::string dist_i_j = boost::lexical_cast<std::string>(std::abs(i - j));
-        TRACE(dist_i_j)
-      }
-      #endif
       //If there is only one or two values between
       //the brackets, and one of these values was a
       //1 becoming added to the other, nullify the
@@ -1529,12 +1471,6 @@ std::vector<std::pair<std::vector<int>,int> >
           new_newick_with_zero[index_bracket_close] = 0;
         }
       }
-      #ifdef DEBUG_GETSIMPLERNEWICKS
-      {
-        const std::string newick_str_with_more_zeroes = Newick::DumbNewickToString(new_newick_with_zero);
-        TRACE(newick_str_with_more_zeroes);
-      }
-      #endif
       //Remove decremented i and possibly nullified brackets
       std::vector<int> new_newick;
       std::remove_copy(
@@ -1548,20 +1484,6 @@ std::vector<std::pair<std::vector<int>,int> >
       {
         new_newick = Surround(new_newick);
       }
-      #ifdef DEBUG_GETSIMPLERNEWICKS
-      {
-        const std::string newick_str_done = Newick::DumbNewickToString(new_newick);
-        TRACE(newick_str_done);
-      }
-      #endif
-      #define DEBUG_2436964926435498753298216832187
-      #ifdef  DEBUG_2436964926435498753298216832187
-      if (!IsNewick(new_newick))
-      {
-        TRACE(Newick::DumbNewickToString(new_newick));
-      }
-      #endif
-
       assert(IsNewick(new_newick));
       newicks.push_back( { new_newick, 1 } );
       continue;
@@ -1993,500 +1915,3 @@ std::vector<int> ribi::Newick::Surround(const std::vector<int>& newick) noexcept
   new_newick.push_back(Newick::bracket_close);
   return new_newick;
 }
-
-#ifndef NDEBUG
-///Test tests all Newick functions
-void ribi::Newick::Test()
-{
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  {
-    NewickCpp98();
-  }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
-
-  //#ifdef __GXX_EXPERIMENTAL_CXX0X__
-  ///\note
-  ///The tests below must be put back in again once
-  #ifdef DEBUG_TEMP_REMOVE_2738236826438
-
-
-  TRACE("Testing basic Newick functionality");
-  //Check difference between C++98 and C++0x
-  assert(Newick::CreateValidTrinaryNewicks() == NewickCpp98().CreateValidTrinaryNewicks());
-  assert(Newick::GetKnownProbabilities() == NewickCpp98().GetKnownProbabilities());
-
-
-
-  //Check conversions from std::string to std::vector #1
-  {
-    const std::vector<int> v = Newick::StringToNewick("(11,(22,33))");
-    assert(v.size() == 7);
-    assert(v[0]==Newick::bracket_open);
-    assert(v[1]==11);
-    assert(v[2]==Newick::bracket_open);
-    assert(v[3]==22);
-    assert(v[4]==33);
-    assert(v[5]==Newick::bracket_close);
-    assert(v[6]==Newick::bracket_close);
-  }
-  //Check if well-formed Newicks are accepted
-  {
-    const std::vector<std::string> v = Newick::CreateValidNewicks();
-    for(const std::string& s: v)
-    {
-      #ifdef TRACE_REJECTED_NEWICKS
-      const std::string debug = "I must be accepted: " + s;
-      TRACE(debug);
-      #endif
-      assert(Newick::IsNewick(s));
-      const std::vector<int> v = Newick::StringToNewick(s);
-      assert(Newick::IsNewick(v));
-    }
-  }
-  //Check if ill-formed Newicks are rejected
-  {
-    #ifndef NDEBUG
-    const std::vector<std::string> v = Newick::CreateInvalidNewicks();
-    for(const std::string& s: v)
-    {
-      #ifdef TRACE_REJECTED_NEWICKS
-      const std::string debug = "I must be rejected: " + s;
-      TRACE(debug);
-      #endif
-      assert(!Newick::IsNewick(s));
-      //Cannot test if std::vector<int> versions are rejected,
-      //because Newick::StringToNewick assumes a valid Newick
-      //const std::vector<int> v = Newick::StringToNewick(s);
-      //assert(!Newick::IsNewick(v));
-    }
-    #endif
-  }
-  //Check conversions from std::string to std::vector #2
-  {
-    const std::vector<int> v = Newick::StringToNewick("((11,22),33)");
-    assert(v.size() == 7);
-    assert(v[0]==Newick::bracket_open);
-    assert(v[1]==Newick::bracket_open);
-    assert(v[2]==11);
-    assert(v[3]==22);
-    assert(v[4]==Newick::bracket_close);
-    assert(v[5]==33);
-    assert(v[6]==Newick::bracket_close);
-  }
-  assert(Newick::CalcNumOfSymmetriesBinary(StringToNewick("(1,(3,1))"))==0);
-  assert(Newick::CalcNumOfSymmetriesBinary(StringToNewick("(3,(1,1))"))==1);
-  assert(Newick::CalcNumOfSymmetriesBinary(StringToNewick("(1,((1,1),(1,1)))"))==3);
-  assert(Newick::CalcNumOfSymmetriesBinary(StringToNewick("(1,((1,1),(2,2)))"))==2);
-  assert(Newick::CalcNumOfSymmetriesBinary(StringToNewick("(1,(2,3))"))==0);
-  assert(Newick::CalcNumOfSymmetriesBinary(StringToNewick("(99,99)"))==1);
-  assert(Newick::CalcNumOfSymmetriesBinary(StringToNewick("(3,(2,2))"))==1);
-  assert(Newick::CalcNumOfSymmetriesBinary(StringToNewick("(2,(2,2))"))==1);
-  assert(Newick::CalcNumOfSymmetriesBinary(StringToNewick("((3,3),(2,2))"))==2);
-  assert(Newick::CalcNumOfSymmetriesBinary(StringToNewick("((3,3),(3,3))"))==3);
-  assert(Newick::CalcNumOfSymmetriesBinary(StringToNewick("((3,3),(3,4))"))==1);
-  assert(Newick::CalcNumOfSymmetriesBinary(StringToNewick("(((3,3),(4,4)),5)"))==2);
-  assert(Newick::CalcNumOfSymmetriesBinary(StringToNewick("(((3,3),(5,5)),5)"))==2);
-  assert(Newick::CalcNumOfSymmetriesBinary(StringToNewick("(((5,5),(5,5)),5)"))==3);
-  assert(Newick::CalcNumOfSymmetriesBinary(StringToNewick("(((5,5),(5,5)),(4,4))"))==4);
-  assert(Newick::CalcNumOfSymmetriesBinary(StringToNewick("(((5,5),(4,4)),(4,4))"))==3);
-  assert(Newick::CalcNumOfSymmetriesBinary(StringToNewick("(((4,4),(4,4)),(4,4))"))==4);
-  assert(Newick::CalcNumOfCombinationsBinary(StringToNewick("(3,(1,1))"))==10);
-  assert(Newick::CalcNumOfCombinationsBinary(StringToNewick("(1,(3,1))"))==20);
-  assert(Newick::CalcNumOfCombinationsBinary(StringToNewick("(1,(1,(1,(1,1))))"))==60);
-  assert(Newick::CalcNumOfCombinationsBinary(StringToNewick("(1,((1,1),(1,1)))"))==15);
-  assert(bigIntegerToString(Newick::FactorialBigInt(1))=="1");
-  assert(bigIntegerToString(Newick::FactorialBigInt(2))=="2");
-  assert(bigIntegerToString(Newick::FactorialBigInt(3))=="6");
-  assert(bigIntegerToString(Newick::FactorialBigInt(4))=="24");
-  assert(bigIntegerToString(Newick::FactorialBigInt(5))=="120");
-  assert(bigIntegerToString(Newick::FactorialBigInt(6))=="720");
-  assert(Newick::GetLeafMaxArity(Newick::StringToNewick("(1)"))   == 1);
-  assert(Newick::GetLeafMaxArity(Newick::StringToNewick("(12)"))  == 1);
-  assert(Newick::GetLeafMaxArity(Newick::StringToNewick("(123)")) == 1);
-  assert(Newick::GetLeafMaxArity(Newick::StringToNewick("(1,2)"))   == 2);
-  assert(Newick::GetLeafMaxArity(Newick::StringToNewick("(12,2)"))  == 2);
-  assert(Newick::GetLeafMaxArity(Newick::StringToNewick("(123,2)")) == 2);
-  assert(Newick::GetLeafMaxArity(Newick::StringToNewick("(1,(1,2))"))   == 2);
-  assert(Newick::GetLeafMaxArity(Newick::StringToNewick("(1,(12,2))"))  == 2);
-  assert(Newick::GetLeafMaxArity(Newick::StringToNewick("(1,(123,2))")) == 2);
-  assert(Newick::GetLeafMaxArity(Newick::StringToNewick("((1,2),3)"))   == 2);
-  assert(Newick::GetLeafMaxArity(Newick::StringToNewick("((12,2),3)"))  == 2);
-  assert(Newick::GetLeafMaxArity(Newick::StringToNewick("((123,2),3)")) == 2);
-  assert(Newick::GetLeafMaxArity(Newick::StringToNewick("(1,2,3)"))   == 3);
-  assert(Newick::GetLeafMaxArity(Newick::StringToNewick("(12,2,3)"))  == 3);
-  assert(Newick::GetLeafMaxArity(Newick::StringToNewick("(123,2,3)")) == 3);
-  assert(Newick::GetLeafMaxArity(Newick::StringToNewick("(1,(1,2,3))"))   == 3);
-  assert(Newick::GetLeafMaxArity(Newick::StringToNewick("(1,(12,2,3))"))  == 3);
-  assert(Newick::GetLeafMaxArity(Newick::StringToNewick("(1,(123,2,3))")) == 3);
-  assert(Newick::GetLeafMaxArity(Newick::StringToNewick("((1,2,3),4)"))   == 3);
-  assert(Newick::GetLeafMaxArity(Newick::StringToNewick("((12,2,3),4)"))  == 3);
-  assert(Newick::GetLeafMaxArity(Newick::StringToNewick("((123,2,3),4)")) == 3);
-
-  assert(fuzzy_equal_to()(  2.0,Newick::CalcDenominator(Newick::StringToNewick("(1,1)"),10.0)));
-  assert(fuzzy_equal_to()(  6.0,Newick::CalcDenominator(Newick::StringToNewick("((1,1),1)"),10.0)));
-  assert(fuzzy_equal_to()( 26.0,Newick::CalcDenominator(Newick::StringToNewick("(1,2)"),10.0)));
-  assert(fuzzy_equal_to()( 32.0,Newick::CalcDenominator(Newick::StringToNewick("((1,1),2)"),10.0)));
-  assert(fuzzy_equal_to()( 32.0,Newick::CalcDenominator(Newick::StringToNewick("(2,(1,1))"),10.0)));
-  assert(fuzzy_equal_to()( 50.0,Newick::CalcDenominator(Newick::StringToNewick("((1,1),3)"),10.0)));
-  assert(fuzzy_equal_to()( 80.0,Newick::CalcDenominator(Newick::StringToNewick("((1,2),3)"),10.0)));
-  assert(fuzzy_equal_to()( 80.0,Newick::CalcDenominator(Newick::StringToNewick("((3,1),2)"),10.0)));
-  assert(fuzzy_equal_to()( 80.0,Newick::CalcDenominator(Newick::StringToNewick("((2,3),1)"),10.0)));
-  assert(fuzzy_equal_to()(102.0,Newick::CalcDenominator(Newick::StringToNewick("((2,1),4)"),10.0)));
-  assert(fuzzy_equal_to()(152.0,Newick::CalcDenominator(Newick::StringToNewick("(2,(1,(3,3)))"),10.0)));
-  assert(fuzzy_equal_to()(162.0,Newick::CalcDenominator(Newick::StringToNewick("((2,3),4)"),10.0)));
-  assert(fuzzy_equal_to()(180.0,Newick::CalcDenominator(Newick::StringToNewick("((1,2),(3,4))"),10.0)));
-  assert(fuzzy_equal_to()(180.0,Newick::CalcDenominator(Newick::StringToNewick("((4,1),(2,3))"),10.0)));
-  assert(fuzzy_equal_to()(180.0,Newick::CalcDenominator(Newick::StringToNewick("((3,4),(1,2))"),10.0)));
-  assert(fuzzy_equal_to()(180.0,Newick::CalcDenominator(Newick::StringToNewick("((2,3),(4,1))"),10.0)));
-  {
-    const std::vector<int> v = { 0,1,2,3,4,5,6 };
-    assert(Newick::FindPosAfter(v,3,2)==3);
-    assert(Newick::FindPosAfter(v,4,2)==4);
-    assert(Newick::FindPosAfter(v,5,2)==5);
-    assert(Newick::FindPosAfter(v,6,2)==6);
-    assert(Newick::FindPosBefore(v,3,4)==3);
-    assert(Newick::FindPosBefore(v,2,4)==2);
-    assert(Newick::FindPosBefore(v,1,4)==1);
-    assert(Newick::FindPosBefore(v,0,4)==0);
-  }
-  {
-    const std::vector<int> v = Newick::GetDepth(Newick::StringToNewick("(1,(2,2))"));
-    const std::vector<int> w = Newick::GetDepth(Newick::StringToNewick("(9,(9,9))"));
-    const std::vector<int> x = { 0,0,1,1,1,1,0 };
-    assert(v == x);
-    assert(w == x);
-  }
-  {
-    const std::vector<int> v = Newick::GetDepth(Newick::StringToNewick("((2,2),1)"));
-    const std::vector<int> w = { 0,1,1,1,1,0,0 };
-    assert(v == w);
-  }
-  {
-    const std::vector<int> v = Newick::GetDepth(Newick::StringToNewick("(1,(2,2),1)"));
-    const std::vector<int> w = { 0,0,1,1,1,1,0,0 };
-    assert(v == w);
-  }
-  {
-    const std::vector<int> v = Newick::GetDepth(Newick::StringToNewick("(1,(2,3),4,(5,6))"));
-    const std::vector<int> w = { 0,0,1,1,1,1,0,1,1,1,1,0 };
-    assert(v == w);
-  }
-  {
-    const std::vector<int> v = Newick::GetDepth(Newick::StringToNewick("(1,(2,3),(5,6))"));
-    const std::vector<int> w = { 0,0,1,1,1,1,1,1,1,1,0 };
-    assert(v == w);
-  }
-  {
-    const std::vector<int> v = Newick::GetDepth(Newick::StringToNewick("(1,(2,(3,4)),((5,6),7))"));
-    const std::vector<int> w = { 0,0,1,1,2,2,2,2,1,1,2,2,2,2,1,1,0 };
-    assert(v == w);
-  }
-  //Test GetRootBranches
-  {
-    const std::vector<std::vector<int> > v = Newick::GetRootBranches(Newick::StringToNewick("(1,2)"));
-    assert(v.size() == 2);
-    assert(std::find(v.begin(),v.end(),
-      Newick::StringToNewick("(1)")) != v.end());
-    assert(std::find(v.begin(),v.end(),
-      Newick::StringToNewick("(2)")) != v.end());
-  }
-  {
-    const std::vector<std::vector<int> > v = Newick::GetRootBranches(Newick::StringToNewick("(1,(2,3))"));
-    assert(v.size() == 2);
-    assert(std::find(v.begin(),v.end(),
-      Newick::StringToNewick("(1)")) != v.end());
-    assert(std::find(v.begin(),v.end(),
-      Newick::StringToNewick("(2,3)")) != v.end());
-  }
-  {
-    const std::vector<std::vector<int> > v = Newick::GetRootBranches(Newick::StringToNewick("(1,2,(3,4))"));
-    assert(v.size() == 3);
-    assert(std::find(v.begin(),v.end(),
-      Newick::StringToNewick("(1)")) != v.end());
-    assert(std::find(v.begin(),v.end(),
-      Newick::StringToNewick("(2)")) != v.end());
-    assert(std::find(v.begin(),v.end(),
-      Newick::StringToNewick("(3,4)")) != v.end());
-  }
-  //Compare C++98 and C++0x version
-  {
-    const std::vector<std::string> v = Newick::CreateValidBinaryNewicks();
-    for(const std::string& s: v)
-    {
-      const std::vector<int> n = Newick::StringToNewick(s);
-      assert(Newick::GetRootBranches(n) == NewickCpp98().GetRootBranches(n));
-    }
-  }
-
-  //Check if binary and trinary Newicks are detected correctly
-  {
-    const std::vector<std::string> v = Newick::CreateValidBinaryNewicks();
-    for(const std::string& s: v)
-    {
-      const std::vector<int> n = Newick::StringToNewick(s);
-      assert(Newick::IsBinaryNewick(n));
-    }
-  }
-  //Check if unary Newicks are detected correctly
-  {
-    const std::vector<std::string> v = Newick::CreateValidUnaryNewicks();
-    for(const std::string& s: v)
-    {
-      const std::vector<int> n = Newick::StringToNewick(s);
-      assert( Newick::GetLeafMaxArity(n)<=1);
-      assert( Newick::IsUnaryNewick(n));
-      assert(!Newick::IsBinaryNewick(n));
-      assert(!Newick::IsTrinaryNewick(n));
-    }
-  }
-  //Check if binary Newicks are detected correctly
-  {
-    const std::vector<std::string> v = Newick::CreateValidBinaryNewicks();
-    for(const std::string& s: v)
-    {
-      const std::vector<int> n = Newick::StringToNewick(s);
-      assert( Newick::GetLeafMaxArity(n)<=2);
-      assert(!Newick::IsUnaryNewick(n));
-      assert( Newick::IsBinaryNewick(n));
-      assert(!Newick::IsTrinaryNewick(n));
-    }
-  }
-  //Check if trinary Newicks are detected correctly
-  {
-    const std::vector<std::string> v = Newick::CreateValidTrinaryNewicks();
-    for(const std::string& s: v)
-    {
-      //TRACE(s);
-      const std::vector<int> n = Newick::StringToNewick(s);
-      assert( Newick::GetLeafMaxArity(n)<=3);
-      assert(!Newick::IsUnaryNewick(n));
-      assert(!Newick::IsBinaryNewick(n));
-      assert( Newick::IsTrinaryNewick(n));
-    }
-  }
-  //Test binary Newick
-  {
-    const std::string s("(1,(2,3))");
-    const std::vector<std::vector<int> > n = GetSimplerNewicks(Newick::StringToNewick(s));
-    //#define DEBUG_1_BO_1_2_3_BC
-    #ifdef  DEBUG_1_BO_1_2_3_BC
-    for(const auto& t: n)
-    {
-      TRACE(Newick::NewickToString(t));
-    }
-    #endif
-    assert(n.size() == 2);
-    assert(std::find(n.begin(),n.end(),Newick::StringToNewick("(1,(1,3))"))
-      != n.end());
-    assert(std::find(n.begin(),n.end(),Newick::StringToNewick("(1,(2,2))"))
-      != n.end());
-  }
-  {
-    const std::string s("(1,(2,3,4))");
-    const std::vector<std::vector<int> > n = GetSimplerNewicks(Newick::StringToNewick(s));
-    assert(n.size() == 3);
-    assert(std::find(n.begin(),n.end(),Newick::StringToNewick("(1,(1,3,4))"))
-      != n.end());
-    assert(std::find(n.begin(),n.end(),Newick::StringToNewick("(1,(2,2,4))"))
-      != n.end());
-    assert(std::find(n.begin(),n.end(),Newick::StringToNewick("(1,(2,3,3))"))
-      != n.end());
-  }
-  {
-    const std::string s("(1,(1,3,4))");
-    const std::vector<std::vector<int> > n = GetSimplerNewicks(Newick::StringToNewick(s));
-    //#define DEBUG_1_BO_1_3_4_BC
-    #ifdef  DEBUG_1_BO_1_3_4_BC
-    TRACE(boost::lexical_cast<std::string>(n.size()));
-    for(const auto& t: n)
-    {
-      TRACE(Newick::NewickToString(t));
-    }
-    #endif
-    assert(n.size() == 4);
-    assert(std::find(n.begin(),n.end(),Newick::StringToNewick("(1,(4,4))"))
-      != n.end());
-    assert(std::find(n.begin(),n.end(),Newick::StringToNewick("(1,(3,5))"))
-      != n.end());
-    assert(std::find(n.begin(),n.end(),Newick::StringToNewick("(1,(1,2,4))"))
-      != n.end());
-    assert(std::find(n.begin(),n.end(),Newick::StringToNewick("(1,(1,3,3))"))
-      != n.end());
-  }
-  {
-    const std::string s("(1,(1,3,4))");
-    const std::vector<std::pair<std::vector<int>,int> > n
-      = GetSimplerNewicksFrequencyPairs(Newick::StringToNewick(s));
-    typedef std::pair<std::vector<int>,int> Pair;
-    #ifdef TRACE_GETSIMPLERNEWICKSFREQUENCYPAIRS_1_134
-    for(const Pair& p: n)
-    {
-      std::cout << Newick::NewickToString(p.first) << '\n';
-    }
-    #endif
-    assert(n.size() == 4);
-    assert(std::find(n.begin(),n.end(),
-      std::make_pair(Newick::StringToNewick("(1,(4,4))"),1))
-      != n.end());
-    assert(std::find(n.begin(),n.end(),
-      std::make_pair(Newick::StringToNewick("(1,(3,5))"),1))
-      != n.end());
-    assert(std::find(n.begin(),n.end(),
-      std::make_pair(Newick::StringToNewick("(1,(1,2,4))"),3))
-      != n.end());
-    assert(std::find(n.begin(),n.end(),
-      std::make_pair(Newick::StringToNewick("(1,(1,3,3))"),4))
-      != n.end());
-  }
-  {
-    const std::string s("((1,1),2)");
-    const std::vector<std::vector<int> > n = Newick::GetSimplerNewicks(
-      Newick::StringToNewick(s));
-    //#define DEBUG_BO_1_1_BC_2
-    #ifdef  DEBUG_BO_1_1_BC_2
-    for(const auto& t: n)
-    {
-      TRACE(Newick::NewickToString(t));
-    }
-    #endif
-    assert(n.size() == 3);
-    assert(std::find(n.begin(),n.end(),
-      Newick::StringToNewick("(2,2)"))
-      != n.end());
-    assert(std::find(n.begin(),n.end(),
-      Newick::StringToNewick("((1,1),1)"))
-      != n.end());
-  }
-  {
-    const std::string s("((1,1),2)");
-    typedef std::pair<std::vector<int>,int> Pair;
-    const std::vector<Pair> n
-      = GetSimplerNewicksFrequencyPairs(Newick::StringToNewick(s));
-    #ifdef TRACE_GETSIMPLERNEWICKSFREQUENCYPAIRS_11_2
-    for(const Pair& p: n)
-    {
-      std::clog << Newick::NewickToString(p.first) << '\n';
-    }
-    #endif
-    assert(n.size() == 3);
-    assert(std::find(n.begin(),n.end(),
-      std::make_pair(Newick::StringToNewick("(2,2)"),1))
-      != n.end());
-    assert(std::find(n.begin(),n.end(),
-      std::make_pair(Newick::StringToNewick("((1,1),1)"),2))
-      != n.end());
-  }
-  {
-    const std::string s("((2,1),4)");
-    const std::vector<std::vector<int> > n = Newick::GetSimplerNewicks(
-      Newick::StringToNewick(s));
-    assert(n.size() == 3);
-    assert(std::find(n.begin(),n.end(),
-      Newick::StringToNewick("(3,4)"))
-      != n.end());
-    assert(std::find(n.begin(),n.end(),
-      Newick::StringToNewick("((1,1),4)"))
-      != n.end());
-    assert(std::find(n.begin(),n.end(),
-      Newick::StringToNewick("((2,1),3)"))
-      != n.end());
-  }
-  {
-    const std::string s("((2,1),4)");
-    typedef std::pair<std::vector<int>,int> Pair;
-    const std::vector<Pair> n
-      = GetSimplerNewicksFrequencyPairs(Newick::StringToNewick(s));
-    #ifdef TRACE_GETSIMPLERNEWICKSFREQUENCYPAIRS_21_2
-    for(const Pair& p: n)
-    {
-      TRACE(Newick::NewickToString(p.first));
-    }
-    #endif
-    assert(n.size() == 3);
-    assert(std::find(n.begin(),n.end(),
-      std::make_pair(Newick::StringToNewick("(3,4)"),1))
-      != n.end());
-    assert(std::find(n.begin(),n.end(),
-      std::make_pair(Newick::StringToNewick("((1,1),4)"),2))
-      != n.end());
-    assert(std::find(n.begin(),n.end(),
-      std::make_pair(Newick::StringToNewick("((2,1),3)"),4))
-      != n.end());
-  }
-  {
-    const std::string s("((2,3),4)");
-    const std::vector<std::vector<int> > n = Newick::GetSimplerNewicks(
-      Newick::StringToNewick(s));
-    assert(n.size() == 3);
-    assert(std::find(n.begin(),n.end(),
-      Newick::StringToNewick("((1,3),4)"))
-      != n.end());
-    assert(std::find(n.begin(),n.end(),
-      Newick::StringToNewick("((2,2),4)"))
-      != n.end());
-    assert(std::find(n.begin(),n.end(),
-      Newick::StringToNewick("((2,3),3)"))
-      != n.end());
-  }
-  {
-    const std::string s("((2,3),4)");
-    typedef std::pair<std::vector<int>,int> Pair;
-    const std::vector<Pair> n
-      = GetSimplerNewicksFrequencyPairs(Newick::StringToNewick(s));
-    #ifdef TRACE_GETSIMPLERNEWICKSFREQUENCYPAIRS_23_4
-    for(const Pair& p: n)
-    {
-      std::cout << Newick::NewickToString(p.first) << '\n';
-    }
-    #endif
-    assert(n.size() == 3);
-    assert(std::find(n.begin(),n.end(),
-      std::make_pair(Newick::StringToNewick("((1,3),4)"),2))
-      != n.end());
-    assert(std::find(n.begin(),n.end(),
-      std::make_pair(Newick::StringToNewick("((2,2),4)"),3))
-      != n.end());
-    assert(std::find(n.begin(),n.end(),
-      std::make_pair(Newick::StringToNewick("((2,3),3)"),4))
-      != n.end());
-  }
-  //Compare GetSimplerNewicks and
-  //GetSimplerNewicksFrequencyPairs
-  {
-    const std::vector<std::string> newicks
-      = Newick::CreateValidNewicks();
-    for(const std::string& newick_str: newicks)
-    {
-      const std::vector<int> newick
-        = Newick::StringToNewick(newick_str);
-      const std::vector<std::vector<int> > v1
-        = Newick::GetSimplerNewicks(newick);
-      const std::vector<std::pair<std::vector<int>,int> > v2
-        = Newick::GetSimplerNewicksFrequencyPairs(newick);
-      assert(v1.size() == v2.size());
-      const int size = boost::numeric_cast<int>(v1.size());
-      for (int i=0; i!=size; ++i)
-      {
-        #define DEBUG_COMPARE_GSN_VS_GSNFP
-        #ifdef  DEBUG_COMPARE_GSN_VS_GSNFP
-        if (v1[i] != v2[i].first)
-        {
-          TRACE("ERROR: DIFFERENT NEWICK SIMPLIFICATIONS");
-          TRACE(Newick::NewickToString(newick));
-          TRACE(Newick::NewickToString(v1[i]));
-          TRACE(Newick::NewickToString(v2[i].first));
-        }
-        #endif
-        assert(v1[i] == v2[i].first);
-      }
-      assert(Newick::GetSimplerNewicksFrequencyPairs(newick)
-        == NewickCpp98().GetSimplerNewicksFrequencyPairs(newick));
-    }
-  }
-  #endif
-}
-#endif
