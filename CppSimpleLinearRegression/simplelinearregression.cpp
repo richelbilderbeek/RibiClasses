@@ -4,9 +4,9 @@
 
 #include <cassert>
 #include <iostream>
+#include <sstream>
 #include <numeric>
 #include <stdexcept>
-#include <sstream>
 
 #pragma GCC diagnostic pop
 
@@ -64,7 +64,7 @@ std::vector<double> ribi::SimpleLinearRegression::GetAnscombesQuartetX(const int
         << __func__
         << "): Anscombe's Quartet has index 1 to and including 4, given index is: "
         << index;
-      std::cerr << s.str() << std::endl;
+      std::cerr << s.str() << '\n';
       assert(!"Should not get here: ");
       throw std::logic_error(s.str());
     }
@@ -91,7 +91,7 @@ std::vector<double>
         << __func__
         << "): Anscombe's Quartet has index 1 to and including 4, given index is: "
         << index;
-      std::cerr << s.str() << std::endl;
+      std::cerr << s.str() << '\n';
       assert(!"Should not get here: ");
       throw std::logic_error(s.str());
     }
