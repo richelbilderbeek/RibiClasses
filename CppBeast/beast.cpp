@@ -14,7 +14,7 @@
 #include "fileio.h"
 #include "ribi_rinside.h"
 
-const std::string ribi::Beast::sm_beast_path{"../../../../Programs/BEAST/bin"};
+const std::string ribi::Beast::sm_beast_path{"../../../../Programs/beast/bin"};
 
 ribi::Beast::Beast()
 {

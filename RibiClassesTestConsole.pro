@@ -3,7 +3,7 @@ include(../RibiLibraries/GeneralConsoleTest.pri)
 include(../RibiLibraries/BoostAll.pri)
 include(../RibiLibraries/Apfloat.pri)
 include(../RibiLibraries/Rinside.pri)
-include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
+
 include(../plane/plane.pri)
 
 include(../RibiClasses/CppBeast/CppBeast.pri)
@@ -39,6 +39,11 @@ include(../RibiClasses/CppStopwatch/CppStopwatch.pri)
 include(../RibiClasses/CppStopwatch/CppStopwatchTest.pri)
 include(../RibiClasses/CppXml/CppXml.pri)
 include(../RibiClasses/CppXml/CppXmlTest.pri)
+
+# Boost Graph Tutorial
+INCLUDEPATH += ../BoostGraphTutorial/BoostGraphTutorial
+include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial_helper.pri)
+include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial_no_properties.pri)
 
 #
 SOURCES += main_test_console.cpp
