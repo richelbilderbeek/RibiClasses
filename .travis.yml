@@ -61,7 +61,7 @@ script:
   - cppcheck --quiet . # Be mild
   # - cppcheck --quiet --error-exitcode=1 . 
   # Codecov
-  - ./get_code_cov.sh
-  - codecov
+  - ./get_code_cov.sh > /dev/null
+  - codecov > /dev/null
   # OCLint
   - ./do_oclint
