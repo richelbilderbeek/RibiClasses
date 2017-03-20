@@ -1,23 +1,3 @@
-//---------------------------------------------------------------------------
-/*
-QtKeyboardFriendlyGraphicsView, an keyboard friendly QGraphicsView
-Copyright (C) 2012-2016 Richel Bilderbeek
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
-GNU General Public License for more details.
-You should have received a copy of the GNU General Public License
-along with this program.If not, see <http://www.gnu.org/licenses/>.
-*/
-//---------------------------------------------------------------------------
-//From http://www.richelbilderbeek.nl/CppQtKeyboardFriendlyGraphicsView.htm
-//---------------------------------------------------------------------------
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #include "qtkeyboardfriendlygraphicsview.h"
@@ -26,12 +6,13 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include <cmath>
 #include <functional>
 #include <iostream>
+#include <sstream>
+#include <QDebug>
 #include <QGraphicsScene>
 #include <QKeyEvent>
 #include <QGraphicsSimpleTextItem>
 
 #include "container.h"
-#include "trace.h"
 
 #pragma GCC diagnostic pop
 
@@ -100,7 +81,7 @@ QGraphicsItem * ribi::QtKeyboardFriendlyGraphicsView::GetClosestNonselectedItem(
   }
   if (!closest_nonselected_item) {
     if (m_verbose) {
-      TRACE("Did not find a nonselected item");
+      qDebug() << "Did not find a nonselected item";
     }
   }
   else {
@@ -108,7 +89,7 @@ QGraphicsItem * ribi::QtKeyboardFriendlyGraphicsView::GetClosestNonselectedItem(
     if (m_verbose) {
       std::stringstream s;
       s << "Found a nonselected item with tooltip " << closest_nonselected_item->toolTip().toStdString();
-      TRACE(s.str());
+      qDebug() << s.str().c_str();
     }
   }
   return closest_nonselected_item;
@@ -170,7 +151,7 @@ QGraphicsItem * ribi::QtKeyboardFriendlyGraphicsView::GetClosestNonselectedItem(
   if (m_verbose) {
     std::stringstream s;
     s << "Finding the best item between " << nonselected_items.size() << " non-selected items";
-    TRACE(s.str());
+    qDebug() << s.str().c_str();
   }
 
   //Look for strict items
@@ -187,7 +168,7 @@ QGraphicsItem * ribi::QtKeyboardFriendlyGraphicsView::GetClosestNonselectedItem(
   if (m_verbose) {
     std::stringstream s;
     s << "Using a strict comparison " << v.size() << " non-selected items were found";
-    TRACE(s.str());
+    qDebug() << s.str().c_str();
   }
   //If nothing found, look more loosely
   if (v.empty())
@@ -206,7 +187,7 @@ QGraphicsItem * ribi::QtKeyboardFriendlyGraphicsView::GetClosestNonselectedItem(
     if (m_verbose) {
       std::stringstream s;
       s << "Using a loose comparison " << v.size() << " non-selected items were found";
-      TRACE(s.str());
+      qDebug() << s.str().c_str();
     }
 
   }
@@ -215,7 +196,7 @@ QGraphicsItem * ribi::QtKeyboardFriendlyGraphicsView::GetClosestNonselectedItem(
   if (m_verbose) {
     std::stringstream s;
     s << "Selecting the closest out of " << v.size() << " items";
-    TRACE(s.str());
+    qDebug() << s.str().c_str();
   }
 
   assert(Container().AllUnique(v));
