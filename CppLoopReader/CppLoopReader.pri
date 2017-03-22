@@ -1,12 +1,3 @@
-INCLUDEPATH += \
-    ../RibiClasses/CppLoopReader
+INCLUDEPATH += $$PWD
 
-SOURCES +=
-#    $$PWD/loopreader.cpp
-
-HEADERS  += \
-    $$PWD/loopreader.h
-
-OTHER_FILES += \
-    $$PWD/Licence.txt
-
+HEADERS  += $$PWD/loopreader.h
