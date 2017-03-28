@@ -59,8 +59,12 @@ struct Beast
   ) const;
 
   private:
-  static const std::string sm_beast_path;
+  ///Full path of the BEAST2 executable
+  const std::string m_beast_path;
 };
+
+///Try to find the BEAST2 executable's path
+std::string get_beast_path();
 
 } //~namespace ribi
 

@@ -14,20 +14,29 @@
 #include "fileio.h"
 #include "ribi_rinside.h"
 
-const std::string ribi::Beast::sm_beast_path{"../../Programs/beast/bin"};
+
+std::string ribi::get_beast_path()
+{
+  const auto folders =
+  {
+    "../../Programs/beast/bin",
+    "../../../Programs/beast/bin",
+    "../../../../Programs/beast/bin"
+  };
+  for (const auto& folder: folders)
+  {
+    const std::string executable{std::string(folder) + "/beast"};
+    if (ribi::fileio::FileIo().IsRegularFile(executable))
+    {
+      return executable;
+    }
+  }
+  throw std::runtime_error("Error: BEAST executable not found");
+}
 
 ribi::Beast::Beast()
+  : m_beast_path{get_beast_path()}
 {
-  const std::string executable{sm_beast_path + "/beast"};
-  if (!ribi::fileio::FileIo().IsRegularFile(executable))
-  {
-    std::stringstream s;
-    s
-      << "Error: BEAST executable '" << executable << "' not found\n"
-      << "Please change the path\n"
-    ;
-    throw std::logic_error(s.str().c_str());
-  }
 }
 
 void ribi::Beast::AnalyzeBirthDeath(
@@ -300,7 +309,7 @@ void ribi::Beast::Run(
 ) const noexcept
 {
   const ribi::fileio::FileIo fileio;
-  const std::string executable{sm_beast_path + "/beast"};
+  const std::string executable{m_beast_path + "/beast"};
   assert(ribi::fileio::FileIo().IsRegularFile(executable)
     && "Checked in constructor");
 
