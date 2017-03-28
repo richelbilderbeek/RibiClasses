@@ -27,7 +27,6 @@ std::istream& boost::units::si::operator>>(std::istream& is, SpeciesGrowth& sd)
 #include <iostream>
 
 #include "fileio.h"
-#include "testtimer.h"
 
 void ribi::units::TestSpeciesGrowth() noexcept
 {
@@ -36,12 +35,6 @@ void ribi::units::TestSpeciesGrowth() noexcept
     if (is_tested) return;
     is_tested = true;
   }
-  {
-    ribi::fileio::FileIo();
-    TestSpeciesDensity();
-    TestRate();
-  }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
   using ribi::fileio::FileIo;
   using SpeciesGrowth = boost::units::quantity<boost::units::si::species_growth>;
   //Species density is in species per square meter

@@ -10,17 +10,13 @@
 #include "RInside.h"
 
 #include "fileio.h"
-#include "testtimer.h"
 #include "coalescenttreemodelparameters.h"
 #include "phylogeny_r.h"
-#include "trace.h"
 #include "ribi_rinside.h"
 
 ribi::ctm::Helper::Helper()
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
+
 }
 
 double ribi::ctm::Helper::CalcLogLikelihood(
@@ -217,92 +213,3 @@ std::string ribi::ctm::Helper::CreateSimulatedPhylogeny(
   const Rcpp::String s = r.parseEval("write.tree(tree_full)");
   return std::string(s);
 }
-
-#ifndef NDEBUG
-void ribi::ctm::Helper::Test() noexcept
-{
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  {
-    ribi::fileio::FileIo();
-    auto& r = ribi::Rinside().Get();
-    r.parseEval("library(ape)");
-    r.parseEval("library(DDD)");
-    r.parseEval("library(geiger)");
-    r.parseEval("library(laser)");
-  }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
-
-  Helper h;
-  ribi::fileio::FileIo f;
-
-  //CreateSimulatedPhylogeny must create a newick
-  {
-    const Parameters parameters(
-      0.1 / boost::units::si::second,
-      0.0 / boost::units::si::second,
-      10,
-      42
-    );
-    assert(!h.CreateSimulatedPhylogeny(parameters).empty());
-  }
-  //CalcLogLikelihood
-  {
-    const std::string newick{"((F:2,G:2):1,H:3);"};
-    const Rate& birth_rate{0.20 / boost::units::si::second};
-    const Rate& death_rate{0.01 / boost::units::si::second};
-    const double log_likelihood{
-      h.CalcLogLikelihood(
-        newick,
-        birth_rate,
-        death_rate
-      )
-    };
-    assert(log_likelihood <= 0.0);
-  }
-  //CalcLogLikelihoodDdd and CalcLogLikelihoodLaser should give same results
-  {
-    const std::string newick{"((F:2,G:2):1,H:3);"};
-    const Rate& birth_rate{0.20 / boost::units::si::second};
-    const Rate& death_rate{0.01 / boost::units::si::second};
-    const double log_likelihood_ddd{
-      h.CalcLogLikelihoodDdd(
-        newick,
-        birth_rate,
-        death_rate,
-        Part::branch_lengths
-      )
-    };
-    const double log_likelihood_laser{
-      h.CalcLogLikelihoodLaser(
-        newick,
-        birth_rate,
-        death_rate
-      )
-    };
-    std::cout
-      << "log_likelihood_laser: " << log_likelihood_laser << '\n'
-      << "log_likelihood_ddd: " << log_likelihood_ddd << '\n'
-    ;
-
-    assert(abs(log_likelihood_laser - log_likelihood_ddd) < 0.0001);
-  }
-  //CalcMaxLikelihood
-  {
-    const std::string newick{"((F:2,G:2):1,H:3);"};
-    Rate birth_rate{0.0 / boost::units::si::second};
-    Rate death_rate{0.0 / boost::units::si::second};
-    h.CalcMaxLikelihood(
-      newick,
-      birth_rate,
-      death_rate,
-      Part::phylogeny
-    );
-    assert(birth_rate > 0.0 / boost::units::si::second);
-    assert(death_rate > 0.0 / boost::units::si::second);
-  }
-}
-#endif

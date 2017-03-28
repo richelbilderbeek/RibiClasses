@@ -9,7 +9,6 @@
 #include <boost/units/io.hpp>
 
 #include "moleculeamount.h"
-#include "testtimer.h"
 
 void ribi::units::TestMoleculeAmount() noexcept
 {
@@ -18,7 +17,6 @@ void ribi::units::TestMoleculeAmount() noexcept
     if (is_tested) return;
     is_tested = true;
   }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
   using MoleculeAmount = boost::units::quantity<boost::units::si::molecule_amount>;
   //Can add molecule amounts
   {

@@ -23,14 +23,6 @@ bool operator==(const Rcpp::NumericVector& lhs, const Rcpp::NumericVector& rhs)
 
 void ribi::Rinside::Test() noexcept
 {
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  {
-    ribi::fileio::FileIo();
-  }
   auto& r = Rinside().Get();
   const auto f = ribi::fileio::FileIo();
   //Read/write of integer

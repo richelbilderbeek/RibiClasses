@@ -11,9 +11,7 @@
 
 ribi::PhylogenyR::PhylogenyR()
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
+
 }
 
 std::string ribi::PhylogenyR::DropExtinct(const std::string& newick) const

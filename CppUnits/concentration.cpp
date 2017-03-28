@@ -8,7 +8,6 @@
 #include <boost/units/io.hpp>
 
 #include "fileio.h"
-#include "testtimer.h"
 
 std::istream& boost::units::si::operator>>(std::istream& is, Concentration& sd)
 {
@@ -34,7 +33,6 @@ void ribi::units::TestConcentration() noexcept
   {
     ribi::fileio::FileIo();
   }
-  const ribi::TestTimer test_timer(__func__,__FILE__,1.0);
   using ribi::fileio::FileIo;
   using Concentration = boost::units::quantity<boost::units::si::concentration>;
   //Concentration is in species per square meter

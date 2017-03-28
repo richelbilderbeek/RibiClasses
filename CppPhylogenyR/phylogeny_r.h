@@ -92,11 +92,6 @@ struct PhylogenyR
     const std::string& filename,
     const GraphicsFormat graphics_format
   ) const;
-
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 };
 
 } //~namespace ribi

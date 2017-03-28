@@ -1,13 +1,7 @@
-INCLUDEPATH += \
-    ../RibiClasses/CppPhylogenyR
+INCLUDEPATH += $$PWD
 
 SOURCES += \
-    ../RibiClasses/CppPhylogenyR/phylogeny_r.cpp \
-    ../RibiClasses/CppPhylogenyR/phylogeny_r_test.cpp
+    $$PWD/phylogeny_r.cpp
 
 HEADERS  += \
-    ../RibiClasses/CppPhylogenyR/phylogeny_r.h
-
-OTHER_FILES += \
-    ../RibiClasses/CppPhylogenyR/Licence.txt
-
+    $$PWD/phylogeny_r.h

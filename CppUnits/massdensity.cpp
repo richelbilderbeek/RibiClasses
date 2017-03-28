@@ -9,7 +9,6 @@
 #include <sstream>
 
 #include "fileio.h"
-#include "testtimer.h"
 
 #ifdef RIBI_USE_MASS_DENSITY
 std::istream& boost::units::si::operator>>(std::istream& is, MassDensity& sd)
@@ -31,10 +30,6 @@ void ribi::units::TestMassDensity() noexcept
     if (is_tested) return;
     is_tested = true;
   }
-  {
-    ribi::fileio::FileIo();
-  }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
   #ifdef RIBI_USE_MASS_DENSITY
   using ribi::fileio::FileIo;
   using MassDensity = boost::units::quantity<boost::units::si::mass_density>;

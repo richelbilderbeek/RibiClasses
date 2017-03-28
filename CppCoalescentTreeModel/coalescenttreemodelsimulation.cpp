@@ -9,8 +9,6 @@
 #include "coalescenttreemodelhelper.h"
 #include <boost/math/constants/constants.hpp>
 
-#include "testtimer.h"
-
 ribi::ctm::Simulation::Simulation(
   const Parameters& parameters
 )
@@ -20,9 +18,7 @@ ribi::ctm::Simulation::Simulation(
     m_time{0.0 * boost::units::si::second},
     m_uniform_distribution(0.0,1.0)
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
+
 }
 
 void ribi::ctm::Simulation::CalcNext(const double x)
@@ -56,18 +52,3 @@ int ribi::ctm::Simulation::CountExtant() const noexcept
 {
   return 0; //Stub
 }
-
-#ifndef NDEBUG
-void ribi::ctm::Simulation::Test() noexcept
-{
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  {
-    Helper();
-  }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
-}
-#endif

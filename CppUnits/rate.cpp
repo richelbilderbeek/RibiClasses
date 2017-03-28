@@ -23,7 +23,6 @@ std::istream& boost::units::si::operator>>(std::istream& is, Rate& sd)
 
 #ifndef NDEBUG
 #include "fileio.h"
-#include "testtimer.h"
 void ribi::units::TestRate() noexcept
 {
   {
@@ -31,10 +30,6 @@ void ribi::units::TestRate() noexcept
     if (is_tested) return;
     is_tested = true;
   }
-  {
-    ribi::fileio::FileIo();
-  }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
   using ribi::fileio::FileIo;
   using Rate = boost::units::quantity<boost::units::si::rate>;
   //Species density is in species per square meter

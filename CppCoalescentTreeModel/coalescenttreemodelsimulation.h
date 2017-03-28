@@ -32,10 +32,6 @@ struct Simulation
 
   int CountExtant() const noexcept;
 
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
-
   private:
   std::exponential_distribution<double> m_exponential_distribution;
   const Parameters m_parameters;

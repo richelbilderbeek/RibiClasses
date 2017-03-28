@@ -4,26 +4,11 @@
 #include <chrono>
 
 #include "fileio.h"
-#include "testtimer.h"
-#include "trace.h"
 #include "ribi_rinside.h"
 #include "RInside.h"
 
-#ifndef NDEBUG
 void ribi::PhylogenyR::Test() noexcept
 {
-  {
-    static bool is_tested{false};
-    if (is_tested) return;
-    is_tested = true;
-  }
-  {
-    ribi::fileio::FileIo();
-    auto& r = ribi::Rinside().Get();
-    r.parseEvalQ("library(ape)");
-    r.parseEvalQ("library(geiger)");
-  }
-  const ribi::TestTimer test_timer(__func__,__FILE__,1.0);
   const bool verbose{false};
 
   ribi::fileio::FileIo f;
@@ -107,5 +92,4 @@ void ribi::PhylogenyR::Test() noexcept
     assert(s == t);
   }
 }
-#endif
 

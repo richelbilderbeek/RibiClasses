@@ -19,8 +19,6 @@ std::istream& boost::units::si::operator>>(std::istream& is, Time& sd)
 }
 
 #ifndef NDEBUG
-#include "testtimer.h"
-
 #include <iostream>
 
 void ribi::units::TestTime() noexcept
@@ -30,10 +28,6 @@ void ribi::units::TestTime() noexcept
     if (is_tested) return;
     is_tested = true;
   }
-  {
-    ribi::fileio::FileIo();
-  }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
   using ribi::fileio::FileIo;
   using Time = boost::units::quantity<boost::units::si::time>;
   using boost::units::si::seconds;

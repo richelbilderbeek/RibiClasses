@@ -6,7 +6,6 @@
 
 #include <boost/units/io.hpp>
 
-#include "testtimer.h"
 void ribi::units::TestHydrogenMoleculeAmount() noexcept
 {
   {

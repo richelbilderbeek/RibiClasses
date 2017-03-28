@@ -5,9 +5,6 @@
 
 ribi::Rinside::Rinside()
 {
-  #ifndef NDEBUG
-  Test();
-  #endif
 }
 
 RInside& ribi::Rinside::Get()

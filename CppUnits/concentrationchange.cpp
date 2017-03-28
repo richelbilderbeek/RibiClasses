@@ -8,7 +8,6 @@
 #include <sstream>
 
 #include "fileio.h"
-#include "testtimer.h"
 
 #include "concentration.h"
 #include "rate.h"
@@ -38,12 +37,6 @@ void ribi::units::TestConcentrationChange() noexcept
     if (is_tested) return;
     is_tested = true;
   }
-  {
-    ribi::fileio::FileIo();
-    TestConcentration();
-    TestRate();
-  }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
   using ribi::fileio::FileIo;
   using ConcentrationChange = boost::units::quantity<boost::units::si::concentration_change>;
   //Concentration density is in species per square meter

@@ -50,12 +50,6 @@ struct Helper
   std::string CreateSimulatedPhylogeny(
     const Parameters& parameters
   ) const;
-
-  private:
-
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
 };
 
 } //~namespace ctm
