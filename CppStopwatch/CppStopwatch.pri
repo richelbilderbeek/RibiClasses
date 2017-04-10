@@ -1,12 +1,7 @@
-INCLUDEPATH += \
-    ../RibiClasses/CppStopwatch
+INCLUDEPATH += $$PWD
 
 SOURCES += \
     $$PWD/stopwatch.cpp
 
 HEADERS  += \
     $$PWD/stopwatch.h
-
-OTHER_FILES += \
-    $$PWD/Licence.txt
-
