@@ -1,14 +1,10 @@
 INCLUDEPATH += \
-    ../RibiClasses/CppApproximator
+    $$PWD
 
 SOURCES += \
-    ../RibiClasses/CppApproximator/approximator.cpp
+    $$PWD/approximator.cpp
 
 HEADERS  += \
-    ../RibiClasses/CppApproximator/approximator.h \
-    ../RibiClasses/CppApproximator/exceptionnoextrapolation.h
-
-
-OTHER_FILES += \
-    ../RibiClasses/CppApproximator/Licence.txt
+    $$PWD/approximator.h \
+    $$PWD/exceptionnoextrapolation.h
 
