@@ -210,7 +210,6 @@ bool CanLexicalCast(const std::string& from) noexcept
   catch (...)
   {
     assert(!"Something unexpected happened");
-    throw;
   }
   return true;
 }

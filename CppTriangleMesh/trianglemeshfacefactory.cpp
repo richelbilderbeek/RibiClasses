@@ -89,7 +89,7 @@ std::vector<boost::shared_ptr<ribi::trim::Face>> ribi::trim::FaceFactory::Create
     case CreateVerticalFacesStrategy::two_faces_per_square: return CreateTestPrismTwoFacesPerVerticalFace();
   }
   assert(!"FaceFactory::CreateTestPrism: Should not get here");
-  throw std::logic_error("FaceFactory::CreateTestPrism: Should not get here");
+  return {};
 }
 
 std::vector<boost::shared_ptr<ribi::trim::Face>> ribi::trim::FaceFactory::CreateTestPrismOneFacePerVerticalFace() const noexcept

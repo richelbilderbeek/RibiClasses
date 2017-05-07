@@ -29,7 +29,7 @@
 ribi::TriangleFile::TriangleFile(
   const Polygons& polygons,
   const Linestrings& linestrings
-) : m_polyfile(boost::make_shared<PolyFileFromPolygons>(polygons,linestrings))
+) : m_polyfile{std::make_unique<PolyFileFromPolygons>(polygons,linestrings)}
 {
   #ifndef NDEBUG
   Test();

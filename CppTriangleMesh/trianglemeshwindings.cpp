@@ -25,6 +25,6 @@ std::string ribi::trim::Windings::ToStr(const Winding winding) const noexcept
     case Winding::indeterminate: return "indeterminate";
     default:
       assert(!"Should not get here");
-      throw std::logic_error("ribi::trim::Windings::ToStr: unknown Winding");
+      return "";
   }
 }

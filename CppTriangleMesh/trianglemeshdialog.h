@@ -92,7 +92,7 @@ struct Dialog
   ///Uses OpenFOAM's checkMesh to check the 3D mesh
   void Check3dMesh(const std::string& full_path_of_executable) const noexcept;
 
-  void CreateTriangleMesh() noexcept;
+  void CreateTriangleMesh();
   void Create3dMesh() noexcept;
 
   static std::function<void(std::vector<boost::shared_ptr<Cell>>&)> CreateDefaultAssignBoundaryFunction() noexcept;

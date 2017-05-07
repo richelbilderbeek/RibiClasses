@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
@@ -114,7 +115,7 @@ struct TriangleFile
   std::string ToStr() const noexcept;
 
   private:
-  boost::shared_ptr<PolyFileFromPolygons> m_polyfile;
+  std::unique_ptr<PolyFileFromPolygons> m_polyfile;
 
   static std::pair<int,char **> CreateArgv(const std::vector<std::string>& v) noexcept;
   static void DeleteArgv(const std::pair<int,char **>& p) noexcept;

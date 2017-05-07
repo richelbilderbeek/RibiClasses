@@ -19,10 +19,10 @@ int ribi::trim::CreateVerticalFacesStrategies::GetFacesPerCell(const CreateVerti
     case CreateVerticalFacesStrategy::two_faces_per_square: return 8;
     default:
       assert(!"Should not get here");
-      throw std::logic_error("ribi::trim::CreateVerticalFacesStrategies::ToStr: unknown strategy");
+      return 0;
   };
   assert(!"Should not get here");
-  throw std::logic_error("ribi::trim::CreateVerticalFacesStrategies::ToStr: unknown strategy");
+  return 0;
 }
 
 
@@ -34,8 +34,8 @@ std::string ribi::trim::CreateVerticalFacesStrategies::ToStr(const CreateVertica
     case CreateVerticalFacesStrategy::two_faces_per_square: return "two_faces_per_square";
     default:
       assert(!"Should not get here");
-      throw std::logic_error("ribi::trim::CreateVerticalFacesStrategies::ToStr: unknown strategy");
+      return "";
   };
   assert(!"Should not get here");
-  throw std::logic_error("ribi::trim::CreateVerticalFacesStrategies::ToStr: unknown strategy");
+  return "";
 }
