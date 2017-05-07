@@ -112,12 +112,11 @@ GetLineRectIntersectionsImpl(
 
   points.erase(new_end,points.end());
 
-  assert(
-    points.size() <= 2
-     && "0: The line does not cross the rectangle"
-     && "1: The line crosses one edge or one corner of the rectangle"
-     && "2: The line is on top of one edge or crosses two edges of the rectangle"
-   );
+
+  //0: The line does not cross the rectangle
+  //1: The line crosses one edge or one corner of the rectangle
+  //2: The line is on top of one edge or crosses two edges of the rectangle
+  assert(points.size() <= 2);
 
   return points;
 }
