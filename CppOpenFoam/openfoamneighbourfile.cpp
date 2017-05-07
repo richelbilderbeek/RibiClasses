@@ -84,7 +84,7 @@ void ribi::foam::NeighbourFile::SetItem(const FaceIndex& face_index, const Neigh
 }
 
 #ifndef NDEBUG
-void ribi::foam::NeighbourFile::Test() noexcept
+void ribi::foam::NeighbourFile::Test()
 {
   {
     static bool is_tested{false};

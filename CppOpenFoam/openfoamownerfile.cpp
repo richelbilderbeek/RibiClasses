@@ -97,7 +97,7 @@ void ribi::foam::OwnerFile::SetItem(const FaceIndex& face_index, const OwnerFile
 }
 
 #ifndef NDEBUG
-void ribi::foam::OwnerFile::Test() noexcept
+void ribi::foam::OwnerFile::Test()
 {
   {
     static bool is_tested{false};

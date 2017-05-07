@@ -31,7 +31,7 @@ ribi::foam::PointsFile::PointsFile(
     m_items(items)
 {
   #ifndef NDEBUG
-  Test();
+  TestPointsFile();
   #endif
 }
 
@@ -60,8 +60,7 @@ ribi::foam::PointsFile ribi::foam::PointsFile::Parse(const std::string& filename
   return file;
 }
 
-#ifndef NDEBUG
-void ribi::foam::PointsFile::Test() noexcept
+void ribi::foam::TestPointsFile()
 {
   {
     static bool is_tested{false};
@@ -142,7 +141,7 @@ void ribi::foam::PointsFile::Test() noexcept
         throw std::logic_error("foam::Files::CreateTestFiles: unknown test index");
     }
     assert(!filename_appendix.empty());
-    const std::string filename_base { GetDefaultHeader().GetObject() };
+    const std::string filename_base { PointsFile::GetDefaultHeader().GetObject() };
     const std::string filename = filename_base + filename_appendix;
     const std::string resources_path { ":/CppOpenFoam/files/" + filename };
 
@@ -157,7 +156,6 @@ void ribi::foam::PointsFile::Test() noexcept
     }
   }
 }
-#endif
 
 bool ribi::foam::operator==(const PointsFile& lhs,const PointsFile& rhs) noexcept
 {

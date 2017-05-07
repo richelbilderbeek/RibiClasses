@@ -44,7 +44,7 @@ struct OwnerFile
   static OwnerFile Parse(const std::string& filename);
 
   #ifndef NDEBUG
-  static void Test() noexcept;
+  static void Test();
   #endif
 
   friend std::ostream& operator<<(std::ostream& os, const OwnerFile& f) noexcept;

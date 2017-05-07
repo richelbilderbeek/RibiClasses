@@ -80,7 +80,7 @@ ribi::foam::FacesFile ribi::foam::FacesFile::Parse(const std::string& filename)
 }
 
 #ifndef NDEBUG
-void ribi::foam::FacesFile::Test() noexcept
+void ribi::foam::FacesFile::Test()
 {
   {
     static bool is_tested{false};

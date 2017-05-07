@@ -48,7 +48,7 @@ bool ribi::foam::BoundaryFile::CanGet(const FaceIndex& face_index) const noexcep
   return false;
 }
 
-ribi::foam::BoundaryFileItem& ribi::foam::BoundaryFile::Find(const FaceIndex& face_index) noexcept
+ribi::foam::BoundaryFileItem& ribi::foam::BoundaryFile::Find(const FaceIndex& face_index)
 {
   assert(CanGet(face_index));
   const int sz = static_cast<int>(m_items.size());
@@ -106,7 +106,7 @@ ribi::foam::BoundaryFile ribi::foam::BoundaryFile::Parse(const std::string& file
 }
 
 #ifndef NDEBUG
-void ribi::foam::BoundaryFile::Test() noexcept
+void ribi::foam::BoundaryFile::Test()
 {
   {
     static bool is_tested{false};

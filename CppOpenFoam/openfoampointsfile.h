@@ -35,13 +35,11 @@ struct PointsFile
   static PointsFile Parse(std::istream& is);
   static PointsFile Parse(const std::string& filename);
 
-  #ifndef NDEBUG
-  static void Test() noexcept;
-  #endif
-
   friend std::ostream& operator<<(std::ostream& os, const PointsFile& f) noexcept;
   friend std::istream& operator>>(std::istream& is, PointsFile& f);
 };
+
+void TestPointsFile();
 
 bool operator==(const PointsFile& lhs,const PointsFile& rhs) noexcept;
 bool operator!=(const PointsFile& lhs,const PointsFile& rhs) noexcept;

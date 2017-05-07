@@ -55,7 +55,7 @@ struct BoundaryFile
 
   ///Find out which BoundaryFileItem the face belongs to
   ///Assumes CanGet(face_index) == true
-  BoundaryFileItem& Find(const FaceIndex& face_index) noexcept;
+  BoundaryFileItem& Find(const FaceIndex& face_index);
 
 
   ///Read an OpenFOAM 'boundary' file.
@@ -65,7 +65,7 @@ struct BoundaryFile
   static BoundaryFile Parse(const std::string& filename);
 
   #ifndef NDEBUG
-  static void Test() noexcept;
+  static void Test();
   #endif
 
   friend std::ostream& operator<<(std::ostream& os, const BoundaryFile& f) noexcept;
