@@ -61,11 +61,6 @@ struct Approximator
   ///Obtain the version history of this class
   static std::vector<std::string> GetVersionHistory() noexcept;
 
-  #ifndef NDEBUG
-  ///Test this class
-  static void Test() noexcept;
-  #endif
-
   private:
   ///The container used
   Container m_m;
@@ -79,9 +74,6 @@ Approximator<Key,Value,Container>::Approximator(const Container& m) noexcept
 {
   static_assert(!std::is_integral<Key>(),
     "Approximator will not work on integer keys");
-  #ifndef NDEBUG
-  Test();
-  #endif
 }
 
 template <class Key, class Value, class Container>
