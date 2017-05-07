@@ -853,7 +853,7 @@ std::string ribi::Geometry::ToSvgStr(
   std::stringstream s;
   s
     << std::setprecision(99)
-    <<  R"*(  <path d="M )*"
+    <<  " <path d=\"M"
     << points[0].x()
     << " "
     << points[0].y()
