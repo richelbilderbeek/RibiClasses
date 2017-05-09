@@ -794,35 +794,6 @@ void ribi::trim::Dialog::Test() noexcept
     if (is_tested) return;
     is_tested = true;
   }
-  {
-    PolyFile( Vertices() );
-    PolyFileFromPolygons( Shapes() );
-    TriangleFile( {} );
-    CellsCreatorFactory();
-    Template::CreateTest(0);
-    CellFactory();
-    TriangleMeshBuilder(
-      { CellFactory().CreateTestPrism(CreateVerticalFacesStrategy::one_face_per_square) },
-      "",
-      Dialog::CreateDefaultBoundaryToPatchFieldTypeFunction(),
-      CreateVerticalFacesStrategy::one_face_per_square,
-      false
-    );
-    //foam::BoundaryFile():
-    foam::ControlDictFile();
-    //foam::FacesFile();
-    foam::FvSchemesFile();
-    foam::FvSolutionFile();
-    //foam::NeighbourFile();
-    //foam::OwnerFile();
-    //foam::PointsFile();
-    foam::PressureFile();
-    foam::TemperatureFile();
-    foam::ThermophysicalPropertiesFile();
-    foam::VelocityFieldFile();
-    //{ Dialog d; d.CreateTriangleMesh(); d.Create3dMesh(); } //TriangleMeshBuilder
-  }
-  
   const bool verbose{false};
   //Flow of Dialog
   {
