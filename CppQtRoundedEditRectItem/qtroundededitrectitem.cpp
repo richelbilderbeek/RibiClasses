@@ -10,12 +10,11 @@
 #include <boost/lambda/lambda.hpp>
 
 #include <QFontMetrics>
+#include <QGraphicsItem>
 #include <QKeyEvent>
 #include <QPainter>
 
 #include "container.h"
-//#include "geometry.h"
-// 
 
 #pragma GCC diagnostic pop
 
