@@ -144,78 +144,30 @@ void ribi::QtRoundedRectItem::SetCenterX(const double x) noexcept
     x,
     current_pos.y()
   );
-  this->update();
+  //this->update();
 }
 
 void ribi::QtRoundedRectItem::SetCenterY(const double y) noexcept
 {
-  const double current_y = this->GetCenterY();
-  if (current_y != y)
-  {
-    const auto current_pos = this->GetCenterPos();
-    QGraphicsRectItem::setPos(
-      current_pos.x(),
-      y
-    );
-    this->update();
-  }
+  const auto current_pos = this->GetCenterPos();
+  QGraphicsRectItem::setPos(
+    current_pos.x(),
+    y
+  );
+  //this->update();
 }
 
 void ribi::QtRoundedRectItem::SetContourPen(const QPen& pen) noexcept
 {
-  #ifndef NDEBUG
-  const double inner_height_before = GetInnerHeight();
-  const double inner_width_before = GetInnerWidth();
-  #endif
-  //if (m_contour_pen.widthF() != pen.widthF())
-  if (m_contour_pen != pen)
-  {
-    const double height = GetInnerHeight();
-    const double width = GetInnerWidth();
-    m_contour_pen = pen;
-    this->SetInnerHeight(height);
-    this->SetInnerWidth(width);
-
-    this->update();
-  }
-  #ifndef NDEBUG
-  else
-  {
-    const double inner_height_after = GetInnerHeight();
-    const double inner_width_after = GetInnerWidth();
-    assert(std::abs(inner_height_before - inner_height_after) < 0.001);
-    assert(std::abs(inner_width_before  - inner_width_after ) < 0.001);
-  }
-  #endif
+  m_contour_pen = pen;
+  //this->update();
   assert(std::abs(pen.widthF() - GetContourPen().widthF()) < 0.01);
 }
 
 void ribi::QtRoundedRectItem::SetFocusPen(const QPen& pen) noexcept
 {
-  #ifndef NDEBUG
-  const double inner_height_before = GetInnerHeight();
-  const double inner_width_before = GetInnerWidth();
-  #endif
-  if (m_focus_pen != pen)
-  {
-    const double height = GetInnerHeight();
-    const double width = GetInnerWidth();
-    m_focus_pen = pen;
-    this->SetInnerHeight(height);
-    this->SetInnerWidth(width);
-
-    this->update();
-  }
-  #ifndef NDEBUG
-  else
-  {
-    const double inner_height_after = GetInnerHeight();
-    const double inner_width_after = GetInnerWidth();
-    assert(std::abs(inner_height_before - inner_height_after) < 0.001);
-    assert(std::abs(inner_width_before  - inner_width_after ) < 0.001);
-  }
-  #endif
-
+  m_focus_pen = pen;
+  //this->update();
   assert(std::abs(pen.widthF() - GetFocusPen().widthF()) < 0.01);
 }
 
