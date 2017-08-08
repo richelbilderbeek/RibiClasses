@@ -349,11 +349,16 @@ void ribi::QtQuadBezierArrowItem::paint(QPainter* painter, const QStyleOptionGra
   {
     //Straight line
     curve.lineTo(p_end_head);
+    #ifdef MOVE_MIDDLE_ITEM_FOR_UNKNOWN_REASON
+    //No idea why I should support this. The line between
+    //head and tail is already straight.
+
     //Keep middle item between tail and head
     if (GetMidItem()) {
       GetMidItem()->setX((GetHead().x() + GetTail().x()) / 2.0);
       GetMidItem()->setY((GetHead().y() + GetTail().y()) / 2.0);
     }
+    #endif
   }
   painter->drawPath(curve);
 
