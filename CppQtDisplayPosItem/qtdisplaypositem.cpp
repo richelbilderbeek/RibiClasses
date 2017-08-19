@@ -6,7 +6,6 @@
 
 #include <cassert>
 #include <sstream>
-//#include <QGraphicsScene>
 
 #pragma GCC diagnostic pop
 

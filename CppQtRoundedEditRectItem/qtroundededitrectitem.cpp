@@ -14,8 +14,6 @@
 #include <QPainter>
 
 #include "container.h"
-//#include "geometry.h"
-// 
 
 #pragma GCC diagnostic pop
 
