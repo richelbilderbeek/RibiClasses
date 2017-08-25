@@ -2,16 +2,32 @@
 #define QTKEYBOARDFRIENDLYGRAPHICSVIEW_TEST_H
 
 #include <QtTest/QtTest>
-
+#include "qtkeyboardfriendlygraphicsview.h"
 namespace ribi {
 
-class qtkeyboardfriendlygraphicsview_test : public QObject
+class QtKeyboardFriendlyGraphicsViewTest : public QObject
 {
     Q_OBJECT
 
 private slots:
-  void all();
+  void SelectNothing();
+  void SendRandomKeys();
+  void SpaceSelectsOneRandomItemWhenTwoAreSelected();
+  void SpaceSelectsOneRandomItemWhenZeroAreSelected();
+  void TappingShiftMustKeepFocus();
+
+
+public slots:
+  void cleanup();
+  void init();
+
+private:
+  QtKeyboardFriendlyGraphicsView * m_view;
+  QGraphicsRectItem * m_item1;
+  QGraphicsRectItem * m_item2;
 };
+
+QtKeyboardFriendlyGraphicsView CreateTestView() noexcept;
 
 } //~namespace ribi
 

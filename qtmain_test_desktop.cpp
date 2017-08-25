@@ -1,3 +1,4 @@
+#include <cassert>
 #include <iostream>
 #include <QtTest/QtTest>
 #include "grabber_test.h"
@@ -19,7 +20,8 @@ int main(int argc, char *argv[])
   QApplication a(argc, argv);
   int error = 0;
   //I am most interested in:
-  { ribi::qthideandshowdialog_test t; error |= QTest::qExec(&t, argc, argv); }
+  //{ ribi::QtKeyboardFriendlyGraphicsViewTest t; error |= QTest::qExec(&t, argc, argv); }
+  //assert(1==2);
 
   //These are all tests in alphabetical order
   { ribi::grabber_test t; error |= QTest::qExec(&t, argc, argv); }
@@ -28,7 +30,7 @@ int main(int argc, char *argv[])
   { ribi::qtgraphics_test t; error |= QTest::qExec(&t, argc, argv); }
   { ribi::qthideandshowdialog_test t; error |= QTest::qExec(&t, argc, argv); }
   { ribi::qtimage_test t; error |= QTest::qExec(&t, argc, argv); }
-  { ribi::qtkeyboardfriendlygraphicsview_test t; error |= QTest::qExec(&t, argc, argv); }
+  { ribi::QtKeyboardFriendlyGraphicsViewTest t; error |= QTest::qExec(&t, argc, argv); }
   { ribi::qtquadbezierarrowdialog_test t; error |= QTest::qExec(&t, argc, argv); }
   { ribi::qtquadbezierarrowitem_test t; error |= QTest::qExec(&t, argc, argv); }
   { ribi::qtroundededitrectitem_test t; error |= QTest::qExec(&t, argc, argv); }
