@@ -337,28 +337,12 @@ void ribi::QtQuadBezierArrowItem::paint(QPainter* painter, const QStyleOptionGra
   {
     //Curve through midpoint
     painter->drawEllipse(GetMidItem()->pos(),1,1);
-    /*
-    const QPointF p_center((p_end_tail + p_end_head) / 2.0);
-    const double dx_mid_center = GetMidItem() ? (GetMidItem()->pos().x() - p_center.x()) : 0.0;
-    const double dy_mid_center = GetMidItem() ? (GetMidItem()->pos().y() - p_center.y()) : 0.0;
-    const QPointF p_beyond(p_center.x() + dx_mid_center + dx_mid_center, p_center.y() + dy_mid_center + dy_mid_center);
-    */
     curve.quadTo(p_beyond,p_end_head);
   }
   else
   {
     //Straight line
     curve.lineTo(p_end_head);
-    #ifdef MOVE_MIDDLE_ITEM_FOR_UNKNOWN_REASON
-    //No idea why I should support this. The line between
-    //head and tail is already straight.
-
-    //Keep middle item between tail and head
-    if (GetMidItem()) {
-      GetMidItem()->setX((GetHead().x() + GetTail().x()) / 2.0);
-      GetMidItem()->setY((GetHead().y() + GetTail().y()) / 2.0);
-    }
-    #endif
   }
   painter->drawPath(curve);
 

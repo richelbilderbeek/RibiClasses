@@ -19,7 +19,7 @@ void ribi::qthideandshowdialog_test::parent_can_show_child()
   QVERIFY(parent.isVisible());
   QVERIFY(!kid.isVisible());
   std::unique_ptr<QTimer> timer(new QTimer);
-  timer->setInterval(1000);
+  timer->setInterval(100);
   QObject::connect(timer.get(), SIGNAL(timeout()), &kid, SLOT(close()));
   timer->start();
   parent.ShowChild(&kid);
@@ -33,7 +33,7 @@ void ribi::qthideandshowdialog_test::parent_can_show_potentially_throwing_child(
   QVERIFY(parent.isVisible());
   QVERIFY(!kid.isVisible());
   std::unique_ptr<QTimer> timer(new QTimer);
-  timer->setInterval(1000);
+  timer->setInterval(100);
   QObject::connect(timer.get(), SIGNAL(timeout()), &kid, SLOT(close()));
   timer->start();
   parent.ShowChild(&kid);
@@ -50,7 +50,7 @@ void ribi::qthideandshowdialog_test::destroy_cleanly_upon_exception_in_derived_c
 
   //Make the kid throw an exception after one second
   std::unique_ptr<QTimer> timer(new QTimer);
-  timer->setInterval(1000);
+  timer->setInterval(100);
   QObject::connect(timer.get(), SIGNAL(timeout()), &kid, SLOT(do_throw()));
   timer->start();
 

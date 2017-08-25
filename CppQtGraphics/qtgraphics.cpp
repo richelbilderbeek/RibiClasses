@@ -4,10 +4,6 @@
 #include "qtgraphics.h"
 
 #include <cassert>
-
-//#include "stopwatch.h"
-//
-//
 #pragma GCC diagnostic pop
 
 

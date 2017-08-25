@@ -1,5 +1,41 @@
+# C++14
+CONFIG += c++14
+QMAKE_CXXFLAGS += -std=c++14
+
+# High warning level
+# Qt and Qwt do not go well with -Weffc++
+QMAKE_CXXFLAGS += -Wall -Wextra -Wshadow -Wnon-virtual-dtor -pedantic -Werror
+
+# Debug and release mode
+CONFIG += debug_and_release
+
+# In release mode, define NDEBUG
+CONFIG(release, debug|release) {
+  DEFINES += NDEBUG
+}
+
+# In debug mode, turn on gcov and UBSAN
+CONFIG(debug, debug|release) {
+
+  # gcov
+  QMAKE_CXXFLAGS += -fprofile-arcs -ftest-coverage
+  LIBS += -lgcov
+
+  # UBSAN
+  QMAKE_CXXFLAGS += -fsanitize=undefined
+  QMAKE_LFLAGS += -fsanitize=undefined
+
+  # Terminate the program at an error
+  # QMAKE_CXXFLAGS += -fno-sanitize-recover
+
+  LIBS += -lubsan
+}
+
+# Qt
+QT += core gui widgets concurrent opengl printsupport svg
+
 # Qt does not go well with -Weffc++
-include(../RibiLibraries/DesktopApplicationNoWeffcpp.pri)
+#include(../RibiLibraries/DesktopApplicationNoWeffcpp.pri)
 
 include(../RibiLibraries/GeneralConsole.pri)
 include(../RibiLibraries/Apfloat.pri)
@@ -75,6 +111,12 @@ QMAKE_CXXFLAGS += -Wno-unused-variable
 # /usr/include/qt4/QtCore/qtconcurrentfilter.h:108:47: error: typedef ‘Iterator’ locally defined but not used [-Werror=unused-local-typedefs]
 # typedef typename Sequence::const_iterator Iterator;
 QMAKE_CXXFLAGS += -Wno-unused-local-typedefs
+
+# Fixes
+#/usr/include/boost/math/constants/constants.hpp:277: error: unable to find numeric literal operator 'operator""Q'
+#   BOOST_DEFINE_MATH_CONSTANT(half, 5.000000000000000000000000000000000000e-01, "5.00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e-01")
+#   ^
+QMAKE_CXXFLAGS += -fext-numeric-literals
 
 # QTest
 QT += testlib

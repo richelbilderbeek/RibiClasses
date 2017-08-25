@@ -1,23 +1,3 @@
-//---------------------------------------------------------------------------
-/*
-TestTimer, class that measures time a test takes
-Copyright (C) 2014-2016 Richel Bilderbeek
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
-GNU General Public License for more details.
-You should have received a copy of the GNU General Public License
-along with this program.If not, see <http://www.gnu.org/licenses/>.
-*/
-//---------------------------------------------------------------------------
-//From http://www.richelbilderbeek.nl/CppTestTimer.htm
-//---------------------------------------------------------------------------
 #include "testtimer.h"
 
 #include <cassert>
@@ -25,8 +5,6 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include <iostream>
 
 #include <boost/timer.hpp>
-
-
 
 namespace ribi {
 
@@ -101,6 +79,7 @@ ribi::TestTimer::TestTimer(
   : m_impl(new TestTimerImpl(function_name,file_name,max_time_sec))
 #endif
 {
+  #ifdef REALLY_KEEP_TESTTIMER_OUTPUT_BEFORE_IT_IS_OBSOLETED
   std::clog
     << std::string(m_impl->m_cnt - 1,' ')
     << "\\ START: "
@@ -123,11 +102,13 @@ ribi::TestTimer::TestTimer(
       << std::endl
     ;
   }
+  #endif // REALLY_KEEP_TESTTIMER_OUTPUT_BEFORE_IT_IS_OBSOLETED
   assert(m_impl->m_cnt < m_impl->m_max_cnt && "TestTimer can only have max_cnt TestTimer instances active");
 }
 
 ribi::TestTimer::~TestTimer() noexcept
 {
+  #ifdef REALLY_KEEP_TESTTIMER_OUTPUT_BEFORE_IT_IS_OBSOLETED
   const double elapsed_secs = m_impl->m_timer.elapsed();
   if (elapsed_secs > m_impl->m_max_time_sec)
   {
@@ -152,6 +133,7 @@ ribi::TestTimer::~TestTimer() noexcept
     << " seconds)"
     << std::endl
   ;
+  #endif // REALLY_KEEP_TESTTIMER_OUTPUT_BEFORE_IT_IS_OBSOLETED
 }
 
 std::string ribi::TestTimer::GetVersion() noexcept
