@@ -5,15 +5,32 @@
 
 namespace ribi {
 
-class qtroundedrectitem_test : public QObject
+class QtRoundedRectItemTest : public QObject
 {
     Q_OBJECT
 
 private slots:
+
+  void GetInnerRectIgnoresContourPenWidth();
+  void GetInnerRectIgnoresFocusPenWidth();
+  void SymmetricSetGetInnerHeight();
+  void SymmetricSetGetInnerPos();
+  void SymmetricSetGetInnerWidth();
+  void SymmetricSetGetInnerX();
+  void SymmetricSetGetInnerY();
+  void SymmetricSetGetRadiusX();
+  void SymmetricSetGetRadiusY();
   void all_tests();
-  void default_construction();
-  void set_and_get_outer_x();
-  void set_and_get_outer_y();
+
+  //To do/review
+  void DefaultConstruction();
+  void SetAndGetOuterX();
+  void SetAndGetOuterY();
+  void SetOuterHeightAndGetOuterHeightSymmetric();
+  void SetOuterPosAndGetOuterPosSymmetric();
+  void SetOuterWidthAndGetOuterWidthSymmetric();
+
+  //Done
 };
 
 } //~namespace ribi

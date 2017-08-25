@@ -21,12 +21,13 @@ int main(int argc, char *argv[])
   int error = 0;
   //I am most interested in:
   //{ ribi::QtKeyboardFriendlyGraphicsViewTest t; error |= QTest::qExec(&t, argc, argv); }
+  //{ ribi::QtRoundedRectItemTest t; error |= QTest::qExec(&t, argc, argv); }
   //assert(1==2);
 
   //These are all tests in alphabetical order
-  { ribi::grabber_test t; error |= QTest::qExec(&t, argc, argv); }
-  { ribi::qtarrowitem_test t; error |= QTest::qExec(&t, argc, argv); }
-  { ribi::qtdisplaypositem_test t; error |= QTest::qExec(&t, argc, argv); }
+  { ribi::GrabberTest t; error |= QTest::qExec(&t, argc, argv); }
+  { ribi::QtArrowItemTest t; error |= QTest::qExec(&t, argc, argv); }
+  { ribi::QtDisplayPosItemTest t; error |= QTest::qExec(&t, argc, argv); }
   { ribi::qtgraphics_test t; error |= QTest::qExec(&t, argc, argv); }
   { ribi::qthideandshowdialog_test t; error |= QTest::qExec(&t, argc, argv); }
   { ribi::qtimage_test t; error |= QTest::qExec(&t, argc, argv); }
@@ -35,7 +36,7 @@ int main(int argc, char *argv[])
   { ribi::qtquadbezierarrowitem_test t; error |= QTest::qExec(&t, argc, argv); }
   { ribi::qtroundededitrectitem_test t; error |= QTest::qExec(&t, argc, argv); }
   { ribi::qtroundedrectitemdialog_test t; error |= QTest::qExec(&t, argc, argv); }
-  { ribi::qtroundedrectitem_test t; error |= QTest::qExec(&t, argc, argv); }
+  { ribi::QtRoundedRectItemTest t; error |= QTest::qExec(&t, argc, argv); }
   { ribi::qtscopeddisable_test t; error |= QTest::qExec(&t, argc, argv); }
 
 

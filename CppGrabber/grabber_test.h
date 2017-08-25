@@ -5,7 +5,7 @@
 
 namespace ribi {
 
-class grabber_test : public QObject
+class GrabberTest : public QObject
 {
     Q_OBJECT
 

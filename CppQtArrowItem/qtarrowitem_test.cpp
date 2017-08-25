@@ -4,7 +4,7 @@
 #include "qtarrowitem.h"
 #include "qtkeyboardfriendlygraphicsview.h"
 
-void ribi::qtarrowitem_test::can_default_construct() const noexcept
+void ribi::QtArrowItemTest::can_default_construct() const noexcept
 {
   try
   {
@@ -26,7 +26,7 @@ void ribi::qtarrowitem_test::can_default_construct() const noexcept
   }
 }
 
-void ribi::qtarrowitem_test::put_in_view() const noexcept
+void ribi::QtArrowItemTest::put_in_view() const noexcept
 {
   ribi::QtKeyboardFriendlyGraphicsView v;
   v.show();

@@ -4,7 +4,7 @@
 #include <QtTest/QtTest>
 namespace ribi {
 
-class qtarrowitem_test : public QObject
+class QtArrowItemTest : public QObject
 {
     Q_OBJECT
 

@@ -5,7 +5,7 @@
 
 namespace ribi {
 
-class qtdisplaypositem_test : public QObject
+class QtDisplayPosItemTest : public QObject
 {
     Q_OBJECT
 
