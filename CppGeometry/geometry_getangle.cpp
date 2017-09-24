@@ -37,19 +37,10 @@ T GetAngleClockScreenImpl(const T& dx, const T& dy) noexcept
 
 double ribi::Geometry::GetAngleClockScreen(const double dx, const double dy) const noexcept
 {
-  //const double pi = boost::math::constants::pi<double>();
-  //const double tau = boost::math::constants::two_pi<double>();
-  //const double angle = Fmod(pi - (std::atan2(dx,dy)),tau);
-  //assert(angle >= 0.0 && "GetAngle must return a value between zero and two pi");
-  //assert(angle < tau  && "GetAngle must return a value between zero and two pi");
-  //return angle;
-  //return ToDoubleSafe(GetAngle(Apfloat(dx),Apfloat(dy)));
   return GetAngleClockScreenImpl(dx,dy);
 }
 
 double ribi::Geometry::GetAngleClockScreen(const Coordinat2D& p) const noexcept
 {
   return GetAngleClockScreenImpl(boost::geometry::get<0>(p),boost::geometry::get<1>(p));
-
-  //return ToDoubleSafe(GetAngle(ToApfloat(p)));
 }
