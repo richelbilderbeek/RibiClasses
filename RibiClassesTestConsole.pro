@@ -30,6 +30,7 @@ include(../RibiClasses/CppFuzzy_equal_to/CppFuzzy_equal_to.pri)
 include(../RibiClasses/CppFuzzy_equal_to/CppFuzzy_equal_toTest.pri)
 
 include(../RibiClasses/CppQrcFile/CppQrcFile.pri)
+include(../RibiClasses/CppQrcFile/CppQrcFileTest.pri)
 
 include(../RibiClasses/CppQtCreatorProFile/CppQtCreatorProFile.pri)
 include(../RibiClasses/CppQtCreatorProFile/CppQtCreatorProFileTest.pri)

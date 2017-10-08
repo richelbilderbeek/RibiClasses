@@ -1,8 +1,5 @@
 INCLUDEPATH += $$PWD
 
 SOURCES += \
-    $$PWD/qrcfile.cpp
-
-HEADERS  += \
-    $$PWD/qrcfile.h
+    $$PWD/qrcfile_test.cpp
 
