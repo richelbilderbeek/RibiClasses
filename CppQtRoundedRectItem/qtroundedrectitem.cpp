@@ -10,7 +10,7 @@
 #include <QGraphicsItem>
 #include <QGraphicsScene>
 #include <QKeyEvent>
-
+#include <QDebug>
 // 
 #pragma GCC diagnostic pop
 
@@ -27,7 +27,11 @@ ribi::QtRoundedRectItem::QtRoundedRectItem(QGraphicsItem *parent)
     | QGraphicsItem::ItemIsSelectable
     );
   this->SetContourPen(QPen(QColor(0,0,0),2.0));
+  assert(this->GetContourPen().isSolid());
+  assert(this->GetContourPen().style() != Qt::DashLine);
   this->SetFocusPen(QPen(QColor(0,0,0),3.0,Qt::DashLine));
+  assert(this->GetFocusPen().style() == Qt::DashLine);
+  //assert(!this->GetFocusPen().isSolid()); //Fails?
   const double height = 32.0;
   const double width = 64.0;
   this->SetInnerWidth(width);
@@ -116,11 +120,13 @@ void ribi::QtRoundedRectItem::paint(QPainter *painter, const QStyleOptionGraphic
   {
     painter->setPen(m_focus_pen);
     assert(painter->pen() == m_focus_pen);
+    qDebug() << "focus";
   }
   else
   {
     painter->setPen(m_contour_pen);
     assert(painter->pen() == m_contour_pen);
+    qDebug() << "no focus";
   }
 
   const double w{GetOuterWidth() - (2 * thickest_pen.widthF()) + this->GetCurrentPen().widthF()};

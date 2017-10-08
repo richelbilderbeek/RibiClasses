@@ -69,22 +69,18 @@ ribi::QtCreatorProFile::QtCreatorProFile(const std::string& filename)
   if (!ribi::fileio::FileIo().IsRegularFile(m_pro_filename))
   {
     std::stringstream s;
-    s << __FILE__ << "(" <<  (__LINE__) <<  ") : "
-      << "Filename '" << m_pro_filename << "' must be a regular file";
-    throw std::logic_error(s.str().c_str());
+    s << "Filename '" << m_pro_filename << "' must be a regular file";
+    throw std::invalid_argument(s.str().c_str());
   }
   assert(fileio::FileIo().IsUnixPath(m_pro_filename));
   if (!fileio::FileIo().IsUnixPath(m_pro_filename))
   {
     std::stringstream s;
-    s << __FILE__ << "(" <<  (__LINE__) <<  ") : "
-      << "Filename '" << m_pro_filename << "' must have a Linux-styl path "
-      << " (this is, folders must be seperated by a slash, instead of a backslash)"
+    s << "Filename '" << m_pro_filename << "' must have a Linux-stylE path "
+      << " (that is, folders must be seperated by a slash, instead of a backslash)"
     ;
-    throw std::logic_error(s.str().c_str());
+    throw std::invalid_argument(s.str().c_str());
   }
-
-
 
   std::vector<std::string> v{ribi::fileio::FileIo().FileToVector(m_pro_filename)};
   RemoveComments(v);
@@ -432,8 +428,8 @@ void ribi::QtCreatorProFile::Test() noexcept
         << "    profile.h";
     }
     //Check the project file
-    const boost::shared_ptr<const QtCreatorProFile> p1(new QtCreatorProFile(mypath1));
-    const boost::shared_ptr<const QtCreatorProFile> p2(new QtCreatorProFile(mypath2));
+    const QtCreatorProFile p1(mypath1);
+    const QtCreatorProFile p2(mypath2);
     fileio::FileIo().DeleteFile(mypath1.c_str());
     fileio::FileIo().DeleteFile(mypath2.c_str());
   }
