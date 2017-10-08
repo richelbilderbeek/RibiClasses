@@ -29,6 +29,11 @@ include(../RibiClasses/CppGeometry/CppGeometryTest.pri)
 include(../RibiClasses/CppFuzzy_equal_to/CppFuzzy_equal_to.pri)
 include(../RibiClasses/CppFuzzy_equal_to/CppFuzzy_equal_toTest.pri)
 
+include(../RibiClasses/CppQrcFile/CppQrcFile.pri)
+
+include(../RibiClasses/CppQtCreatorProFile/CppQtCreatorProFile.pri)
+include(../RibiClasses/CppQtCreatorProFile/CppQtCreatorProFileTest.pri)
+
 include(../RibiClasses/CppRibiRinside/CppRibiRinside.pri)
 
 include(../RibiClasses/CppRibiRandom/CppRibiRandom.pri)
