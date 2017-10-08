@@ -130,7 +130,8 @@ BOOST_AUTO_TEST_CASE(ribi_qtcreatorprofile_tests)
         << "SOURCES += wtmain.cpp \\\n"
         << "    profile.cpp\n"
         << "HEADERS += \\\n"
-        << "    profile.h";
+        << "    profile.h"
+      ;
     }
     {
       std::ofstream f(mypath2);
