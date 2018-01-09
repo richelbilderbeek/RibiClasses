@@ -44,7 +44,7 @@ ribi::QtRoundedRectItem::~QtRoundedRectItem() noexcept
   //OK
 }
 
-const QPen& ribi::GetCurrentPen(const QtRoundedRectItem& r) const noexcept
+const QPen& ribi::GetCurrentPen(const QtRoundedRectItem& r) noexcept
 {
   return IsSelected(r) || HasFocus(r) ? r.GetFocusPen() : r.GetContourPen();
 }
@@ -144,8 +144,8 @@ void ribi::QtRoundedRectItem::paint(QPainter *painter, const QStyleOptionGraphic
     qDebug() << "no focus";
   }
   */
-  const double w{GetOuterWidth() - (2 * thickest_pen.widthF()) + this->GetCurrentPen().widthF()};
-  const double h{GetOuterHeight() - (2 * thickest_pen.widthF()) + this->GetCurrentPen().widthF()};
+  const double w{GetOuterWidth() - (2 * thickest_pen.widthF()) + GetCurrentPen(*this).widthF()};
+  const double h{GetOuterHeight() - (2 * thickest_pen.widthF()) + GetCurrentPen(*this).widthF()};
 
   painter->drawRoundedRect(
     QRectF(
