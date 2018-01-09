@@ -65,10 +65,6 @@ class QtRoundedRectItem : public QGraphicsRectItem
   ///Get the pen by which focus is indicated
   const QPen& GetFocusPen() const noexcept { return m_focus_pen; }
 
-  const QPen& GetCurrentPen() const noexcept { return GetIsSelected() ? m_focus_pen : m_contour_pen; }
-
-  bool GetIsSelected() const noexcept { return isSelected() || hasFocus(); }
-
   QPointF GetCenterPos() const noexcept { return QGraphicsRectItem::pos(); }
   double GetCenterX() const noexcept { return GetCenterPos().x(); }
   double GetCenterY() const noexcept { return GetCenterPos().y(); }
@@ -90,12 +86,6 @@ class QtRoundedRectItem : public QGraphicsRectItem
 
   ///Get the rounded rect corner y radius
   double GetRadiusY() const noexcept{ return m_radius_y; }
-
-  ///Obtain the version of this class
-  static std::string GetVersion() noexcept;
-
-  ///Obtain the version history of this class
-  static std::vector<std::string> GetVersionHistory() noexcept;
 
   void SetCenterPos(const double x,const double y) noexcept { SetCenterX(x); SetCenterY(y); }
   void SetCenterPos(const QPointF& pos) noexcept { SetCenterPos(pos.x(),pos.y()); }
@@ -146,6 +136,21 @@ protected:
   void setRect(const QRectF&) = delete;
 
 };
+
+///Get the current pen, depends on the focus and selectedness of the item
+const QPen& GetCurrentPen(const QtRoundedRectItem& r) noexcept;
+
+///Obtain the version of this class
+std::string GetQtRoundedRectItemVersion() noexcept;
+
+///Obtain the version history of this class
+std::vector<std::string> GetQtRoundedRectItemVersionHistory() noexcept;
+
+///Does this object have focus?
+bool HasFocus(const QtRoundedRectItem& r) noexcept;
+
+///Is this object selected?
+bool IsSelected(const QtRoundedRectItem& r) noexcept;
 
 std::ostream& operator<<(std::ostream& os,const QtRoundedRectItem& item) noexcept;
 

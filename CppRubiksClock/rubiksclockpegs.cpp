@@ -28,7 +28,7 @@ const boost::shared_ptr<const ribi::ToggleButtonWidget> ribi::ruco::Pegs::GetPeg
     case Side::bottomRight: return m_pegs[1][1];
   }
   assert(!"Should not get here");
-  throw std::logic_error("ribi::ruco::Pegs::GetPeg");
+  return m_pegs[0][0];
 }
 
 bool operator==(const ribi::ruco::Pegs& lhs, const ribi::ruco::Pegs& rhs) noexcept

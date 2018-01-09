@@ -44,6 +44,11 @@ ribi::QtRoundedRectItem::~QtRoundedRectItem() noexcept
   //OK
 }
 
+const QPen& ribi::GetCurrentPen(const QtRoundedRectItem& r) const noexcept
+{
+  return IsSelected(r) || HasFocus(r) ? r.GetFocusPen() : r.GetContourPen();
+}
+
 double ribi::QtRoundedRectItem::GetInnerHeight() const noexcept
 {
   const double pen_width = GetFocusPen().widthF() > GetContourPen().widthF()
@@ -77,13 +82,12 @@ QRectF ribi::QtRoundedRectItem::GetOuterRect() const noexcept
   return r.translated(GetCenterX(),GetCenterY());
 }
 
-
-std::string ribi::QtRoundedRectItem::GetVersion() noexcept
+std::string ribi::GetQtRoundedRectItemVersion() noexcept
 {
   return "1.11";
 }
 
-std::vector<std::string> ribi::QtRoundedRectItem::GetVersionHistory() noexcept
+std::vector<std::string> ribi::GetQtRoundedRectItemVersionHistory() noexcept
 {
   return {
     "2012-12-13: version 1.0: initial version",
@@ -101,6 +105,16 @@ std::vector<std::string> ribi::QtRoundedRectItem::GetVersionHistory() noexcept
   };
 }
 
+bool ribi::HasFocus(const QtRoundedRectItem& r) noexcept
+{
+  return r.hasFocus();
+}
+
+bool ribi::IsSelected(const QtRoundedRectItem& r) noexcept
+{
+  return r.isSelected();
+}
+
 void ribi::QtRoundedRectItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) noexcept
 {
   QGraphicsRectItem::mouseMoveEvent(event);
@@ -116,6 +130,7 @@ void ribi::QtRoundedRectItem::paint(QPainter *painter, const QStyleOptionGraphic
                          ? GetContourPen()
                          : GetFocusPen();
 
+  /*
   if (this->isSelected() || this->hasFocus())
   {
     painter->setPen(m_focus_pen);
@@ -128,7 +143,7 @@ void ribi::QtRoundedRectItem::paint(QPainter *painter, const QStyleOptionGraphic
     assert(painter->pen() == m_contour_pen);
     qDebug() << "no focus";
   }
-
+  */
   const double w{GetOuterWidth() - (2 * thickest_pen.widthF()) + this->GetCurrentPen().widthF()};
   const double h{GetOuterHeight() - (2 * thickest_pen.widthF()) + this->GetCurrentPen().widthF()};
 
