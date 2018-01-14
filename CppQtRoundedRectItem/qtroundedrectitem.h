@@ -128,7 +128,7 @@ protected:
   ///To make it private, use GetRect instead
 
   QRectF rect() = delete; //#244
-  ///To make it private, use SetPos instead
+  ///To make it private, use SetCenterPos instead
   void setPos(qreal x, qreal y) = delete;
   void setPos(const QPointF&) = delete;
   ///To make it private, use SetRoundedRect instead
