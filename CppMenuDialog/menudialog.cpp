@@ -22,7 +22,9 @@ std::vector<std::string> ribi::MenuDialog::ConvertArguments(
    return v;
 }
 
-int ribi::MenuDialog::Execute(const std::vector<std::string>& argv) noexcept
+int ribi::MenuDialog::Execute(
+  const std::vector<std::string>& argv
+) noexcept
 {
   const int argc = static_cast<int>(argv.size());
   if (argc <= 1)

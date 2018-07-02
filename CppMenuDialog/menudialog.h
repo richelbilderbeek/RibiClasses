@@ -1,6 +1,7 @@
 #ifndef RIBI_MENUDIALOG_H
 #define RIBI_MENUDIALOG_H
 
+#include <iostream>
 #include <vector>
 #include <string>
 
@@ -31,7 +32,9 @@ struct MenuDialog
   ///First performs a default parse, then passed arguments on to ExecuteSpecific
   ///Returns the error code to give back to the operatings system
   ///Make it a non-const member function: a menu is allowed to have state
-  int Execute(const std::vector<std::string>& argv) noexcept;
+  int Execute(
+    const std::vector<std::string>& argv
+  ) noexcept;
 
   ///Obtain the About information of this class
   virtual About GetAbout() const noexcept = 0;
@@ -50,7 +53,9 @@ struct MenuDialog
   ///Here the program itself is called.
   ///Returns the error code to give back to the operatings system
   ///Make it a non-const member function: a menu is allowed to have state
-  virtual int ExecuteSpecific(const std::vector<std::string>& argv) noexcept = 0;
+  virtual int ExecuteSpecific(
+    const std::vector<std::string>& argv
+  ) noexcept = 0;
 
 };
 
