@@ -2,7 +2,7 @@ include(../RibiLibraries/GeneralConsole.pri)
 include(../RibiLibraries/GeneralConsoleTest.pri)
 include(../RibiLibraries/Apfloat.pri)
 include(../RibiLibraries/BoostAll.pri)
-include(../BoostGraphTutorial/BoostGraphTutorial/boost_graph_tutorial.pri)
+include(../boost_graph_cookbook_1/boost_graph_cookbook_1/boost_graph_tutorial.pri)
 
 include(../RibiClasses/CppContainer/CppContainer.pri)
 include(../RibiClasses/CppContainer/CppContainerTest.pri)
