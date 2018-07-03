@@ -165,7 +165,7 @@ void ribi::QtRoundedRectItem::SetCenterX(const double x) noexcept
     x,
     current_pos.y()
   );
-  //this->update();
+  this->update();
 }
 
 void ribi::QtRoundedRectItem::SetCenterY(const double y) noexcept
@@ -175,7 +175,7 @@ void ribi::QtRoundedRectItem::SetCenterY(const double y) noexcept
     current_pos.x(),
     y
   );
-  //this->update();
+  this->update();
 }
 
 void ribi::QtRoundedRectItem::SetContourPen(const QPen& pen) noexcept
