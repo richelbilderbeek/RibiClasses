@@ -12,6 +12,8 @@ before_install:
   - sudo apt-get update -qq
 
 install: 
+  # Get my folder
+  - my_github=${PWD##*/}  
   # R, do this before 'sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-5 90'
   - sudo apt-get install r-base r-base-dev
   - sudo apt-get install libssh2-1-dev
@@ -32,10 +34,12 @@ install:
   # BEAST2
   - ./install_beast2
   # Other GitHubs
+  - cd ..
   - git clone -b develop https://github.com/richelbilderbeek/boost_graph_cookbook_1
   - git clone -b develop https://github.com/richelbilderbeek/plane
   - git clone -b develop https://github.com/richelbilderbeek/RibiClasses
   - git clone -b develop https://github.com/richelbilderbeek/RibiLibraries
+  - cd $my_github
   - sudo ./install_other_githubs
 
 # Boost
