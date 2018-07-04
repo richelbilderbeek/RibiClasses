@@ -60,8 +60,8 @@ double ribi::QtRoundedRectItem::GetInnerHeight() const noexcept
 QRectF ribi::QtRoundedRectItem::GetInnerRect() const noexcept
 {
   return QRectF(
-    GetCenterX(),
-    GetCenterY(),
+    pos().x(),
+    pos().y(),
     GetInnerWidth(),
     GetInnerHeight()
   );
@@ -79,7 +79,7 @@ double ribi::QtRoundedRectItem::GetInnerWidth() const noexcept
 QRectF ribi::QtRoundedRectItem::GetOuterRect() const noexcept
 {
   const QRectF r{QGraphicsRectItem::rect()};
-  return r.translated(GetCenterX(),GetCenterY());
+  return r.translated(pos().x(),pos().y());
 }
 
 std::string ribi::GetQtRoundedRectItemVersion() noexcept
@@ -160,7 +160,7 @@ void ribi::QtRoundedRectItem::paint(QPainter *painter, const QStyleOptionGraphic
 
 void ribi::QtRoundedRectItem::SetCenterX(const double x) noexcept
 {
-  const auto current_pos = this->GetCenterPos();
+  const auto current_pos = this->pos();
   QGraphicsRectItem::setPos(
     x,
     current_pos.y()
@@ -170,7 +170,7 @@ void ribi::QtRoundedRectItem::SetCenterX(const double x) noexcept
 
 void ribi::QtRoundedRectItem::SetCenterY(const double y) noexcept
 {
-  const auto current_pos = this->GetCenterPos();
+  const auto current_pos = this->pos();
   QGraphicsRectItem::setPos(
     current_pos.x(),
     y

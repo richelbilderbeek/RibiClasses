@@ -65,10 +65,6 @@ class QtRoundedRectItem : public QGraphicsRectItem
   ///Get the pen by which focus is indicated
   const QPen& GetFocusPen() const noexcept { return m_focus_pen; }
 
-  QPointF GetCenterPos() const noexcept { return QGraphicsRectItem::pos(); }
-  double GetCenterX() const noexcept { return GetCenterPos().x(); }
-  double GetCenterY() const noexcept { return GetCenterPos().y(); }
-
   double GetInnerHeight() const noexcept;
 
   ///Gets the rectangle within/excluding the pen, use GetRawRect the get the raw QRectF
@@ -123,10 +119,7 @@ protected:
   double m_radius_y;
 
 
-  ///To make it private, use GetPos instead
-  QPointF pos() = delete;
   ///To make it private, use GetRect instead
-
   QRectF rect() = delete; //#244
   ///To make it private, use SetCenterPos instead
   void setPos(qreal x, qreal y) = delete;

@@ -329,7 +329,7 @@ void ribi::QtQuadBezierArrowItem::paint(QPainter* painter, const QStyleOptionGra
   const QPointF p_end_head{GetHead()};
   const QPointF p_end_tail{GetTail()};
   const QPointF p_beyond{GetBeyond()};
-  //const QPointF p_center{GetCenter()};
+  //const QPointF p_center{pos()};
   QPainterPath curve;
   curve.moveTo(p_end_tail);
 

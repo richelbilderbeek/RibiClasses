@@ -140,8 +140,8 @@ void ribi::QtRoundedRectItemDialog::OnFocusPenChanged(QtRoundedRectItem * const 
 void ribi::QtRoundedRectItemDialog::OnPosChanged(QtRoundedRectItem * const qtitem) noexcept
 {
   assert(!"Am I called?");
-  const double new_x = qtitem->GetCenterPos().x();
-  const double new_y = qtitem->GetCenterPos().y();
+  const double new_x = qtitem->pos().x();
+  const double new_y = qtitem->pos().y();
   ui->box_x->setValue(new_x);
   ui->box_y->setValue(new_y);
 }
@@ -227,12 +227,12 @@ void ribi::QtRoundedRectItemDialog::on_box_width_including_pen_valueChanged(doub
 
 void ribi::QtRoundedRectItemDialog::on_box_x_valueChanged(double arg1)
 {
-  m_item->SetCenterPos(arg1,m_item->GetCenterPos().y());
+  m_item->SetCenterPos(arg1,m_item->pos().y());
 }
 
 void ribi::QtRoundedRectItemDialog::on_box_y_valueChanged(double arg1)
 {
-  m_item->SetCenterPos(m_item->GetCenterPos().x(),arg1);
+  m_item->SetCenterPos(m_item->pos().x(),arg1);
 }
 
 void ribi::QtRoundedRectItemDialog::SetItem(const boost::shared_ptr<QtRoundedRectItem>& item) noexcept
@@ -251,8 +251,8 @@ void ribi::QtRoundedRectItemDialog::SetItem(const boost::shared_ptr<QtRoundedRec
     ui->box_radius_y->setValue(GetItem()->GetRadiusY());
     ui->box_width->setValue(GetItem()->GetInnerWidth());
     ui->box_width_including_pen->setValue(GetItem()->GetOuterWidth());
-    ui->box_x->setValue(GetItem()->GetCenterX());
-    ui->box_y->setValue(GetItem()->GetCenterY());
+    ui->box_x->setValue(GetItem()->pos().x());
+    ui->box_y->setValue(GetItem()->pos().y());
     return;
   }
   if (verbose)
