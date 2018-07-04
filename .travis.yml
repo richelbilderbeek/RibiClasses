@@ -37,7 +37,6 @@ install:
   - cd ..
   - git clone -b develop https://github.com/richelbilderbeek/boost_graph_cookbook_1
   - git clone -b develop https://github.com/richelbilderbeek/plane
-  - git clone -b develop https://github.com/richelbilderbeek/RibiClasses
   - git clone -b develop https://github.com/richelbilderbeek/RibiLibraries
   - cd $my_github
   - sudo ./install_other_githubs
