@@ -40,7 +40,7 @@ QT += core gui widgets concurrent opengl printsupport svg
 include(../RibiLibraries/GeneralConsole.pri)
 include(../RibiLibraries/Apfloat.pri)
 #include(../RibiLibraries/BoostAll.pri)
-include(../boost_graph_cookbook_1/boost_graph_cookbook_1/boost_graph_tutorial.pri)
+include(../boost_graph_cookbook_1/boost_graph_cookbook_1/boost_graph_cookbook_1.pri)
 include(../plane/plane.pri)
 
 # Do not test console classes
