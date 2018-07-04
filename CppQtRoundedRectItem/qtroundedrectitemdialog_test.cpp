@@ -74,17 +74,17 @@ void ribi::qtroundedrectitemdialog_test::all_tests()
   }
   if (verbose) { TRACE("Set/Get X must be symmetric"); }
   {
-    dialog.GetUi()->box_x->setValue(item->GetCenterX() + 10.0);
+    dialog.GetUi()->box_x->setValue(item->pos().x() + 10.0);
     const auto new_x = dialog.GetUi()->box_x->value() + 10.0;
     item->SetCenterX(new_x);
-    QVERIFY(std::abs(item->GetCenterX() - new_x) < 2.0);
+    QVERIFY(std::abs(item->pos().x() - new_x) < 2.0);
   }
   if (verbose) { TRACE("Set/Get Y must be symmetric"); }
   {
-    dialog.GetUi()->box_y->setValue(item->GetCenterY() + 10.0);
+    dialog.GetUi()->box_y->setValue(item->pos().y() + 10.0);
     const auto new_y = dialog.GetUi()->box_y->value() + 10.0;
     item->SetCenterY(new_y);
-    QVERIFY(std::abs(item->GetCenterY() - new_y) < 2.0);
+    QVERIFY(std::abs(item->pos().y() - new_y) < 2.0);
   }
   if (verbose) { TRACE("SetItem with other item"); }
   {

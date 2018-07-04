@@ -13,8 +13,8 @@
 void ribi::QtRoundedRectItemTest::DefaultConstruction()
 {
   const QtRoundedRectItem i;
-  QVERIFY(std::abs(i.GetCenterX() - 0.0) < 0.0001);
-  QVERIFY(std::abs(i.GetCenterY() - 0.0) < 0.0001);
+  QVERIFY(std::abs(i.pos().x() - 0.0) < 0.0001);
+  QVERIFY(std::abs(i.pos().y() - 0.0) < 0.0001);
 }
 
 void ribi::QtRoundedRectItemTest::GetInnerRectIgnoresContourPenWidth()
@@ -63,19 +63,19 @@ void ribi::QtRoundedRectItemTest::GetInnerRectIgnoresFocusPenWidth()
 void ribi::QtRoundedRectItemTest::SetAndGetOuterX()
 {
   QtRoundedRectItem i;
-  const auto old_x = i.GetCenterX();
+  const auto old_x = i.pos().x();
   const auto new_x = old_x + 10.0;
   i.SetCenterX(new_x);
-  QVERIFY(std::abs(i.GetCenterX() - new_x) < 4.0);
+  QVERIFY(std::abs(i.pos().x() - new_x) < 4.0);
 }
 
 void ribi::QtRoundedRectItemTest::SetAndGetOuterY()
 {
   QtRoundedRectItem i;
-  const auto old_y = i.GetCenterY();
+  const auto old_y = i.pos().y();
   const auto new_y = old_y + 10.0;
   i.SetCenterY(new_y);
-  QVERIFY(std::abs(i.GetCenterY() - new_y) < 4.0);
+  QVERIFY(std::abs(i.pos().y() - new_y) < 4.0);
 }
 
 void ribi::QtRoundedRectItemTest::SetOuterHeightAndGetOuterHeightSymmetric()
@@ -90,11 +90,11 @@ void ribi::QtRoundedRectItemTest::SetOuterHeightAndGetOuterHeightSymmetric()
 void ribi::QtRoundedRectItemTest::SetOuterPosAndGetOuterPosSymmetric()
 {
   QtRoundedRectItem i;
-  const auto old_pos = i.GetCenterPos();
+  const auto old_pos = i.pos();
   const auto new_pos = old_pos + QPointF(10.0,10.0);
   i.SetCenterPos(new_pos);
-  QVERIFY(std::abs(i.GetCenterPos().x() - new_pos.x()) < 2.0);
-  QVERIFY(std::abs(i.GetCenterPos().y() - new_pos.y()) < 2.0);
+  QVERIFY(std::abs(i.pos().x() - new_pos.x()) < 2.0);
+  QVERIFY(std::abs(i.pos().y() - new_pos.y()) < 2.0);
 }
 
 void ribi::QtRoundedRectItemTest::SetOuterWidthAndGetOuterWidthSymmetric()
@@ -120,11 +120,11 @@ void ribi::QtRoundedRectItemTest::SymmetricSetGetInnerPos()
 {
   // SetInnerPos and GetInnerPos must be symmetric"); }
   QtRoundedRectItem i;
-  const auto old_pos = i.GetCenterPos();
+  const auto old_pos = i.pos();
   const auto new_pos = old_pos + QPointF(10.0,10.0);
   i.SetCenterPos(new_pos);
-  QVERIFY(std::abs(i.GetCenterPos().x() - new_pos.x()) < 2.0);
-  QVERIFY(std::abs(i.GetCenterPos().y() - new_pos.y()) < 2.0);
+  QVERIFY(std::abs(i.pos().x() - new_pos.x()) < 2.0);
+  QVERIFY(std::abs(i.pos().y() - new_pos.y()) < 2.0);
 }
 
 void ribi::QtRoundedRectItemTest::SymmetricSetGetInnerWidth()
@@ -142,20 +142,20 @@ void ribi::QtRoundedRectItemTest::SymmetricSetGetInnerX()
 {
   // SetInnerX and GetInnerX must be symmetric"); }
   QtRoundedRectItem i;
-  const auto old_x = i.GetCenterX();
+  const auto old_x = i.pos().x();
   const auto new_x = old_x + 10.0;
   i.SetCenterX(new_x);
-  QVERIFY(std::abs(i.GetCenterX() - new_x) < 2.0);
+  QVERIFY(std::abs(i.pos().x() - new_x) < 2.0);
 }
 
 void ribi::QtRoundedRectItemTest::SymmetricSetGetInnerY()
 {
   // SetInnerY and GetInnerY must be symmetric"); }
   QtRoundedRectItem i;
-  const auto old_y = i.GetCenterY();
+  const auto old_y = i.pos().y();
   const auto new_y = old_y + 10.0;
   i.SetCenterY(new_y);
-  QVERIFY(std::abs(i.GetCenterY() - new_y) < 2.0);
+  QVERIFY(std::abs(i.pos().y() - new_y) < 2.0);
 }
 
 void ribi::QtRoundedRectItemTest::SymmetricSetGetRadiusX()
@@ -183,30 +183,30 @@ void ribi::QtRoundedRectItemTest::all_tests()
   // Position must be in GetOuterRect"); }
   {
     QtRoundedRectItem i;
-    QVERIFY(i.GetOuterRect().contains(i.GetCenterPos()));
+    QVERIFY(i.GetOuterRect().contains(i.pos()));
   }
   // Position must be in GetInnerRect"); }
   {
     QtRoundedRectItem i;
-    QVERIFY(i.GetInnerRect().contains(i.GetCenterPos()));
+    QVERIFY(i.GetInnerRect().contains(i.pos()));
   }
   // After changing the outer width and position, the Position must be in GetOuterRect"); }
   {
     QtRoundedRectItem i;
     i.SetOuterWidth(3.0);
     i.SetOuterHeight(3.0);
-    i.SetCenterX(i.GetCenterX() + 10.0);
-    i.SetCenterY(i.GetCenterY() + 10.0);
-    QVERIFY(i.GetOuterRect().contains(i.GetCenterPos()));
+    i.SetCenterX(i.pos().x() + 10.0);
+    i.SetCenterY(i.pos().y() + 10.0);
+    QVERIFY(i.GetOuterRect().contains(i.pos()));
   }
   // After changing the inner width and position, the Position must be in GetInnerRect"); }
   {
     QtRoundedRectItem i;
     i.SetInnerWidth(3.0);
     i.SetInnerHeight(3.0);
-    i.SetCenterX(i.GetCenterX() + 10.0);
-    i.SetCenterY(i.GetCenterY() + 10.0);
-    QVERIFY(i.GetInnerRect().contains(i.GetCenterPos()));
+    i.SetCenterX(i.pos().x() + 10.0);
+    i.SetCenterY(i.pos().y() + 10.0);
+    QVERIFY(i.GetInnerRect().contains(i.pos()));
   }
   #ifdef ISSUE_261_GIVE_UP_ON_TESTING_FOCUS
   // GetInnerRect should not change if width of focus pen changes and given focus"); }
