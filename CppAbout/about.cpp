@@ -5,14 +5,14 @@
 #include <iostream>
 #include <iterator>
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
-#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
+
+
+
+
 #include <boost/lexical_cast.hpp>
 #include <boost/version.hpp>
 
-#pragma GCC diagnostic pop
+
 
 ribi::About::About(
     const std::string& author,
