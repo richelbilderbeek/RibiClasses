@@ -130,20 +130,16 @@ void ribi::QtRoundedRectItem::paint(QPainter *painter, const QStyleOptionGraphic
                          ? GetContourPen()
                          : GetFocusPen();
 
-  /*
   if (this->isSelected() || this->hasFocus())
   {
     painter->setPen(m_focus_pen);
     assert(painter->pen() == m_focus_pen);
-    qDebug() << "focus";
   }
   else
   {
     painter->setPen(m_contour_pen);
     assert(painter->pen() == m_contour_pen);
-    qDebug() << "no focus";
   }
-  */
   const double w{GetOuterWidth() - (2 * thickest_pen.widthF()) + GetCurrentPen(*this).widthF()};
   const double h{GetOuterHeight() - (2 * thickest_pen.widthF()) + GetCurrentPen(*this).widthF()};
 
