@@ -14,7 +14,7 @@ namespace ribi {
 ///For a single line of text, use QtRoundedEditRectItem
 class QtRoundedEditRectItem : public QtRoundedRectItem
 {
-  //Q_OBJECT //Cannot make this a QObject???
+  //No need to inherit from Q_OBJECT
 
   public:
   typedef QtRoundedRectItem Base;
