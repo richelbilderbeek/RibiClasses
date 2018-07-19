@@ -1,7 +1,3 @@
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
-#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
 #include "qtquadbezierarrowitem.h"
 
 #include <cassert>
@@ -13,6 +9,7 @@
 #include <boost/math/constants/constants.hpp>
 
 #include <QCursor>
+#include <QDebug>
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 #include <QKeyEvent>
@@ -26,7 +23,6 @@
 // 
 #include "qtroundededitrectitem.h"
 #include "qtroundedrectitem.h"
-#pragma GCC diagnostic pop
 
 const double ribi::QtQuadBezierArrowItem::m_click_easy_width = 10.0;
 
@@ -83,8 +79,14 @@ QRectF ribi::QtQuadBezierArrowItem::boundingRect() const
 QPointF ribi::QtQuadBezierArrowItem::GetBeyond() const noexcept
 {
   const QPointF p_center = GetCenter();
-  const double dx_mid_center = GetMidItem() ? (GetMidItem()->pos().x() - p_center.x()) : 0.0;
-  const double dy_mid_center = GetMidItem() ? (GetMidItem()->pos().y() - p_center.y()) : 0.0;
+  const double dx_mid_center = GetMidItem() && GetMidItem()->isVisible()
+    ? (GetMidItem()->pos().x() - p_center.x())
+    : 0.0
+  ;
+  const double dy_mid_center = GetMidItem() && GetMidItem()->isVisible()
+    ? (GetMidItem()->pos().y() - p_center.y())
+    : 0.0
+  ;
   const QPointF p_beyond(p_center.x() + dx_mid_center + dx_mid_center, p_center.y() + dy_mid_center + dy_mid_center);
 
   //const double dx_mid_center = GetMidItem() ? (GetMidItem()->pos().x() - center.x()) : 0.0;
@@ -345,7 +347,6 @@ void ribi::QtQuadBezierArrowItem::paint(QPainter* painter, const QStyleOptionGra
     curve.lineTo(p_end_head);
   }
   painter->drawPath(curve);
-
 
   {
     const double sz = 10.0; //pixels
