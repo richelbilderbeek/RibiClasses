@@ -14,7 +14,7 @@ namespace ribi {
 class QtHideAndShowAndThrowDialog : public QtHideAndShowDialog
 {
 public:
-  QtHideAndShowAndThrowDialog(QWidget* parent = 0);
+  QtHideAndShowAndThrowDialog(QWidget* parent = nullptr);
 
 public slots:
   ///Throws an exception

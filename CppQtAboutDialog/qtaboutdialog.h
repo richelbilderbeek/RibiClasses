@@ -4,13 +4,8 @@
 #include <string>
 #include <vector>
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
-#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
 #include "about.h"
 #include "qthideandshowdialog.h"
-#pragma GCC diagnostic pop
 
 namespace Ui {
   class QtAboutDialog;
@@ -24,7 +19,7 @@ class QtAboutDialog : public QtHideAndShowDialog
   Q_OBJECT //!OCLINT
 
 public:
-  explicit QtAboutDialog(const ribi::About& about) noexcept;
+  explicit QtAboutDialog(const ribi::About& about, QWidget* parent = nullptr) noexcept;
   QtAboutDialog(const QtAboutDialog&) = delete;
   QtAboutDialog& operator=(const QtAboutDialog&) = delete;
   ~QtAboutDialog() noexcept;

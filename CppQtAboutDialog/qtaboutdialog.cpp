@@ -1,21 +1,17 @@
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
-#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
 #include "qtaboutdialog.h"
 
 #include <cassert>
 #include <string>
 
 #include "about.h"
-//
-
 #include "ui_qtaboutdialog.h"
 
-#pragma GCC diagnostic pop
-
-ribi::QtAboutDialog::QtAboutDialog(const ribi::About& about) noexcept
-  : ui(new Ui::QtAboutDialog)
+ribi::QtAboutDialog::QtAboutDialog(
+  const ribi::About& about,
+  QWidget* parent
+) noexcept
+  : QtHideAndShowDialog(parent),
+    ui(new Ui::QtAboutDialog)
 {
   ui->setupUi(this);
 

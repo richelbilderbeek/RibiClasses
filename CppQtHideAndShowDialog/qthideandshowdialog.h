@@ -17,7 +17,7 @@ class QtHideAndShowDialog : public QDialog
   Q_OBJECT //!OCLINT
     
 public:
-  explicit QtHideAndShowDialog(QWidget* parent = 0) noexcept;
+  explicit QtHideAndShowDialog(QWidget* parent = nullptr) noexcept;
 
   ///Virtual destructor as this is a base class
   virtual ~QtHideAndShowDialog();
