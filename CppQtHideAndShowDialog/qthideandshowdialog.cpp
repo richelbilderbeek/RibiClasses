@@ -1,14 +1,8 @@
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
-#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
 #include "qthideandshowdialog.h"
 
 #include <cassert>
 #include <QApplication>
 #include <QKeyEvent>
-
-#pragma GCC diagnostic pop
 
 ribi::QtHideAndShowDialog::QtHideAndShowDialog(QWidget* parent) noexcept
   : QDialog(parent),
