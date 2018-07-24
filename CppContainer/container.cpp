@@ -1,7 +1,3 @@
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
-#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
 #include "container.h"
 
 #include <boost/algorithm/string/split.hpp>
@@ -9,8 +5,6 @@
 #include <boost/numeric/conversion/cast.hpp>
 
 #include "fuzzy_equal_to.h"
-
-#pragma GCC diagnostic pop
 
 template <class Container>
 std::string ContainerToStrImpl(const Container& c, const std::string& seperator)

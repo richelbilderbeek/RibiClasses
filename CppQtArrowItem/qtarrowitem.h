@@ -72,6 +72,9 @@ protected:
   virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem *, QWidget *);
   QPainterPath shape() const;
 
+  ///Define a usertype for QtEdge, must be unique
+  int type() const override { return UserType + 7; }
+
 private:
 
   ///Set the distance in pixels the user is allowed to be distance from the

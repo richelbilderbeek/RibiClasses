@@ -41,6 +41,9 @@ struct QtLabeledQuadBezierArrowItem : public QtRoundedEditRectItem
   ///Obtain the version history of this class
   static std::vector<std::string> GetVersionHistory() noexcept;
 
+  ///Define a usertype for QtEdge, must be unique
+  int type() const override { return UserType + 9; }
+
 protected:
   virtual QRectF boundingRect() const noexcept override final;
   virtual void keyPressEvent(QKeyEvent *event) noexcept override final;
