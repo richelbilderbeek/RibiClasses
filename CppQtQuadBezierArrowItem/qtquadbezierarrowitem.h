@@ -141,8 +141,12 @@ struct QtQuadBezierArrowItem : public QGraphicsItem
   ///In this example, it is redefined to ease selecting those thin lines
   QPainterPath shape() const noexcept override final;
 
-  ///Define a usertype for QtEdge, must be unique
-  int type() const override { return UserType + 6; }
+  ///Define a usertype for this QGraphicsItem, must be unique
+  enum { Type = UserType + 6 };
+  int type() const override
+  {
+    return Type;
+  }
 
   protected:
   ///Change the cursor when the user moves the mouse cursor in the bounding rectangle

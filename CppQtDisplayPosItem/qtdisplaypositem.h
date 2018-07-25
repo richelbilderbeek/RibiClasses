@@ -19,8 +19,12 @@ struct QtDisplayPosItem : public QGraphicsSimpleTextItem
   ///Obtain the version history of this class
   static std::vector<std::string> GetVersionHistory() noexcept;
 
-  ///Define a usertype for QtEdge, must be unique
-  int type() const override { return UserType + 8; }
+  ///Define a usertype for this QGraphicsItem, must be unique
+  enum { Type = UserType + 8 };
+  int type() const override
+  {
+    return Type;
+  }
 
 protected:
   void mouseMoveEvent(QGraphicsSceneMouseEvent *event);

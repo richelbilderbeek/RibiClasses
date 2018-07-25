@@ -126,8 +126,12 @@ class QtRoundedEditRectItem : public QtRoundedRectItem
   ///Set the pen by which the text is drawn
   void SetTextPen(const QPen& pen) noexcept;
 
-  ///Define a usertype for this item, must be unique
-  int type() const override { return UserType + 11; }
+  ///Define a usertype for this QGraphicsItem, must be unique
+  enum { Type = UserType + 11 };
+  int type() const override
+  {
+    return Type;
+  }
 
 protected:
   virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) noexcept;

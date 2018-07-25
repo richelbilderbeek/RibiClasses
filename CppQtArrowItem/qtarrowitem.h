@@ -72,8 +72,12 @@ protected:
   virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem *, QWidget *);
   QPainterPath shape() const;
 
-  ///Define a usertype for QtEdge, must be unique
-  int type() const override { return UserType + 7; }
+  ///Define a usertype for this QGraphicsItem, must be unique
+  enum { Type = UserType + 7 };
+  int type() const override
+  {
+    return Type;
+  }
 
 private:
 
