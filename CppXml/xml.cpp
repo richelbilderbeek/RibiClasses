@@ -4,15 +4,10 @@
 #include <sstream>
 #include <vector>
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/make_shared.hpp>
 #include <boost/shared_ptr.hpp>
-// 
-#pragma GCC diagnostic pop
 
 std::string ribi::xml::Decode2(std::string s) noexcept
 {
@@ -114,25 +109,6 @@ std::vector<std::string> ribi::xml::XmlToPretty(const std::string& xml_string) n
   }
   return v;
 }
-
-/*
-const std::pair<std::string,std::string> ribi::xml::XmlToStr(const std::string& s)
-{
-  assert(!s.empty());
-  assert(s[0] == '<');
-  assert(s[s.size() - 1] == '>');
-  assert(s.find('>') != std::string::npos);
-  const int tag_name_sz = static_cast<int>(s.find('>')) - 1;
-  const std::string tag_name = s.substr(1,tag_name_sz);
-
-  assert(s.find_last_of('/') != std::string::npos);
-  const int content_sz = static_cast<int>(s.find_last_of('/')) - tag_name_sz - 3;
-  const std::string content = s.substr(tag_name.size() + 2,content_sz);
-  const std::pair<std::string,std::string> p { tag_name, content };
-  assert(ToXml(p.first,p.second) == s);
-  return p;
-}
-*/
 
 std::pair<std::string,std::vector<std::string>> ribi::xml::XmlToVector(
   const std::string& s)
