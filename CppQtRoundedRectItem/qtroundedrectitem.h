@@ -109,7 +109,7 @@ class QtRoundedRectItem : public QGraphicsRectItem
 
 protected:
 
-  virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) noexcept override;
+  virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
   virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) noexcept override;
 
   private:
@@ -128,9 +128,6 @@ protected:
 
   ///To make it private, use GetRect instead
   QRectF rect() = delete; //#244
-  ///To make it private, use SetCenterPos instead
-  void setPos(qreal x, qreal y) = delete;
-  void setPos(const QPointF&) = delete;
   ///To make it private, use SetRoundedRect instead
   void setRect(const double,const double,const double,const double) = delete;
   void setRect(const QRectF&) = delete;

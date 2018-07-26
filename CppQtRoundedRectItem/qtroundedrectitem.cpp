@@ -10,7 +10,6 @@
 #include <QGraphicsItem>
 #include <QGraphicsScene>
 #include <QKeyEvent>
-#include <QDebug>
 // 
 #pragma GCC diagnostic pop
 
@@ -115,7 +114,7 @@ bool ribi::IsSelected(const QtRoundedRectItem& r) noexcept
   return r.isSelected();
 }
 
-void ribi::QtRoundedRectItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) noexcept
+void ribi::QtRoundedRectItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
   QGraphicsRectItem::mouseMoveEvent(event);
   this->update();

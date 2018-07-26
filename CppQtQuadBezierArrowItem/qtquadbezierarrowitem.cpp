@@ -9,7 +9,6 @@
 #include <boost/math/constants/constants.hpp>
 
 #include <QCursor>
-#include <QDebug>
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 #include <QKeyEvent>
