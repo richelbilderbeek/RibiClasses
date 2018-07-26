@@ -3,7 +3,7 @@
 
 #include <string>
 
-//#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "qtroundededitrectitem.h"
 
 namespace ribi {
@@ -27,8 +27,8 @@ struct QtLabeledQuadBezierArrowItem : public QtRoundedEditRectItem
   QtLabeledQuadBezierArrowItem& operator=(const QtLabeledQuadBezierArrowItem&) = delete;
   ~QtLabeledQuadBezierArrowItem() noexcept {}
 
-        boost::shared_ptr<const QtQuadBezierArrowItem>  GetArrow() const noexcept { return m_arrow; }
-  const boost::shared_ptr<      QtQuadBezierArrowItem>& GetArrow()       noexcept { return m_arrow; }
+        std::shared_ptr<const QtQuadBezierArrowItem>  GetArrow() const noexcept { return m_arrow; }
+  const std::shared_ptr<      QtQuadBezierArrowItem>& GetArrow()       noexcept { return m_arrow; }
 
   ///Obtain the version of this class
   static std::string GetVersion() noexcept;
@@ -45,7 +45,7 @@ protected:
   virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) noexcept override final;
 
 private:
-  const boost::shared_ptr<QtQuadBezierArrowItem> m_arrow;
+  const std::shared_ptr<QtQuadBezierArrowItem> m_arrow;
 
 };
 
