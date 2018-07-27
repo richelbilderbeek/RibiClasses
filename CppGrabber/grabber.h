@@ -13,7 +13,7 @@
 
 namespace ribi {
 
-struct Grabber : public QObject
+struct Grabber final : public QObject
 {
   Q_OBJECT
 
@@ -22,7 +22,7 @@ struct Grabber : public QObject
     const int win_id,
     const std::string& filename = "screengrab.png"
   );
-  virtual ~Grabber() noexcept;
+  ~Grabber() noexcept;
 
   public slots:
   void Grab() const noexcept;

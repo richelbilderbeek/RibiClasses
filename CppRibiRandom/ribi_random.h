@@ -33,13 +33,13 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 namespace ribi {
 
 ///Random functions
-struct Random
+struct Random final
 {
   ///Random seed
   Random();
   ///Use a given seed
   Random(const int seed);
-  virtual ~Random() noexcept;
+  ~Random() noexcept;
 
   ///Obtain a random boolean
   bool GetBool() noexcept;

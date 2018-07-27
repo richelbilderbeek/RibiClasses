@@ -23,7 +23,7 @@ struct QtQuadBezierArrowItem : public QGraphicsItem
     QGraphicsItem* parent = 0
   ) noexcept;
 
-  virtual ~QtQuadBezierArrowItem() noexcept {}
+  virtual ~QtQuadBezierArrowItem() noexcept;
 
   ///The rectangle that containg the item, used for rough calculations like
   ///collision detection

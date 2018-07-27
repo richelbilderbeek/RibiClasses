@@ -69,6 +69,11 @@ ribi::QtQuadBezierArrowItem::QtQuadBezierArrowItem(
   }
 }
 
+ribi::QtQuadBezierArrowItem::~QtQuadBezierArrowItem() noexcept
+{
+
+}
+
 QRectF ribi::QtQuadBezierArrowItem::boundingRect() const
 {
   assert(this->scene());

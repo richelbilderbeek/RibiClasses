@@ -13,8 +13,7 @@ namespace ribi {
 struct QtQuadBezierArrowItem;
 
 ///Dialog to display the members of a QtQuadBezierArrowItem
-//Cannot mark it as a final class, because that would break Qt4 compatibility
-class QtQuadBezierArrowDialog : public QtHideAndShowDialog
+class QtQuadBezierArrowDialog final : public QtHideAndShowDialog
 {
   Q_OBJECT
 
@@ -24,7 +23,7 @@ public:
   explicit QtQuadBezierArrowDialog(QWidget *parent = 0);
   QtQuadBezierArrowDialog(const QtQuadBezierArrowDialog&) = delete;
   QtQuadBezierArrowDialog& operator=(const QtQuadBezierArrowDialog&) = delete;
-  virtual ~QtQuadBezierArrowDialog() noexcept;
+  ~QtQuadBezierArrowDialog() noexcept;
 
   Arrow GetArrow() const noexcept { return m_arrow; }
 

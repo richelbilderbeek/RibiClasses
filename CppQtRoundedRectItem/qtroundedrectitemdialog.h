@@ -17,7 +17,7 @@ namespace ribi {
 
 struct QtRoundedRectItem;
 
-class QtRoundedRectItemDialog : public QtHideAndShowDialog
+class QtRoundedRectItemDialog final : public QtHideAndShowDialog
 {
   Q_OBJECT
     
@@ -26,7 +26,7 @@ public:
   explicit QtRoundedRectItemDialog(QWidget *parent = 0);
   QtRoundedRectItemDialog(const QtRoundedRectItemDialog&) = delete;
   QtRoundedRectItemDialog& operator=(const QtRoundedRectItemDialog&) = delete;
-  virtual ~QtRoundedRectItemDialog() noexcept;
+  ~QtRoundedRectItemDialog() noexcept;
 
   void DisableSetSize() noexcept;
   void DoSomethingRandom() noexcept;

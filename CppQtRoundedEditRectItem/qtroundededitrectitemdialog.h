@@ -19,7 +19,7 @@ namespace ribi {
 struct QtRoundedEditRectItem; //The item
 struct QtRoundedRectItemDialog; //its base class display
 
-class QtRoundedEditRectItemDialog : public QtHideAndShowDialog
+class QtRoundedEditRectItemDialog final : public QtHideAndShowDialog
 {
   Q_OBJECT
     
@@ -28,7 +28,7 @@ public:
   explicit QtRoundedEditRectItemDialog(QWidget *parent = 0);
   QtRoundedEditRectItemDialog(const QtRoundedEditRectItemDialog&) = delete;
   QtRoundedEditRectItemDialog& operator=(const QtRoundedEditRectItemDialog&) = delete;
-  virtual ~QtRoundedEditRectItemDialog() noexcept;
+  ~QtRoundedEditRectItemDialog() noexcept;
 
   boost::shared_ptr<QtRoundedEditRectItem> GetItem() const noexcept { return m_item; }
 

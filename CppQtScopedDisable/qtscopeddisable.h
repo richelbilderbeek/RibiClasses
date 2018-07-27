@@ -10,7 +10,7 @@
 ///again when it goes out of scope.
 ///From http://www.richelbilderbeek.nl/CppQtScopedDisable.htm
 template <class T>
-struct QtScopedDisable
+struct QtScopedDisable final
 {
   QtScopedDisable(T * const t)
     : m_t(t)
@@ -18,7 +18,7 @@ struct QtScopedDisable
     assert(m_t);
     m_t->setEnabled(false);
   }
-  virtual ~QtScopedDisable() noexcept
+  ~QtScopedDisable() noexcept
   {
     m_t->setEnabled(true);
   }
