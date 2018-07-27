@@ -24,7 +24,7 @@ struct QtArrowItem : public QGraphicsLineItem
     QGraphicsItem* parent = 0
   ) noexcept;
 
-  virtual ~QtArrowItem() noexcept {}
+  virtual ~QtArrowItem() noexcept;
 
   ///Obtain the version of this class
   static std::string GetVersion() noexcept;

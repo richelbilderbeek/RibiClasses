@@ -22,7 +22,7 @@ public:
   explicit QtAboutDialog(const ribi::About& about, QWidget* parent = nullptr) noexcept;
   QtAboutDialog(const QtAboutDialog&) = delete;
   QtAboutDialog& operator=(const QtAboutDialog&) = delete;
-  ~QtAboutDialog() noexcept;
+  virtual ~QtAboutDialog() noexcept;
 
 
   ///Obtain the version of this class

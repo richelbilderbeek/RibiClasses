@@ -22,7 +22,7 @@ struct Grabber : public QObject
     const int win_id,
     const std::string& filename = "screengrab.png"
   );
-  ~Grabber() noexcept;
+  virtual ~Grabber() noexcept;
 
   public slots:
   void Grab() const noexcept;

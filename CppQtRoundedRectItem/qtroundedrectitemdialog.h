@@ -26,7 +26,7 @@ public:
   explicit QtRoundedRectItemDialog(QWidget *parent = 0);
   QtRoundedRectItemDialog(const QtRoundedRectItemDialog&) = delete;
   QtRoundedRectItemDialog& operator=(const QtRoundedRectItemDialog&) = delete;
-  ~QtRoundedRectItemDialog() noexcept;
+  virtual ~QtRoundedRectItemDialog() noexcept;
 
   void DisableSetSize() noexcept;
   void DoSomethingRandom() noexcept;

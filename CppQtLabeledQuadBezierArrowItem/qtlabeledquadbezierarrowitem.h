@@ -25,7 +25,7 @@ struct QtLabeledQuadBezierArrowItem : public QtRoundedEditRectItem
   );
   QtLabeledQuadBezierArrowItem(const QtLabeledQuadBezierArrowItem&) = delete;
   QtLabeledQuadBezierArrowItem& operator=(const QtLabeledQuadBezierArrowItem&) = delete;
-  ~QtLabeledQuadBezierArrowItem() noexcept {}
+  virtual ~QtLabeledQuadBezierArrowItem() noexcept {}
 
         std::shared_ptr<const QtQuadBezierArrowItem>  GetArrow() const noexcept { return m_arrow; }
   const std::shared_ptr<      QtQuadBezierArrowItem>& GetArrow()       noexcept { return m_arrow; }

@@ -1,6 +1,3 @@
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #include "qtarrowitem.h"
 
 #include <cassert>
@@ -15,8 +12,6 @@
 #include <QPainter>
 
 #include "geometry.h"
-// 
-#pragma GCC diagnostic pop
 
 const double ribi::QtArrowItem::m_click_easy_width = 10.0;
 
@@ -47,6 +42,11 @@ ribi::QtArrowItem::QtArrowItem(
 
   assert(this->line().p1() == QPointF(x1,y1));
   assert(this->line().p2() == QPointF(x2,y2));
+}
+
+ribi::QtArrowItem::~QtArrowItem() noexcept
+{
+
 }
 
 QRectF ribi::QtArrowItem::boundingRect() const

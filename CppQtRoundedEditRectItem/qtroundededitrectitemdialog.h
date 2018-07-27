@@ -28,7 +28,7 @@ public:
   explicit QtRoundedEditRectItemDialog(QWidget *parent = 0);
   QtRoundedEditRectItemDialog(const QtRoundedEditRectItemDialog&) = delete;
   QtRoundedEditRectItemDialog& operator=(const QtRoundedEditRectItemDialog&) = delete;
-  ~QtRoundedEditRectItemDialog() noexcept;
+  virtual ~QtRoundedEditRectItemDialog() noexcept;
 
   boost::shared_ptr<QtRoundedEditRectItem> GetItem() const noexcept { return m_item; }
 

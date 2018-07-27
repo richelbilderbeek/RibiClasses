@@ -20,9 +20,9 @@ struct Program;
 ///Class for all ProjectRichelBilderbeek menu dialogs
 struct MenuDialog
 {
-  MenuDialog() noexcept {}
+  MenuDialog();
 
-  virtual ~MenuDialog() noexcept {}
+  virtual ~MenuDialog() noexcept;
 
   ///Convert the C style array and string to C++ equivalents
   ///This is used when menu

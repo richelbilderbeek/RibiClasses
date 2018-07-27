@@ -1,13 +1,17 @@
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
-#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
 #include "menudialog.h"
 #include <cassert>
 #include <iterator>
 #include <iostream>
 
-#pragma GCC diagnostic pop
+ribi::MenuDialog::MenuDialog()
+{
+
+}
+
+ribi::MenuDialog::~MenuDialog() noexcept
+{
+
+}
 
 std::vector<std::string> ribi::MenuDialog::ConvertArguments(
   const int argc, const char * const argv[]) noexcept

@@ -24,7 +24,7 @@ public:
   explicit QtQuadBezierArrowDialog(QWidget *parent = 0);
   QtQuadBezierArrowDialog(const QtQuadBezierArrowDialog&) = delete;
   QtQuadBezierArrowDialog& operator=(const QtQuadBezierArrowDialog&) = delete;
-  ~QtQuadBezierArrowDialog() noexcept;
+  virtual ~QtQuadBezierArrowDialog() noexcept;
 
   Arrow GetArrow() const noexcept { return m_arrow; }
 

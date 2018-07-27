@@ -18,7 +18,7 @@ struct QtScopedDisable
     assert(m_t);
     m_t->setEnabled(false);
   }
-  ~QtScopedDisable() noexcept
+  virtual ~QtScopedDisable() noexcept
   {
     m_t->setEnabled(true);
   }
