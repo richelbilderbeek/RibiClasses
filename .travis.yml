@@ -54,12 +54,12 @@ before_script:
 
 script: 
   # Console
-  - qmake RibiClassesTestConsole.pro
-  - make
+  - qmake -qt=qt5 RibiClassesTestConsole.pro
+  - make -s
   - ./RibiClassesTestConsole
   # Desktop
-  - qmake RibiClassesTestDesktop.pro
-  - make
+  - qmake -qt=qt5 RibiClassesTestDesktop.pro
+  - make -s
   - ./RibiClassesTestDesktop
   # cppcheck
   - cppcheck --quiet . # Be mild
