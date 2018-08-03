@@ -3,7 +3,6 @@
 #include <QApplication>
 #include <QGraphicsScene>
 #include <QGraphicsView>
-#include "grabber.h"
 #include "qtroundededitrectitem.h"
 #include "qtquadbezierarrowitem.h"
 
@@ -61,14 +60,12 @@ void ribi::qtquadbezierarrowitem_test::all_tests()
 
     QGraphicsView * const view{new QGraphicsView};
     view->setScene(my_scene);
-    ribi::Grabber grabber(view->winId(),"QtQuadBezierArrowItemTest1.png");
     view->show();
     view->setGeometry(0,0,300,300);
     arrow->SetVerbosity(false);
     //Increase max value of i if screenshot does not show the QGraphicsView
     for (int i=0; i!=10; ++i) { qApp->processEvents(); }
     view->show();
-    grabber.Grab();
 
     //Same general tests
     QVERIFY(arrow->GetCenter().x() == 25.0);

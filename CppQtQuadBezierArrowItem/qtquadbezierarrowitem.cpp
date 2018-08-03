@@ -18,8 +18,7 @@
 #include <QTimer>
 
 #include "geometry.h"
-#include "grabber.h"
-// 
+
 #include "qtroundededitrectitem.h"
 #include "qtroundedrectitem.h"
 
