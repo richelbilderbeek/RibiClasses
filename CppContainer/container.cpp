@@ -4,8 +4,6 @@
 #include <boost/algorithm/string/erase.hpp>
 #include <boost/numeric/conversion/cast.hpp>
 
-#include "fuzzy_equal_to.h"
-
 template <class Container>
 std::string ContainerToStrImpl(const Container& c, const std::string& seperator)
 {
@@ -24,13 +22,18 @@ bool ribi::Container::AllAboutEqual(
   const double tolerance) const noexcept
 {
   assert(!v.empty());
-  fuzzy_equal_to f(tolerance);
   const double first_value{v[0]};
 
   return std::count_if(
     std::begin(v),
     std::end(v),
-    [f,first_value](const double x) { return f(first_value,x); }
+    [first_value, tolerance](const double rhs)
+    {
+      const double lhs = first_value;
+      assert(lhs != 0.0);
+      return rhs > (1.0 - tolerance) * lhs
+          && rhs < (1.0 + tolerance) * lhs;
+    }
   )
     == boost::numeric_cast<int>(v.size())
   ;
