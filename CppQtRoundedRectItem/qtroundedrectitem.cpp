@@ -45,7 +45,7 @@ ribi::QtRoundedRectItem::~QtRoundedRectItem() noexcept
 
 const QPen& ribi::GetCurrentPen(const QtRoundedRectItem& r) noexcept
 {
-  return IsSelected(r) || HasFocus(r) ? r.GetFocusPen() : r.GetContourPen();
+  return (IsSelected(r) || HasFocus(r)) ? r.GetFocusPen() : r.GetContourPen();
 }
 
 double ribi::QtRoundedRectItem::GetInnerHeight() const noexcept

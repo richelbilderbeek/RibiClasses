@@ -6,8 +6,8 @@
 
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/lexical_cast.hpp>
-#include <boost/make_shared.hpp>
-#include <boost/shared_ptr.hpp>
+//#include <boost/make_shared.hpp>
+//#include <boost/shared_ptr.hpp>
 
 std::string ribi::xml::Decode2(std::string s) noexcept
 {
