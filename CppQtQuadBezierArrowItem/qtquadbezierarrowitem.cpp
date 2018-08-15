@@ -479,7 +479,6 @@ void ribi::QtQuadBezierArrowItem::SetToPos(const QPointF& pos) noexcept
 
 QPainterPath ribi::QtQuadBezierArrowItem::shape() const noexcept
 {
-  assert(this->scene());
   const QPointF p_end_tail = GetHead();
   const QPointF p_end_head = GetTail();
 
