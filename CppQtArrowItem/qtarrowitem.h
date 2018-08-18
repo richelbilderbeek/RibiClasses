@@ -63,6 +63,13 @@ struct QtArrowItem : public QGraphicsLineItem
   ///Set the position of the tail
   void SetTailPos(const double x, const double y) noexcept;
 
+  ///Define a usertype for this QGraphicsItem, must be unique
+  enum { Type = UserType + 7 };
+  int type() const override
+  {
+    return Type;
+  }
+
 protected:
 
   QRectF boundingRect() const;
@@ -71,13 +78,6 @@ protected:
   virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
   virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem *, QWidget *);
   QPainterPath shape() const;
-
-  ///Define a usertype for this QGraphicsItem, must be unique
-  enum { Type = UserType + 7 };
-  int type() const override
-  {
-    return Type;
-  }
 
 private:
 
