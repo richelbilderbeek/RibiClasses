@@ -3,7 +3,7 @@
 #include "counter.h"
 #include "trace.h"
 
-void ribi::qtroundededitrectitem_test::all_tests()
+void ribi::QtRoundedEditRectItemTest::all_tests()
 {
   using namespace ribi;
   //using namespace ribi::QtRoundedEditRectItem;

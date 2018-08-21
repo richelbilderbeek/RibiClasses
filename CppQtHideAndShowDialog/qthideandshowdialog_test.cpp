@@ -4,14 +4,14 @@
 #include "qthideandshowdialog.h"
 #include "qthideandshowandthrowdialog.h"
 
-void ribi::qthideandshowdialog_test::default_construct()
+void ribi::QtHideAndShowDialogTest::default_construct()
 {
   QtHideAndShowDialog d;
   QVERIFY(!d.GetVersion().empty());
   QVERIFY(!d.GetVersionHistory().empty());
 }
 
-void ribi::qthideandshowdialog_test::parent_can_show_child()
+void ribi::QtHideAndShowDialogTest::parent_can_show_child()
 {
   QtHideAndShowDialog parent;
   QtHideAndShowDialog kid;
@@ -25,7 +25,7 @@ void ribi::qthideandshowdialog_test::parent_can_show_child()
   parent.ShowChild(&kid);
 }
 
-void ribi::qthideandshowdialog_test::parent_can_show_potentially_throwing_child()
+void ribi::QtHideAndShowDialogTest::parent_can_show_potentially_throwing_child()
 {
   QtHideAndShowDialog parent;
   QtHideAndShowAndThrowDialog kid;
@@ -39,7 +39,7 @@ void ribi::qthideandshowdialog_test::parent_can_show_potentially_throwing_child(
   parent.ShowChild(&kid);
 }
 
-void ribi::qthideandshowdialog_test::destroy_cleanly_upon_exception_in_derived_class()
+void ribi::QtHideAndShowDialogTest::destroy_cleanly_upon_exception_in_derived_class()
 {
   if ("this will freeze") return;
   QtHideAndShowDialog parent;

@@ -6,7 +6,7 @@
 #include "qtroundededitrectitem.h"
 #include "qtquadbezierarrowitem.h"
 
-void ribi::qtquadbezierarrowitem_test::all_tests()
+void ribi::QtQuadBezierArrowItemTest::all_tests()
 {
   using namespace ribi;
   //Render one QtQuadBezierArrowItem

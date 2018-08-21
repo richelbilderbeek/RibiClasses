@@ -3,7 +3,7 @@
 
 #include <QGraphicsSimpleTextItem>
 
-void ribi::qtimage_test::all_tests()
+void ribi::QtImageTest::all_tests()
 {
   using namespace ribi;
   //if (verbose) { TRACE("Default-construction of QtImage"); }

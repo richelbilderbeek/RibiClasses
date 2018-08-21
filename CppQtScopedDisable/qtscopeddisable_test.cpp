@@ -2,7 +2,7 @@
 #include "qtscopeddisable.h"
 #include <QDialog>
 
-void ribi::qtscopeddisable_test::default_construct()
+void ribi::QtScopedDisableTest::default_construct()
 {
   QDialog * const dialog{new QDialog};
   QVERIFY(dialog->isEnabled());

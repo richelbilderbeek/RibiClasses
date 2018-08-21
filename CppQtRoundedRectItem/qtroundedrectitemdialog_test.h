@@ -5,7 +5,7 @@
 
 namespace ribi {
 
-class qtroundedrectitemdialog_test : public QObject
+class QtRoundedRectItemDialogTest : public QObject
 {
     Q_OBJECT
 

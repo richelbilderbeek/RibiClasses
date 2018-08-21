@@ -5,7 +5,7 @@
 
 namespace ribi {
 
-class qtquadbezierarrowitem_test : public QObject
+class QtQuadBezierArrowItemTest : public QObject
 {
     Q_OBJECT
 

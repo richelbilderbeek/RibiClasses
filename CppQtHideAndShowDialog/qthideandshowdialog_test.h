@@ -5,7 +5,7 @@
 
 namespace ribi {
 
-class qthideandshowdialog_test : public QObject
+class QtHideAndShowDialogTest : public QObject
 {
     Q_OBJECT
 

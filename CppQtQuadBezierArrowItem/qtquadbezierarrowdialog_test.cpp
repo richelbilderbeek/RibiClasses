@@ -5,7 +5,7 @@
 #include "qtquadbezierarrowdialog.h"
 #include "qtquadbezierarrowitem.h"
 
-void ribi::qtquadbezierarrowdialog_test::all_tests()
+void ribi::QtQuadBezierArrowDialogTest::all_tests()
 {
   using namespace ribi;
   const boost::shared_ptr<QGraphicsItem> from{new QGraphicsSimpleTextItem};

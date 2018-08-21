@@ -4,7 +4,7 @@
 
 #include "trace.h"
 
-void ribi::qtgraphics_test::all_tests()
+void ribi::QtGraphicsTest::all_tests()
 {
   using namespace ribi;
   const bool verbose{false};

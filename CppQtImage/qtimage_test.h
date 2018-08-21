@@ -5,7 +5,7 @@
 
 namespace ribi {
 
-class qtimage_test : public QObject
+class QtImageTest : public QObject
 {
     Q_OBJECT
 

@@ -6,7 +6,7 @@
 #include "ui_qtroundedrectitemdialog.h"
 #include "trace.h"
 
-void ribi::qtroundedrectitemdialog_test::all_tests()
+void ribi::QtRoundedRectItemDialogTest::all_tests()
 {
   using namespace ribi;
   const bool verbose{false};

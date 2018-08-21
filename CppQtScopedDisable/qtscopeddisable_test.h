@@ -5,7 +5,7 @@
 
 namespace ribi {
 
-class qtscopeddisable_test : public QObject
+class QtScopedDisableTest : public QObject
 {
     Q_OBJECT
 

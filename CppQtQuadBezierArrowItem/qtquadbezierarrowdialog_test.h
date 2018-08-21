@@ -5,7 +5,7 @@
 
 namespace ribi {
 
-class qtquadbezierarrowdialog_test : public QObject
+class QtQuadBezierArrowDialogTest : public QObject
 {
     Q_OBJECT
 

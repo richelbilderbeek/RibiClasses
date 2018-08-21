@@ -15,6 +15,8 @@
 #include "qtroundedrectitem_test.h"
 #include "qtroundedrectitemdialog_test.h"
 
+using namespace ribi;
+
 int main(int argc, char *argv[])
 {
   QApplication a(argc, argv);
@@ -22,22 +24,23 @@ int main(int argc, char *argv[])
   //I am most interested in:
   //{ ribi::QtKeyboardFriendlyGraphicsViewTest t; error |= QTest::qExec(&t, argc, argv); }
   //{ ribi::QtRoundedRectItemTest t; error |= QTest::qExec(&t, argc, argv); }
-  //assert(1==2);
+  //{ QtQuadBezierArrowItemTest t; error |= QTest::qExec(&t, argc, argv); }
+  //assert(!"Don't forget to let Travis test everything");
 
   //These are all tests in alphabetical order
-  { ribi::GrabberTest t; error |= QTest::qExec(&t, argc, argv); }
-  { ribi::QtArrowItemTest t; error |= QTest::qExec(&t, argc, argv); }
-  { ribi::QtDisplayPosItemTest t; error |= QTest::qExec(&t, argc, argv); }
-  { ribi::qtgraphics_test t; error |= QTest::qExec(&t, argc, argv); }
-  { ribi::qthideandshowdialog_test t; error |= QTest::qExec(&t, argc, argv); }
-  { ribi::qtimage_test t; error |= QTest::qExec(&t, argc, argv); }
-  { ribi::QtKeyboardFriendlyGraphicsViewTest t; error |= QTest::qExec(&t, argc, argv); }
-  { ribi::qtquadbezierarrowdialog_test t; error |= QTest::qExec(&t, argc, argv); }
-  { ribi::qtquadbezierarrowitem_test t; error |= QTest::qExec(&t, argc, argv); }
-  { ribi::qtroundededitrectitem_test t; error |= QTest::qExec(&t, argc, argv); }
-  { ribi::qtroundedrectitemdialog_test t; error |= QTest::qExec(&t, argc, argv); }
-  { ribi::QtRoundedRectItemTest t; error |= QTest::qExec(&t, argc, argv); }
-  { ribi::qtscopeddisable_test t; error |= QTest::qExec(&t, argc, argv); }
+  { GrabberTest t; error |= QTest::qExec(&t, argc, argv); }
+  { QtArrowItemTest t; error |= QTest::qExec(&t, argc, argv); }
+  { QtDisplayPosItemTest t; error |= QTest::qExec(&t, argc, argv); }
+  { QtGraphicsTest t; error |= QTest::qExec(&t, argc, argv); }
+  { QtHideAndShowDialogTest t; error |= QTest::qExec(&t, argc, argv); }
+  { QtImageTest t; error |= QTest::qExec(&t, argc, argv); }
+  { QtKeyboardFriendlyGraphicsViewTest t; error |= QTest::qExec(&t, argc, argv); }
+  { QtQuadBezierArrowDialogTest t; error |= QTest::qExec(&t, argc, argv); }
+  { QtQuadBezierArrowItemTest t; error |= QTest::qExec(&t, argc, argv); }
+  { QtRoundedEditRectItemTest t; error |= QTest::qExec(&t, argc, argv); }
+  { QtRoundedRectItemDialogTest t; error |= QTest::qExec(&t, argc, argv); }
+  { QtRoundedRectItemTest t; error |= QTest::qExec(&t, argc, argv); }
+  { QtScopedDisableTest t; error |= QTest::qExec(&t, argc, argv); }
 
 
   if (error == 0) { std::cout << "Pass\n"; }

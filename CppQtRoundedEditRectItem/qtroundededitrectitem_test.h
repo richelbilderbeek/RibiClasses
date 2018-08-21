@@ -5,7 +5,7 @@
 
 namespace ribi {
 
-class qtroundededitrectitem_test : public QObject
+class QtRoundedEditRectItemTest : public QObject
 {
     Q_OBJECT
 
