@@ -64,7 +64,11 @@ protected:
   QRectF boundingRect() const;
   void hoverEnterEvent(QGraphicsSceneHoverEvent *);
   virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
-  void paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *);
+  void paint(
+    QPainter *painter,
+    const QStyleOptionGraphicsItem *,
+    QWidget *
+  ) override;
   QPainterPath shape() const;
 
 private:

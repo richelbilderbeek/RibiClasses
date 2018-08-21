@@ -12,8 +12,9 @@ namespace ribi {
 ///follows the three QGraphicsItem positions
 ///If mid is nullptr, the line will be straight
 ///The QGraphicsItems supplied will not be deleted by QtQuadBezierArrowItem
-struct QtQuadBezierArrowItem : public QGraphicsItem
+class QtQuadBezierArrowItem final : public QGraphicsItem
 {
+public:
   QtQuadBezierArrowItem(
     QGraphicsItem* const from,
     const bool tail,
@@ -101,7 +102,11 @@ struct QtQuadBezierArrowItem : public QGraphicsItem
   void mousePressEvent(QGraphicsSceneMouseEvent *event) noexcept override final;
 
   ///Paint a QtQuadBezierArrowItem
-  void paint(QPainter* painter, const QStyleOptionGraphicsItem *, QWidget *) noexcept override final;
+  void paint(
+    QPainter* painter,
+    const QStyleOptionGraphicsItem *,
+    QWidget *
+  ) override final;
 
   ///Set if the arrow has a point at the head
   void SetHasHead(const bool has_head) noexcept;

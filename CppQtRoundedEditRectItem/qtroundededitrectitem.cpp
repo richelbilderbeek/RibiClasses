@@ -166,7 +166,11 @@ std::vector<std::string> ribi::QtRoundedEditRectItem::GetVersionHistory() noexce
   };
 }
 
-void ribi::QtRoundedEditRectItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) noexcept
+void ribi::QtRoundedEditRectItem::paint(
+  QPainter* painter,
+  const QStyleOptionGraphicsItem* option,
+  QWidget* widget
+)
 {
   //Draws the rounded rectangle
   QtRoundedRectItem::paint(painter,option,widget);

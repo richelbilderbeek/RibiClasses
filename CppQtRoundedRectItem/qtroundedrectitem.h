@@ -110,7 +110,11 @@ class QtRoundedRectItem : public QGraphicsRectItem
 protected:
 
   virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
-  virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) noexcept override;
+  virtual void paint(
+    QPainter *painter,
+    const QStyleOptionGraphicsItem *option,
+    QWidget *widget
+  ) override;
 
   private:
   ///The pen by which the contour is drawn

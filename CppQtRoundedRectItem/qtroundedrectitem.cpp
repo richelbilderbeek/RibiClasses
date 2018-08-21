@@ -121,13 +121,19 @@ void ribi::QtRoundedRectItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
   this->scene()->update();
 }
 
-void ribi::QtRoundedRectItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *) noexcept
+void ribi::QtRoundedRectItem::paint(
+  QPainter *painter,
+  const QStyleOptionGraphicsItem *,
+  QWidget *
+)
 {
   painter->setBrush(brush());
 
-  const QPen thickest_pen = GetContourPen().widthF() > GetFocusPen().widthF()
-                         ? GetContourPen()
-                         : GetFocusPen();
+  const QPen thickest_pen{
+    GetContourPen().widthF() > GetFocusPen().widthF()
+    ? GetContourPen()
+    : GetFocusPen()
+  };
 
   if (this->isSelected() || this->hasFocus())
   {

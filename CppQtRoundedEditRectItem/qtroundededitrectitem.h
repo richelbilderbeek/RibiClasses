@@ -134,7 +134,11 @@ class QtRoundedEditRectItem : public QtRoundedRectItem
   }
 
 protected:
-  virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) noexcept;
+  virtual void paint(
+    QPainter* painter,
+    const QStyleOptionGraphicsItem* option,
+    QWidget* widget
+  ) override;
 
 private:
 

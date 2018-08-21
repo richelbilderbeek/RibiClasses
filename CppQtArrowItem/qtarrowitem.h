@@ -76,7 +76,11 @@ protected:
   virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
   virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
   virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
-  virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem *, QWidget *);
+  virtual void paint(
+    QPainter* painter,
+    const QStyleOptionGraphicsItem *,
+    QWidget *
+  ) override;
   QPainterPath shape() const;
 
 private:

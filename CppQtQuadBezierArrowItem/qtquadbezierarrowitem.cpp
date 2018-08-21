@@ -9,6 +9,7 @@
 #include <boost/math/constants/constants.hpp>
 
 #include <QCursor>
+#include <QDebug>
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 #include <QKeyEvent>
@@ -310,9 +311,29 @@ void ribi::QtQuadBezierArrowItem::mousePressEvent(QGraphicsSceneMouseEvent *even
   QGraphicsItem::mousePressEvent(event);
 }
 
-
-void ribi::QtQuadBezierArrowItem::paint(QPainter* painter, const QStyleOptionGraphicsItem *, QWidget *) noexcept
+void ribi::QtQuadBezierArrowItem::paint(
+  QPainter* painter,
+  const QStyleOptionGraphicsItem *,
+  QWidget *)
 {
+  #define FIX_BRAINWEAVER_ISSUE_288
+  #ifdef FIX_BRAINWEAVER_ISSUE_288
+  //https://github.com/richelbilderbeek/BrainWeaver/issues/288
+  //  if (!parentItem()->scene())
+  //  {
+  //    qCritical() << "STOPPED";
+  //    while (1)
+  //    {
+  //      qApp->processEvents();
+  //    }
+  //  }
+  if (!parentItem()->scene())
+  {
+    throw std::runtime_error("QtQuadBezierArrowItem must have a parent");
+  }
+  assert(parentItem()->scene());
+  #endif // FIX_BRAINWEAVER_ISSUE_288
+
   painter->setRenderHint(QPainter::Antialiasing);
 
   if (this->isSelected() || this->hasFocus())
