@@ -22,8 +22,6 @@ int main(int argc, char *argv[])
   QApplication a(argc, argv);
   int error = 0;
   //I am most interested in:
-  //{ ribi::QtKeyboardFriendlyGraphicsViewTest t; error |= QTest::qExec(&t, argc, argv); }
-  //{ ribi::QtRoundedRectItemTest t; error |= QTest::qExec(&t, argc, argv); }
   //{ QtQuadBezierArrowItemTest t; error |= QTest::qExec(&t, argc, argv); }
   //assert(!"Don't forget to let Travis test everything");
 

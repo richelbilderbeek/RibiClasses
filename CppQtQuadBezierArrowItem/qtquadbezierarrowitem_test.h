@@ -10,7 +10,7 @@ class QtQuadBezierArrowItemTest : public QObject
     Q_OBJECT
 
 private slots:
-  void all_tests();
+  void Paint();
 };
 
 } //~namespace ribi
