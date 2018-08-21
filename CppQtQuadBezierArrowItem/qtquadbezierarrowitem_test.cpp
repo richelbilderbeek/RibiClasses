@@ -13,6 +13,8 @@ void ribi::QtQuadBezierArrowItemTest::Paint()
   QGraphicsScene * const my_scene{new QGraphicsScene};
   QGraphicsView * const view{new QGraphicsView};
   view->setScene(my_scene);
+  view->show();
+  view->setGeometry(0, 0, 300, 300);
   std::vector<QGraphicsRectItem *> rects;
   //From
   {
@@ -41,26 +43,28 @@ void ribi::QtQuadBezierArrowItemTest::Paint()
     my_scene->addItem(rect);
     rects.push_back(rect);
   }
+  QGraphicsRectItem * const parent_item{
+    new QGraphicsRectItem
+  };
+  my_scene->addItem(parent_item);
   //Arrow
   QtQuadBezierArrowItem * arrow{new QtQuadBezierArrowItem(
       rects[0],
       false,
       rects[1],
       true,
-      rects[2]
+      rects[2],
+      parent_item //Temporarily supply parent item for https://github.com/richelbilderbeek/BrainWeaver/issues/288
     )
   };
   my_scene->addItem(arrow);
   //Scales
   {
-    QGraphicsLineItem * const xaxis{new QGraphicsLineItem(-100.0,0.0,100.0,0.0)};
-    QGraphicsLineItem * const yaxis{new QGraphicsLineItem(0.0,-100.0,0.0,100.0)};
+    QGraphicsLineItem * const xaxis{new QGraphicsLineItem(-100.0,    0.0, 100.0,   0.0)};
+    QGraphicsLineItem * const yaxis{new QGraphicsLineItem(   0.0, -100.0,   0.0, 100.0)};
     my_scene->addItem(xaxis);
     my_scene->addItem(yaxis);
   }
-
-  view->show();
-  view->setGeometry(0,0,300,300);
   arrow->SetVerbosity(false);
   //Increase max value of i if screenshot does not show the QGraphicsView
   for (int i=0; i!=10; ++i) { qApp->processEvents(); }
