@@ -39,7 +39,7 @@ struct QtArrowItem : public QGraphicsLineItem
   bool HasTail() const noexcept { return m_tail; }
 
   ///Respond to key presses
-  void keyPressEvent(QKeyEvent *event);
+  void keyPressEvent(QKeyEvent *event) override;
 
   ///Set the distance in pixels the user is allowed to be distance from the
   ///arrow head/tail to change it
@@ -73,15 +73,15 @@ struct QtArrowItem : public QGraphicsLineItem
 protected:
 
   QRectF boundingRect() const;
-  virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
-  virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-  virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
+  virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
+  virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+  virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
   virtual void paint(
     QPainter* painter,
     const QStyleOptionGraphicsItem *,
     QWidget *
   ) override;
-  QPainterPath shape() const;
+  QPainterPath shape() const override;
 
 private:
 
