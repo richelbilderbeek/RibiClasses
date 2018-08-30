@@ -20,7 +20,7 @@ struct QtRoundedRectItem;
 class QtRoundedRectItemDialog final : public QtHideAndShowDialog
 {
   Q_OBJECT
-    
+
 public:
 
   explicit QtRoundedRectItemDialog(QWidget *parent = 0);
