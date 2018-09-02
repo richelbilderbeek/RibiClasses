@@ -316,7 +316,7 @@ void ribi::QtQuadBezierArrowItem::paint(
   const QStyleOptionGraphicsItem *,
   QWidget *)
 {
-  #define FIX_BRAINWEAVER_ISSUE_288
+  //#define FIX_BRAINWEAVER_ISSUE_288
   #ifdef FIX_BRAINWEAVER_ISSUE_288
   //https://github.com/richelbilderbeek/BrainWeaver/issues/288
   //  if (!parentItem()->scene())
@@ -403,7 +403,7 @@ void ribi::QtQuadBezierArrowItem::paint(
 
       const QPointF p0(p_end_head.x(),p_end_head.y());
       const QPointF p1
-        = p0 + QPointF( 
+        = p0 + QPointF(
            std::cos(angle1) * sz,
            -std::sin(angle1) * sz);
       const QPointF p2
