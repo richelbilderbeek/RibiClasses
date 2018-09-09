@@ -316,24 +316,6 @@ void ribi::QtQuadBezierArrowItem::paint(
   const QStyleOptionGraphicsItem *,
   QWidget *)
 {
-  #define FIX_BRAINWEAVER_ISSUE_288
-  #ifdef FIX_BRAINWEAVER_ISSUE_288
-  //https://github.com/richelbilderbeek/BrainWeaver/issues/288
-  //  if (!parentItem()->scene())
-  //  {
-  //    qCritical() << "STOPPED";
-  //    while (1)
-  //    {
-  //      qApp->processEvents();
-  //    }
-  //  }
-  if (!parentItem()->scene())
-  {
-    throw std::runtime_error("QtQuadBezierArrowItem must have a parent");
-  }
-  assert(parentItem()->scene());
-  #endif // FIX_BRAINWEAVER_ISSUE_288
-
   painter->setRenderHint(QPainter::Antialiasing);
 
   if (this->isSelected() || this->hasFocus())
@@ -403,7 +385,7 @@ void ribi::QtQuadBezierArrowItem::paint(
 
       const QPointF p0(p_end_head.x(),p_end_head.y());
       const QPointF p1
-        = p0 + QPointF( 
+        = p0 + QPointF(
            std::cos(angle1) * sz,
            -std::sin(angle1) * sz);
       const QPointF p2
