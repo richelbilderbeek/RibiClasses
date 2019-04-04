@@ -1,7 +1,7 @@
 language: cpp
 compiler: gcc
 sudo: require
-dist: trusty
+dist: xenial
 
 before_install:
   # C++14
@@ -46,11 +46,16 @@ addons:
   apt: 
     packages: libboost-all-dev
 
-# Start virtual X server, from https://docs.travis-ci.com/user/gui-and-headless-browsers/
-before_script:
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
-  - sleep 3 # give xvfb some time to start
+# Xenial
+services:
+  - xvfb
+
+# Trusty
+# Start virtual X server
+# before_script:
+#  - "export DISPLAY=:99.0"
+#  - "sh -e /etc/init.d/xvfb start"
+#  - sleep 3 # give xvfb some time to start
 
 script: 
   # Console
