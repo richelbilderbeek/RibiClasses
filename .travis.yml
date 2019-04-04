@@ -15,9 +15,9 @@ install:
   # Get my folder
   - my_github=${PWD##*/}  
   # R, do this before 'sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-5 90'
-  - sudo apt-get install r-base r-base-dev
-  - sudo apt-get install libssh2-1-dev
-  - sudo Rscript install_r_packages.R
+  #- sudo apt-get install r-base r-base-dev
+  #- sudo apt-get install libssh2-1-dev
+  #- sudo Rscript install_r_packages.R
   # Qt5
   - sudo apt-get install -qq libqt5webkit5-dev qtdeclarative5-dev libqt5svg5*
   - export QMAKE=/usr/lib/x86_64-linux-gnu/qt5/bin/qmake
@@ -60,11 +60,11 @@ services:
 script: 
   # Console
   - qmake -qt=qt5 RibiClassesTestConsole.pro
-  - make -s
+  - make --silent
   - ./RibiClassesTestConsole
   # Desktop
   - qmake -qt=qt5 RibiClassesTestDesktop.pro
-  - make -s
+  - make --silent
   - ./RibiClassesTestDesktop
   # cppcheck
   - cppcheck --quiet . # Be mild
