@@ -12,9 +12,6 @@ include(../RibiLibraries/Rinside.pri)
 
 include(../plane/plane.pri)
 
-include(../RibiClasses/CppBeast/CppBeast.pri)
-include(../RibiClasses/CppBeast/CppBeastTest.pri)
-
 include(../RibiClasses/CppFastaFile/CppFastaFile.pri)
 include(../RibiClasses/CppFastaFile/CppFastaFileTest.pri)
 
