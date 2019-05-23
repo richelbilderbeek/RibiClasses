@@ -8,12 +8,9 @@ include(../RibiLibraries/GeneralConsoleTest.pri)
 
 include(../RibiLibraries/BoostAll.pri)
 include(../RibiLibraries/Apfloat.pri)
-include(../RibiLibraries/Rinside.pri)
+# include(../RibiLibraries/Rinside.pri)
 
 include(../plane/plane.pri)
-
-include(../RibiClasses/CppBeast/CppBeast.pri)
-include(../RibiClasses/CppBeast/CppBeastTest.pri)
 
 include(../RibiClasses/CppFastaFile/CppFastaFile.pri)
 include(../RibiClasses/CppFastaFile/CppFastaFileTest.pri)
@@ -35,7 +32,7 @@ include(../RibiClasses/CppQrcFile/CppQrcFileTest.pri)
 include(../RibiClasses/CppQtCreatorProFile/CppQtCreatorProFile.pri)
 include(../RibiClasses/CppQtCreatorProFile/CppQtCreatorProFileTest.pri)
 
-include(../RibiClasses/CppRibiRinside/CppRibiRinside.pri)
+# include(../RibiClasses/CppRibiRinside/CppRibiRinside.pri)
 
 include(../RibiClasses/CppRibiRandom/CppRibiRandom.pri)
 include(../RibiClasses/CppRibiRandom/CppRibiRandomTest.pri)

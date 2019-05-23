@@ -32,7 +32,8 @@ CONFIG(debug, debug|release) {
 }
 
 # Qt
-QT += core gui widgets concurrent opengl printsupport svg
+QT += core gui widgets
+# QT += core gui widgets concurrent opengl printsupport svg
 
 # Qt does not go well with -Weffc++
 #include(../RibiLibraries/DesktopApplicationNoWeffcpp.pri)
