@@ -7,7 +7,7 @@ then
   exit 1
 fi
 
-for filename in $(find . | egrep '\.cpp'`); 
+for filename in $(find . | egrep '\.cpp'); 
 do 
   gcov -n -o $OBJ_FILES_PATH $filename > /dev/null; 
 done
