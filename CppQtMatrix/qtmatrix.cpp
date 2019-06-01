@@ -8,8 +8,6 @@
 #include <boost/numeric/conversion/cast.hpp>
 #include <QTableWidget>
 
-
-
 #pragma GCC diagnostic pop
 
 std::string ribi::QtMatrix::GetVersion() noexcept
