@@ -1,9 +1,11 @@
 language: cpp
 dist: bionic
 compiler: gcc
-sudo: require
 
 install: 
+  - sudo apt update -qq
+  # Boost
+  - sudo apt install -qq libboost-all-dev
   # Get my folder
   - my_github=${PWD##*/}  
   # Qt5
