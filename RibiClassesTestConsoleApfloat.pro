@@ -35,9 +35,9 @@ include(../RibiClasses/CppXml/CppXmlTest.pri)
 #
 SOURCES += main_test_console.cpp
 
-# C++14
-CONFIG += c++14
-QMAKE_CXXFLAGS += -std=c++14
+# C++17
+CONFIG += c++17
+QMAKE_CXXFLAGS += -std=c++17
 
 # High warning levels
 # -Wshadow goes bad with apfloat
