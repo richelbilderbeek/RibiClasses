@@ -1,11 +1,11 @@
 #ifndef TRIANGLEMESHFACEIMPL_H
 #define TRIANGLEMESHFACEIMPL_H
 
-#pragma GCC diagnostic push
 
 
 
-#pragma GCC diagnostic pop
+
+
 
 namespace ribi {
 namespace trim {

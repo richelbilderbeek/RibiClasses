@@ -1,4 +1,4 @@
-#pragma GCC diagnostic push
+
 
 
 #include "qtrubiksclockwidget.h"
@@ -23,7 +23,7 @@
 #include "togglebutton.h"
 #include "togglebuttonwidget.h"
 
-#pragma GCC diagnostic pop
+
 
 ribi::ruco::QtRubiksClockWidget::QtRubiksClockWidget(
   const bool toggled,

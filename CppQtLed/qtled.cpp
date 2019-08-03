@@ -18,7 +18,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppQtLed.htm
 //---------------------------------------------------------------------------
-#pragma GCC diagnostic push
+
 
 
 
@@ -35,7 +35,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "testtimer.h"
 #include "trace.h"
 
-#pragma GCC diagnostic pop
+
 
 ribi::QtLed::QtLed(
   const double intensity,

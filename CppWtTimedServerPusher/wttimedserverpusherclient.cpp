@@ -18,7 +18,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppWtTimedServerPusherClient.htm
 //---------------------------------------------------------------------------
-#pragma GCC diagnostic push
+
 
 
 
@@ -28,7 +28,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "wttimedserverpusher.h"
 #include "wttimedserverpusherclient.h"
-#pragma GCC diagnostic pop
+
 
 ribi::WtTimedServerPusherClient::WtTimedServerPusherClient()
 {

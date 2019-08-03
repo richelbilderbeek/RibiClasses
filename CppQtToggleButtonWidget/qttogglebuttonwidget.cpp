@@ -18,7 +18,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppQtToggleButtonWidget.htm
 //---------------------------------------------------------------------------
-#pragma GCC diagnostic push
+
 
 
 
@@ -37,7 +37,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "togglebutton.h"
 #include "togglebuttonwidget.h"
 
-#pragma GCC diagnostic pop
+
 
 ribi::QtToggleButtonWidget::QtToggleButtonWidget(
   const bool toggled,

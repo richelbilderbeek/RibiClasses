@@ -1,4 +1,4 @@
-#pragma GCC diagnostic push
+
 
 #include "simplelinearregression.h"
 
@@ -8,7 +8,7 @@
 #include <numeric>
 #include <stdexcept>
 
-#pragma GCC diagnostic pop
+
 
 double ribi::SimpleLinearRegression::CalculateCovariance(
   const std::vector<double>& xs,

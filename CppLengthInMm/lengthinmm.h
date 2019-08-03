@@ -1,14 +1,14 @@
 #ifndef RIBI_LENGTHINMM_H
 #define RIBI_LENGTHINMM_H
 
-#pragma GCC diagnostic push
+
 
 
 
 #include <boost/units/quantity.hpp>
 #include <boost/units/systems/si/length.hpp>
 #include <boost/units/systems/si/prefixes.hpp>
-#pragma GCC diagnostic pop
+
 
 namespace ribi {
 

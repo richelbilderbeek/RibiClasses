@@ -18,7 +18,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppQtQuestionDialog.htm
 //---------------------------------------------------------------------------
-#pragma GCC diagnostic push
+
 
 
 #include "qtquestiondialog.h"
@@ -29,7 +29,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include <boost/lambda/lambda.hpp>
 
 #include "questiondialog.h"
-#pragma GCC diagnostic pop
+
 
 
 ribi::QtQuestionDialog::QtQuestionDialog(

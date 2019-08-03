@@ -22,7 +22,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <iostream>
 #include <numeric>
 
-#pragma GCC diagnostic push
+
 
 
 
@@ -39,7 +39,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "rainbow.h"
 #include "wtgroupwidget.h"
-#pragma GCC diagnostic pop
+
 
 ribi::WtGroupWidget::WtGroupWidget()
   : m_v{}

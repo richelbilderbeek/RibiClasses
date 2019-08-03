@@ -6,11 +6,11 @@
 
 #include "canvascolorsystem.h"
 
-#pragma GCC diagnostic push
+
 
 
 #include <boost/bimap.hpp>
-#pragma GCC diagnostic pop
+
 
 namespace ribi {
 

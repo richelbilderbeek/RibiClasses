@@ -21,7 +21,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #ifndef QTLEDWIDGET_H
 #define QTLEDWIDGET_H
 
-#pragma GCC diagnostic push
+
 
 
 
@@ -31,7 +31,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "led.h"       //Needed by MOC
 #include "ledwidget.h" //Needed by MOC
-#pragma GCC diagnostic pop
+
 
 namespace ribi {
 

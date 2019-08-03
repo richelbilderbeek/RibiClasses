@@ -4,10 +4,10 @@
 #include <string>
 #include <vector>
 
-#pragma GCC diagnostic push
+
 
 #include "floatingpointstateobserver.h"
-#pragma GCC diagnostic pop
+
 
 namespace ribi {
 

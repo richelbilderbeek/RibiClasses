@@ -1,7 +1,7 @@
 #ifndef GRABBER_H
 #define GRABBER_H
 
-#pragma GCC diagnostic push
+
 
 
 
@@ -9,7 +9,7 @@
 #include <vector>
 
 #include <QObject>
-#pragma GCC diagnostic pop
+
 
 namespace ribi {
 

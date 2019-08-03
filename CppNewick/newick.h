@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#pragma GCC diagnostic push
+
 
 
 
@@ -15,7 +15,7 @@
 #include "BigIntegerLibrary.hh"
 #include "newickcpp98.h"
 #include "newickstorage.h"
-#pragma GCC diagnostic pop
+
 
 namespace ribi {
 

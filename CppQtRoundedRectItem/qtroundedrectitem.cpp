@@ -1,4 +1,4 @@
-#pragma GCC diagnostic push
+
 
 
 
@@ -11,7 +11,7 @@
 #include <QGraphicsScene>
 #include <QKeyEvent>
 // 
-#pragma GCC diagnostic pop
+
 
 ribi::QtRoundedRectItem::QtRoundedRectItem(QGraphicsItem *parent)
  : QGraphicsRectItem(parent),

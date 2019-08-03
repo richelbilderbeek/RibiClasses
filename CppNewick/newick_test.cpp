@@ -1,4 +1,4 @@
-#pragma GCC diagnostic push
+
 
 #include "newick.h"
 
@@ -22,7 +22,7 @@
 
 #include "newickcpp98.h"
 
-#pragma GCC diagnostic pop
+
 
 void ribi_Newick_Test()
 {

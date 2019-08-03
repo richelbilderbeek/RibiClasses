@@ -1,7 +1,7 @@
 #ifndef RIBI_QTCANVASDIALOG_H
 #define RIBI_QTCANVASDIALOG_H
 
-#pragma GCC diagnostic push
+
 
 
 
@@ -11,7 +11,7 @@
 #include <boost/shared_ptr.hpp>
 
 #include "qthideandshowdialog.h"
-#pragma GCC diagnostic pop
+
 
 
 namespace ribi {

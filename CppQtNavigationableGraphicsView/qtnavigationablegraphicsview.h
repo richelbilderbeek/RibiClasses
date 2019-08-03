@@ -21,12 +21,12 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #ifndef QTNAVIGATIONABLEGRAPHICSVIEW_H
 #define QTNAVIGATIONABLEGRAPHICSVIEW_H
 
-#pragma GCC diagnostic push
+
 
 
 
 #include <QGraphicsView>
-#pragma GCC diagnostic pop
+
 
 struct QWheelEvent;
 

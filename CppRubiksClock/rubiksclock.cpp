@@ -18,7 +18,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppRubiksClock.htm
 //---------------------------------------------------------------------------
-#pragma GCC diagnostic push
+
 
 
 
@@ -41,7 +41,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "togglebuttonwidget.h"
 //
 
-#pragma GCC diagnostic pop
+
 
 ribi::ruco::Clock::Clock() noexcept
   : m_signal_clock_changed{},

@@ -18,7 +18,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppToggleButtonWidget.htm
 //---------------------------------------------------------------------------
-#pragma GCC diagnostic push
+
 
 
 
@@ -34,7 +34,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "togglebutton.h"
 
 
-#pragma GCC diagnostic pop
+
 
 ribi::ToggleButtonWidget::ToggleButtonWidget(
   const bool pressed,

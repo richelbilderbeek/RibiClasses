@@ -21,13 +21,13 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #ifndef SHINYBUTTONWIDGET_H
 #define SHINYBUTTONWIDGET_H
 
-#pragma GCC diagnostic push
+
 
 
 #include <boost/scoped_ptr.hpp>
 #include <boost/signals2.hpp>
 #include "widget.h"
-#pragma GCC diagnostic pop
+
 
 namespace ribi {
 

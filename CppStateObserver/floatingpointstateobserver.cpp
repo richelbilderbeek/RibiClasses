@@ -1,7 +1,7 @@
-#pragma GCC diagnostic push
+
 
 #include "floatingpointstateobserver.h"
-#pragma GCC diagnostic pop
+
 
 std::string ribi::FloatingPointStateObserver::GetVersion()
 {

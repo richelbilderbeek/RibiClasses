@@ -21,12 +21,12 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #ifndef QTLED_H
 #define QTLED_H
 
-#pragma GCC diagnostic push
+
 
 
 
 #include <QWidget>
-#pragma GCC diagnostic pop
+
 
 #include "led.h"
 

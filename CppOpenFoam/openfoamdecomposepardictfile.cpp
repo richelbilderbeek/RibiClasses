@@ -5,7 +5,7 @@
 #include <iostream>
 #include <stdexcept>
 
-#pragma GCC diagnostic push
+
 
 
 
@@ -20,7 +20,7 @@
 #include "openfoamheader.h"
 
 
-#pragma GCC diagnostic pop
+
 
 
 ribi::foam::DecomposeParDictFile::DecomposeParDictFile(

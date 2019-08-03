@@ -22,7 +22,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 
 #include <cassert>
 
-#pragma GCC diagnostic push
+
 
 
 
@@ -39,7 +39,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "richelbilderbeekprogram.h"
 #include "trace.h"
 #include "wtaboutdialog.h"
-#pragma GCC diagnostic pop
+
 
 ribi::RichelBilderbeek::WtGalleryDialog::Ui::Ui()
   : m_table(new Wt::WTable)

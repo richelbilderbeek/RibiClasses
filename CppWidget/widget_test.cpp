@@ -1,4 +1,4 @@
-#pragma GCC diagnostic push
+
 
 
 
@@ -9,7 +9,7 @@
 #include "geometry.h"
 
 
-#pragma GCC diagnostic pop
+
 
 
 void ribi::WidgetTest() noexcept

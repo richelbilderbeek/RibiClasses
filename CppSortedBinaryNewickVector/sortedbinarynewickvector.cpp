@@ -18,7 +18,7 @@
 //---------------------------------------------------------------------------
 // From http://www.richelbilderbeek.nl
 //---------------------------------------------------------------------------
-#pragma GCC diagnostic push
+
 
 #include "sortedbinarynewickvector.h"
 
@@ -32,7 +32,7 @@
 #include "binarynewickvector.h"
 #include "newick.h"
 
-#pragma GCC diagnostic pop
+
 
 ribi::SortedBinaryNewickVector::SortedBinaryNewickVector(const SortedBinaryNewickVector& rhs)
   : m_v(rhs.Peek())

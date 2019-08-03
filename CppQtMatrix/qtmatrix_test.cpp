@@ -1,4 +1,4 @@
-#pragma GCC diagnostic push
+
 
 
 #include "qtmatrix.h"
@@ -8,7 +8,7 @@
 #include <boost/numeric/conversion/cast.hpp>
 #include <QTableWidget>
 
-#pragma GCC diagnostic pop
+
 
 
 void ribi::QtMatrixTest() noexcept

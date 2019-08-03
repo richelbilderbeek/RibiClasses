@@ -1,4 +1,4 @@
-#pragma GCC diagnostic push
+
 
 
 
@@ -16,7 +16,7 @@
 #include "geometry.h"
 #include "textcanvas.h"
 
-#pragma GCC diagnostic pop
+
 
 void ribi::DialWidgetTest() noexcept
 {

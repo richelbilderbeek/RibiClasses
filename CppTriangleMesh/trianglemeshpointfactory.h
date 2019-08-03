@@ -4,7 +4,7 @@
 #include <iosfwd>
 #include <vector>
 
-#pragma GCC diagnostic push
+
 
 
 #include <boost/checked_delete.hpp>
@@ -15,7 +15,7 @@
 #include <boost/units/systems/si/length.hpp>
 #include "trianglemeshfwd.h"
 #include "trianglemeshwinding.h"
-#pragma GCC diagnostic pop
+
 
 namespace ribi {
 namespace trim {

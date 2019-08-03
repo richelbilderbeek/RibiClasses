@@ -22,7 +22,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <iostream>
 #include <numeric>
 
-#pragma GCC diagnostic push
+
 
 
 
@@ -42,7 +42,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "wtgroupwidget.h"
 #include "wtshapegroupwidget.h"
 #include "wtshapewidget.h"
-#pragma GCC diagnostic pop
+
 
 ribi::WtShapeGroupWidget::WtShapeGroupWidget()
   : m_v{}

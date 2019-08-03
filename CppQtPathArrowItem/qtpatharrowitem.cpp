@@ -18,7 +18,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppQtPathArrowItem.htm
 //---------------------------------------------------------------------------
-#pragma GCC diagnostic push
+
 
 
 #include "qtpatharrowitem.h"
@@ -35,7 +35,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include <QPainter>
 
 #include "geometry.h"
-#pragma GCC diagnostic pop
+
 
 const double ribi::QtPathArrowItem::m_click_easy_width = 10.0;
 

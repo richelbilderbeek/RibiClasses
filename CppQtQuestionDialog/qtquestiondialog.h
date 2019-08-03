@@ -21,13 +21,13 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #ifndef QTQUESTIONDIALOG_H
 #define QTQUESTIONDIALOG_H
 
-#pragma GCC diagnostic push
+
 
 
 #include <boost/shared_ptr.hpp>
 #include <boost/signals2.hpp>
 #include "qthideandshowdialog.h"
-#pragma GCC diagnostic pop
+
 
 namespace ribi {
 

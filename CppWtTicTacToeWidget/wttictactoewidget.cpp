@@ -18,7 +18,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppWtTicTacToeWidget.htm
 //---------------------------------------------------------------------------
-#pragma GCC diagnostic push
+
 
 
 
@@ -32,7 +32,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "wttictactoewidget.h"
 
 #include <cassert>
-#pragma GCC diagnostic pop
+
 
 ribi::WtTicTacToeWidget::WtTicTacToeWidget()
   : m_signal_has_winner{},

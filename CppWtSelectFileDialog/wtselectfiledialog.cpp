@@ -18,7 +18,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppWtSelectFileDialog.htm
 //---------------------------------------------------------------------------
-#pragma GCC diagnostic push
+
 
 
 
@@ -33,7 +33,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 
 #include "fileio.h"
 
-#pragma GCC diagnostic pop
+
 
 ///The path this dialog starts at
 std::string ribi::WtSelectFileDialog::m_path = "";

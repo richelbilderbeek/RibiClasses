@@ -1,4 +1,4 @@
-#pragma GCC diagnostic push
+
 
 
 #include "qtublasvectorintmodel.h"
@@ -8,7 +8,7 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/numeric/ublas/vector.hpp>
 #include "matrix.h"
-#pragma GCC diagnostic pop
+
 
 void ribi::QtUblasVectorIntModel::Test() noexcept
 {

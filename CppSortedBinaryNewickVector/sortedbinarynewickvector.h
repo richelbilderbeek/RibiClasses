@@ -22,11 +22,11 @@
 #define SORTEDBINARYNEWICKVECTOR_H
 
 #include <vector>
-#pragma GCC diagnostic push
+
 
 #include "binarynewickvector.h"
 #include "newick.h"
-#pragma GCC diagnostic pop
+
 
 namespace ribi {
 

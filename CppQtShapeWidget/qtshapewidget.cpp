@@ -18,7 +18,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppQtShapeWidget.htm
 //---------------------------------------------------------------------------
-#pragma GCC diagnostic push
+
 
 
 #include "qtshapewidget.h"
@@ -36,7 +36,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "shape.h"
 #include "trace.h"
 
-#pragma GCC diagnostic pop
+
 
 ribi::QtShapeWidget::QtShapeWidget(QWidget *parent)
   : QWidget(parent),

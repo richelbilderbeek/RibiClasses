@@ -4,7 +4,7 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
-#pragma GCC diagnostic push
+
 
 
 #include <boost/make_shared.hpp>
@@ -24,7 +24,7 @@
 #include "trianglecppmain.h"
 #endif
 
-#pragma GCC diagnostic pop
+
 
 ribi::TriangleFile::TriangleFile(
   const Polygons& polygons,

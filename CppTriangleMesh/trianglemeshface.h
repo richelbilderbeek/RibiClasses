@@ -5,7 +5,7 @@
 #include <set>
 #include <vector>
 
-#pragma GCC diagnostic push
+
 
 
 
@@ -15,7 +15,7 @@
 #include <boost/signals2.hpp>
 #include "trianglemeshfaceorientation.h"
 #include "trianglemeshfwd.h"
-#pragma GCC diagnostic pop
+
 
 namespace ribi {
 namespace trim {

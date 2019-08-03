@@ -18,7 +18,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppNewick.htm
 //---------------------------------------------------------------------------
-#pragma GCC diagnostic push
+
 
 #include "newick.h"
 
@@ -42,7 +42,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 
 #include "newickcpp98.h"
 
-#pragma GCC diagnostic pop
+
 
 //From http://www.richelbilderbeek.nl/CppAccumulate_if.htm
 template

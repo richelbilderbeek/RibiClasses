@@ -5,14 +5,14 @@
 #include <string>
 #include <vector>
 
-#pragma GCC diagnostic push
+
 
 
 #include <boost/signals2.hpp>
 #include "canvas.h"
 #include "canvascolorsystem.h"
 #include "canvascoordinatsystem.h"
-#pragma GCC diagnostic pop
+
 
 struct QRegExp;
 

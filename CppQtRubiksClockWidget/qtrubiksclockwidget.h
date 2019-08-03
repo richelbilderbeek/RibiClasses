@@ -24,7 +24,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <string>
 #include <vector>
 
-#pragma GCC diagnostic push
+
 
 
 #include <boost/signals2.hpp>
@@ -34,7 +34,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "rubiksclock.h"       //Required by MOC
 #include "rubiksclockfwd.h"
 #include "rubiksclockwidget.h" //Required by MOC
-#pragma GCC diagnostic pop
+
 
 namespace Wt { struct WMouseEventEvent; }
 struct QPainter;

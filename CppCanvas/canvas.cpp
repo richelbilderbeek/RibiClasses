@@ -7,7 +7,7 @@
 #include <functional>
 #include <iterator>
 
-#pragma GCC diagnostic push
+
 
 
 
@@ -20,7 +20,7 @@
 #include "canvascolorsystems.h"
 #include "canvascoordinatsystems.h"
 #include "fileio.h"
-#pragma GCC diagnostic pop
+
 
 ribi::Canvas::Canvas()
 {

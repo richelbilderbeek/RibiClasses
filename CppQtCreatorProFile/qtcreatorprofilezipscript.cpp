@@ -1,4 +1,4 @@
-#pragma GCC diagnostic push
+
 
 
 
@@ -20,7 +20,7 @@
 #include "qtcreatorprofile.h"
 
 
-#pragma GCC diagnostic pop
+
 
 struct PathOrdering
 {

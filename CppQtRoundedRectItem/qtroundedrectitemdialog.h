@@ -1,13 +1,13 @@
 #ifndef QTROUNDEDRECTDIALOG_H
 #define QTROUNDEDRECTDIALOG_H
 
-#pragma GCC diagnostic push
+
 
 
 
 #include <boost/shared_ptr.hpp>
 #include "qthideandshowdialog.h"
-#pragma GCC diagnostic pop
+
 
 namespace Ui {
 class QtRoundedRectItemDialog;

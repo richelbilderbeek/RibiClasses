@@ -1,10 +1,10 @@
-#pragma GCC diagnostic push
+
 
 #include "alphabetagammafilter.h"
 
 #include <cassert>
 
-#pragma GCC diagnostic pop
+
 
 ribi::AlphaBetaGammaFilter::AlphaBetaGammaFilter(
   const double alpha,

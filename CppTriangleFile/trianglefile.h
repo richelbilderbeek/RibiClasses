@@ -5,7 +5,7 @@
 #include <vector>
 #include <memory>
 
-#pragma GCC diagnostic push
+
 
 
 
@@ -16,7 +16,7 @@
 #include <boost/units/systems/si/length.hpp>
 #include <boost/units/systems/si/plane_angle.hpp>
 #include <boost/units/quantity.hpp>
-#pragma GCC diagnostic pop
+
 
 namespace ribi {
 

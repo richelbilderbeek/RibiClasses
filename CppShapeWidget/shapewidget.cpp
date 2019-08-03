@@ -1,4 +1,4 @@
-#pragma GCC diagnostic push
+
 
 
 #include "shapewidget.h"
@@ -12,7 +12,7 @@
 
 //#include "trace.h"
 
-#pragma GCC diagnostic pop
+
 
 ribi::ShapeWidget::ShapeWidget(
   const int n_corners,

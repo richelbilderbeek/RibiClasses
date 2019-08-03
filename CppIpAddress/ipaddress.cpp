@@ -18,7 +18,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppIpAddress.htm
 //---------------------------------------------------------------------------
-#pragma GCC diagnostic push
+
 
 
 #include "ipaddress.h"
@@ -26,7 +26,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <stdexcept>
 
 #include <boost/xpressive/xpressive.hpp>
-#pragma GCC diagnostic pop
+
 
 ribi::IpAddress::IpAddress(const std::string& ip_address)
   : m_ip_address{ip_address}

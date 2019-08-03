@@ -18,7 +18,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppMatrix.htm
 //---------------------------------------------------------------------------
-#pragma GCC diagnostic push
+
 
 
 #include "matrix.h"
@@ -31,7 +31,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <boost/numeric/ublas/matrix.hpp>
 #include <boost/numeric/ublas/matrix_proxy.hpp>
 #include <boost/numeric/ublas/blas.hpp> //boost::numeric::ublas::equals
-#pragma GCC diagnostic pop
+
 
 #include "ribi_random.h"
 

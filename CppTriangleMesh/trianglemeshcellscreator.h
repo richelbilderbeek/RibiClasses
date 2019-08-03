@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#pragma GCC diagnostic push
+
 
 
 
@@ -14,7 +14,7 @@
 
 #include "trianglemeshfwd.h"
 #include "trianglemeshcreateverticalfacesstrategy.h"
-#pragma GCC diagnostic pop
+
 
 namespace ribi {
 namespace trim {

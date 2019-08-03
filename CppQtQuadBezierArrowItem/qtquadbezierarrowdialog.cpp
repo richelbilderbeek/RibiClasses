@@ -1,4 +1,4 @@
-#pragma GCC diagnostic push
+
 
 
 
@@ -16,7 +16,7 @@
 // 
 
 #include "ui_qtquadbezierarrowdialog.h"
-#pragma GCC diagnostic pop
+
 
 ribi::QtQuadBezierArrowDialog::QtQuadBezierArrowDialog(QWidget *parent)
   : QtHideAndShowDialog(parent),

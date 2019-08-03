@@ -4,12 +4,12 @@
 #include <string>
 #include <vector>
 
-#pragma GCC diagnostic push
+
 
 
 #include <boost/numeric/ublas/matrix.hpp>
 #include <boost/numeric/ublas/vector.hpp>
-#pragma GCC diagnostic pop
+
 
 struct QTableWidget;
 

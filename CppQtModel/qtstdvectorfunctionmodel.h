@@ -21,12 +21,12 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #ifndef QTSTDVECTORFUNCTIONMODEL_H
 #define QTSTDVECTORFUNCTIONMODEL_H
 
-#pragma GCC diagnostic push
+
 
 
 #include <boost/numeric/ublas/vector.hpp>
 #include <QAbstractTableModel>
-#pragma GCC diagnostic pop
+
 
 namespace ribi {
 

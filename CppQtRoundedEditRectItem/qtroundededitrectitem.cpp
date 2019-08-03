@@ -1,4 +1,4 @@
-#pragma GCC diagnostic push
+
 
 
 
@@ -16,7 +16,7 @@
 
 #include "container.h"
 
-#pragma GCC diagnostic pop
+
 
 const ribi::QtRoundedEditRectItem::Padding ribi::QtRoundedEditRectItem::m_text_padding(3.0,0.0,0.0,3.0);
 
@@ -203,7 +203,7 @@ void ribi::QtRoundedEditRectItem::paint(
   }
 }
 
-#pragma GCC diagnostic push
+
 
 void ribi::QtRoundedEditRectItem::SetFont(const QFont& font) noexcept
 {
@@ -213,7 +213,7 @@ void ribi::QtRoundedEditRectItem::SetFont(const QFont& font) noexcept
     this->update();
   }
 }
-#pragma GCC diagnostic pop
+
 
 void ribi::QtRoundedEditRectItem::SetPadding(const Padding& padding) noexcept
 {

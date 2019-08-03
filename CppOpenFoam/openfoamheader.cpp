@@ -5,7 +5,7 @@
 #include <sstream>
 #include <stdexcept>
 
-#pragma GCC diagnostic push
+
 
 
 #include <boost/algorithm/string/trim.hpp>
@@ -13,7 +13,7 @@
 #include "fileio.h"
 
 
-#pragma GCC diagnostic pop
+
 
 ribi::foam::Header::Header(
     const std::string& class_name,

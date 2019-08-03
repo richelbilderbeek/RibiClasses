@@ -18,7 +18,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppRibiRandom.htm
 //---------------------------------------------------------------------------
-#pragma GCC diagnostic push
+
 
 
 
@@ -30,7 +30,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
 
-#pragma GCC diagnostic pop
+
 
 struct ribi::Random::RandomImpl
 {

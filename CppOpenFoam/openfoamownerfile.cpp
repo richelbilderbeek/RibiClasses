@@ -5,7 +5,7 @@
 #include <iostream>
 #include <stdexcept>
 
-#pragma GCC diagnostic push
+
 
 
 
@@ -22,7 +22,7 @@
 #include "openfoamownerfileitem.h"
 
 
-#pragma GCC diagnostic pop
+
 
 
 ribi::foam::OwnerFile::OwnerFile(

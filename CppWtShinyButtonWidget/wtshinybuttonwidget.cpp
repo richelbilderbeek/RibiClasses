@@ -20,7 +20,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 #include <iostream>
 
-#pragma GCC diagnostic push
+
 
 
 
@@ -37,7 +37,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "shinybutton.h"
 #include "shinybuttonwidget.h"
 #include "wtshinybuttonwidget.h"
-#pragma GCC diagnostic pop
+
 
 ribi::WtShinyButtonWidget::WtShinyButtonWidget(
   const double color,

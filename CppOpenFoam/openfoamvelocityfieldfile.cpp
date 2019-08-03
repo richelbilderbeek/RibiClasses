@@ -5,7 +5,7 @@
 #include <iostream>
 #include <stdexcept>
 
-#pragma GCC diagnostic push
+
 
 
 
@@ -21,7 +21,7 @@
 #include "openfoampatchfieldtypes.h"
 
 
-#pragma GCC diagnostic pop
+
 
 
 ribi::foam::VelocityFieldFile::VelocityFieldFile(

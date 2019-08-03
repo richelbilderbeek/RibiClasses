@@ -24,7 +24,7 @@
 #include "ribi_regex.h"
 #include "xml.h"
 
-#pragma GCC diagnostic pop
+
 
 void ribi::DrawCanvasTest() noexcept
 {

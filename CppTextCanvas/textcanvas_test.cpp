@@ -1,4 +1,4 @@
-#pragma GCC diagnostic push
+
 
 
 #include "textcanvas.h"
@@ -14,7 +14,7 @@
 
 #include "dotmatrixstring.h"
 
-#pragma GCC diagnostic pop
+
 
 #ifndef NDEBUG
 //Boost.Test here

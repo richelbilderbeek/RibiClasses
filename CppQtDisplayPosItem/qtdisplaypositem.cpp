@@ -1,4 +1,4 @@
-#pragma GCC diagnostic push
+
 
 
 
@@ -7,7 +7,7 @@
 #include <cassert>
 #include <sstream>
 
-#pragma GCC diagnostic pop
+
 
 ribi::QtDisplayPosItem::QtDisplayPosItem(QGraphicsItem *parent)
  : QGraphicsSimpleTextItem(parent)
@@ -35,13 +35,13 @@ std::vector<std::string> ribi::QtDisplayPosItem::GetVersionHistory() noexcept
 }
 
 
-#pragma GCC diagnostic push
+
 
 void ribi::QtDisplayPosItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
   QGraphicsSimpleTextItem::mouseMoveEvent(event);
 }
-#pragma GCC diagnostic pop
+
 
 void ribi::QtDisplayPosItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {

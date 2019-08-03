@@ -1,13 +1,13 @@
 #ifndef RIBI_REGEX_H
 #define RIBI_REGEX_H
 
-#pragma GCC diagnostic push
+
 
 
 
 #include <string>
 #include <vector>
-#pragma GCC diagnostic pop
+
 
 namespace ribi {
 

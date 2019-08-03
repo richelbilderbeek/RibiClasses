@@ -24,7 +24,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <string>
 #include <vector>
 
-#pragma GCC diagnostic push
+
 
 
 #include <boost/scoped_ptr.hpp>
@@ -34,7 +34,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "shape.h" //For MOC
 #include "shapewidget.h" //For MOC
-#pragma GCC diagnostic pop
+
 
 namespace ribi {
 

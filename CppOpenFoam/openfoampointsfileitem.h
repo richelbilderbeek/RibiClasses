@@ -5,12 +5,12 @@
 #include <vector>
 #include <iosfwd>
 
-#pragma GCC diagnostic push
+
 
 
 
 #include <boost/geometry.hpp>
-#pragma GCC diagnostic pop
+
 
 namespace ribi {
 namespace foam {

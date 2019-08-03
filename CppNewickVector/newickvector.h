@@ -23,13 +23,13 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 
 #include <string>
 #include <vector>
-#pragma GCC diagnostic push
+
 
 
 #include <boost/lexical_cast.hpp>
 #include "BigIntegerLibrary.hh"
 #include "newickstorage.h"
-#pragma GCC diagnostic pop
+
 
 namespace ribi {
 

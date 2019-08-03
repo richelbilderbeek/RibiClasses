@@ -2,7 +2,7 @@
 
 #include <cassert>
 
-#pragma GCC diagnostic push
+
 
 
 #include <boost/algorithm/string.hpp>
@@ -16,7 +16,7 @@
 #include "trianglemeshpoint.h"
 #include "trianglemeshpointfactory.h"
 
-#pragma GCC diagnostic pop
+
 
 ribi::trim::Template::Template(
   const std::string& filename_node,

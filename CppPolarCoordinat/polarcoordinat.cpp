@@ -1,7 +1,7 @@
-#pragma GCC diagnostic push
+
 
 #include "polarcoordinat.h"
-#pragma GCC diagnostic pop
+
 
 /*
 template<>

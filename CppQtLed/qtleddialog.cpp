@@ -20,7 +20,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 #include "qtleddialog.h"
 
-#pragma GCC diagnostic push
+
 
 
 
@@ -34,7 +34,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "testtimer.h"
 #include "trace.h"
 #include "ui_qtleddialog.h"
-#pragma GCC diagnostic pop
+
 
 ribi::QtLedDialog::QtLedDialog(QWidget *parent)
   : QtHideAndShowDialog(parent),

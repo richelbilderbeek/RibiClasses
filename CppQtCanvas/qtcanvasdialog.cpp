@@ -2,13 +2,13 @@
 
 #include <cassert>
 
-#pragma GCC diagnostic push
+
 
 
 #include <QVBoxLayout>
 
 #include "qtcanvas.h"
-#pragma GCC diagnostic pop
+
 
 ribi::QtCanvasDialog::QtCanvasDialog(QtCanvas * const qtcanvas)
   : m_qtcanvas(qtcanvas)

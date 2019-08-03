@@ -1,6 +1,6 @@
 #include "grabber.h"
 
-#pragma GCC diagnostic push
+
 
 
 
@@ -13,7 +13,7 @@
 
 
 // 
-#pragma GCC diagnostic pop
+
 
 ribi::Grabber::Grabber(
   const int win_id,

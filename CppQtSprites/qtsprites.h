@@ -21,10 +21,10 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #ifndef QTSPRITES_H
 #define QTSPRITES_H
 
-#pragma GCC diagnostic push
+
 
 #include <QPixmap>
-#pragma GCC diagnostic pop
+
 
 namespace ribi {
 

@@ -5,12 +5,12 @@
 #include <string>
 #include <vector>
 
-#pragma GCC diagnostic push
+
 
 #include <boost/checked_delete.hpp>
 #include <boost/shared_ptr.hpp>
 #include "qtcreatorprofile.h"
-#pragma GCC diagnostic pop
+
 
 namespace ribi {
 

@@ -8,10 +8,10 @@
 #include <stdexcept>
 #include <map>
 
-#pragma GCC diagnostic push
 
 
-#pragma GCC diagnostic pop
+
+
 
 #include "approximator.h"
 #include "exceptionnoextrapolation.h"

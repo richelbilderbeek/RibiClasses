@@ -1,11 +1,11 @@
-#pragma GCC diagnostic push
+
 
 #include "multiintegerstateobserver.h"
 
 #include <cassert>
 
 
-#pragma GCC diagnostic pop
+
 
 ribi::MultiIntegerStateObserver::MultiIntegerStateObserver(
   std::vector<boost::shared_ptr<IntegerStateObserver> >& filters)

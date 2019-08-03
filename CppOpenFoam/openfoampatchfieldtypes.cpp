@@ -2,7 +2,7 @@
 
 #include <stdexcept>
 
-#pragma GCC diagnostic push
+
 
 
 
@@ -10,7 +10,7 @@
 
 
 
-#pragma GCC diagnostic pop
+
 
 boost::bimap<ribi::foam::PatchFieldType,std::string> ribi::foam::PatchFieldTypes::m_map;
 

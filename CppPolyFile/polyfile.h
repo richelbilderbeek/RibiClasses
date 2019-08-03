@@ -5,12 +5,12 @@
 #include <vector>
 #include <boost/shared_ptr.hpp>
 
-#pragma GCC diagnostic push
+
 
 
 
 #include <boost/geometry/geometries/point_xy.hpp>
-#pragma GCC diagnostic pop
+
 
 namespace ribi {
 

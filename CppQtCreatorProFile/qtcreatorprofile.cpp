@@ -1,4 +1,4 @@
-#pragma GCC diagnostic push
+
 
 
 #include "qtcreatorprofile.h"
@@ -22,7 +22,7 @@
 
 
 
-#pragma GCC diagnostic pop
+
 
 ribi::QtCreatorProFile::QtCreatorProFile(const std::string& filename)
   :

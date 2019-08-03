@@ -18,7 +18,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppLed.htm
 //---------------------------------------------------------------------------
-#pragma GCC diagnostic push
+
 
 
 
@@ -29,7 +29,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include <boost/lexical_cast.hpp>
 
-#pragma GCC diagnostic pop
+
 
 ribi::Led::Led(
   const double intensity,

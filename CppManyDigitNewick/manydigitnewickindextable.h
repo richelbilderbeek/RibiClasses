@@ -21,13 +21,13 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #ifndef MANYDIGITINDEXTABLE_H
 #define MANYDIGITINDEXTABLE_H
 
-#pragma GCC diagnostic push
+
 
 
 #include <vector>
 #include "multivector.h"
 #include "manydigitnewickcoordinat.h"
-#pragma GCC diagnostic push
+
 
 namespace ribi {
 

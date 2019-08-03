@@ -5,13 +5,13 @@
 #include <string>
 #include <vector>
 
-#pragma GCC diagnostic push
+
 
 
 #include <boost/checked_delete.hpp>
 #include <boost/signals2.hpp>
 #include "canvas.h"
-#pragma GCC diagnostic pop
+
 
 struct QImage;
 

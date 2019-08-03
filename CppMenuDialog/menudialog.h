@@ -5,13 +5,13 @@
 #include <vector>
 #include <string>
 
-#pragma GCC diagnostic push
+
 
 
 
 #include "about.h"
 #include "help.h"
-#pragma GCC diagnostic pop
+
 
 namespace ribi {
 

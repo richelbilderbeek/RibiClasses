@@ -1,4 +1,4 @@
-#pragma GCC diagnostic push
+
 
 
 #include "modelfunctionparser.h"
@@ -15,7 +15,7 @@
 #include "templocale.h"
 
 
-#pragma GCC diagnostic pop
+
 
 ribi::ModelFunctionParser::ModelFunctionParser(
   std::string my_function,

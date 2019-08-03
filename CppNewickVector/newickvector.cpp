@@ -1,4 +1,4 @@
-#pragma GCC diagnostic push
+
 
 
 #include "newickvector.h"
@@ -25,7 +25,7 @@
 #include "newick.h"
 
 
-#pragma GCC diagnostic pop
+
 
 ribi::NewickVector::NewickVector(const std::string& s)
   : m_v{Newick().StringToNewick(s)}

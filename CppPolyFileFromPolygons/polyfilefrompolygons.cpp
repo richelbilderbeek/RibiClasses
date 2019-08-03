@@ -3,7 +3,7 @@
 #include <cassert>
 #include <fstream>
 
-#pragma GCC diagnostic push
+
 
 
 
@@ -13,7 +13,7 @@
 #include "geometry.h"
 
 
-#pragma GCC diagnostic pop
+
 
 
 ribi::PolyFileFromPolygons::PolyFileFromPolygons(

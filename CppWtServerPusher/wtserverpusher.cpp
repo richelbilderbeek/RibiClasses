@@ -22,7 +22,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <chrono>
 #include <numeric>
 
-#pragma GCC diagnostic push
+
 
 
 
@@ -32,7 +32,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <Wt/WServer>
 
 #include "wtserverpusher.h"
-#pragma GCC diagnostic pop
+
 
 boost::scoped_ptr<ribi::WtServerPusher> ribi::WtServerPusher::m_instance;
 

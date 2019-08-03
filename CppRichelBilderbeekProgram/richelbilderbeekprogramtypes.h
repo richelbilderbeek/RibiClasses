@@ -1,13 +1,13 @@
 #ifndef RIBI_RICHELBILDERBEEKPROGRAMTYPES_H
 #define RIBI_RICHELBILDERBEEKPROGRAMTYPES_H
 
-#pragma GCC diagnostic push
+
 
 
 
 #include <boost/bimap.hpp>
 #include "richelbilderbeekprogramtype.h"
-#pragma GCC diagnostic pop
+
 
 namespace ribi {
 

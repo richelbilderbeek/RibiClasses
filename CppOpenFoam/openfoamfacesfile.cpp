@@ -5,7 +5,7 @@
 #include <iostream>
 #include <stdexcept>
 
-#pragma GCC diagnostic push
+
 
 
 #include <boost/algorithm/string/trim.hpp>
@@ -22,7 +22,7 @@
 #include "openfoamparseerror.h"
 
 
-#pragma GCC diagnostic pop
+
 
 
 ribi::foam::FacesFile::FacesFile(

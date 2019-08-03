@@ -18,7 +18,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppQtModel.htm
 //---------------------------------------------------------------------------
-#pragma GCC diagnostic push
+
 
 
 #include "qtublasvectorintmodel.h"
@@ -30,7 +30,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "matrix.h"
 
 
-#pragma GCC diagnostic pop
+
 
 ribi::QtUblasVectorIntModel::QtUblasVectorIntModel(QObject *parent) noexcept
   : QAbstractTableModel(parent),

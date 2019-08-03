@@ -2,7 +2,7 @@
 #define RIBI_OPENFOAMFACE_H
 
 #include <vector>
-#pragma GCC diagnostic push
+
 
 
 
@@ -13,7 +13,7 @@
 #include <boost/geometry/geometries/polygon.hpp>
 #endif
 #include "openfoamfwd.h"
-#pragma GCC diagnostic pop
+
 
 namespace ribi {
 

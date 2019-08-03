@@ -22,12 +22,12 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include <cassert>
 
-#pragma GCC diagnostic push
+
 
 
 
 #include "testtimer.h"
-#pragma GCC diagnostic pop
+
 
 ribi::Biology::Biology() noexcept
 {

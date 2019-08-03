@@ -1,12 +1,12 @@
 #ifndef QTHIDEANDSHOWANDTHROWDIALOG_H
 #define QTHIDEANDSHOWANDTHROWDIALOG_H
 
-#pragma GCC diagnostic push
+
 
 
 
 #include "qthideandshowdialog.h"
-#pragma GCC diagnostic pop
+
 
 namespace ribi {
 

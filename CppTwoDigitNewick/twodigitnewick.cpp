@@ -18,7 +18,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/ToolTestTwoDigitNewick.htm
 //---------------------------------------------------------------------------
-#pragma GCC diagnostic push
+
 
 #include "twodigitnewick.h"
 
@@ -32,7 +32,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "newick.h"
 #include "twodigitnewickindexer.h"
 
-#pragma GCC diagnostic pop
+
 
 double ribi::TwoDigitNewick::sm_theta = -1.0;
 

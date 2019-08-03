@@ -20,7 +20,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 #include "qtledwidgetdialog.h"
 
-#pragma GCC diagnostic push
+
 
 
 
@@ -28,7 +28,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "ledwidget.h"
 #include "ui_qtledwidgetdialog.h"
-#pragma GCC diagnostic pop
+
 
 ribi::QtLedWidgetDialog::QtLedWidgetDialog(QWidget *parent) :
   QDialog(parent),

@@ -1,4 +1,4 @@
-#pragma GCC diagnostic push
+
 
 #include "qtalphafilterdialog.h"
 
@@ -6,7 +6,7 @@
 #include "alphafilter.h"
 #include "ui_qtalphafilterdialog.h"
 
-#pragma GCC diagnostic pop
+
 
 ribi::QtAlphaFilterDialog::QtAlphaFilterDialog(QWidget *parent) noexcept
   : QDialog(parent),

@@ -24,7 +24,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include <cassert>
 #include <vector>
 
-#pragma GCC diagnostic push
+
 
 
 #include "manydigitnewick.h"
@@ -34,7 +34,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "manydigitnewicks.h"
 #include "multivector.h"
 #include "newickvector.h"
-#pragma GCC diagnostic pop
+
 
 namespace ribi {
 

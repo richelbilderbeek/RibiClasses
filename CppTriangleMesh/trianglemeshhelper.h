@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-#pragma GCC diagnostic push
+
 
 
 #include <boost/geometry.hpp>
@@ -18,7 +18,7 @@
 #include "trianglemeshfwd.h"
 #include "trianglemeshwinding.h"
 
-#pragma GCC diagnostic pop
+
 
 namespace ribi {
 namespace trim {

@@ -4,12 +4,12 @@
 #include <string>
 #include <vector>
 
-#pragma GCC diagnostic push
+
 
 
 
 #include <QImage>
-#pragma GCC diagnostic pop
+
 
 namespace ribi {
 

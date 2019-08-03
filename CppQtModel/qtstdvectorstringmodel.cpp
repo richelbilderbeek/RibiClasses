@@ -18,7 +18,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppQtModel.htm
 //---------------------------------------------------------------------------
-#pragma GCC diagnostic push
+
 
 
 #include "qtstdvectorstringmodel.h"
@@ -28,7 +28,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
 
-#pragma GCC diagnostic pop
+
 
 ribi::QtStdVectorStringModel::QtStdVectorStringModel(QObject *parent) noexcept
   : QAbstractTableModel(parent),

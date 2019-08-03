@@ -2,7 +2,7 @@
 #include <cassert>
 #include <iostream>
 
-#pragma GCC diagnostic push
+
 
 
 #include <QFile>
@@ -10,7 +10,7 @@
 #include "chessresources.h"
 #include "qtchessresources.h"
 //#include "trace.h"
-#pragma GCC diagnostic pop
+
 
 
 ribi::Chess::QtResources::QtResources()

@@ -1,10 +1,10 @@
-#pragma GCC diagnostic push
+
 
 
 #include "qtgraphics.h"
 
 #include <cassert>
-#pragma GCC diagnostic pop
+
 
 
 ribi::QtGraphics::QtGraphics()

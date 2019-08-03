@@ -25,7 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <string>
 #include <vector>
 
-#pragma GCC diagnostic push
+
 
 
 
@@ -37,7 +37,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "canvas.h"
 #include "canvascolorsystem.h"
 #include "canvascoordinatsystem.h"
-#pragma GCC diagnostic pop
+
 
 struct QRegExp;
 

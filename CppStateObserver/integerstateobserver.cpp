@@ -1,9 +1,9 @@
-#pragma GCC diagnostic push
+
 
 #include "integerstateobserver.h"
 
 #include <boost/numeric/conversion/cast.hpp>
-#pragma GCC diagnostic pop
+
 
 std::string ribi::IntegerStateObserver::GetVersion() noexcept
 {

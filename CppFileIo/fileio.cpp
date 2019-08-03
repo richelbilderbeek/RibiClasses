@@ -1,6 +1,6 @@
 #include "fileio.h"
 
-#pragma GCC diagnostic push
+
 
 
 
@@ -14,7 +14,7 @@
 
 #include "filecopymode.h"
 
-#pragma GCC diagnostic pop
+
 
 ribi::fileio::FileIo::FileIo()
 {

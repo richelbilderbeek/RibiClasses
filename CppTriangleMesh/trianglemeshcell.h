@@ -4,7 +4,7 @@
 #include <iosfwd>
 #include <vector>
 
-#pragma GCC diagnostic push
+
 
 
 
@@ -13,7 +13,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/signals2.hpp>
 #include "trianglemeshfwd.h"
-#pragma GCC diagnostic pop
+
 
 namespace ribi {
 namespace trim {

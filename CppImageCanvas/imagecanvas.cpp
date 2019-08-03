@@ -1,4 +1,4 @@
-#pragma GCC diagnostic push
+
 
 
 #include "imagecanvas.h"
@@ -19,7 +19,7 @@
 #include "canvascolorsystems.h"
 #include "canvascoordinatsystems.h"
 #include "fileio.h"
-#pragma GCC diagnostic pop
+
 
 ribi::ImageCanvas::ImageCanvas() noexcept
   : Canvas{},

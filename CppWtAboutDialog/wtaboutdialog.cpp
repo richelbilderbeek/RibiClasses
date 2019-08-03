@@ -22,7 +22,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include <string>
 
-#pragma GCC diagnostic push
+
 
 
 
@@ -33,7 +33,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #endif
 #include <Wt/WLabel>
 #include <Wt/WTextArea>
-#pragma GCC diagnostic pop
+
 
 ribi::WtAboutDialog::WtAboutDialog(
   const About& about_original,

@@ -22,7 +22,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include <iostream>
 
-#pragma GCC diagnostic push
+
 
 
 
@@ -47,7 +47,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //#include "trace.h"
 #include "wtdialwidget.h"
 #include "wttogglebuttonwidget.h"
-#pragma GCC diagnostic pop
+
 
 ribi::ruco::WtClockWidget::WtClockWidget(
   const bool toggled,

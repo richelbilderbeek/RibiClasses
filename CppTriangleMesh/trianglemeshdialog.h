@@ -22,7 +22,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #define RIBI_TRIANGLEMESHDIALOG_H
 
 #include <vector>
-#pragma GCC diagnostic push
+
 
 
 
@@ -36,7 +36,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <boost/units/systems/si/plane_angle.hpp>
 #include "openfoampatchfieldtype.h"
 #include "trianglemeshcreateverticalfacesstrategy.h"
-#pragma GCC diagnostic pop
+
 
 namespace ribi {
 

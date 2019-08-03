@@ -2,7 +2,7 @@
 
 #include <cassert>
 
-#pragma GCC diagnostic push
+
 
 
 
@@ -24,7 +24,7 @@
 #include "trianglemeshtemplate.h"
 #include "trianglemeshcreateverticalfacesstrategies.h"
 
-#pragma GCC diagnostic pop
+
 
 ribi::trim::CellsCreator::CellsCreator(
   const boost::shared_ptr<const Template> t,

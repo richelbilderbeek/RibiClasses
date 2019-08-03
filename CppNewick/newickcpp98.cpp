@@ -1,4 +1,4 @@
-#pragma GCC diagnostic push
+
 
 
 #include "newickcpp98.h"
@@ -11,7 +11,7 @@
 
 #include "newick.h"
 
-#pragma GCC diagnostic pop
+
 
 ribi::NewickCpp98::NewickCpp98()
 {

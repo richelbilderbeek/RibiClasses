@@ -1,4 +1,4 @@
-#pragma GCC diagnostic push
+
 
 
 #include "multicanvas.h"
@@ -21,7 +21,7 @@
 #include "fileio.h"
 #include "trace.h"
 
-#pragma GCC diagnostic pop
+
 
 ribi::MultiCanvas::MultiCanvas(
   const std::vector<boost::shared_ptr<Canvas>>& canvases

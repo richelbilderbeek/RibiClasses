@@ -1,11 +1,11 @@
-#pragma GCC diagnostic push
+
 
 #include "multialphafilter.h"
 
 #include <cassert>
 
 
-#pragma GCC diagnostic pop
+
 
 ribi::MultiAlphaFilter::MultiAlphaFilter(
   const std::vector<double> alphas,

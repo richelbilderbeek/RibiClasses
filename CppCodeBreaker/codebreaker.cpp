@@ -28,7 +28,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <numeric>
 #include <vector>
 
-#pragma GCC diagnostic push
+
 
 
 #include <boost/math/distributions/chi_squared.hpp>
@@ -38,7 +38,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "loopreader.h"
 #include "testtimer.h"
 #include "vigenerecipher.h"
-#pragma GCC diagnostic pop
+
 
 ribi::CodeBreaker::CodeBreaker()
 {

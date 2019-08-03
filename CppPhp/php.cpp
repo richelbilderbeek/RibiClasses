@@ -1,4 +1,4 @@
-#pragma GCC diagnostic push
+
 
 
 #include "php.h"
@@ -7,7 +7,7 @@
 #include <iomanip>
 
 #include <boost/lexical_cast.hpp>
-#pragma GCC diagnostic pop
+
 
 std::string ribi::php::implode(
   const std::string& seperator,

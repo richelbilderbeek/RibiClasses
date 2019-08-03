@@ -18,7 +18,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppQtLeftRightRectItem.htm
 //---------------------------------------------------------------------------
-#pragma GCC diagnostic push
+
 
 
 
@@ -30,7 +30,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include <QPainter>
 #include <QKeyEvent>
 
-#pragma GCC diagnostic pop
+
 
 ribi::QtLeftRightRectItem::QtLeftRightRectItem(QGraphicsItem* parent)
  : QGraphicsRectItem(parent),
@@ -84,14 +84,14 @@ void ribi::QtLeftRightRectItem::keyPressEvent(QKeyEvent* event)
 
 }
 
-#pragma GCC diagnostic push
+
 
 void ribi::QtLeftRightRectItem::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
 {
   m_signal_request_scene_update();
   QGraphicsRectItem::mouseMoveEvent(event);
 }
-#pragma GCC diagnostic pop
+
 
 void ribi::QtLeftRightRectItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* , QWidget* )
 {

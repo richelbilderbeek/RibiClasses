@@ -6,7 +6,7 @@
 #include <numeric>
 #include <set>
 
-#pragma GCC diagnostic push
+
 
 
 #include <boost/lambda/bind.hpp>
@@ -26,7 +26,7 @@
 #include "trianglemeshwindings.h"
 
 #include "xml.h"
-#pragma GCC diagnostic pop
+
 
 std::set<const ribi::trim::Face*> ribi::trim::Face::sm_faces;
 

@@ -1,4 +1,4 @@
-#pragma GCC diagnostic push
+
 
 
 
@@ -36,7 +36,7 @@
 #include "trianglemeshpoint.h"
 #include "trianglemeshtemplate.h"
 #include "trianglemeshcreateverticalfacesstrategies.h"
-#pragma GCC diagnostic pop
+
 
 ribi::trim::Dialog::Dialog()
   : m_3dmesh_assign_boundary_function{CreateDefaultAssignBoundaryFunction()},

@@ -32,11 +32,11 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <boost/math/constants/constants.hpp>
 
 
-#pragma GCC diagnostic push
+
 
 #include <QFile>
 #include <QImage>
-#pragma GCC diagnostic pop
+
 
 #include "canvascolorsystems.h"
 #include "canvascoordinatsystems.h"

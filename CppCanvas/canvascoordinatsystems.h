@@ -5,13 +5,13 @@
 #include <vector>
 
 
-#pragma GCC diagnostic push
+
 
 
 #include <boost/bimap.hpp>
 
 #include "canvascoordinatsystem.h"
-#pragma GCC diagnostic pop
+
 
 namespace ribi {
 

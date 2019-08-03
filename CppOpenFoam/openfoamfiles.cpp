@@ -7,7 +7,7 @@
 #include <set>
 #include <sstream>
 
-#pragma GCC diagnostic push
+
 
 
 #include <boost/make_shared.hpp>
@@ -24,7 +24,7 @@
 #include "openfoampointsfile.h"
 
 
-#pragma GCC diagnostic pop
+
 
 /*
 ribi::foam::Files::Files(const std::string& folder_name)

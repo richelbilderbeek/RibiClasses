@@ -1,4 +1,4 @@
-#pragma GCC diagnostic push
+
 
 
 
@@ -14,7 +14,7 @@
 
 // 
 
-#pragma GCC diagnostic pop
+
 
 ribi::Regex::Regex()
 {

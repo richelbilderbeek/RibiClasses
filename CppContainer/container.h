@@ -8,10 +8,10 @@
 #include <sstream>
 #include <vector>
 
-#pragma GCC diagnostic push
 
 
-#pragma GCC diagnostic pop
+
+
 
 namespace ribi {
 

@@ -1,4 +1,4 @@
-#pragma GCC diagnostic push
+
 
 
 
@@ -21,7 +21,7 @@
 
 #include "ribi_regex.h"
 #include "plane.h"
-#pragma GCC diagnostic pop
+
 
 namespace ribi {
 template <class T>

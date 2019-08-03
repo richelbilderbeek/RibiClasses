@@ -18,7 +18,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppRubiksClockWidget.htm
 //---------------------------------------------------------------------------
-#pragma GCC diagnostic push
+
 
 
 #include "rubiksclockdial.h"
@@ -33,7 +33,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
 
-#pragma GCC diagnostic pop
+
 
 ribi::ruco::ClockDial::ClockDial(
   const int time,

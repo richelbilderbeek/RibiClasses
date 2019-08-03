@@ -1,4 +1,4 @@
-#pragma GCC diagnostic push
+
 
 
 #include "matrix.h"

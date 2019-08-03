@@ -1,14 +1,14 @@
 #ifndef POLYFILEFROMPOLYGONS_H
 #define POLYFILEFROMPOLYGONS_H
 
-#pragma GCC diagnostic push
+
 
 
 
 #include <boost/geometry/geometries/linestring.hpp>
 #include <boost/geometry/geometries/polygon.hpp>
 #include "polyfile.h"
-#pragma GCC diagnostic pop
+
 
 namespace ribi {
 

@@ -18,7 +18,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppWtEntrance.htm
 //---------------------------------------------------------------------------
-#pragma GCC diagnostic push
+
 
 
 
@@ -32,7 +32,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "fileio.h"
 #include "ipaddress.h"
-#pragma GCC diagnostic pop
+
 
 const std::string ribi::WtEntrance::m_filename_names  = "wtentrance_names.txt";
 const std::string ribi::WtEntrance::m_filename_visits = "wtentrance_visits.txt";

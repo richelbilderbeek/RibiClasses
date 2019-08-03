@@ -8,12 +8,12 @@
 #include <vector>
 #include <typeinfo>
 
-#pragma GCC diagnostic push
+
 
 
 
 #include <boost/shared_ptr.hpp>
-#pragma GCC diagnostic pop
+
 
 namespace ribi {
 

@@ -1,4 +1,4 @@
-#pragma GCC diagnostic push
+
 
 
 #include "qtublasvectordoublemodel.h"
@@ -6,7 +6,7 @@
 #include <cassert>
 #include <boost/lexical_cast.hpp>
 #include "matrix.h"
-#pragma GCC diagnostic pop
+
 
 void ribi::QtUblasVectorDoubleModelTest() noexcept
 {

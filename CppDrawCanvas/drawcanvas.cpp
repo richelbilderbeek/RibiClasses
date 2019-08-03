@@ -1,4 +1,4 @@
-#pragma GCC diagnostic push
+
 
 
 
@@ -28,7 +28,7 @@
 #include "ribi_regex.h"
 #include "xml.h"
 
-#pragma GCC diagnostic pop
+
 
 ribi::DrawCanvas::DrawCanvas(
   const int width,

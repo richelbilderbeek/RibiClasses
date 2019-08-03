@@ -3,12 +3,12 @@
 
 #include <vector>
 
-#pragma GCC diagnostic push
+
 
 #include <boost/shared_ptr.hpp>
 #include "integeralphafilter.h"
 #include "integerstateobserver.h"
-#pragma GCC diagnostic pop
+
 
 namespace ribi {
 

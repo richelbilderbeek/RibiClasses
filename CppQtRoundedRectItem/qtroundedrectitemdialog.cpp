@@ -1,4 +1,4 @@
-#pragma GCC diagnostic push
+
 
 
 
@@ -14,7 +14,7 @@
 
 // 
 #include "ui_qtroundedrectitemdialog.h"
-#pragma GCC diagnostic pop
+
 
 ribi::QtRoundedRectItemDialog::QtRoundedRectItemDialog(QWidget *parent) :
     QtHideAndShowDialog(parent),

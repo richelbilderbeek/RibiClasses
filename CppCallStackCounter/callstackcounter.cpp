@@ -23,12 +23,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <algorithm>
 
-#pragma GCC diagnostic push
+
 
 
 
 #include "callstackcounter.h"
-#pragma GCC diagnostic pop
+
 
 int CallStackCounter::cnt = 0;
 int CallStackHistoryCounter::cnt = 0;

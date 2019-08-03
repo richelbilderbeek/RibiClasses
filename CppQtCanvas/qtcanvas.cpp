@@ -1,4 +1,4 @@
-#pragma GCC diagnostic push
+
 
 
 
@@ -14,7 +14,7 @@
 
 #include "canvas.h"
 #include "dotmatrixtext.h"
-#pragma GCC diagnostic pop
+
 
 ribi::QtCanvas::QtCanvas()
   : m_signal_on_destroy{},

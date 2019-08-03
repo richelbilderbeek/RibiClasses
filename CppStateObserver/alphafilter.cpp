@@ -1,9 +1,9 @@
-#pragma GCC diagnostic push
+
 
 #include "alphafilter.h"
 
 #include <cassert>
-#pragma GCC diagnostic pop
+
 
 ribi::AlphaFilter::AlphaFilter(
   const double alpha,

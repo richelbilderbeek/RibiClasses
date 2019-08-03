@@ -24,14 +24,14 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <string>
 #include <vector>
 
-#pragma GCC diagnostic push
+
 
 
 
 #include <boost/checked_delete.hpp>
 #include <boost/make_shared.hpp>
 #include <boost/signals2.hpp>
-#pragma GCC diagnostic pop
+
 
 namespace ribi {
 

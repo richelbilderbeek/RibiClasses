@@ -21,14 +21,14 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #ifndef RIBI_RANDOM_H
 #define RIBI_RANDOM_H
 
-#pragma GCC diagnostic push
+
 
 
 
 #include <memory>
 #include <string>
 #include <vector>
-#pragma GCC diagnostic pop
+
 
 namespace ribi {
 

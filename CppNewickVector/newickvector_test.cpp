@@ -1,4 +1,4 @@
-#pragma GCC diagnostic push
+
 
 
 #include "newickvector.h"
@@ -25,7 +25,7 @@
 #include "newick.h"
 
 
-#pragma GCC diagnostic pop
+
 
 void ribi_NewickVector_Test() noexcept
 {

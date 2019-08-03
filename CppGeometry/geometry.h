@@ -1,7 +1,7 @@
 #ifndef RIBI_GEOMETRY_H
 #define RIBI_GEOMETRY_H
 
-#pragma GCC diagnostic push
+
 
 
 
@@ -21,7 +21,7 @@ struct QRect;
 struct QRectF;
 struct QPoint;
 struct QPointF;
-#pragma GCC diagnostic pop
+
 
 namespace ribi {
 

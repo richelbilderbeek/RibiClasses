@@ -18,7 +18,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppQtRichelBilderbeekGalleryDialog.htm
 //---------------------------------------------------------------------------
-#pragma GCC diagnostic push
+
 
 #include "qtrichelbilderbeekgallerydialog.h"
 
@@ -37,7 +37,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "trace.h"
 #include "ui_qtrichelbilderbeekgallerydialog.h"
 
-#pragma GCC diagnostic pop
+
 
 struct QtGalleryItem : public QTableWidgetItem
 {

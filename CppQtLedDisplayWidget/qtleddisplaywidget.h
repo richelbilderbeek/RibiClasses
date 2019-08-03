@@ -25,13 +25,13 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <vector>
 
 
-#pragma GCC diagnostic push
+
 
 #include <boost/scoped_ptr.hpp>
 #include <QWidget>
 #include "ledwidget.h" //Needed by MOC
 #include "led.h" //Needed by MOC
-#pragma GCC diagnostic pop
+
 
 namespace ribi {
 

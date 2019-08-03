@@ -25,12 +25,12 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <vector>
 
 
-#pragma GCC diagnostic push
+
 
 
 #include <boost/signals2.hpp>
 #include <QWidget>
-#pragma GCC diagnostic pop
+
 
 namespace ribi {
 

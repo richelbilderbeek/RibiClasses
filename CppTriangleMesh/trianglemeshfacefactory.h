@@ -4,7 +4,7 @@
 #include <iosfwd>
 #include <vector>
 
-#pragma GCC diagnostic push
+
 
 
 
@@ -15,7 +15,7 @@
 #include "trianglemeshfaceorientation.h"
 #include "trianglemeshfwd.h"
 #include "trianglemeshwinding.h"
-#pragma GCC diagnostic pop
+
 
 namespace ribi {
 namespace trim {

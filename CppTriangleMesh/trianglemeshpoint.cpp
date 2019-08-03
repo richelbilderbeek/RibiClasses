@@ -4,7 +4,7 @@
 #include <iomanip>
 #include <sstream>
 
-#pragma GCC diagnostic push
+
 
 
 #include <boost/lambda/bind.hpp>
@@ -16,7 +16,7 @@
 #include "trianglemeshhelper.h"
 
 #include "xml.h"
-#pragma GCC diagnostic pop
+
 
 ribi::trim::Point::Point(
   const boost::shared_ptr<const Coordinat2D> coordinat,

@@ -3,7 +3,7 @@
 #include <cassert>
 #include <fstream>
 
-#pragma GCC diagnostic push
+
 
 
 
@@ -19,7 +19,7 @@
 
 
 
-#pragma GCC diagnostic pop
+
 
 ribi::PolyFile::PolyFile(
   const Vertices& vertices,

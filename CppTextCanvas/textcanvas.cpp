@@ -1,4 +1,4 @@
-#pragma GCC diagnostic push
+
 
 
 #include "textcanvas.h"
@@ -15,7 +15,7 @@
 #include "dotmatrixstring.h"
 
 
-#pragma GCC diagnostic pop
+
 
 ribi::TextCanvas::TextCanvas(
   const int width,

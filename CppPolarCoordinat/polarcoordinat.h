@@ -6,7 +6,7 @@
 
 //#include "coordinat.h"
 
-#pragma GCC diagnostic push
+
 
 
 #include <boost/geometry/geometries/point_xy.hpp>
@@ -18,7 +18,7 @@
 #include <boost/units/systems/si/length.hpp>
 #include <boost/units/systems/si/prefixes.hpp>
 #include "trace.h"
-#pragma GCC diagnostic pop
+
 
 namespace ribi {
 

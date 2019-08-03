@@ -18,7 +18,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppManyDigitNewick.htm
 //---------------------------------------------------------------------------
-#pragma GCC diagnostic push
+
 
 
 
@@ -36,7 +36,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "newick.h"
 #include "manydigitnewickindexer.h"
 #include "testtimer.h"
-#pragma GCC diagnostic pop
+
 
 double ribi::ManyDigitNewick::sm_theta = -1.0;
 
@@ -182,7 +182,7 @@ void ribi::ManyDigitNewick::SetTheta(const double theta)
   sm_theta = theta;
 }
 
-#pragma GCC diagnostic push
+
 
 #ifndef NDEBUG
 void ribi::ManyDigitNewick::Test() noexcept
@@ -210,5 +210,5 @@ void ribi::ManyDigitNewick::Test() noexcept
   }
 }
 #endif // NDEBUG
-#pragma GCC diagnostic pop
+
 

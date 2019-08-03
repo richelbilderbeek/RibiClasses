@@ -21,7 +21,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <cassert>
 #include <cmath>
 
-#pragma GCC diagnostic push
+
 
 
 
@@ -37,7 +37,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "shapewidget.h"
 #include "wtshapewidget.h"
 //#include "trace.h"
-#pragma GCC diagnostic pop
+
 
 ribi::WtShapeWidget::WtShapeWidget(
   boost::shared_ptr<ShapeWidget> widget)

@@ -1,11 +1,11 @@
 #ifndef TRIANGLEMESHCELLIMPL_H
 #define TRIANGLEMESHCELLIMPL_H
 
-#pragma GCC diagnostic push
 
 
 
-#pragma GCC diagnostic pop
+
+
 
 namespace ribi {
 namespace trim {

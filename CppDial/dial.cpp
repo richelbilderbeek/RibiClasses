@@ -18,7 +18,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppDial.htm
 //---------------------------------------------------------------------------
-#pragma GCC diagnostic push
+
 
 
 
@@ -30,7 +30,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <boost/numeric/conversion/cast.hpp>
 #include "geometry.h"
 
-#pragma GCC diagnostic pop
+
 
 ribi::Dial::Dial(
   const double position,

@@ -23,11 +23,11 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include <boost/scoped_ptr.hpp>
 
-#pragma GCC diagnostic push
+
 
 
 #include "widget.h"
-#pragma GCC diagnostic pop
+
 
 namespace ribi {
 

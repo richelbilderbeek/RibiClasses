@@ -1,4 +1,4 @@
-#pragma GCC diagnostic push
+
 
 
 #include "qtscaleitem.h"
@@ -11,7 +11,7 @@
 #include <QPainter>
 #include <QCursor>
 #include "units.h"
-#pragma GCC diagnostic pop
+
 
 const double QtScaleItem::m_length
   = boost::units::quantity<boost::units::si::length>(

@@ -2,7 +2,7 @@
 
 #include <cassert>
 
-#pragma GCC diagnostic push
+
 
 
 #include <boost/make_shared.hpp>
@@ -18,7 +18,7 @@
 #include "trianglemeshwinding.h"
 #include "trianglemeshwindings.h"
 
-#pragma GCC diagnostic pop
+
 
 ribi::trim::FaceFactory::FaceFactory()
 {

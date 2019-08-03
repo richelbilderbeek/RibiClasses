@@ -5,6 +5,16 @@ do
 
   cd $folder
 
+  perl -pi -w -e 's/#pragma GCC diagnostic pop//g;' *.h
+  perl -pi -w -e 's/#pragma GCC diagnostic pop//g;' *.cpp
+
+  perl -pi -w -e 's/#pragma GCC diagnostic push//g;' *.h
+  perl -pi -w -e 's/#pragma GCC diagnostic push//g;' *.cpp
+
+  perl -pi -w -e 's/#pragma GCC diagnostic ignored "-Wunused-variable"//g;' *.h
+  perl -pi -w -e 's/#pragma GCC diagnostic ignored "-Wunused-variable"//g;' *.cpp
+
+
   perl -pi -w -e 's/#pragma GCC diagnostic ignored "-Wunused-variable"//g;' *.h
   perl -pi -w -e 's/#pragma GCC diagnostic ignored "-Wunused-variable"//g;' *.cpp
 

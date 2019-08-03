@@ -1,4 +1,4 @@
-#pragma GCC diagnostic push
+
 
 
 
@@ -20,7 +20,7 @@
 #include "trianglemeshpoint.h"
 #include "trianglemeshpointfactory.h"
 //#include "xml.h"
-#pragma GCC diagnostic pop
+
 
 #ifndef NDEBUG
 void ribi::trim::Helper::Test() noexcept

@@ -1,7 +1,7 @@
 #ifndef RIBI_QTCANVAS_H
 #define RIBI_QTCANVAS_H
 
-#pragma GCC diagnostic push
+
 
 
 
@@ -11,7 +11,7 @@
 #include "textcanvas.h"
 #include <QPlainTextEdit>
 #include "canvas.h"
-#pragma GCC diagnostic pop
+
 
 namespace ribi {
 

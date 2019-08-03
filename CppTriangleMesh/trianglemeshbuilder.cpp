@@ -1,4 +1,4 @@
-#pragma GCC diagnostic push
+
 
 
 #include "trianglemeshbuilder.h"
@@ -11,7 +11,7 @@
 
 #include "trianglemeshbuilderimpl.h"
 
-#pragma GCC diagnostic pop
+
 
 ribi::trim::TriangleMeshBuilder::TriangleMeshBuilder(
   const std::vector<boost::shared_ptr<Cell>>& cells,

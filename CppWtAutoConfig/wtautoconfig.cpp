@@ -23,7 +23,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <fstream>
 #include <iostream>
 
-#pragma GCC diagnostic push
+
 
 
 
@@ -33,7 +33,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <Wt/WEnvironment>
 
 #include "wtautoconfig.h"
-#pragma GCC diagnostic pop
+
 
 ribi::WtAutoConfig::WtAutoConfig(
   const int argc, char ** const argv,const FunctionType function)

@@ -18,7 +18,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 //From http://www.richelbilderbeek.nl/CppRainbow.htm
 //---------------------------------------------------------------------------
-#pragma GCC diagnostic push
+
 
 
 #include "rainbow.h"
@@ -27,7 +27,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <cmath>
 
 #include <boost/math/constants/constants.hpp>
-#pragma GCC diagnostic pop
+
 
 void ribi::Rainbow::GetRgb(
   const double x,
