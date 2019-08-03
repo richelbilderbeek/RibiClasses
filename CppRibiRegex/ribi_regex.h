@@ -4,7 +4,7 @@
 #pragma GCC diagnostic push
 
 
-#pragma GCC diagnostic ignored "-Wunused-variable"
+
 #include <string>
 #include <vector>
 #pragma GCC diagnostic pop

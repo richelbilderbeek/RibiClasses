@@ -5,6 +5,9 @@ do
 
   cd $folder
 
+  perl -pi -w -e 's/#pragma GCC diagnostic ignored "-Wunused-variable"//g;' *.h
+  perl -pi -w -e 's/#pragma GCC diagnostic ignored "-Wunused-variable"//g;' *.cpp
+
   perl -pi -w -e 's/#pragma GCC diagnostic ignored "-Weffc\+\+"//g;' *.h
   perl -pi -w -e 's/#pragma GCC diagnostic ignored "-Weffc\+\+"//g;' *.cpp
 

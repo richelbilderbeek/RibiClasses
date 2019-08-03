@@ -8,7 +8,7 @@
 #pragma GCC diagnostic push
 
 
-#pragma GCC diagnostic ignored "-Wunused-variable"
+
 #include <boost/geometry/geometries/point_xy.hpp>
 #pragma GCC diagnostic pop
 
