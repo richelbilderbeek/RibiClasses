@@ -17,7 +17,6 @@
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/trim.hpp>
-#include <boost/function.hpp>
 
 #include "fileio.h"
 
@@ -253,14 +252,14 @@ void ribi::QtCreatorProFile::RemoveComments(std::vector<std::string>& v)
 std::ostream& ribi::operator<<(std::ostream& os, const QtCreatorProFile& p)
 {
   os << "\n";
-  for (const std::string pri: p.GetPriFiles())
+  for (const std::string& pri: p.GetPriFiles())
   {
     os << "include(" << pri << ")" << '\n';
   }
   {
     const std::vector<
       std::pair<
-        std::string, boost::function<const std::set<std::string>& (const QtCreatorProFile&)>
+        std::string, std::function<const std::set<std::string>& (const QtCreatorProFile&)>
         >
       > v = {
         { "CONFIG", &QtCreatorProFile::GetConfig },
@@ -279,7 +278,7 @@ std::ostream& ribi::operator<<(std::ostream& os, const QtCreatorProFile& p)
       };
 
     std::for_each(v.begin(),v.end(),
-      [&os,&p](const std::pair<std::string, boost::function<const std::set<std::string>& (const QtCreatorProFile&)> >& pair)
+      [&os,&p](const std::pair<std::string, std::function<const std::set<std::string>& (const QtCreatorProFile&)> >& pair)
       {
         const std::set<std::string>& w = pair.second(p);
         if (!w.empty())

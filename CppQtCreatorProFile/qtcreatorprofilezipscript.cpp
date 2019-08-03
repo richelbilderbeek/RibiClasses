@@ -24,7 +24,7 @@
 
 struct PathOrdering
 {
-  bool operator()(const std::string& lhs, const std::string& rhs)
+  bool operator()(const std::string& lhs, const std::string& rhs) const noexcept
   {
     //Shortest files first
     if (lhs.size() < rhs.size()) return true;
@@ -106,7 +106,7 @@ std::string ribi::QtCreatorProFileZipScript::CreateScript(const std::string& sou
   //Add the .pri files in the .pro files
   {
     std::vector<std::string> w(pro_filenames);
-    for (const std::string pro_filename: pro_filenames)
+    for (const std::string& pro_filename: pro_filenames)
     {
       assert(ribi::fileio::FileIo().IsUnixPath(pro_filename));
 
@@ -124,7 +124,7 @@ std::string ribi::QtCreatorProFileZipScript::CreateScript(const std::string& sou
 
       assert(pro_file);
       //Copy its .pri files to be scanned
-      for (const std::string pri_file: pro_file->GetPriFiles())
+      for (const std::string& pri_file: pro_file->GetPriFiles())
       {
         assert(ribi::fileio::FileIo().IsUnixPath(pri_file));
         w.push_back(pri_file);
@@ -190,7 +190,7 @@ const std::set<std::string> ribi::QtCreatorProFileZipScript::ExtractFilenames(
 
 
   //Copy all resources
-  for (const std::string qrc_filename_raw: pro_file->GetResources())
+  for (const std::string& qrc_filename_raw: pro_file->GetResources())
   {
     assert(ribi::fileio::FileIo().IsUnixPath(qrc_filename_raw));
 
@@ -241,7 +241,7 @@ const std::set<std::string> ribi::QtCreatorProFileZipScript::ExtractFilenames(
   assert(pro_file);
   assert(ribi::fileio::FileIo().IsRegularFile(pro_file->GetQtCreatorProFilename()));
   filenames.push_back(pro_file->GetQtCreatorProFilename());
-  for (const std::string filename: v)
+  for (const std::string& filename: v)
   {
     if (!filename.empty() && (filename[0] == '/' || filename[0] == '.'))
     {
@@ -397,7 +397,7 @@ std::ostream& ribi::operator<<(std::ostream& os,const QtCreatorProFileZipScript&
 
   std::set<std::string,PathOrdering> folder_names;
   //Add the folders added by the .pro file
-  for (const std::string filename: file_names)
+  for (const std::string& filename: file_names)
   {
     assert(ribi::fileio::FileIo().IsRegularFile(filename));
     assert(ribi::fileio::FileIo().IsUnixPath(filename));

@@ -33,7 +33,6 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include <vector>
 
 #include <boost/algorithm/string/trim.hpp>
-#include <boost/function.hpp>
 #include <boost/xpressive/xpressive.hpp>
 
 #include "fileio.h"
