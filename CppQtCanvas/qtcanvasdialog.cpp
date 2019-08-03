@@ -3,8 +3,8 @@
 #include <cassert>
 
 #pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
+
+
 #include <QVBoxLayout>
 
 #include "qtcanvas.h"

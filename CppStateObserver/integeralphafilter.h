@@ -5,7 +5,7 @@
 #include <vector>
 
 #pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
+
 #include "integerstateobserver.h"
 #pragma GCC diagnostic pop
 

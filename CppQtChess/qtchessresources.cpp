@@ -3,7 +3,7 @@
 #include <iostream>
 
 #pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
+
 
 #include <QFile>
 #include "fileio.h"

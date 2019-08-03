@@ -6,8 +6,8 @@
 #include <vector>
 
 #pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
+
+
 #include "canvas.h"
 #pragma GCC diagnostic pop
 

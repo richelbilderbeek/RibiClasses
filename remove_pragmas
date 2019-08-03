@@ -4,11 +4,18 @@ for folder in `ls -d */`
 do
 
   cd $folder
+
+  perl -pi -w -e 's/#pragma GCC diagnostic ignored "-Weffc\+\+"//g;' *.h
+  perl -pi -w -e 's/#pragma GCC diagnostic ignored "-Weffc\+\+"//g;' *.cpp
+
+  perl -pi -w -e 's/#pragma GCC diagnostic ignored "-Wunused-local-typedefs"//g;' *.h
+  perl -pi -w -e 's/#pragma GCC diagnostic ignored "-Wunused-local-typedefs"//g;' *.cpp
+
   perl -pi -w -e 's/#pragma GCC diagnostic ignored "-Wunused-but-set-variable"//g;' *.h
   perl -pi -w -e 's/#pragma GCC diagnostic ignored "-Wunused-but-set-variable"//g;' *.cpp
-  git add --all :/
-  git commit -m "Remove pragma's"
-  git push
+  #git add --all :/
+  #git commit -m "Remove pragma's"
+  #git push
  
 
   cd ..

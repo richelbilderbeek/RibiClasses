@@ -6,8 +6,8 @@
 #include <vector>
 
 #pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
+
+
 #include <boost/checked_delete.hpp>
 #include <boost/signals2.hpp>
 #include "canvas.h"

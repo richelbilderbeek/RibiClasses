@@ -19,7 +19,7 @@
 // From http://www.richelbilderbeek.nl
 //---------------------------------------------------------------------------
 #pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
+
 #include "sortedbinarynewickvector.h"
 
 #include <algorithm>

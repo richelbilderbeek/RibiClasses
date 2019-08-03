@@ -5,8 +5,8 @@
 #include <iostream>
 #include <sstream>
 #pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
+
+
 #include <boost/make_shared.hpp>
 #include <boost/units/io.hpp>
 

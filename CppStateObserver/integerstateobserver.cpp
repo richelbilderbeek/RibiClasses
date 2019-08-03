@@ -1,5 +1,5 @@
 #pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
+
 #include "integerstateobserver.h"
 
 #include <boost/numeric/conversion/cast.hpp>

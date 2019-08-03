@@ -19,8 +19,8 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 //From http://www.richelbilderbeek.nl/CppManyDigitNewick.htm
 //---------------------------------------------------------------------------
 #pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
+
+
 
 #include "manydigitnewick.h"
 
@@ -183,7 +183,7 @@ void ribi::ManyDigitNewick::SetTheta(const double theta)
 }
 
 #pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
+
 #ifndef NDEBUG
 void ribi::ManyDigitNewick::Test() noexcept
 {

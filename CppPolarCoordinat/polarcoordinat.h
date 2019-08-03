@@ -7,8 +7,8 @@
 //#include "coordinat.h"
 
 #pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
+
+
 #include <boost/geometry/geometries/point_xy.hpp>
 #include <boost/math/constants/constants.hpp>
 #include <boost/units/base_units/angle/radian.hpp>

@@ -5,8 +5,8 @@
 #include <sstream>
 
 #pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
+
+
 #include <boost/lambda/bind.hpp>
 #include <boost/lambda/lambda.hpp>
 

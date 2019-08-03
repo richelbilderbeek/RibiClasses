@@ -1,6 +1,6 @@
 #pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
+
+
 #include "newickcpp98.h"
 
 #include <boost/numeric/conversion/cast.hpp>

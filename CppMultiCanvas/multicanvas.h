@@ -6,8 +6,8 @@
 #include <vector>
 
 #pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
+
+
 #include <boost/signals2.hpp>
 #include "canvas.h"
 #include "canvascolorsystem.h"

@@ -10,8 +10,8 @@
 #include <vector>
 
 #pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
+
+
 #include <boost/geometry.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/geometry/geometries/point_xy.hpp>
