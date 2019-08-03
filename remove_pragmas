@@ -1,0 +1,15 @@
+#!/bin/bash
+
+for folder in `ls -d */`
+do
+
+  cd $folder
+  perl -pi -w -e 's/#pragma GCC diagnostic ignored "-Wunused-but-set-variable"//g;' *.h
+  perl -pi -w -e 's/#pragma GCC diagnostic ignored "-Wunused-but-set-variable"//g;' *.cpp
+  git add --all :/
+  git commit -m "Remove pragma's"
+  git push
+ 
+
+  cd ..
+done
