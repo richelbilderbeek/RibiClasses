@@ -1,7 +1,7 @@
 #pragma GCC diagnostic push
 
 
-#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
+
 #include "qtquadbezierarrowdialog.h"
 
 #include <boost/lambda/bind.hpp>

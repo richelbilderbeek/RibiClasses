@@ -11,6 +11,9 @@ do
   perl -pi -w -e 's/#pragma GCC diagnostic ignored "-Wunused-local-typedefs"//g;' *.h
   perl -pi -w -e 's/#pragma GCC diagnostic ignored "-Wunused-local-typedefs"//g;' *.cpp
 
+  perl -pi -w -e 's/#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"//g;' *.h
+  perl -pi -w -e 's/#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"//g;' *.cpp
+
   perl -pi -w -e 's/#pragma GCC diagnostic ignored "-Wunused-but-set-variable"//g;' *.h
   perl -pi -w -e 's/#pragma GCC diagnostic ignored "-Wunused-but-set-variable"//g;' *.cpp
   #git add --all :/

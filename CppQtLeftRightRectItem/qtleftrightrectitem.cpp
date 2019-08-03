@@ -21,7 +21,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic push
 
 
-#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
+
 #include "qtleftrightrectitem.h"
 
 #include <cassert>
@@ -85,7 +85,7 @@ void ribi::QtLeftRightRectItem::keyPressEvent(QKeyEvent* event)
 }
 
 #pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
+
 void ribi::QtLeftRightRectItem::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
 {
   m_signal_request_scene_update();

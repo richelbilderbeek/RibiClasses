@@ -4,7 +4,7 @@
 #pragma GCC diagnostic push
 
 
-#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
+
 #include <boost/bimap.hpp>
 #include "richelbilderbeekprogramtype.h"
 #pragma GCC diagnostic pop

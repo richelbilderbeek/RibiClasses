@@ -1,7 +1,7 @@
 #pragma GCC diagnostic push
 
 
-#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
+
 #include "ribi_time.h"
 
 #include <cassert>

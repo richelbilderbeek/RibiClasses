@@ -4,7 +4,7 @@
 #pragma GCC diagnostic push
 
 
-#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
+
 #include "qthideandshowdialog.h"
 #pragma GCC diagnostic pop
 

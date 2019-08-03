@@ -1,6 +1,6 @@
 #pragma GCC diagnostic push
 
-#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
+
 
 #include "widget.h"
 

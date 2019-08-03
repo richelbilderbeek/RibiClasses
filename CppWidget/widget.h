@@ -27,7 +27,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #pragma GCC diagnostic push
 
 
-#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
+
 #include <boost/make_shared.hpp>
 #include <boost/checked_delete.hpp>
 #include <boost/scoped_ptr.hpp>

@@ -3,7 +3,7 @@
 #pragma GCC diagnostic push
 
 
-#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
+
 #include <cassert>
 #include <fstream>
 

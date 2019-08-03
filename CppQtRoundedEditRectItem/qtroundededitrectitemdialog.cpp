@@ -1,7 +1,7 @@
 #pragma GCC diagnostic push
 
 
-#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
+
 #include "qtroundededitrectitemdialog.h"
 
 #include <boost/algorithm/string/trim_all.hpp>

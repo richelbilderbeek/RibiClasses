@@ -1,7 +1,7 @@
 #pragma GCC diagnostic push
 
 
-#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
+
 #include "qtdisplaypositem.h"
 
 #include <cassert>
@@ -36,7 +36,7 @@ std::vector<std::string> ribi::QtDisplayPosItem::GetVersionHistory() noexcept
 
 
 #pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
+
 void ribi::QtDisplayPosItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
   QGraphicsSimpleTextItem::mouseMoveEvent(event);

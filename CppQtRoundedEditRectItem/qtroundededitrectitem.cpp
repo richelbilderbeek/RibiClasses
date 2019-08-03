@@ -1,7 +1,7 @@
 #pragma GCC diagnostic push
 
 
-#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
+
 #include "qtroundededitrectitem.h"
 
 #include <cassert>
@@ -204,7 +204,7 @@ void ribi::QtRoundedEditRectItem::paint(
 }
 
 #pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
+
 void ribi::QtRoundedEditRectItem::SetFont(const QFont& font) noexcept
 {
   if (m_font != font)

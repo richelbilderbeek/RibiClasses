@@ -6,7 +6,7 @@
 #pragma GCC diagnostic push
 
 
-#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
+
 #include <boost/make_shared.hpp>
 
 #include "fileio.h"

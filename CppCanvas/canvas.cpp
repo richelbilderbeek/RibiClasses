@@ -10,7 +10,7 @@
 #pragma GCC diagnostic push
 
 
-#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
+
 #include <boost/math/constants/constants.hpp>
 #include <boost/algorithm/string/split.hpp>
 

@@ -7,7 +7,7 @@
 #pragma GCC diagnostic push
 
 
-#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
+
 #include <boost/shared_ptr.hpp>
 
 #include "rubiksclockside.h"

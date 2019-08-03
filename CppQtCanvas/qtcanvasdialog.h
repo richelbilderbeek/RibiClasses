@@ -4,7 +4,7 @@
 #pragma GCC diagnostic push
 
 
-#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
+
 #include <boost/checked_delete.hpp>
 #include <boost/make_shared.hpp>
 #include <boost/scoped_ptr.hpp>

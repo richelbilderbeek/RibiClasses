@@ -1,7 +1,7 @@
 #pragma GCC diagnostic push
 
 
-#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
+
 #include "qtroundedrectitemdialog.h"
 
 #include <boost/make_shared.hpp>
