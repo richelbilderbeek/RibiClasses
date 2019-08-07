@@ -55,7 +55,7 @@ include(../boost_graph_cookbook_1/boost_graph_cookbook_1/boost_graph_cookbook_1_
 #
 SOURCES += main_test_console.cpp
 
-# C++17
+
 CONFIG += c++17
 QMAKE_CXXFLAGS += -std=c++17
 
