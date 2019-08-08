@@ -23,14 +23,10 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <fstream>
 #include <iostream>
 
-
-
-
-
 #include <boost/program_options.hpp>
 
-#include <Wt/WApplication>
-#include <Wt/WEnvironment>
+#include <Wt/WApplication.h>
+#include <Wt/WEnvironment.h>
 
 #include "wtautoconfig.h"
 

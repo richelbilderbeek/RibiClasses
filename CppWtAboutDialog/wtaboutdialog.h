@@ -24,14 +24,10 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <string>
 #include <vector>
 
-
-
-
-
 #include <boost/signals2.hpp>
 
-#include <Wt/WContainerWidget>
-#include <Wt/WPushButton>
+#include <Wt/WContainerWidget.h>
+#include <Wt/WPushButton.h>
 
 #include "about.h"
 
@@ -56,7 +52,7 @@ struct WtAboutDialog : public Wt::WContainerWidget
   ///From http://www.richelbilderbeek.nl/CppGetWtVersion.htm
   static std::string GetWtVersion();
   private:
-  Wt::WPushButton * const m_button_close;
+  Wt::WPushButton * m_button_close;
   void OnClose();
 };
 

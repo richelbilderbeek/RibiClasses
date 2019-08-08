@@ -1,39 +1,13 @@
-//---------------------------------------------------------------------------
-/*
-WtAboutDialog, Wt dialog for displaying the About class
-Copyright (C) 2010-2016 Richel Bilderbeek
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU General Public License for more details.
-You should have received a copy of the GNU General Public License
-along with this program. If not, see <http://www.gnu.org/licenses/>.
-*/
-//---------------------------------------------------------------------------
-//From http://www.richelbilderbeek.nl/CppWtAboutDialog.htm
-//---------------------------------------------------------------------------
 #include "wtaboutdialog.h"
 
 #include <string>
 
-
-
-
-
-
-#include <Wt/WBreak>
+#include <Wt/WBreak.h>
 #ifndef _WIN32
 #include <Wt/WConfig.h>
 #endif
-#include <Wt/WLabel>
-#include <Wt/WTextArea>
-
+#include <Wt/WLabel.h>
+#include <Wt/WTextArea.h>
 
 ribi::WtAboutDialog::WtAboutDialog(
   const About& about_original,
@@ -45,74 +19,74 @@ ribi::WtAboutDialog::WtAboutDialog(
   about.AddLibrary("Wt version: " + GetWtVersion());
   about.AddLibrary("WtAboutDialog version: " + GetVersion());
 
-  this->setContentAlignment(Wt::AlignCenter);
+  this->setContentAlignment(Wt::AlignmentFlag::Center);
   const int min_width = 800;
   //Display the general about text
   {
     const std::vector<std::string> v = about.CreateAboutText();
-    for(const auto s: v)
+    for(const auto& s: v)
     {
-      new Wt::WLabel(s.c_str(),this);
-      this->addWidget(new Wt::WBreak);
+      this->addWidget(std::make_unique<Wt::WLabel>(s.c_str()));
     }
   }
-  this->addWidget(new Wt::WBreak);
+  this->addWidget(std::make_unique<Wt::WBreak>());
   //Display the libraries used text
   {
-    Wt::WTextArea * text = new Wt::WTextArea;
+    auto text = std::make_unique<Wt::WTextArea>();
     {
       const std::vector<std::string> v = about.CreateLibrariesUsedText();
       std::string s;
-      for(const auto t: v) {  s+=t; s+="\n"; }
+      for(const auto& t: v) {  s+=t; s+="\n"; }
       text->setText(s);
     }
     text->setMinimumSize(min_width,100);
     text->setReadOnly(true);
-    this->addWidget(text);
+    this->addWidget(std::move(text));
   }
-  this->addWidget(new Wt::WBreak);
+  this->addWidget(std::make_unique<Wt::WBreak>());
   //Display the version history
   {
-    Wt::WTextArea * text = new Wt::WTextArea;
+    auto text = std::make_unique<Wt::WTextArea>();
     {
       const std::vector<std::string> v = about.CreateVersionHistory();
       std::string s;
-      for(const auto t: v) {  s+=t; s+="\n"; }
+      for(const auto& t: v) {  s+=t; s+="\n"; }
       text->setText(s);
     }
     text->setMinimumSize(min_width,100);
     text->setReadOnly(true);
-    this->addWidget(text);
+    this->addWidget(std::move(text));
   }
-  this->addWidget(new Wt::WBreak);
+  this->addWidget(std::make_unique<Wt::WBreak>());
   //Display the licence text
   {
-    Wt::WTextArea * text = new Wt::WTextArea;
+    auto text = std::make_unique<Wt::WTextArea>();
     {
       const std::vector<std::string> v = about.CreateLicenceText();
       std::string s;
-      for(const auto t: v) {  s+=t; s+="\n"; }
+      for(const auto& t: v) {  s+=t; s+="\n"; }
       text->setText(s);
     }
     text->setMinimumSize(min_width,100);
     text->setReadOnly(true);
-    this->addWidget(text);
+    this->addWidget(std::move(text));
   }
-  addWidget(new Wt::WBreak);
+  this->addWidget(std::make_unique<Wt::WBreak>());
   {
     const std::string s
       = std::string("Source code built at ")
       + std::string(__DATE__)
       + std::string(" ")
-      + std::string(__TIME__);
-    new Wt::WLabel(s.c_str(),this);
-     this->addWidget(new Wt::WBreak);
+      + std::string(__TIME__)
+    ;
+    this->addWidget(std::make_unique<Wt::WLabel>(s.c_str()));
+    this->addWidget(std::make_unique<Wt::WBreak>());
   }
 
   if (display_close_button)
   {
-    this->addWidget(new Wt::WBreak);
-    this->addWidget(m_button_close);
+    this->addWidget(std::make_unique<Wt::WBreak>());
+    m_button_close = addWidget(std::make_unique<Wt::WPushButton>());
     m_button_close->setText("Close");
     m_button_close->clicked().connect(
       this,&ribi::WtAboutDialog::OnClose);
