@@ -7,8 +7,6 @@
 
 #include "RInside.h"
 
-struct RInside;
-
 namespace ribi {
 
 struct HistogramR

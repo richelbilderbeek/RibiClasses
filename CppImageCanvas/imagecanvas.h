@@ -4,12 +4,6 @@
 #include <iosfwd>
 #include <string>
 #include <vector>
-
-
-
-
-#include <boost/checked_delete.hpp>
-#include <boost/signals2.hpp>
 #include "canvas.h"
 
 
@@ -32,7 +26,7 @@ struct ImageCanvas : public Canvas
   ) noexcept;
   ImageCanvas(const ImageCanvas&) noexcept;
   ImageCanvas& operator=(const ImageCanvas&) noexcept;
-  ~ImageCanvas() noexcept {}
+  ~ImageCanvas() noexcept override {}
 
   ///The color system used:
   ///- normal: full/drawn is displayed by M
@@ -45,10 +39,6 @@ struct ImageCanvas : public Canvas
   CanvasCoordinatSystem GetCoordinatSystem() const noexcept { return m_coordinat_system; }
 
   int GetHeight() const noexcept override;
-
-  static std::string GetVersion() noexcept;
-
-  static std::vector<std::string> GetVersionHistory() noexcept;
 
   int GetWidth() const noexcept override { return m_n_cols; }
 
@@ -83,7 +73,7 @@ struct ImageCanvas : public Canvas
   /// a three pixel gradient line -> {0.0, 0.5, 1.0 }
   ///
   static std::vector<std::vector<double>>
-    ConvertToGreyYx(const QImage * const i) noexcept;
+    ConvertToGreyYx(const QImage& i) noexcept;
 
   ///Returns a Y-X-ordered std::vector of greynesses, with the same size as the original image
   static std::vector<std::vector<double>>

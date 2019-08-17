@@ -143,21 +143,21 @@ std::vector<std::string> ribi::ImageCanvas::ConvertGreynessesToAscii(
 }
 
 std::vector<std::vector<double>>
-  ribi::ImageCanvas::ConvertToGreyYx(const QImage * const i) noexcept
+  ribi::ImageCanvas::ConvertToGreyYx(const QImage& i) noexcept
 {
-  const int maxy = i->height();
-  const int maxx = i->width();
+  const int maxy = i.height();
+  const int maxx = i.width();
 
   std::vector<std::vector<double> > v;
 
   if (maxx == 0) return v;
   assert(maxx > 0);
-  const int n_bytes = i->bytesPerLine() / maxx;
+  const int n_bytes = i.bytesPerLine() / maxx;
 
   for (int y=0; y!=maxy; ++y)
   {
     v.push_back(std::vector<double>());
-    const unsigned char * const line = i->scanLine(y);
+    const unsigned char * const line = i.scanLine(y);
     for (int x=0; x!=maxx; ++x)
     {
       int sum = 0;
@@ -180,11 +180,8 @@ std::vector<std::vector<double>>
 std::vector<std::vector<double>>
   ribi::ImageCanvas::ConvertToGreyYx(const std::string& filename) noexcept
 {
-  const boost::scoped_ptr<QImage> qimage{
-    new QImage(filename.c_str())
-  };
-  assert(qimage);
-  return ConvertToGreyYx(qimage.get());
+  const QImage qimage(filename.c_str());
+  return ConvertToGreyYx(qimage);
 }
 
 double ribi::ImageCanvas::GetFractionGrey(
@@ -305,21 +302,6 @@ int ribi::ImageCanvas::GetHeight() const noexcept
   return static_cast<int>(m_canvas.size());
 }
 
-std::string ribi::ImageCanvas::GetVersion() noexcept
-{
-  return "4.1";
-}
-
-std::vector<std::string> ribi::ImageCanvas::GetVersionHistory() noexcept
-{
-  return {
-    "2011-03-23: Version 1.0: initial version, then called AsciiArter",
-    "2014-01-07: Version 2.0: add conversion to Canvas"
-    "2014-01-07: version 3.0: reworked interface, renamed to ImageCanvas",
-    "2015-07-20: version 4.0: characters are not square",
-    "2015-12-02: version 4.1: removed use of previously inherited signals"
-  };
-}
 
 void ribi::ImageCanvas::SetColorSystem(const CanvasColorSystem colorSystem) noexcept
 {
