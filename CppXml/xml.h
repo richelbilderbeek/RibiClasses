@@ -18,7 +18,7 @@ bool CanLexicalCast(const SourceType& from)
   {
     boost::lexical_cast<TargetType>(from);
   }
-  catch (boost::bad_lexical_cast)
+  catch (const boost::bad_lexical_cast&)
   {
     return false;
   }

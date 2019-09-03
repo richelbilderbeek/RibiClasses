@@ -1,10 +1,6 @@
 #ifndef RIBI_GEOMETRY_H
 #define RIBI_GEOMETRY_H
 
-
-
-
-
 #include <cassert>
 #include <functional>
 #include <string>

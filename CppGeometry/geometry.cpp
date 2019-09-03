@@ -78,7 +78,7 @@ GetLineRectIntersectionsImpl(
       g.CreateLine(std::vector<Point>( {p2,p3} ))
     };
   std::vector<Point> points;
-  for (const auto side: rect_sides)
+  for (const auto& side: rect_sides)
   {
     const std::vector<Point> v = g.GetLineLineIntersections(line,side);
     std::copy(v.begin(),v.end(),std::back_inserter(points));
@@ -200,8 +200,7 @@ boost::geometry::model::polygon<boost::geometry::model::d2::point_xy<double>>
         0   1   2
 
   */
-  typedef boost::geometry::model::d2::point_xy<double> Coordinat2D;
-  //typedef boost::geometry::model::polygon<Coordinat2D> Polygon;
+  //typedef boost::geometry::model::d2::point_xy<double> Coordinat2D;
 
 
   const std::vector<Coordinat2D> points {
@@ -461,7 +460,7 @@ bool ribi::Geometry::IsConvex(const Coordinats3D& points) const noexcept
   assert(IsPlane(points));
   #endif // NDEBUG
   //Use the first three points for a Plane
-  for (const std::vector<int> v:
+  for (const std::vector<int>& v:
     {
       std::vector<int>( {0,1,2} ),
       std::vector<int>( {0,1,3} ),
@@ -550,7 +549,7 @@ bool ribi::Geometry::IsPlane(const std::vector<Coordinat3D>& v) const noexcept
     assert(plane->IsInPlane(v[3]) == (plane->CalcError(v[3]) <= plane->CalcMaxError(v[3])));
     return plane->IsInPlane(v[3]);
   }
-  catch (std::logic_error& e)
+  catch (const std::logic_error&)
   {
     return false;
   }
@@ -650,8 +649,8 @@ ribi::Geometry::Polygon ribi::Geometry::Rescale(
   const double scale_origin_y
 ) const noexcept
 {
-  typedef boost::geometry::model::d2::point_xy<double> Coordinat2D;
-  typedef boost::geometry::model::polygon<Coordinat2D> Polygon;
+  //typedef boost::geometry::model::d2::point_xy<double> Coordinat2D;
+  //typedef boost::geometry::model::polygon<Coordinat2D> Polygon;
 
   boost::geometry::model::ring<Coordinat2D> points;
   boost::geometry::convert(polygon,points);
@@ -952,8 +951,8 @@ boost::geometry::model::polygon<boost::geometry::model::d2::point_xy<double>>
     const double dy
   ) const noexcept
 {
-  typedef boost::geometry::model::d2::point_xy<double> Coordinat2D;
-  typedef boost::geometry::model::polygon<Coordinat2D> Polygon;
+  //typedef boost::geometry::model::d2::point_xy<double> Coordinat2D;
+  //typedef boost::geometry::model::polygon<Coordinat2D> Polygon;
 
   boost::geometry::model::ring<Coordinat2D> points;
   boost::geometry::convert(shape,points);
