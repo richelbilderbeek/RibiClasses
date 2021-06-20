@@ -1,4 +1,4 @@
-# GSL: Guidelines Support Library [![Build Status](https://travis-ci.org/Microsoft/GSL.svg?branch=master)](https://travis-ci.org/Microsoft/GSL)
+# GSL: Guidelines Support Library [![Build Status](https://travis-ci.com/Microsoft/GSL.svg?branch=master)](https://travis-ci.com/Microsoft/GSL)
 
 The Guidelines Support Library (GSL) contains functions and types that are suggested for use by the
 [C++ Core Guidelines](https://github.com/isocpp/CppCoreGuidelines) maintained by the [Standard C++ Foundation](https://isocpp.org).
