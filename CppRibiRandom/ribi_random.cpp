@@ -37,7 +37,7 @@ struct ribi::Random::RandomImpl
   ///Use a random seed
   RandomImpl() : RandomImpl(std::random_device()()) {}
   ///Use a given seed
-  RandomImpl(const int seed) : m_mt{seed} {}
+  RandomImpl(const int seed) : m_mt(seed) {}
   RandomImpl(const RandomImpl&) = delete;
   RandomImpl& operator=(const RandomImpl&) = delete;
 
@@ -124,7 +124,7 @@ ribi::Random::Random(const int seed) : m_impl{new RandomImpl(seed)}
 
 }
 
-ribi::Random::~Random()
+ribi::Random::~Random() noexcept
 {
   //Otherwise trouble with forward declarations
 }

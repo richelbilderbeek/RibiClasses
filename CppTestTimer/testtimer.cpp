@@ -4,7 +4,7 @@
 #include <sstream>
 #include <iostream>
 
-#include <boost/timer.hpp>
+#include <boost/timer/timer.hpp>
 
 namespace ribi {
 
