@@ -14,6 +14,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Remove README that is not originally from this repo
+        run: rm CppGslLite/README.md
+
       - uses: gaurav-nelson/github-action-markdown-link-check@v1
         with:
           config-file: 'mlc_config.json'
