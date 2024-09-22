@@ -321,7 +321,7 @@ std::vector<std::string> ribi::fileio::FileIo::GetFilesInFolder(
 
   //Convert QFileInfoList to std::vector<std::string> of filenames
   std::vector<std::string> v;
-  const int size{list.size()};
+  const int size{static_cast<int>(list.size())};
   for (int i{0}; i != size; ++i)
   {
     assert(i >= 0);

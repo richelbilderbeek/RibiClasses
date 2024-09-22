@@ -4,7 +4,7 @@
 #include <sstream>
 #include <iostream>
 
-#include <boost/timer.hpp>
+#include <boost/timer/timer.hpp>
 
 namespace ribi {
 
@@ -54,7 +54,7 @@ struct TestTimerImpl
   ///Maximum allowed time for a test
   const double m_max_time_sec;
   ///Timer to measure the duration of a test
-  boost::timer m_timer;
+  boost::timer::auto_cpu_timer m_timer;
   ///The number of tests started
   static int m_n_tests;
 };
