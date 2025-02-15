@@ -9,6 +9,7 @@ on:
       - '**.pri'
       - '**.cpp'
       - '**.h'
+      - download_other_githubs.sh
   pull_request:
   schedule:
   - cron: "0 0 21 * *"
