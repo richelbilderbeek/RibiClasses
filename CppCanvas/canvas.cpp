@@ -15,7 +15,11 @@
 #include <boost/algorithm/string/split.hpp>
 
 #include <QString>
-#include <QRegExp>
+
+//Older Qt version:
+//#include <QRegExp>
+#include <QRegularExpression>
+
 
 #include "canvascolorsystems.h"
 #include "canvascoordinatsystems.h"
