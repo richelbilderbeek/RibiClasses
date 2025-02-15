@@ -1097,12 +1097,6 @@ std::ostream& ribi::operator<<(std::ostream& os, const Geometry::Polygon& p) noe
   return os;
 }
 
-std::ostream& ribi::operator<<(std::ostream& os,const QColor& color) noexcept
-{
-  os << color;
-  return os;
-}
-
 std::ostream& ribi::operator<<(std::ostream& os,const QPen& pen) noexcept
 {
   os << pen.color() << " (" << pen.widthF() << ')';

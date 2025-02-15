@@ -87,20 +87,10 @@ std::vector<std::string> ribi::Container::SeperateString(
   const std::string& input,
   const char seperator) const noexcept
 {
-  std::stringstream s{input};
-  std::string segment;
-  std::vector<std::string> v;
-
-  while(std::getline(s, segment, seperator))
-  {
-    v.push_back(segment);
-  }
-  #ifdef USE_OLD_CODE
   std::vector<std::string> v;
   boost::algorithm::split(v,input,
     std::bind2nd(std::equal_to<char>(),seperator),
     boost::algorithm::token_compress_on);
-  #endif
   return v;
 }
 
@@ -108,7 +98,7 @@ std::string ribi::Container::ToUpper(std::string s) const
 {
   std::transform(
     std::begin(s), std::end(s), std::begin(s),
-    ::toupper
+    std::ptr_fun<int,int>(std::toupper)
   );
   return s;
 }

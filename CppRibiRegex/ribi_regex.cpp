@@ -9,9 +9,12 @@
 #include <stdexcept>
 #include <boost/xpressive/xpressive.hpp>
 
-//Older version:
-//#include <QRegExp>
-#include <QRegularExpression>
+#include <QRegExp>
+
+
+// 
+
+
 
 ribi::Regex::Regex()
 {
@@ -23,13 +26,9 @@ std::vector<std::string>
   const std::string& regex_str
 ) const noexcept
 {
-  assert(!s.empty());
-  assert(!regex_str.empty());
-  std::vector<std::string> v;
-  assert(!"Not used");
-  /*
-  QRegularExpression r(regex_str.c_str());
+  QRegExp r(regex_str.c_str());
   r.setMinimal(true); //QRegExp must be non-greedy
+  std::vector<std::string> v;
   int pos = 0;
   while ((pos = r.indexIn(s.c_str(), pos)) != -1)
   {
@@ -38,7 +37,6 @@ std::vector<std::string>
     v.push_back(q.toStdString());
     pos += r.matchedLength();
   }
-  */
   return v;
 }
 
