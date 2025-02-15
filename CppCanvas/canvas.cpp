@@ -7,10 +7,6 @@
 #include <functional>
 #include <iterator>
 
-
-
-
-
 #include <boost/math/constants/constants.hpp>
 #include <boost/algorithm/string/split.hpp>
 
@@ -23,8 +19,7 @@
 
 #include "canvascolorsystems.h"
 #include "canvascoordinatsystems.h"
-#include "fileio.h"
-
+//#include "fileio.h"
 
 ribi::Canvas::Canvas()
 {

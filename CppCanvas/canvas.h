@@ -11,9 +11,6 @@
 #include "canvascolorsystem.h"
 #include "canvascoordinatsystem.h"
 
-
-struct QRegExp;
-
 namespace ribi {
 
 ///A Canvas is an ASCII art class for drawing (DrawCanvas),
