@@ -13,6 +13,7 @@
 #endif
 
 struct QPen;
+struct QColor;
 struct QRect;
 struct QRectF;
 struct QPoint;
@@ -605,6 +606,7 @@ std::ostream& operator<<(std::ostream& os, const Geometry::Coordinat3D& p) noexc
 std::ostream& operator<<(std::ostream& os, const Geometry::Linestring& linestring) noexcept;
 std::ostream& operator<<(std::ostream& os, const Geometry::Polygon& p) noexcept;
 
+std::ostream& operator<<(std::ostream& os,const QColor& color) noexcept;
 std::ostream& operator<<(std::ostream& os,const QPen& pen) noexcept;
 std::ostream& operator<<(std::ostream& os,const QPoint& rect) noexcept;
 std::ostream& operator<<(std::ostream& os,const QPointF& rect) noexcept;
