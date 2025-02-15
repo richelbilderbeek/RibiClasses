@@ -23,7 +23,7 @@
 
 #include "canvascolorsystems.h"
 #include "canvascoordinatsystems.h"
-#include "fileio.h"
+//#include "fileio.h"
 
 
 ribi::Canvas::Canvas()
