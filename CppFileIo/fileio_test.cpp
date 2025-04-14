@@ -271,7 +271,7 @@ BOOST_AUTO_TEST_CASE(ribi_fileio_get_files_in_folder_test)
     const std::string in_subfolder_filename1 { "in_subfolder1.txt" };
     const std::string in_subfolder_filename2 { "in_subfolder2.txt" };
     //Folder creation
-    for (const std::string folder_name:
+    for (const std::string& folder_name:
       {
         folder_name1,
         folder_name1 + fileio.GetPathSeperator() + subfolder_name1,
@@ -291,7 +291,7 @@ BOOST_AUTO_TEST_CASE(ribi_fileio_get_files_in_folder_test)
       BOOST_CHECK(fileio.IsFolder(folder_name));
     }
     //File creation
-    for (const std::string filename:
+    for (const std::string& filename:
       {
         local_filename,
         folder_name1 + fileio.GetPathSeperator() + in_folder_filename1,
