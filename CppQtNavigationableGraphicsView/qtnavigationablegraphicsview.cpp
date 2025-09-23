@@ -38,6 +38,10 @@ ribi::QtNavigationableGraphicsView::QtNavigationableGraphicsView(QWidget *parent
 
 void ribi::QtNavigationableGraphicsView::wheelEvent(QWheelEvent *event)
 {
+  #ifdef USE_OLD
   const double new_scale = 1.0 + (static_cast<double>(event->delta()) / 1000.0);
+  #else
+  const double new_scale = 1.0 + (static_cast<double>(event->angleDelta().y()) / 1000.0);
+  #endif
   this->scale(new_scale,new_scale);
 }

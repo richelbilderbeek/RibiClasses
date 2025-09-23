@@ -88,17 +88,35 @@ std::vector<std::string> ribi::Container::SeperateString(
   const char seperator) const noexcept
 {
   std::vector<std::string> v;
-  boost::algorithm::split(v,input,
-    std::bind2nd(std::equal_to<char>(),seperator),
-    boost::algorithm::token_compress_on);
+  #ifdef USE_OLD_VERSION
+    boost::algorithm::split(v,input,
+      std::bind2nd(std::equal_to<char>(),seperator),
+      boost::algorithm::token_compress_on);
+  #else
+    boost::algorithm::split(
+      v,
+      input,
+      [seperator](const char c) { return c == seperator; },
+      boost::algorithm::token_compress_on
+    );
+  #endif
   return v;
 }
 
 std::string ribi::Container::ToUpper(std::string s) const
 {
+  #ifdef USE_OLD_VERSION
   std::transform(
     std::begin(s), std::end(s), std::begin(s),
     std::ptr_fun<int,int>(std::toupper)
   );
+  #else
+  std::transform(
+    std::begin(s), std::end(s), std::begin(s),
+    [](const char c) { return std::toupper(c); }
+
+  );
+  #endif
+
   return s;
 }

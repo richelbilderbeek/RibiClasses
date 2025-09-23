@@ -1,6 +1,5 @@
 #include "geometry.h"
 
-
 #include <cassert>
 #include <cmath>
 
@@ -1099,7 +1098,10 @@ std::ostream& ribi::operator<<(std::ostream& os, const Geometry::Polygon& p) noe
 
 std::ostream& ribi::operator<<(std::ostream& os,const QPen& pen) noexcept
 {
-  os << pen.color() << " (" << pen.widthF() << ')';
+  os << pen.color().red()
+  << pen.color().green()
+  << pen.color().blue()
+  << " (" << pen.widthF() << ')';
   return os;
 }
 
