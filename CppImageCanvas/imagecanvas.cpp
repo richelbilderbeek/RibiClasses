@@ -12,6 +12,7 @@
 #include <numeric>
 #include <sstream>
 #include <boost/math/constants/constants.hpp>
+#include <boost/numeric/conversion/cast.hpp>
 
 #include <QFile>
 #include <QImage>
