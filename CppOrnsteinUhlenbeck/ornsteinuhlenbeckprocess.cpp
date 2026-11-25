@@ -12,7 +12,6 @@
 #include "brownianmotionprocess.h"
 
 #include "ornsteinuhlenbeckhelper.h"
-#include "testtimer.h"
 
 ribi::ou::Process::Process(const Parameters& parameters)
   : m_normal_distribution(0.0,1.0),
@@ -95,7 +94,6 @@ void ribi::ou::Process::Test() noexcept
   {
     Helper();
   }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
   const bool verbose{false};
 
   //Run Ornstein-Uhlenbeck for dt=0.25 and known results

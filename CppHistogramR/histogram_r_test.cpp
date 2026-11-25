@@ -4,7 +4,6 @@
 #include <chrono>
 
 #include "fileio.h"
-#include "testtimer.h"
 #include "trace.h"
 #include "ribi_rinside.h"
 #include "RInside.h"
@@ -21,7 +20,6 @@ void ribi::HistogramR::Test() noexcept
     ribi::fileio::FileIo();
     ribi::Rinside().Get();
   }
-  const ribi::TestTimer test_timer(__func__,__FILE__,1.0);
   const bool verbose{false};
 
   ribi::fileio::FileIo f;

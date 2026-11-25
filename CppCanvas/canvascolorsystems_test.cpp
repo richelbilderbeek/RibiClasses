@@ -2,7 +2,6 @@
 
 #include <cassert>
 
-#include "testtimer.h"
 #include "trace.h"
 
 boost::bimap<ribi::CanvasColorSystem,std::string> ribi::CanvasColorSystems::m_map;
@@ -42,7 +41,6 @@ void ribi::CanvasColorSystems::Test() noexcept
     if (is_tested) return;
     is_tested = true;
   }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
   const std::vector<CanvasColorSystem> v = CanvasColorSystems().GetAll();
   const std::size_t sz = v.size();
   for (std::size_t i=0; i!=sz; ++i)

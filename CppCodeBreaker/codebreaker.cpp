@@ -36,7 +36,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "caesarcipher.h"
 #include "trace.h"
 #include "loopreader.h"
-#include "testtimer.h"
 #include "vigenerecipher.h"
 
 
@@ -419,7 +418,6 @@ void ribi::CodeBreaker::Test() noexcept
   }
   const CodeBreaker b;
   //const bool verbose{false};
-  const TestTimer test_timer(__func__,__FILE__,1.0);
   {
     const auto p(
       b.CalculateChiSquared(

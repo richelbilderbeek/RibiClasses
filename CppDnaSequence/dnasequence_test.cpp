@@ -5,7 +5,6 @@
 #include <stdexcept>
 
 #include "container.h"
-#include "testtimer.h"
 
 BOOST_AUTO_TEST_CASE(dna_sequence_test)
 {

@@ -31,7 +31,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <boost/lambda/lambda.hpp>
 
 #include "led.h"
-#include "testtimer.h"
 #include "trace.h"
 #include "ui_qtleddialog.h"
 
@@ -193,7 +192,6 @@ void ribi::QtLedDialog::Test() noexcept
   {
     Led();
   }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
   QtLedDialog d;
   const Led led;
   d.SetLed(led);

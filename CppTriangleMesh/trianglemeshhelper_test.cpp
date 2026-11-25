@@ -42,7 +42,6 @@ void ribi::trim::Helper::Test() noexcept
   //IsClockwiseVertical
   // IsConvex, 2D, from error"); }
   {
-    //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,1.0);
     std::vector<boost::shared_ptr<const Coordinat2D>> coordinats2d;
     {
       const auto coordinat
@@ -82,7 +81,6 @@ void ribi::trim::Helper::Test() noexcept
   }
   // IsConvex, 3D, from error"); }
   {
-    //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,1.0);
     std::vector<boost::shared_ptr<const Coordinat3D>> coordinats3d;
     {
       const auto coordinat = boost::make_shared<Coordinat3D>(0.0,2.0,1.0);
@@ -119,7 +117,6 @@ void ribi::trim::Helper::Test() noexcept
   }
   // IsConvex, 2D, from #228, this is the 2D projection of the next test"); }
   {
-    //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,1.0);
   /*
     This is not convex
 
@@ -140,7 +137,6 @@ void ribi::trim::Helper::Test() noexcept
   #ifdef FIX_ISSUE_228
   // IsCounterClockwise, 3D, from #228"); }
   {
-    //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,1.0);
     /*
     This is not counterclockwise, it is a Z shape on the Y=2 plane
 
@@ -196,7 +192,6 @@ void ribi::trim::Helper::Test() noexcept
   }
   // IsCounterClockwise, 3D, from #228, test for positive"); }
   {
-    //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,1.0);
     /*
     This is counterclockwise
 
@@ -253,7 +248,6 @@ void ribi::trim::Helper::Test() noexcept
   #ifdef BRUTE_FORCE_TEST_MAKECOUNTERCLOCKWISE
   // MakeCounterClockwise, make shuffled points counterclockwise, from #228"); }
   {
-    //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,1.0);
     /*
 
     Observer is behind these points
@@ -309,7 +303,6 @@ void ribi::trim::Helper::Test() noexcept
   #endif // BRUTE_FORCE_TEST_MAKECOUNTERCLOCKWISE
   //OrderByX
   {
-    //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,1.0);
     const auto f = h.OrderByX();
     const auto v = ribi::trim::PointFactory().CreateTestPrism();
     const int sz { static_cast<int>(v.size()) };
@@ -336,7 +329,6 @@ void ribi::trim::Helper::Test() noexcept
   //MakeConvex
   // MakeConvex"); }
   {
-    //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,1.0);
     boost::shared_ptr<const Coordinat2D> left {new Coordinat2D(1.17557,2.35781)};
     boost::shared_ptr<const Coordinat2D> right{new Coordinat2D(2.23114,3.23607)};
     std::vector<boost::shared_ptr<ribi::trim::Point>> points {
@@ -352,7 +344,6 @@ void ribi::trim::Helper::Test() noexcept
   //MakeConvex
   // MakeConvex, from #228"); }
   {
-    //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,1.0);
     /*
     (-0.55,2,0)
     (-3.78624,2,0)
@@ -375,7 +366,6 @@ void ribi::trim::Helper::Test() noexcept
   #ifdef BRUTE_FORCE_TEST_ISSUE228
   // MakeConvex, #228"); }
   {
-    //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,1.0);
     /*
     (-3.78624,2,10)
     (-0.55,2,10)
@@ -399,7 +389,6 @@ void ribi::trim::Helper::Test() noexcept
   }
   // Making CounterClockWise (seen from an observer), #228"); }
   {
-    //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,1.0);
     /* Make these counterclockwise
     (-3.78624,2,0)
     (-3.78624,2,10)
@@ -436,7 +425,6 @@ void ribi::trim::Helper::Test() noexcept
   }
   // MakCounterClockWise, #228"); }
   {
-    //const TestTimer test_timer(boost::lexical_cast<std::string>(__LINE__),__FILE__,1.0);
     /* Make these counterclockwise
 
     (-0.55,2,0)
