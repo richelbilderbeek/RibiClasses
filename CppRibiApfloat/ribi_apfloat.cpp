@@ -5,7 +5,6 @@
 #include <sstream>
 #include "apfloat.h"
 #include "trace.h"
-#include "testtimer.h"
 
 ribi::Apfloat::Apfloat() noexcept
 {
@@ -35,7 +34,6 @@ void ribi::Apfloat::Test() noexcept
     if (is_tested) return;
     is_tested = true;
   }
-  const ribi::TestTimer test_timer(__func__,__FILE__,1.0);
   {
     const double a{4818656.433841671999999998};
     const apfloat b(a);

@@ -35,7 +35,6 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include "newickvector.h"
 #include "newick.h"
 #include "manydigitnewickindexer.h"
-#include "testtimer.h"
 
 
 double ribi::ManyDigitNewick::sm_theta = -1.0;
@@ -195,7 +194,6 @@ void ribi::ManyDigitNewick::Test() noexcept
   {
     ribi::MultiVector<int>();
   }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
   const double theta = 10.0;
   ribi::ManyDigitNewick::SetTheta(theta);
   const std::vector<std::string> v = Newick().CreateValidNewicks();

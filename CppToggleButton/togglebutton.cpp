@@ -25,6 +25,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "togglebutton.h"
 
 #include <cassert>
+#include <ostream>
 //#include <cmath>
 
 //#include <boost/math/constants/constants.hpp>

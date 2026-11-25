@@ -5,7 +5,6 @@
 #include <QGraphicsRectItem>
 #include "container.h"
 #include "fileio.h"
-#include "testtimer.h"
 #include "counter.h"
 #include "ribi_system.h"
 #include "ribi_time.h"

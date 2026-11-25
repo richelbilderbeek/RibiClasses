@@ -7,7 +7,6 @@
 
 #include "dnasequence.h"
 #include "fileio.h"
-#include "testtimer.h"
 #include "ribi_rinside.h"
 #include "trace.h"
 
@@ -24,7 +23,6 @@ void ribi::DnaR::Test() noexcept
     auto& r = ribi::Rinside().Get();
     r.parseEval("library(ape)");
   }
-  const ribi::TestTimer test_timer(__func__,__FILE__,1.0);
   ribi::fileio::FileIo f;
   DnaR d;
   using ribi::DnaSequence;

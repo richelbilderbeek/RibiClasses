@@ -4,7 +4,6 @@
 
 #include "fileio.h"
 #include "phylogeny_r.h"
-#include "testtimer.h"
 #include "trace.h"
 
 #ifndef NDEBUG
@@ -18,7 +17,6 @@ void ribi::NewickUtils::Test() noexcept
   {
     PhylogenyR();
   }
-  const ribi::TestTimer test_timer(__func__,__FILE__,1.0);
   const bool verbose{false};
   if (verbose) { TRACE("GetPhylogeny"); }
   {

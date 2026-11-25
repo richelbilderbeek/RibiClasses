@@ -26,7 +26,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
 
-#include "testtimer.h"
 
 
 ribi::Biology::Biology() noexcept
@@ -53,7 +52,6 @@ void ribi::Biology::Test() noexcept
     if (is_tested) return;
     is_tested = true;
   }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
 
   {
     const PopSize K{1.0};

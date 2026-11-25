@@ -32,7 +32,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <QPainter>
 
 #include "led.h"
-#include "testtimer.h"
 #include "trace.h"
 
 
@@ -297,7 +296,6 @@ void ribi::QtLed::Test() noexcept
   {
     Led();
   }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
   {
     const QtLed a;
     const QtLed b;

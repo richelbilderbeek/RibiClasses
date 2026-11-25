@@ -7,7 +7,6 @@
 #include <boost/math/constants/constants.hpp>
 
 #include "brownianmotionprocess.h"
-#include "testtimer.h"
 #include "trace.h"
 
 ribi::ou::Helper::Helper()
@@ -278,7 +277,6 @@ void ribi::ou::Helper::Test() noexcept
     if (is_tested) return;
     is_tested = true;
   }
-  const TestTimer test_timer(__func__,__FILE__,1.0);
   ///Testing dataset
   //Run a Ornsein-Uhlenbeck motion process for dt = 1.0
   const std::vector<double> known_noises
